@@ -15,7 +15,7 @@ mix.js('resources/js/app.js', 'public/js')
     .sass('resources/sass/app.scss', 'public/css');
 
 // copy images folder into laravel public folder
-mix.copyDirectory('resources/demo8/src/assets/media', 'public/assets/media');
+mix.copyDirectory('resources/demo1/src/assets/media', 'public/assets/media');
 
 /**
  * plugins specific issue workaround for webpack
