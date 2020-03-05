@@ -31,10 +31,13 @@
 													<table class="table">
 														<thead class="thead-light">
 															<tr>
-																<th>#</th>
-																<th>First Name</th>
-																<th>Last Name</th>
-																<th>Username</th>
+																<th>Tanggal</th>
+																<th>No UMK</th>
+																<th>No Kas/Bank</th>
+																<th>Jenis</th>
+																<th>Keterangan</th>
+																<th>Nilai</th>
+																<th>Approval</th>
 															</tr>
 														</thead>
 														<tbody>
@@ -43,63 +46,14 @@
 																<td>Jhon</td>
 																<td>Stone</td>
 																<td>@jhon</td>
-															</tr>
-															<tr>
-																<th scope="row">2</th>
-																<td>Lisa</td>
-																<td>Nilson</td>
-																<td>@lisa</td>
-															</tr>
-															<tr>
-																<th scope="row">3</th>
-																<td>Larry</td>
-																<td>the Bird</td>
-																<td>@twitter</td>
-															</tr>
-														</tbody>
-													</table>
-												</div>
-											</div>
-
-											<!--end::Section-->
-
-											<!--begin::Section-->
-											<div class="kt-section">
-												<div class="kt-section__content">
-													<table class="table">
-														<thead class="thead-dark">
-															<tr>
-																<th>#</th>
-																<th>First Name</th>
-																<th>Last Name</th>
-																<th>Username</th>
-															</tr>
-														</thead>
-														<tbody>
-															<tr>
-																<th scope="row">1</th>
-																<td>Jhon</td>
-																<td>Stone</td>
+																<td>@jhon</td>
+																<td>@jhon</td>
 																<td>@jhon</td>
 															</tr>
-															<tr>
-																<th scope="row">2</th>
-																<td>Lisa</td>
-																<td>Nilson</td>
-																<td>@lisa</td>
-															</tr>
-															<tr>
-																<th scope="row">3</th>
-																<td>Larry</td>
-																<td>the Bird</td>
-																<td>@twitter</td>
-															</tr>
 														</tbody>
 													</table>
 												</div>
 											</div>
-
-											<!--end::Section-->
 										</div>
 									</div>
 
