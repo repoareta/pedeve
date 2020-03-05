@@ -50,6 +50,15 @@
 																<td>@jhon</td>
 																<td>@jhon</td>
 															</tr>
+															<tr>
+																<th scope="row">1</th>
+																<td>Jhon</td>
+																<td>Stone</td>
+																<td>@jhon</td>
+																<td>@jhon</td>
+																<td>@jhon</td>
+																<td>@jhon</td>
+															</tr>
 														</tbody>
 													</table>
 												</div>
