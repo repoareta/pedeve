@@ -11,4 +11,5 @@
 |
 */
 
-Route::get('/','UmumUmkController@index');
+Route::get('/', 'UmumUmkController@index');
+Route::get('/umum/perjalanan_dinas', 'UmumUmkController@indexPerjalananDinas')->name('umum.perjalanan_dinas.index');
