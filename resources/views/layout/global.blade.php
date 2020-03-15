@@ -94,7 +94,7 @@
                     @include('layout.nav-top')
 
 						<!-- begin:: Content -->
-						@yield('layout.content')
+						@yield('content')
 						<!-- end:: Content -->
                 </div>
 					@include('layout.footer')
