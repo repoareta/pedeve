@@ -10,7 +10,13 @@
                 <h4 style="text-align:center; color:#ffffff;" >Muhammad ali</h4>
             </li>
 
-            <li class="kt-menu__item  kt-menu__item--submenu" aria-haspopup="true" data-ktmenu-submenu-toggle="hover">
+            @php
+                $umum = array(
+                    'perjalanan_dinas.index'
+                );
+            @endphp
+
+            <li class="kt-menu__item  kt-menu__item--submenu {{ set_active($umum) }}" aria-haspopup="true" data-ktmenu-submenu-toggle="hover">
                 <a href="javascript:;" class="kt-menu__link kt-menu__toggle">
                     <span class="kt-menu__link-icon">
                         <i class="fa fa-users"></i>
@@ -28,7 +34,9 @@
                                 </span>
                             </span>
                         </li>
-                        <li class="kt-menu__item " aria-haspopup="true">
+                        <li class="kt-menu__item  kt-menu__item{{ set_active_submenu([
+                            'perjalanan_dinas.index'
+                        ]) }}" aria-haspopup="true">
                             <a href="{{ route('perjalanan_dinas.index') }}" class="kt-menu__link ">
                                 <i class="kt-menu__link-bullet kt-menu__link-bullet--dot">
                                     <span></span>
