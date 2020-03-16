@@ -39,7 +39,7 @@
 	<div class="">
 		<div class="card-body table-responsive" >
 		<!--begin: Datatable -->
-		<form  class="kt-form kt-form--label-right" id="form-update-umk">
+		<form  class="kt-form kt-form--label-right" id="form-create-umk">
 			{{csrf_field()}}
 			<div class="kt-portlet__body">
 				<div class="form-group form-group-last">
@@ -236,12 +236,12 @@
 	$('#bulan_buku').datepicker("setDate", new Date());
 	
 	//create
-	$('#form-update-umk').submit(function(){
+	$('#form-create-umk').submit(function(){
         var no_umk = $("#noumk").val();
 		$.ajax({
 			url  : "{{route('uang_muka_kerja.addumk')}}",
 			type : "POST",
-			data : $('#form-update-umk').serialize(),
+			data : $('#form-create-umk').serialize(),
 			dataType : "JSON",
             headers: {
             'X-CSRF-Token': '{{ csrf_token() }}',

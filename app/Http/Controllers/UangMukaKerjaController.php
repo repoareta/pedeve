@@ -40,7 +40,7 @@ class UangMukaKerjaController extends Controller
                     return $button;
                 })
                 ->addColumn('noumk', function($data){
-                        $button = '<a align="center" href="/add_umk/'.str_replace('/', '-', $data->no_umk).'">'.$data->no_umk.'</a>';
+                        $button = '<a align="center" href="/umum/uang_muka_kerja/detailumk/'.str_replace('/', '-', $data->no_umk).'">'.$data->no_umk.'</a>';
                     return $button;
                 })
                 ->addColumn('jenisum', function($data){
@@ -125,9 +125,14 @@ class UangMukaKerjaController extends Controller
     public function detailumk($noumk)
     {   
         $noumk=str_replace('-', '/', $noumk);
-        $data_umks = DB::select("select * from kerja_header where REPLACE(no_umk,'/','') = '$noumk'");
-        $no_uruts = DB::select("select max(no) as no from kerja_detail where REPLACE(no_umk,'/','') = '$noumk'");
-        $data_umk_details = DB::select("select * from kerja_detail where REPLACE(no_umk,'/','') = '$noumk'");
+        $data_umks = DB::select("select * from kerja_header where no_umk = '$noumk'");
+        $no_uruts = DB::select("select max(no) as no from kerja_detail where no_umk = '$noumk'");
+        $data_umk_details = DB::select("select * from kerja_detail where no_umk = '$noumk'");
+        $data_account = DB::select("select kodeacct, descacct FROM account where LENGTH(kodeacct)=6 AND kodeacct NOT LIKE '%X%'");
+        $data_bagian = DB::select("SELECT A.kode,A.nama FROM sdm_tbl_kdbag A ORDER BY A.kode");
+        $data_jenisbiaya = DB::select("select kode,keterangan from jenisbiaya order by kode");
+        $data_cj = DB::select("select kode,nama from cashjudex order by kode");
+        $count= DetailUmkModel::where('no_umk',$noumk)->select('no_umk')->sum('nilai');
 
         if(!empty($no_urut) == null)
         {
@@ -146,8 +151,25 @@ class UangMukaKerjaController extends Controller
                 'page2'         => 'Uang Muka Kerja',
             );
         
-            return view('layouts.master',compact('data_umks','data_umk_details','no_umk_details'))->with($data);
+            return view('Umum.uang_muka_kerja.edit', compact('data_umks','data_umk_details','no_umk_details','data_account','data_bagian','data_jenisbiaya','data_cj','count'));
     }
+
+    public function addumkdetail(request $request)
+    {      
+    DB::table('kerja_detail')->insert([
+        'no' => $request->no,
+        'keterangan' => $request->keterangan,
+        'account' => $request->acc,
+        'nilai' => $request->nilai,
+        'cj' => $request->cj,
+        'jb' => $request->jb,
+        'bagian' => $request->bagian,
+        'pk' => $request->pk,
+        'no_umk' => $request->no_umk
+        ]);
+        return response()->json();
+    }
+
 
     /**
      * Store a newly created resource in storage.
