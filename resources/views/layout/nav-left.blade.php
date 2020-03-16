@@ -11,8 +11,14 @@
             </li>
 
             @php
-                $umum = array(
-                    'perjalanan_dinas.index'
+                $perjalanan_dinas = array(
+                    'perjalanan_dinas.index',
+                    'perjalanan_dinas.create',
+                    'perjalanan_dinas.edit'
+                );
+
+                $umum = array_merge(
+                    $perjalanan_dinas
                 );
             @endphp
 
@@ -34,9 +40,7 @@
                                 </span>
                             </span>
                         </li>
-                        <li class="kt-menu__item  kt-menu__item{{ set_active_submenu([
-                            'perjalanan_dinas.index'
-                        ]) }}" aria-haspopup="true">
+                        <li class="kt-menu__item  kt-menu__item{{ set_active_submenu($perjalanan_dinas) }}" aria-haspopup="true">
                             <a href="{{ route('perjalanan_dinas.index') }}" class="kt-menu__link ">
                                 <i class="kt-menu__link-bullet kt-menu__link-bullet--dot">
                                     <span></span>

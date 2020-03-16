@@ -17,18 +17,19 @@ Route::get('/home', 'HomeController@index')->name('home');
 
 // LOGIN FORM
 Route::view('/', 'login');
-Route::get('/login','AuthController@login')->name('login');
-Route::post('postlogin','AuthController@postlogin');
-Route::get('/logout','AuthController@logout');
+Route::get('/login', 'AuthController@login')->name('login');
+Route::post('postlogin', 'AuthController@postlogin');
+Route::get('/logout', 'AuthController@logout');
+
 // UMK
 // Route::get('/', 'UmumUmkController@index');
 
 // Perjalanan Dinas
-// Route::group(['middleware'=>['auth','checkRole:admin']],function(){
 
+Route::group(['middleware'=>['auth','checkRole:admin']], function () {
+});
 
-
-
+// Perjalanan Dinas
 Route::prefix('umum')->group(function () {
     // Matches The "/umum/perjalanan_dinas" URL
     // Route assigned name "umum.perjalanan_dinas"...
@@ -51,4 +52,4 @@ Route::prefix('umum')->group(function () {
     // Report UMUM
     Route::get('report', 'ReportController@index')->name('report.index');
 });
-// });
+

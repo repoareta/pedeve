@@ -32,78 +32,15 @@
 				<i class="kt-font-brand flaticon2-line-chart"></i>
 			</span>
 			<h3 class="kt-portlet__head-title">
-				Tabel Umum Panjar Dinas
+				Tambah Panjar Dinas
 			</h3>			
 		</div>
 		<div class="kt-portlet__head-toolbar">
 			<div class="kt-portlet__head-wrapper">
-				<div class="kt-portlet__head-actions">
-					<a href="{{ route('perjalanan_dinas.create') }}">
-						<span style="font-size: 2em;" class="kt-font-success">
-							<i class="fas fa-plus-circle"></i>
-						</span>
-					</a>
-	
-					<a href="#">
-						<span style="font-size: 2em;" class="kt-font-warning">
-							<i class="fas fa-edit"></i>
-						</span>
-					</a>
-	
-					<a href="#">
-						<span style="font-size: 2em;" class="kt-font-danger">
-							<i class="fas fa-times-circle"></i>
-						</span>
-					</a>
-
-					<a href="#">
-						<span style="font-size: 2em;" class="kt-font-info">
-							<i class="fas fa-file-export"></i>
-						</span>
-					</a>
-				</div>
 			</div>
 		</div>
 	</div>
 	<div class="kt-portlet__body">
-
-		<!--begin: Datatable -->
-		<table class="table table-striped table-bordered table-hover table-checkable" id="kt_table">
-			<thead>
-				<tr>
-					<th></th>
-					<th>No. Panjar</th>
-					<th>No. UMK</th>
-					<th>Jenis</th>
-					<th>Mutasi</th>
-					<th>Mulai</th>
-					<th>Sampai</th>
-					<th>Dari</th>
-					<th>Tujuan</th>
-					<th>Nopek</th>
-					<th>Keterangan</th>
-					<th>Nilai</th>
-				</tr>
-			</thead>
-			<tbody>
-				<tr>
-					<td>Hehe</td>
-					<td>Hehe</td>
-					<td>Hehe</td>
-					<td>Hehe</td>
-					<td>Hehe</td>
-					<td>Hehe</td>
-					<td>Hehe</td>
-					<td>Hehe</td>
-					<td>Hehe</td>
-					<td>Hehe</td>
-					<td>Hehe</td>
-					<td>Hehe</td>
-				</tr>
-			</tbody>
-		</table>
-
-		<!--end: Datatable -->
 	</div>
 </div>
 </div>

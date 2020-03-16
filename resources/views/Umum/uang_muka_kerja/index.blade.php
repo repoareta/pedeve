@@ -78,3 +78,53 @@
 
 
 @endsection
+
+@section('scripts')
+<script type="text/javascript">
+$(document).ready(function(){
+	$('#data-umk-table').DataTable({
+        processing: true,
+		serverSide: true,
+		ajax: {
+            url: "{{ route('uang_muka_kerja_json.index') }}",
+		},
+		columns: [
+			{
+				data: 'radio',
+				name: 'radio',
+				orderable: false
+			},
+			{
+				data: 'tgl_panjar',
+				name: 'tgl_panjar'
+			},
+			{
+				data: 'noumk',
+				name: 'noumk'
+			},
+			{
+				data: 'no_kas',
+				name: 'no_kas'
+			},
+			{
+				data: 'jenisum',
+				name: 'jenisum'
+			},
+			{
+				data: 'keterangan',
+				name: 'keterangan'
+			},
+			{
+				data: 'jumlah',
+				name: 'jumlah'
+			},
+			{
+				data: 'action',
+				name: 'action',
+				orderable: false
+			}
+		]
+    });
+});
+</script>
+@endsection
