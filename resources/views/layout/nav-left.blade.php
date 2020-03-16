@@ -19,7 +19,9 @@
 
                 $umk = array(); // isi nama semua route UMK
                 $permintaan_bayar = array(); // isi nama semua route permintaan_bayar
-                $anggaran = array(); // isi nama semua route anggaran
+                $anggaran = array(
+                    'anggaran.index'
+                ); // isi nama semua route anggaran
                 $report_umum = array(); // isi nama semua route report umum
 
                 // menu umum
@@ -35,7 +37,7 @@
             <li class="kt-menu__item  kt-menu__item--submenu {{ set_active($umum) }}" aria-haspopup="true" data-ktmenu-submenu-toggle="hover">
                 <a href="javascript:;" class="kt-menu__link kt-menu__toggle">
                     <span class="kt-menu__link-icon">
-                        <i class="fa fa-users"></i>
+                        <i class="fa fa-boxes"></i>
                     </span>
                     <span class="kt-menu__link-text">
                         Umum
@@ -70,7 +72,7 @@
                                 </span>
                             </a>
                         </li>
-                        <li class="kt-menu__item " aria-haspopup="true">
+                        <li class="kt-menu__item  kt-menu__item{{ set_active_submenu($permintaan_bayar) }}" aria-haspopup="true">
                             <a href="{{ route('perjalanan_dinas.index') }}" class="kt-menu__link ">
                                 <i class="kt-menu__link-bullet kt-menu__link-bullet--dot">
                                     <span></span>
@@ -80,8 +82,8 @@
                                 </span>
                             </a>
                         </li>
-                        <li class="kt-menu__item " aria-haspopup="true">
-                            <a href="{{ route('perjalanan_dinas.index') }}" class="kt-menu__link ">
+                        <li class="kt-menu__item  kt-menu__item{{ set_active_submenu($anggaran) }}" aria-haspopup="true">
+                            <a href="{{ route('anggaran.index') }}" class="kt-menu__link ">
                                 <i class="kt-menu__link-bullet kt-menu__link-bullet--dot">
                                     <span></span>
                                 </i>
@@ -90,7 +92,7 @@
                                 </span>
                             </a>
                         </li>
-                        <li class="kt-menu__item " aria-haspopup="true">
+                        {{-- <li class="kt-menu__item " aria-haspopup="true">
                             <a href="{{ route('perjalanan_dinas.index') }}" class="kt-menu__link ">
                                 <i class="kt-menu__link-bullet kt-menu__link-bullet--dot">
                                     <span></span>
@@ -99,15 +101,52 @@
                                     Report Umum
                                 </span>
                             </a>
-                        </li>
+                        </li> --}}
+                        <li class="kt-menu__item  kt-menu__item--submenu" aria-haspopup="true" data-ktmenu-submenu-toggle="hover">
+                            <a href="javascript:;" class="kt-menu__link kt-menu__toggle">
+                                <i class="kt-menu__link-bullet kt-menu__link-bullet--dot">
+                                    <span></span>
+                                </i>
+                                <span class="kt-menu__link-text">Report Umum</span>
+                                <i class="kt-menu__ver-arrow la la-angle-right"></i>
+                            </a>
+                            <div class="kt-menu__submenu "><span class="kt-menu__arrow"></span>
+                                <ul class="kt-menu__subnav">
+                                    <li class="kt-menu__item " aria-haspopup="true">
+                                        <a href="custom/apps/user/list-default.html" class="kt-menu__link ">
+                                            <i class="kt-menu__link-bullet kt-menu__link-bullet--line">
+                                                <span></span>
+                                            </i>
+                                            <span class="kt-menu__link-text">Rekap SPD</span>
+                                        </a>
+                                    </li>
+                                    <li class="kt-menu__item " aria-haspopup="true">
+                                        <a href="custom/apps/user/list-default.html" class="kt-menu__link ">
+                                            <i class="kt-menu__link-bullet kt-menu__link-bullet--line">
+                                                <span></span>
+                                            </i>
+                                            <span class="kt-menu__link-text">Rekap UMK</span>
+                                        </a>
+                                    </li>
+                                    <li class="kt-menu__item " aria-haspopup="true">
+                                        <a href="custom/apps/user/list-default.html" class="kt-menu__link ">
+                                            <i class="kt-menu__link-bullet kt-menu__link-bullet--line">
+                                                <span></span>
+                                            </i>
+                                            <span class="kt-menu__link-text">Rekap Permintaan Bayar</span>
+                                        </a>
+                                    </li>
+                                </ul>
+                            </div>
+                        </>
                     </ul>
                 </div>
-            </li>
+            </i>
 
             <li class="kt-menu__item  kt-menu__item--submenu" aria-haspopup="true" data-ktmenu-submenu-toggle="hover">
                 <a href="javascript:;" class="kt-menu__link kt-menu__toggle">
                     <span class="kt-menu__link-icon">
-                        <i class="fa fa-users"></i>
+                        <i class="fa fa-book-reader"></i>
                     </span>
                     <span class="kt-menu__link-text">
                         SDM & Payroll
@@ -121,7 +160,7 @@
                                     SDM & Payroll
                                 </span>
                             </span>
-                        </li>
+                        </>
                         <li class="kt-menu__item " aria-haspopup="true">
                             <a href="{{ route('perjalanan_dinas.index') }}" class="kt-menu__link ">
                                 <i class="kt-menu__link-bullet kt-menu__link-bullet--dot">
@@ -139,7 +178,7 @@
             <li class="kt-menu__item  kt-menu__item--submenu" aria-haspopup="true" data-ktmenu-submenu-toggle="hover">
                 <a href="javascript:;" class="kt-menu__link kt-menu__toggle">
                     <span class="kt-menu__link-icon">
-                        <i class="fa fa-users"></i>
+                        <i class="fa fa-chalkboard"></i>
                     </span>
                     <span class="kt-menu__link-text">
                         Perbendaharaan
@@ -171,7 +210,7 @@
             <li class="kt-menu__item  kt-menu__item--submenu" aria-haspopup="true" data-ktmenu-submenu-toggle="hover">
                 <a href="javascript:;" class="kt-menu__link kt-menu__toggle">
                     <span class="kt-menu__link-icon">
-                        <i class="fa fa-users"></i>
+                        <i class="fa fa-crosshairs"></i>
                     </span>
                     <span class="kt-menu__link-text">
                         Kontroler
@@ -203,7 +242,7 @@
             <li class="kt-menu__item  kt-menu__item--submenu" aria-haspopup="true" data-ktmenu-submenu-toggle="hover">
                 <a href="javascript:;" class="kt-menu__link kt-menu__toggle">
                     <span class="kt-menu__link-icon">
-                        <i class="fa fa-users"></i>
+                        <i class="fa fa-handshake"></i>
                     </span>
                     <span class="kt-menu__link-text">
                         Customer Management
