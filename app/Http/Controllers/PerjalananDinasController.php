@@ -23,7 +23,7 @@ class PerjalananDinasController extends Controller
      */
     public function create()
     {
-        //
+        return view('perjalanan_dinas.create');
     }
 
     /**

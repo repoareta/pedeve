@@ -35,3 +35,9 @@
 <!--begin::Global Theme Bundle(used by all pages) -->
 <script src="{{ asset('js/app.js') }}"></script>
 <!--end::Global Theme Bundle -->
+
+
+<script src="{{ asset('plugins/datatables/datatables.bundle.js') }}"></script>
+
+
+@yield("scripts")
