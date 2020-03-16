@@ -5,7 +5,11 @@
 	<head>
 		<base href="{{ url('/') }}">
 		<meta charset="utf-8" />
-		<title>{{ config('app.name', 'Pertamina PDV') }} | {{ ucwords(str_replace('_', ' ', Request::segment(1))) }}</title>
+		<title>
+			{{ config('app.name', 'Pertamina PDV') }} | 
+			{{ ucwords(str_replace('_', ' ', Request::segment(1))) }} 
+			@if(Request::segment(2)) - {{ ucwords(str_replace('_', ' ', Request::segment(2))) }} @endif
+		</title>
 		<meta name="description" content="Server-side processing examples">
 		<meta name="viewport" content="width=device-width, initial-scale=1, shrink-to-fit=no">
 

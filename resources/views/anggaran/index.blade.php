@@ -6,7 +6,7 @@
 	<div class="kt-container  kt-container--fluid ">
 		<div class="kt-subheader__main">
 			<h3 class="kt-subheader__title">
-				Panjar Dinas </h3>
+				Anggaran </h3>
 			<span class="kt-subheader__separator kt-hidden"></span>
 			<div class="kt-subheader__breadcrumbs">
 				<a href="#" class="kt-subheader__breadcrumbs-home"><i class="flaticon2-shelter"></i></a>
@@ -14,7 +14,7 @@
 				<a href="" class="kt-subheader__breadcrumbs-link">
 					Umum </a>
 				<span class="kt-subheader__breadcrumbs-separator"></span>
-				<span class="kt-subheader__breadcrumbs-link kt-subheader__breadcrumbs-link--active">Perjalanan Dinas</span>
+				<span class="kt-subheader__breadcrumbs-link kt-subheader__breadcrumbs-link--active">Anggaran</span>
 			</div>
 		</div>
 	</div>
@@ -29,7 +29,7 @@
 				<i class="kt-font-brand flaticon2-line-chart"></i>
 			</span>
 			<h3 class="kt-portlet__head-title">
-				Tabel Umum Panjar Dinas
+				Tabel Umum Anggaran
 			</h3>			
 		</div>
 		<div class="kt-portlet__head-toolbar">
@@ -69,29 +69,13 @@
 			<thead class="thead-light">
 				<tr>
 					<th></th>
-					<th>No. Panjar</th>
-					<th>No. UMK</th>
-					<th>Jenis</th>
-					<th>Mutasi</th>
-					<th>Mulai</th>
-					<th>Sampai</th>
-					<th>Dari</th>
-					<th>Tujuan</th>
-					<th>Nopek</th>
-					<th>Keterangan</th>
-					<th>Nilai</th>
+					<th>Sub Main</th>
+					<th>Detail Anggaran</th>
+					<th>Realisasi</th>
 				</tr>
 			</thead>
 			<tbody>
 				<tr>
-					<td>Hehe</td>
-					<td>Hehe</td>
-					<td>Hehe</td>
-					<td>Hehe</td>
-					<td>Hehe</td>
-					<td>Hehe</td>
-					<td>Hehe</td>
-					<td>Hehe</td>
 					<td>Hehe</td>
 					<td>Hehe</td>
 					<td>Hehe</td>
