@@ -24,7 +24,7 @@ Route::get('/logout','AuthController@logout');
 // Route::get('/', 'UmumUmkController@index');
 
 // Perjalanan Dinas
-Route::group(['middleware'=>['auth','checkRole:admin']],function(){
+// Route::group(['middleware'=>['auth','checkRole:admin']],function(){
 
 
 
@@ -33,6 +33,10 @@ Route::prefix('umum')->group(function () {
     // Matches The "/umum/perjalanan_dinas" URL
     // Route assigned name "umum.perjalanan_dinas"...
     // Perjalanan Dinas
+    Route::get('uang_muka_kerja', 'UangMukaKerjaController@tampil')->name('uang_muka_kerja.tampil');
+    Route::resource('uang_muka_kerja_json', 'UangMukaKerjaController');
+    Route::get('create_uang_muka_kerja', 'UangMukaKerjaController@create')->name('create_uang_muka_kerja.create');
+
     Route::get('perjalanan_dinas', 'PerjalananDinasController@index')->name('perjalanan_dinas.index');
     Route::get('perjalanan_dinas/create', 'PerjalananDinasController@create')->name('perjalanan_dinas.create');
     Route::get('perjalanan_dinas/edit', 'PerjalananDinasController@edit')->name('perjalanan_dinas.edit');
@@ -47,4 +51,4 @@ Route::prefix('umum')->group(function () {
     // Report UMUM
     Route::get('report', 'ReportController@index')->name('report.index');
 });
-});
+// });
