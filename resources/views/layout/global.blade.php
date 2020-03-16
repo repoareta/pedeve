@@ -5,7 +5,7 @@
 	<head>
 		<base href="{{ url('/') }}">
 		<meta charset="utf-8" />
-		<title>Metronic | Server-side processing Examples</title>
+		<title>{{ config('app.name', 'Pertamina PDV') }} | {{ ucwords(str_replace('_', ' ', Request::segment(1))) }}</title>
 		<meta name="description" content="Server-side processing examples">
 		<meta name="viewport" content="width=device-width, initial-scale=1, shrink-to-fit=no">
 
@@ -19,7 +19,7 @@
 		<!--end::Global Theme Styles -->
 
 		<!--end::Layout Skins -->
-		<link rel="shortcut icon" href="assets/media/logos/favicon.ico" />
+		<link rel="shortcut icon" href="{{ asset('assets/media/logos/favicon.ico') }}" />
 	</head>
 
 	<!-- end::Head -->
@@ -32,7 +32,7 @@
 		<!-- begin:: Header Mobile -->
 		<div id="kt_header_mobile" class="kt-header-mobile  kt-header-mobile--fixed ">
 			<div class="kt-header-mobile__logo">
-				<a href="index.html">
+				<a href="{{ url()->current() }}">
 					<img alt="Logo" src="{{ asset('assets/media/logos/pedeve.png') }}" />
 				</a>
 			</div>
@@ -52,7 +52,7 @@
 					<!-- begin:: Aside -->
 					<div class="kt-aside__brand kt-grid__item " id="kt_aside_brand">
 						<div class="kt-aside__brand-logo">
-							<a href="index.html">
+							<a href="{{ url()->current() }}">
 								<img alt="Logo" src="{{ asset('assets/media/logos/pedeve.png') }}" />
 							</a>
 						</div>
@@ -65,11 +65,11 @@
 				<div class="kt-grid__item kt-grid__item--fluid kt-grid kt-grid--hor kt-wrapper" id="kt_wrapper">
                     @include('layout.nav-top')
 
-				<div class="kt-content  kt-grid__item kt-grid__item--fluid kt-grid kt-grid--hor" id="kt_content">
-					<!-- begin:: Content -->
-					@yield('content')
-					<!-- end:: Content -->
-                </div>
+					<div class="kt-content  kt-grid__item kt-grid__item--fluid kt-grid kt-grid--hor" id="kt_content">
+						<!-- begin:: Content -->
+						@yield('content')
+						<!-- end:: Content -->
+					</div>
                     <!-- begin:: Footer -->
                     @include('layout.footer')
                     <!-- end:: Footer -->
