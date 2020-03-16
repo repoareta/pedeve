@@ -9,6 +9,11 @@
     <div class="kt-header-menu-wrapper" id="kt_header_menu_wrapper">
         <div id="kt_header_menu" class="kt-header-menu kt-header-menu-mobile  kt-header-menu--layout-default ">
             <ul class="kt-menu__nav ">
+                <li class="kt-menu__item  kt-menu__item--submenu kt-menu__item--rel kt-menu__item--active" data-ktmenu-submenu-toggle="click" aria-haspopup="true">
+                    <div class="kt-menu__link kt-menu__toggle">
+                        <span class="kt-menu__link-text">Umum</span>
+                    </div>
+                </li>
             </ul>
         </div>
     </div>
@@ -78,19 +83,6 @@
                             </div>
                         </div>
                     </a>
-                    <a href="custom/apps/user/profile-3.html" class="kt-notification__item">
-                        <div class="kt-notification__item-icon">
-                            <i class="flaticon2-mail kt-font-warning"></i>
-                        </div>
-                        <div class="kt-notification__item-details">
-                            <div class="kt-notification__item-title kt-font-bold">
-                                My Messages
-                            </div>
-                            <div class="kt-notification__item-time">
-                                Inbox and tasks
-                            </div>
-                        </div>
-                    </a>
                     <a href="custom/apps/user/profile-2.html" class="kt-notification__item">
                         <div class="kt-notification__item-icon">
                             <i class="flaticon2-rocket-1 kt-font-danger"></i>
@@ -104,35 +96,8 @@
                             </div>
                         </div>
                     </a>
-                    <a href="custom/apps/user/profile-3.html" class="kt-notification__item">
-                        <div class="kt-notification__item-icon">
-                            <i class="flaticon2-hourglass kt-font-brand"></i>
-                        </div>
-                        <div class="kt-notification__item-details">
-                            <div class="kt-notification__item-title kt-font-bold">
-                                My Tasks
-                            </div>
-                            <div class="kt-notification__item-time">
-                                latest tasks and projects
-                            </div>
-                        </div>
-                    </a>
-                    <a href="custom/apps/user/profile-1/overview.html" class="kt-notification__item">
-                        <div class="kt-notification__item-icon">
-                            <i class="flaticon2-cardiogram kt-font-warning"></i>
-                        </div>
-                        <div class="kt-notification__item-details">
-                            <div class="kt-notification__item-title kt-font-bold">
-                                Billing
-                            </div>
-                            <div class="kt-notification__item-time">
-                                billing & statements <span class="kt-badge kt-badge--danger kt-badge--inline kt-badge--pill kt-badge--rounded">2 pending</span>
-                            </div>
-                        </div>
-                    </a>
                     <div class="kt-notification__custom kt-space-between">
-                        <a href="custom/user/login-v2.html" target="_blank" class="btn btn-label btn-label-brand btn-sm btn-bold">Sign Out</a>
-                        <a href="custom/user/login-v2.html" target="_blank" class="btn btn-clean btn-sm btn-bold">Upgrade Plan</a>
+                        <a href="custom/user/login-v2.html" target="_blank" class="btn btn-label btn-label-brand btn-sm btn-bold btn-block">Sign Out</a>
                     </div>
                 </div>
 
@@ -147,34 +112,3 @@
 </div>
 
 <!-- end:: Header -->
-<div class="kt-content  kt-grid__item kt-grid__item--fluid kt-grid kt-grid--hor" id="kt_content">
-
-<!-- begin:: Subheader -->
-<div class="kt-subheader   kt-grid__item" id="kt_subheader">
-    <div class="kt-container  kt-container--fluid ">
-        <div class="kt-subheader__main">
-            <h3 class="kt-subheader__title">
-                Server-side processing Examples </h3>
-            <span class="kt-subheader__separator kt-hidden"></span>
-            <div class="kt-subheader__breadcrumbs">
-                <a href="#" class="kt-subheader__breadcrumbs-home"><i class="flaticon2-shelter"></i></a>
-                <span class="kt-subheader__breadcrumbs-separator"></span>
-                <a href="" class="kt-subheader__breadcrumbs-link">
-                    Crud </a>
-                <span class="kt-subheader__breadcrumbs-separator"></span>
-                <a href="" class="kt-subheader__breadcrumbs-link">
-                    Datatables.net </a>
-                <span class="kt-subheader__breadcrumbs-separator"></span>
-                <a href="" class="kt-subheader__breadcrumbs-link">
-                    Data sources </a>
-                <span class="kt-subheader__breadcrumbs-separator"></span>
-                <a href="" class="kt-subheader__breadcrumbs-link">
-                    Ajax Server-side </a>
-
-                <!-- <span class="kt-subheader__breadcrumbs-link kt-subheader__breadcrumbs-link--active">Active link</span> -->
-            </div>
-        </div>
-    </div>
-</div>
-
-<!-- end:: Subheader -->
