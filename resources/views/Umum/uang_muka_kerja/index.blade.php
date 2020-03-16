@@ -44,15 +44,15 @@
 						</span>
 					</a>
 	
-					<a href="#">
+					<a >
 						<span style="font-size: 2em;" class="kt-font-warning">
-							<i class="fas fa-edit"></i>
+							<i class="fas fa-edit" id="btn-edit-umk"></i>
 						</span>
 					</a>
 	
-					<a href="#">
-						<span style="font-size: 2em;" class="kt-font-danger">
-							<i class="fas fa-times-circle"></i>
+					<a >
+						<span style="font-size: 2em;"  class="kt-font-danger">
+							<i class="fas fa-times-circle" id="btn-delete-umk"></i>
 						</span>
 					</a>
 
@@ -71,7 +71,7 @@
 		<table id="data-umk-table" class="table table-striped table-hover table-bordered">
 			<thead class="thead-light">
 				<tr>
-					<th></th>
+					<th><input type="radio" hidden name="btn-radio"  data-id="1" class="btn-radio" checked ></th>
 					<th>Tanggal</th>
 					<th>No UMK</th>
 					<th>No Kas/Bank</th>
@@ -141,6 +141,75 @@ $(document).ready(function(){
 			}
 		]
     });
+});
+
+//edit
+$('#btn-edit-umk').on('click', function(e) {
+
+
+var allVals = [];  
+$(".btn-radio:checked").each(function() {  
+	var dataid = $(this).attr('data-id');
+
+	if(dataid == 1) 
+	{
+		swal({
+				title: "Tandai baris yang akan diedit!",
+				type: "success"
+				}) ;  
+	}  else {  
+		window.location.replace("/umum/uang_muka_kerja/detailumk/"+dataid);
+	}	
+				
+});
+});
+
+
+
+//delete
+$('#btn-delete-umk').on('click', function(e) {
+
+	$(".btn-radio:checked").each(function() {  
+		var dataid = $(this).attr('data-id');
+
+	if(dataid == 1)  
+	{  
+		swal({
+				title: "Tandai baris yang akan dihapus!",
+				type: "success"
+				}) ; 
+	}  else {  
+		swal({
+			title: "Data yang akan di hapus?",
+			text: "NO UMK :"+dataid,
+			icon: "warning",
+			buttons: true,
+			dangerMode: true,
+			})
+			.then((willDelete) => {
+			if (willDelete) {
+				$.ajax({
+					url: "/umum/uang_muka_kerja/deleteumk/"+dataid ,
+					type: 'get',
+					success: function () {
+						swal({
+								title: "Delete",
+								text: "Success",
+								type: "success"
+							}).then(function() {
+								location.replace("{{ route('uang_muka_kerja.tampil') }}");
+							});
+					},
+					error: function () {
+						alert("Ada kesalahan aplikasi");
+					}
+				});
+			}
+		});
+	}	
+});				
+
+
 });
 </script>
 @endsection

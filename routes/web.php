@@ -40,6 +40,7 @@ Route::prefix('umum')->group(function () {
     Route::get('uang_muka_kerja/create', 'UangMukaKerjaController@create')->name('uang_muka_kerja.create');
     Route::post('uang_muka_kerja/addumk', 'UangMukaKerjaController@addumk')->name('uang_muka_kerja.addumk');
     Route::post('uang_muka_kerja/addumkdetail', 'UangMukaKerjaController@addumkdetail')->name('uang_muka_kerja.addumkdetail');
+    Route::get('uang_muka_kerja/deleteumk/{noumk}', 'UangMukaKerjaController@deleteumk')->name('uang_muka_kerja.deleteumk');
     Route::get('uang_muka_kerja/detailumk/{noumk}', 'UangMukaKerjaController@detailumk')->name('uang_muka_kerja.detailumk');
     
     // Perjalanan Dinas

@@ -170,6 +170,14 @@ class UangMukaKerjaController extends Controller
         return response()->json();
     }
 
+    public function deleteumk($noumk)
+    {      
+        $noumks=str_replace('-', '/', $noumk);
+        DB::select("delete from kerja_header where no_umk = '$noumks'" );
+        DB::select("delete from kerja_detail where no_umk = '$noumks'" );
+        return response()->json();
+    }
+
 
     /**
      * Store a newly created resource in storage.
