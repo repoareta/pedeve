@@ -15,11 +15,21 @@
                     'perjalanan_dinas.index',
                     'perjalanan_dinas.create',
                     'perjalanan_dinas.edit'
-                );
+                ); // isi nama semua route perjalanan dinas
 
+                $umk = array(); // isi nama semua route UMK
+                $permintaan_bayar = array(); // isi nama semua route permintaan_bayar
+                $anggaran = array(); // isi nama semua route anggaran
+                $report_umum = array(); // isi nama semua route report umum
+
+                // menu umum
                 $umum = array_merge(
-                    $perjalanan_dinas
-                );
+                    $perjalanan_dinas,
+                    $umk,
+                    $permintaan_bayar,
+                    $anggaran,
+                    $report_umum
+                ); // array merge semua submenu
             @endphp
 
             <li class="kt-menu__item  kt-menu__item--submenu {{ set_active($umum) }}" aria-haspopup="true" data-ktmenu-submenu-toggle="hover">
