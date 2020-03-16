@@ -17,11 +17,18 @@ Route::get('/home', 'HomeController@index')->name('home');
 
 // LOGIN FORM
 Route::view('/', 'login');
-
+Route::get('/login','AuthController@login')->name('login');
+Route::post('postlogin','AuthController@postlogin');
+Route::get('/logout','AuthController@logout');
 // UMK
 // Route::get('/', 'UmumUmkController@index');
 
-// Modul UMUM
+// Perjalanan Dinas
+Route::group(['middleware'=>['auth','checkRole:admin']],function(){
+
+
+
+
 Route::prefix('umum')->group(function () {
     // Matches The "/umum/perjalanan_dinas" URL
     // Route assigned name "umum.perjalanan_dinas"...
@@ -30,8 +37,6 @@ Route::prefix('umum')->group(function () {
     Route::get('perjalanan_dinas/create', 'PerjalananDinasController@create')->name('perjalanan_dinas.create');
     Route::get('perjalanan_dinas/edit', 'PerjalananDinasController@edit')->name('perjalanan_dinas.edit');
 
-    // UMK
-    Route::get('umk', 'UmkController@index')->name('umk.index');
 
     // Permintaan Bayar
     Route::get('permintaan_bayar', 'PermintaanBayarController@index')->name('permintaan_bayar.index');
@@ -41,4 +46,5 @@ Route::prefix('umum')->group(function () {
     
     // Report UMUM
     Route::get('report', 'ReportController@index')->name('report.index');
+});
 });
