@@ -84,18 +84,69 @@ class UangMukaKerjaController extends Controller
         }else {
             $no_umk= sprintf("%03s", 1). '/' . $awal .'/' . date('d/m/Y');
         }
-        // $data_umks = UmkModel::select('*')->where('no_umk', $no_umk);
-        // $no_uruts = DetailUmkModel::select('no')->where('no_umk', $no_umk)->max('no');
-        // $data_umk_details = DetailUmkModel::where('no_umk',$no_umk);
-        // if(!empty($no_uruts) == null)
-        // {
-
-        //         $no_umk_details=$no_uruts + 1;
-
-        // }else{
-        //     $no_umk_details= 1;
-        // }
         return view('Umum.uang_muka_kerja.create', compact('no_umk'));
+    }
+
+    public function addumk(request $request)
+    {
+        $check_data = DB::select("select * from kerja_header where no_umk = '$request->no_umk'");
+        if(!empty($check_data))
+        {
+            DB::table('kerja_header')
+            ->where('no_umk', $request->no_umk)
+            ->update([
+            'tgl_panjar' => $request->tgl_panjar,
+            'bulan_buku' => $request->bulan_buku,
+            'keterangan' => $request->untuk,
+            'ci' => $request->ci,
+            'rate' => $request->kurs,
+            'jenis_um' => $request->jenis_um,
+            'no_umk' => $request->no_umk,
+            'jumlah' => $request->jumlah
+            ]);
+            return response()->json();
+        }else{
+            DB::table('kerja_header')->insert([
+                'tgl_panjar' => $request->tgl_panjar,
+                'bulan_buku' => $request->bulan_buku,
+                'keterangan' => $request->untuk,
+                'ci' => $request->ci,
+                'rate' => $request->kurs,
+                'jenis_um' => $request->jenis_um,
+                'no_umk' => $request->no_umk,
+                'jumlah' => $request->jumlah,
+                'app_pbd' => 'N',
+                'app_sdm' => 'N',
+                ]);
+                return response()->json();
+        }        
+    }
+
+    public function detailumk($noumk)
+    {   
+        $noumk=str_replace('-', '/', $noumk);
+        $data_umks = DB::select("select * from kerja_header where REPLACE(no_umk,'/','') = '$noumk'");
+        $no_uruts = DB::select("select max(no) as no from kerja_detail where REPLACE(no_umk,'/','') = '$noumk'");
+        $data_umk_details = DB::select("select * from kerja_detail where REPLACE(no_umk,'/','') = '$noumk'");
+
+        if(!empty($no_urut) == null)
+        {
+            foreach($no_uruts as $no_urut)
+            {
+                $no_umk_details=$no_urut->no + 1;
+            }
+        }else{
+            $no_umk_details= 1;
+        }
+        
+            $data = array(
+                'Content'       => 'Umum.umk_detail',
+                'thisJs'       => 'js.js_umk',
+                'page1'         => 'Umum',
+                'page2'         => 'Uang Muka Kerja',
+            );
+        
+            return view('layouts.master',compact('data_umks','data_umk_details','no_umk_details'))->with($data);
     }
 
     /**

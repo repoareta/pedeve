@@ -37,15 +37,31 @@
 		</div>
 		<div class="kt-portlet__head-toolbar">
 			<div class="kt-portlet__head-wrapper">
-			<span class="kt-section__info">
-                               <div style="padding-left:25px;float:left;font-weight:bold; font-size:20px" id="btn-tombol">
-                                <a style="color:blue;" href="{{ route('create_uang_muka_kerja.create') }}" id="btn-tambah-umk" class="kt-menu__link kt-menu__toggle"><span class="kt-menu__link-icon flaticon2-plus-1"></span></a>
-                                <a style="color:green;" href="#" id="btn-edit-umk" data-id="1" class="kt-menu__link kt-menu__toggle"><span class="kt-menu__link-icon flaticon2-writing"></span></a>
-                                <a style="color:red;" href="#"  id="btn-delete-umk" class=""><span class="kt-menu__link-icon flaticon2-delete"></span></a>
-                                <a style="color:yellow;" href="#" class="kt-menu__link kt-menu__toggle"><span class="kt-menu__link-icon flaticon2-search-1"></span></a>
-                                <a style="color:blue;" href="#"  class="kt-menu__link kt-menu__toggle"><span class="kt-menu__link-icon flaticon2-download-2"></span></a>
-                                </div>
+				<div class="kt-portlet__head-actions">
+					<a href="{{ route('uang_muka_kerja.create') }}">
+						<span style="font-size: 2em;" class="kt-font-success">
+							<i class="fas fa-plus-circle"></i>
 						</span>
+					</a>
+	
+					<a href="#">
+						<span style="font-size: 2em;" class="kt-font-warning">
+							<i class="fas fa-edit"></i>
+						</span>
+					</a>
+	
+					<a href="#">
+						<span style="font-size: 2em;" class="kt-font-danger">
+							<i class="fas fa-times-circle"></i>
+						</span>
+					</a>
+
+					<a href="#">
+						<span style="font-size: 2em;" class="kt-font-info">
+							<i class="fas fa-file-export"></i>
+						</span>
+					</a>
+				</div>
 			</div>
 		</div>
 	</div>
@@ -53,16 +69,16 @@
 		<div class="card-body table-responsive">
 		<!--begin: Datatable -->
 		<table id="data-umk-table" class="table table-striped table-hover table-bordered">
-			<thead bgcolor="#483D8B">
+			<thead class="thead-light">
 				<tr>
-					<th style="color:#ffffff"></th>
-					<th style="color:#ffffff">Tanggal</th>
-					<th style="color:#ffffff">No UMK</th>
-					<th style="color:#ffffff">No Kas/Bank</th>
-					<th style="color:#ffffff">Jenis</th>
-					<th style="color:#ffffff">Keterangan</th>
-					<th style="color:#ffffff">Nilai</th>
-					<th style="color:#ffffff">Approval</th>
+					<th></th>
+					<th>Tanggal</th>
+					<th>No UMK</th>
+					<th>No Kas/Bank</th>
+					<th>Jenis</th>
+					<th>Keterangan</th>
+					<th>Nilai</th>
+					<th>Approval</th>
 				</tr>
 			</thead>
 			<tbody>
