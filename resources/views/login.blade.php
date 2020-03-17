@@ -9,6 +9,7 @@
 <meta name="keywords" content="Static Login Form Responsive, Login form web template, Sign up Web Templates, Flat Web Templates, Login signup Responsive web template, Smartphone Compatible web template, free webdesigns for Nokia, Samsung, LG, SonyErricsson, Motorola web design" />
 <!--script-->
 <script src="{{asset('js/jquery.min.js')}}"></script>
+<link href="{{ asset('css/app.css') }}" rel="stylesheet" type="text/css" >
 <script src="{{asset('js/easyResponsiveTabs.js')}}" type="text/javascript"></script>
 		    <script type="text/javascript">
 			    $(document).ready(function () {
