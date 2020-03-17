@@ -6,7 +6,7 @@
 	<div class="kt-container  kt-container--fluid ">
 		<div class="kt-subheader__main">
 			<h3 class="kt-subheader__title">
-				Panjar Dinas </h3>
+				Uang Muka Kerja </h3>
 			<span class="kt-subheader__separator kt-hidden"></span>
 			<div class="kt-subheader__breadcrumbs">
 				<a href="#" class="kt-subheader__breadcrumbs-home"><i class="flaticon2-shelter"></i></a>
@@ -14,10 +14,7 @@
 				<a href="" class="kt-subheader__breadcrumbs-link">
 					Umum </a>
 				<span class="kt-subheader__breadcrumbs-separator"></span>
-				<a href="" class="kt-subheader__breadcrumbs-link">
-					Uang Muka Kerja </a>
-				<span class="kt-subheader__breadcrumbs-separator"></span>
-				<!-- <span class="kt-subheader__breadcrumbs-link kt-subheader__breadcrumbs-link--active">Active link</span> -->
+				<span class="kt-subheader__breadcrumbs-link kt-subheader__breadcrumbs-link--active">Uang Muka Kerja</span>
 			</div>
 		</div>
 	</div>
@@ -110,7 +107,7 @@
 					</div>
 					<div style="float:right;">
 						<div class="kt-form__actions">
-							<a  href="{{route('uang_muka_kerja.tampil')}}" class="btn btn-warning">Cancel</a>
+							<a  href="{{route('uang_muka_kerja.index')}}" class="btn btn-warning">Cancel</a>
 							<button type="submit" class="btn btn-brand">Save</button>
 						</div>
 					</div>
@@ -326,7 +323,7 @@ $(document).ready(function () {
 $('#form-update-umk').submit(function(){
         var no_umk = $("#noumk").val();
 		$.ajax({
-			url  : "{{route('uang_muka_kerja.addumk')}}",
+			url  : "{{route('uang_muka_kerja.store')}}",
 			type : "POST",
 			data : $('#form-update-umk').serialize(),
 			dataType : "JSON",
@@ -340,7 +337,7 @@ $('#form-update-umk').submit(function(){
                     text: "Message!",
                     type: "success"
                 }).then(function() {
-                    window.location.replace("{{route('uang_muka_kerja.tampil')}}");;
+                    window.location.replace("{{route('uang_muka_kerja.index')}}");;
                 });
 			}, 
 			error : function(){
@@ -353,7 +350,7 @@ $('#form-update-umk').submit(function(){
     //create detail
     $('#form-tambah-umk-detail').submit(function(){
 		$.ajax({
-			url  : "{{route('uang_muka_kerja.addumkdetail')}}",
+			url  : "{{route('uang_muka_kerja.store.detail')}}",
 			type : "POST",
 			data : $('#form-tambah-umk-detail').serialize(),
 			dataType : "JSON",
@@ -389,6 +386,7 @@ $(".btn-radio:checked").each(function() {
 			dataType:"json",
 			success:function(data)
 			{
+				$('#no').val(data.no);
 				$('#keterangan').val(data.keterangan);
 				$('#acc').val(data.account);
 				$('#bagian').val(data.bagian);

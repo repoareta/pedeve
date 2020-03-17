@@ -6,7 +6,7 @@
 	<div class="kt-container  kt-container--fluid ">
 		<div class="kt-subheader__main">
 			<h3 class="kt-subheader__title">
-				Panjar Dinas </h3>
+				Uang Muka Kerja </h3>
 			<span class="kt-subheader__separator kt-hidden"></span>
 			<div class="kt-subheader__breadcrumbs">
 				<a href="#" class="kt-subheader__breadcrumbs-home"><i class="flaticon2-shelter"></i></a>
@@ -14,10 +14,7 @@
 				<a href="" class="kt-subheader__breadcrumbs-link">
 					Umum </a>
 				<span class="kt-subheader__breadcrumbs-separator"></span>
-				<a href="" class="kt-subheader__breadcrumbs-link">
-					Uang Muka Kerja </a>
-				<span class="kt-subheader__breadcrumbs-separator"></span>
-				<!-- <span class="kt-subheader__breadcrumbs-link kt-subheader__breadcrumbs-link--active">Active link</span> -->
+				<span class="kt-subheader__breadcrumbs-link kt-subheader__breadcrumbs-link--active">Uang Muka Kerja</span>
 			</div>
 		</div>
 	</div>
@@ -112,7 +109,7 @@
 					</div>
 					<div style="float:right;">
 						<div class="kt-form__actions">
-							<a  href="{{route('uang_muka_kerja.tampil')}}" class="btn btn-warning">Cancel</a>
+							<a  href="{{route('uang_muka_kerja.index')}}" class="btn btn-warning">Cancel</a>
 							<button type="submit" class="btn btn-brand">Save</button>
 						</div>
 					</div>
@@ -239,7 +236,7 @@
 	$('#form-create-umk').submit(function(){
         var no_umk = $("#noumk").val();
 		$.ajax({
-			url  : "{{route('uang_muka_kerja.addumk')}}",
+			url  : "{{route('uang_muka_kerja.store')}}",
 			type : "POST",
 			data : $('#form-create-umk').serialize(),
 			dataType : "JSON",
@@ -253,7 +250,7 @@
                     text: "Message!",
                     type: "success"
                 }).then(function() {
-                    window.location.replace("/umum/uang_muka_kerja/detailumk/"+no_umk);;
+                    window.location.replace("/umum/uang_muka_kerja/detail/"+no_umk);;
                 });
 			}, 
 			error : function(){

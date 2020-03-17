@@ -35,15 +35,15 @@ Route::prefix('umum')->group(function () {
     // Route assigned name "umum.perjalanan_dinas"...
     
     // UMK
-    Route::get('uang_muka_kerja', 'UangMukaKerjaController@tampil')->name('uang_muka_kerja.tampil');
-    Route::resource('uang_muka_kerja_json', 'UangMukaKerjaController');
+    Route::get('uang_muka_kerja', 'UangMukaKerjaController@index')->name('uang_muka_kerja.index');
+    Route::get('uang_muka_kerja/index_json', 'UangMukaKerjaController@indexJson')->name('uang_muka_kerja.index.json');
     Route::get('uang_muka_kerja/create', 'UangMukaKerjaController@create')->name('uang_muka_kerja.create');
-    Route::post('uang_muka_kerja/addumk', 'UangMukaKerjaController@addumk')->name('uang_muka_kerja.addumk');
-    Route::post('uang_muka_kerja/addumkdetail', 'UangMukaKerjaController@addumkdetail')->name('uang_muka_kerja.addumkdetail');
-    Route::get('uang_muka_kerja/deleteumk/{noumk}', 'UangMukaKerjaController@deleteumk')->name('uang_muka_kerja.deleteumk');
-    Route::get('uang_muka_kerja/detailumk/{noumk}', 'UangMukaKerjaController@detailumk')->name('uang_muka_kerja.detailumk');
-    Route::get('uang_muka_kerja/{datano}/{dataid}/edit', 'UangMukaKerjaController@edit')->name('uang_muka_kerja.edit');
-    Route::get('uang_muka_kerja/{datano}/{dataid}/delete', 'UangMukaKerjaController@delete')->name('uang_muka_kerja.delete');
+    Route::post('uang_muka_kerja/store', 'UangMukaKerjaController@store')->name('uang_muka_kerja.store');
+    Route::post('uang_muka_kerja/store_detail', 'UangMukaKerjaController@storeDetail')->name('uang_muka_kerja.store.detail');
+    Route::get('uang_muka_kerja/delete/{no}', 'UangMukaKerjaController@delete')->name('uang_muka_kerja.delete');
+    Route::get('uang_muka_kerja/delete_detail/{no}/{id}', 'UangMukaKerjaController@deleteDetail')->name('uang_muka_kerja.delete.detail');
+    Route::get('uang_muka_kerja/detail/{no}', 'UangMukaKerjaController@detail')->name('uang_muka_kerja.detail');
+    Route::get('uang_muka_kerja/edit/{no}/{id}', 'UangMukaKerjaController@edit')->name('uang_muka_kerja.edit');
     
     // Perjalanan Dinas
     Route::get('perjalanan_dinas', 'PerjalananDinasController@index')->name('perjalanan_dinas.index');

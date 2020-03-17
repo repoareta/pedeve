@@ -6,7 +6,7 @@
 	<div class="kt-container  kt-container--fluid ">
 		<div class="kt-subheader__main">
 			<h3 class="kt-subheader__title">
-				Panjar Dinas </h3>
+				Uang Muka Kerja </h3>
 			<span class="kt-subheader__separator kt-hidden"></span>
 			<div class="kt-subheader__breadcrumbs">
 				<a href="#" class="kt-subheader__breadcrumbs-home"><i class="flaticon2-shelter"></i></a>
@@ -14,10 +14,7 @@
 				<a href="" class="kt-subheader__breadcrumbs-link">
 					Umum </a>
 				<span class="kt-subheader__breadcrumbs-separator"></span>
-				<a href="" class="kt-subheader__breadcrumbs-link">
-					Uang Muka Kerja </a>
-				<span class="kt-subheader__breadcrumbs-separator"></span>
-				<!-- <span class="kt-subheader__breadcrumbs-link kt-subheader__breadcrumbs-link--active">Active link</span> -->
+				<span class="kt-subheader__breadcrumbs-link kt-subheader__breadcrumbs-link--active">Uang Muka Kerja</span>
 			</div>
 		</div>
 	</div>
@@ -102,7 +99,7 @@ $(document).ready(function(){
         processing: true,
 		serverSide: true,
 		ajax: {
-            url: "{{ route('uang_muka_kerja_json.index') }}",
+            url: "{{ route('uang_muka_kerja.index.json') }}",
 		},
 		columns: [
 			{
@@ -197,7 +194,7 @@ $('#btn-delete-umk').on('click', function(e) {
 								text: "Success",
 								type: "success"
 							}).then(function() {
-								location.replace("{{ route('uang_muka_kerja.tampil') }}");
+								location.replace("{{ route('uang_muka_kerja.index') }}");
 							});
 					},
 					error: function () {
