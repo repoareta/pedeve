@@ -139,15 +139,15 @@
 								</span>
 							</a>
 			
-							<a href="#">
+							<a>
 								<span style="font-size: 2em;" class="kt-font-warning">
-									<i class="fas fa-edit"></i>
+									<i class="fas fa-edit" id="btn-edit-detail"></i>
 								</span>
 							</a>
 			
-							<a href="#">
+							<a>
 								<span style="font-size: 2em;" class="kt-font-danger">
-									<i class="fas fa-times-circle"></i>
+									<i class="fas fa-times-circle" id="btn-delete-detail"></i>
 								</span>
 							</a>
 						</div>
@@ -158,6 +158,7 @@
 				<table class="table table-striped table-bordered table-hover table-checkable" id="kt_table">
                     <thead class="thead-light">
                         <tr>
+							<th ><input type="radio" hidden name="btn-radio"  data-id="1" class="btn-radio" checked ></th>
 							<th >No.</th>
 							<th >Keterangan</th>
 							<th >Account</th>
@@ -173,19 +174,20 @@
 					@foreach($data_umk_details as $data_umk_detail)
 					<?php $no++; ?>
 						<tr class="table-info">
-							<th scope="row">{{$no}}</th>
-							<td id="keterangan">{{$data_umk_detail->keterangan}}</td>
-							<td>{{$data_umk_detail->account}}</td>
-							<td>{{$data_umk_detail->bagian}}</td>
-							<td>{{$data_umk_detail->pk}}</td>
-							<td>{{$data_umk_detail->jb}}</td>
-							<td>{{$data_umk_detail->pk}}</td>
+							<td scope="row" align="center"><input type="radio" name="btn-radio" data-no="{{$data_umk_detail->no}}"  data-id="{{str_replace('/', '-', $data_umk_detail->no_umk)}}" class="btn-radio"  ></td>
+							<td scope="row" align="center">{{$no}}</td>
+							<td>{{$data_umk_detail->keterangan}}</td>
+							<td align="center">{{$data_umk_detail->descacct}}</td>
+							<td align="center">{{$data_umk_detail->bagian}}</td>
+							<td align="center">{{$data_umk_detail->pk}}</td>
+							<td align="center">{{$data_umk_detail->jb}}</td>
+							<td align="center">{{$data_umk_detail->pk}}</td>
 							<td>Rp. <?php echo number_format($data_umk_detail->nilai, 0, ',', '.'); ?></td>
 						</tr>
 					@endforeach
 					</tbody>
                         <tr>
-                            <td colspan="7" align="right">Jumlah Total : </td>
+                            <td colspan="8" align="right">Jumlah Total : </td>
                             <td >Rp. <?php echo number_format($count, 0, ',', '.'); ?></td>
                         </tr>
 				</table>
@@ -198,13 +200,14 @@
 </div>
 
 <!--begin::Modal-->
-<div class="modal fade" id="kt_modal_4" tabindex="-1" role="dialog" aria-labelledby="exampleModalLabel" aria-hidden="true">
+<div class="modal fade modal-detail-umk" id="kt_modal_4"  tabindex="-1" role="dialog" aria-labelledby="exampleModalLabel" aria-hidden="true">
 	<div class="modal-dialog modal-lg" role="document">
 		<div class="modal-content">
 			<div class="modal-header">
 				<h5 class="modal-title" id="exampleModalLabel">Tambah Detail Uang Muka Kerja</h5>
 			</div>
 			<div class="modal-body">
+			<span id="form_result"></span>
                 <form  class="kt-form" id="form-tambah-umk-detail"  enctype="multipart/form-data">
 					{{csrf_field()}}
                         @foreach($data_umks as $data_umk)
@@ -233,9 +236,9 @@
 						<div class="col-6">
 							<select name="acc" id="acc" class="form-control selectpicker" data-live-search="true">
 								<option value="">-Pilih-</option>
-												@foreach($data_account as $row)
+									@foreach($data_account as $row)
 								<option value="{{$row->kodeacct}}">{{$row->kodeacct}} - {{$row->descacct}}</option>
-												@endforeach
+									@endforeach
 							</select>
 						</div>
 					</div>
@@ -247,7 +250,7 @@
 							<select name="bagian" id="bagian" class="form-control selectpicker" data-live-search="true">
 								<option value="">-Pilih-</option>
 												@foreach($data_bagian as $row)
-								<option value="{{$row->kode}}">{{$row->kode}} - {{$row->nama}}</option>
+								<option value="{{$row->kode}}" <?php if ($row->kode == 'B0000' ) echo 'selected' ; ?>>{{$row->kode}} - {{$row->nama}}</option>
 												@endforeach
 							</select>
 						</div>
@@ -264,11 +267,14 @@
 					<div class="form-group row">
 						<label for="example-text-input" class="col-2 col-form-label">Jenis Biaya</label>
 						<label for="example-text-input" class=" col-form-label">:</label>
-						<div class="col-6">
-							<select name="jb" id="jb" class="form-control selectpicker" data-live-search="true">
+						<div class="col-3">
+							<input  class="form-control" type="text" value="" id="jb" >
+						</div>
+						<div class="col-3">
+							<select name="jb"  class="form-control selectpicker" data-live-search="true">
 								<option value="">-Pilih-</option>
 												@foreach($data_jenisbiaya as $row)
-								<option value="{{$row->kode}}">{{$row->kode}} - {{$row->keterangan}}</option>
+								<option value="{{$row->kode}}" >{{$row->kode}} - {{$row->keterangan}}</option>
 												@endforeach
 							</select>
 						</div>
@@ -369,6 +375,82 @@ $('#form-update-umk').submit(function(){
 		});	
 		return false;
 	});
+
+
+//edit detail
+$('#btn-edit-detail').on('click', function(e) {
+var allVals = [];  
+$(".btn-radio:checked").each(function() {  
+	var dataid = $(this).attr('data-id');
+	var datano = $(this).attr('data-no');
+	$('#form_result').html('');
+		$.ajax({
+			url :"/umum/uang_muka_kerja/"+dataid+"/"+datano+"/edit",
+			dataType:"json",
+			success:function(data)
+			{
+				$('#keterangan').val(data.keterangan);
+				$('#acc').val(data.account);
+				$('#bagian').val(data.bagian);
+				$('#pk').val(data.pk);
+				$('#jb').val(data.jb);
+				$('#cj').val(data.cj);
+				$('#nilai').val(data.nilai);
+				$('.modal-detail-umk').modal('show');
+			}
+		})
+				
+});
+});
+
+
+
+//delete
+$('#btn-delete-detail').on('click', function(e) {
+
+	$(".btn-radio:checked").each(function() {  
+		var dataid = $(this).attr('data-id');
+		var datano = $(this).attr('data-no');
+
+	if(dataid == 1)  
+	{  
+		swal({
+				title: "Tandai baris yang akan dihapus!",
+				type: "success"
+				}) ; 
+	}  else {  
+		swal({
+			title: "Data yang akan di hapus?",
+			text: "NO UMK :"+dataid,
+			icon: "warning",
+			buttons: true,
+			dangerMode: true,
+			})
+			.then((willDelete) => {
+			if (willDelete) {
+				$.ajax({
+					url: "/umum/uang_muka_kerja/"+dataid+"/"+datano+"/delete" ,
+					type: 'get',
+					success: function () {
+						swal({
+								title: "Delete",
+								text: "Message!",
+								type: "success"
+							}).then(function() {
+								location.reload();
+							});
+						},
+					error: function () {
+						alert("Ada kesalahan aplikasi");
+					}
+				});
+			}
+		});
+	}	
+});				
+
+
+});
     
 </script>
 @endsection

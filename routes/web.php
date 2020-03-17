@@ -42,6 +42,8 @@ Route::prefix('umum')->group(function () {
     Route::post('uang_muka_kerja/addumkdetail', 'UangMukaKerjaController@addumkdetail')->name('uang_muka_kerja.addumkdetail');
     Route::get('uang_muka_kerja/deleteumk/{noumk}', 'UangMukaKerjaController@deleteumk')->name('uang_muka_kerja.deleteumk');
     Route::get('uang_muka_kerja/detailumk/{noumk}', 'UangMukaKerjaController@detailumk')->name('uang_muka_kerja.detailumk');
+    Route::get('uang_muka_kerja/{datano}/{dataid}/edit', 'UangMukaKerjaController@edit')->name('uang_muka_kerja.edit');
+    Route::get('uang_muka_kerja/{datano}/{dataid}/delete', 'UangMukaKerjaController@delete')->name('uang_muka_kerja.delete');
     
     // Perjalanan Dinas
     Route::get('perjalanan_dinas', 'PerjalananDinasController@index')->name('perjalanan_dinas.index');

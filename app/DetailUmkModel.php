@@ -12,6 +12,23 @@ class DetailUmkModel extends Model
 
     public function umkmodel()
     {
-        return $this->belongTo(UmkModel::class);
+        return $this->belongTo('App\UmkModel');
+    }
+
+    public function accountmodel()
+    {
+        return $this->hasmany('App\AccountModel');
+    }
+    public function cashjudexmodel()
+    {
+        return $this->hasmany('App\CashjudexModel');
+    }
+    public function jenisbiayamodel()
+    {
+        return $this->belongTo('App\JenisBiayaModel');
+    }
+    public function sdmkdbagmodel()
+    {
+        return $this->belongTo('App\SdmKdbagModel');
     }
 }

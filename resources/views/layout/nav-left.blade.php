@@ -17,7 +17,15 @@
                     'perjalanan_dinas.edit'
                 ); // isi nama semua route perjalanan dinas
 
-                $umk = array(); // isi nama semua route UMK
+                $umk = array(
+                    'uang_muka_kerja.tampil',
+                    'uang_muka_kerja.create',
+                    'uang_muka_kerja.addumk',
+                    'uang_muka_kerja.deleteumk',
+                    'uang_muka_kerja.detailumk',
+                    'uang_muka_kerja.edit',
+                    'uang_muka_kerja.delete'
+                ); // isi nama semua route UMK
                 $permintaan_bayar = array(); // isi nama semua route permintaan_bayar
                 $anggaran = array(
                     'anggaran.index'
@@ -62,7 +70,7 @@
                                 </span>
                             </a>
                         </li>
-                        <li class="kt-menu__item " aria-haspopup="true">
+                        <li class="kt-menu__item kt-menu__item{{ set_active_submenu($umk) }}" aria-haspopup="true">
                             <a href="{{ route('uang_muka_kerja.tampil') }}" class="kt-menu__link ">
                                 <i class="kt-menu__link-bullet kt-menu__link-bullet--dot">
                                     <span></span>

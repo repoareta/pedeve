@@ -127,7 +127,7 @@ class UangMukaKerjaController extends Controller
         $noumk=str_replace('-', '/', $noumk);
         $data_umks = DB::select("select * from kerja_header where no_umk = '$noumk'");
         $no_uruts = DB::select("select max(no) as no from kerja_detail where no_umk = '$noumk'");
-        $data_umk_details = DB::select("select * from kerja_detail where no_umk = '$noumk'");
+        $data_umk_details = DetailUmkModel::where('no_umk',$noumk)->get();
         $data_account = DB::select("select kodeacct, descacct FROM account where LENGTH(kodeacct)=6 AND kodeacct NOT LIKE '%X%'");
         $data_bagian = DB::select("SELECT A.kode,A.nama FROM sdm_tbl_kdbag A ORDER BY A.kode");
         $data_jenisbiaya = DB::select("select kode,keterangan from jenisbiaya order by kode");
@@ -156,18 +156,37 @@ class UangMukaKerjaController extends Controller
 
     public function addumkdetail(request $request)
     {      
-    DB::table('kerja_detail')->insert([
-        'no' => $request->no,
-        'keterangan' => $request->keterangan,
-        'account' => $request->acc,
-        'nilai' => $request->nilai,
-        'cj' => $request->cj,
-        'jb' => $request->jb,
-        'bagian' => $request->bagian,
-        'pk' => $request->pk,
-        'no_umk' => $request->no_umk
-        ]);
-        return response()->json();
+        // $data = DB::select("select * from kerja_detail where no = $request->no and no_umk = $request->no_umk");
+        // if($data){
+        //     DB::table('kerja_detail')
+        //     ->where('no_umk', $request->no_umk)
+        //     ->where('no', $request->no)
+        //     ->update([
+        //     'no' => $request->no,
+        //     'keterangan' => 'cek',
+        //     'account' => $request->acc,
+        //     'nilai' => $request->nilai,
+        //     'cj' => $request->cj,
+        //     'jb' => $request->jb,
+        //     'bagian' => $request->bagian,
+        //     'pk' => $request->pk,
+        //     'no_umk' => $request->no_umk
+        //     ]);
+        //     return response()->json();
+        // }else{
+        DB::table('kerja_detail')->insert([
+            'no' => $request->no,
+            'keterangan' => $request->keterangan,
+            'account' => $request->acc,
+            'nilai' => $request->nilai,
+            'cj' => $request->cj,
+            'jb' => $request->jb,
+            'bagian' => $request->bagian,
+            'pk' => $request->pk,
+            'no_umk' => $request->no_umk
+            ]);
+            return response()->json();
+        // }
     }
 
     public function deleteumk($noumk)
@@ -207,9 +226,14 @@ class UangMukaKerjaController extends Controller
      * @param  int  $id
      * @return \Illuminate\Http\Response
      */
-    public function edit($id)
+    public function edit($dataid, $datano)
     {
-        //
+        $noumk=str_replace('-', '/', $dataid);
+        if(request()->ajax())
+        {
+            $data = DetailUmkModel::where('no', $datano)->where('no_umk', $noumk)->distinct()->get();
+            return response()->json($data[0]);
+        }
     }
 
     /**
@@ -230,8 +254,11 @@ class UangMukaKerjaController extends Controller
      * @param  int  $id
      * @return \Illuminate\Http\Response
      */
-    public function destroy($id)
+    public function delete($dataid, $datano)
     {
-        //
+        $noumk=str_replace('-', '/', $dataid);
+        $detailumk = DetailUmkModel::where('no', $datano)->where('no_umk', $noumk);
+    	$detailumk->delete();
+        return response()->json();
     }
 }
