@@ -47,9 +47,9 @@ Route::prefix('umum')->group(function () {
     
     // Perjalanan Dinas
     Route::get('perjalanan_dinas', 'PerjalananDinasController@index')->name('perjalanan_dinas.index');
+    Route::get('perjalanan_dinas/index_json', 'PerjalananDinasController@indexJson')->name('perjalanan_dinas.index.json');
     Route::get('perjalanan_dinas/create', 'PerjalananDinasController@create')->name('perjalanan_dinas.create');
     Route::get('perjalanan_dinas/edit', 'PerjalananDinasController@edit')->name('perjalanan_dinas.edit');
-
 
     // Permintaan Bayar
     Route::get('permintaan_bayar', 'PermintaanBayarController@index')->name('permintaan_bayar.index');
@@ -108,20 +108,4 @@ Route::prefix('sdm')->group(function () {
     Route::get('implementasi_gcg', 'ImplementasiGcgController@index')->name('implementasi_gcg.index');
     Route::get('implementasi_gcg/create', 'ImplementasiGcgController@create')->name('implementasi_gcg.create');
     Route::get('implementasi_gcg/edit', 'ImplementasiGcgController@edit')->name('implementasi_gcg.edit');
-    
-    
-    
-    
-    
-    
-    
-    
-    Route::get('permintaan_bayar', 'PermintaanBayarController@index')->name('permintaan_bayar.index');
-    Route::get('permintaan_bayar/create', 'PermintaanBayarController@create')->name('permintaan_bayar.create');
-    
-    // Anggaran
-    Route::get('anggaran', 'AnggaranController@index')->name('anggaran.index');
-    
-    // Report UMUM
-    Route::get('report', 'ReportController@index')->name('report.index');
 });
