@@ -42,6 +42,89 @@
                     $anggaran,
                     $report_umum
                 ); // array merge semua submenu
+
+                $tabel_data_master = array(
+                    'tabel_data_master.index',
+                    'tabel_data_master.create',
+                    'tabel_data_master.edit'
+                ); // isi nama semua route tabel data master
+                $master_pekerja = array(
+                    'master_pekerja.index',
+                    'master_pekerja.create',
+                    'master_pekerja.edit'
+                ); // isi nama semua route master pekerja
+                $potongan_koreksi_gaji = array(
+                    'potongan_koreksi_gaji.index',
+                    'potongan_koreksi_gaji.create',
+                    'potongan_koreksi_gaji.edit'
+                ); // isi nama semua route potongan koreksi gajian
+                $lembur = array(
+                    'lembur.index',
+                    'lembur.create',
+                    'lembur.edit'
+                ); // isi nama semua route Lembur
+                $pinjaman_pekerja = array(
+                    'pinjaman_pekerja.index',
+                    'pinjaman_pekerja.create',
+                    'pinjaman_pekerja.edit'
+                ); // isi nama semua route pinjaman pekerjaan
+                $proses_gaji_sdm = array(
+                    'proses_gaji.index',
+                    'proses_gaji.create',
+                    'proses_gaji.edit'
+                ); // isi nama semua route proses gajian sdm
+                $proses_gaji = array(
+                    'proses_gaji.index',
+                    'proses_gaji.create',
+                    'proses_gaji.edit',
+                    'proses_thr.index',
+                    'proses_thr.create',
+                    'proses_thr.edit',
+                    'proses_insentif.index',
+                    'proses_insentif.create',
+                    'proses_insentif.edit'
+                ); // isi nama semua route proses gajian
+                $proses_thr = array(
+                    'proses_thr.index',
+                    'proses_thr.create',
+                    'proses_thr.edit'
+                ); // isi nama semua route proses thr
+                $proses_insentif = array(
+                    'proses_insentif.index',
+                    'proses_insentif.create',
+                    'proses_insentif.edit'
+                ); // isi nama semua route proses insentif
+                $report_sdm_payroll = array(
+                    'report_sdm_payroll.index',
+                    'report_sdm_payroll.create',
+                    'report_sdm_payroll.edit'
+                ); // isi nama semua route  report sdm dan payroll
+                $absensi_karyawan = array(
+                    'absensi_karyawan.index',
+                    'absensi_karyawan.create',
+                    'absensi_karyawan.edit'
+                ); // isi nama semua route absensi karyawan
+                $implementasi_gcg = array(
+                    'implementasi_gcg.index',
+                    'implementasi_gcg.create',
+                    'implementasi_gcg.edit'
+                ); // isi nama semua route absensi implementasi GCG
+
+                //menu sdm & Payroll
+                $sdmpayroll = array_merge(
+                    $tabel_data_master,
+                    $master_pekerja,
+                    $potongan_koreksi_gaji,
+                    $lembur,
+                    $pinjaman_pekerja,
+                    $proses_gaji_sdm,
+                    $proses_gaji,
+                    $proses_thr,
+                    $proses_insentif,
+                    $report_sdm_payroll,
+                    $absensi_karyawan,
+                    $implementasi_gcg
+                ); // array merge semua submenu
             @endphp
 
             <li class="kt-menu__item  kt-menu__item--submenu {{ set_active($umum) }}" aria-haspopup="true" data-ktmenu-submenu-toggle="hover">
@@ -153,7 +236,7 @@
                 </div>
             </i>
 
-            <li class="kt-menu__item  kt-menu__item--submenu" aria-haspopup="true" data-ktmenu-submenu-toggle="hover">
+            <li class="kt-menu__item  kt-menu__item--submenu {{ set_active($sdmpayroll) }}" aria-haspopup="true" data-ktmenu-submenu-toggle="hover">
                 <a href="javascript:;" class="kt-menu__link kt-menu__toggle">
                     <span class="kt-menu__link-icon">
                         <i class="fa fa-book-reader"></i>
@@ -171,13 +254,120 @@
                                 </span>
                             </span>
                         </>
-                        <li class="kt-menu__item " aria-haspopup="true">
-                            <a href="{{ route('perjalanan_dinas.index') }}" class="kt-menu__link ">
+                        <li class="kt-menu__item kt-menu__item{{ set_active_submenu($tabel_data_master) }}" aria-haspopup="true">
+                            <a href="{{ route('tabel_data_master.index') }}" class="kt-menu__link ">
                                 <i class="kt-menu__link-bullet kt-menu__link-bullet--dot">
                                     <span></span>
                                 </i>
                                 <span class="kt-menu__link-text">
-                                    Users
+                                    Tabel Data Master
+                                </span>
+                            </a>
+                        </li>
+                        <li class="kt-menu__item kt-menu__item{{ set_active_submenu($master_pekerja) }}" aria-haspopup="true">
+                            <a href="{{ route('master_pekerja.index') }}" class="kt-menu__link ">
+                                <i class="kt-menu__link-bullet kt-menu__link-bullet--dot">
+                                    <span></span>
+                                </i>
+                                <span class="kt-menu__link-text">
+                                    Master Pekerjaan
+                                </span>
+                            </a>
+                        </li>
+                        <li class="kt-menu__item kt-menu__item{{ set_active_submenu($potongan_koreksi_gaji) }}" aria-haspopup="true">
+                            <a href="{{ route('potongan_koreksi_gaji.index') }}" class="kt-menu__link ">
+                                <i class="kt-menu__link-bullet kt-menu__link-bullet--dot">
+                                    <span></span>
+                                </i>
+                                <span class="kt-menu__link-text">
+                                    Potongan dan Koreksi Gaji
+                                </span>
+                            </a>
+                        </li>
+                        <li class="kt-menu__item kt-menu__item{{ set_active_submenu($lembur) }}" aria-haspopup="true">
+                            <a href="{{ route('lembur.index') }}" class="kt-menu__link ">
+                                <i class="kt-menu__link-bullet kt-menu__link-bullet--dot">
+                                    <span></span>
+                                </i>
+                                <span class="kt-menu__link-text">
+                                    Lembur 
+                                </span>
+                            </a>
+                        </li>
+                        <li class="kt-menu__item kt-menu__item{{ set_active_submenu($pinjaman_pekerja) }}" aria-haspopup="true">
+                            <a href="{{ route('pinjaman_pekerja.index') }}" class="kt-menu__link ">
+                                <i class="kt-menu__link-bullet kt-menu__link-bullet--dot">
+                                    <span></span>
+                                </i>
+                                <span class="kt-menu__link-text">
+                                    Pinjaman Pekerja 
+                                </span>
+                            </a>
+                        </li>
+                        <li class="kt-menu__item  kt-menu__item--submenu kt-menu__item{{ set_active_submenu($proses_gaji_sdm) }}" aria-haspopup="true" data-ktmenu-submenu-toggle="hover">
+                            <a href="javascript:;" class="kt-menu__link kt-menu__toggle">
+                                <i class="kt-menu__link-bullet kt-menu__link-bullet--dot">
+                                    <span></span>
+                                </i>
+                                <span class="kt-menu__link-text">Proses Gaji</span>
+                                <i class="kt-menu__ver-arrow la la-angle-right"></i>
+                            </a>
+                            <div class="kt-menu__submenu "><span class="kt-menu__arrow"></span>
+                                <ul class="kt-menu__subnav">
+                                    <li class="kt-menu__item " aria-haspopup="true">
+                                        <a href="custom/apps/user/list-default.html" class="kt-menu__link ">
+                                            <i class="kt-menu__link-bullet kt-menu__link-bullet--line">
+                                                <span></span>
+                                            </i>
+                                            <span class="kt-menu__link-text">Proses Gaji</span>
+                                        </a>
+                                    </li>
+                                    <li class="kt-menu__item " aria-haspopup="true">
+                                        <a href="custom/apps/user/list-default.html" class="kt-menu__link ">
+                                            <i class="kt-menu__link-bullet kt-menu__link-bullet--line">
+                                                <span></span>
+                                            </i>
+                                            <span class="kt-menu__link-text">Proses THR</span>
+                                        </a>
+                                    </li>
+                                    <li class="kt-menu__item " aria-haspopup="true">
+                                        <a href="custom/apps/user/list-default.html" class="kt-menu__link ">
+                                            <i class="kt-menu__link-bullet kt-menu__link-bullet--line">
+                                                <span></span>
+                                            </i>
+                                            <span class="kt-menu__link-text">Proses Insentif </span>
+                                        </a>
+                                    </li>
+                                </ul>
+                            </div>
+                        </>
+                        <li class="kt-menu__item kt-menu__item{{ set_active_submenu($report_sdm_payroll) }}" aria-haspopup="true">
+                            <a href="{{ route('report_sdm_payroll.index') }}" class="kt-menu__link ">
+                                <i class="kt-menu__link-bullet kt-menu__link-bullet--dot">
+                                    <span></span>
+                                </i>
+                                <span class="kt-menu__link-text">
+                                    Report SDM & Payrol  
+                                </span>
+                            </a>
+                        </li>
+                        <li class="kt-menu__item kt-menu__item{{ set_active_submenu($absensi_karyawan) }}" aria-haspopup="true">
+                            <a href="{{ route('absensi_karyawan.index') }}" class="kt-menu__link ">
+                                <i class="kt-menu__link-bullet kt-menu__link-bullet--dot">
+                                    <span></span>
+                                </i>
+                                <span class="kt-menu__link-text">
+                                    Absensi Karyawan   
+                                </span>
+                            </a>
+                        </li>
+                        <li class="kt-menu__item kt-menu__item{{ set_active_submenu($implementasi_gcg) }}" aria-haspopup="true">
+                            <a href="{{ route('implementasi_gcg.index') }}" class="kt-menu__link ">
+                                <i class="kt-menu__link-bullet kt-menu__link-bullet--dot">
+                                    <span></span>
+                                </i>
+                                <span class="kt-menu__link-text">
+                                    Implementasi GCG   
                                 </span>
                             </a>
                         </li>

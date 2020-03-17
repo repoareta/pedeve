@@ -61,3 +61,67 @@ Route::prefix('umum')->group(function () {
     // Report UMUM
     Route::get('report', 'ReportController@index')->name('report.index');
 });
+
+//SDM & Payroll
+Route::prefix('sdm')->group(function () {
+    // Tabel data Master
+    Route::get('tabel_data_master', 'TabelDataMasterController@index')->name('tabel_data_master.index');
+    Route::get('tabel_data_master/create', 'TabelDataMasterController@create')->name('tabel_data_master.create');
+    Route::get('tabel_data_master/edit', 'TabelDataMasterController@edit')->name('tabel_data_master.edit');
+    // master pekerja
+    Route::get('master_pekerja', 'MasterPekerjaController@index')->name('master_pekerja.index');
+    Route::get('master_pekerja/create', 'MasterPekerjaController@create')->name('master_pekerja.create');
+    Route::get('master_pekerja/edit', 'MasterPekerjaController@edit')->name('master_pekerja.edit');
+    //potongan koreksi gaji
+    Route::get('potongan_koreksi_gaji', 'PotonganKoreksiGajiController@index')->name('potongan_koreksi_gaji.index');
+    Route::get('potongan_koreksi_gaji/create', 'PotonganKoreksiGajiController@create')->name('potongan_koreksi_gaji.create');
+    Route::get('potongan_koreksi_gaji/edit', 'PotonganKoreksiGajiController@edit')->name('potongan_koreksi_gaji.edit');
+    // Lembur
+    Route::get('lembur', 'LemburController@index')->name('lembur.index');
+    Route::get('lembur/create', 'LemburController@create')->name('lembur.create');
+    Route::get('lembur/edit', 'LemburController@edit')->name('lembur.edit');
+    //pinjaman pekerja
+    Route::get('pinjaman_pekerja', 'PinjamanPekerjaController@index')->name('pinjaman_pekerja.index');
+    Route::get('pinjaman_pekerja/create', 'PinjamanPekerjaController@create')->name('pinjaman_pekerja.create');
+    Route::get('pinjaman_pekerja/edit', 'PinjamanPekerjaController@edit')->name('pinjaman_pekerja.edit');
+    //proses gaji
+    Route::get('proses_gaji', 'ProsesGajiController@index')->name('proses_gaji.index');
+    Route::get('proses_gaji/create', 'ProsesGajiController@create')->name('proses_gaji.create');
+    Route::get('proses_gaji/edit', 'ProsesGajiController@edit')->name('proses_gaji.edit');
+    //proses thr
+    Route::get('proses_thr', 'ProsesThrController@index')->name('proses_thr.index');
+    Route::get('proses_thr/create', 'ProsesThrController@create')->name('proses_thr.create');
+    Route::get('proses_thr/edit', 'ProsesThrController@edit')->name('proses_thr.edit');
+    //proses insentif
+    Route::get('proses_insentif', 'ProsesInsentifController@index')->name('proses_insentif.index');
+    Route::get('proses_insentif/create', 'ProsesInsentifController@create')->name('proses_insentif.create');
+    Route::get('proses_insentif/edit', 'ProsesInsentifController@edit')->name('proses_insentif.edit');
+    //proses report sdm payroll
+    Route::get('report_sdm_payroll', 'ReportSdmPayrollController@index')->name('report_sdm_payroll.index');
+    Route::get('report_sdm_payroll/create', 'ReportSdmPayrollController@create')->name('report_sdm_payroll.create');
+    Route::get('report_sdm_payroll/edit', 'ReportSdmPayrollController@edit')->name('report_sdm_payroll.edit');
+    //absensi karyawan
+    Route::get('absensi_karyawan', 'AbsensiKaryawanController@index')->name('absensi_karyawan.index');
+    Route::get('absensi_karyawan/create', 'AbsensiKaryawanController@create')->name('absensi_karyawan.create');
+    Route::get('absensi_karyawan/edit', 'AbsensiKaryawanController@edit')->name('absensi_karyawan.edit');
+    //absensi karyawan
+    Route::get('implementasi_gcg', 'ImplementasiGcgController@index')->name('implementasi_gcg.index');
+    Route::get('implementasi_gcg/create', 'ImplementasiGcgController@create')->name('implementasi_gcg.create');
+    Route::get('implementasi_gcg/edit', 'ImplementasiGcgController@edit')->name('implementasi_gcg.edit');
+    
+    
+    
+    
+    
+    
+    
+    
+    Route::get('permintaan_bayar', 'PermintaanBayarController@index')->name('permintaan_bayar.index');
+    Route::get('permintaan_bayar/create', 'PermintaanBayarController@create')->name('permintaan_bayar.create');
+    
+    // Anggaran
+    Route::get('anggaran', 'AnggaranController@index')->name('anggaran.index');
+    
+    // Report UMUM
+    Route::get('report', 'ReportController@index')->name('report.index');
+});
