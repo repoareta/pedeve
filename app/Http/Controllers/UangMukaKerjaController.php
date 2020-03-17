@@ -156,24 +156,7 @@ class UangMukaKerjaController extends Controller
 
     public function addumkdetail(request $request)
     {      
-        // $data = DB::select("select * from kerja_detail where no = $request->no and no_umk = $request->no_umk");
-        // if($data){
-        //     DB::table('kerja_detail')
-        //     ->where('no_umk', $request->no_umk)
-        //     ->where('no', $request->no)
-        //     ->update([
-        //     'no' => $request->no,
-        //     'keterangan' => 'cek',
-        //     'account' => $request->acc,
-        //     'nilai' => $request->nilai,
-        //     'cj' => $request->cj,
-        //     'jb' => $request->jb,
-        //     'bagian' => $request->bagian,
-        //     'pk' => $request->pk,
-        //     'no_umk' => $request->no_umk
-        //     ]);
-        //     return response()->json();
-        // }else{
+        
         DB::table('kerja_detail')->insert([
             'no' => $request->no,
             'keterangan' => $request->keterangan,
@@ -186,7 +169,6 @@ class UangMukaKerjaController extends Controller
             'no_umk' => $request->no_umk
             ]);
             return response()->json();
-        // }
     }
 
     public function deleteumk($noumk)
