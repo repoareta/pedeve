@@ -11,4 +11,8 @@ class AccountModel extends Model
     protected $table="account";
     protected $fillable=['kodeacct','descacct','userid', 'update_date','flag','jenis'];
 
+   public function detailumkmodel()
+    {
+        return $this->belongToMany('App\DetailUmkModel');
+    }
 }

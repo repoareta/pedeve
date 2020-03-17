@@ -13,6 +13,6 @@ class UmkModel extends Model
 
     public function detailumkmodel()
     {
-        return $this->hasMany(DetailUmkModel::class);
+        return $this->hasMany('App\DetailUmkModel');
     }
 }
