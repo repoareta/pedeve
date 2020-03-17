@@ -53,6 +53,7 @@ Route::prefix('umum')->group(function () {
 
     // Permintaan Bayar
     Route::get('permintaan_bayar', 'PermintaanBayarController@index')->name('permintaan_bayar.index');
+    Route::get('permintaan_bayar/create', 'PermintaanBayarController@create')->name('permintaan_bayar.create');
     
     // Anggaran
     Route::get('anggaran', 'AnggaranController@index')->name('anggaran.index');

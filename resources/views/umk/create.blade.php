@@ -6,7 +6,7 @@
 	<div class="kt-container  kt-container--fluid ">
 		<div class="kt-subheader__main">
 			<h3 class="kt-subheader__title">
-				Uang Muka Kerja </h3>
+				Uang muka Kerja </h3>
 			<span class="kt-subheader__separator kt-hidden"></span>
 			<div class="kt-subheader__breadcrumbs">
 				<a href="#" class="kt-subheader__breadcrumbs-home"><i class="flaticon2-shelter"></i></a>
@@ -14,7 +14,10 @@
 				<a href="" class="kt-subheader__breadcrumbs-link">
 					Umum </a>
 				<span class="kt-subheader__breadcrumbs-separator"></span>
-				<span class="kt-subheader__breadcrumbs-link kt-subheader__breadcrumbs-link--active">Uang Muka Kerja</span>
+				<a href="" class="kt-subheader__breadcrumbs-link">
+					Uang Muka Kerja </a>
+				<span class="kt-subheader__breadcrumbs-separator"></span>
+				<span class="kt-subheader__breadcrumbs-link kt-subheader__breadcrumbs-link--active">Tambah</span>
 			</div>
 		</div>
 	</div>
@@ -29,7 +32,7 @@
 				<i class="kt-font-brand flaticon2-line-chart"></i>
 			</span>
 			<h3 class="kt-portlet__head-title">
-				Menu Tambah Uang Muka Kerja
+				Tambah Uang Muka Kerja
 			</h3>
 		</div>
 	</div>
@@ -125,7 +128,7 @@
 						<i class="kt-font-brand flaticon2-line-chart"></i>
 					</span>
 					<h3 class="kt-portlet__head-title">
-						Detail Panjar Dinas
+						Detail Uang Muka Kerja
 					</h3>			
 				</div>
 				<div class="kt-portlet__head-toolbar">

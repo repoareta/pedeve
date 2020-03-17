@@ -23,7 +23,12 @@
                     'uang_muka_kerja.detail',
                     'uang_muka_kerja.edit',
                 ); // isi nama semua route UMK
-                $permintaan_bayar = array(); // isi nama semua route permintaan_bayar
+                $permintaan_bayar = array(
+                    'permintaan_bayar.index',
+                    'permintaan_bayar.create',
+                    'permintaan_bayar.detail',
+                    'permintaan_bayar.edit',
+                ); // isi nama semua route permintaan_bayar
                 $anggaran = array(
                     'anggaran.index'
                 ); // isi nama semua route anggaran
@@ -78,7 +83,7 @@
                             </a>
                         </li>
                         <li class="kt-menu__item  kt-menu__item{{ set_active_submenu($permintaan_bayar) }}" aria-haspopup="true">
-                            <a href="{{ route('perjalanan_dinas.index') }}" class="kt-menu__link ">
+                            <a href="{{ route('permintaan_bayar.index') }}" class="kt-menu__link ">
                                 <i class="kt-menu__link-bullet kt-menu__link-bullet--dot">
                                     <span></span>
                                 </i>
