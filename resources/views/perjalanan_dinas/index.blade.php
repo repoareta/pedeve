@@ -106,7 +106,7 @@
 				{data: 'action', name: 'aksi', orderable: false, searchable: false},
 				{data: 'no_panjar', name: 'no_panjar'},
 				{data: 'no_umk', name: 'no_umk'},
-				{data: 'jenis', name: 'jenis'},
+				{data: 'jenis_dinas', name: 'jenis'},
 				{data: 'mulai', name: 'mulai'},
 				{data: 'sampai', name: 'sampai'},
 				{data: 'dari', name: 'dari'},
