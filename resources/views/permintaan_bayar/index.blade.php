@@ -111,15 +111,25 @@
 			]
     	});
 
+		//edit permintaan bayar
+
 		$('#editRow').click(function(e) {
 			e.preventDefault();
 
-			$("input[type=radio]:checked").each(function(){
-				var id = $(this).val();
-				// edit stuff
-			});
+			if($('input[type=radio]').is(':checked')) { 
+				$("input[type=radio]:checked").each(function(){
+					var id = $(this).val();
+					// edit stuff
+				});
+			} else {
+					swal({
+						title: "Tandai baris yang akan diedit!",
+						type: "success"
+					}) ; 
+			}
 		});
 
+		//delete permintaan bayar
 		$('#deleteRow').click(function(e) {
 			e.preventDefault();
 			if($('input[type=radio]').is(':checked')) { 
