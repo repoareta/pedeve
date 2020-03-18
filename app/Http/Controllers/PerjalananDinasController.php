@@ -61,7 +61,7 @@ class PerjalananDinasController extends Controller
                 return currency_idr($row->jum_panjar);
             })
             ->addColumn('action', function ($row) {
-                $radio = '<label class="kt-radio"><input type="radio" name="radio1"><span></span></label>';
+                $radio = '<label class="kt-radio kt-radio--bold kt-radio--brand"><input type="radio" name="radio1" value="'.$row->no_panjar.'"><span></span></label>';
                 return $radio;
             })
             ->rawColumns(['action'])
@@ -129,8 +129,11 @@ class PerjalananDinasController extends Controller
      * @param  int  $id
      * @return \Illuminate\Http\Response
      */
-    public function destroy($id)
+    public function delete(Request $request)
     {
-        //
+        dd($request->id);
+        // PanjarHeader::destroy($id);
+        PanjarHeader::where('no_panjar', $request->id)->first();
+        return response()->json();
     }
 }
