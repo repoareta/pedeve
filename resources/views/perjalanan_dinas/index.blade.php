@@ -72,7 +72,6 @@
 					<th>No. Panjar</th>
 					<th>No. UMK</th>
 					<th>Jenis</th>
-					<th>Mutasi</th>
 					<th>Mulai</th>
 					<th>Sampai</th>
 					<th>Dari</th>
@@ -83,20 +82,6 @@
 				</tr>
 			</thead>
 			<tbody>
-				<tr>
-					<td>Hehe</td>
-					<td>Hehe</td>
-					<td>Hehe</td>
-					<td>Hehe</td>
-					<td>Hehe</td>
-					<td>Hehe</td>
-					<td>Hehe</td>
-					<td>Hehe</td>
-					<td>Hehe</td>
-					<td>Hehe</td>
-					<td>Hehe</td>
-					<td>Hehe</td>
-				</tr>
 			</tbody>
 		</table>
 
@@ -109,7 +94,25 @@
 @section('scripts')
 	<script type="text/javascript">
 	$(document).ready(function () {
-		$('#kt_table').DataTable();
+		$('#kt_table').DataTable({
+			scrollX   : true,
+			processing: true,
+			serverSide: true,
+			ajax      : "{{ route('perjalanan_dinas.index.json') }}",
+			columns: [
+				{data: 'action', name: 'aksi', orderable: false, searchable: false},
+				{data: 'no_panjar', name: 'no_panjar'},
+				{data: 'no_umk', name: 'no_umk'},
+				{data: 'jenis', name: 'jenis'},
+				{data: 'mulai', name: 'mulai'},
+				{data: 'sampai', name: 'sampai'},
+				{data: 'dari', name: 'dari'},
+				{data: 'tujuan', name: 'tujuan'},
+				{data: 'nopek', name: 'nopek'},
+				{data: 'keterangan', name: 'keterangan'},
+				{data: 'nilai', name: 'nilai', class:'text-right'}
+			]
+		});
 	});
 	</script>
 @endsection

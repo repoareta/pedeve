@@ -34,3 +34,15 @@ function set_active_submenu($uri, $output = '--active')
         }
     }
 }
+
+/**
+ * membuat format mata uang rupiah
+ * @param  [type] $angka [description]
+ * @return [type]        [description]
+ */
+function currency_idr($angka)
+{
+    // $hasil = "Rp. " . number_format($angka, 2, ',', '.');
+    $hasil = "Rp. " . number_format($angka, 4, ',', '.');
+    return $hasil;
+}
