@@ -48,69 +48,91 @@
 					<div class="form-group form-group-last">
 						<div class="alert alert-secondary" role="alert">
 							<div class="alert-text">
-								Header Uang Muka Kerja
+								Header Permintaan Bayar
 							</div>
 						</div>
 					
 						<div class="form-group row">
-							<label for="spd-input" class="col-2 col-form-label">No. UMK</label>
+							<label class="col-2 col-form-label">No. Permintaan</label>
 							<div class="col-10">
-								<?php $a = str_replace('/', '-', $no_umk); ?>
-								<input  class="form-control" type="hidden" value="{{$a}}" id="noumk"  size="25" maxlength="25" readonly>
-								<input  class="form-control" type="text" value="{{$no_umk}}" id="no_umk" name="no_umk" size="25" maxlength="25" readonly required>
-							</div>
-						</div>
+								<input  class="form-control" name="cj" type="text" value="" id="cj" >
+							</div>						</div>
 						<div class="form-group row">
-							<label for="nopek-input" class="col-2 col-form-label">Tanggal</label>
-							<div class="col-10">
+							<label class="col-2 col-form-label">Tanggal</label>
+							<div class="col-10" >
 								<input class="form-control" type="text" name="tgl_panjar" value="" data-date-format="dd/MM/yyyy" id="datepicker" id="tgl_panjar" size="15" maxlength="15" required>
-
 							</div>
 						</div>
 						<div class="form-group row">
-							<label for="example-email-input" class="col-2 col-form-label">Jenis Uang Muka</label>
+							<label for="nopek-input" class="col-2 col-form-label">Terlampir</label>
 							<div class="col-10">
-							<select class="form-control" id="jenis_um" name="jenis_um" required>
-								<option value="">-Pilih-</option>
-								<option value="K" >Uang Muka Kerja</option>
-								<option value="D" >Uang Muka Dinas</option>
-							</select>
+								<input class="form-control" type="text" name="tgl_panjar" value=""  id="" id="tgl_panjar" size="15" maxlength="15" required>
 							</div>
 						</div>
 						<div class="form-group row">
-							<label for="id-pekerja;-input" class="col-2 col-form-label">Bulan Buku</label>
+							<label for="id-pekerja;-input" class="col-2 col-form-label">Keterangan</label>
 							<div class="col-10">
-								<input class="form-control" type="text" value="" data-date-format="yyyymm" id="bulan_buku" name="bulan_buku" size="6" maxlength="6" required>
+								<input class="form-control" type="text" value=""  id="" name="bulan_buku" size="6" maxlength="6" required>
 							</div>
 						</div>
 						<div class="form-group row">
-							<label for="jenis-dinas-input" class="col-2 col-form-label">No. Panjar</label>
+							<label for="jenis-dinas-input" class="col-2 col-form-label">Dibayar Kepada</label>
 							<div class="col-10">
 								<input class="form-control" type="text" value="" name="no_panjar" id="no_panjar">
 							</div>
 						</div>
 						<div class="form-group row">
-							<label for="dari-input" class="col-2 col-form-label">Mata Uang</label>
+							<label for="dari-input" class="col-2 col-form-label">Debet Dari</label>
 							<div class="col-10">
-								<input class="form-control" type="text" value="" name="ci" id="ci" size="1" maxlength="1" >
+								<select name="cj" id="select-cj" class="form-control selectpicker" data-live-search="true">
+									<option value=""></option>
+								</select>
 							</div>
 						</div>
 						<div class="form-group row">
-							<label for="tujuan-input" class="col-2 col-form-label">Kurs</label>
-							<div class="col-10">
-								<input class="form-control" type="text" value="" name="kurs" id="kurs" size="10" maxlength="10">
+							<label class="col-2 col-form-label">No. Debet</label>
+							<div class="col-4">
+								<input class="form-control" type="text" name="tgl_panjar" value="" data-date-format="dd/MM/yyyy" id="datepicker" id="tgl_panjar" size="15" maxlength="15" required>
+							</div>
+							<label class=" col-form-label">Tgl Debet</label>
+							<div class="col-3" >
+								<input class="form-control" type="text" name="tgl_panjar" value="" data-date-format="dd/MM/yyyy" id="date-debet" id="tgl_panjar" size="15" maxlength="15" required>
 							</div>
 						</div>
 						<div class="form-group row">
-							<label for="example-datetime-local-input" class="col-2 col-form-label">Untuk</label>
-							<div class="col-10">
-								<input  class="form-control" type="text" value="" name="untuk" id="untuk" size="70" maxlength="200" required>
+							<label class="col-2 col-form-label">No. Kas</label>
+							<div class="col-4">
+								<input  class="form-control" name="cj" type="text" value="" id="cj" >
+							</div>
+							<label class=" col-form-label">Bulan Buku</label>
+							<div class="col-3" >
+								<input class="form-control" type="text" value="" data-date-format="yyyymm" id="bulan_buku" name="bulan_buku" size="6" maxlength="6" required>
 							</div>
 						</div>
 						<div class="form-group row">
-							<label for="example-datetime-local-input" class="col-2 col-form-label">Jumlah</label>
-							<div class="col-10">
-								<input  class="form-control" type="text" value="" name="jumlah" id="jumlah" size="70" maxlength="200" readonly value="Rp. 0,-">
+							<label class="col-2 col-form-label">CI</label>
+							<div class="col-4">
+								<input  class="form-control" name="cj" type="text" value="" id="cj" >
+							</div>
+							<label class=" col-form-label">Kurs</label>
+							<div class="col-3" >
+								<input class="form-control" type="text" value="" name="no_panjar" id="no_panjar">
+							</div>
+						</div>
+						<div class="form-group row">
+							<label class="col-2 col-form-label">Periode</label>
+							<div class="col-4">
+								<input class="form-control" type="text" name="tgl_panjar" value="" data-date-format="dd/MM/yyyy" id="date-periode" id="tgl_panjar" size="15" maxlength="15" required>
+							</div>
+							<label class=" col-form-label">s/d</label>
+							<div class="col-3" >
+								<input class="form-control" type="text" name="tgl_panjar" value="" data-date-format="dd/MM/yyyy" id="date-sd" id="tgl_panjar" size="15" maxlength="15" required>
+							</div>
+						</div>
+						<div class="form-group row">
+							<label class="col-2 col-form-label">Total Nilai</label>
+							<div class="col-4">
+								<input  class="form-control" name="cj" type="text" value="" id="cj" >
 							</div>
 						</div>
 						<div style="float:right;">
@@ -131,25 +153,25 @@
 							<i class="kt-font-brand flaticon2-line-chart"></i>
 						</span>
 						<h3 class="kt-portlet__head-title">
-							Detail Uang Muka Kerja
+							Detail Permintaan Bayar
 						</h3>			
 					</div>
 					<div class="kt-portlet__head-toolbar">
 						<div class="kt-portlet__head-wrapper">
 							<div class="kt-portlet__head-actions">
-								<a  data-toggle="modal" data-target="#kt_modal_4">
+								<a href="#" data-toggle="modal" data-target="#kt_modal_4">
 									<span style="font-size: 2em;" class="kt-font-success">
 										<i class="fas fa-plus-circle"></i>
 									</span>
 								</a>
 				
-								<a >
+								<a href="#" >
 									<span style="font-size: 2em;" class="kt-font-warning">
 										<i class="fas fa-edit"></i>
 									</span>
 								</a>
 				
-								<a >
+								<a href="#" >
 									<span style="font-size: 2em;" class="kt-font-danger">
 										<i class="fas fa-times-circle"></i>
 									</span>
@@ -159,17 +181,17 @@
 					</div>
 				</div>
 				<div class="kt-portlet__body">
-					<table class="table table-striped table-bordered table-hover table-checkable" id="kt_table">
+					<table class="table table-striped table-bordered table-hover table-checkable" id="tabel-detail-permintaan">
 						<thead class="thead-light">
 							<tr>
 								<th ><input type="radio" hidden name="btn-radio"  data-id="1" class="btn-radio" checked ></th>
 								<th >No.</th>
 								<th >Keterangan</th>
-								<th >Account</th>
 								<th >Bagian</th>
-								<th >PK</th>
+								<th >Account</th>
 								<th >JB</th>
-								<th >KK</th>
+								<th >PK</th>
+								<th >CJ</th>
 								<th >Jumlah</th>
 							</tr>
 						</thead>
@@ -219,7 +241,50 @@
 @section('scripts')
 	<script type="text/javascript">
 	$(document).ready(function () {
-		$('#kt_table').DataTable();
+		$('#tabel-detail-permintaan').DataTable();
 	});
-	</script>
+
+    $('#datepicker').datepicker({
+        weekStart: 1,
+        daysOfWeekHighlighted: "6,0",
+        autoclose: true,
+        todayHighlight: true,
+    });
+
+    $('#datepicker').datepicker("setDate", new Date());
+    $('#bulan_buku').datepicker({
+        weekStart: 1,
+        daysOfWeekHighlighted: "6,0",
+        autoclose: true,
+        todayHighlight: true,
+    });
+	$('#bulan_buku').datepicker("setDate", new Date());
+	
+	$('#date-debet').datepicker({
+        weekStart: 1,
+        daysOfWeekHighlighted: "6,0",
+        autoclose: true,
+        todayHighlight: true,
+    });
+
+    $('#date-debet').datepicker("setDate", new Date());
+	$('#date-periode').datepicker({
+        weekStart: 1,
+        daysOfWeekHighlighted: "6,0",
+        autoclose: true,
+        todayHighlight: true,
+    });
+
+    $('#date-periode').datepicker("setDate", new Date());
+	$('#date-sd').datepicker({
+        weekStart: 1,
+        daysOfWeekHighlighted: "6,0",
+        autoclose: true,
+        todayHighlight: true,
+    });
+
+    $('#date-sd').datepicker("setDate", new Date());
+	
+</script>
+
 @endsection

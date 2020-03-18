@@ -41,13 +41,13 @@
 						</span>
 					</a>
 	
-					<a >
+					<a href="#">
 						<span style="font-size: 2em;" class="kt-font-warning">
 							<i class="fas fa-edit" id="btn-edit-umk"></i>
 						</span>
 					</a>
 	
-					<a >
+					<a href="#">
 						<span style="font-size: 2em;"  class="kt-font-danger">
 							<i class="fas fa-times-circle" id="btn-delete-umk"></i>
 						</span>
@@ -146,7 +146,7 @@ $(document).ready(function(){
 
 //edit
 $('#btn-edit-umk').on('click', function(e) {
-
+	e.preventDefault();
 
 var allVals = [];  
 $(".btn-radio:checked").each(function() {  
@@ -171,7 +171,7 @@ $(".btn-radio:checked").each(function() {
 
 //delete
 $('#btn-delete-umk').on('click', function(e) {
-
+	e.preventDefault();
 	$(".btn-radio:checked").each(function() {  
 		e.preventDefault();
 		var dataid = $(this).attr('data-id');

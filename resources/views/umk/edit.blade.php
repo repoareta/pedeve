@@ -89,7 +89,8 @@
 					<div class="form-group row">
 						<label for="tujuan-input" class="col-2 col-form-label">Kurs</label>
 						<div class="col-10">
-                            <input class="form-control" type="text" value="<?php echo number_format($data_umk->rate, 0, ',', '.'); ?>" name="kurs" id="kurs" size="10" maxlength="10">
+                            <input class="form-control" type="text" value="<?php echo number_format($data_umk->rate, 0, ',', '.'); ?>" name="kurs"  size="10" maxlength="10">
+                            <input class="form-control" type="text" hidden value="{{$data_umk->rate}}" name="kurs"  size="10" maxlength="10">
 						</div>
 					</div>
 					<div class="form-group row">
@@ -132,19 +133,19 @@
 				<div class="kt-portlet__head-toolbar">
 					<div class="kt-portlet__head-wrapper">
 						<div class="kt-portlet__head-actions">
-							<a  id="btn-create-detail" data-target="#kt_modal_4">
+							<a href="#" id="btn-create-detail" data-target="#kt_modal_4">
 								<span style="font-size: 2em;" class="kt-font-success">
 									<i class="fas fa-plus-circle"></i>
 								</span>
 							</a>
 			
-							<a>
+							<a href="#">
 								<span style="font-size: 2em;" class="kt-font-warning">
 									<i class="fas fa-edit" id="btn-edit-detail"></i>
 								</span>
 							</a>
 			
-							<a>
+							<a href="#">
 								<span style="font-size: 2em;" class="kt-font-danger">
 									<i class="fas fa-times-circle" id="btn-delete-detail"></i>
 								</span>
@@ -173,7 +174,7 @@
 					@foreach($data_umk_details as $data_umk_detail)
 					<?php $no++; ?>
 						<tr class="table-info">
-							<td scope="row" align="center"><input type="radio" name="btn-radio" data-no="{{$data_umk_detail->no}}"  data-id="{{str_replace('/', '-', $data_umk_detail->no_umk)}}" class="btn-radio"  ></td>
+							<td scope="row" align="center"><label class="kt-radio kt-radio--bold kt-radio--brand"><input type="radio" name="btn-radio" data-no="{{$data_umk_detail->no}}"  data-id="{{str_replace('/', '-', $data_umk_detail->no_umk)}}" class="btn-radio" ><span></span></label></td>
 							<td scope="row" align="center">{{$no}}</td>
 							<td>{{$data_umk_detail->keterangan}}</td>
 							<td align="center">{{$data_umk_detail->account}}</td>
@@ -202,7 +203,7 @@
 	<div class="modal-dialog modal-lg" role="document">
 		<div class="modal-content">
 			<div class="modal-header">
-				<h5 class="modal-title" id="title-detail">Tambah Detail Uang Muka Kerja</h5>
+				<h5 class="modal-title" id="title-detail"></h5>
 			</div>
 			<div class="modal-body">
 			<span id="form_result"></span>
@@ -312,7 +313,7 @@
 	<div class="modal-dialog modal-lg" role="document">
 		<div class="modal-content">
 			<div class="modal-header">
-				<h5 class="modal-title" id="title-detail">Tambah Detail Uang Muka Kerja</h5>
+				<h5 class="modal-title" id="title-detail">Edit Detail Uang Muka Kerja</h5>
 			</div>
 			<div class="modal-body">
 			<span id="form_result"></span>
@@ -464,6 +465,7 @@ $('#form-update-umk').submit(function(){
     });
 
 	$('#btn-create-detail').on('click', function(e) {
+		e.preventDefault();
 		$('#title-detail').html("Tambah Detail Uang Muka Kerja");
 		$('.modal-create-detail-umk').modal('show');
 	});
@@ -549,6 +551,7 @@ $('#cj').on('click', function(e) {
 
 //tampil edit detail
 $('#btn-edit-detail').on('click', function(e) {
+	e.preventDefault();
 var allVals = [];  
 $(".btn-radio:checked").each(function() {  
 	var dataid = $(this).attr('data-id');
@@ -595,6 +598,7 @@ $(".btn-radio:checked").each(function() {
 
 //delete
 $('#btn-delete-detail').on('click', function(e) {
+	e.preventDefault();
 
 	$(".btn-radio:checked").each(function() {  
 		var dataid = $(this).attr('data-id');
