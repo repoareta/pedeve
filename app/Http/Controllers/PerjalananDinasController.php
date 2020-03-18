@@ -4,8 +4,11 @@ namespace App\Http\Controllers;
 
 use Illuminate\Http\Request;
 
+// Load Model
 use App\Models\PanjarHeader;
+use App\Models\PanjarDetail;
 
+// Load Plugin
 use Carbon\Carbon;
 
 class PerjalananDinasController extends Controller
