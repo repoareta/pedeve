@@ -18,15 +18,12 @@ Route::get('/home', 'HomeController@index')->name('home');
 // LOGIN FORM
 Route::view('/', 'login');
 Route::get('/login', 'AuthController@login')->name('login');
-Route::post('postlogin', 'AuthController@postlogin');
+Route::post('login_user', 'AuthController@postlogin')->name('login_user.postlogin');
 Route::get('/logout', 'AuthController@logout');
 
-// UMK
-// Route::get('/', 'UmumUmkController@index');
 
-// Perjalanan Dinas
+Route::group(['middleware'=> 'checkRole'], function () {
 
-Route::group(['middleware'=>['auth','checkRole:admin']], function () {
 });
 
 // Perjalanan Dinas
@@ -53,6 +50,7 @@ Route::prefix('umum')->group(function () {
 
     // Permintaan Bayar
     Route::get('permintaan_bayar', 'PermintaanBayarController@index')->name('permintaan_bayar.index');
+    Route::get('permintaan_bayar/index_json', 'PermintaanBayarController@indexJson')->name('permintaan_bayar.index.json');
     Route::get('permintaan_bayar/create', 'PermintaanBayarController@create')->name('permintaan_bayar.create');
     
     // Anggaran
@@ -108,20 +106,4 @@ Route::prefix('sdm')->group(function () {
     Route::get('implementasi_gcg', 'ImplementasiGcgController@index')->name('implementasi_gcg.index');
     Route::get('implementasi_gcg/create', 'ImplementasiGcgController@create')->name('implementasi_gcg.create');
     Route::get('implementasi_gcg/edit', 'ImplementasiGcgController@edit')->name('implementasi_gcg.edit');
-    
-    
-    
-    
-    
-    
-    
-    
-    Route::get('permintaan_bayar', 'PermintaanBayarController@index')->name('permintaan_bayar.index');
-    Route::get('permintaan_bayar/create', 'PermintaanBayarController@create')->name('permintaan_bayar.create');
-    
-    // Anggaran
-    Route::get('anggaran', 'AnggaranController@index')->name('anggaran.index');
-    
-    // Report UMUM
-    Route::get('report', 'ReportController@index')->name('report.index');
 });

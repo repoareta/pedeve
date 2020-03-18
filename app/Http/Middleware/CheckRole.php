@@ -13,10 +13,13 @@ class CheckRole
      * @param  \Closure  $next
      * @return mixed
      */
-    public function handle($request, Closure $next,...$role)
+    public function handle($request, Closure $next)
     {
-        if(in_array($request->user()->kode,$role)){
-            return $next($request);
+        $user= $request->user();
+        if($user){
+            if($user->isAdmin()){
+                return $next($request);
+            }
         }
             return redirect('/login');
     }

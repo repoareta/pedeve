@@ -2,7 +2,11 @@
 
 namespace App\Http\Controllers;
 
+use App\UmuBayarModel;
+use App\UmuBayarDetailModel;
 use Illuminate\Http\Request;
+use DataTables;
+use DB;
 
 class PermintaanBayarController extends Controller
 {
