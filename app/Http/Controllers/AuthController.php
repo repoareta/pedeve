@@ -17,12 +17,15 @@ class AuthController extends Controller
 
             if(Auth::attempt($Request->only('usernm','userpw'))){
             	if(Auth::user()->kode == 'admin'){
-                	return redirect('/umum/perjalanan_dinas');
+                	return redirect()->route('perjalanan_dinas.index');
             	}elseif(Auth::user()->kode == 'UMUM'){
-                	return redirect('/umum/perjalanan_dinas');
-            	}
+                	return redirect()->route('perjalanan_dinas.index');
+            	}else{
+                	return redirect()->route('perjalanan_dinas.index');
+
+                }
             }else{
-                return redirect('/login');
+                return redirect('/logina');
             }
         
     }

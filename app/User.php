@@ -29,4 +29,10 @@ class User extends Authenticatable
         'passexp',
         'host'
     ];
+
+    public function isAdmin()
+    {
+        if($this->kode == 'UMUM') return true;
+        return false;
+    }
 }

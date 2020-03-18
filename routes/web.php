@@ -18,15 +18,12 @@ Route::get('/home', 'HomeController@index')->name('home');
 // LOGIN FORM
 Route::view('/', 'login');
 Route::get('/login', 'AuthController@login')->name('login');
-Route::post('postlogin', 'AuthController@postlogin');
+Route::post('login_user', 'AuthController@postlogin')->name('login_user.postlogin');
 Route::get('/logout', 'AuthController@logout');
 
-// UMK
-// Route::get('/', 'UmumUmkController@index');
 
-// Perjalanan Dinas
+Route::group(['middleware'=> 'checkRole'], function () {
 
-Route::group(['middleware'=>['auth','checkRole:admin']], function () {
 });
 
 // Perjalanan Dinas
@@ -53,6 +50,7 @@ Route::prefix('umum')->group(function () {
 
     // Permintaan Bayar
     Route::get('permintaan_bayar', 'PermintaanBayarController@index')->name('permintaan_bayar.index');
+    Route::get('permintaan_bayar/index_json', 'PermintaanBayarController@indexJson')->name('permintaan_bayar.index.json');
     Route::get('permintaan_bayar/create', 'PermintaanBayarController@create')->name('permintaan_bayar.create');
     
     // Anggaran

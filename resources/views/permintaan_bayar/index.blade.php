@@ -65,7 +65,7 @@
 	<div class="kt-portlet__body">
 
 		<!--begin: Datatable -->
-		<table class="table table-striped table-bordered table-hover table-checkable" id="kt_table">
+		<table class="table table-striped table-bordered table-hover table-checkable" id="table-permintaan">
 			<thead class="thead-light">
 				<tr>
 					<th></th>
@@ -91,7 +91,22 @@
 @section('scripts')
 	<script type="text/javascript">
 	$(document).ready(function () {
-		$('#kt_table').DataTable();
+		$('#table-permintaan').DataTable({
+			scrollX   : true,
+			processing: true,
+			serverSide: true,
+			ajax      : "{{ route('permintaan_bayar.index.json') }}",
+			columns: [
+				{data: 'action_radio', name: 'aksi', orderable: false, searchable: false},
+				{data: 'no_bayar', name: 'no_bayar'},
+				{data: 'no_kas', name: 'no_kas'},
+				{data: 'kepada', name: 'kepada'},
+				{data: 'keterangan', name: 'keterangan'},
+				{data: 'lampiran', name: 'lampiran'},
+				{data: 'nilai', name: 'nilai'},
+				{data: 'action', name: 'aksi' , orderable: false, searchable: false},
+			]
+    });
 	});
 	</script>
 @endsection
