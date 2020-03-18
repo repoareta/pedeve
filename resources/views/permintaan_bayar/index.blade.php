@@ -92,17 +92,20 @@
 	<script type="text/javascript">
 	$(document).ready(function () {
 		$('#table-permintaan').DataTable({
-		processing: true,
-		serverSide: true,
-		ajax: {
-            url: "{{ route('permintaan_bayar.index.json') }}",
-		},
-		columns: [
-			{
-				data: 'radio',
-				name: 'radio',
-			}
-		]
+			scrollX   : true,
+			processing: true,
+			serverSide: true,
+			ajax      : "{{ route('permintaan_bayar.index.json') }}",
+			columns: [
+				{data: 'action_radio', name: 'aksi', orderable: false, searchable: false},
+				{data: 'no_bayar', name: 'no_bayar'},
+				{data: 'no_kas', name: 'no_kas'},
+				{data: 'kepada', name: 'kepada'},
+				{data: 'keterangan', name: 'keterangan'},
+				{data: 'lampiran', name: 'lampiran'},
+				{data: 'nilai', name: 'nilai'},
+				{data: 'action', name: 'aksi' , orderable: false, searchable: false},
+			]
     });
 	});
 	</script>
