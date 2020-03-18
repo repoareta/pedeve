@@ -14,8 +14,8 @@ class PanjarDetail extends Model
      *
      * @return void
      */
-    public function panjar_detail()
+    public function panjar_header()
     {
-        return $this->belongsTo('App\Models\PanjarDetail', 'no_panjar');
+        return $this->belongsTo('App\Models\PanjarHeader', 'no_panjar');
     }
 }

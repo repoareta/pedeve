@@ -66,7 +66,7 @@
 				<div class="form-group row">
 					<label for="nopek-input" class="col-2 col-form-label">Nopek</label>
 					<div class="col-10">
-						<select class="form-control kt-select2" id="kt_select2_1" name="nopek">
+						<select class="form-control kt-select2" id="nopek" name="nopek">
 							<option value="">- Pilih Nopek -</option>
 							@foreach ($pegawai_list as $pegawai)
 							<option value="{{ $pegawai->nopeg }}">{{ $pegawai->nopeg.' - '.$pegawai->nama }}</option>

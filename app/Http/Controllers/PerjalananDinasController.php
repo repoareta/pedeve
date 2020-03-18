@@ -33,7 +33,7 @@ class PerjalananDinasController extends Controller
     public function indexJson()
     {
         $panjar_list = PanjarHeader::all();
-        
+
         return datatables()->of($panjar_list)
             ->addColumn('mulai', function ($row) {
                 return Carbon::parse($row->mulai)->translatedFormat('d F Y');
@@ -109,7 +109,7 @@ class PerjalananDinasController extends Controller
 
         // Save Panjar Detail;
 
-        return redirect()->route('perjalanan_dinas.index');
+        return redirect()->route('perjalanan_dinas.index')->refresh();
     }
 
     /**
@@ -154,9 +154,9 @@ class PerjalananDinasController extends Controller
      */
     public function delete(Request $request)
     {
-        dd($request->id);
-        // PanjarHeader::destroy($id);
-        PanjarHeader::where('no_panjar', $request->id)->first();
+        PanjarHeader::where('no_panjar', $request->id)->delete();
+        PanjarDetail::where('no_panjar', $request->id)->delete();
+
         return response()->json();
     }
 }
