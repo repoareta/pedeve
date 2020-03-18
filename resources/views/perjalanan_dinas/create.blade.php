@@ -40,83 +40,145 @@
 				</div>
 			</div>
 		</div>
-		<form class="kt-form kt-form--label-right">
+		<form class="kt-form kt-form--label-right" action="{{ route('perjalanan_dinas.store') }}" method="POST">
+			@csrf
 			<div class="kt-portlet__body">
 				<div class="form-group form-group-last">
 					<div class="alert alert-secondary" role="alert">
 						<div class="alert-text">
-							Header Panjar Dinas
+							<h5 class="kt-portlet__head-title">
+								Header Panjar Dinas
+							</h5>	
 						</div>
 					</div>
 				</div>
 				<div class="form-group row">
 					<label for="spd-input" class="col-2 col-form-label">No. SPD</label>
-					<div class="col-10">
-						<input class="form-control" type="text" value="Artisanal kale" id="spd">
+					<div class="col-5">
+						<input class="form-control" type="text" name="no_spd" value="{{ ($panjar_header_count + 1).'/PDV/CS/'.date('Y') }}" id="spd">
+					</div>
+
+					<label for="spd-input" class="col-2 col-form-label">Tanggal Panjar</label>
+					<div class="col-3">
+						<input class="form-control" type="text" name="tanggal" id="tanggal" value="{{ date('Y-m-d') }}">
 					</div>
 				</div>
 				<div class="form-group row">
 					<label for="nopek-input" class="col-2 col-form-label">Nopek</label>
 					<div class="col-10">
-						<input class="form-control" type="text" value="How do I shoot web" id="example-search-input">
+						<select class="form-control kt-select2" id="kt_select2_1" name="nopek">
+							<option value="">- Pilih Nopek -</option>
+							@foreach ($pegawai_list as $pegawai)
+							<option value="{{ $pegawai->nopeg }}">{{ $pegawai->nopeg.' - '.$pegawai->nama }}</option>
+							@endforeach
+						</select>
 					</div>
 				</div>
 				<div class="form-group row">
 					<label for="example-email-input" class="col-2 col-form-label">Jabatan</label>
-					<div class="col-10">
-						<input class="form-control" type="text" value="bootstrap@example.com" id="example-email-input">
+					<div class="col-5">
+						<select class="form-control kt-select2" name="jabatan" id="jabatan">
+							<option value="">- Pilih Jabatan -</option>
+							@foreach ($jabatan_list as $jabatan)
+								<option value="{{ $jabatan->keterangan }}">{{ $jabatan->keterangan }}</option>
+							@endforeach
+						</select>
+					</div>
+
+					<label for="example-email-input" class="col-2 col-form-label">Golongan</label>
+					<div class="col-3">
+						<input class="form-control" type="text" name="golongan" id="golongan">
 					</div>
 				</div>
 				<div class="form-group row">
 					<label for="id-pekerja;-input" class="col-2 col-form-label">KTP/Passport</label>
 					<div class="col-10">
-						<input class="form-control" type="text" value="https://getbootstrap.com" id="example-url-input">
+						<input class="form-control" type="text" name="ktp" id="ktp">
 					</div>
 				</div>
 				<div class="form-group row">
 					<label for="jenis-dinas-input" class="col-2 col-form-label">Jenis Dinas</label>
 					<div class="col-10">
-						<input class="form-control" type="text" value="1-(555)-555-5555" id="example-tel-input">
+						<select class="form-control" name="jenis_dinas" id="jenis_dinas">
+							<option value="">- Pilih Jenis Dinas -</option>
+							<option value="DN">PDN-DN</option>
+							<option value="LN">PDN-LN</option>
+							<option value="SIJ">SIJ</option>
+							<option value="CUTI">CUTI</option>
+						</select>
 					</div>
 				</div>
 				<div class="form-group row">
 					<label for="dari-input" class="col-2 col-form-label">Dari/Asal</label>
 					<div class="col-10">
-						<input class="form-control" type="text" value="hunter2" id="example-password-input">
+						<input class="form-control" type="text" name="dari" id="dari">
 					</div>
 				</div>
 				<div class="form-group row">
 					<label for="tujuan-input" class="col-2 col-form-label">Tujuan</label>
 					<div class="col-10">
-						<input class="form-control" type="text" value="42" id="example-number-input">
+						<input class="form-control" type="text" name="tujuan" id="tujuan">
 					</div>
 				</div>
 				<div class="form-group row">
-					<label for="example-datetime-local-input" class="col-2 col-form-label">Mulai</label>
+					<label for="mulai-input" class="col-2 col-form-label">Mulai</label>
 					<div class="col-10">
-						<input class="form-control" type="datetime-local" value="2011-08-19T13:45:00" id="example-datetime-local-input">
+						<div class="input-daterange input-group" id="date_range_picker">
+							<input type="text" class="form-control" name="mulai" />
+							<div class="input-group-append">
+								<span class="input-group-text">Sampai</span>
+							</div>
+							<input type="text" class="form-control" name="sampai" />
+						</div>
+						<span class="form-text text-muted">Linked pickers for date range selection</span>
 					</div>
 				</div>
+
 				<div class="form-group row">
-					<label for="example-date-input" class="col-2 col-form-label">Sampai</label>
+					<label for="example-week-input" class="col-2 col-form-label">Kendaraan</label>
 					<div class="col-10">
-						<input class="form-control" type="date" value="2011-08-19" id="example-date-input">
+						<input class="form-control" type="text" name="kendaraan" id="kendaraan">
 					</div>
 				</div>
+
+				<div class="form-group row">
+					<label for="example-week-input" class="col-2 col-form-label">Biaya</label>
+					<div class="col-10">
+						<select class="form-control" name="biaya" id="biaya">
+							<option value="">- Pilih Biaya -</option>
+							<option value="P">Ditanggung Perusahaan</option>
+							<option value="K">Ditanggung Pribadi</option>
+							<option value="U">Ditanggung PPU</option>
+						</select>
+					</div>
+				</div>
+
 				<div class="form-group row">
 					<label for="example-month-input" class="col-2 col-form-label">Keterangan</label>
 					<div class="col-10">
-						<input class="form-control" type="month" value="2011-08" id="example-month-input">
+						<textarea class="form-control" name="keterangan" id="keterangan"></textarea>
 					</div>
 				</div>
+
 				<div class="form-group row">
 					<label for="example-week-input" class="col-2 col-form-label">Jumlah</label>
 					<div class="col-10">
-						<input class="form-control" type="week" value="2011-W33" id="example-week-input">
+						<input class="form-control" type="number" name="jumlah" id="example-week-input">
 					</div>
 				</div>
-			</div>
 
+				<div class="kt-form__actions">
+					<div class="row">
+						<div class="col-2"></div>
+						<div class="col-10">
+							<a  href="{{ url()->previous() }}" class="btn btn-warning"><i class="fa fa-reply" aria-hidden="true"></i> Batal</a>
+							<button type="submit" class="btn btn-brand"><i class="fa fa-check" aria-hidden="true"></i> Simpan</button>
+						</div>
+					</div>
+				</div>
+
+			</div>
+			{{-- END BODY --}}
 				
 			<div class="kt-portlet__head kt-portlet__head">
 				<div class="kt-portlet__head-label">
@@ -155,6 +217,7 @@
 				<table class="table table-striped table-bordered table-hover table-checkable" id="kt_table">
 					<thead class="thead-light">
 						<tr>
+							<th></th>
 							<th>No</th>
 							<th>Nopek</th>
 							<th>Nama</th>
@@ -164,14 +227,14 @@
 						</tr>
 					</thead>
 					<tbody>
-						<tr>
-							<td>Hehe</td>
-							<td>Hehe</td>
-							<td>Hehe</td>
-							<td>Hehe</td>
-							<td>Hehe</td>
-							<td>Hehe</td>
-						</tr>
+						@foreach ($panjar_details as $panjar_detail)
+							<td>radio</td>
+							<td>Nopek</td>
+							<td>Nama</td>
+							<td>Gol</td>
+							<td>Jabatan</td>
+							<td>Keterangan</td>
+						@endforeach
 					</tbody>
 				</table>
 			</div>
@@ -189,7 +252,7 @@
 				</button>
 			</div>
 			<div class="modal-body">
-				<form>
+				<form class="" action="{{ route('perjalanan_dinas.store.detail') }}" method="POST">
 					<div class="form-group">
 						<label for="recipient-name" class="form-control-label">Recipient:</label>
 						<input type="text" class="form-control" id="recipient-name">
@@ -215,6 +278,58 @@
 	<script type="text/javascript">
 	$(document).ready(function () {
 		$('#kt_table').DataTable();
+
+		// Class definition
+
+		var KTBootstrapDatepicker = function () {
+
+			var arrows;
+			if (KTUtil.isRTL()) {
+				arrows = {
+					leftArrow: '<i class="la la-angle-right"></i>',
+					rightArrow: '<i class="la la-angle-left"></i>'
+				}
+			} else {
+				arrows = {
+					leftArrow: '<i class="la la-angle-left"></i>',
+					rightArrow: '<i class="la la-angle-right"></i>'
+				}
+			}
+
+			// Private functions
+			var demos = function () {
+
+				// range picker
+				$('#date_range_picker').datepicker({
+					rtl: KTUtil.isRTL(),
+					todayHighlight: true,
+					templates: arrows,
+					// autoclose: true,
+					// language : 'id',
+					format   : 'yyyy-mm-dd'
+				});
+
+				// minimum setup
+				$('#tanggal').datepicker({
+					rtl: KTUtil.isRTL(),
+					todayHighlight: true,
+					orientation: "bottom left",
+					templates: arrows,
+					autoclose: true,
+					// language : 'id',
+					format   : 'yyyy-mm-dd'
+				});
+			};
+
+			return {
+				// public functions
+				init: function() {
+					demos(); 
+				}
+			};
+		}();
+
+		KTBootstrapDatepicker.init();
 	});
 	</script>
 @endsection

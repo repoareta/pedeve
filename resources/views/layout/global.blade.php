@@ -23,7 +23,7 @@
 		<!--end::Global Theme Styles -->
 
 		<!--end::Layout Skins -->
-		<link rel="shortcut icon" href="{{ asset('assets/media/logos/favicon.ico') }}" />
+		<link rel="shortcut icon" href="{{ asset('images/favicon.ico') }}" />
 	</head>
 
 	<!-- end::Head -->
