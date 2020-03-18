@@ -30,12 +30,12 @@ class UangMukaKerjaController extends Controller
                 return DataTables::of($data)
                 ->addColumn('action', function($data){
                     if($data->app_pbd == 'Y'){
-                        $button = '<p align="center"><img src="'.asset('images/OK.gif').'" style="cursor:hand" title="Data sudah di Approv perbendaharaan"></p>';
+                        $button = '<p align="center"><span style="font-size: 2em;" class="kt-font-success"><i class="fas fa-check-circle" title="Data Sudah di proses perbendaharaan"></i></span></p>';
                     }else{
                         if($data->app_sdm == 'Y'){
-                            $button = '<p align="center"><a align="center" href="ba"><img src="'.asset('images/OK.gif').'" style="cursor:hand" title="Batalkan Approval"></a></p>';
+                            $button = '<p align="center"><a href="#"><span style="font-size: 2em;" class="kt-font-warning"><i class="fas fa-check-circle" title="Batalkan Approval"></i></span></a></p>';
                         }else{
-                            $button = '<p align="center"><a align="center" href="app"><img src="'.asset('images/publish_x.png').'" style="cursor:hand" title="Klik untuk Approval"></a></p>';
+                            $button = '<p align="center"><a href="#"><span style="font-size: 2em;" class="kt-font-danger"><i class="fas fa-ban" title="Klik untuk Approval"></i></span></a></p>';
                         }
                     }
                     return $button;
@@ -58,7 +58,7 @@ class UangMukaKerjaController extends Controller
                 })
 
                 ->addColumn('radio', function($data){
-                    $button = '<p align="center"><a align="center"><input type="radio" name="btn-radio"  data-id="'.str_replace('/', '-', $data->no_umk).'" class="btn-radio"  ></a></p>';
+                    $button = '<label class="kt-radio"><input type="radio" data-id="'.str_replace('/', '-', $data->no_umk).'" name="btn-radio"><span></span></label>';
                     return $button;
                 })
                 ->rawColumns(['action','radio','jenisum','jumlah','noumk'])
