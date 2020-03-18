@@ -58,7 +58,7 @@ class UangMukaKerjaController extends Controller
                 })
 
                 ->addColumn('radio', function($data){
-                    $button = '<label class="kt-radio"><input type="radio" class="btn-radio" data-id="'.str_replace('/', '-', $data->no_umk).'" name="btn-radio"><span></span></label>';
+                    $button = '<label class="kt-radio kt-radio--bold kt-radio--brand"><input type="radio" class="btn-radio" data-id="'.str_replace('/', '-', $data->no_umk).'" name="btn-radio"><span></span></label>';
                     return $button;
                 })
                 ->rawColumns(['action','radio','jenisum','jumlah','noumk'])

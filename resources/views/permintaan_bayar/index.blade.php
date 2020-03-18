@@ -41,13 +41,13 @@
 						</span>
 					</a>
 	
-					<a href="#">
+					<a href="#" id="editRow">
 						<span style="font-size: 2em;" class="kt-font-warning">
 							<i class="fas fa-edit"></i>
 						</span>
 					</a>
 	
-					<a href="#">
+					<a href="#" id="deleteRow">
 						<span style="font-size: 2em;" class="kt-font-danger">
 							<i class="fas fa-times-circle"></i>
 						</span>
@@ -95,6 +95,9 @@
 			scrollX   : true,
 			processing: true,
 			serverSide: true,
+			language: {
+            	processing: '<i class="fa fa-spinner fa-spin fa-2x fa-fw"></i> <br> Loading...'
+			},
 			ajax      : "{{ route('permintaan_bayar.index.json') }}",
 			columns: [
 				{data: 'action_radio', name: 'aksi', orderable: false, searchable: false},
@@ -106,7 +109,64 @@
 				{data: 'nilai', name: 'nilai'},
 				{data: 'action', name: 'aksi' , orderable: false, searchable: false},
 			]
-    });
+    	});
+
+		$('#editRow').click(function(e) {
+			e.preventDefault();
+
+			$("input[type=radio]:checked").each(function(){
+				var id = $(this).val();
+				// edit stuff
+			});
+		});
+
+		$('#deleteRow').click(function(e) {
+			e.preventDefault();
+			if($('input[type=radio]').is(':checked')) { 
+				$("input[type=radio]:checked").each(function() {
+					var id = $(this).val();
+					// delete stuff
+					swal({
+						title: "Data yang akan di hapus?",
+						text: "No. Panjar : " + id,
+						icon: "warning",
+						buttons: true,
+						dangerMode: true,
+					})
+					.then((willDelete) => {
+						if (willDelete) {
+							$.ajax({
+								url: "{{ route('permintaan_bayar.delete') }}",
+								type: 'DELETE',
+								dataType: 'json',
+								data: {
+									"id": id,
+									"_token": "{{ csrf_token() }}",
+								},
+								success: function () {
+									swal({
+											title: "Delete",
+											text: "Success",
+											type: "success"
+									}).then(function() {
+										location.replace("{{ route('permintaan_bayar.index') }}");
+									});
+								},
+								error: function () {
+									alert("Terjadi kesalahan, coba lagi nanti");
+								}
+							});
+						}
+					});
+				});
+			} else {
+				swal({
+					title: "Tandai baris yang akan dihapus!",
+					type: "success"
+				}) ; 
+			}
+			
+		});
 	});
 	</script>
 @endsection

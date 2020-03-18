@@ -53,6 +53,8 @@ Route::prefix('umum')->group(function () {
     Route::get('permintaan_bayar', 'PermintaanBayarController@index')->name('permintaan_bayar.index');
     Route::get('permintaan_bayar/index_json', 'PermintaanBayarController@indexJson')->name('permintaan_bayar.index.json');
     Route::get('permintaan_bayar/create', 'PermintaanBayarController@create')->name('permintaan_bayar.create');
+    Route::get('permintaan_bayar/edit', 'PermintaanBayarController@edit')->name('permintaan_bayar.edit');
+    Route::delete('permintaan_bayar/delete', 'PermintaanBayarController@delete')->name('permintaan_bayar.delete');
     
     // Anggaran
     Route::get('anggaran', 'AnggaranController@index')->name('anggaran.index');

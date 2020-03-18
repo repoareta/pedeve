@@ -2,8 +2,8 @@
 
 namespace App\Http\Controllers;
 
-use App\UmuBayarModel;
-use App\UmuBayarDetailModel;
+use App\PermintaanBayarModel;
+use App\PermintaanDetailModel;
 use Illuminate\Http\Request;
 use Carbon\Carbon;
 use DB;
@@ -22,7 +22,7 @@ class PermintaanBayarController extends Controller
 
     public function indexJson()
     {
-        $bayar_list = UmuBayarModel::all();
+        $bayar_list = PermintaanBayarModel::all();
         
         return datatables()->of($bayar_list)
             ->addColumn('no_bayar', function ($row) {
@@ -56,7 +56,7 @@ class PermintaanBayarController extends Controller
                 return $button;
             })
             ->addColumn('action_radio', function ($row) {
-                $radio = '<label class="kt-radio"><input type="radio" name="radio1"><span></span></label>';
+                $radio = '<label class="kt-radio kt-radio--bold kt-radio--brand"><input type="radio" name="radio1" value="'.$row->no_bayar.'"><span></span></label>';
                 return $radio;
             })
             ->rawColumns(['action_radio','action'])
@@ -124,8 +124,10 @@ class PermintaanBayarController extends Controller
      * @param  int  $id
      * @return \Illuminate\Http\Response
      */
-    public function destroy($id)
+    public function delete(Request $request)
     {
-        //
+        PermintaanBayarModel::where('no_bayar', $request->id)->delete();
+        PermintaanDetailModel::where('no_bayar', $request->id)->delete();
+        return response()->json();
     }
 }

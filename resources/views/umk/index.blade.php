@@ -96,8 +96,12 @@
 <script type="text/javascript">
 $(document).ready(function(){
 	$('#data-umk-table').DataTable({
-        processing: true,
-		serverSide: true,
+        scrollX   : true,
+			processing: true,
+			serverSide: true,
+			language: {
+            	processing: '<i class="fa fa-spinner fa-spin fa-2x fa-fw"></i> <br> Loading...'
+			},
 		ajax: {
             url: "{{ route('uang_muka_kerja.index.json') }}",
 		},
