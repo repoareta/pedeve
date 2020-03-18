@@ -134,19 +134,19 @@
 				<div class="kt-portlet__head-toolbar">
 					<div class="kt-portlet__head-wrapper">
 						<div class="kt-portlet__head-actions">
-							<a href="#" data-toggle="modal" data-target="#kt_modal_4">
+							<a  >
 								<span style="font-size: 2em;" class="kt-font-success">
 									<i class="fas fa-plus-circle"></i>
 								</span>
 							</a>
 			
-							<a href="#">
+							<a >
 								<span style="font-size: 2em;" class="kt-font-warning">
 									<i class="fas fa-edit"></i>
 								</span>
 							</a>
 			
-							<a href="#">
+							<a >
 								<span style="font-size: 2em;" class="kt-font-danger">
 									<i class="fas fa-times-circle"></i>
 								</span>
@@ -159,12 +159,15 @@
 				<table class="table table-striped table-bordered table-hover table-checkable" id="kt_table">
 					<thead class="thead-light">
 						<tr>
-							<th>No</th>
-							<th>Nopek</th>
-							<th>Nama</th>
-							<th>Gol</th>
-							<th>Jabatan</th>
-							<th>Keterangan</th>
+							<th ><input type="radio" hidden name="btn-radio"  data-id="1" class="btn-radio" checked ></th>
+							<th >No.</th>
+							<th >Keterangan</th>
+							<th >Account</th>
+							<th >Bagian</th>
+							<th >PK</th>
+							<th >JB</th>
+							<th >KK</th>
+							<th >Jumlah</th>
 						</tr>
 					</thead>
 					<tbody>

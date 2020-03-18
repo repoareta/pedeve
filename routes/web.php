@@ -37,10 +37,10 @@ Route::prefix('umum')->group(function () {
     Route::get('uang_muka_kerja/create', 'UangMukaKerjaController@create')->name('uang_muka_kerja.create');
     Route::post('uang_muka_kerja/store', 'UangMukaKerjaController@store')->name('uang_muka_kerja.store');
     Route::post('uang_muka_kerja/store_detail', 'UangMukaKerjaController@storeDetail')->name('uang_muka_kerja.store.detail');
-    Route::get('uang_muka_kerja/delete/{no}', 'UangMukaKerjaController@delete')->name('uang_muka_kerja.delete');
-    Route::get('uang_muka_kerja/delete_detail/{no}/{id}', 'UangMukaKerjaController@deleteDetail')->name('uang_muka_kerja.delete.detail');
-    Route::get('uang_muka_kerja/detail/{no}', 'UangMukaKerjaController@detail')->name('uang_muka_kerja.detail');
-    Route::get('uang_muka_kerja/edit/{no}/{id}', 'UangMukaKerjaController@edit')->name('uang_muka_kerja.edit');
+    Route::delete('uang_muka_kerja/delete/{no}', 'UangMukaKerjaController@delete')->name('uang_muka_kerja.delete');
+    Route::delete('uang_muka_kerja/delete_detail/{id}/{no}', 'UangMukaKerjaController@deleteDetail')->name('uang_muka_kerja.delete.detail');
+    Route::get('uang_muka_kerja/edit/{no}', 'UangMukaKerjaController@edit')->name('uang_muka_kerja.edit');
+    Route::get('uang_muka_kerja/edit_detail/{id}/{no}', 'UangMukaKerjaController@edit_detail')->name('uang_muka_kerja.edit.detail');
     
     // Perjalanan Dinas
     Route::get('perjalanan_dinas', 'PerjalananDinasController@index')->name('perjalanan_dinas.index');

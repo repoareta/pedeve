@@ -105,7 +105,7 @@ $(document).ready(function(){
 			{
 				data: 'radio',
 				name: 'radio',
-				orderable: false
+				// orderable: false
 			},
 			{
 				data: 'tgl_panjar',
@@ -146,7 +146,9 @@ $('#btn-edit-umk').on('click', function(e) {
 
 var allVals = [];  
 $(".btn-radio:checked").each(function() {  
+	e.preventDefault();
 	var dataid = $(this).attr('data-id');
+	var dataa = $(this).attr('data-umk-table');
 
 	if(dataid == 1) 
 	{
@@ -155,7 +157,7 @@ $(".btn-radio:checked").each(function() {
 				type: "success"
 				}) ;  
 	}  else {  
-		window.location.replace("/umum/uang_muka_kerja/detailumk/"+dataid);
+		location.replace("/umum/uang_muka_kerja/edit/"+dataid);
 	}	
 				
 });
@@ -167,6 +169,7 @@ $(".btn-radio:checked").each(function() {
 $('#btn-delete-umk').on('click', function(e) {
 
 	$(".btn-radio:checked").each(function() {  
+		e.preventDefault();
 		var dataid = $(this).attr('data-id');
 
 	if(dataid == 1)  
@@ -186,12 +189,14 @@ $('#btn-delete-umk').on('click', function(e) {
 			.then((willDelete) => {
 			if (willDelete) {
 				$.ajax({
-					url: "/umum/uang_muka_kerja/deleteumk/"+dataid ,
-					type: 'get',
+					url: "/umum/uang_muka_kerja/delete/"+dataid ,
+					type: 'delete',
+					headers: {
+						'X-CSRF-Token': '{{ csrf_token() }}',
+						},
 					success: function () {
 						swal({
-								title: "Delete",
-								text: "Success",
+								text: "Data Uang Muka Kerja Berhasil dihapus.",
 								type: "success"
 							}).then(function() {
 								location.replace("{{ route('uang_muka_kerja.index') }}");

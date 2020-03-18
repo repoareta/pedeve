@@ -40,142 +40,147 @@
 				</div>
 			</div>
 		</div>
-		<form class="kt-form kt-form--label-right">
-			<div class="kt-portlet__body">
-				<div class="form-group form-group-last">
-					<div class="alert alert-secondary" role="alert">
-						<div class="alert-text">
-							Header Permintaan Bayar
+		<div class="card-body table-responsive" >
+			<!--begin: Datatable -->
+			<form  class="kt-form kt-form--label-right" id="form-create-umk">
+				{{csrf_field()}}
+				<div class="kt-portlet__body">
+					<div class="form-group form-group-last">
+						<div class="alert alert-secondary" role="alert">
+							<div class="alert-text">
+								Header Uang Muka Kerja
+							</div>
+						</div>
+					
+						<div class="form-group row">
+							<label for="spd-input" class="col-2 col-form-label">No. UMK</label>
+							<div class="col-10">
+								<?php $a = str_replace('/', '-', $no_umk); ?>
+								<input  class="form-control" type="hidden" value="{{$a}}" id="noumk"  size="25" maxlength="25" readonly>
+								<input  class="form-control" type="text" value="{{$no_umk}}" id="no_umk" name="no_umk" size="25" maxlength="25" readonly required>
+							</div>
+						</div>
+						<div class="form-group row">
+							<label for="nopek-input" class="col-2 col-form-label">Tanggal</label>
+							<div class="col-10">
+								<input class="form-control" type="text" name="tgl_panjar" value="" data-date-format="dd/MM/yyyy" id="datepicker" id="tgl_panjar" size="15" maxlength="15" required>
+
+							</div>
+						</div>
+						<div class="form-group row">
+							<label for="example-email-input" class="col-2 col-form-label">Jenis Uang Muka</label>
+							<div class="col-10">
+							<select class="form-control" id="jenis_um" name="jenis_um" required>
+								<option value="">-Pilih-</option>
+								<option value="K" >Uang Muka Kerja</option>
+								<option value="D" >Uang Muka Dinas</option>
+							</select>
+							</div>
+						</div>
+						<div class="form-group row">
+							<label for="id-pekerja;-input" class="col-2 col-form-label">Bulan Buku</label>
+							<div class="col-10">
+								<input class="form-control" type="text" value="" data-date-format="yyyymm" id="bulan_buku" name="bulan_buku" size="6" maxlength="6" required>
+							</div>
+						</div>
+						<div class="form-group row">
+							<label for="jenis-dinas-input" class="col-2 col-form-label">No. Panjar</label>
+							<div class="col-10">
+								<input class="form-control" type="text" value="" name="no_panjar" id="no_panjar">
+							</div>
+						</div>
+						<div class="form-group row">
+							<label for="dari-input" class="col-2 col-form-label">Mata Uang</label>
+							<div class="col-10">
+								<input class="form-control" type="text" value="" name="ci" id="ci" size="1" maxlength="1" >
+							</div>
+						</div>
+						<div class="form-group row">
+							<label for="tujuan-input" class="col-2 col-form-label">Kurs</label>
+							<div class="col-10">
+								<input class="form-control" type="text" value="" name="kurs" id="kurs" size="10" maxlength="10">
+							</div>
+						</div>
+						<div class="form-group row">
+							<label for="example-datetime-local-input" class="col-2 col-form-label">Untuk</label>
+							<div class="col-10">
+								<input  class="form-control" type="text" value="" name="untuk" id="untuk" size="70" maxlength="200" required>
+							</div>
+						</div>
+						<div class="form-group row">
+							<label for="example-datetime-local-input" class="col-2 col-form-label">Jumlah</label>
+							<div class="col-10">
+								<input  class="form-control" type="text" value="" name="jumlah" id="jumlah" size="70" maxlength="200" readonly value="Rp. 0,-">
+							</div>
+						</div>
+						<div style="float:right;">
+							<div class="kt-form__actions">
+								<a  href="{{route('uang_muka_kerja.index')}}" class="btn btn-warning">Cancel</a>
+								<button type="submit" class="btn btn-brand">Save</button>
+							</div>
 						</div>
 					</div>
 				</div>
-				<div class="form-group row">
-					<label for="spd-input" class="col-2 col-form-label">No. SPD</label>
-					<div class="col-10">
-						<input class="form-control" type="text" value="Artisanal kale" id="spd">
-					</div>
-				</div>
-				<div class="form-group row">
-					<label for="nopek-input" class="col-2 col-form-label">Nopek</label>
-					<div class="col-10">
-						<input class="form-control" type="text" value="How do I shoot web" id="example-search-input">
-					</div>
-				</div>
-				<div class="form-group row">
-					<label for="example-email-input" class="col-2 col-form-label">Jabatan</label>
-					<div class="col-10">
-						<input class="form-control" type="text" value="bootstrap@example.com" id="example-email-input">
-					</div>
-				</div>
-				<div class="form-group row">
-					<label for="id-pekerja;-input" class="col-2 col-form-label">KTP/Passport</label>
-					<div class="col-10">
-						<input class="form-control" type="text" value="https://getbootstrap.com" id="example-url-input">
-					</div>
-				</div>
-				<div class="form-group row">
-					<label for="jenis-dinas-input" class="col-2 col-form-label">Jenis Dinas</label>
-					<div class="col-10">
-						<input class="form-control" type="text" value="1-(555)-555-5555" id="example-tel-input">
-					</div>
-				</div>
-				<div class="form-group row">
-					<label for="dari-input" class="col-2 col-form-label">Dari/Asal</label>
-					<div class="col-10">
-						<input class="form-control" type="text" value="hunter2" id="example-password-input">
-					</div>
-				</div>
-				<div class="form-group row">
-					<label for="tujuan-input" class="col-2 col-form-label">Tujuan</label>
-					<div class="col-10">
-						<input class="form-control" type="text" value="42" id="example-number-input">
-					</div>
-				</div>
-				<div class="form-group row">
-					<label for="example-datetime-local-input" class="col-2 col-form-label">Mulai</label>
-					<div class="col-10">
-						<input class="form-control" type="datetime-local" value="2011-08-19T13:45:00" id="example-datetime-local-input">
-					</div>
-				</div>
-				<div class="form-group row">
-					<label for="example-date-input" class="col-2 col-form-label">Sampai</label>
-					<div class="col-10">
-						<input class="form-control" type="date" value="2011-08-19" id="example-date-input">
-					</div>
-				</div>
-				<div class="form-group row">
-					<label for="example-month-input" class="col-2 col-form-label">Keterangan</label>
-					<div class="col-10">
-						<input class="form-control" type="month" value="2011-08" id="example-month-input">
-					</div>
-				</div>
-				<div class="form-group row">
-					<label for="example-week-input" class="col-2 col-form-label">Jumlah</label>
-					<div class="col-10">
-						<input class="form-control" type="week" value="2011-W33" id="example-week-input">
-					</div>
-				</div>
-			</div>
 
 				
-			<div class="kt-portlet__head kt-portlet__head">
-				<div class="kt-portlet__head-label">
-					<span class="kt-portlet__head-icon">
-						<i class="kt-font-brand flaticon2-line-chart"></i>
-					</span>
-					<h3 class="kt-portlet__head-title">
-						Detail Permintaan Bayar
-					</h3>			
-				</div>
-				<div class="kt-portlet__head-toolbar">
-					<div class="kt-portlet__head-wrapper">
-						<div class="kt-portlet__head-actions">
-							<a href="#" data-toggle="modal" data-target="#kt_modal_4">
-								<span style="font-size: 2em;" class="kt-font-success">
-									<i class="fas fa-plus-circle"></i>
-								</span>
-							</a>
-			
-							<a href="#">
-								<span style="font-size: 2em;" class="kt-font-warning">
-									<i class="fas fa-edit"></i>
-								</span>
-							</a>
-			
-							<a href="#">
-								<span style="font-size: 2em;" class="kt-font-danger">
-									<i class="fas fa-times-circle"></i>
-								</span>
-							</a>
+
+					
+				<div class="kt-portlet__head kt-portlet__head">
+					<div class="kt-portlet__head-label">
+						<span class="kt-portlet__head-icon">
+							<i class="kt-font-brand flaticon2-line-chart"></i>
+						</span>
+						<h3 class="kt-portlet__head-title">
+							Detail Uang Muka Kerja
+						</h3>			
+					</div>
+					<div class="kt-portlet__head-toolbar">
+						<div class="kt-portlet__head-wrapper">
+							<div class="kt-portlet__head-actions">
+								<a  data-toggle="modal" data-target="#kt_modal_4">
+									<span style="font-size: 2em;" class="kt-font-success">
+										<i class="fas fa-plus-circle"></i>
+									</span>
+								</a>
+				
+								<a >
+									<span style="font-size: 2em;" class="kt-font-warning">
+										<i class="fas fa-edit"></i>
+									</span>
+								</a>
+				
+								<a >
+									<span style="font-size: 2em;" class="kt-font-danger">
+										<i class="fas fa-times-circle"></i>
+									</span>
+								</a>
+							</div>
 						</div>
 					</div>
 				</div>
-			</div>
-			<div class="kt-portlet__body">
-				<table class="table table-striped table-bordered table-hover table-checkable" id="kt_table">
-					<thead class="thead-light">
-						<tr>
-							<th>No</th>
-							<th>Nopek</th>
-							<th>Nama</th>
-							<th>Gol</th>
-							<th>Jabatan</th>
-							<th>Keterangan</th>
-						</tr>
-					</thead>
-					<tbody>
-						<tr>
-							<td>Hehe</td>
-							<td>Hehe</td>
-							<td>Hehe</td>
-							<td>Hehe</td>
-							<td>Hehe</td>
-							<td>Hehe</td>
-						</tr>
-					</tbody>
-				</table>
-			</div>
-		</form>
+				<div class="kt-portlet__body">
+					<table class="table table-striped table-bordered table-hover table-checkable" id="kt_table">
+						<thead class="thead-light">
+							<tr>
+								<th ><input type="radio" hidden name="btn-radio"  data-id="1" class="btn-radio" checked ></th>
+								<th >No.</th>
+								<th >Keterangan</th>
+								<th >Account</th>
+								<th >Bagian</th>
+								<th >PK</th>
+								<th >JB</th>
+								<th >KK</th>
+								<th >Jumlah</th>
+							</tr>
+						</thead>
+						<tbody>
+							
+						</tbody>
+					</table>
+				</div>
+			</form>
+			<!--end: Datatable -->
+		</div>
 	</div>
 </div>
 
