@@ -165,7 +165,7 @@ return [
         /*
          * Package Service Providers...
          */
-        Yajra\DataTables\DataTablesServiceProvider::class,
+
         /*
          * Application Service Providers...
          */
@@ -174,6 +174,12 @@ return [
         // App\Providers\BroadcastServiceProvider::class,
         App\Providers\EventServiceProvider::class,
         App\Providers\RouteServiceProvider::class,
+
+        /**
+         * Custom Plugin
+         */
+        Yajra\DataTables\DataTablesServiceProvider::class,
+        Barryvdh\DomPDF\ServiceProvider::class,
 
     ],
 
@@ -225,7 +231,9 @@ return [
         'URL' => Illuminate\Support\Facades\URL::class,
         'Validator' => Illuminate\Support\Facades\Validator::class,
         'View' => Illuminate\Support\Facades\View::class,
+        // Custom plugin
         'DataTables' => Yajra\DataTables\Facades\DataTables::class,
+        'PDF' => Barryvdh\DomPDF\Facade::class,
 
     ],
 

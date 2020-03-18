@@ -4,18 +4,18 @@ namespace App\Models;
 
 use Illuminate\Database\Eloquent\Model;
 
-class PanjarHeader extends Model
+class PanjarDetail extends Model
 {
-    protected $table = "panjar_header";
+    protected $table = "panjar_detail";
     public $timestamps = false;
 
     /**
-     * Panjar Header hasMany Panjar Detail
+     * Panjar Detail dimiliki Panjar Header
      *
      * @return void
      */
     public function panjar_detail()
     {
-        return $this->hasMany('App\Models\PanjarDetail', 'no_panjar');
+        return $this->belongsTo('App\Models\PanjarDetail', 'no_panjar');
     }
 }
