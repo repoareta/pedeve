@@ -204,7 +204,7 @@
 								</span>
 							</a>
 			
-							<a href="#">
+							<a href="#" id="deleteRow">
 								<span style="font-size: 2em;" class="kt-font-danger">
 									<i class="fas fa-times-circle"></i>
 								</span>
@@ -227,14 +227,6 @@
 						</tr>
 					</thead>
 					<tbody>
-						@foreach ($panjar_details as $panjar_detail)
-							<td>radio</td>
-							<td>Nopek</td>
-							<td>Nama</td>
-							<td>Gol</td>
-							<td>Jabatan</td>
-							<td>Keterangan</td>
-						@endforeach
 					</tbody>
 				</table>
 			</div>
@@ -247,26 +239,62 @@
 	<div class="modal-dialog modal-lg" role="document">
 		<div class="modal-content">
 			<div class="modal-header">
-				<h5 class="modal-title" id="exampleModalLabel">New message</h5>
+				<h5 class="modal-title" id="exampleModalLabel">Tambah Detail Panjar Dinas</h5>
 				<button type="button" class="close" data-dismiss="modal" aria-label="Close">
 				</button>
 			</div>
-			<div class="modal-body">
-				<form class="" action="{{ route('perjalanan_dinas.store.detail') }}" method="POST">
-					<div class="form-group">
-						<label for="recipient-name" class="form-control-label">Recipient:</label>
-						<input type="text" class="form-control" id="recipient-name">
+			<form class="kt-form kt-form--label-right">
+				<div class="modal-body">
+					<div class="form-group row">
+						<label for="spd-input" class="col-2 col-form-label">No. Urut</label>
+						<div class="col-10">
+							<input class="form-control" type="text" name="no_urut" value="1" id="no_urut">
+						</div>
 					</div>
-					<div class="form-group">
-						<label for="message-text" class="form-control-label">Message:</label>
-						<textarea class="form-control" id="message-text"></textarea>
+
+					<div class="form-group row">
+						<label for="spd-input" class="col-2 col-form-label">Keterangan</label>
+						<div class="col-10">
+							<textarea class="form-control" name="keterangan_detail" id="keterangan_detail"></textarea>
+						</div>
 					</div>
-				</form>
-			</div>
-			<div class="modal-footer">
-				<button type="button" class="btn btn-secondary" data-dismiss="modal">Close</button>
-				<button type="button" class="btn btn-primary">Send message</button>
-			</div>
+
+					<div class="form-group row">
+						<label for="spd-input" class="col-2 col-form-label">Nopek</label>
+						<div class="col-10">
+							<select class="form-control kt-select2" id="nopek_detail" name="nopek_detail">
+								<option value="">- Pilih Nopek -</option>
+								@foreach ($pegawai_list as $pegawai)
+									<option value="{{ $pegawai->nopeg.'-'.$pegawai->nama }}">{{ $pegawai->nopeg.' - '.$pegawai->nama }}</option>
+								@endforeach
+							</select>
+						</div>
+					</div>
+
+					<div class="form-group row">
+						<label for="spd-input" class="col-2 col-form-label">Jabatan</label>
+						<div class="col-10">
+							<select class="form-control kt-select2" name="jabatan_detail" id="jabatan_detail">
+								<option value="">- Pilih Jabatan -</option>
+								@foreach ($jabatan_list as $jabatan)
+									<option value="{{ $jabatan->keterangan }}">{{ $jabatan->keterangan }}</option>
+								@endforeach
+							</select>
+						</div>
+					</div>
+
+					<div class="form-group row">
+						<label for="spd-input" class="col-2 col-form-label">Golongan</label>
+						<div class="col-10">
+							<input class="form-control" type="text" name="golongan_detail" id="golongan_detail">
+						</div>
+					</div>
+				</div>
+				<div class="modal-footer">
+					<button type="button" class="btn btn-warning" data-dismiss="modal"><i class="fa fa-reply" aria-hidden="true"></i> Batal</button>
+					<button type="button" id="saveDetail" class="btn btn-primary"><i class="fa fa-check" aria-hidden="true"></i> Simpan</button>
+				</div>
+			</form>
 		</div>
 	</div>
 </div>
@@ -275,12 +303,30 @@
 @endsection
 
 @section('scripts')
-	<script type="text/javascript">
+<script type="text/javascript">
 	$(document).ready(function () {
-		$('#kt_table').DataTable();
+		var t = $('#kt_table').DataTable({
+			scrollX   : true,
+			processing: true,
+			serverSide: true,
+			language: {
+				processing: '<i class="fa fa-spinner fa-spin fa-2x fa-fw"></i> <br> Loading...'
+			},
+			ajax      : "{{ route('perjalanan_dinas.index.json.detail') }}",
+			columns: [
+				{data: 'action', name: 'aksi', orderable: false, searchable: false},
+				{data: 'no', name: 'no'},
+				{data: 'nopek', name: 'nopek'},
+				{data: 'nama', name: 'nama'},
+				{data: 'golongan', name: 'golongan'},
+				{data: 'jabatan', name: 'jabatan'},
+				{data: 'keterangan', name: 'keterangan'}
+			]
+		});
+
+		$('#kt_table2').DataTable();
 
 		// Class definition
-
 		var KTBootstrapDatepicker = function () {
 
 			var arrows;
@@ -330,6 +376,97 @@
 		}();
 
 		KTBootstrapDatepicker.init();
+
+
+		$('#saveDetail').click(function(e) {
+			var no = $('#no_urut').val();
+			var keterangan = $('#keterangan_detail').val();
+			var nopek = $('#nopek_detail').val().split('-')[0];
+			var nama = $('#nopek_detail').val().split('-')[1];
+			var jabatan = $('#jabatan_detail').val();
+			var golongan = $('#golongan_detail').val();
+
+			$.ajax({
+				url: "{{ route('perjalanan_dinas.store.detail') }}",
+				type: "POST",
+				data: {
+					no: no,
+					keterangan: keterangan,
+					nopek: nopek,
+					nama: nama,
+					jabatan: jabatan,				
+					golongan: golongan,
+					_token:"{{ csrf_token() }}"		
+				},
+				success: function(dataResult){
+					swal({
+						title: "Tambah Detail Panjar",
+						text: "Success",
+						type: "success"
+					})
+					// close modal
+					$('#kt_modal_4').modal('toggle');
+					// clear form
+					$('#kt_modal_4').on('hidden.bs.modal', function () {
+						$(this).find('form').trigger('reset');
+					})
+					// append to datatable
+					t.ajax.reload();
+				},
+				error: function () {
+					alert("Terjadi kesalahan, coba lagi nanti");
+				}
+			});
+		});
+
+		$('#deleteRow').click(function(e) {
+			e.preventDefault();
+			if($('input[type=radio]').is(':checked')) { 
+				$("input[type=radio]:checked").each(function() {
+					var no_nopek = $(this).val();
+					// delete stuff
+					swal({
+						title: "Data yang akan di hapus?",
+						text: "Nopek : " + no_nopek,
+						icon: "warning",
+						buttons: true,
+						dangerMode: true,
+					})
+					.then((willDelete) => {
+						if (willDelete) {
+							$.ajax({
+								url: "{{ route('perjalanan_dinas.delete.detail') }}",
+								type: 'DELETE',
+								dataType: 'json',
+								data: {
+									"no_nopek": no_nopek,
+									"session": true,
+									"_token": "{{ csrf_token() }}",
+								},
+								success: function () {
+									swal({
+											title: "Delete",
+											text: "Success",
+											type: "success"
+									}).then(function() {
+										t.ajax.reload();
+									});
+								},
+								error: function () {
+									alert("Terjadi kesalahan, coba lagi nanti");
+								}
+							});
+						}
+					});
+				});
+			} else {
+				swal({
+					title: "Tandai baris yang akan dihapus!",
+					type: "success"
+				}) ; 
+			}
+		});
+
 	});
-	</script>
+</script>
 @endsection

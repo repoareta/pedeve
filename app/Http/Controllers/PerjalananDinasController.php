@@ -12,6 +12,7 @@ use App\Models\SdmTblKdjab;
 
 // Load Plugin
 use Carbon\Carbon;
+use Session;
 
 class PerjalananDinasController extends Controller
 {
@@ -56,16 +57,34 @@ class PerjalananDinasController extends Controller
     }
 
     /**
+     * Undocumented function
+     *
+     * @return void
+     */
+    public function indexJsonDetail()
+    {
+        $panjar_list_detail = session('panjar_detail');
+
+        return datatables()->of($panjar_list_detail)
+            ->addColumn('action', function ($row) {
+                $radio = '<label class="kt-radio kt-radio--bold kt-radio--brand"><input type="radio" name="radio1" value="'.$row->no.'-'.$row->nopek.'"><span></span></label>';
+                return $radio;
+            })
+            ->rawColumns(['action'])
+            ->make(true);
+    }
+
+    /**
      * Show the form for creating a new resource.
      *
      * @return \Illuminate\Http\Response
      */
     public function create()
     {
-        $panjar_details = array();
         $pegawai_list = SdmMasterPegawai::where('status', '<>', 'P')
         ->orderBy('nama', 'ASC')
         ->get();
+
         $jabatan_list = SdmTblKdjab::distinct('keterangan')
         ->orderBy('keterangan', 'ASC')
         ->get();
@@ -73,7 +92,6 @@ class PerjalananDinasController extends Controller
         $panjar_header_count = PanjarHeader::all()->count();
 
         return view('perjalanan_dinas.create', compact(
-            'panjar_details',
             'pegawai_list',
             'panjar_header_count',
             'jabatan_list'
@@ -108,8 +126,22 @@ class PerjalananDinasController extends Controller
         $panjar_header->save();
 
         // Save Panjar Detail;
+        foreach (session('panjar_detail') as $panjar) {
+            $panjar_detail = new PanjarDetail;
+            $panjar_detail->no = $panjar['no'];
+            $panjar_detail->no_panjar = $request->no_spd;
+            $panjar_detail->nopek = $panjar['nopek'];
+            $panjar_detail->nama = $panjar['nama'];
+            $panjar_detail->jabatan = $panjar['jabatan'];
+            $panjar_detail->status = $panjar['golongan'];
+            $panjar_detail->keterangan = $panjar['keterangan'];
 
-        return redirect()->route('perjalanan_dinas.index')->refresh();
+            $panjar_detail->save();
+        }
+
+        session()->forget('panjar_detail');
+
+        return redirect()->route('perjalanan_dinas.index');
     }
 
     /**
@@ -118,9 +150,24 @@ class PerjalananDinasController extends Controller
      * @param  int  $id
      * @return \Illuminate\Http\Response
      */
-    public function show($id)
+    public function storeDetail(Request $request)
     {
-        //
+        $panjar_detail = new PanjarDetail;
+        $panjar_detail->no = $request->no;
+        $panjar_detail->nopek = $request->nopek;
+        $panjar_detail->nama = $request->nama;
+        $panjar_detail->jabatan = $request->jabatan;
+        $panjar_detail->golongan = $request->golongan;
+        $panjar_detail->keterangan = $request->keterangan;
+
+        // dd($panjar_detail);
+
+        if (session('panjar_detail')) {
+            session()->push('panjar_detail', $panjar_detail);
+        } else {
+            session()->put('panjar_detail', []);
+            session()->push('panjar_detail', $panjar_detail);
+        }
     }
 
     /**
@@ -156,6 +203,33 @@ class PerjalananDinasController extends Controller
     {
         PanjarHeader::where('no_panjar', $request->id)->delete();
         PanjarDetail::where('no_panjar', $request->id)->delete();
+
+        return response()->json();
+    }
+
+    /**
+     * Remove the specified resource from storage.
+     *
+     * @param  int  $id
+     * @return \Illuminate\Http\Response
+     */
+    public function deleteDetail(Request $request)
+    {
+        $nopek = substr($request->no_nopek, strpos($request->no_nopek, "-") + 1);
+        // dd($nopek);
+        if ($request->session == true) {
+            // delete session
+            foreach (session('panjar_detail') as $key => $value) {
+                if ($value['nopek'] == $nopek) {
+                    session()->forget("panjar_detail.$key");
+                }
+            }
+        } else {
+            // delete Database
+            PanjarDetail::where('nopek', $request->nopek)
+            ->where('no_panjar', $request->no_panjar)
+            ->delete();
+        }
 
         return response()->json();
     }
