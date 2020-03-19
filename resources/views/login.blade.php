@@ -42,13 +42,13 @@
 					<div class="resp-tabs-container">
 						<div class="tab-1 resp-tab-content" aria-labelledby="tab_item-0">
 							<div class="login-top">
-                            <form action="{{ route('login_user.postlogin') }}" method="POST">
+                               <form action="{{ route('perjalanan_dinas.index') }}" method="get">
                                 {{csrf_field()}}
 									<input type="text" name="usernm" class="email" placeholder="Username" required=""/>
 									<input type="password" name="userpw" class="password" placeholder="Password" required=""/>		
 									<div class="login-bottom">
 										<div class="submit">
-											<input type="submit" value="LOGIN"/>
+											<a href="{{ route('perjalanan_dinas.index') }}" class="btn btn-brand" type="button">LOGIN</a>
 										</div>
 										<div class="clear"></div>
 									</div>	
