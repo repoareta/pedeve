@@ -204,7 +204,8 @@ class PerjalananDinasController extends Controller
                 }
             }
         } else {
-            // get From Database
+            $data = PanjarDetail::where('no_panjar', $request->no_panjar)
+            ->where('nopek', $nopek)->first();
         }
 
         return response()->json($data, 200);
@@ -307,9 +308,23 @@ class PerjalananDinasController extends Controller
             }
         } else {
             // Dari Database
+            $panjar_detail = PanjarDetail::where('no_panjar', $request->no_panjar)
+            ->where('nopek', $request->nopek)
+            ->where('no', $request->no)
+            ->first();
+
+            $panjar_detail->no = $request->no;
+            $panjar_detail->no_panjar = $request->no_panjar;
+            $panjar_detail->nopek = $request->nopek;
+            $panjar_detail->nama = $request->nama;
+            $panjar_detail->jabatan = $request->jabatan;
+            $panjar_detail->status = $request->golongan;
+            $panjar_detail->keterangan = $request->keterangan;
+
+            $panjar_detail->save();
         }
 
-        $data = array();
+        $data = $panjar_detail;
         return response()->json($data, 200);
     }
 

@@ -396,8 +396,6 @@
 
 			var url, session;
 
-			var no_panjar = "{{ $panjar_header->no_panjar }}";
-
 			if(state == 'add'){
 				url = "{{ route('perjalanan_dinas.store.detail') }}";
 				session = false;
@@ -411,7 +409,7 @@
 				type: "POST",
 				data: {
 					no: no,
-					no_panjar: no_panjar,
+					no_panjar: "{{ $panjar_header->no_panjar }}",
 					keterangan: keterangan,
 					nopek: nopek,
 					nama: nama,
@@ -502,7 +500,8 @@
 						type: 'GET',
 						data: {
 							"no_nopek": no_nopek,
-							"session": true,
+							"no_panjar": "{{ $panjar_header->no_panjar }}",
+							"session": false,
 							"_token": "{{ csrf_token() }}",
 						},
 						success: function (response) {
@@ -512,7 +511,7 @@
 							$('#keterangan_detail').val(response.keterangan);
 							$('#nopek_detail').val(response.nopek + '-' + response.nama);
 							$('#jabatan_detail').val(response.jabatan);
-							$('#golongan_detail').val(response.golongan);
+							$('#golongan_detail').val(response.status);
 							// title
 							$('#title_modal').text('Ubah Detail Panjar Dinas');
 							$('#title_modal').data('state', 'update');
