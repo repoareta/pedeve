@@ -34,6 +34,7 @@
                 ); // isi nama semua route anggaran
                 $report_umum = array(
                     'report_permintaan_bayar.index'
+                    'perjalanan_dinas.rekap'
                 ); // isi nama semua route report umum
 
                 // menu umum
@@ -197,7 +198,7 @@
                                 </span>
                             </a>
                         </li> --}}
-                        <li class="kt-menu__item  kt-menu__item--submenu" aria-haspopup="true" data-ktmenu-submenu-toggle="hover">
+                        <li class="kt-menu__item kt-menu__item--submenu {{ set_active($report_umum) }}" aria-haspopup="true" data-ktmenu-submenu-toggle="hover">
                             <a href="javascript:;" class="kt-menu__link kt-menu__toggle">
                                 <i class="kt-menu__link-bullet kt-menu__link-bullet--dot">
                                     <span></span>
@@ -207,7 +208,7 @@
                             </a>
                             <div class="kt-menu__submenu "><span class="kt-menu__arrow"></span>
                                 <ul class="kt-menu__subnav">
-                                    <li class="kt-menu__item " aria-haspopup="true">
+                                    <li class="kt-menu__item kt-menu__item{{ set_active_submenu($report_umum) }}" aria-haspopup="true">
                                         <a href="{{ route('perjalanan_dinas.rekap') }}" class="kt-menu__link ">
                                             <i class="kt-menu__link-bullet kt-menu__link-bullet--line">
                                                 <span></span>
