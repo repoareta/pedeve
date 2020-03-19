@@ -1,28 +1,39 @@
 <!DOCTYPE HTML>
 <html>
 <head>
-<title></title>
-<link rel="stylesheet" type="text/css" href="{{asset('css/style.css')}}" />
-<meta http-equiv="Content-Type" content="text/html; charset=utf-8" />
-<meta name="viewport" content="width=device-width, initial-scale=1, maximum-scale=1">
-<meta http-equiv="Content-Type" content="text/html; charset=utf-8" /> 
-<meta name="keywords" content="Static Login Form Responsive, Login form web template, Sign up Web Templates, Flat Web Templates, Login signup Responsive web template, Smartphone Compatible web template, free webdesigns for Nokia, Samsung, LG, SonyErricsson, Motorola web design" />
-<!--script-->
-<script src="{{asset('js/jquery.min.js')}}"></script>
-<link href="{{ asset('css/app.css') }}" rel="stylesheet" type="text/css" >
-<script src="{{asset('js/easyResponsiveTabs.js')}}" type="text/javascript"></script>
-		    <script type="text/javascript">
-			    $(document).ready(function () {
-			        $('#horizontalTab').easyResponsiveTabs({
-			            type: 'default', //Types: default, vertical, accordion           
-			            width: 'auto', //auto or any width like 600px
-			            fit: true   // 100% fit in a container
-			        });
-			    });
-				
-</script>	
-<!--script-->
-<!---Google Analytics Designmaz.net-->
+	<title>{{ config('app.name', 'Pertamina PDV') }}</title>
+	<meta http-equiv="Content-Type" content="text/html; charset=utf-8" />
+	<meta name="viewport" content="width=device-width, initial-scale=1, maximum-scale=1">
+	<meta http-equiv="Content-Type" content="text/html; charset=utf-8" /> 
+	<meta name="keywords" content="Static Login Form Responsive, Login form web template, Sign up Web Templates, Flat Web Templates, Login signup Responsive web template, Smartphone Compatible web template, free webdesigns for Nokia, Samsung, LG, SonyErricsson, Motorola web design" />
+
+	<link rel="stylesheet" type="text/css" href="{{ asset('css/style.css') }}">
+	<link rel="stylesheet" type="text/css" href="{{ asset('css/app.css') }}">
+
+	<link rel="shortcut icon" href="{{ asset('images/favicon.ico') }}" />
+	<!--script-->
+	<script src="{{asset('js/jquery.min.js')}}"></script>
+	<script src="{{asset('js/easyResponsiveTabs.js')}}" type="text/javascript"></script>
+	<script type="text/javascript">
+		$(document).ready(function () {
+			$('#horizontalTab').easyResponsiveTabs({
+				type: 'default', //Types: default, vertical, accordion           
+				width: 'auto', //auto or any width like 600px
+				fit: true   // 100% fit in a container
+			});
+		});		
+	</script>	
+	<!--script-->
+	<style>
+		.login input[type="text"], .login input[type="password"] {
+			width: 100%;
+		}
+
+		.login-bottom {
+			margin-top: 7%;
+			margin-left: 0%;
+		}
+	</style>
 </head>
 <body style="background-image: url('{{ asset('images/gedung.jpg')}}');">
 	<div class="head">
@@ -47,7 +58,7 @@
 									<input type="text" name="usernm" class="email" placeholder="Username" required=""/>
 									<input type="password" name="userpw" class="password" placeholder="Password" required=""/>		
 									<div class="login-bottom">
-										<div class="submit">
+										<div class="text-center">
 											<a href="{{ route('perjalanan_dinas.index') }}" class="btn btn-brand" type="button">LOGIN</a>
 										</div>
 										<div class="clear"></div>
