@@ -1,38 +1,39 @@
 <!DOCTYPE HTML>
 <html>
 <head>
-<title></title>
-<meta http-equiv="Content-Type" content="text/html; charset=utf-8" />
-<meta name="viewport" content="width=device-width, initial-scale=1, maximum-scale=1">
-<meta http-equiv="Content-Type" content="text/html; charset=utf-8" /> 
-<meta name="keywords" content="Static Login Form Responsive, Login form web template, Sign up Web Templates, Flat Web Templates, Login signup Responsive web template, Smartphone Compatible web template, free webdesigns for Nokia, Samsung, LG, SonyErricsson, Motorola web design" />
+	<title>{{ config('app.name', 'Pertamina PDV') }}</title>
+	<meta http-equiv="Content-Type" content="text/html; charset=utf-8" />
+	<meta name="viewport" content="width=device-width, initial-scale=1, maximum-scale=1">
+	<meta http-equiv="Content-Type" content="text/html; charset=utf-8" /> 
+	<meta name="keywords" content="Static Login Form Responsive, Login form web template, Sign up Web Templates, Flat Web Templates, Login signup Responsive web template, Smartphone Compatible web template, free webdesigns for Nokia, Samsung, LG, SonyErricsson, Motorola web design" />
 
-<link rel="stylesheet" type="text/css" href="{{ asset('css/style.css') }}">
-<link rel="stylesheet" type="text/css" href="{{ asset('css/app.css') }}">
+	<link rel="stylesheet" type="text/css" href="{{ asset('css/style.css') }}">
+	<link rel="stylesheet" type="text/css" href="{{ asset('css/app.css') }}">
 
-<!--script-->
-<script src="{{asset('js/jquery.min.js')}}"></script>
-<script src="{{asset('js/easyResponsiveTabs.js')}}" type="text/javascript"></script>
-<script type="text/javascript">
-	$(document).ready(function () {
-		$('#horizontalTab').easyResponsiveTabs({
-			type: 'default', //Types: default, vertical, accordion           
-			width: 'auto', //auto or any width like 600px
-			fit: true   // 100% fit in a container
-		});
-	});		
-</script>	
-<!--script-->
-<style>
-	.login input[type="text"], .login input[type="password"] {
-		width: 100%;
-	}
+	<link rel="shortcut icon" href="{{ asset('images/favicon.ico') }}" />
+	<!--script-->
+	<script src="{{asset('js/jquery.min.js')}}"></script>
+	<script src="{{asset('js/easyResponsiveTabs.js')}}" type="text/javascript"></script>
+	<script type="text/javascript">
+		$(document).ready(function () {
+			$('#horizontalTab').easyResponsiveTabs({
+				type: 'default', //Types: default, vertical, accordion           
+				width: 'auto', //auto or any width like 600px
+				fit: true   // 100% fit in a container
+			});
+		});		
+	</script>	
+	<!--script-->
+	<style>
+		.login input[type="text"], .login input[type="password"] {
+			width: 100%;
+		}
 
-	.login-bottom {
-		margin-top: 7%;
-		margin-left: 0%;
-	}
-</style>
+		.login-bottom {
+			margin-top: 7%;
+			margin-left: 0%;
+		}
+	</style>
 </head>
 <body style="background-image: url('{{ asset('images/gedung.jpg')}}');">
 	<div class="head">
