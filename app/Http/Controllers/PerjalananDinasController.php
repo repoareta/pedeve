@@ -13,6 +13,7 @@ use App\Models\SdmTblKdjab;
 // Load Plugin
 use Carbon\Carbon;
 use Session;
+use PDF;
 
 class PerjalananDinasController extends Controller
 {
@@ -378,7 +379,11 @@ class PerjalananDinasController extends Controller
     {
         $mulai = date($request->mulai);
         $sampai = date($request->sampai);
-        $panjar_header_list = PanjarHeader::whereBetween('tgl_panjar', [$mulai, $sampai])->get();
-        dd($panjar_header_list);
+        $panjar_header_list = PanjarHeader::whereBetween('tgl_panjar', [$mulai, $sampai])
+        ->get();
+        // dd($panjar_header_list);
+
+        $pdf = PDF::loadview('perjalanan_dinas.export', ['panjar_header_list' => $panjar_header_list]);
+        return $pdf->download('rekap_spd_'.date('Y-m-d H:i:s').'.pdf');
     }
 }
