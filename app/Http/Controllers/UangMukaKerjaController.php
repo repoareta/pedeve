@@ -58,7 +58,7 @@ class UangMukaKerjaController extends Controller
                 })
 
                 ->addColumn('radio', function($data){
-                    $button = '<label class="kt-radio kt-radio--bold kt-radio--brand"><input type="radio" class="btn-radio" data-id="'.str_replace('/', '-', $data->no_umk).'" name="btn-radio"><span></span></label>';
+                    $button = '<label class="kt-radio kt-radio--bold kt-radio--brand"><input type="radio" class="btn-radio" dataumk="'.$data->no_umk.'" data-id="'.str_replace('/', '-', $data->no_umk).'" name="btn-radio"><span></span></label>';
                     return $button;
                 })
                 ->rawColumns(['action','radio','jenisum','jumlah','noumk'])
@@ -193,11 +193,10 @@ class UangMukaKerjaController extends Controller
     public function edit_detail($dataid, $datano)
     {
         $noumk=str_replace('-', '/', $dataid);
-        if(request()->ajax())
-        {
+
             $data = DetailUmkModel::where('no', $datano)->where('no_umk', $noumk)->distinct()->get();
             return response()->json($data[0]);
-        }
+
     }
 
     /**
@@ -228,7 +227,9 @@ class UangMukaKerjaController extends Controller
     public function deleteDetail(Request $request)
     {
 
-        DetailUmkModel::where('no_umk', $request->id)->delete();
+        DetailUmkModel::where('no', $request->no)
+        ->where('no_umk', $request->id)
+        ->delete();
         return response()->json();
     }
 }

@@ -176,7 +176,7 @@
 					@foreach($data_umk_details as $data_umk_detail)
 					<?php $no++; ?>
 						<tr class="table-info">
-							<td scope="row" align="center"><label class="kt-radio kt-radio--bold kt-radio--brand"><input type="radio" name="btn-radio" data-no="{{$data_umk_detail->no}}"  data-id="{{str_replace('/', '-', $data_umk_detail->no_umk)}}" value="{{$data_umk_detail->no_umk}}" class="btn-radio" ><span></span></label></td>
+							<td scope="row" align="center"><label class="kt-radio kt-radio--bold kt-radio--brand"><input type="radio" name="btn-radio" data-no="{{$data_umk_detail->no}}"  data-id="{{str_replace('/', '-', $data_umk_detail->no_umk)}}" noumk="{{$data_umk_detail->no_umk}}" class="btn-radio" ><span></span></label></td>
 							<td scope="row" align="center">{{$no}}</td>
 							<td>{{$data_umk_detail->keterangan}}</td>
 							<td align="center">{{$data_umk_detail->account}}</td>
@@ -460,7 +460,7 @@ $('#form-update-umk').submit(function(){
                 });
 			}, 
 			error : function(){
-				alert("Ada kesalahan aplikasi");
+				alert("Terjadi kesalahan, coba lagi nanti");
 			}
 		});	
 		return false;
@@ -491,7 +491,7 @@ $('#form-update-umk').submit(function(){
                 });
 			}, 
 			error : function(){
-				alert("Ada kesalahan aplikasi");
+				alert("Terjadi kesalahan, coba lagi nanti");
 			}
 		});	
 		return false;
@@ -517,7 +517,7 @@ $('#form-update-umk').submit(function(){
                 });
 			}, 
 			error : function(){
-				alert("Ada kesalahan aplikasi");
+				alert("Terjadi kesalahan, coba lagi nanti");
 			}
 		});	
 		return false;
@@ -599,15 +599,24 @@ $(".btn-radio:checked").each(function() {
 
 
 //delete
-$('#deleteRow').click(function(e) {
+	$('#deleteRow').click(function(e) {
 			e.preventDefault();
-			if($('input[type=radio]').is(':checked')) { 
+			$(".btn-radio:checked").each(function() {  
+			var dataid = $(this).attr('data-id');
+				if(dataid == 1)  
+				{  
+					swal({
+						title: "Tandai baris yang akan dihapus!",
+						type: "success"
+					}) ; 
+				}  else { 
 				$("input[type=radio]:checked").each(function() {
-					var id = $(this).val();
+					var id = $(this).attr('noumk');
+                    var no = $(this).attr('data-no');
 					// delete stuff
 					swal({
 						title: "Data yang akan di hapus?",
-						text: "No. Panjar : " + id,
+						text: "No. UMK : " + id+"dan NO urut :"+no,
 						icon: "warning",
 						buttons: true,
 						dangerMode: true,
@@ -620,6 +629,7 @@ $('#deleteRow').click(function(e) {
 								dataType: 'json',
 								data: {
 									"id": id,
+									"no": no,
 									"_token": "{{ csrf_token() }}",
 								},
 								success: function () {
@@ -628,7 +638,7 @@ $('#deleteRow').click(function(e) {
 											text: "Success",
 											type: "success"
 									}).then(function() {
-										location.replace("{{ route('uang_muka_kerja.edit',['no' => $data_umk->no_umk]) }}");
+										location.reload();
 									});
 								},
 								error: function () {
@@ -638,14 +648,10 @@ $('#deleteRow').click(function(e) {
 						}
 					});
 				});
-			} else {
-				swal({
-					title: "Tandai baris yang akan dihapus!",
-					type: "success"
-				}) ; 
-			}
+			} 
 			
 		});
+	});
 
 function hanyaAngka(evt) {
 		  var charCode = (evt.which) ? evt.which : event.keyCode

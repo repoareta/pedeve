@@ -74,7 +74,7 @@
 						<div class="form-group row">
 							<label for="id-pekerja;-input" class="col-2 col-form-label">Keterangan</label>
 							<div class="col-10">
-								<input class="form-control" type="text" value="{{$data_bayar->keterangan}}"  id="keterangan" name="keterangan" size="50" maxlength="200" required>
+								<input class="form-control" type="text" value="{{$data_bayar->keterangan}}"  name="keterangan" size="50" maxlength="200" required>
 							</div>
 						</div>
 						<div class="form-group row">
@@ -144,7 +144,7 @@
 						<div class="form-group row">
 							<label class="col-2 col-form-label">Total Nilai</label>
 							<div class="col-4">
-								<input  class="form-control" name="totalnilai" type="text" value="" id="totalnilai" >
+								<input  class="form-control" name="totalnilai" type="text" id="totalnilai" value="Rp. <?php echo number_format($count, 0, ',', '.'); ?>"  readonly>
 							</div>
 						</div>
 						<div style="float:right;">
@@ -209,7 +209,26 @@
 							</tr>
 						</thead>
 						<tbody>
-							
+                            <?php $no=0; ?>
+                            @foreach($data_bayar_details as $data_bayar_detail)
+                            <?php $no++; ?>
+                                <tr class="table-info">
+                                    <td scope="row" align="center"><label class="kt-radio kt-radio--bold kt-radio--brand"><input type="radio" name="btn-radio" data-no="{{$data_bayar_detail->no}}"  data-id="{{str_replace('/', '-', $data_bayar_detail->no_bayar)}}" nobayar="{{$data_bayar_detail->no_bayar}}" class="btn-radio" ><span></span></label></td>
+                                    <td scope="row" align="center">{{$no}}</td>
+                                    <td>{{$data_bayar_detail->keterangan}}</td>
+                                    <td align="center">{{$data_bayar_detail->bagian}}</td>
+                                    <td align="center">{{$data_bayar_detail->account}}</td>
+                                    <td align="center">{{$data_bayar_detail->jb}}</td>
+                                    <td align="center">{{$data_bayar_detail->pk}}</td>
+                                    <td align="center">{{$data_bayar_detail->cj}}</td>
+                                    <td>Rp. <?php echo number_format($data_bayar_detail->nilai, 0, ',', '.'); ?></td>
+                                </tr>
+                            @endforeach
+                        </tbody>
+                                <tr>
+                                    <td colspan="8" align="right">Jumlah Total : </td>
+                                    <td >Rp. <?php echo number_format($count, 0, ',', '.'); ?></td>
+                                </tr>
 						</tbody>
 					</table>
 				</div>
@@ -219,35 +238,237 @@
 </div>
 
 <!--begin::Modal-->
-<div class="modal fade" id="kt_modal_4" tabindex="-1" role="dialog" aria-labelledby="exampleModalLabel" aria-hidden="true">
+<div class="modal fade modal-create-detail-umk" id="kt_modal_4"  tabindex="-1" role="dialog" aria-labelledby="exampleModalLabel" aria-hidden="true">
 	<div class="modal-dialog modal-lg" role="document">
 		<div class="modal-content">
 			<div class="modal-header">
-				<h5 class="modal-title" id="exampleModalLabel">New message</h5>
-				<button type="button" class="close" data-dismiss="modal" aria-label="Close">
-				</button>
+				<h5 class="modal-title" id="title-detail">Tambah Menu Rincian Minta Bayar</h5>
 			</div>
 			<div class="modal-body">
-				<form>
-					<div class="form-group">
-						<label for="recipient-name" class="form-control-label">Recipient:</label>
-						<input type="text" class="form-control" id="recipient-name">
+			<span id="form_result"></span>
+                <form  class="kt-form " id="form-tambah-bayar-detail"  enctype="multipart/form-data">
+					{{csrf_field()}}
+                        @foreach($data_bayars as $data_bayar)
+                        <input  class="form-control" hidden type="text" value="{{$data_bayar->no_bayar}}"  name="nobayar">
+                        @endforeach
+                    <div class="form-group row">
+						<label for="example-text-input" class="col-2 col-form-label">No. Urut</label>
+						<label for="example-text-input" class=" col-form-label">:</label>
+						<div class="col-2">
+							<input  class="form-control" type="text" value="{{$no_bayar_details}}"  name="no" readonly>
+						</div>
 					</div>
-					<div class="form-group">
-						<label for="message-text" class="form-control-label">Message:</label>
-						<textarea class="form-control" id="message-text"></textarea>
+
+					<div class="form-group row">
+						<label for="example-text-input" class="col-2 col-form-label">Keterangan</label>
+						<label for="example-text-input" class=" col-form-label">:</label>
+						<div class="col-8">
+							<input  class="form-control" type="text" value=""  name="keterangan">
+						</div>
+					</div>
+									
+																					
+					<div class="form-group row">
+						<label for="example-text-input" class="col-2 col-form-label">Account</label>
+						<label for="example-text-input" class=" col-form-label">:</label>
+						<div  class="col-3" >
+							<select name="acc"  class="form-control selectpicker" data-live-search="true">
+								<option value="">-Pilih-</option>
+									@foreach($data_account as $row)
+								<option value="{{$row->kodeacct}}">{{$row->kodeacct}} - {{$row->descacct}}</option>
+									@endforeach
+							</select>
+						</div>
+					</div>
+
+					<div class="form-group row">
+						<label for="example-text-input" class="col-2 col-form-label">Kode Bagian</label>
+						<label for="example-text-input" class=" col-form-label">:</label>
+						<div  class="col-3">
+							<select name="bagian"  class="form-control selectpicker" data-live-search="true">
+								<option value="">-Pilih-</option>
+									@foreach($data_bagian as $row)
+								<option value="{{$row->kode}}" >{{$row->kode}} - {{$row->nama}}</option>
+									@endforeach
+							</select>
+						</div>
+					</div>
+
+					<div class="form-group row">
+						<label for="example-text-input" class="col-2 col-form-label">Perintah Kerja</label>
+						<label for="example-text-input" class=" col-form-label">:</label>
+						<div class="col-4">
+							<input  class="form-control" type="text" value="000"  name="pk" size="6" maxlength="6">
+						</div>
+					</div>
+
+					<div class="form-group row">
+						<label for="example-text-input" class="col-2 col-form-label">Jenis Biaya</label>
+						<label for="example-text-input" class=" col-form-label">:</label>
+						<div  class="col-3">
+							<select name="jb"  class="form-control selectpicker" data-live-search="true">
+								<option value="">-Pilih-</option>
+									@foreach($data_jenisbiaya as $row)
+								<option value="{{$row->kode}}" >{{$row->kode}} - {{$row->keterangan}}</option>
+									@endforeach
+							</select>
+						</div>
+					</div>
+
+					<div class="form-group row">
+						<label for="example-text-input" class="col-2 col-form-label">C. Judex</label>
+						<label for="example-text-input" class=" col-form-label">:</label>
+						<div class="col-3">
+							<select name="cj" class="form-control selectpicker" data-live-search="true">
+								<option value="">-Pilih-</option>
+									@foreach($data_cj as $row)
+								<option value="{{$row->kode}}">{{$row->kode}} - {{$row->nama}}</option>
+									@endforeach
+							</select>
+						</div>
+					</div>
+
+									
+
+					<div class="form-group row">
+						<label for="example-text-input" class="col-2 col-form-label">Jumlah</label>
+						<label for="example-text-input" class=" col-form-label">:</label>
+						<div class="col-4">
+							<input  class="form-control" type="text" value="" name="nilai" onkeypress="return hanyaAngka(event)" required>
+						</div>
+					</div>
+
+																					
+					<div style="float:right;">
+						<button type="reset"  class="btn btn-warning"  data-dismiss="modal">Cancel</button>
+						<button type="submit" class="btn btn-brand">Save</button>
 					</div>
 				</form>
-			</div>
-			<div class="modal-footer">
-				<button type="button" class="btn btn-secondary" data-dismiss="modal">Close</button>
-				<button type="button" class="btn btn-primary">Send message</button>
 			</div>
 		</div>
 	</div>
 </div>
 
 <!--end::Modal-->
+<div class="modal fade modal-edit-detail-bayar" id="kt_modal_4"  tabindex="-1" role="dialog" aria-labelledby="exampleModalLabel" aria-hidden="true">
+	<div class="modal-dialog modal-lg" role="document">
+		<div class="modal-content">
+			<div class="modal-header">
+				<h5 class="modal-title" id="title-detail">Edit Menu Rincian Minta Bayar</h5>
+			</div>
+			<div class="modal-body">
+			<span id="form_result"></span>
+                <form  class="kt-form " id="form-edit-bayar-detail"  enctype="multipart/form-data">
+					{{csrf_field()}}
+                        @foreach($data_bayars as $data_bayar)
+                        <input  class="form-control" hidden type="text" value="{{$data_bayar->no_bayar}}"  name="nobayar">
+                        @endforeach
+                    <div class="form-group row">
+						<label for="example-text-input" class="col-2 col-form-label">No. Urut</label>
+						<label for="example-text-input" class=" col-form-label">:</label>
+						<div class="col-2">
+							<input  class="form-control" type="text" value="{{$no_bayar_details}}" id="no" name="no" readonly>
+						</div>
+					</div>
+
+					<div class="form-group row">
+						<label for="example-text-input" class="col-2 col-form-label">Keterangan</label>
+						<label for="example-text-input" class=" col-form-label">:</label>
+						<div class="col-8">
+							<input  class="form-control" type="text" value="" id="keterangan" name="keterangan">
+						</div>
+					</div>
+									
+																					
+					<div class="form-group row">
+						<label for="example-text-input" class="col-2 col-form-label">Account</label>
+						<label for="example-text-input" class=" col-form-label">:</label>
+						<div class="col-3">
+							<input  class="form-control" name="acc" type="text" value="" id="acc" >
+						</div>
+						<div id="div-acc" class="col-3" style="display:none;">
+							<select name="acc" id="select-acc" class="form-control selectpicker" data-live-search="true">
+									@foreach($data_account as $row)
+								<option value="{{$row->kodeacct}}">{{$row->kodeacct}} - {{$row->descacct}}</option>
+									@endforeach
+							</select>
+						</div>
+					</div>
+
+					<div class="form-group row">
+						<label for="example-text-input" class="col-2 col-form-label">Kode Bagian</label>
+						<label for="example-text-input" class=" col-form-label">:</label>
+						<div class="col-3">
+							<input  class="form-control" name="bagian" type="text" value="" id="bagian" >
+						</div>
+						<div id="div-bagian" class="col-3" style="display:none;">
+							<select name="bagian" id="select-bagian"  class="form-control selectpicker" data-live-search="true">
+									@foreach($data_bagian as $row)
+								<option value="{{$row->kode}}" <?php if( '<input value="$row->kode">' == '<input id="bagian">' ) echo 'selected' ; ?>>{{$row->kode}} - {{$row->nama}}</option>
+									@endforeach
+							</select>
+						</div>
+					</div>
+
+					<div class="form-group row">
+						<label for="example-text-input" class="col-2 col-form-label">Perintah Kerja</label>
+						<label for="example-text-input" class=" col-form-label">:</label>
+						<div class="col-4">
+							<input  class="form-control" type="text" value="000" id="pk" name="pk" size="6" maxlength="6">
+						</div>
+					</div>
+
+					<div class="form-group row">
+						<label for="example-text-input" class="col-2 col-form-label">Jenis Biaya</label>
+						<label for="example-text-input" class=" col-form-label">:</label>
+						<div class="col-3">
+							<input  class="form-control" name="jb" type="text" value="" id="jb" >
+						</div>
+						<div id="div-jb" class="col-3" style="display:none;">
+							<select name="jb" id="select-jb"  class="form-control selectpicker" data-live-search="true">
+									@foreach($data_jenisbiaya as $row)
+								<option value="{{$row->kode}}" >{{$row->kode}} - {{$row->keterangan}}</option>
+									@endforeach
+							</select>
+						</div>
+					</div>
+
+					<div class="form-group row">
+						<label for="example-text-input" class="col-2 col-form-label">C. Judex</label>
+						<label for="example-text-input" class=" col-form-label">:</label>
+						<div class="col-3">
+							<input  class="form-control" name="cj" type="text" value="" id="cj" >
+						</div>
+						<div class="col-3" id="div-cj" style="display:none;">
+							<select name="cj" id="select-cj" class="form-control selectpicker" data-live-search="true">
+									@foreach($data_cj as $row)
+								<option value="{{$row->kode}}">{{$row->kode}} - {{$row->nama}}</option>
+									@endforeach
+							</select>
+						</div>
+					</div>
+									
+
+					<div class="form-group row">
+						<label for="example-text-input" class="col-2 col-form-label">Jumlah</label>
+						<label for="example-text-input" class=" col-form-label">:</label>
+						<div class="col-4">
+							<input  class="form-control" type="text" value="" id="nilai" name="nilai" onkeypress="return hanyaAngka(event)">
+						</div>
+					</div>
+
+																					
+					<div style="float:right;">
+						<button type="reset"  class="btn btn-warning"  data-dismiss="modal">Cancel</button>
+						<button type="submit" class="btn btn-brand">Save</button>
+					</div>
+				</form>
+			</div>
+		</div>
+	</div>
+</div>
+
+
 @endsection
 
 @section('scripts')
@@ -256,7 +477,7 @@
 		$('#tabel-detail-permintaan').DataTable();
 
 
-
+// proses update permintaan bayar
 		$('#form-update-permintaan-bayar').submit(function(){
         	var no_umk = $("#noumk").val();
 			$.ajax({
@@ -278,7 +499,7 @@
 					});
 				}, 
 				error : function(){
-					alert("Ada kesalahan aplikasi");
+					alert("Terjadi kesalahan, coba lagi nanti");
 				}
 			});	
 			return false;
@@ -299,6 +520,184 @@ if (KTUtil.isRTL()) {
 		rightArrow: '<i class="la la-angle-right"></i>'
 	}
 }
+
+ //prosess create detail
+ $('#form-tambah-bayar-detail').submit(function(){
+		$.ajax({
+			url  : "{{route('permintaan_bayar.store.detail')}}",
+			type : "POST",
+			data : $('#form-tambah-bayar-detail').serialize(),
+			dataType : "JSON",
+            headers: {
+            'X-CSRF-Token': '{{ csrf_token() }}',
+            },
+			success : function(data){
+                swal({
+                    text: "Data Detail Permintaan Biaya Berhasil Ditambahkan.",
+                    type: "success"
+                }).then(function() {
+                    location.reload();
+                });
+			}, 
+			error : function(){
+				alert("Terjadi kesalahan, coba lagi nanti");
+			}
+		});	
+		return false;
+	});
+
+ //proses update detail
+ $('#form-edit-bayar-detail').submit(function(){
+		$.ajax({
+			url  : "{{route('permintaan_bayar.store.detail')}}",
+			type : "POST",
+			data : $('#form-edit-bayar-detail').serialize(),
+			dataType : "JSON",
+            headers: {
+            'X-CSRF-Token': '{{ csrf_token() }}',
+            },
+			success : function(data){
+                swal({
+                    text: "Data Detail Permintaan Bayar Berhasil Diedit.",
+                    type: "success"
+                }).then(function() {
+                    window.location.reload();
+                });
+			}, 
+			error : function(){
+				alert("Terjadi kesalahan, coba lagi nanti");
+			}
+		});	
+		return false;
+	});
+
+//edit bagian
+$('#bagian').on('click', function(e) {
+	$('#bagian').attr('disabled', true);
+	$('#div-bagian').fadeIn();
+	$( "#select-bagian" ).prop( "disabled", false );
+});
+
+//edit account
+$('#acc').on('click', function(e) {
+	$('#acc').attr('disabled', true);
+	$('#div-acc').fadeIn();
+	$( "#select-acc" ).prop( "disabled", false );
+});
+
+//edit jenis bayar
+$('#jb').on('click', function(e) {
+	$('#jb').attr('disabled', true);
+	$('#div-jb').fadeIn();
+	$( "#select-jb" ).prop( "disabled", false );
+});
+
+//edit cj
+$('#cj').on('click', function(e) {
+	$('#cj').attr('disabled', true);
+	$('#div-cj').fadeIn();
+	$( "#select-cj" ).prop( "disabled", false );
+});
+
+//tampil edit detail
+$('#editRow').on('click', function(e) {
+	e.preventDefault();
+var allVals = [];  
+$(".btn-radio:checked").each(function() {  
+	var dataid = $(this).attr('data-id');
+	var datano = $(this).attr('data-no');
+	if(dataid == 1)  
+	{  
+		swal({
+				title: "Tandai baris yang akan diedit!",
+				type: "success"
+				}) ; 
+	}  else { 
+		$.ajax({
+			url :"/umum/permintaan_bayar/editdetail/"+dataid+'/'+datano,
+			type : 'get',
+			dataType:"json",
+			headers: {
+				'X-CSRF-Token': '{{ csrf_token() }}',
+				},
+			success:function(data)
+			{
+				$('#no').val(data.no);
+				$('#keterangan').val(data.keterangan);
+				$('#acc').val(data.account);
+				$('#bagian').val(data.bagian);
+				$('#pk').val(data.pk);
+				$('#jb').val(data.jb);
+				$('#cj').val(data.cj);
+				var output=parseInt(data.nilai);
+				$('#nilai').val(output);
+				$('.modal-edit-detail-bayar').modal('show');
+				$( "#select-bagian" ).prop( "disabled", true );
+				$( "#select-acc" ).prop( "disabled", true );
+				$( "#select-jb" ).prop( "disabled", true );
+				$( "#select-cj" ).prop( "disabled", true );
+			}
+		})
+	}
+				
+});
+});
+
+
+//delete permintaan bayar detail
+//delete
+$('#deleteRow').click(function(e) {
+			e.preventDefault();
+			$(".btn-radio:checked").each(function() {  
+			var dataid = $(this).attr('data-id');
+				if(dataid == 1)  
+				{  
+					swal({
+						title: "Tandai baris yang akan dihapus!",
+						type: "success"
+					}) ; 
+				}  else { 
+				$("input[type=radio]:checked").each(function() {
+                    var id = $(this).attr('nobayar');
+                    var no = $(this).attr('data-no');
+					// delete stuff
+					swal({
+						title: "Data yang akan di hapus?",
+						text: "No. Permintaan : " + id+" Dan No Urut :"+no,
+						icon: "warning",
+						buttons: true,
+						dangerMode: true,
+					})
+					.then((willDelete) => {
+						if (willDelete) {
+							$.ajax({
+								url: "{{ route('permintaan_bayar.delete.detail') }}",
+								type: 'DELETE',
+								dataType: 'json',
+								data: {
+									"id": id,
+									"no": no,
+									"_token": "{{ csrf_token() }}",
+								},
+								success: function () {
+									swal({
+											title: "Delete",
+											text: "Success",
+											type: "success"
+									}).then(function() {
+										location.reload();
+									});
+								},
+								error: function () {
+									alert("Terjadi kesalahan, coba lagi nanti");
+								}
+							});
+						}
+					});
+				});
+			} 
+		});
+	});
 
 // Private functions
 var demos = function () {
@@ -351,7 +750,15 @@ return {
 }();
 
 KTBootstrapDatepicker.init();
+
 });
+        function hanyaAngka(evt) {
+		  var charCode = (evt.which) ? evt.which : event.keyCode
+		   if (charCode > 31 && (charCode < 48 || charCode > 57))
+ 
+		    return false;
+		  return true;
+		}
 </script>
 
 @endsection

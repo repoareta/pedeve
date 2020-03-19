@@ -138,6 +138,40 @@ class PermintaanBayarController extends Controller
         }  
     }
 
+    public function storeDetail(request $request)
+    {      
+        $check_data =  DB::select("select * from umu_bayar_detail where no = '$request->no' and  no_bayar = '$request->nobayar'");
+        if(!empty($check_data)){
+            PermintaanDetailModel::where('no_bayar', $request->nobayar)
+            ->where('no', $request->no)
+            ->update([
+            'no' => $request->no,
+            'keterangan' => $request->keterangan,
+            'account' => $request->acc,
+            'nilai' => $request->nilai,
+            'cj' => $request->cj,
+            'jb' => $request->jb,
+            'bagian' => $request->bagian,
+            'pk' => $request->pk,
+            'no_bayar' => $request->nobayar
+            ]);
+            return response()->json();
+        }else{
+            PermintaanDetailModel::insert([
+            'no' => $request->no,
+            'keterangan' => $request->keterangan,
+            'account' => $request->acc,
+            'nilai' => $request->nilai,
+            'cj' => $request->cj,
+            'jb' => $request->jb,
+            'bagian' => $request->bagian,
+            'pk' => $request->pk,
+            'no_bayar' => $request->nobayar
+            ]);
+            return response()->json();
+        }
+    }
+
     /**
      * Display the specified resource.
      *
@@ -160,27 +194,40 @@ class PermintaanBayarController extends Controller
         $nobayars=str_replace('-', '/', $nobayar);
         $data_bayars =  PermintaanBayarModel::where('no_bayar', $nobayars)->get();
         $debit_nota = UmuDebetNota::all();
-        // $no_uruts = DB::select("select max(no) as no from kerja_detail where no_umk = '$noumk'");
-        // $data_umk_details = DetailUmkModel::where('no_umk',$noumk)->get();
-        // $data_account = DB::select("select kodeacct, descacct FROM account where LENGTH(kodeacct)=6 AND kodeacct NOT LIKE '%X%'");
-        // $data_bagian = DB::select("SELECT A.kode,A.nama FROM sdm_tbl_kdbag A ORDER BY A.kode");
-        // $data_jenisbiaya = DB::select("select kode,keterangan from jenisbiaya order by kode");
-        // $data_cj = DB::select("select kode,nama from cashjudex order by kode");
-        // $count= DetailUmkModel::where('no_umk',$noumk)->select('no_umk')->sum('nilai');
-
-        // if(!empty($no_urut) == null)
-        // {
-        //     foreach($no_uruts as $no_urut)
-        //     {
-        //         $no_umk_details=$no_urut->no + 1;
-        //     }
-        // }else{
-        //     $no_umk_details= 1;
-        // }
+        $no_uruts =  DB::select("select max(no) as no from umu_bayar_detail where no_bayar = '$nobayars'");
+        $data_bayar_details = PermintaanDetailModel::where('no_bayar',$nobayars)->get();
+        $data_account = DB::select("select kodeacct, descacct FROM account where LENGTH(kodeacct)=6 AND kodeacct NOT LIKE '%X%'");
+        $data_bagian = DB::select("SELECT A.kode,A.nama FROM sdm_tbl_kdbag A ORDER BY A.kode");
+        $data_jenisbiaya = DB::select("select kode,keterangan from jenisbiaya order by kode");
+        $data_cj = DB::select("select kode,nama from cashjudex order by kode");
+        $count= PermintaanDetailModel::where('no_bayar',$nobayars)->select('no_bayar')->sum('nilai');
+        if(!empty($no_urut) == null)
+        { 
+            foreach($no_uruts as $no_urut)
+            {
+                $no_bayar_details=$no_urut->no + 1;
+            }
+        }else{
+            $no_bayar_details= 1;
+        }
         return view('permintaan_bayar.edit', compact(
             'data_bayars',
-            'debit_nota'
+            'debit_nota',
+            'data_account',
+            'data_bagian',
+            'data_jenisbiaya',
+            'data_cj',
+            'no_bayar_details',
+            'data_bayar_details',
+            'count'
         ));
+    }
+
+    public function editDetail($dataid, $datano)
+    {
+        $nobayar=str_replace('-', '/', $dataid);
+        $data = PermintaanDetailModel::where('no', $datano)->where('no_bayar', $nobayar)->distinct()->get();
+        return response()->json($data[0]);
     }
 
     /**
@@ -206,6 +253,15 @@ class PermintaanBayarController extends Controller
         $nobayars=str_replace('-', '/', $request->id);
         PermintaanBayarModel::where('no_bayar', $nobayars)->delete();
         PermintaanDetailModel::where('no_bayar', $nobayars)->delete();
+        return response()->json();
+    }
+
+    public function deleteDetail(Request $request)
+    {
+
+        PermintaanDetailModel::where('no', $request->no)
+        ->where('no_bayar', $request->id)
+        ->delete();
         return response()->json();
     }
 }
