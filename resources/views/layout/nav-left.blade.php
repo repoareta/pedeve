@@ -33,8 +33,8 @@
                     'anggaran.index'
                 ); // isi nama semua route anggaran
                 $report_umum = array(
-                    'report_permintaan_bayar.index'
-                    'perjalanan_dinas.rekap',
+                    'permintaan_bayar.rekap'
+                    
                 ); // isi nama semua route report umum
 
                 // menu umum
@@ -225,7 +225,7 @@
                                         </a>
                                     </li>
                                     <li class="kt-menu__item " aria-haspopup="true">
-                                        <a href="{{route('report_permintaan_bayar.index')}}" class="kt-menu__link ">
+                                        <a href="{{route('permintaan_bayar.rekap')}}" class="kt-menu__link ">
                                             <i class="kt-menu__link-bullet kt-menu__link-bullet--line">
                                                 <span></span>
                                             </i>

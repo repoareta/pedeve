@@ -8,6 +8,9 @@ use App\Models\UmuDebetNota;
 use Illuminate\Http\Request;
 use Carbon\Carbon;
 use DB;
+use Session;
+use PDF;
+
 
 class PermintaanBayarController extends Controller
 {
@@ -263,5 +266,21 @@ class PermintaanBayarController extends Controller
         ->where('no_bayar', $request->id)
         ->delete();
         return response()->json();
+    }
+    public function rekap()
+    {
+        return view('permintaan_bayar.rekap');
+    }
+
+    public function rekapExport(Request $request)
+    {
+        $mulai = date($request->mulai);
+        $sampai = date($request->sampai);
+        $bayar_header_list = PermintaanBayarModel::whereBetween('tgl_bayar', [$mulai, $sampai])
+        ->get();
+        // dd($panjar_header_list);
+
+        $pdf = PDF::loadview('permintaan_bayar.export', ['bayar_header_list' => $bayar_header_list]);
+        return $pdf->download('rekap_bayar_'.date('Y-m-d H:i:s').'.pdf');
     }
 }

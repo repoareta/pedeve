@@ -41,6 +41,7 @@ Route::prefix('umum')->group(function () {
     Route::get('uang_muka_kerja/edit/{no}', 'UangMukaKerjaController@edit')->name('uang_muka_kerja.edit');
     Route::get('uang_muka_kerja/edit_detail/{id}/{no}', 'UangMukaKerjaController@edit_detail')->name('uang_muka_kerja.edit.detail');
     Route::get('uang_muka_kerja/rekap', 'UangMukaKerjaController@rekap')->name('uang_muka_kerja.rekap');
+    Route::post('uang_muka_kerja/rekap/export', 'UangMukaKerjaController@rekapExport')->name('uang_muka_kerja.rekap.export');
 
     
     // Perjalanan Dinas
@@ -69,6 +70,8 @@ Route::prefix('umum')->group(function () {
     Route::get('permintaan_bayar/editdetail/{id}/{no}', 'PermintaanBayarController@editDetail')->name('permintaan_bayar.edit.detail');
     Route::delete('permintaan_bayar/delete', 'PermintaanBayarController@delete')->name('permintaan_bayar.delete');
     Route::delete('permintaan_bayar/delete_detail', 'PermintaanBayarController@deleteDetail')->name('permintaan_bayar.delete.detail');
+    Route::get('permintaan_bayar/rekap', 'PermintaanBayarController@rekap')->name('permintaan_bayar.rekap');
+    Route::post('permintaan_bayar/rekap/export', 'PermintaanBayarController@rekapExport')->name('permintaan_bayar.rekap.export');
     
     
     // Anggaran
@@ -77,8 +80,6 @@ Route::prefix('umum')->group(function () {
     // Report UMUM
     Route::get('report', 'ReportController@index')->name('report.index');
 
-    // riport rekap permintaan bayar
-    Route::get('report_permintaan_bayar', 'ReportPermintaanBayarController@index')->name('report_permintaan_bayar.index');
 });
 
 //SDM & Payroll
