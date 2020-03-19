@@ -66,7 +66,7 @@
 				<div class="form-group row">
 					<label for="nopek-input" class="col-2 col-form-label">Nopek</label>
 					<div class="col-10">
-						<select class="form-control kt-select2" id="nopek" name="nopek">
+						<select class="form-control selectpicker" id="nopek" name="nopek" data-live-search="true">
 							<option value="">- Pilih Nopek -</option>
 							@foreach ($pegawai_list as $pegawai)
 							<option value="{{ $pegawai->nopeg }}">{{ $pegawai->nopeg.' - '.$pegawai->nama }}</option>
@@ -77,7 +77,7 @@
 				<div class="form-group row">
 					<label for="example-email-input" class="col-2 col-form-label">Jabatan</label>
 					<div class="col-5">
-						<select class="form-control kt-select2" name="jabatan" id="jabatan">
+						<select class="form-control selectpicker" name="jabatan" id="jabatan" data-live-search="true">
 							<option value="">- Pilih Jabatan -</option>
 							@foreach ($jabatan_list as $jabatan)
 								<option value="{{ $jabatan->keterangan }}">{{ $jabatan->keterangan }}</option>
@@ -130,7 +130,7 @@
 							</div>
 							<input type="text" class="form-control" name="sampai" autocomplete="off" />
 						</div>
-						<span class="form-text text-muted">Linked pickers for date range selection</span>
+						<span class="form-text text-muted">Pilih rentang waktu mulai dan sampai</span>
 					</div>
 				</div>
 
@@ -262,7 +262,7 @@
 					<div class="form-group row">
 						<label for="spd-input" class="col-2 col-form-label">Nopek</label>
 						<div class="col-10">
-							<select class="form-control kt-select2" id="nopek_detail" name="nopek_detail">
+							<select class="form-control selectpicker" id="nopek_detail" name="nopek_detail" data-live-search="true">
 								<option value="">- Pilih Nopek -</option>
 								@foreach ($pegawai_list as $pegawai)
 									<option value="{{ $pegawai->nopeg.'-'.$pegawai->nama }}">{{ $pegawai->nopeg.' - '.$pegawai->nama }}</option>
@@ -274,7 +274,7 @@
 					<div class="form-group row">
 						<label for="spd-input" class="col-2 col-form-label">Jabatan</label>
 						<div class="col-10">
-							<select class="form-control kt-select2" name="jabatan_detail" id="jabatan_detail">
+							<select class="form-control selectpicker" name="jabatan_detail" id="jabatan_detail" data-live-search="true">
 								<option value="">- Pilih Jabatan -</option>
 								@foreach ($jabatan_list as $jabatan)
 									<option value="{{ $jabatan->keterangan }}">{{ $jabatan->keterangan }}</option>
@@ -417,14 +417,15 @@
 					swal({
 						title: "Tambah Detail Panjar",
 						text: "Success",
-						type: "success"
+						icon: "success",
+						timer:2000
 					})
 					// close modal
 					$('#kt_modal_4').modal('toggle');
 					// clear form
 					$('#kt_modal_4').on('hidden.bs.modal', function () {
 						$(this).find('form').trigger('reset');
-					})
+					});
 					// append to datatable
 					t.ajax.reload();
 				},
@@ -460,9 +461,10 @@
 								},
 								success: function () {
 									swal({
-											title: "Delete",
-											text: "Success",
-											type: "success"
+										title: "Hapus Detail Panjar",
+										text: "Success",
+										icon: "success",
+										timer: 2000
 									}).then(function() {
 										t.ajax.reload();
 									});
@@ -476,7 +478,7 @@
 				});
 			} else {
 				swal({
-					title: "Tandai baris yang akan dihapus!",
+					title: "Tandai baris yang akan dihapus",
 					type: "success"
 				}) ; 
 			}
@@ -520,7 +522,7 @@
 			} else {
 				swal({
 					title: "Tandai baris yang akan diubah",
-					type: "success"
+					icon: "success"
 				}) ; 
 			}
 		});
