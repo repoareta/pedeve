@@ -34,7 +34,7 @@
                 ); // isi nama semua route anggaran
                 $report_umum = array(
                     'report_permintaan_bayar.index'
-                    'perjalanan_dinas.rekap'
+                    'perjalanan_dinas.rekap',
                 ); // isi nama semua route report umum
 
                 // menu umum
