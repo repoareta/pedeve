@@ -9,3 +9,6 @@ import '../demo1/src/assets/js/pages/custom/login/login-general';
 
 // DATATABLES
 import '../demo1/src/assets/js/pages/crud/datatables/data-sources/ajax-server-side';
+
+// SELECT2
+import '../demo1/src/assets/js/pages/crud/forms/widgets/select2';

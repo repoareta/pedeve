@@ -45,15 +45,17 @@
 				<div class="form-group form-group-last">
 					<div class="alert alert-secondary" role="alert">
 						<div class="alert-text">
-							Header Uang Muka Kerja
+							<h5 class="kt-portlet__head-title">
+								Header Uang Muka Kerja
+							</h5>	
 						</div>
 					</div>
 				
 					<div class="form-group row">
 						<label for="spd-input" class="col-2 col-form-label">No. UMK</label>
 						<div class="col-10">
-							<?php $a = str_replace('/', '-', $no_umk); ?>
-							<input  class="form-control" type="hidden" value="{{$a}}" id="noumk"  size="25" maxlength="25" readonly>
+							<?php $data_no_umk = str_replace('/', '-', $no_umk); ?>
+							<input  class="form-control" type="hidden" value="{{$data_no_umk}}" id="noumk"  size="25" maxlength="25" readonly>
 							<input  class="form-control" type="text" value="{{$no_umk}}" id="no_umk" name="no_umk" size="25" maxlength="25" readonly required>
 						</div>
 					</div>
@@ -134,19 +136,19 @@
 				<div class="kt-portlet__head-toolbar">
 					<div class="kt-portlet__head-wrapper">
 						<div class="kt-portlet__head-actions">
-							<a href="#" data-toggle="modal" data-target="#kt_modal_4">
+							<a  >
 								<span style="font-size: 2em;" class="kt-font-success">
 									<i class="fas fa-plus-circle"></i>
 								</span>
 							</a>
 			
-							<a href="#">
+							<a >
 								<span style="font-size: 2em;" class="kt-font-warning">
 									<i class="fas fa-edit"></i>
 								</span>
 							</a>
 			
-							<a href="#">
+							<a >
 								<span style="font-size: 2em;" class="kt-font-danger">
 									<i class="fas fa-times-circle"></i>
 								</span>
@@ -159,12 +161,15 @@
 				<table class="table table-striped table-bordered table-hover table-checkable" id="kt_table">
 					<thead class="thead-light">
 						<tr>
-							<th>No</th>
-							<th>Nopek</th>
-							<th>Nama</th>
-							<th>Gol</th>
-							<th>Jabatan</th>
-							<th>Keterangan</th>
+							<th ><input type="radio" hidden name="btn-radio"  data-id="1" class="btn-radio" checked ></th>
+							<th >No.</th>
+							<th >Keterangan</th>
+							<th >Account</th>
+							<th >Bagian</th>
+							<th >PK</th>
+							<th >JB</th>
+							<th >KK</th>
+							<th >Jumlah</th>
 						</tr>
 					</thead>
 					<tbody>
@@ -249,11 +254,11 @@
 			success : function(data){
 			   console.log(data);
 				swal({
-                    title: "Wow!",
-                    text: "Message!",
+                    title: "Data Berhasil Ditambah.",
+                    text: "Success",
                     type: "success"
                 }).then(function() {
-                    window.location.replace("/umum/uang_muka_kerja/detail/"+no_umk);;
+                    window.location.replace("{{ route('uang_muka_kerja.edit', ['no' => $data_no_umk]) }}");;
                 });
 			}, 
 			error : function(){

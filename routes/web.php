@@ -23,7 +23,6 @@ Route::get('/logout', 'AuthController@logout');
 
 
 Route::group(['middleware'=> 'checkRole'], function () {
-
 });
 
 // Perjalanan Dinas
@@ -37,21 +36,27 @@ Route::prefix('umum')->group(function () {
     Route::get('uang_muka_kerja/create', 'UangMukaKerjaController@create')->name('uang_muka_kerja.create');
     Route::post('uang_muka_kerja/store', 'UangMukaKerjaController@store')->name('uang_muka_kerja.store');
     Route::post('uang_muka_kerja/store_detail', 'UangMukaKerjaController@storeDetail')->name('uang_muka_kerja.store.detail');
-    Route::get('uang_muka_kerja/delete/{no}', 'UangMukaKerjaController@delete')->name('uang_muka_kerja.delete');
-    Route::get('uang_muka_kerja/delete_detail/{no}/{id}', 'UangMukaKerjaController@deleteDetail')->name('uang_muka_kerja.delete.detail');
-    Route::get('uang_muka_kerja/detail/{no}', 'UangMukaKerjaController@detail')->name('uang_muka_kerja.detail');
-    Route::get('uang_muka_kerja/edit/{no}/{id}', 'UangMukaKerjaController@edit')->name('uang_muka_kerja.edit');
+    Route::delete('uang_muka_kerja/delete', 'UangMukaKerjaController@delete')->name('uang_muka_kerja.delete');
+    Route::delete('uang_muka_kerja/delete_detail', 'UangMukaKerjaController@deleteDetail')->name('uang_muka_kerja.delete.detail');
+    Route::get('uang_muka_kerja/edit/{no}', 'UangMukaKerjaController@edit')->name('uang_muka_kerja.edit');
+    Route::get('uang_muka_kerja/edit_detail/{id}/{no}', 'UangMukaKerjaController@edit_detail')->name('uang_muka_kerja.edit.detail');
     
     // Perjalanan Dinas
     Route::get('perjalanan_dinas', 'PerjalananDinasController@index')->name('perjalanan_dinas.index');
     Route::get('perjalanan_dinas/index_json', 'PerjalananDinasController@indexJson')->name('perjalanan_dinas.index.json');
     Route::get('perjalanan_dinas/create', 'PerjalananDinasController@create')->name('perjalanan_dinas.create');
+    Route::post('perjalanan_dinas/store', 'PerjalananDinasController@store')->name('perjalanan_dinas.store');
+    Route::post('perjalanan_dinas/store_detail', 'PerjalananDinasController@storeDetail')->name('perjalanan_dinas.store.detail');
     Route::get('perjalanan_dinas/edit', 'PerjalananDinasController@edit')->name('perjalanan_dinas.edit');
+    Route::delete('perjalanan_dinas/delete', 'PerjalananDinasController@delete')->name('perjalanan_dinas.delete');
 
     // Permintaan Bayar
     Route::get('permintaan_bayar', 'PermintaanBayarController@index')->name('permintaan_bayar.index');
     Route::get('permintaan_bayar/index_json', 'PermintaanBayarController@indexJson')->name('permintaan_bayar.index.json');
     Route::get('permintaan_bayar/create', 'PermintaanBayarController@create')->name('permintaan_bayar.create');
+    Route::post('permintaan_bayar/store', 'PermintaanBayarController@store')->name('permintaan_bayar.store');
+    Route::get('permintaan_bayar/edit/{no}', 'PermintaanBayarController@edit')->name('permintaan_bayar.edit');
+    Route::delete('permintaan_bayar/delete', 'PermintaanBayarController@delete')->name('permintaan_bayar.delete');
     
     // Anggaran
     Route::get('anggaran', 'AnggaranController@index')->name('anggaran.index');

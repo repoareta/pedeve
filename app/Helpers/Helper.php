@@ -42,7 +42,5 @@ function set_active_submenu($uri, $output = '--active')
  */
 function currency_idr($angka)
 {
-    // $hasil = "Rp. " . number_format($angka, 2, ',', '.');
-    $hasil = "Rp. " . number_format($angka, 4, ',', '.');
-    return $hasil;
+    return "Rp. ".number_format($angka, 2, ',', '.');
 }

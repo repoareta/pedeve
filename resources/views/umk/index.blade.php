@@ -41,13 +41,13 @@
 						</span>
 					</a>
 	
-					<a >
+					<a href="#">
 						<span style="font-size: 2em;" class="kt-font-warning">
 							<i class="fas fa-edit" id="btn-edit-umk"></i>
 						</span>
 					</a>
 	
-					<a >
+					<a href="#">
 						<span style="font-size: 2em;"  class="kt-font-danger">
 							<i class="fas fa-times-circle" id="btn-delete-umk"></i>
 						</span>
@@ -96,8 +96,12 @@
 <script type="text/javascript">
 $(document).ready(function(){
 	$('#data-umk-table').DataTable({
-        processing: true,
-		serverSide: true,
+        scrollX   : true,
+			processing: true,
+			serverSide: true,
+			language: {
+            	processing: '<i class="fa fa-spinner fa-spin fa-2x fa-fw"></i> <br> Loading...'
+			},
 		ajax: {
             url: "{{ route('uang_muka_kerja.index.json') }}",
 		},
@@ -105,7 +109,7 @@ $(document).ready(function(){
 			{
 				data: 'radio',
 				name: 'radio',
-				orderable: false
+				// orderable: false
 			},
 			{
 				data: 'tgl_panjar',
@@ -142,11 +146,13 @@ $(document).ready(function(){
 
 //edit
 $('#btn-edit-umk').on('click', function(e) {
-
+	e.preventDefault();
 
 var allVals = [];  
 $(".btn-radio:checked").each(function() {  
+	e.preventDefault();
 	var dataid = $(this).attr('data-id');
+	var dataa = $(this).attr('data-umk-table');
 
 	if(dataid == 1) 
 	{
@@ -155,7 +161,7 @@ $(".btn-radio:checked").each(function() {
 				type: "success"
 				}) ;  
 	}  else {  
-		window.location.replace("/umum/uang_muka_kerja/detailumk/"+dataid);
+		location.replace("/umum/uang_muka_kerja/edit/"+dataid);
 	}	
 				
 });
@@ -165,8 +171,9 @@ $(".btn-radio:checked").each(function() {
 
 //delete
 $('#btn-delete-umk').on('click', function(e) {
-
+	e.preventDefault();
 	$(".btn-radio:checked").each(function() {  
+		e.preventDefault();
 		var dataid = $(this).attr('data-id');
 
 	if(dataid == 1)  
@@ -186,12 +193,14 @@ $('#btn-delete-umk').on('click', function(e) {
 			.then((willDelete) => {
 			if (willDelete) {
 				$.ajax({
-					url: "/umum/uang_muka_kerja/deleteumk/"+dataid ,
-					type: 'get',
+					url: "/umum/uang_muka_kerja/delete/"+dataid ,
+					type: 'delete',
+					headers: {
+						'X-CSRF-Token': '{{ csrf_token() }}',
+						},
 					success: function () {
 						swal({
-								title: "Delete",
-								text: "Success",
+								text: "Data Uang Muka Kerja Berhasil dihapus.",
 								type: "success"
 							}).then(function() {
 								location.replace("{{ route('uang_muka_kerja.index') }}");

@@ -41,13 +41,13 @@
 						</span>
 					</a>
 	
-					<a href="#">
+					<a href="#" id="editRow">
 						<span style="font-size: 2em;" class="kt-font-warning">
 							<i class="fas fa-edit"></i>
 						</span>
 					</a>
 	
-					<a href="#">
+					<a href="#" id="deleteRow">
 						<span style="font-size: 2em;" class="kt-font-danger">
 							<i class="fas fa-times-circle"></i>
 						</span>
@@ -65,7 +65,7 @@
 	<div class="kt-portlet__body">
 
 		<!--begin: Datatable -->
-		<table class="table table-striped table-bordered table-hover table-checkable" id="kt_table">
+		<table class="table table-striped table-bordered table-hover table-checkable" id="kt_table" width="100%">
 			<thead class="thead-light">
 				<tr>
 					<th></th>
@@ -98,12 +98,15 @@
 			scrollX   : true,
 			processing: true,
 			serverSide: true,
+			language: {
+            	processing: '<i class="fa fa-spinner fa-spin fa-2x fa-fw"></i> <br> Loading...'
+			},
 			ajax      : "{{ route('perjalanan_dinas.index.json') }}",
 			columns: [
 				{data: 'action', name: 'aksi', orderable: false, searchable: false},
 				{data: 'no_panjar', name: 'no_panjar'},
 				{data: 'no_umk', name: 'no_umk'},
-				{data: 'jenis', name: 'jenis'},
+				{data: 'jenis_dinas', name: 'jenis'},
 				{data: 'mulai', name: 'mulai'},
 				{data: 'sampai', name: 'sampai'},
 				{data: 'dari', name: 'dari'},
@@ -112,6 +115,63 @@
 				{data: 'keterangan', name: 'keterangan'},
 				{data: 'nilai', name: 'nilai', class:'text-right'}
 			]
+		});
+
+		$('#editRow').click(function(e) {
+			e.preventDefault();
+
+			$("input[type=radio]:checked").each(function(){
+				var id = $(this).val();
+				// edit stuff
+			});
+		});
+
+		$('#deleteRow').click(function(e) {
+			e.preventDefault();
+			if($('input[type=radio]').is(':checked')) { 
+				$("input[type=radio]:checked").each(function() {
+					var id = $(this).val();
+					// delete stuff
+					swal({
+						title: "Data yang akan di hapus?",
+						text: "No. Panjar : " + id,
+						icon: "warning",
+						buttons: true,
+						dangerMode: true,
+					})
+					.then((willDelete) => {
+						if (willDelete) {
+							$.ajax({
+								url: "{{ route('perjalanan_dinas.delete') }}",
+								type: 'DELETE',
+								dataType: 'json',
+								data: {
+									"id": id,
+									"_token": "{{ csrf_token() }}",
+								},
+								success: function () {
+									swal({
+											title: "Delete",
+											text: "Success",
+											type: "success"
+									}).then(function() {
+										location.replace("{{ route('perjalanan_dinas.index') }}");
+									});
+								},
+								error: function () {
+									alert("Terjadi kesalahan, coba lagi nanti");
+								}
+							});
+						}
+					});
+				});
+			} else {
+				swal({
+					title: "Tandai baris yang akan dihapus!",
+					type: "success"
+				}) ; 
+			}
+			
 		});
 	});
 	</script>
