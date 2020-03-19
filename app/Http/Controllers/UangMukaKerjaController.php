@@ -41,7 +41,7 @@ class UangMukaKerjaController extends Controller
                     return $button;
                 })
                 ->addColumn('noumk', function($data){
-                        $button = '<a align="center" href="/umum/uang_muka_kerja/detailumk/'.str_replace('/', '-', $data->no_umk).'">'.$data->no_umk.'</a>';
+                        $button = '<a align="center" >'.$data->no_umk.'</a>';
                     return $button;
                 })
                 ->addColumn('jenisum', function($data){
@@ -58,14 +58,13 @@ class UangMukaKerjaController extends Controller
                 })
 
                 ->addColumn('radio', function($data){
-                    $button = '<label class="kt-radio"><input type="radio" data-id="'.str_replace('/', '-', $data->no_umk).'" name="btn-radio"><span></span></label>';
+                    $button = '<label class="kt-radio kt-radio--bold kt-radio--brand"><input type="radio" class="btn-radio" data-id="'.str_replace('/', '-', $data->no_umk).'" name="btn-radio"><span></span></label>';
                     return $button;
                 })
                 ->rawColumns(['action','radio','jenisum','jumlah','noumk'])
                 ->make(true);
             }
         }
-        return view('umk.index');
     }
     /**
      * Show the form for creating a new resource.
@@ -126,7 +125,7 @@ class UangMukaKerjaController extends Controller
         }        
     }
 
-    public function detail($noumk)
+    public function edit($noumk)
     {   
         $noumk=str_replace('-', '/', $noumk);
         $data_umks = DB::select("select * from kerja_header where no_umk = '$noumk'");
@@ -148,17 +147,10 @@ class UangMukaKerjaController extends Controller
             $no_umk_details= 1;
         }
         
-            $data = array(
-                'Content'       => 'Umum.umk_detail',
-                'thisJs'       => 'js.js_umk',
-                'page1'         => 'Umum',
-                'page2'         => 'Uang Muka Kerja',
-            );
-        
             return view('umk.edit', compact('data_umks','data_umk_details','no_umk_details','data_account','data_bagian','data_jenisbiaya','data_cj','count'));
     }
 
-    public function addumkdetail(request $request)
+    public function storeDetail(request $request)
     {      
         $check_data =  DB::select("select * from kerja_detail where no = '$request->no' and  no_umk = '$request->no_umk'");
         if(!empty($check_data)){
@@ -198,7 +190,7 @@ class UangMukaKerjaController extends Controller
      * @param  int  $id
      * @return \Illuminate\Http\Response
      */
-    public function edit($dataid, $datano)
+    public function edit_detail($dataid, $datano)
     {
         $noumk=str_replace('-', '/', $dataid);
         if(request()->ajax())
@@ -220,11 +212,10 @@ class UangMukaKerjaController extends Controller
         //
     }
 
-    public function delete($noumk)
-    {      
-        $noumks=str_replace('-', '/', $noumk);
-        DB::select("delete from kerja_header where no_umk = '$noumks'" );
-        DB::select("delete from kerja_detail where no_umk = '$noumks'" );
+    public function delete(Request $request)
+    {
+        UmkModel::where('no_umk', $request->id)->delete();
+        DetailUmkModel::where('no_umk', $request->id)->delete();
         return response()->json();
     }
 
@@ -234,11 +225,10 @@ class UangMukaKerjaController extends Controller
      * @param  int  $id
      * @return \Illuminate\Http\Response
      */
-    public function deleteDetail($dataid, $datano)
+    public function deleteDetail(Request $request)
     {
-        $noumk=str_replace('-', '/', $dataid);
-        $detailumk = DetailUmkModel::where('no', $datano)->where('no_umk', $noumk);
-    	$detailumk->delete();
+
+        DetailUmkModel::where('no_umk', $request->id)->delete();
         return response()->json();
     }
 }
