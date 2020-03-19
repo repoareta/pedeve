@@ -4,6 +4,9 @@ namespace App\Http\Controllers;
 
 use Illuminate\Http\Request;
 
+// load model
+use App\Models\AnggaranMain;
+
 class AnggaranController extends Controller
 {
     /**
@@ -13,7 +16,8 @@ class AnggaranController extends Controller
      */
     public function index()
     {
-        return view('anggaran.index');
+        $anggaran_main_list = AnggaranMain::all();
+        return view('anggaran.index', compact('anggaran_main_list'));
     }
 
     /**
