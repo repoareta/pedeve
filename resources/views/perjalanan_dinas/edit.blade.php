@@ -328,10 +328,12 @@
 				{data: 'golongan', name: 'status'},
 				{data: 'jabatan', name: 'jabatan'},
 				{data: 'keterangan', name: 'keterangan'}
-			]
+			],
+			order: [[ 1, "asc" ]],
+			initComplete: function() {
+				$('#no_urut').val(this.api().data().length + 1);
+			}
 		});
-
-		$('#kt_table2').DataTable();
 
 		// Class definition
 		var KTBootstrapDatepicker = function () {
