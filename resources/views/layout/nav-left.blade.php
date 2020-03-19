@@ -32,7 +32,9 @@
                 $anggaran = array(
                     'anggaran.index'
                 ); // isi nama semua route anggaran
-                $report_umum = array(); // isi nama semua route report umum
+                $report_umum = array(
+                    'report_permintaan_bayar.index'
+                ); // isi nama semua route report umum
 
                 // menu umum
                 $umum = array_merge(
@@ -214,7 +216,7 @@
                                         </a>
                                     </li>
                                     <li class="kt-menu__item " aria-haspopup="true">
-                                        <a href="custom/apps/user/list-default.html" class="kt-menu__link ">
+                                        <a href="{{route('uang_muka_kerja.rekap')}}" class="kt-menu__link ">
                                             <i class="kt-menu__link-bullet kt-menu__link-bullet--line">
                                                 <span></span>
                                             </i>
@@ -222,7 +224,7 @@
                                         </a>
                                     </li>
                                     <li class="kt-menu__item " aria-haspopup="true">
-                                        <a href="custom/apps/user/list-default.html" class="kt-menu__link ">
+                                        <a href="{{route('report_permintaan_bayar.index')}}" class="kt-menu__link ">
                                             <i class="kt-menu__link-bullet kt-menu__link-bullet--line">
                                                 <span></span>
                                             </i>

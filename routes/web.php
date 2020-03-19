@@ -40,6 +40,8 @@ Route::prefix('umum')->group(function () {
     Route::delete('uang_muka_kerja/delete_detail', 'UangMukaKerjaController@deleteDetail')->name('uang_muka_kerja.delete.detail');
     Route::get('uang_muka_kerja/edit/{no}', 'UangMukaKerjaController@edit')->name('uang_muka_kerja.edit');
     Route::get('uang_muka_kerja/edit_detail/{id}/{no}', 'UangMukaKerjaController@edit_detail')->name('uang_muka_kerja.edit.detail');
+    Route::get('uang_muka_kerja/rekap', 'UangMukaKerjaController@rekap')->name('uang_muka_kerja.rekap');
+
     
     // Perjalanan Dinas
     Route::get('perjalanan_dinas', 'PerjalananDinasController@index')->name('perjalanan_dinas.index');
@@ -74,6 +76,9 @@ Route::prefix('umum')->group(function () {
     
     // Report UMUM
     Route::get('report', 'ReportController@index')->name('report.index');
+
+    // riport rekap permintaan bayar
+    Route::get('report_permintaan_bayar', 'ReportPermintaanBayarController@index')->name('report_permintaan_bayar.index');
 });
 
 //SDM & Payroll

@@ -232,4 +232,9 @@ class UangMukaKerjaController extends Controller
         ->delete();
         return response()->json();
     }
+
+    public function rekap()
+    {
+        return view('umk.rekap');
+    }
 }
