@@ -309,10 +309,10 @@ class PerjalananDinasController extends Controller
         } else {
             // Dari Database
             $panjar_detail = PanjarDetail::where('no_panjar', $request->no_panjar)
-            ->where('nopek', $request->nopek)
             ->where('no', $request->no)
-            ->first();
+            ->delete();
 
+            $panjar_detail = new PanjarDetail;
             $panjar_detail->no = $request->no;
             $panjar_detail->no_panjar = $request->no_panjar;
             $panjar_detail->nopek = $request->nopek;
