@@ -368,4 +368,17 @@ class PerjalananDinasController extends Controller
 
         return response()->json();
     }
+
+    public function rekap()
+    {
+        return view('perjalanan_dinas.rekap');
+    }
+
+    public function rekapExport(Request $request)
+    {
+        $mulai = date($request->mulai);
+        $sampai = date($request->sampai);
+        $panjar_header_list = PanjarHeader::whereBetween('tgl_panjar', [$mulai, $sampai])->get();
+        dd($panjar_header_list);
+    }
 }

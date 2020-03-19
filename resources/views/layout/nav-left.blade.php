@@ -206,7 +206,7 @@
                             <div class="kt-menu__submenu "><span class="kt-menu__arrow"></span>
                                 <ul class="kt-menu__subnav">
                                     <li class="kt-menu__item " aria-haspopup="true">
-                                        <a href="custom/apps/user/list-default.html" class="kt-menu__link ">
+                                        <a href="{{ route('perjalanan_dinas.rekap') }}" class="kt-menu__link ">
                                             <i class="kt-menu__link-bullet kt-menu__link-bullet--line">
                                                 <span></span>
                                             </i>
