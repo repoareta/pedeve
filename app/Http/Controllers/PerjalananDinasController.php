@@ -61,9 +61,9 @@ class PerjalananDinasController extends Controller
      *
      * @return void
      */
-    public function indexJsonDetail(Request $request, $no_panjar = null)
+    public function indexJsonDetail(Request $request, $no_panjar = 'null')
     {
-        if (session('panjar_detail') and $request->no_panjar == null) {
+        if (session('panjar_detail') and $request->no_panjar == 'null') {
             $panjar_list_detail = session('panjar_detail');
         } else {
             $no_panjar = str_replace('-', '/', $request->no_panjar);
