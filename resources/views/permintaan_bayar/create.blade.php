@@ -42,102 +42,112 @@
 		</div>
 		<div class="card-body table-responsive" >
 			<!--begin: Datatable -->
-			<form  class="kt-form kt-form--label-right" id="form-create-umk">
+			<form  class="kt-form kt-form--label-right" id="form-create-permintaan-bayar">
 				{{csrf_field()}}
 				<div class="kt-portlet__body">
 					<div class="form-group form-group-last">
 						<div class="alert alert-secondary" role="alert">
 							<div class="alert-text">
-								Header Permintaan Bayar
+								<h5 class="kt-portlet__head-title">
+									Header Permintaan Bayar
+								</h5>	
 							</div>
 						</div>
 					
 						<div class="form-group row">
-							<label class="col-2 col-form-label">No. Permintaan</label>
-							<div class="col-10">
-								<input  class="form-control" name="cj" type="text" value="" id="cj" >
-							</div>						</div>
-						<div class="form-group row">
-							<label class="col-2 col-form-label">Tanggal</label>
-							<div class="col-10" >
-								<input class="form-control" type="text" name="tgl_panjar" value="" data-date-format="dd/MM/yyyy" id="datepicker" id="tgl_panjar" size="15" maxlength="15" required>
+							<label for="spd-input" class="col-2 col-form-label">No. Permintaan</label>
+							<div class="col-5">
+							<?php $data_no_bayar = str_replace('/', '-', $permintaan_header_count); ?>
+								<input  class="form-control" type="hidden" value="{{$data_no_bayar}}" id="noumk"  size="25" maxlength="25" readonly>
+								<input class="form-control" type="text" name="nobayar" value="{{ $permintaan_header_count }}" id="nobayar">
+							</div>
+
+							<label for="spd-input" class="col-2 col-form-label">Tanggal</label>
+							<div class="col-3">
+								<input class="form-control" type="text" name="tanggal" id="tanggal" value="{{ date('Y-m-d') }}">
 							</div>
 						</div>
 						<div class="form-group row">
 							<label for="nopek-input" class="col-2 col-form-label">Terlampir</label>
 							<div class="col-10">
-								<input class="form-control" type="text" name="tgl_panjar" value=""  id="" id="tgl_panjar" size="15" maxlength="15" required>
+								<input class="form-control" type="text" name="lampiran" value=""  id="lampiran"  required>
 							</div>
 						</div>
 						<div class="form-group row">
 							<label for="id-pekerja;-input" class="col-2 col-form-label">Keterangan</label>
 							<div class="col-10">
-								<input class="form-control" type="text" value=""  id="" name="bulan_buku" size="6" maxlength="6" required>
+								<input class="form-control" type="text" value=""  id="keterangan" name="keterangan" size="50" maxlength="200" required>
 							</div>
 						</div>
 						<div class="form-group row">
 							<label for="jenis-dinas-input" class="col-2 col-form-label">Dibayar Kepada</label>
 							<div class="col-10">
-								<input class="form-control" type="text" value="" name="no_panjar" id="no_panjar">
+								<input class="form-control" type="text" value="" name="dibayar" id="dibayar" size="50" maxlength="200">
 							</div>
 						</div>
 						<div class="form-group row">
 							<label for="dari-input" class="col-2 col-form-label">Debet Dari</label>
 							<div class="col-10">
-								<select name="cj" id="select-cj" class="form-control selectpicker" data-live-search="true">
-									<option value=""></option>
+								<select name="debetdari" id="select-debetdari" class="form-control selectpicker" data-live-search="true">
+									<option value="">- Pilih Nopek -</option>
+									@foreach ($debit_nota as $row)
+									<option value="{{ $row->kode }}">{{ $row->kode.' - '.$row->keterangan }}</option>
+									@endforeach
 								</select>
 							</div>
 						</div>
 						<div class="form-group row">
 							<label class="col-2 col-form-label">No. Debet</label>
-							<div class="col-4">
-								<input class="form-control" type="text" name="tgl_panjar" value="" data-date-format="dd/MM/yyyy" id="datepicker" id="tgl_panjar" size="15" maxlength="15" required>
+							<div class="col-5">
+								<input class="form-control" type="text" name="nodebet" id="nodebet" value="" size="15" maxlength="15" required>
 							</div>
-							<label class=" col-form-label">Tgl Debet</label>
+							<label class="col-2 col-form-label">Tgl Debet</label>
 							<div class="col-3" >
-								<input class="form-control" type="text" name="tgl_panjar" value="" data-date-format="dd/MM/yyyy" id="date-debet" id="tgl_panjar" size="15" maxlength="15" required>
+								<input class="form-control" type="text" name="tgldebet" value="" data-date-format="dd/MM/yyyy" id="tgldebet" size="15" maxlength="15" required>
 							</div>
 						</div>
 						<div class="form-group row">
-							<label class="col-2 col-form-label">No. Kas</label>
-							<div class="col-4">
-								<input  class="form-control" name="cj" type="text" value="" id="cj" >
+							<label for="spd-input"  class="col-2 col-form-label">No. Kas</label>
+							<div class="col-5">
+								<input  class="form-control" name="nokas" type="text" value="" id="nokas" size="10" maxlength="25">
 							</div>
-							<label class=" col-form-label">Bulan Buku</label>
+							<label for="spd-input"  class="col-2 col-form-label">Bulan Buku</label>
 							<div class="col-3" >
-								<input class="form-control" type="text" value="" data-date-format="yyyymm" id="bulan_buku" name="bulan_buku" size="6" maxlength="6" required>
+								<input class="form-control" type="text" value="" data-date-format="yyyymm" id="bulanbuku" name="bulanbuku" size="6" maxlength="6" required>
 							</div>
 						</div>
 						<div class="form-group row">
-							<label class="col-2 col-form-label">CI</label>
-							<div class="col-4">
-								<input  class="form-control" name="cj" type="text" value="" id="cj" >
+							<label for="spd-input" class="col-2 col-form-label">CI</label>
+							<div class="col-5">
+								<input class="form-control" type="text" name="ci" value="" id="ci" size="1" maxlength="1">
 							</div>
-							<label class=" col-form-label">Kurs</label>
-							<div class="col-3" >
-								<input class="form-control" type="text" value="" name="no_panjar" id="no_panjar">
+
+							<label for="spd-input" class="col-2 col-form-label">Kurs</label>
+							<div class="col-3">
+								<input class="form-control" type="text" name="kurs" id="kurs" value="" size="10" maxlength="10">
 							</div>
 						</div>
 						<div class="form-group row">
-							<label class="col-2 col-form-label">Periode</label>
-							<div class="col-4">
-								<input class="form-control" type="text" name="tgl_panjar" value="" data-date-format="dd/MM/yyyy" id="date-periode" id="tgl_panjar" size="15" maxlength="15" required>
-							</div>
-							<label class=" col-form-label">s/d</label>
-							<div class="col-3" >
-								<input class="form-control" type="text" name="tgl_panjar" value="" data-date-format="dd/MM/yyyy" id="date-sd" id="tgl_panjar" size="15" maxlength="15" required>
+							<label for="mulai-input" class="col-2 col-form-label">Periode</label>
+							<div class="col-10">
+								<div class="input-daterange input-group" id="date_range_picker">
+									<input type="text" class="form-control" name="mulai" />
+									<div class="input-group-append">
+										<span class="input-group-text">s/d</span>
+									</div>
+									<input type="text" class="form-control" name="sampai" />
+								</div>
 							</div>
 						</div>
 						<div class="form-group row">
 							<label class="col-2 col-form-label">Total Nilai</label>
 							<div class="col-4">
-								<input  class="form-control" name="cj" type="text" value="" id="cj" >
+								<input  class="form-control" name="totalnilai" type="text" value="" id="totalnilai" >
 							</div>
 						</div>
 						<div style="float:right;">
 							<div class="kt-form__actions">
-								<a  href="{{route('uang_muka_kerja.index')}}" class="btn btn-warning">Cancel</a>
+								<a  href="{{route('permintaan_bayar.index')}}" class="btn btn-warning">Cancel</a>
 								<button type="submit" class="btn btn-brand">Save</button>
 							</div>
 						</div>
@@ -242,49 +252,104 @@
 	<script type="text/javascript">
 	$(document).ready(function () {
 		$('#tabel-detail-permintaan').DataTable();
+
+
+
+		$('#form-create-permintaan-bayar').submit(function(){
+        	var no_umk = $("#noumk").val();
+			$.ajax({
+				url  : "{{route('permintaan_bayar.store')}}",
+				type : "POST",
+				data : $('#form-create-permintaan-bayar').serialize(),
+				dataType : "JSON",
+				headers: {
+				'X-CSRF-Token': '{{ csrf_token() }}',
+				},
+				success : function(data){
+				console.log(data);
+					swal({
+						title: "Data Berhasil Ditambahkan!",
+						text: "Success!",
+						type: "success"
+					}).then(function() {
+						window.location.replace("{{ route('permintaan_bayar.edit', ['no' => $data_no_bayar] ) }}");;
+					});
+				}, 
+				error : function(){
+					alert("Ada kesalahan aplikasi");
+				}
+			});	
+			return false;
+		});
+	
+
+    var KTBootstrapDatepicker = function () {
+
+var arrows;
+if (KTUtil.isRTL()) {
+	arrows = {
+		leftArrow: '<i class="la la-angle-right"></i>',
+		rightArrow: '<i class="la la-angle-left"></i>'
+	}
+} else {
+	arrows = {
+		leftArrow: '<i class="la la-angle-left"></i>',
+		rightArrow: '<i class="la la-angle-right"></i>'
+	}
+}
+
+// Private functions
+var demos = function () {
+
+	// range picker
+	$('#date_range_picker').datepicker({
+		rtl: KTUtil.isRTL(),
+		todayHighlight: true,
+		templates: arrows,
+		// autoclose: true,
+		// language : 'id',
+		format   : 'yyyy-mm-dd'
 	});
 
-    $('#datepicker').datepicker({
+	// minimum setup
+	$('#tanggal').datepicker({
+		rtl: KTUtil.isRTL(),
+		todayHighlight: true,
+		orientation: "bottom left",
+		templates: arrows,
+		autoclose: true,
+		// language : 'id',
+		format   : 'yyyy-mm-dd'
+	});
+	// minimum setup
+	$('#tgldebet').datepicker({
+		rtl: KTUtil.isRTL(),
+		todayHighlight: true,
+		orientation: "bottom left",
+		templates: arrows,
+		autoclose: true,
+		// language : 'id',
+		format   : 'yyyy-mm-dd'
+	});
+	$('#bulanbuku').datepicker({
         weekStart: 1,
         daysOfWeekHighlighted: "6,0",
         autoclose: true,
         todayHighlight: true,
     });
+	$('#bulanbuku').datepicker("setDate", new Date());
+};
 
-    $('#datepicker').datepicker("setDate", new Date());
-    $('#bulan_buku').datepicker({
-        weekStart: 1,
-        daysOfWeekHighlighted: "6,0",
-        autoclose: true,
-        todayHighlight: true,
-    });
-	$('#bulan_buku').datepicker("setDate", new Date());
-	
-	$('#date-debet').datepicker({
-        weekStart: 1,
-        daysOfWeekHighlighted: "6,0",
-        autoclose: true,
-        todayHighlight: true,
-    });
+return {
+	// public functions
+	init: function() {
+		demos(); 
+	}
+};
+}();
 
-    $('#date-debet').datepicker("setDate", new Date());
-	$('#date-periode').datepicker({
-        weekStart: 1,
-        daysOfWeekHighlighted: "6,0",
-        autoclose: true,
-        todayHighlight: true,
-    });
-
-    $('#date-periode').datepicker("setDate", new Date());
-	$('#date-sd').datepicker({
-        weekStart: 1,
-        daysOfWeekHighlighted: "6,0",
-        autoclose: true,
-        todayHighlight: true,
-    });
-
-    $('#date-sd').datepicker("setDate", new Date());
-	
+KTBootstrapDatepicker.init();
+});
 </script>
 
 @endsection

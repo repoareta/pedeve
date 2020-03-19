@@ -45,15 +45,17 @@
 				<div class="form-group form-group-last">
 					<div class="alert alert-secondary" role="alert">
 						<div class="alert-text">
-							Header Uang Muka Kerja
+							<h5 class="kt-portlet__head-title">
+								Header Uang Muka Kerja
+							</h5>	
 						</div>
 					</div>
 				
 					<div class="form-group row">
 						<label for="spd-input" class="col-2 col-form-label">No. UMK</label>
 						<div class="col-10">
-							<?php $a = str_replace('/', '-', $no_umk); ?>
-							<input  class="form-control" type="hidden" value="{{$a}}" id="noumk"  size="25" maxlength="25" readonly>
+							<?php $data_no_umk = str_replace('/', '-', $no_umk); ?>
+							<input  class="form-control" type="hidden" value="{{$data_no_umk}}" id="noumk"  size="25" maxlength="25" readonly>
 							<input  class="form-control" type="text" value="{{$no_umk}}" id="no_umk" name="no_umk" size="25" maxlength="25" readonly required>
 						</div>
 					</div>
@@ -252,11 +254,11 @@
 			success : function(data){
 			   console.log(data);
 				swal({
-                    title: "Wow!",
-                    text: "Message!",
+                    title: "Data Berhasil Ditambah.",
+                    text: "Success",
                     type: "success"
                 }).then(function() {
-                    window.location.replace("/umum/uang_muka_kerja/detail/"+no_umk);;
+                    window.location.replace("{{ route('uang_muka_kerja.edit', ['no' => $data_no_umk]) }}");;
                 });
 			}, 
 			error : function(){

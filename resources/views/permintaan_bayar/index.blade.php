@@ -119,7 +119,7 @@
 			if($('input[type=radio]').is(':checked')) { 
 				$("input[type=radio]:checked").each(function(){
 					var id = $(this).val();
-					// edit stuff
+					location.replace("/umum/permintaan_bayar/edit/"+id);
 				});
 			} else {
 					swal({

@@ -147,13 +147,6 @@ class UangMukaKerjaController extends Controller
             $no_umk_details= 1;
         }
         
-            $data = array(
-                'Content'       => 'Umum.umk_detail',
-                'thisJs'       => 'js.js_umk',
-                'page1'         => 'Umum',
-                'page2'         => 'Uang Muka Kerja',
-            );
-        
             return view('umk.edit', compact('data_umks','data_umk_details','no_umk_details','data_account','data_bagian','data_jenisbiaya','data_cj','count'));
     }
 
@@ -219,11 +212,10 @@ class UangMukaKerjaController extends Controller
         //
     }
 
-    public function delete($noumk)
-    {      
-        $noumks=str_replace('-', '/', $noumk);
-        DB::select("delete from kerja_header where no_umk = '$noumks'" );
-        DB::select("delete from kerja_detail where no_umk = '$noumks'" );
+    public function delete(Request $request)
+    {
+        UmkModel::where('no_umk', $request->id)->delete();
+        DetailUmkModel::where('no_umk', $request->id)->delete();
         return response()->json();
     }
 
@@ -233,11 +225,10 @@ class UangMukaKerjaController extends Controller
      * @param  int  $id
      * @return \Illuminate\Http\Response
      */
-    public function deleteDetail($dataid, $datano)
+    public function deleteDetail(Request $request)
     {
-        $noumk=str_replace('-', '/', $dataid);
-        $detailumk = DetailUmkModel::where('no', $datano)->where('no_umk', $noumk);
-    	$detailumk->delete();
+
+        DetailUmkModel::where('no_umk', $request->id)->delete();
         return response()->json();
     }
 }

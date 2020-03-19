@@ -36,8 +36,8 @@ Route::prefix('umum')->group(function () {
     Route::get('uang_muka_kerja/create', 'UangMukaKerjaController@create')->name('uang_muka_kerja.create');
     Route::post('uang_muka_kerja/store', 'UangMukaKerjaController@store')->name('uang_muka_kerja.store');
     Route::post('uang_muka_kerja/store_detail', 'UangMukaKerjaController@storeDetail')->name('uang_muka_kerja.store.detail');
-    Route::delete('uang_muka_kerja/delete/{no}', 'UangMukaKerjaController@delete')->name('uang_muka_kerja.delete');
-    Route::delete('uang_muka_kerja/delete_detail/{id}/{no}', 'UangMukaKerjaController@deleteDetail')->name('uang_muka_kerja.delete.detail');
+    Route::delete('uang_muka_kerja/delete', 'UangMukaKerjaController@delete')->name('uang_muka_kerja.delete');
+    Route::delete('uang_muka_kerja/delete_detail', 'UangMukaKerjaController@deleteDetail')->name('uang_muka_kerja.delete.detail');
     Route::get('uang_muka_kerja/edit/{no}', 'UangMukaKerjaController@edit')->name('uang_muka_kerja.edit');
     Route::get('uang_muka_kerja/edit_detail/{id}/{no}', 'UangMukaKerjaController@edit_detail')->name('uang_muka_kerja.edit.detail');
     
@@ -54,7 +54,8 @@ Route::prefix('umum')->group(function () {
     Route::get('permintaan_bayar', 'PermintaanBayarController@index')->name('permintaan_bayar.index');
     Route::get('permintaan_bayar/index_json', 'PermintaanBayarController@indexJson')->name('permintaan_bayar.index.json');
     Route::get('permintaan_bayar/create', 'PermintaanBayarController@create')->name('permintaan_bayar.create');
-    Route::get('permintaan_bayar/edit', 'PermintaanBayarController@edit')->name('permintaan_bayar.edit');
+    Route::post('permintaan_bayar/store', 'PermintaanBayarController@store')->name('permintaan_bayar.store');
+    Route::get('permintaan_bayar/edit/{no}', 'PermintaanBayarController@edit')->name('permintaan_bayar.edit');
     Route::delete('permintaan_bayar/delete', 'PermintaanBayarController@delete')->name('permintaan_bayar.delete');
     
     // Anggaran

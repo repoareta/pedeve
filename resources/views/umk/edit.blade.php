@@ -42,7 +42,9 @@
 				<div class="form-group form-group-last">
 					<div class="alert alert-secondary" role="alert">
 						<div class="alert-text">
-							Header Uang Muka Kerja
+							<h5 class="kt-portlet__head-title">
+								Header Uang Muka Kerja
+							</h5>	
 						</div>
 					</div>
                     @foreach($data_umks as $data_umk)
@@ -147,7 +149,7 @@
 			
 							<a href="#">
 								<span style="font-size: 2em;" class="kt-font-danger">
-									<i class="fas fa-times-circle" id="btn-delete-detail"></i>
+									<i class="fas fa-times-circle" id="deleteRow"></i>
 								</span>
 							</a>
 						</div>
@@ -174,7 +176,7 @@
 					@foreach($data_umk_details as $data_umk_detail)
 					<?php $no++; ?>
 						<tr class="table-info">
-							<td scope="row" align="center"><label class="kt-radio kt-radio--bold kt-radio--brand"><input type="radio" name="btn-radio" data-no="{{$data_umk_detail->no}}"  data-id="{{str_replace('/', '-', $data_umk_detail->no_umk)}}" class="btn-radio" ><span></span></label></td>
+							<td scope="row" align="center"><label class="kt-radio kt-radio--bold kt-radio--brand"><input type="radio" name="btn-radio" data-no="{{$data_umk_detail->no}}"  data-id="{{str_replace('/', '-', $data_umk_detail->no_umk)}}" value="{{$data_umk_detail->no_umk}}" class="btn-radio" ><span></span></label></td>
 							<td scope="row" align="center">{{$no}}</td>
 							<td>{{$data_umk_detail->keterangan}}</td>
 							<td align="center">{{$data_umk_detail->account}}</td>
@@ -294,7 +296,7 @@
 						<label for="example-text-input" class="col-2 col-form-label">Jumlah</label>
 						<label for="example-text-input" class=" col-form-label">:</label>
 						<div class="col-4">
-							<input  class="form-control" type="text" value="" name="nilai" onkeypress="return hanyaAngka(event)">
+							<input  class="form-control" type="text" value="" name="nilai" onkeypress="return hanyaAngka(event)" required>
 						</div>
 					</div>
 
@@ -597,53 +599,53 @@ $(".btn-radio:checked").each(function() {
 
 
 //delete
-$('#btn-delete-detail').on('click', function(e) {
-	e.preventDefault();
-
-	$(".btn-radio:checked").each(function() {  
-		var dataid = $(this).attr('data-id');
-		var datano = $(this).attr('data-no');
-
-	if(dataid == 1)  
-	{  
-		swal({
-				title: "Tandai baris yang akan dihapus!",
-				type: "success"
-				}) ; 
-	}  else {  
-		swal({
-			title: "Data yang akan di hapus?",
-			text: "NO UMK :"+dataid,
-			icon: "warning",
-			buttons: true,
-			dangerMode: true,
-			})
-			.then((willDelete) => {
-			if (willDelete) {
-				$.ajax({
-					url: "{{ route('uang_muka_kerja.delete.detail', ['id' => str_replace('/', '-', $data_umk_detail->no_umk), 'no'=> $data_umk_detail->no]) }} ",
-					type: 'delete',
-					headers: {
-						'X-CSRF-Token': '{{ csrf_token() }}',
-						},
-					success: function () {
-						swal({
-								text: "Data Berhasil Dihapus.",
-								type: "success"
-							}).then(function() {
-								location.reload();
+$('#deleteRow').click(function(e) {
+			e.preventDefault();
+			if($('input[type=radio]').is(':checked')) { 
+				$("input[type=radio]:checked").each(function() {
+					var id = $(this).val();
+					// delete stuff
+					swal({
+						title: "Data yang akan di hapus?",
+						text: "No. Panjar : " + id,
+						icon: "warning",
+						buttons: true,
+						dangerMode: true,
+					})
+					.then((willDelete) => {
+						if (willDelete) {
+							$.ajax({
+								url: "{{ route('uang_muka_kerja.delete.detail') }}",
+								type: 'DELETE',
+								dataType: 'json',
+								data: {
+									"id": id,
+									"_token": "{{ csrf_token() }}",
+								},
+								success: function () {
+									swal({
+											title: "Delete",
+											text: "Success",
+											type: "success"
+									}).then(function() {
+										location.replace("{{ route('uang_muka_kerja.edit',['no' => $data_umk->no_umk]) }}");
+									});
+								},
+								error: function () {
+									alert("Terjadi kesalahan, coba lagi nanti");
+								}
 							});
-						},
-					error: function () {
-						alert("Ada kesalahan aplikasi");
-					}
+						}
+					});
 				});
+			} else {
+				swal({
+					title: "Tandai baris yang akan dihapus!",
+					type: "success"
+				}) ; 
 			}
+			
 		});
-	}	
-});				
-});
-
 
 function hanyaAngka(evt) {
 		  var charCode = (evt.which) ? evt.which : event.keyCode
