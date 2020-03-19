@@ -17,7 +17,7 @@
 				<a href="" class="kt-subheader__breadcrumbs-link">
 					Perjalanan Dinas </a>
 				<span class="kt-subheader__breadcrumbs-separator"></span>
-				<span class="kt-subheader__breadcrumbs-link kt-subheader__breadcrumbs-link--active">Tambah</span>
+				<span class="kt-subheader__breadcrumbs-link kt-subheader__breadcrumbs-link--active">Ubah</span>
 			</div>
 		</div>
 	</div>
@@ -40,7 +40,7 @@
 				</div>
 			</div>
 		</div>
-		<form class="kt-form kt-form--label-right" action="{{ route('perjalanan_dinas.store') }}" method="POST">
+		<form class="kt-form kt-form--label-right" action="{{ route('perjalanan_dinas.update', ['no_panjar' => Request::segment(4)]) }}" method="POST">
 			@csrf
 			<div class="kt-portlet__body">
 				<div class="form-group form-group-last">
@@ -55,12 +55,12 @@
 				<div class="form-group row">
 					<label for="spd-input" class="col-2 col-form-label">No. SPD</label>
 					<div class="col-5">
-						<input class="form-control" type="text" name="no_spd" value="{{ ($panjar_header_count + 1).'/PDV/CS/'.date('Y') }}" id="spd">
+						<input class="form-control" type="text" name="no_spd" value="{{ $panjar_header->no_panjar }}" id="spd">
 					</div>
 
 					<label for="spd-input" class="col-2 col-form-label">Tanggal Panjar</label>
 					<div class="col-3">
-						<input class="form-control" type="text" name="tanggal" id="tanggal" value="{{ date('Y-m-d') }}">
+						<input class="form-control" type="text" name="tanggal" id="tanggal" value="{{ $panjar_header->tgl_panjar }}">
 					</div>
 				</div>
 				<div class="form-group row">
@@ -69,7 +69,9 @@
 						<select class="form-control kt-select2" id="nopek" name="nopek">
 							<option value="">- Pilih Nopek -</option>
 							@foreach ($pegawai_list as $pegawai)
-							<option value="{{ $pegawai->nopeg }}">{{ $pegawai->nopeg.' - '.$pegawai->nama }}</option>
+							<option value="{{ $pegawai->nopeg }}" @if($pegawai->nopeg == $panjar_header->nopek)
+								selected
+							@endif>{{ $pegawai->nopeg.' - '.$pegawai->nama }}</option>
 							@endforeach
 						</select>
 					</div>
@@ -80,20 +82,22 @@
 						<select class="form-control kt-select2" name="jabatan" id="jabatan">
 							<option value="">- Pilih Jabatan -</option>
 							@foreach ($jabatan_list as $jabatan)
-								<option value="{{ $jabatan->keterangan }}">{{ $jabatan->keterangan }}</option>
+								<option value="{{ $jabatan->keterangan }}" @if($jabatan->keterangan == $panjar_header->jabatan)
+									selected
+								@endif>{{ $jabatan->keterangan }}</option>
 							@endforeach
 						</select>
 					</div>
 
 					<label for="example-email-input" class="col-2 col-form-label">Golongan</label>
 					<div class="col-3">
-						<input class="form-control" type="text" name="golongan" id="golongan">
+						<input class="form-control" type="text" name="golongan" value="{{ $panjar_header->gol }}" id="golongan">
 					</div>
 				</div>
 				<div class="form-group row">
 					<label for="id-pekerja;-input" class="col-2 col-form-label">KTP/Passport</label>
 					<div class="col-10">
-						<input class="form-control" type="text" name="ktp" id="ktp">
+						<input class="form-control" type="text" name="ktp" value="{{ $panjar_header->ktp }}" id="ktp">
 					</div>
 				</div>
 				<div class="form-group row">
@@ -101,34 +105,34 @@
 					<div class="col-10">
 						<select class="form-control" name="jenis_dinas" id="jenis_dinas">
 							<option value="">- Pilih Jenis Dinas -</option>
-							<option value="DN">PDN-DN</option>
-							<option value="LN">PDN-LN</option>
-							<option value="SIJ">SIJ</option>
-							<option value="CUTI">CUTI</option>
+							<option value="DN" @if($panjar_header->jenis_dinas == 'DN') selected @endif>PDN-DN</option>
+							<option value="LN" @if($panjar_header->jenis_dinas == 'LN') selected @endif>PDN-LN</option>
+							<option value="SIJ" @if($panjar_header->jenis_dinas == 'SIJ') selected @endif>SIJ</option>
+							<option value="CUTI" @if($panjar_header->jenis_dinas == 'CUTI') selected @endif>CUTI</option>
 						</select>
 					</div>
 				</div>
 				<div class="form-group row">
 					<label for="dari-input" class="col-2 col-form-label">Dari/Asal</label>
 					<div class="col-10">
-						<input class="form-control" type="text" name="dari" id="dari">
+						<input class="form-control" type="text" name="dari" value="{{ $panjar_header->dari }}" id="dari">
 					</div>
 				</div>
 				<div class="form-group row">
 					<label for="tujuan-input" class="col-2 col-form-label">Tujuan</label>
 					<div class="col-10">
-						<input class="form-control" type="text" name="tujuan" id="tujuan">
+						<input class="form-control" type="text" name="tujuan" value="{{ $panjar_header->tujuan }}" id="tujuan">
 					</div>
 				</div>
 				<div class="form-group row">
 					<label for="mulai-input" class="col-2 col-form-label">Mulai</label>
 					<div class="col-10">
 						<div class="input-daterange input-group" id="date_range_picker">
-							<input type="text" class="form-control" name="mulai" autocomplete="off" />
+							<input type="text" class="form-control" name="mulai" value="{{ date('Y-m-d', strtotime($panjar_header->mulai)) }}" autocomplete="off" />
 							<div class="input-group-append">
 								<span class="input-group-text">Sampai</span>
 							</div>
-							<input type="text" class="form-control" name="sampai" autocomplete="off" />
+							<input type="text" class="form-control" name="sampai" value="{{ date('Y-m-d', strtotime($panjar_header->sampai)) }}" autocomplete="off" />
 						</div>
 						<span class="form-text text-muted">Linked pickers for date range selection</span>
 					</div>
@@ -137,7 +141,7 @@
 				<div class="form-group row">
 					<label for="example-week-input" class="col-2 col-form-label">Kendaraan</label>
 					<div class="col-10">
-						<input class="form-control" type="text" name="kendaraan" id="kendaraan">
+						<input class="form-control" type="text" name="kendaraan" value="{{ $panjar_header->kendaraan }}" id="kendaraan">
 					</div>
 				</div>
 
@@ -146,9 +150,9 @@
 					<div class="col-10">
 						<select class="form-control" name="biaya" id="biaya">
 							<option value="">- Pilih Biaya -</option>
-							<option value="P">Ditanggung Perusahaan</option>
-							<option value="K">Ditanggung Pribadi</option>
-							<option value="U">Ditanggung PPU</option>
+							<option value="P" @if($panjar_header->ditanggung_oleh == 'P') selected @endif>Ditanggung Perusahaan</option>
+							<option value="K" @if($panjar_header->ditanggung_oleh == 'K') selected @endif>Ditanggung Pribadi</option>
+							<option value="U" @if($panjar_header->ditanggung_oleh == 'U') selected @endif>Ditanggung PPU</option>
 						</select>
 					</div>
 				</div>
@@ -156,14 +160,14 @@
 				<div class="form-group row">
 					<label for="example-month-input" class="col-2 col-form-label">Keterangan</label>
 					<div class="col-10">
-						<textarea class="form-control" name="keterangan" id="keterangan"></textarea>
+						<textarea class="form-control" name="keterangan" id="keterangan">{{ $panjar_header->keterangan }}</textarea>
 					</div>
 				</div>
 
 				<div class="form-group row">
 					<label for="example-week-input" class="col-2 col-form-label">Jumlah</label>
 					<div class="col-10">
-						<input class="form-control" type="number" name="jumlah" id="example-week-input">
+						<input class="form-control" type="number" name="jumlah" value="{{ $panjar_header->jum_panjar }}" id="jumlah">
 					</div>
 				</div>
 
@@ -249,7 +253,7 @@
 						<label for="spd-input" class="col-2 col-form-label">No. Urut</label>
 						<div class="col-10">
 							@php
-								$no = session('panjar_detail') ? count(session('panjar_detail')) + 1 : 1;
+								$no = $panjar_detail_count ? $panjar_detail_count + 1 : 1;
 							@endphp
 							<input class="form-control" type="text" name="no_urut" value="{{ $no }}" id="no_urut">
 						</div>
@@ -315,19 +319,21 @@
 			language: {
 				processing: '<i class="fa fa-spinner fa-spin fa-2x fa-fw"></i> <br> Loading...'
 			},
-			ajax      : "{{ route('perjalanan_dinas.index.json.detail') }}",
+			ajax: "{{ route('perjalanan_dinas.index.json.detail', ['no_panjar' => str_replace('/', '-', $panjar_header->no_panjar)]) }}",
 			columns: [
 				{data: 'action', name: 'aksi', orderable: false, searchable: false},
 				{data: 'no', name: 'no'},
 				{data: 'nopek', name: 'nopek'},
 				{data: 'nama', name: 'nama'},
-				{data: 'golongan', name: 'golongan'},
+				{data: 'golongan', name: 'status'},
 				{data: 'jabatan', name: 'jabatan'},
 				{data: 'keterangan', name: 'keterangan'}
-			]
+			],
+			order: [[ 1, "asc" ]],
+			initComplete: function() {
+				$('#no_urut').val(this.api().data().length + 1);
+			}
 		});
-
-		$('#kt_table2').DataTable();
 
 		// Class definition
 		var KTBootstrapDatepicker = function () {
@@ -380,7 +386,6 @@
 
 		KTBootstrapDatepicker.init();
 
-
 		$('#saveDetail').click(function(e) {
 			var no = $('#no_urut').val();
 			var keterangan = $('#keterangan_detail').val();
@@ -398,7 +403,7 @@
 				session = false;
 			} else {
 				url = "{{ route('perjalanan_dinas.update.detail') }}";
-				session = true;
+				session = false;
 			}
 
 			$.ajax({
@@ -406,13 +411,14 @@
 				type: "POST",
 				data: {
 					no: no,
+					no_panjar: "{{ $panjar_header->no_panjar }}",
 					keterangan: keterangan,
 					nopek: nopek,
 					nama: nama,
 					jabatan: jabatan,				
 					golongan: golongan,
 					session: session,
-					_token:"{{ csrf_token() }}"		
+					_token:"{{ csrf_token() }}"
 				},
 				success: function(dataResult){
 					swal({
@@ -456,7 +462,8 @@
 								dataType: 'json',
 								data: {
 									"no_nopek": no_nopek,
-									"session": true,
+									"no_panjar": "{{ $panjar_header->no_panjar }}",
+									"session": false,
 									"_token": "{{ csrf_token() }}",
 								},
 								success: function () {
@@ -495,7 +502,8 @@
 						type: 'GET',
 						data: {
 							"no_nopek": no_nopek,
-							"session": true,
+							"no_panjar": "{{ $panjar_header->no_panjar }}",
+							"session": false,
 							"_token": "{{ csrf_token() }}",
 						},
 						success: function (response) {
@@ -505,7 +513,7 @@
 							$('#keterangan_detail').val(response.keterangan);
 							$('#nopek_detail').val(response.nopek + '-' + response.nama);
 							$('#jabatan_detail').val(response.jabatan);
-							$('#golongan_detail').val(response.golongan);
+							$('#golongan_detail').val(response.status);
 							// title
 							$('#title_modal').text('Ubah Detail Panjar Dinas');
 							$('#title_modal').data('state', 'update');

@@ -94,7 +94,7 @@
 @section('scripts')
 	<script type="text/javascript">
 	$(document).ready(function () {
-		$('#kt_table').DataTable({
+		var t = $('#kt_table').DataTable({
 			scrollX   : true,
 			processing: true,
 			serverSide: true,
@@ -119,11 +119,18 @@
 
 		$('#editRow').click(function(e) {
 			e.preventDefault();
-
-			$("input[type=radio]:checked").each(function(){
-				var id = $(this).val();
-				// edit stuff
-			});
+			if($('input[type=radio]').is(':checked')) { 
+				$("input[type=radio]:checked").each(function() {
+					var id = $(this).val().split("/").join("-");
+					// go to page edit
+					window.location.href = "{{ url('umum/perjalanan_dinas/edit') }}" + '/' + id;
+				});
+			} else {
+				swal({
+					title: "Tandai baris yang akan dihapus!",
+					type: "success"
+				}) ; 
+			}
 		});
 
 		$('#deleteRow').click(function(e) {
@@ -155,7 +162,7 @@
 											text: "Success",
 											type: "success"
 									}).then(function() {
-										location.replace("{{ route('perjalanan_dinas.index') }}");
+										t.ajax.reload();
 									});
 								},
 								error: function () {
@@ -171,8 +178,8 @@
 					type: "success"
 				}) ; 
 			}
-			
 		});
+
 	});
 	</script>
 @endsection
