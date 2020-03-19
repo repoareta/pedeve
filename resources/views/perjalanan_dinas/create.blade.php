@@ -248,10 +248,7 @@
 					<div class="form-group row">
 						<label for="spd-input" class="col-2 col-form-label">No. Urut</label>
 						<div class="col-10">
-							@php
-								$no = session('panjar_detail') ? count(session('panjar_detail')) + 1 : 1;
-							@endphp
-							<input class="form-control" type="text" name="no_urut" value="{{ $no }}" id="no_urut">
+							<input class="form-control" type="text" name="no_urut" id="no_urut">
 						</div>
 					</div>
 
@@ -315,7 +312,7 @@
 			language: {
 				processing: '<i class="fa fa-spinner fa-spin fa-2x fa-fw"></i> <br> Loading...'
 			},
-			ajax      : "{{ route('perjalanan_dinas.index.json.detail') }}",
+			ajax      : "{{ route('perjalanan_dinas.index.json.detail', ['no_panjar' => 'null']) }}",
 			columns: [
 				{data: 'action', name: 'aksi', orderable: false, searchable: false},
 				{data: 'no', name: 'no'},
@@ -324,10 +321,12 @@
 				{data: 'golongan', name: 'golongan'},
 				{data: 'jabatan', name: 'jabatan'},
 				{data: 'keterangan', name: 'keterangan'}
-			]
+			],
+			order: [[ 1, "asc" ]],
+			initComplete: function() {
+				$('#no_urut').val(this.api().data().length + 1);
+			}
 		});
-
-		$('#kt_table2').DataTable();
 
 		// Class definition
 		var KTBootstrapDatepicker = function () {
@@ -395,7 +394,7 @@
 
 			if(state == 'add'){
 				url = "{{ route('perjalanan_dinas.store.detail') }}";
-				session = false;
+				session = true;
 			} else {
 				url = "{{ route('perjalanan_dinas.update.detail') }}";
 				session = true;

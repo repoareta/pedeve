@@ -13,6 +13,7 @@ use App\Models\SdmTblKdjab;
 // Load Plugin
 use Carbon\Carbon;
 use Session;
+use PDF;
 
 class PerjalananDinasController extends Controller
 {
@@ -61,9 +62,9 @@ class PerjalananDinasController extends Controller
      *
      * @return void
      */
-    public function indexJsonDetail(Request $request, $no_panjar = null)
+    public function indexJsonDetail(Request $request, $no_panjar = 'null')
     {
-        if (session('panjar_detail') and $request->no_panjar == null) {
+        if (session('panjar_detail') and $request->no_panjar == 'null') {
             $panjar_list_detail = session('panjar_detail');
         } else {
             $no_panjar = str_replace('-', '/', $request->no_panjar);
@@ -367,5 +368,22 @@ class PerjalananDinasController extends Controller
         }
 
         return response()->json();
+    }
+
+    public function rekap()
+    {
+        return view('perjalanan_dinas.rekap');
+    }
+
+    public function rekapExport(Request $request)
+    {
+        $mulai = date($request->mulai);
+        $sampai = date($request->sampai);
+        $panjar_header_list = PanjarHeader::whereBetween('tgl_panjar', [$mulai, $sampai])
+        ->get();
+        // dd($panjar_header_list);
+
+        $pdf = PDF::loadview('perjalanan_dinas.export', ['panjar_header_list' => $panjar_header_list]);
+        return $pdf->download('rekap_spd_'.date('Y-m-d H:i:s').'.pdf');
     }
 }
