@@ -6,7 +6,10 @@ use App\UmkModel;
 use App\DetailUmkModel;
 use Illuminate\Http\Request;
 use DataTables;
+use Carbon\Carbon;
 use DB;
+use Session;
+use PDF;
 
 class UangMukaKerjaController extends Controller
 {
@@ -58,7 +61,7 @@ class UangMukaKerjaController extends Controller
                 })
 
                 ->addColumn('radio', function($data){
-                    $button = '<label class="kt-radio kt-radio--bold kt-radio--brand"><input type="radio" class="btn-radio" data-id="'.str_replace('/', '-', $data->no_umk).'" name="btn-radio"><span></span></label>';
+                    $button = '<label class="kt-radio kt-radio--bold kt-radio--brand"><input type="radio" class="btn-radio" dataumk="'.$data->no_umk.'" data-id="'.str_replace('/', '-', $data->no_umk).'" name="btn-radio"><span></span></label>';
                     return $button;
                 })
                 ->rawColumns(['action','radio','jenisum','jumlah','noumk'])
@@ -193,11 +196,10 @@ class UangMukaKerjaController extends Controller
     public function edit_detail($dataid, $datano)
     {
         $noumk=str_replace('-', '/', $dataid);
-        if(request()->ajax())
-        {
+
             $data = DetailUmkModel::where('no', $datano)->where('no_umk', $noumk)->distinct()->get();
             return response()->json($data[0]);
-        }
+
     }
 
     /**
@@ -228,7 +230,26 @@ class UangMukaKerjaController extends Controller
     public function deleteDetail(Request $request)
     {
 
-        DetailUmkModel::where('no_umk', $request->id)->delete();
+        DetailUmkModel::where('no', $request->no)
+        ->where('no_umk', $request->id)
+        ->delete();
         return response()->json();
+    }
+
+    public function rekap()
+    {
+        return view('umk.rekap');
+    }
+
+    public function rekapExport(Request $request)
+    {
+        $mulai = date($request->mulai);
+        $sampai = date($request->sampai);
+        $umk_header_list = UmkModel::whereBetween('tgl_panjar', [$mulai, $sampai])
+        ->get();
+        // dd($panjar_header_list);
+
+        $pdf = PDF::loadview('umk.export', ['umk_header_list' => $umk_header_list]);
+        return $pdf->download('rekap_umk_'.date('Y-m-d H:i:s').'.pdf');
     }
 }

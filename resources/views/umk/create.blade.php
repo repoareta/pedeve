@@ -262,7 +262,7 @@
                 });
 			}, 
 			error : function(){
-				alert("Ada kesalahan aplikasi");
+				alert("Terjadi kesalahan, coba lagi nanti");
 			}
 		});	
 		return false;

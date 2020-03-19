@@ -49,7 +49,7 @@
 	
 					<a href="#">
 						<span style="font-size: 2em;"  class="kt-font-danger">
-							<i class="fas fa-times-circle" id="btn-delete-umk"></i>
+							<i class="fas fa-times-circle" id="deleteRow"></i>
 						</span>
 					</a>
 
@@ -170,52 +170,57 @@ $(".btn-radio:checked").each(function() {
 
 
 //delete
-$('#btn-delete-umk').on('click', function(e) {
-	e.preventDefault();
-	$(".btn-radio:checked").each(function() {  
-		e.preventDefault();
-		var dataid = $(this).attr('data-id');
-
-	if(dataid == 1)  
-	{  
-		swal({
-				title: "Tandai baris yang akan dihapus!",
-				type: "success"
-				}) ; 
-	}  else {  
-		swal({
-			title: "Data yang akan di hapus?",
-			text: "NO UMK :"+dataid,
-			icon: "warning",
-			buttons: true,
-			dangerMode: true,
-			})
-			.then((willDelete) => {
-			if (willDelete) {
-				$.ajax({
-					url: "/umum/uang_muka_kerja/delete/"+dataid ,
-					type: 'delete',
-					headers: {
-						'X-CSRF-Token': '{{ csrf_token() }}',
-						},
-					success: function () {
-						swal({
-								text: "Data Uang Muka Kerja Berhasil dihapus.",
-								type: "success"
-							}).then(function() {
-								location.replace("{{ route('uang_muka_kerja.index') }}");
+//delete
+$('#deleteRow').click(function(e) {
+			e.preventDefault();
+			$(".btn-radio:checked").each(function() {  
+				var dataid = $(this).attr('data-id');
+				if(dataid == 1)  
+				{  
+					swal({
+						title: "Tandai baris yang akan dihapus!",
+						type: "success"
+					}) ; 
+				}  else { 
+				$("input[type=radio]:checked").each(function() {
+					var id = $(this).attr('dataumk');
+					// delete stuff
+					swal({
+						title: "Data yang akan di hapus?",
+						text: "No. UMK : " + id,
+						icon: "warning",
+						buttons: true,
+						dangerMode: true,
+					})
+					.then((willDelete) => {
+						if (willDelete) {
+							$.ajax({
+								url: "{{ route('uang_muka_kerja.delete') }}",
+								type: 'DELETE',
+								dataType: 'json',
+								data: {
+									"id": id,
+									"_token": "{{ csrf_token() }}",
+								},
+								success: function () {
+									swal({
+											title: "Delete",
+											text: "Success",
+											type: "success"
+									}).then(function() {
+										location.reload();
+									});
+								},
+								error: function () {
+									alert("Terjadi kesalahan, coba lagi nanti");
+								}
 							});
-					},
-					error: function () {
-						alert("Ada kesalahan aplikasi");
-					}
+						}
+					});
 				});
-			}
+			} 
+			
 		});
-	}	
-});				
-
-
-});
+	});		
 </script>
 @endsection
