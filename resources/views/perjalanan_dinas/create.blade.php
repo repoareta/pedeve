@@ -124,11 +124,11 @@
 					<label for="mulai-input" class="col-2 col-form-label">Mulai</label>
 					<div class="col-10">
 						<div class="input-daterange input-group" id="date_range_picker">
-							<input type="text" class="form-control" name="mulai" />
+							<input type="text" class="form-control" name="mulai" autocomplete="off" />
 							<div class="input-group-append">
 								<span class="input-group-text">Sampai</span>
 							</div>
-							<input type="text" class="form-control" name="sampai" />
+							<input type="text" class="form-control" name="sampai" autocomplete="off" />
 						</div>
 						<span class="form-text text-muted">Linked pickers for date range selection</span>
 					</div>
@@ -198,7 +198,7 @@
 								</span>
 							</a>
 			
-							<a href="#">
+							<a href="#" id="editRow">
 								<span style="font-size: 2em;" class="kt-font-warning">
 									<i class="fas fa-edit"></i>
 								</span>
@@ -239,7 +239,7 @@
 	<div class="modal-dialog modal-lg" role="document">
 		<div class="modal-content">
 			<div class="modal-header">
-				<h5 class="modal-title" id="exampleModalLabel">Tambah Detail Panjar Dinas</h5>
+				<h5 class="modal-title" id="title_modal" data-state="add">Tambah Detail Panjar Dinas</h5>
 				<button type="button" class="close" data-dismiss="modal" aria-label="Close">
 				</button>
 			</div>
@@ -248,7 +248,10 @@
 					<div class="form-group row">
 						<label for="spd-input" class="col-2 col-form-label">No. Urut</label>
 						<div class="col-10">
-							<input class="form-control" type="text" name="no_urut" value="1" id="no_urut">
+							@php
+								$no = session('panjar_detail') ? count(session('panjar_detail')) + 1 : 1;
+							@endphp
+							<input class="form-control" type="text" name="no_urut" value="{{ $no }}" id="no_urut">
 						</div>
 					</div>
 
@@ -386,8 +389,20 @@
 			var jabatan = $('#jabatan_detail').val();
 			var golongan = $('#golongan_detail').val();
 
+			var state = $('#title_modal').data('state');
+
+			var url, session;
+
+			if(state == 'add'){
+				url = "{{ route('perjalanan_dinas.store.detail') }}";
+				session = false;
+			} else {
+				url = "{{ route('perjalanan_dinas.update.detail') }}";
+				session = true;
+			}
+
 			$.ajax({
-				url: "{{ route('perjalanan_dinas.store.detail') }}",
+				url: url,
 				type: "POST",
 				data: {
 					no: no,
@@ -396,6 +411,7 @@
 					nama: nama,
 					jabatan: jabatan,				
 					golongan: golongan,
+					session: session,
 					_token:"{{ csrf_token() }}"		
 				},
 				success: function(dataResult){
@@ -462,6 +478,49 @@
 			} else {
 				swal({
 					title: "Tandai baris yang akan dihapus!",
+					type: "success"
+				}) ; 
+			}
+		});
+
+		$('#editRow').click(function(e) {
+			e.preventDefault();
+
+			if($('input[type=radio]').is(':checked')) { 
+				$("input[type=radio]:checked").each(function() {
+					// get value from row
+					var no_nopek = $(this).val();
+					$.ajax({
+						url: "{{ route('perjalanan_dinas.show.json.detail') }}",
+						type: 'GET',
+						data: {
+							"no_nopek": no_nopek,
+							"session": true,
+							"_token": "{{ csrf_token() }}",
+						},
+						success: function (response) {
+							// update stuff
+							// append value
+							$('#no_urut').val(response.no);
+							$('#keterangan_detail').val(response.keterangan);
+							$('#nopek_detail').val(response.nopek + '-' + response.nama);
+							$('#jabatan_detail').val(response.jabatan);
+							$('#golongan_detail').val(response.golongan);
+							// title
+							$('#title_modal').text('Ubah Detail Panjar Dinas');
+							$('#title_modal').data('state', 'update');
+							// open modal
+							$('#kt_modal_4').modal('toggle');
+						},
+						error: function () {
+							alert("Terjadi kesalahan, coba lagi nanti");
+						}
+					});
+					
+				});
+			} else {
+				swal({
+					title: "Tandai baris yang akan diubah",
 					type: "success"
 				}) ; 
 			}

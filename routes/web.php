@@ -49,6 +49,9 @@ Route::prefix('umum')->group(function () {
     Route::post('perjalanan_dinas/store', 'PerjalananDinasController@store')->name('perjalanan_dinas.store');
     Route::post('perjalanan_dinas/store_detail', 'PerjalananDinasController@storeDetail')->name('perjalanan_dinas.store.detail');
     Route::get('perjalanan_dinas/edit', 'PerjalananDinasController@edit')->name('perjalanan_dinas.edit');
+    Route::post('perjalanan_dinas/update/{no_panjar}', 'PerjalananDinasController@update')->name('perjalanan_dinas.update');
+    Route::post('perjalanan_dinas/update_detail', 'PerjalananDinasController@updateDetail')->name('perjalanan_dinas.update.detail');
+    Route::get('perjalanan_dinas/show_json_detail', 'PerjalananDinasController@showJsonDetail')->name('perjalanan_dinas.show.json.detail');
     Route::delete('perjalanan_dinas/delete', 'PerjalananDinasController@delete')->name('perjalanan_dinas.delete');
     Route::delete('perjalanan_dinas/delete_detail', 'PerjalananDinasController@deleteDetail')->name('perjalanan_dinas.delete.detail');
 

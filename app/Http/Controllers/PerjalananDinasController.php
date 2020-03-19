@@ -63,7 +63,12 @@ class PerjalananDinasController extends Controller
      */
     public function indexJsonDetail()
     {
-        $panjar_list_detail = session('panjar_detail');
+        if (session('panjar_detail')) {
+            $panjar_list_detail = session('panjar_detail');
+        } else {
+            $panjar_list_detail = array();
+        }
+        
 
         return datatables()->of($panjar_list_detail)
             ->addColumn('action', function ($row) {
@@ -170,15 +175,33 @@ class PerjalananDinasController extends Controller
         }
     }
 
+    public function showJsonDetail(Request $request)
+    {
+        $nopek = substr($request->no_nopek, strpos($request->no_nopek, "-") + 1);
+
+        if ($request->session == true) {
+            foreach (session('panjar_detail') as $key => $value) {
+                if ($value['nopek'] == $nopek) {
+                    $data = session("panjar_detail.$key");
+                }
+            }
+        } else {
+            // get From Database
+        }
+
+        return response()->json($data, 200);
+    }
+
     /**
      * Show the form for editing the specified resource.
      *
      * @param  int  $id
      * @return \Illuminate\Http\Response
      */
-    public function edit($id)
+    public function edit($no_panjar)
     {
-        //
+        $panjar_header = PanjarHeader::where('no_panjar', $no_panjar)->first();
+        return view('perjalanan_dinas.edit', compact('panjar_header'));
     }
 
     /**
@@ -191,6 +214,47 @@ class PerjalananDinasController extends Controller
     public function update(Request $request, $id)
     {
         //
+    }
+
+    /**
+     * Update the specified resource in storage.
+     *
+     * @param  \Illuminate\Http\Request  $request
+     * @param  int  $id
+     * @return \Illuminate\Http\Response
+     */
+    public function updateDetail(Request $request)
+    {
+        if ($request->session == true) {
+            // delete session
+            foreach (session('panjar_detail') as $key => $value) {
+                if ($value['nopek'] == $request->nopek) {
+                    session()->forget("panjar_detail.$key");
+
+                    $panjar_detail = new PanjarDetail;
+                    $panjar_detail->no = $request->no;
+                    $panjar_detail->nopek = $request->nopek;
+                    $panjar_detail->nama = $request->nama;
+                    $panjar_detail->jabatan = $request->jabatan;
+                    $panjar_detail->golongan = $request->golongan;
+                    $panjar_detail->keterangan = $request->keterangan;
+
+                    // dd($panjar_detail);
+
+                    if (session('panjar_detail')) {
+                        session()->push('panjar_detail', $panjar_detail);
+                    } else {
+                        session()->put('panjar_detail', []);
+                        session()->push('panjar_detail', $panjar_detail);
+                    }
+                }
+            }
+        } else {
+            // Dari Database
+        }
+
+        $data = array();
+        return response()->json($data, 200);
     }
 
     /**
