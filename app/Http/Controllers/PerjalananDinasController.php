@@ -164,10 +164,11 @@ class PerjalananDinasController extends Controller
     {
         $panjar_detail = new PanjarDetail;
         $panjar_detail->no = $request->no;
+        $panjar_detail->no_panjar = $request->no_panjar ? $request->no_panjar : null; // for add update only
         $panjar_detail->nopek = $request->nopek;
         $panjar_detail->nama = $request->nama;
         $panjar_detail->jabatan = $request->jabatan;
-        $panjar_detail->golongan = $request->golongan;
+        $panjar_detail->status = $request->golongan;
         $panjar_detail->keterangan = $request->keterangan;
 
         if ($request->session == 'true') {
@@ -179,15 +180,6 @@ class PerjalananDinasController extends Controller
             }
         } else {
             // insert to database
-            $panjar_detail = new PanjarDetail;
-            $panjar_detail->no = $request->no;
-            $panjar_detail->no_panjar = $request->no_panjar;
-            $panjar_detail->nopek = $request->nopek;
-            $panjar_detail->nama = $request->nama;
-            $panjar_detail->jabatan = $request->jabatan;
-            $panjar_detail->status = $request->golongan;
-            $panjar_detail->keterangan = $request->keterangan;
-
             $panjar_detail->save();
         }
 

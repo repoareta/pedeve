@@ -24,4 +24,8 @@
     font-size: 1rem;
     transition: all 0.3s ease;
 }
+
+td.sorting_1 {
+    padding-top: 0px;
+}
 </style>
