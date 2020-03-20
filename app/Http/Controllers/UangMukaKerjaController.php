@@ -61,7 +61,11 @@ class UangMukaKerjaController extends Controller
                 })
 
                 ->addColumn('radio', function($data){
-                    $button = '<label class="kt-radio kt-radio--bold kt-radio--brand"><input type="radio" class="btn-radio" dataumk="'.$data->no_umk.'" data-id="'.str_replace('/', '-', $data->no_umk).'" name="btn-radio"><span></span></label>';
+                    if($data->app_pbd == 'Y'){
+                        $button = '<label class="kt-radio kt-radio--bold kt-radio--brand"><input type="radio" disabled class="btn-radio" ><span></span></label>';
+                    }else{
+                        $button = '<label class="kt-radio kt-radio--bold kt-radio--brand"><input type="radio" class="btn-radio" dataumk="'.$data->no_umk.'" data-id="'.str_replace('/', '-', $data->no_umk).'" name="btn-radio"><span></span></label>';
+                    }
                     return $button;
                 })
                 ->rawColumns(['action','radio','jenisum','jumlah','noumk'])
@@ -250,6 +254,7 @@ class UangMukaKerjaController extends Controller
         // dd($panjar_header_list);
 
         $pdf = PDF::loadview('umk.export', ['umk_header_list' => $umk_header_list]);
-        return $pdf->download('rekap_umk_'.date('Y-m-d H:i:s').'.pdf');
+        // return $pdf->download('rekap_umk_'.date('Y-m-d H:i:s').'.pdf');
+        return $pdf->stream();
     }
 }

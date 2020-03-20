@@ -89,7 +89,7 @@
 							<label for="dari-input" class="col-2 col-form-label">Debet Dari</label>
 							<div class="col-10">
 								<select name="debetdari" id="select-debetdari" class="form-control selectpicker" data-live-search="true">
-									<option value="">- Pilih Nopek -</option>
+									<option value="">- Pilih -</option>
 									@foreach ($debit_nota as $row)
 									<option value="{{ $row->kode }}">{{ $row->kode.' - '.$row->keterangan }}</option>
 									@endforeach
@@ -113,7 +113,7 @@
 							</div>
 							<label for="spd-input"  class="col-2 col-form-label">Bulan Buku</label>
 							<div class="col-3" >
-								<input class="form-control" type="text" value="" data-date-format="yyyymm" id="bulanbuku" name="bulanbuku" size="6" maxlength="6" required>
+								<input class="form-control" type="text" value="{{ date('Ym') }}"  id="bulanbuku" name="bulanbuku" size="6" maxlength="6" required>
 							</div>
 						</div>
 						<div class="form-group row">
@@ -142,13 +142,13 @@
 						<div class="form-group row">
 							<label class="col-2 col-form-label">Total Nilai</label>
 							<div class="col-4">
-								<input  class="form-control" name="totalnilai" type="text" value="" id="totalnilai" >
+								<input  class="form-control" name="totalnilai" type="text" value="" id="totalnilai"  readonly>
 							</div>
 						</div>
 						<div style="float:right;">
 							<div class="kt-form__actions">
-								<a  href="{{route('permintaan_bayar.index')}}" class="btn btn-warning">Cancel</a>
-								<button type="submit" class="btn btn-brand">Save</button>
+								<a  href="{{route('permintaan_bayar.index')}}" class="btn btn-warning"><i class="fa fa-reply" aria-hidden="true"></i>Cancel</a>
+								<button type="submit" class="btn btn-brand"><i class="fa fa-check" aria-hidden="true"></i>Save</button>
 							</div>
 						</div>
 					</div>
@@ -175,13 +175,13 @@
 									</span>
 								</a>
 				
-								<a href="#" >
+								<a href="#" href="#" data-toggle="modal" data-target="#kt_modal_4" >
 									<span style="font-size: 2em;" class="kt-font-warning">
 										<i class="fas fa-edit"></i>
 									</span>
 								</a>
 				
-								<a href="#" >
+								<a href="#" href="#" data-toggle="modal" data-target="#kt_modal_4">
 									<span style="font-size: 2em;" class="kt-font-danger">
 										<i class="fas fa-times-circle"></i>
 									</span>
@@ -215,37 +215,6 @@
 		</div>
 	</div>
 </div>
-
-<!--begin::Modal-->
-<div class="modal fade" id="kt_modal_4" tabindex="-1" role="dialog" aria-labelledby="exampleModalLabel" aria-hidden="true">
-	<div class="modal-dialog modal-lg" role="document">
-		<div class="modal-content">
-			<div class="modal-header">
-				<h5 class="modal-title" id="exampleModalLabel">New message</h5>
-				<button type="button" class="close" data-dismiss="modal" aria-label="Close">
-				</button>
-			</div>
-			<div class="modal-body">
-				<form>
-					<div class="form-group">
-						<label for="recipient-name" class="form-control-label">Recipient:</label>
-						<input type="text" class="form-control" id="recipient-name">
-					</div>
-					<div class="form-group">
-						<label for="message-text" class="form-control-label">Message:</label>
-						<textarea class="form-control" id="message-text"></textarea>
-					</div>
-				</form>
-			</div>
-			<div class="modal-footer">
-				<button type="button" class="btn btn-secondary" data-dismiss="modal">Close</button>
-				<button type="button" class="btn btn-primary">Send message</button>
-			</div>
-		</div>
-	</div>
-</div>
-
-<!--end::Modal-->
 @endsection
 
 @section('scripts')
@@ -332,12 +301,14 @@ var demos = function () {
 		format   : 'yyyy-mm-dd'
 	});
 	$('#bulanbuku').datepicker({
-        weekStart: 1,
-        daysOfWeekHighlighted: "6,0",
-        autoclose: true,
-        todayHighlight: true,
-    });
-	$('#bulanbuku').datepicker("setDate", new Date());
+		rtl: KTUtil.isRTL(),
+		todayHighlight: true,
+		orientation: "bottom left",
+		templates: arrows,
+		autoclose: true,
+		// language : 'id',
+		format   : 'yyyymm'
+	});
 };
 
 return {

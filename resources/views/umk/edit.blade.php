@@ -57,7 +57,7 @@
 					<div class="form-group row">
 						<label for="nopek-input" class="col-2 col-form-label">Tanggal</label>
 						<div class="col-10">
-                            <input class="form-control" type="text" name="tgl_panjar" value="<?php echo date("d/m/Y", strtotime($data_umk->tgl_panjar)) ?>" id="dat"  id="tgl_panjar" size="15" maxlength="15">
+                            <input class="form-control" type="text" name="tgl_panjar" id="tgl_panjar" value="<?php echo date("Y-m-d", strtotime($data_umk->tgl_panjar)) ?>" size="15" maxlength="15">
 						</div>
 					</div>
 					<div class="form-group row">
@@ -73,7 +73,7 @@
 					<div class="form-group row">
 						<label for="id-pekerja;-input" class="col-2 col-form-label">Bulan Buku</label>
 						<div class="col-10">
-                            <input class="form-control" type="text" value="{{$data_umk->bulan_buku}}"   name="bulan_buku" size="6" maxlength="6">
+                            <input class="form-control" type="text" value="{{$data_umk->bulan_buku}}"   name="bulan_buku" id="bulan_buku" size="6" maxlength="6">
 						</div>
 					</div>
 					<div class="form-group row">
@@ -110,8 +110,8 @@
 					</div>
 					<div style="float:right;">
 						<div class="kt-form__actions">
-							<a  href="{{route('uang_muka_kerja.index')}}" class="btn btn-warning">Cancel</a>
-							<button type="submit" class="btn btn-brand">Save</button>
+							<a  href="{{route('uang_muka_kerja.index')}}" class="btn btn-warning"><i class="fa fa-reply" aria-hidden="true"></i>Cancel</a>
+							<button type="submit" class="btn btn-brand"><i class="fa fa-check" aria-hidden="true"></i>Save</button>
 						</div>
 					</div>
                     @endforeach
@@ -302,8 +302,8 @@
 
 																					
 					<div style="float:right;">
-						<button type="reset"  class="btn btn-warning"  data-dismiss="modal">Cancel</button>
-						<button type="submit" class="btn btn-brand">Save</button>
+						<button type="reset"  class="btn btn-warning"  data-dismiss="modal"><i class="fa fa-reply" aria-hidden="true"></i>Cancel</button>
+						<button type="submit" class="btn btn-brand"><i class="fa fa-check" aria-hidden="true"></i>Save</button>
 					</div>
 				</form>
 			</div>
@@ -420,8 +420,8 @@
 
 																					
 					<div style="float:right;">
-						<button type="reset"  class="btn btn-warning"  data-dismiss="modal">Cancel</button>
-						<button type="submit" class="btn btn-brand">Save</button>
+						<button type="reset"  class="btn btn-warning"  data-dismiss="modal"><i class="fa fa-reply" aria-hidden="true"></i>Cancel</button>
+						<button type="submit" class="btn btn-brand"><i class="fa fa-check" aria-hidden="true"></i>Save</button>
 					</div>
 				</form>
 			</div>
@@ -652,6 +652,56 @@ $(".btn-radio:checked").each(function() {
 			
 		});
 	});
+
+// Class definition
+var KTBootstrapDatepicker = function () {
+
+var arrows;
+if (KTUtil.isRTL()) {
+	arrows = {
+		leftArrow: '<i class="la la-angle-right"></i>',
+		rightArrow: '<i class="la la-angle-left"></i>'
+	}
+} else {
+	arrows = {
+		leftArrow: '<i class="la la-angle-left"></i>',
+		rightArrow: '<i class="la la-angle-right"></i>'
+	}
+}
+// Private functions
+var demos = function () {
+
+// minimum setup
+$('#tgl_panjar').datepicker({
+	rtl: KTUtil.isRTL(),
+	todayHighlight: true,
+	orientation: "bottom left",
+	templates: arrows,
+	autoclose: true,
+	// language : 'id',
+	format   : 'yyyy-mm-dd'
+});
+// minimum setup
+$('#bulan_buku').datepicker({
+	rtl: KTUtil.isRTL(),
+	todayHighlight: true,
+	orientation: "bottom left",
+	templates: arrows,
+	autoclose: true,
+	// language : 'id',
+	format   : 'yyyymm'
+});
+};
+
+return {
+// public functions
+init: function() {
+	demos(); 
+}
+};
+}();
+
+KTBootstrapDatepicker.init();
 
 function hanyaAngka(evt) {
 		  var charCode = (evt.which) ? evt.which : event.keyCode

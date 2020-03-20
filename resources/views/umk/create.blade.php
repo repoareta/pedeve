@@ -62,7 +62,7 @@
 					<div class="form-group row">
 						<label for="nopek-input" class="col-2 col-form-label">Tanggal</label>
 						<div class="col-10">
-							<input class="form-control" type="text" name="tgl_panjar" value="" data-date-format="dd/MM/yyyy" id="datepicker" id="tgl_panjar" size="15" maxlength="15" required>
+							<input class="form-control" type="text" name="tgl_panjar" value="{{ date('Y-m-d') }}" id="datepicker" id="tgl_panjar" size="15" maxlength="15" required>
 
 						</div>
 					</div>
@@ -79,7 +79,7 @@
 					<div class="form-group row">
 						<label for="id-pekerja;-input" class="col-2 col-form-label">Bulan Buku</label>
 						<div class="col-10">
-							<input class="form-control" type="text" value="" data-date-format="yyyymm" id="bulan_buku" name="bulan_buku" size="6" maxlength="6" required>
+							<input class="form-control" type="text" y value="{{ date('Ym') }}" id="bulan_buku" name="bulan_buku" size="6" maxlength="6" required>
 						</div>
 					</div>
 					<div class="form-group row">
@@ -114,8 +114,8 @@
 					</div>
 					<div style="float:right;">
 						<div class="kt-form__actions">
-							<a  href="{{route('uang_muka_kerja.index')}}" class="btn btn-warning">Cancel</a>
-							<button type="submit" class="btn btn-brand">Save</button>
+							<a  href="{{route('uang_muka_kerja.index')}}" class="btn btn-warning"><i class="fa fa-reply" aria-hidden="true"></i>Cancel</a>
+							<button type="submit" class="btn btn-brand"><i class="fa fa-check" aria-hidden="true"></i>Save</button>
 						</div>
 					</div>
 				</div>
@@ -136,19 +136,19 @@
 				<div class="kt-portlet__head-toolbar">
 					<div class="kt-portlet__head-wrapper">
 						<div class="kt-portlet__head-actions">
-							<a  >
+							<a  href="#" data-toggle="modal" data-target="#kt_modal_4">
 								<span style="font-size: 2em;" class="kt-font-success">
 									<i class="fas fa-plus-circle"></i>
 								</span>
 							</a>
 			
-							<a >
+							<a href="#" data-toggle="modal" data-target="#kt_modal_4">
 								<span style="font-size: 2em;" class="kt-font-warning">
 									<i class="fas fa-edit"></i>
 								</span>
 							</a>
 			
-							<a >
+							<a href="#" data-toggle="modal" data-target="#kt_modal_4">
 								<span style="font-size: 2em;" class="kt-font-danger">
 									<i class="fas fa-times-circle"></i>
 								</span>
@@ -183,37 +183,6 @@
 	</div>
 </div>
 </div>
-
-<!--begin::Modal-->
-<div class="modal fade" id="kt_modal_4" tabindex="-1" role="dialog" aria-labelledby="exampleModalLabel" aria-hidden="true">
-	<div class="modal-dialog modal-lg" role="document">
-		<div class="modal-content">
-			<div class="modal-header">
-				<h5 class="modal-title" id="exampleModalLabel">New message</h5>
-				<button type="button" class="close" data-dismiss="modal" aria-label="Close">
-				</button>
-			</div>
-			<div class="modal-body">
-				<form>
-					<div class="form-group">
-						<label for="recipient-name" class="form-control-label">Recipient:</label>
-						<input type="text" class="form-control" id="recipient-name">
-					</div>
-					<div class="form-group">
-						<label for="message-text" class="form-control-label">Message:</label>
-						<textarea class="form-control" id="message-text"></textarea>
-					</div>
-				</form>
-			</div>
-			<div class="modal-footer">
-				<button type="button" class="btn btn-secondary" data-dismiss="modal">Close</button>
-				<button type="button" class="btn btn-primary">Send message</button>
-			</div>
-		</div>
-	</div>
-</div>
-
-<!--end::Modal-->
 @endsection
 
 @section('scripts')
@@ -222,23 +191,56 @@
 		$('#kt_table').DataTable();
 	});
 
-    $('#datepicker').datepicker({
-        weekStart: 1,
-        daysOfWeekHighlighted: "6,0",
-        autoclose: true,
-        todayHighlight: true,
-    });
-    $('#dat').datepicker({
-        
-    });
-    $('#datepicker').datepicker("setDate", new Date());
-    $('#bulan_buku').datepicker({
-        weekStart: 1,
-        daysOfWeekHighlighted: "6,0",
-        autoclose: true,
-        todayHighlight: true,
-    });
-	$('#bulan_buku').datepicker("setDate", new Date());
+// Class definition
+var KTBootstrapDatepicker = function () {
+
+var arrows;
+if (KTUtil.isRTL()) {
+	arrows = {
+		leftArrow: '<i class="la la-angle-right"></i>',
+		rightArrow: '<i class="la la-angle-left"></i>'
+	}
+} else {
+	arrows = {
+		leftArrow: '<i class="la la-angle-left"></i>',
+		rightArrow: '<i class="la la-angle-right"></i>'
+	}
+}
+
+// Private functions
+var demos = function () {
+
+	// minimum setup
+	$('#datepicker').datepicker({
+		rtl: KTUtil.isRTL(),
+		todayHighlight: true,
+		orientation: "bottom left",
+		templates: arrows,
+		autoclose: true,
+		// language : 'id',
+		format   : 'yyyy-mm-dd'
+	});
+	// minimum setup
+	$('#bulan_buku').datepicker({
+		rtl: KTUtil.isRTL(),
+		todayHighlight: true,
+		orientation: "bottom left",
+		templates: arrows,
+		autoclose: true,
+		// language : 'id',
+		format   : 'yyyymm'
+	});
+};
+
+return {
+	// public functions
+	init: function() {
+		demos(); 
+	}
+};
+}();
+
+KTBootstrapDatepicker.init();
 	
 	//create
 	$('#form-create-umk').submit(function(){

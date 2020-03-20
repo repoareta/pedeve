@@ -60,7 +60,11 @@ class PermintaanBayarController extends Controller
                 return $button;
             })
             ->addColumn('action_radio', function ($row) {
+                if($row->app_pbd == 'Y'){
+                    $radio = '<label class="kt-radio kt-radio--bold kt-radio--brand"><input type="radio" disabled><span></span></label>';
+                }else{
                 $radio = '<label class="kt-radio kt-radio--bold kt-radio--brand"><input type="radio" name="radio1" value="'.str_replace('/', '-', $row->no_bayar).'" data-id="'.str_replace('/', '-', $row->no_bayar).'"><span></span></label>';
+                }
                 return $radio;
             })
             ->rawColumns(['action_radio','action'])
@@ -278,9 +282,10 @@ class PermintaanBayarController extends Controller
         $sampai = date($request->sampai);
         $bayar_header_list = PermintaanBayarModel::whereBetween('tgl_bayar', [$mulai, $sampai])
         ->get();
-        // dd($panjar_header_list);
+        // dd($bayar_header_list);
 
         $pdf = PDF::loadview('permintaan_bayar.export', ['bayar_header_list' => $bayar_header_list]);
-        return $pdf->download('rekap_bayar_'.date('Y-m-d H:i:s').'.pdf');
+        // return $pdf->download('rekap_permint_'.date('Y-m-d H:i:s').'.pdf');
+        return $pdf->stream();
     }
 }

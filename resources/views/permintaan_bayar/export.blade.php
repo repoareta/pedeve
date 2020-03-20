@@ -70,13 +70,13 @@ h4 {
 
 </style>
 <body>
-    <table style="width:100%;" class="table">
+
+    <table style="margin-top:30px;width:100%;" class="table">
         <thead>
             <tr>
                 <th>NO. BAYAR</th>
                 <th>NO. KAS</th>
                 <th>KEPADA</th>
-                <th>KETERANGAN</th>
                 <th>KETERANGAN</th>
                 <th>LAMPIRAN</th>
                 <th>JUMLAH</th>
