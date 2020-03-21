@@ -10,6 +10,7 @@ use Carbon\Carbon;
 use DB;
 use Session;
 use PDF;
+use Alert;
 
 class UangMukaKerjaController extends Controller
 {
@@ -36,9 +37,9 @@ class UangMukaKerjaController extends Controller
                         $button = '<p align="center"><span style="font-size: 2em;" class="kt-font-success"><i class="fas fa-check-circle" title="Data Sudah di proses perbendaharaan"></i></span></p>';
                     }else{
                         if($data->app_sdm == 'Y'){
-                            $button = '<p align="center"><a href="#"><span style="font-size: 2em;" class="kt-font-warning"><i class="fas fa-check-circle" title="Batalkan Approval"></i></span></a></p>';
+                            $button = '<p align="center"><a href="'. route('uang_muka_kerja.approv',['id' => str_replace('/', '-', $data->no_umk)]).'"><span style="font-size: 2em;" class="kt-font-warning"><i class="fas fa-check-circle" title="Batalkan Approval"></i></span></a></p>';
                         }else{
-                            $button = '<p align="center"><a href="#"><span style="font-size: 2em;" class="kt-font-danger"><i class="fas fa-ban" title="Klik untuk Approval"></i></span></a></p>';
+                            $button = '<p align="center"><a href="'. route('uang_muka_kerja.approv',['id' => str_replace('/', '-', $data->no_umk)]).'"><span style="font-size: 2em;" class="kt-font-danger"><i class="fas fa-ban" title="Klik untuk Approval"></i></span></a></p>';
                         }
                     }
                     return $button;
@@ -64,7 +65,11 @@ class UangMukaKerjaController extends Controller
                     if($data->app_pbd == 'Y'){
                         $button = '<label class="kt-radio kt-radio--bold kt-radio--brand"><input type="radio" disabled class="btn-radio" ><span></span></label>';
                     }else{
-                        $button = '<label class="kt-radio kt-radio--bold kt-radio--brand"><input type="radio" class="btn-radio" dataumk="'.$data->no_umk.'" data-id="'.str_replace('/', '-', $data->no_umk).'" name="btn-radio"><span></span></label>';
+                        if($data->app_sdm == 'Y'){
+                        $button = '<label class="kt-radio kt-radio--bold kt-radio--brand"><input type="radio" disabled class="btn-radio" ><span></span></label>';
+                        }else{
+                            $button = '<label class="kt-radio kt-radio--bold kt-radio--brand"><input type="radio" class="btn-radio" dataumk="'.$data->no_umk.'" data-id="'.str_replace('/', '-', $data->no_umk).'" name="btn-radio"><span></span></label>';
+                        }
                     }
                     return $button;
                 })
@@ -118,46 +123,21 @@ class UangMukaKerjaController extends Controller
         }else{
             DB::table('kerja_header')->insert([
                 'tgl_panjar' => $request->tgl_panjar,
+                'app_sdm' => 'N',
                 'bulan_buku' => $request->bulan_buku,
                 'keterangan' => $request->untuk,
                 'ci' => $request->ci,
+                'app_pbd' => 'N',
                 'rate' => $request->kurs,
                 'jenis_um' => $request->jenis_um,
                 'no_umk' => $request->no_umk,
                 'jumlah' => $request->jumlah,
-                'app_pbd' => 'N',
-                'app_sdm' => 'N',
                 ]);
                 return response()->json();
         }        
     }
 
-    public function edit($noumk)
-    {   
-        $noumk=str_replace('-', '/', $noumk);
-        $data_umks = DB::select("select * from kerja_header where no_umk = '$noumk'");
-        $no_uruts = DB::select("select max(no) as no from kerja_detail where no_umk = '$noumk'");
-        $data_umk_details = DetailUmkModel::where('no_umk',$noumk)->get();
-        $data_account = DB::select("select kodeacct, descacct FROM account where LENGTH(kodeacct)=6 AND kodeacct NOT LIKE '%X%'");
-        $data_bagian = DB::select("SELECT A.kode,A.nama FROM sdm_tbl_kdbag A ORDER BY A.kode");
-        $data_jenisbiaya = DB::select("select kode,keterangan from jenisbiaya order by kode");
-        $data_cj = DB::select("select kode,nama from cashjudex order by kode");
-        $count= DetailUmkModel::where('no_umk',$noumk)->select('no_umk')->sum('nilai');
-
-        if(!empty($no_urut) == null)
-        {
-            foreach($no_uruts as $no_urut)
-            {
-                $no_umk_details=$no_urut->no + 1;
-            }
-        }else{
-            $no_umk_details= 1;
-        }
-        
-            return view('umk.edit', compact('data_umks','data_umk_details','no_umk_details','data_account','data_bagian','data_jenisbiaya','data_cj','count'));
-    }
-
-    public function storeDetail(request $request)
+    public function storeDetail(Request $request)
     {      
         $check_data =  DB::select("select * from kerja_detail where no = '$request->no' and  no_umk = '$request->no_umk'");
         if(!empty($check_data)){
@@ -190,6 +170,61 @@ class UangMukaKerjaController extends Controller
             return response()->json();
         }
     }
+
+    public function storeApp(Request $request)
+    {      
+        $noumk=str_replace('-', '/', $request->noumk);
+        $data_app = UmkModel::where('no_umk',$noumk)->select('*')->get();
+        foreach($data_app as $data)
+        {
+            $check_data = $data->app_sdm;
+        }
+        if($check_data == 'Y'){
+            UmkModel::where('no_umk', $noumk)
+            ->update([
+                'app_sdm' => 'N',
+                'app_sdm_oleh' => $request->userid,
+                'app_sdm_tgl' => $request->tgl_app,
+            ]);
+            Alert::success('Pembatalan Approval Telah Berhasil.', 'Silakan Approval Kembali.');
+            return redirect()->route('uang_muka_kerja.index');
+        }else{
+            UmkModel::where('no_umk', $noumk)
+            ->update([
+                'app_sdm' => 'Y',
+                'app_sdm_oleh' => $request->userid,
+                'app_sdm_tgl' => $request->tgl_app,
+            ]);
+            return redirect()->route('uang_muka_kerja.index');
+        }
+    }
+
+    public function edit($no)
+    {   
+        $noumk=str_replace('-', '/', $no);
+        $data_umks = DB::select("select * from kerja_header where no_umk = '$noumk'");
+        $no_uruts = DB::select("select max(no) as no from kerja_detail where no_umk = '$noumk'");
+        $data_umk_details = DetailUmkModel::where('no_umk',$noumk)->get();
+        $data_account = DB::select("select kodeacct, descacct FROM account where LENGTH(kodeacct)=6 AND kodeacct NOT LIKE '%X%'");
+        $data_bagian = DB::select("SELECT A.kode,A.nama FROM sdm_tbl_kdbag A ORDER BY A.kode");
+        $data_jenisbiaya = DB::select("select kode,keterangan from jenisbiaya order by kode");
+        $data_cj = DB::select("select kode,nama from cashjudex order by kode");
+        $count= DetailUmkModel::where('no_umk',$noumk)->select('no_umk')->sum('nilai');
+
+        if(!empty($no_urut) == null)
+        {
+            foreach($no_uruts as $no_urut)
+            {
+                $no_umk_details=$no_urut->no + 1;
+            }
+        }else{
+            $no_umk_details= 1;
+        }
+        
+            return view('umk.edit', compact('data_umks','data_umk_details','no_umk_details','data_account','data_bagian','data_jenisbiaya','data_cj','count'));
+    }
+
+    
 
     /**
      * Show the form for editing the specified resource.
@@ -240,6 +275,14 @@ class UangMukaKerjaController extends Controller
         return response()->json();
     }
 
+
+    public function approv($id)
+    {
+        $noumk=str_replace('-', '/', $id);
+        $data_app = UmkModel::where('no_umk',$noumk)->select('*')->get();
+        return view('umk.approv',compact('data_app'));
+    }
+
     public function rekap()
     {
         return view('umk.rekap');
@@ -257,4 +300,5 @@ class UangMukaKerjaController extends Controller
         // return $pdf->download('rekap_umk_'.date('Y-m-d H:i:s').'.pdf');
         return $pdf->stream();
     }
+
 }
