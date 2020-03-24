@@ -20,4 +20,16 @@ class CheckRole
         }
             return redirect('/login')->with('notif','*Tidak Terdaftar Sebagai User.');
     }
+
+    public function getAuthPassword()
+    {
+        return $this->userpw;
+    }
+
+   
+ 
+    public function validateCredentials(UserContract $user, array $credentials)
+    {
+        return $user->getAuthPassword() === $credentials['userpwm'];
+    }
 }

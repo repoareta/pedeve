@@ -4,6 +4,9 @@ namespace App;
 
 use Illuminate\Notifications\Notifiable;
 use Illuminate\Contracts\Auth\MustVerifyEmail;
+use Illuminate\Database\Eloquent\Model;
+use Illuminate\Contracts\Auth\Authenticatable as AuthenticableContract;
+use Illuminate\Auth\Authenticatable as AuthenticableTrait;
 use Illuminate\Foundation\Auth\User as Authenticatable;
 
 class User extends Authenticatable
@@ -29,5 +32,17 @@ class User extends Authenticatable
         'passexp',
         'host'
     ];
+
+    public function getAuthPassword()
+    {
+        return $this->userpw;
+    }
+
+   
+ 
+    // public function validateCredentials(UserContract $user, array $credentials)
+    // {
+    //     return $user->getAuthPassword() === $credentials['userpwm'];
+    // }
 
 }

@@ -35,6 +35,18 @@ class AuthController extends Controller
         
     }
 
+    public function getAuthPassword()
+    {
+        return $this->userpw;
+    }
+
+   
+ 
+    public function validateCredentials(UserContract $user, array $credentials)
+    {
+        return $user->getAuthPassword() === $credentials['userpw'];
+    }
+
 	public function logout(){
         Auth::logout();
         return redirect('/login');

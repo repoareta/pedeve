@@ -83,6 +83,7 @@
 							<label for="jenis-dinas-input" class="col-2 col-form-label">Dibayar Kepada</label>
 							<div class="col-10">
 								<input class="form-control" type="text" value="" name="dibayar" id="dibayar" size="50" maxlength="200">
+								<input name="rekyes" type="checkbox" id="rekyes" value="1" <% if rekyes="1" then response.Write("checked") %>></td>
 							</div>
 						</div>
 						<div class="form-group row">

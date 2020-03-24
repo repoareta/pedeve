@@ -55,7 +55,7 @@
 
 					<a href="#">
 						<span style="font-size: 2em;" class="kt-font-info">
-							<i class="fas fa-file-export"></i>
+							<i class="fas fa-file-export" id="reportRow"></i>
 						</span>
 					</a>
 				</div>
@@ -68,7 +68,7 @@
 		<table id="data-umk-table" class="table table-striped table-bordered table-hover table-checkable">
 			<thead class="thead-light">
 				<tr>
-					<th><input type="radio" hidden name="btn-radio"  data-id="1" class="btn-radio" checked ></th>
+					<th><input type="radio" hidden name="btn-radio"  data-id="1" class="btn-radio" checked ><input type="radio" hidden name="btn-radio-rekap"  data-id-rekap="1" class="btn-radio-rekap" checked ></th>
 					<th>Tanggal</th>
 					<th>No UMK</th>
 					<th>No Kas/Bank</th>
@@ -144,6 +144,28 @@ $(document).ready(function(){
     });
 });
 
+//report Uang Muka Kerja 
+$('#reportRow').on('click', function(e) {
+	e.preventDefault();
+
+var allVals = [];  
+$(".btn-radio-rekap:checked").each(function() {  
+	e.preventDefault();
+	var dataid = $(this).attr('data-id-rekap');
+	var dataa = $(this).attr('dataumk');
+
+	if(dataid == 1) 
+	{
+		swal({
+				title: "Tandai baris yang akan dicetak!",
+				type: "success"
+				}) ;  
+	}  else {  
+		location.replace("/umum/uang_muka_kerja/rekap/export/"+dataid);
+	}	
+				
+});
+});
 //edit
 $('#btn-edit-umk').on('click', function(e) {
 	e.preventDefault();
