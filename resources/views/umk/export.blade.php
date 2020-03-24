@@ -70,16 +70,28 @@ h4 {
 
 </style>
 <body>
-    <table style="width:100%;" class="table">
+
+        
+    <table style="margin-top:30px" class="table">
         <thead>
             <tr>
-                <th>No. Panjar</th>
+                <th>NO. BAYAR</th>
+                <th>NO. KAS</th>
+                <th>KEPADA</th>
+                <th>KETERANGAN</th>
+                <th>LAMPIRAN</th>
+                <th>JUMLAH</th>
             </tr>
         </thead>
         <tbody>
             @foreach ($umk_header_list as $umk)
                 <tr>
                     <td>{{ $umk->no_umk }}</td>
+                    <td>{{ $umk->no_kas }}</td>
+                    <td>{{ $umk->kepada }}</td>
+                    <td>{{ $umk->keterangan }}</td>
+                    <td>{{ $umk->lampiran }}</td>
+                    <td>{{ $umk->nilai }}</td>
                 </tr>
             @endforeach
         </tbody>

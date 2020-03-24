@@ -52,15 +52,23 @@ class PermintaanBayarController extends Controller
                     $button = '<p align="center"><span style="font-size: 2em;" class="kt-font-success"><i class="fas fa-check-circle" title="Data Sudah di proses perbendaharaan"></i></span></p>';
                 }else{
                     if($row->app_sdm == 'Y'){
-                        $button = '<p align="center"><a href="#"><span style="font-size: 2em;" class="kt-font-warning"><i class="fas fa-check-circle" title="Batalkan Approval"></i></span></a></p>';
+                        $button = '<p align="center"><a href="'. route('permintaan_bayar.approv',['id' => str_replace('/', '-', $row->no_bayar)]).'"><span style="font-size: 2em;" class="kt-font-warning"><i class="fas fa-check-circle" title="Batalkan Approval"></i></span></a></p>';
                     }else{
-                        $button = '<p align="center"><a href="#"><span style="font-size: 2em;" class="kt-font-danger"><i class="fas fa-ban" title="Klik untuk Approval"></i></span></a></p>';
+                        $button = '<p align="center"><a href="'. route('permintaan_bayar.approv',['id' => str_replace('/', '-', $row->no_bayar)]).'"><span style="font-size: 2em;" class="kt-font-danger"><i class="fas fa-ban" title="Klik untuk Approval"></i></span></a></p>';
                     }
                 }
                 return $button;
             })
             ->addColumn('action_radio', function ($row) {
-                $radio = '<label class="kt-radio kt-radio--bold kt-radio--brand"><input type="radio" name="radio1" value="'.str_replace('/', '-', $row->no_bayar).'" data-id="'.str_replace('/', '-', $row->no_bayar).'"><span></span></label>';
+                if($row->app_pbd == 'Y'){
+                    $radio = '<label class="kt-radio kt-radio--bold kt-radio--brand"><input type="radio" disabled class="btn-radio" ><span></span></label>';
+                }else{
+                    if($row->app_sdm == 'Y'){
+                    $radio = '<label class="kt-radio kt-radio--bold kt-radio--brand"><input type="radio" disabled class="btn-radio" ><span></span></label>';
+                    }else{
+                        $radio = '<label class="kt-radio kt-radio--bold kt-radio--brand"><input type="radio" class="btn-radio" dataumk="'.$row->no_bayar.'" data-id="'.str_replace('/', '-', $row->no_bayar).'" name="btn-radio"><span></span></label>';
+                    }
+                }
                 return $radio;
             })
             ->rawColumns(['action_radio','action'])
@@ -82,7 +90,7 @@ class PermintaanBayarController extends Controller
             $data_no_bayar->no_bayar;
         }
         $no_bayar_max = $data_no_bayar->no_bayar;
-        if(empty($no_umk_max)) {
+        if(empty($no_bayar_max)) {
             $permintaan_header_count= sprintf("%03s", abs($no_bayar_max + 1)). '/CS/' . date('d/m/Y');
         }else {
             $permintaan_header_count= sprintf("%03s", 1). '/CS/' . date('d/m/Y');
@@ -172,6 +180,33 @@ class PermintaanBayarController extends Controller
             'no_bayar' => $request->nobayar
             ]);
             return response()->json();
+        }
+    }
+
+    public function storeApp(Request $request)
+    {      
+        $nobayar=str_replace('-', '/', $request->nobayar);
+        $data_app = PermintaanBayarModel::where('no_bayar',$nobayar)->select('*')->get();
+        foreach($data_app as $data)
+        {
+            $check_data = $data->app_sdm;
+        }
+        if($check_data == 'Y'){
+            PermintaanBayarModel::where('no_bayar', $nobayar)
+            ->update([
+                'app_sdm' => 'N',
+                'app_sdm_oleh' => $request->userid,
+                'app_sdm_tgl' => $request->tgl_app,
+            ]);
+            return redirect()->route('permintaan_bayar.index');
+        }else{
+            PermintaanBayarModel::where('no_bayar', $nobayar)
+            ->update([
+                'app_sdm' => 'Y',
+                'app_sdm_oleh' => $request->userid,
+                'app_sdm_tgl' => $request->tgl_app,
+            ]);
+            return redirect()->route('permintaan_bayar.index');
         }
     }
 
@@ -267,6 +302,16 @@ class PermintaanBayarController extends Controller
         ->delete();
         return response()->json();
     }
+
+
+    public function approv($id)
+    {
+        $nobayar=str_replace('-', '/', $id);
+        $data_app = PermintaanBayarModel::where('no_bayar',$nobayar)->select('*')->get();
+        return view('permintaan_bayar.approv',compact('data_app'));
+    }
+
+
     public function rekap()
     {
         return view('permintaan_bayar.rekap');
@@ -278,9 +323,10 @@ class PermintaanBayarController extends Controller
         $sampai = date($request->sampai);
         $bayar_header_list = PermintaanBayarModel::whereBetween('tgl_bayar', [$mulai, $sampai])
         ->get();
-        // dd($panjar_header_list);
+        // dd($bayar_header_list);
 
         $pdf = PDF::loadview('permintaan_bayar.export', ['bayar_header_list' => $bayar_header_list]);
-        return $pdf->download('rekap_bayar_'.date('Y-m-d H:i:s').'.pdf');
+        // return $pdf->download('rekap_permint_'.date('Y-m-d H:i:s').'.pdf');
+        return $pdf->stream();
     }
 }

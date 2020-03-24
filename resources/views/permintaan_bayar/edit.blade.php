@@ -149,8 +149,8 @@
 						</div>
 						<div style="float:right;">
 							<div class="kt-form__actions">
-								<a  href="{{route('permintaan_bayar.index')}}" class="btn btn-warning">Cancel</a>
-								<button type="submit" class="btn btn-brand">Save</button>
+								<a  href="{{route('permintaan_bayar.index')}}" class="btn btn-warning"><i class="fa fa-reply" aria-hidden="true"></i>Cancel</a>
+								<button type="submit" class="btn btn-brand"><i class="fa fa-reply" aria-hidden="true"></i>Save</button>
 							</div>
 						</div>
 					</div>
@@ -340,8 +340,8 @@
 
 																					
 					<div style="float:right;">
-						<button type="reset"  class="btn btn-warning"  data-dismiss="modal">Cancel</button>
-						<button type="submit" class="btn btn-brand">Save</button>
+						<button type="reset"  class="btn btn-warning"  data-dismiss="modal"><i class="fa fa-reply" aria-hidden="true"></i>Cancel</button>
+						<button type="submit" class="btn btn-brand"><i class="fa fa-reply" aria-hidden="true"></i>Save</button>
 					</div>
 				</form>
 			</div>
@@ -459,8 +459,8 @@
 
 																					
 					<div style="float:right;">
-						<button type="reset"  class="btn btn-warning"  data-dismiss="modal">Cancel</button>
-						<button type="submit" class="btn btn-brand">Save</button>
+						<button type="reset"  class="btn btn-warning"  data-dismiss="modal"><i class="fa fa-reply" aria-hidden="true"></i>Cancel</button>
+						<button type="submit" class="btn btn-brand"><i class="fa fa-reply" aria-hidden="true"></i>Save</button>
 					</div>
 				</form>
 			</div>

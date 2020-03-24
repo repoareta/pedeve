@@ -13,14 +13,11 @@ class CheckRole
      * @param  \Closure  $next
      * @return mixed
      */
-    public function handle($request, Closure $next)
+    public function handle($request, Closure $next,...$role)
     {
-        $user= $request->user();
-        if($user){
-            if($user->isAdmin()){
-                return $next($request);
-            }
+        if(in_array($request->user()->userlv,$role)){
+            return $next($request);
         }
-            return redirect('/login');
+            return redirect('/login')->with('notif','*Tidak Terdaftar Sebagai User.');
     }
 }

@@ -36,7 +36,6 @@
 <script src="{{ asset('js/app.js') }}"></script>
 <!--end::Global Theme Bundle -->
 <script src="{{ asset('plugins/datatables/datatables.bundle.js') }}"></script>
-<script src="https://cdnjs.cloudflare.com/ajax/libs/bootstrap-datepicker/1.7.1/js/bootstrap-datepicker.min.js"></script>
 <script src="https://unpkg.com/sweetalert/dist/sweetalert.min.js"></script>
 
 @yield("scripts")

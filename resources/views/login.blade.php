@@ -53,16 +53,19 @@
 					<div class="resp-tabs-container">
 						<div class="tab-1 resp-tab-content" aria-labelledby="tab_item-0">
 							<div class="login-top">
-                               <form action="{{ route('perjalanan_dinas.index') }}" method="get">
+                               <form action="{{ route('login_user.postlogin') }}" method="post">
                                 {{csrf_field()}}
 									<input type="text" name="usernm" class="email" placeholder="Username" required=""/>
 									<input type="password" name="userpw" class="password" placeholder="Password" required=""/>		
 									<div class="login-bottom">
 										<div class="text-center">
-											<a href="{{ route('perjalanan_dinas.index') }}" class="btn btn-brand" type="button">LOGIN</a>
+											<button class="btn btn-brand" type="submit">LOGIN</button>
 										</div>
 										<div class="clear"></div>
 									</div>	
+										@if(\Session::has('notif'))
+												<span style="color:red; font-size:2; float:left;">{{Session::get('notif')}}</span>
+										@endif
 								</form>
 							</div>
 						</div>							

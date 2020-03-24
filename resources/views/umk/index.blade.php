@@ -65,7 +65,7 @@
 	<div class="kt-portlet__body">
 		<div class="card-body table-responsive">
 		<!--begin: Datatable -->
-		<table id="data-umk-table" class="table table-striped table-hover table-bordered">
+		<table id="data-umk-table" class="table table-striped table-bordered table-hover table-checkable">
 			<thead class="thead-light">
 				<tr>
 					<th><input type="radio" hidden name="btn-radio"  data-id="1" class="btn-radio" checked ></th>
