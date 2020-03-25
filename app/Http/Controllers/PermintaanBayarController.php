@@ -61,12 +61,12 @@ class PermintaanBayarController extends Controller
             })
             ->addColumn('action_radio', function ($row) {
                 if($row->app_pbd == 'Y'){
-                    $radio = '<label class="kt-radio kt-radio--bold kt-radio--brand"><input type="radio" disabled class="btn-radio" ><span></span></label>';
+                    $radio = '<label class="kt-radio kt-radio--bold kt-radio--brand"><input type="radio" data-id-rekap="'.str_replace('/', '-', $row->no_bayar).'" class="btn-radio-rekap" name="btn-radio-rekap"><span></span></label>';
                 }else{
                     if($row->app_sdm == 'Y'){
-                    $radio = '<label class="kt-radio kt-radio--bold kt-radio--brand"><input type="radio" disabled class="btn-radio" ><span></span></label>';
+                    $radio = '<label class="kt-radio kt-radio--bold kt-radio--brand"><input class="btn-radio" type="radio" disabled class="btn-radio" ><span></span></label>';
                     }else{
-                        $radio = '<label class="kt-radio kt-radio--bold kt-radio--brand"><input type="radio" class="btn-radio" dataumk="'.$row->no_bayar.'" data-id="'.str_replace('/', '-', $row->no_bayar).'" name="btn-radio"><span></span></label>';
+                        $radio = '<label  class="kt-radio kt-radio--bold kt-radio--brand"><input type="radio" class="btn-radio" dataumk="'.$row->no_bayar.'" data-id="'.str_replace('/', '-', $row->no_bayar).'" name="btn-radio"><span></span></label>';
                     }
                 }
                 return $radio;
@@ -317,15 +317,34 @@ class PermintaanBayarController extends Controller
         return view('permintaan_bayar.rekap');
     }
 
-    public function rekapExport(Request $request)
+    public function rekapExport($id)
+    {
+        $nobayar=str_replace('-', '/', $id);
+        $bayar_header_list = PermintaanBayarModel::where('no_bayar', $nobayar)
+        ->get();
+        // dd($bayar_header_list);
+        $pdf = PDF::loadview('permintaan_bayar.export', ['bayar_header_list' => $bayar_header_list])->setPaper('a4', 'Portrait');
+        $pdf->output();
+        $dom_pdf = $pdf->getDomPDF();
+
+        $canvas = $dom_pdf ->get_canvas();
+        $canvas->page_text(0, 0, "Page {PAGE_NUM} of {PAGE_COUNT}", null, 10, array(0, 0, 0));
+        // return $pdf->download('rekap_permint_'.date('Y-m-d H:i:s').'.pdf');
+        return $pdf->stream();
+    }
+    public function rekapExportRange(Request $request)
     {
         $mulai = date($request->mulai);
         $sampai = date($request->sampai);
         $bayar_header_list = PermintaanBayarModel::whereBetween('tgl_bayar', [$mulai, $sampai])
         ->get();
         // dd($bayar_header_list);
+        $pdf = PDF::loadview('permintaan_bayar.exportrange', ['bayar_header_list' => $bayar_header_list])->setPaper('a4', 'landscape');
+        $pdf->output();
+        $dom_pdf = $pdf->getDomPDF();
 
-        $pdf = PDF::loadview('permintaan_bayar.export', ['bayar_header_list' => $bayar_header_list]);
+        $canvas = $dom_pdf ->get_canvas();
+        $canvas->page_text(670, 120, "Page {PAGE_NUM} of {PAGE_COUNT}", null, 10, array(0, 0, 0));
         // return $pdf->download('rekap_permint_'.date('Y-m-d H:i:s').'.pdf');
         return $pdf->stream();
     }

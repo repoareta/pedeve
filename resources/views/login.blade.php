@@ -35,7 +35,11 @@
 		}
 	</style>
 </head>
-<body style="background-image: url('{{ asset('images/gedung.jpg')}}');">
+<body style="background-image: url('{{ asset('images/gedung.jpg')}}');
+				-webkit-background-size: 100% 100%;
+                -moz-background-size: 100% 100%;
+                -o-background-size: 100% 100%;
+                background-size: 100% 100%;">
 	<div class="head">
 		<div class="logo">
 			<div class="logo-top">

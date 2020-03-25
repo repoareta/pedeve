@@ -63,7 +63,7 @@ class UangMukaKerjaController extends Controller
 
                 ->addColumn('radio', function($data){
                     if($data->app_pbd == 'Y'){
-                        $button = '<label class="kt-radio kt-radio--bold kt-radio--brand"><input type="radio" disabled class="btn-radio" ><span></span></label>';
+                        $button = '<label class="kt-radio kt-radio--bold kt-radio--brand"><input type="radio" data-id-rekap="'.str_replace('/', '-', $data->no_umk).'" class="btn-radio-rekap" name="btn-radio-rekap"><span></span></label>';
                     }else{
                         if($data->app_sdm == 'Y'){
                         $button = '<label class="kt-radio kt-radio--bold kt-radio--brand"><input type="radio" disabled class="btn-radio" ><span></span></label>';
@@ -288,15 +288,36 @@ class UangMukaKerjaController extends Controller
         return view('umk.rekap');
     }
 
-    public function rekapExport(Request $request)
+    public function rekapExport($id)
+    {
+        $noumk=str_replace('-', '/', $id);
+        $umk_header_list = UmkModel::where('no_umk', $noumk)
+        ->get();
+        // dd($umk_header_list);
+
+        $pdf = PDF::loadview('umk.export', ['umk_header_list' => $umk_header_list])->setPaper('a4', 'Portrait');
+        $pdf->output();
+        $dom_pdf = $pdf->getDomPDF();
+
+        $canvas = $dom_pdf ->get_canvas();
+        $canvas->page_text(690, 100, "Page {PAGE_NUM} of {PAGE_COUNT}", null, 10, array(0, 0, 0));
+        // return $pdf->download('rekap_umk_'.date('Y-m-d H:i:s').'.pdf');
+        return $pdf->stream();
+    }
+    public function rekapExportRange(Request $request)
     {
         $mulai = date($request->mulai);
         $sampai = date($request->sampai);
         $umk_header_list = UmkModel::whereBetween('tgl_panjar', [$mulai, $sampai])
         ->get();
-        // dd($panjar_header_list);
+        dd($umk_header_list);
 
-        $pdf = PDF::loadview('umk.export', ['umk_header_list' => $umk_header_list]);
+        $pdf = PDF::loadview('umk.export', ['umk_header_list' => $umk_header_list])->setPaper('a4', 'landscape');
+        $pdf->output();
+        $dom_pdf = $pdf->getDomPDF();
+
+        $canvas = $dom_pdf ->get_canvas();
+        $canvas->page_text(690, 100, "Page {PAGE_NUM} of {PAGE_COUNT}", null, 10, array(0, 0, 0));
         // return $pdf->download('rekap_umk_'.date('Y-m-d H:i:s').'.pdf');
         return $pdf->stream();
     }

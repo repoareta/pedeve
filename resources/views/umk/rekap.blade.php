@@ -40,7 +40,7 @@
 		</div>
 	</div>
 	<div class="kt-portlet__body">
-        <form class="kt-form kt-form--label-right" action="{{ route('uang_muka_kerja.rekap.export') }}" method="post">
+        <form class="kt-form kt-form--label-right" action="{{ route('uang_muka_kerja.rekap.export') }}" method="get">
             @csrf
             <div class="form-group row">
                 <label for="mulai-input" class="col-2 col-form-label">Mulai</label>

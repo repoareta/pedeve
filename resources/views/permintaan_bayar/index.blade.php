@@ -55,7 +55,7 @@
 
 					<a href="#">
 						<span style="font-size: 2em;" class="kt-font-info">
-							<i class="fas fa-file-export"></i>
+							<i class="fas fa-file-export" id="reportRow"></i>
 						</span>
 					</a>
 				</div>
@@ -111,13 +111,31 @@
 			]
     	});
 
-		//edit permintaan bayar
+//report Uang Muka Kerja 
+$('#reportRow').on('click', function(e) {
+	e.preventDefault();
 
+	if($('input[class=btn-radio-rekap]').is(':checked')) { 
+		$("input[class=btn-radio-rekap]:checked").each(function() {  
+			e.preventDefault();
+			var dataid = $(this).attr('data-id-rekap');
+				location.replace("/umum/permintaan_bayar/rekap/export/"+dataid);
+		});
+	} else{
+			swal({
+					title: "Tandai baris yang akan dicetak!",
+					type: "success"
+				}) ;  
+	}
+	
+});
+
+		//edit permintaan bayar
 		$('#editRow').click(function(e) {
 			e.preventDefault();
 
-			if($('input[type=radio]').is(':checked')) { 
-				$("input[type=radio]:checked").each(function(){
+			if($('input[class=btn-radio]').is(':checked')) { 
+				$("input[class=btn-radio]:checked").each(function(){
 					var id = $(this).val();
 					location.replace("/umum/permintaan_bayar/edit/"+id);
 				});
@@ -132,8 +150,8 @@
 		//delete permintaan bayar
 		$('#deleteRow').click(function(e) {
 			e.preventDefault();
-			if($('input[type=radio]').is(':checked')) { 
-				$("input[type=radio]:checked").each(function() {
+			if($('input[class=btn-radio]').is(':checked')) { 
+				$("input[class=btn-radio]:checked").each(function() {
 					var id = $(this).val();
 					// delete stuff
 					swal({
