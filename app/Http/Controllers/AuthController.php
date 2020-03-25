@@ -27,7 +27,7 @@ class AuthController extends Controller
             	}elseif(Auth::user()->userlv == '5'){
                 	return redirect()->route('isi_route pada Authcontroller');
                 }else {
-                    return redirect('/login')->with('notif','*Username atau Password salah.');
+                    return redirect('/login')->with('notif','*Tidak Terdaftar Sebagai User.');
                 }
             }else{
                 return redirect('/login')->with('notif','*Username atau Password salah.');
