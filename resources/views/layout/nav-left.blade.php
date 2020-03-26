@@ -42,13 +42,23 @@
                     'permintaan_bayar.detail',
                     'permintaan_bayar.edit',
                 ); // isi nama semua route permintaan_bayar
+
                 $anggaran = array(
                     'anggaran.index'
                 ); // isi nama semua route anggaran
-                $report_umum = array(
+
+                $rekap_spd = array(
+                    'perjalanan_dinas.rekap'
+                );
+
+                $rekap_umk = array(
+                    'uang_muka_kerja.rekap'
+                );
+                $rekap_permintaan_bayar = array(
                     'permintaan_bayar.rekap'
-                    
-                ); // isi nama semua route report umum
+                );
+
+                $report_umum_menu = array_merge($rekap_spd, $rekap_umk, $rekap_permintaan_bayar); // isi nama semua route report umum
 
                 // menu umum
                 $umum = array_merge(
@@ -57,7 +67,7 @@
                     $umk_pertanggungjawaban,
                     $permintaan_bayar,
                     $anggaran,
-                    $report_umum
+                    $report_umum_menu
                 ); // array merge semua submenu
 
                 $tabel_data_master = array(
@@ -243,7 +253,7 @@
                                 </span>
                             </a>
                         </li>
-                        <li class="kt-menu__item kt-menu__item--submenu {{ set_active($report_umum) }}" aria-haspopup="true" data-ktmenu-submenu-toggle="hover">
+                        <li class="kt-menu__item kt-menu__item--submenu {{ set_active($report_umum_menu) }}" aria-haspopup="true" data-ktmenu-submenu-toggle="hover">
                             <a href="javascript:;" class="kt-menu__link kt-menu__toggle">
                                 <i class="kt-menu__link-bullet kt-menu__link-bullet--dot">
                                     <span></span>
@@ -253,7 +263,7 @@
                             </a>
                             <div class="kt-menu__submenu "><span class="kt-menu__arrow"></span>
                                 <ul class="kt-menu__subnav">
-                                    <li class="kt-menu__item kt-menu__item{{ set_active_submenu($report_umum) }}" aria-haspopup="true">
+                                    <li class="kt-menu__item kt-menu__item{{ set_active_submenu($rekap_spd) }}" aria-haspopup="true">
                                         <a href="{{ route('perjalanan_dinas.rekap') }}" class="kt-menu__link ">
                                             <i class="kt-menu__link-bullet kt-menu__link-bullet--line">
                                                 <span></span>
@@ -261,7 +271,7 @@
                                             <span class="kt-menu__link-text">Rekap SPD</span>
                                         </a>
                                     </li>
-                                    <li class="kt-menu__item " aria-haspopup="true">
+                                    <li class="kt-menu__item kt-menu__item{{ set_active_submenu($rekap_umk) }}" aria-haspopup="true">
                                         <a href="{{route('uang_muka_kerja.rekap')}}" class="kt-menu__link ">
                                             <i class="kt-menu__link-bullet kt-menu__link-bullet--line">
                                                 <span></span>
@@ -269,7 +279,7 @@
                                             <span class="kt-menu__link-text">Rekap UMK</span>
                                         </a>
                                     </li>
-                                    <li class="kt-menu__item " aria-haspopup="true">
+                                    <li class="kt-menu__item kt-menu__item{{ set_active_submenu($rekap_permintaan_bayar) }}" aria-haspopup="true">
                                         <a href="{{route('permintaan_bayar.rekap')}}" class="kt-menu__link ">
                                             <i class="kt-menu__link-bullet kt-menu__link-bullet--line">
                                                 <span></span>
