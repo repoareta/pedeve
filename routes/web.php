@@ -21,6 +21,7 @@ Route::get('/logout', 'AuthController@logout')->name('logout.index');
 //MODUL UMUM
 Route::group(['middleware'=> ['auth','checkRole:1']], function () {
     Route::prefix('umum')->group(function () {
+
         // UMK
         Route::get('uang_muka_kerja', 'UangMukaKerjaController@index')->name('uang_muka_kerja.index');
         Route::get('uang_muka_kerja/index_json', 'UangMukaKerjaController@indexJson')->name('uang_muka_kerja.index.json');
@@ -36,6 +37,9 @@ Route::group(['middleware'=> ['auth','checkRole:1']], function () {
         Route::get('uang_muka_kerja/rekap', 'UangMukaKerjaController@rekap')->name('uang_muka_kerja.rekap');
         Route::get('uang_muka_kerja/rekap/export/{id}', 'UangMukaKerjaController@rekapExport')->name('uang_muka_kerja.rekap.export');
         Route::get('uang_muka_kerja/rekap/export/range', 'UangMukaKerjaController@rekapExportRange')->name('uang_muka_kerja.rekap.export.range');
+
+        Route::get('uang_muka_kerja/pertanggungjawaban', 'UangMukaKerjaPertanggungJawabanController@index')->name('uang_muka_kerja.pertanggungjawaban.index');
+        Route::get('uang_muka_kerja/pertanggungjawaban/index_json', 'UangMukaKerjaPertanggungJawabanController@indexJson')->name('uang_muka_kerja.pertanggungjawaban.index.json');
         
         // Perjalanan Dinas
         Route::get('perjalanan_dinas', 'PerjalananDinasController@index')->name('perjalanan_dinas.index');
@@ -52,6 +56,9 @@ Route::group(['middleware'=> ['auth','checkRole:1']], function () {
         Route::delete('perjalanan_dinas/delete_detail', 'PerjalananDinasController@deleteDetail')->name('perjalanan_dinas.delete.detail');
         Route::get('perjalanan_dinas/rekap', 'PerjalananDinasController@rekap')->name('perjalanan_dinas.rekap');
         Route::post('perjalanan_dinas/rekap/export', 'PerjalananDinasController@rekapExport')->name('perjalanan_dinas.rekap.export');
+
+        Route::get('perjalanan_dinas/pertanggungjawaban', 'PerjalananDinasPertanggungJawabanController@index')->name('perjalanan_dinas.pertanggungjawaban.index');
+        Route::get('perjalanan_dinas/pertanggungjawaban/index_json', 'PerjalananDinasPertanggungJawabanController@indexJson')->name('perjalanan_dinas.pertanggungjawaban.index.json');
 
         // Permintaan Bayar
         Route::get('permintaan_bayar', 'PermintaanBayarController@index')->name('permintaan_bayar.index');
@@ -127,7 +134,6 @@ Route::group(['middleware'=>['auth','checkRole:2']], function () {
 
 //MODUL PERBENDAHARAAN
 Route::group(['middleware'=>['auth','checkRole:3']], function () {
-   
 });
 
 //MODUL KONTROLER
@@ -136,5 +142,4 @@ Route::group(['middleware'=>['auth','checkRole:4']], function () {
 
 //MODUL ADMINISTRATOR
 Route::group(['middleware'=>['auth','checkRole:5']], function () {
-    
 });
