@@ -4,6 +4,17 @@ namespace App\Http\Controllers;
 
 use Illuminate\Http\Request;
 
+// Load Model
+use App\Models\PPanjarHeader;
+use App\Models\PPanjarDetail;
+use App\Models\SdmMasterPegawai;
+use App\Models\SdmTblKdjab;
+
+// Load Plugin
+use Carbon\Carbon;
+use Session;
+use PDF;
+
 class UangMukaKerjaPertanggungJawabanController extends Controller
 {
     /**
@@ -13,7 +24,34 @@ class UangMukaKerjaPertanggungJawabanController extends Controller
      */
     public function index()
     {
-        //
+        return view('umk_pertanggungjawaban.index');
+    }
+
+    /**
+     * Undocumented function
+     *
+     * @return void
+     */
+    public function indexJson()
+    {
+        $panjar_list = PPanjarHeader::all();
+
+        return datatables()->of($panjar_list)
+            ->addColumn('tgl_ppanjar', function ($row) {
+                return Carbon::parse($row->tgl_ppanjar)->translatedFormat('d F Y');
+            })
+            ->addColumn('nopek', function ($row) {
+                return $row->nopek." - ".$row->nama;
+            })
+            ->addColumn('jmlpanjar', function ($row) {
+                return currency_idr($row->jmlpanjar);
+            })
+            ->addColumn('action', function ($row) {
+                $radio = '<label class="kt-radio kt-radio--bold kt-radio--brand"><input type="radio" name="radio1" value="'.$row->no_panjar.'"><span></span></label>';
+                return $radio;
+            })
+            ->rawColumns(['action'])
+            ->make(true);
     }
 
     /**
