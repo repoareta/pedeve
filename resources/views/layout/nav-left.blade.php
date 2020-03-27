@@ -17,33 +17,57 @@
                     'perjalanan_dinas.edit'
                 ); // isi nama semua route perjalanan dinas
 
+                $perjalanan_dinas_pertanggungjawaban = array(
+                    'perjalanan_dinas.pertanggungjawaban.index',
+                ); // isi nama semua route perjalanan dinas
+
+                $perjalanan_dinas_menu = array_merge($perjalanan_dinas, $perjalanan_dinas_pertanggungjawaban);
+
                 $umk = array(
                     'uang_muka_kerja.index',
                     'uang_muka_kerja.create',
                     'uang_muka_kerja.detail',
                     'uang_muka_kerja.edit',
                 ); // isi nama semua route UMK
+
+                $umk_pertanggungjawaban = array(
+                    'uang_muka_kerja.pertanggungjawaban.index',
+                ); // isi nama semua route UMK
+
+                $umk_menu = array_merge($umk, $umk_pertanggungjawaban);
+                
                 $permintaan_bayar = array(
                     'permintaan_bayar.index',
                     'permintaan_bayar.create',
                     'permintaan_bayar.detail',
                     'permintaan_bayar.edit',
                 ); // isi nama semua route permintaan_bayar
+
                 $anggaran = array(
                     'anggaran.index'
                 ); // isi nama semua route anggaran
-                $report_umum = array(
+
+                $rekap_spd = array(
+                    'perjalanan_dinas.rekap'
+                );
+
+                $rekap_umk = array(
+                    'uang_muka_kerja.rekap'
+                );
+                $rekap_permintaan_bayar = array(
                     'permintaan_bayar.rekap'
-                    
-                ); // isi nama semua route report umum
+                );
+
+                $report_umum_menu = array_merge($rekap_spd, $rekap_umk, $rekap_permintaan_bayar); // isi nama semua route report umum
 
                 // menu umum
                 $umum = array_merge(
-                    $perjalanan_dinas,
-                    $umk,
+                    $perjalanan_dinas_menu,
+                    $umk_menu,
+                    $umk_pertanggungjawaban,
                     $permintaan_bayar,
                     $anggaran,
-                    $report_umum
+                    $report_umum_menu
                 ); // array merge semua submenu
 
                 $tabel_data_master = array(
@@ -148,26 +172,67 @@
                                 </span>
                             </span>
                         </li>
-                        <li class="kt-menu__item  kt-menu__item{{ set_active_submenu($perjalanan_dinas) }}" aria-haspopup="true">
-                            <a href="{{ route('perjalanan_dinas.index') }}" class="kt-menu__link ">
+
+                        <li class="kt-menu__item kt-menu__item--submenu {{ set_active($perjalanan_dinas_menu) }}" aria-haspopup="true" data-ktmenu-submenu-toggle="hover">
+                            <a href="javascript:;" class="kt-menu__link kt-menu__toggle">
                                 <i class="kt-menu__link-bullet kt-menu__link-bullet--dot">
                                     <span></span>
                                 </i>
-                                <span class="kt-menu__link-text">
-                                    Perjalanan Dinas
-                                </span>
+                                <span class="kt-menu__link-text">Perjalanan Dinas</span>
+                                <i class="kt-menu__ver-arrow la la-angle-right"></i>
                             </a>
+                            <div class="kt-menu__submenu "><span class="kt-menu__arrow"></span>
+                                <ul class="kt-menu__subnav">
+                                    <li class="kt-menu__item kt-menu__item{{ set_active_submenu($perjalanan_dinas) }}" aria-haspopup="true">
+                                        <a href="{{ route('perjalanan_dinas.index') }}" class="kt-menu__link ">
+                                            <i class="kt-menu__link-bullet kt-menu__link-bullet--line">
+                                                <span></span>
+                                            </i>
+                                            <span class="kt-menu__link-text">Permintaan SPD</span>
+                                        </a>
+                                    </li>
+                                    <li class="kt-menu__item kt-menu__item{{ set_active_submenu($perjalanan_dinas_pertanggungjawaban) }}" aria-haspopup="true">
+                                        <a href="{{route('perjalanan_dinas.pertanggungjawaban.index')}}" class="kt-menu__link ">
+                                            <i class="kt-menu__link-bullet kt-menu__link-bullet--line">
+                                                <span></span>
+                                            </i>
+                                            <span class="kt-menu__link-text">Pertanggungjawaban SPD</span>
+                                        </a>
+                                    </li>
+                                </ul>
+                            </div>
                         </li>
-                        <li class="kt-menu__item kt-menu__item{{ set_active_submenu($umk) }}" aria-haspopup="true">
-                            <a href="{{ route('uang_muka_kerja.index') }}" class="kt-menu__link ">
+
+                        <li class="kt-menu__item kt-menu__item--submenu {{ set_active($umk_menu) }}" aria-haspopup="true" data-ktmenu-submenu-toggle="hover">
+                            <a href="javascript:;" class="kt-menu__link kt-menu__toggle">
                                 <i class="kt-menu__link-bullet kt-menu__link-bullet--dot">
                                     <span></span>
                                 </i>
-                                <span class="kt-menu__link-text">
-                                    Uang Muka Kerja
-                                </span>
+                                <span class="kt-menu__link-text">Uang Muka Kerja</span>
+                                <i class="kt-menu__ver-arrow la la-angle-right"></i>
                             </a>
+                            <div class="kt-menu__submenu "><span class="kt-menu__arrow"></span>
+                                <ul class="kt-menu__subnav">
+                                    <li class="kt-menu__item kt-menu__item{{ set_active_submenu($umk) }}" aria-haspopup="true">
+                                        <a href="{{ route('uang_muka_kerja.index') }}" class="kt-menu__link ">
+                                            <i class="kt-menu__link-bullet kt-menu__link-bullet--line">
+                                                <span></span>
+                                            </i>
+                                            <span class="kt-menu__link-text">Permintaan UMK</span>
+                                        </a>
+                                    </li>
+                                    <li class="kt-menu__item kt-menu__item{{ set_active_submenu($umk_pertanggungjawaban) }}" aria-haspopup="true">
+                                        <a href="{{route('uang_muka_kerja.pertanggungjawaban.index')}}" class="kt-menu__link ">
+                                            <i class="kt-menu__link-bullet kt-menu__link-bullet--line">
+                                                <span></span>
+                                            </i>
+                                            <span class="kt-menu__link-text">Pertanggungjawaban UMK</span>
+                                        </a>
+                                    </li>
+                                </ul>
+                            </div>
                         </li>
+
                         <li class="kt-menu__item  kt-menu__item{{ set_active_submenu($permintaan_bayar) }}" aria-haspopup="true">
                             <a href="{{ route('permintaan_bayar.index') }}" class="kt-menu__link ">
                                 <i class="kt-menu__link-bullet kt-menu__link-bullet--dot">
@@ -188,17 +253,7 @@
                                 </span>
                             </a>
                         </li>
-                        {{-- <li class="kt-menu__item " aria-haspopup="true">
-                            <a href="{{ route('perjalanan_dinas.index') }}" class="kt-menu__link ">
-                                <i class="kt-menu__link-bullet kt-menu__link-bullet--dot">
-                                    <span></span>
-                                </i>
-                                <span class="kt-menu__link-text">
-                                    Report Umum
-                                </span>
-                            </a>
-                        </li> --}}
-                        <li class="kt-menu__item kt-menu__item--submenu {{ set_active($report_umum) }}" aria-haspopup="true" data-ktmenu-submenu-toggle="hover">
+                        <li class="kt-menu__item kt-menu__item--submenu {{ set_active($report_umum_menu) }}" aria-haspopup="true" data-ktmenu-submenu-toggle="hover">
                             <a href="javascript:;" class="kt-menu__link kt-menu__toggle">
                                 <i class="kt-menu__link-bullet kt-menu__link-bullet--dot">
                                     <span></span>
@@ -208,7 +263,7 @@
                             </a>
                             <div class="kt-menu__submenu "><span class="kt-menu__arrow"></span>
                                 <ul class="kt-menu__subnav">
-                                    <li class="kt-menu__item kt-menu__item{{ set_active_submenu($report_umum) }}" aria-haspopup="true">
+                                    <li class="kt-menu__item kt-menu__item{{ set_active_submenu($rekap_spd) }}" aria-haspopup="true">
                                         <a href="{{ route('perjalanan_dinas.rekap') }}" class="kt-menu__link ">
                                             <i class="kt-menu__link-bullet kt-menu__link-bullet--line">
                                                 <span></span>
@@ -216,7 +271,7 @@
                                             <span class="kt-menu__link-text">Rekap SPD</span>
                                         </a>
                                     </li>
-                                    <li class="kt-menu__item " aria-haspopup="true">
+                                    <li class="kt-menu__item kt-menu__item{{ set_active_submenu($rekap_umk) }}" aria-haspopup="true">
                                         <a href="{{route('uang_muka_kerja.rekap')}}" class="kt-menu__link ">
                                             <i class="kt-menu__link-bullet kt-menu__link-bullet--line">
                                                 <span></span>
@@ -224,7 +279,7 @@
                                             <span class="kt-menu__link-text">Rekap UMK</span>
                                         </a>
                                     </li>
-                                    <li class="kt-menu__item " aria-haspopup="true">
+                                    <li class="kt-menu__item kt-menu__item{{ set_active_submenu($rekap_permintaan_bayar) }}" aria-haspopup="true">
                                         <a href="{{route('permintaan_bayar.rekap')}}" class="kt-menu__link ">
                                             <i class="kt-menu__link-bullet kt-menu__link-bullet--line">
                                                 <span></span>
@@ -234,10 +289,10 @@
                                     </li>
                                 </ul>
                             </div>
-                        </>
+                        </li>
                     </ul>
                 </div>
-            </i>
+            </li>
 
             <li class="kt-menu__item  kt-menu__item--submenu {{ set_active($sdmpayroll) }}" aria-haspopup="true" data-ktmenu-submenu-toggle="hover">
                 <a href="javascript:;" class="kt-menu__link kt-menu__toggle">
@@ -256,7 +311,7 @@
                                     SDM & Payroll
                                 </span>
                             </span>
-                        </>
+                        </li>
                         <li class="kt-menu__item kt-menu__item{{ set_active_submenu($tabel_data_master) }}" aria-haspopup="true">
                             <a href="{{ route('tabel_data_master.index') }}" class="kt-menu__link ">
                                 <i class="kt-menu__link-bullet kt-menu__link-bullet--dot">
@@ -343,7 +398,7 @@
                                     </li>
                                 </ul>
                             </div>
-                        </>
+                        </li>
                         <li class="kt-menu__item kt-menu__item{{ set_active_submenu($report_sdm_payroll) }}" aria-haspopup="true">
                             <a href="{{ route('report_sdm_payroll.index') }}" class="kt-menu__link ">
                                 <i class="kt-menu__link-bullet kt-menu__link-bullet--dot">
@@ -444,7 +499,7 @@
                                     </li>
                                 </ul>
                             </div>
-                        </>
+                        </li>
                         <li class="kt-menu__item " aria-haspopup="true">
                             <a href="{{ route('perjalanan_dinas.index') }}" class="kt-menu__link ">
                                 <i class="kt-menu__link-bullet kt-menu__link-bullet--dot">

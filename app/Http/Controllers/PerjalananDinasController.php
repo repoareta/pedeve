@@ -136,20 +136,22 @@ class PerjalananDinasController extends Controller
         $panjar_header->save();
 
         // Save Panjar Detail;
-        foreach (session('panjar_detail') as $panjar) {
-            $panjar_detail = new PanjarDetail;
-            $panjar_detail->no = $panjar['no'];
-            $panjar_detail->no_panjar = $request->no_spd;
-            $panjar_detail->nopek = $panjar['nopek'];
-            $panjar_detail->nama = $panjar['nama'];
-            $panjar_detail->jabatan = $panjar['jabatan'];
-            $panjar_detail->status = $panjar['golongan'];
-            $panjar_detail->keterangan = $panjar['keterangan'];
-
-            $panjar_detail->save();
+        if (session('panjar_detail')) {
+            foreach (session('panjar_detail') as $panjar) {
+                $panjar_detail = new PanjarDetail;
+                $panjar_detail->no = $panjar['no'];
+                $panjar_detail->no_panjar = $request->no_spd;
+                $panjar_detail->nopek = $panjar['nopek'];
+                $panjar_detail->nama = $panjar['nama'];
+                $panjar_detail->jabatan = $panjar['jabatan'];
+                $panjar_detail->status = $panjar['golongan'];
+                $panjar_detail->keterangan = $panjar['keterangan'];
+    
+                $panjar_detail->save();
+            }
+    
+            session()->forget('panjar_detail');
         }
-
-        session()->forget('panjar_detail');
 
         return redirect()->route('perjalanan_dinas.index');
     }
