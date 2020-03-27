@@ -29,7 +29,7 @@
 				<i class="kt-font-brand flaticon2-line-chart"></i>
 			</span>
 			<h3 class="kt-portlet__head-title">
-				Tabel Umum Rekap Permintaan Bayar
+				Tabel Umum Report Permintaan Bayar
 			</h3>			
 		</div>
 		<div class="kt-portlet__head-toolbar">
@@ -40,27 +40,47 @@
 		</div>
 	</div>
 	<div class="kt-portlet__body">
-        <form class="kt-form kt-form--label-right" action="{{ route('permintaan_bayar.rekap.export.range') }}" method="post">
+        <form class="kt-form kt-form--label-right" action="{{ route('permintaan_bayar.rekap.export') }}" method="post">
             @csrf
             <div class="form-group row">
-                <label for="mulai-input" class="col-2 col-form-label">Mulai</label>
-                <div class="col-8">
-                    <div class="input-daterange input-group" id="date_range_picker">
-                        <input type="text" class="form-control" name="mulai" autocomplete="off" />
-                        <div class="input-group-append">
-                            <span class="input-group-text">Sampai</span>
-                        </div>
-                        <input type="text" class="form-control" name="sampai" autocomplete="off" />
-                    </div>
-                    <span class="form-text text-muted">Pilih rentang waktu rekap permintaan bayar</span>
-                </div>
-            </div>
+				<label for="jenis-dinas-input" class="col-2 col-form-label">Kepada</label>
+				<div class="col-10">
+                @foreach($data_report as $data)
+					<input class="form-control" type="hidden" value="{{$data->no_bayar}}" name="nobayar" id="nobayar" size="50" maxlength="200" readonly>
+				@endforeach
+                    <input class="form-control" type="text" value="MAN. FINANCE" name="kepada" id="kepada" size="50" maxlength="200" required oninvalid="this.setCustomValidity('Kepada Harus Diisi...')" oninput="setCustomValidity('')" autocomplete='off'>
+				</div>
+			</div>
+            <div class="form-group row">
+				<label for="jenis-dinas-input" class="col-2 col-form-label">Dari</label>
+				<div class="col-10">
+					<input class="form-control" type="text" value="IA & RM" name="dari" id="dari" size="50" maxlength="200" required oninvalid="this.setCustomValidity('Dari Harus Diisi..')" oninput="setCustomValidity('')" autocomplete='off'>
+				</div>
+			</div>
+            <div class="form-group row">
+				<label for="jenis-dinas-input" class="col-2 col-form-label">Menyetujui</label>
+				<div class="col-10">
+					<input class="form-control" type="text" value="" name="menyetujui" id="menyetujui" size="50" maxlength="200" required oninvalid="this.setCustomValidity('Menyetujui Harus Diisi..')" oninput="setCustomValidity('')" autocomplete='off'>
+				</div>
+			</div>
+            <div class="form-group row">
+				<label for="jenis-dinas-input" class="col-2 col-form-label">Pemohon</label>
+				<div class="col-10">
+					<input class="form-control" type="text" value="" name="pemohon" id="pemohon" size="50" maxlength="200" required oninvalid="this.setCustomValidity('Pemohon Harus Diisi..')" oninput="setCustomValidity('')" autocomplete='off'>
+				</div>
+			</div>
+            <div class="form-group row">
+				<label for="jenis-dinas-input" class="col-2 col-form-label">Tanggal Surat</label>
+				<div class="col-10">
+                    <input class="form-control" type="text" name="tglsurat" value="" data-date-format="dd/MM/yyyy" id="tglsurat" size="15" maxlength="15" required autocomplete='off'>
+				</div>
+			</div>
 
-            <div class="kt-form__actions">
+            <div class="kt-form__actions" align="right">
                 <div class="row">
                     <div class="col-2"></div>
                     <div class="col-10">
-                        <a  href="{{ url()->previous() }}" class="btn btn-warning"><i class="fa fa-reply" aria-hidden="true"></i> Batal</a>
+                        <a  href="{{ route('permintaan_bayar.index') }}" class="btn btn-warning"><i class="fa fa-reply" aria-hidden="true"></i> Batal</a>
                         <button type="submit" class="btn btn-brand"><i class="fa fa-check" aria-hidden="true"></i> Submit</button>
                     </div>
                 </div>
@@ -93,16 +113,15 @@ $(document).ready(function () {
     // Private functions
     var demos = function () {
 
-        // range picker
-        $('#date_range_picker').datepicker({
-            rtl: KTUtil.isRTL(),
-            todayHighlight: true,
-            templates: arrows,
-            // autoclose: true,
-            // language : 'id',
-            format   : 'yyyy-mm-dd',
-            orientation: 'bottom'
-        });
+        $('#tglsurat').datepicker({
+		rtl: KTUtil.isRTL(),
+		todayHighlight: true,
+		orientation: "bottom left",
+		templates: arrows,
+		autoclose: true,
+		// language : 'id',
+		format   : 'dd/mm/yyyy'
+	    });
     };
 
     return {

@@ -41,7 +41,7 @@
     </head>
     <body>
         <!-- Define header and footer blocks before your content -->
-        @foreach($bayar_header_list as $data_report)
+        
         <header>
             <table width="100%"  >
                 <tr>
@@ -58,10 +58,11 @@
         <main>
         <table width="100%" style="padding-top:10px;">
                 <tr style="font-size: 10pt;">
-                    <td width="100px">KEPADA</td><td width="20px">:</td><td>MAN. FINANC</td><br>
+                    <td width="100px">KEPADA</td><td width="20px">:</td><td>{{strtoupper($request->kepada)}}</td><br>
                 </tr>
+                
                 <tr style="font-size: 10pt;">
-                    <td width="100px">DARI</td><td width="20px">:</td><td>IA & RM</td>
+                    <td width="100px">DARI</td><td width="20px">:</td><td>{{strtoupper($request->dari)}}</td>
                     <hr>
                 </tr>
         </table>
@@ -73,54 +74,60 @@
                     <td width="200px">{{$data_report->lampiran}}</td>
                 </tr>
         </table>
-        <table width="100%" style="padding-top:20px;" >
+        <table width="100%" style="padding-top:10px;" >
                 <tr style="font-size: 10pt;">
-                    <td width="200px">UNTUK PEMBAYARAN</td><td width="20px">:</td><td>{{$data_report->keterangan}}</td><br>
+                    <td width="200px">UNTUK PEMBAYARAN</td><td width="20px">:</td><td>{{$data_report->keterangan}}</td>
                 </tr>
         </table>
-        <table width="100%" style="padding-top:20px;" >
+        <table width="100%" style="padding-top:10px;" >
                 <tr style="font-size: 10pt;">
-                    <td width="200px">SEBESAR</td><td width="20px">:</td><td><?php echo currency_idr($data_report->nilai); ?></td><br>
+                    <td width="200px">SEBESAR</td><td width="20px">:</td><td><?php echo currency_idr($list_acount); ?></td>
                 </tr>
                 <tr style="font-size: 9pt;">
-                    <td width="200px"></td><td width="20px"></td><td>{{ strtoupper(Terbilang::angka($data_report->nilai)) }} {{strtoupper('rupiah')}}</td><br>
+                    <td width="200px"></td><td width="20px"></td><td>{{ strtoupper(Terbilang::angka($list_acount)) }} {{strtoupper('rupiah')}}</td>
                 </tr>
         </table>
-        <table width="100%" style="padding-top:20px;" >
+        <table width="100%" style="padding-top:5px;" >
                 <tr style="font-size: 10pt;">
-                    <td width="200px">DIBAYARKAN KEPADA</td><td width="20px">:</td><td>{{$data_report->kepada}}</td><br>
+                    <td width="200px">DIBAYARKAN KEPADA</td><td width="20px">:</td><td>{{$data_report->kepada}}</td>
                 </tr>
         </table>
-        <table width="100%" style="padding-top:40px;" >
+        
+        
+        <table width="100%" style="padding-top:10px;" >
                 <tr style="font-size: 10pt;">
                     <td width="600px">PERINCIAN :</td>
                 </tr>
         </table>
         <table width="100%" border="none" >
                 <tr style="font-size: 10pt;border-style: groove" bgcolor="#DCDCDC">
-                    <td width="10PX">NO</td>
+                    <td width="1" align="center">NO</td>
                     <td width="100">KETERANGAN</td>
-                    <!-- <td width="10PX"  align="center">SANDI</td> -->
+                    <td width="10PX"  align="center">SANDI</td>
                     <td width="10PX" align="center">JUMLAH</td>
                 </tr>
         </table>
+        <?php $no=0; ?>
+        @foreach($bayar_detail_list as $data_detail)
+        <?php $no++; ?>
         <table width="100%"  >
                 <tr style="font-size: 10pt;">
-                    <td style="border-bottom:2px dotted black;" width="70px">1</td>
-                    <td style="border-bottom:2px dotted black;" width="275">{{$data_report->keterangan}}</td>
-                    <!-- <td  width="60"  align="center">111111</td> -->
-                    <td  width="80">Rp.</td>
-                    <td  width="580px"><?php echo number_format($data_report->nilai, 2, ',', '.'); ?></td>
+                    <td style="border-bottom:2px dotted black;" width="70px" align="center">{{$no}}</td>
+                    <td style="border-bottom:2px dotted black;" width="275">{{$data_detail->keterangan}}</td>
+                    <td  width="70"  align="center">{{$data_detail->account}}</td>
+                    <td  width="50">Rp.</td>
+                    <td  ><?php echo number_format($data_detail->nilai, 2, ',', '.'); ?></td>
                 </tr>
         </table>
+        @endforeach
         <table width="100%">
                 <tr style="font-size: 10pt;">
-                    <td align="right" width="335">TOTAL </td> <td width="80">Rp.</td><td> <?php echo number_format($data_report->nilai, 2, ',', '.'); ?></td><br>
+                    <td align="right" width="400"><b>TOTAL </b></td> <td width="50"><b>Rp.</b></td><td><b><?php echo number_format($list_acount, 2, ',', '.'); ?></b></td>
                 </tr>
         </table>
         <table width="100%" style="font-size: 10pt; padding-top:50px;">
                 <tr style="font-size: 10pt;">
-                    <td align="right" width="400">JAKARTA</td><td width="10">, </td><td><?php echo date('d/m/Y'); ?></td><br>
+                    <td align="right" width="400">JAKARTA</td><td width="10">, </td><td>{{$request->tglsurat}}</td><br>
                 </tr>
         </table>
         <table width="100%" style="font-size: 10pt; padding-top:-10px;">
@@ -133,9 +140,8 @@
         </table>
         <table width="100%" style="font-size: 10pt; padding-top:10px;">
                 <tr style="font-size: 10pt;">
-                    <td align="center" width="200"><u>ALI SYAMSUL ROHMAN</u></td><td align="center" width="200"><u>ANGGRAINI GITTA L</u></td><br>
+                    <td align="center" width="200"><u>{{strtoupper($data_report->menyetujui)}}</u></td><td align="center" width="200"><u>{{strtoupper($data_report->pemohon)}}</u></td><br>
                 </tr>
         </table>
-        @endforeach
     </body>
 </html>

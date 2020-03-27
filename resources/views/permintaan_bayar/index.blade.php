@@ -119,7 +119,7 @@ $('#reportRow').on('click', function(e) {
 		$("input[class=btn-radio-rekap]:checked").each(function() {  
 			e.preventDefault();
 			var dataid = $(this).attr('data-id-rekap');
-				location.replace("/umum/permintaan_bayar/rekap/export/"+dataid);
+				location.replace("/umum/permintaan_bayar/rekap/"+dataid);
 		});
 	} else{
 			swal({

@@ -284,19 +284,29 @@ class UangMukaKerjaController extends Controller
         return view('umk.approv',compact('data_app'));
     }
 
-    public function rekap()
-    {
-        return view('umk.rekap');
-    }
-
-    public function rekapExport($id)
+    public function rekap($id)
     {
         $noumk=str_replace('-', '/', $id);
-        $umk_header_list = UmkModel::where('no_umk', $noumk)
-        ->get();
-        // dd($umk_header_list);
+        $data_report = UmkModel::where('no_umk',$noumk)->select('*')->get();
+        return view('umk.rekap',compact('data_report'));
+    }
 
-        $pdf = PDF::loadview('umk.export', ['umk_header_list' => $umk_header_list])->setPaper('a4', 'Portrait');
+    public function rekapRange()
+    {
+        return view('umk.rekaprange');
+    }
+
+    public function rekapExport(Request $request)
+    {
+        $noumk=$request->noumk;
+        $header_list = UmkModel::where('no_umk', $noumk)->get();
+        foreach($header_list as $data_report)
+        {
+            $data_report;
+        }
+        $detail_list = DetailUmkModel::where('no_umk', $noumk)->get();
+        $list_acount =DetailUmkModel::where('no_umk',$noumk)->select('nilai')->sum('nilai');
+        $pdf = PDF::loadview('umk.export', compact('list_acount','data_report','detail_list','request'))->setPaper('a4', 'Portrait');
         $pdf->output();
         $dom_pdf = $pdf->getDomPDF();
 
@@ -305,15 +315,16 @@ class UangMukaKerjaController extends Controller
         // return $pdf->download('rekap_umk_'.date('Y-m-d H:i:s').'.pdf');
         return $pdf->stream();
     }
+
     public function rekapExportRange(Request $request)
     {
         $mulai = date($request->mulai);
         $sampai = date($request->sampai);
         $umk_header_list = UmkModel::whereBetween('tgl_panjar', [$mulai, $sampai])
         ->get();
-        dd($umk_header_list);
-
-        $pdf = PDF::loadview('umk.export', ['umk_header_list' => $umk_header_list])->setPaper('a4', 'landscape');
+        // dd($umk_header_list);
+        $list_acount =UmkModel::whereBetween('tgl_panjar', [$mulai, $sampai])->select('jumlah')->sum('jumlah');
+        $pdf = PDF::loadview('umk.exportrange',compact('umk_header_list','list_acount'))->setPaper('a4', 'landscape');
         $pdf->output();
         $dom_pdf = $pdf->getDomPDF();
 

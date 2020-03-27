@@ -314,22 +314,40 @@ class PermintaanBayarController extends Controller
         return view('permintaan_bayar.approv',compact('data_app'));
     }
 
-
-    public function rekap()
-    {
-        return view('permintaan_bayar.rekap');
-    }
-
-    public function rekapExport($id)
+//surat permintaan bayar
+    public function rekap($id)
     {
         $nobayar=str_replace('-', '/', $id);
-        $bayar_header_list = \DB::table('umu_bayar_header AS a')
-        ->select(\DB::raw('a.*, (SELECT sum(b.nilai)  FROM umu_bayar_detail as b WHERE b.no_bayar=a.no_bayar) AS nilai'))
-        ->where('a.no_bayar',$nobayar)
-        ->get();
-        $list_acount =PermintaanDetailModel::where('no_bayar', $nobayar)->distinct()->get();
-        // dd($bayar_header_list);
-        $pdf = PDF::loadview('permintaan_bayar.export', compact('list_acount','bayar_header_list'))->setPaper('a4', 'Portrait');
+        $data_report = PermintaanBayarModel::where('no_bayar',$nobayar)->select('*')->get();
+        return view('permintaan_bayar.rekap',compact('data_report'));
+    }
+
+
+//rekap permintaan bayar
+    public function rekapRange()
+    {
+        return view('permintaan_bayar.rekaprange');
+    }
+
+
+
+
+    public function rekapExport(Request $request)
+    {
+        $nobayar=$request->nobayar;
+        PermintaanBayarModel::where('no_bayar', $nobayar)
+            ->update([
+            'pemohon' => $request->pemohon,
+            'menyetujui' => $request->menyetujui,
+            ]);
+        $bayar_header_list = PermintaanBayarModel::where('no_bayar', $nobayar)->get();
+        foreach($bayar_header_list as $data_report)
+        {
+            $data_report;
+        }
+        $bayar_detail_list = PermintaanDetailModel::where('no_bayar', $nobayar)->get();
+        $list_acount =PermintaanDetailModel::where('no_bayar',$nobayar)->select('nilai')->sum('nilai');
+        $pdf = PDF::loadview('permintaan_bayar.export', compact('list_acount','data_report','bayar_detail_list','request'))->setPaper('a4', 'Portrait');
         // return $pdf->download('rekap_permint_'.date('Y-m-d H:i:s').'.pdf');
         return $pdf->stream();
     }

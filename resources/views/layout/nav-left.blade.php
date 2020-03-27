@@ -52,10 +52,10 @@
                 );
 
                 $rekap_umk = array(
-                    'uang_muka_kerja.rekap'
+                    'uang_muka_kerja.rekap.range'
                 );
                 $rekap_permintaan_bayar = array(
-                    'permintaan_bayar.rekap'
+                    'permintaan_bayar.rekap.range'
                 );
 
                 $report_umum_menu = array_merge($rekap_spd, $rekap_umk, $rekap_permintaan_bayar); // isi nama semua route report umum
@@ -272,7 +272,7 @@
                                         </a>
                                     </li>
                                     <li class="kt-menu__item kt-menu__item{{ set_active_submenu($rekap_umk) }}" aria-haspopup="true">
-                                        <a href="{{route('uang_muka_kerja.rekap')}}" class="kt-menu__link ">
+                                        <a href="{{route('uang_muka_kerja.rekap.range')}}" class="kt-menu__link ">
                                             <i class="kt-menu__link-bullet kt-menu__link-bullet--line">
                                                 <span></span>
                                             </i>
@@ -280,7 +280,7 @@
                                         </a>
                                     </li>
                                     <li class="kt-menu__item kt-menu__item{{ set_active_submenu($rekap_permintaan_bayar) }}" aria-haspopup="true">
-                                        <a href="{{route('permintaan_bayar.rekap')}}" class="kt-menu__link ">
+                                        <a href="{{route('permintaan_bayar.rekap.range')}}" class="kt-menu__link ">
                                             <i class="kt-menu__link-bullet kt-menu__link-bullet--line">
                                                 <span></span>
                                             </i>

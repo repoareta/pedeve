@@ -34,9 +34,10 @@ Route::group(['middleware'=> ['auth','checkRole:1']], function () {
         Route::get('uang_muka_kerja/edit/{no}', 'UangMukaKerjaController@edit')->name('uang_muka_kerja.edit');
         Route::get('uang_muka_kerja/edit_detail/{id}/{no}', 'UangMukaKerjaController@edit_detail')->name('uang_muka_kerja.edit.detail');
         Route::get('uang_muka_kerja/approv/{id}', 'UangMukaKerjaController@approv')->name('uang_muka_kerja.approv');
-        Route::get('uang_muka_kerja/rekap', 'UangMukaKerjaController@rekap')->name('uang_muka_kerja.rekap');
-        Route::get('uang_muka_kerja/rekap/export/{id}', 'UangMukaKerjaController@rekapExport')->name('uang_muka_kerja.rekap.export');
-        Route::get('uang_muka_kerja/rekap/export/range', 'UangMukaKerjaController@rekapExportRange')->name('uang_muka_kerja.rekap.export.range');
+        Route::get('uang_muka_kerja/rekap/{id}', 'UangMukaKerjaController@rekap')->name('uang_muka_kerja.rekap');
+        Route::get('uang_muka_kerja/rekaprange', 'UangMukaKerjaController@rekapRange')->name('uang_muka_kerja.rekap.range');
+        Route::post('uang_muka_kerja/rekap/export', 'UangMukaKerjaController@rekapExport')->name('uang_muka_kerja.rekap.export');
+        Route::post('uang_muka_kerja/rekap/export/range', 'UangMukaKerjaController@rekapExportRange')->name('uang_muka_kerja.rekap.export.range');
 
         Route::get('uang_muka_kerja/pertanggungjawaban', 'UangMukaKerjaPertanggungJawabanController@index')->name('uang_muka_kerja.pertanggungjawaban.index');
         Route::get('uang_muka_kerja/pertanggungjawaban/index_json', 'UangMukaKerjaPertanggungJawabanController@indexJson')->name('uang_muka_kerja.pertanggungjawaban.index.json');
@@ -74,8 +75,9 @@ Route::group(['middleware'=> ['auth','checkRole:1']], function () {
         Route::get('permintaan_bayar/approv/{id}', 'PermintaanBayarController@approv')->name('permintaan_bayar.approv');
         Route::delete('permintaan_bayar/delete', 'PermintaanBayarController@delete')->name('permintaan_bayar.delete');
         Route::delete('permintaan_bayar/delete_detail', 'PermintaanBayarController@deleteDetail')->name('permintaan_bayar.delete.detail');
-        Route::get('permintaan_bayar/rekap', 'PermintaanBayarController@rekap')->name('permintaan_bayar.rekap');
-        Route::get('permintaan_bayar/rekap/export/{id}', 'PermintaanBayarController@rekapExport')->name('permintaan_bayar.rekap.export');
+        Route::get('permintaan_bayar/rekap/{id}', 'PermintaanBayarController@rekap')->name('permintaan_bayar.rekap');
+        Route::get('permintaan_bayar/rekaprange', 'PermintaanBayarController@rekapRange')->name('permintaan_bayar.rekap.range');
+        Route::post('permintaan_bayar/rekap/export', 'PermintaanBayarController@rekapExport')->name('permintaan_bayar.rekap.export');
         Route::post('permintaan_bayar/rekap/export/range', 'PermintaanBayarController@rekapExportRange')->name('permintaan_bayar.rekap.export.range');
         
         // Anggaran

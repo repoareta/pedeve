@@ -108,7 +108,7 @@
 						<div class="form-group row">
 							<label for="spd-input"  class="col-2 col-form-label">No. Kas</label>
 							<div class="col-5">
-								<input  class="form-control" name="nokas" type="text" value="{{$data_bayar->no_kas}}" id="nokas" size="10" maxlength="25">
+								<input style="background-color:#DCDCDC; cursor:not-allowed" readonly  class="form-control" name="nokas" type="text" value="{{$data_bayar->no_kas}}" id="nokas" size="10" maxlength="25">
 							</div>
 							<label for="spd-input"  class="col-2 col-form-label">Bulan Buku</label>
 							<div class="col-3" >
