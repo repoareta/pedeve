@@ -56,7 +56,7 @@
 						<div class="col-10">
 							<?php $data_no_umk = str_replace('/', '-', $no_umk); ?>
 							<input  class="form-control" type="hidden" value="{{$data_no_umk}}" id="noumk"  size="25" maxlength="25" readonly>
-							<input  class="form-control" type="text" value="{{$no_umk}}" id="no_umk" name="no_umk" size="25" maxlength="25" readonly required>
+							<input style="background-color:#DCDCDC; cursor:not-allowed"  class="form-control" type="text" value="{{$no_umk}}" id="no_umk" name="no_umk" size="25" maxlength="25" readonly required>
 						</div>
 					</div>
 					<div class="form-group row">
@@ -83,33 +83,31 @@
 						</div>
 					</div>
 					<div class="form-group row">
-						<label for="jenis-dinas-input" class="col-2 col-form-label">No. Panjar</label>
-						<div class="col-10">
-							<input class="form-control" type="text" value="" name="no_panjar" id="no_panjar">
-						</div>
-					</div>
-					<div class="form-group row">
 						<label for="dari-input" class="col-2 col-form-label">Mata Uang</label>
 						<div class="col-10">
-							<input class="form-control" type="text" value="" name="ci" id="ci" size="1" maxlength="1" >
+							<select class="form-control" name="ci" id="ci">
+								<option value="">-Pilih-</option>
+								<option value="1" >1.Rp</option>
+								<option value="2" >2.USD</option>
+							</select>
 						</div>
 					</div>
 					<div class="form-group row">
 						<label for="tujuan-input" class="col-2 col-form-label">Kurs</label>
 						<div class="col-10">
-							<input class="form-control" type="text" value="" name="kurs" id="kurs" size="10" maxlength="10">
+							<input class="form-control" type="text" value="" name="kurs" id="kurs" size="10" maxlength="10" autocomplete='off'>
 						</div>
 					</div>
 					<div class="form-group row">
 						<label for="example-datetime-local-input" class="col-2 col-form-label">Untuk</label>
 						<div class="col-10">
-							<input  class="form-control" type="text" value="" name="untuk" id="untuk" size="70" maxlength="200" required>
+							<textarea  class="form-control" type="text" value="" name="untuk" id="untuk" size="70" maxlength="200" required></textarea>
 						</div>
 					</div>
 					<div class="form-group row">
 						<label for="example-datetime-local-input" class="col-2 col-form-label">Jumlah</label>
 						<div class="col-10">
-							<input  class="form-control" type="text" value="" name="jumlah" id="jumlah" size="70" maxlength="200" readonly value="Rp. 0,-">
+							<input style="background-color:#DCDCDC; cursor:not-allowed" class="form-control" type="text" value="Rp. 0" name="jumlah" id="jumlah" size="70" maxlength="200" readonly value="Rp. 0,-">
 						</div>
 					</div>
 					<div style="float:right;">
@@ -136,19 +134,19 @@
 				<div class="kt-portlet__head-toolbar">
 					<div class="kt-portlet__head-wrapper">
 						<div class="kt-portlet__head-actions">
-							<a  href="#" data-toggle="modal" data-target="#kt_modal_4">
+							<a  href="#" style="cursor:not-allowed" data-toggle="modal" data-target="#kt_modal_4">
 								<span style="font-size: 2em;" class="kt-font-success">
 									<i class="fas fa-plus-circle"></i>
 								</span>
 							</a>
 			
-							<a href="#" data-toggle="modal" data-target="#kt_modal_4">
+							<a href="#" style="cursor:not-allowed" data-toggle="modal" data-target="#kt_modal_4">
 								<span style="font-size: 2em;" class="kt-font-warning">
 									<i class="fas fa-edit"></i>
 								</span>
 							</a>
 			
-							<a href="#" data-toggle="modal" data-target="#kt_modal_4">
+							<a href="#" style="cursor:not-allowed" data-toggle="modal" data-target="#kt_modal_4">
 								<span style="font-size: 2em;" class="kt-font-danger">
 									<i class="fas fa-times-circle"></i>
 								</span>

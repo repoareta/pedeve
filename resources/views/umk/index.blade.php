@@ -112,8 +112,8 @@ $(document).ready(function(){
 				// orderable: false
 			},
 			{
-				data: 'tgl_panjar',
-				name: 'tgl_panjar'
+				data: 'tglpanjar',
+				name: 'tglpanjar'
 			},
 			{
 				data: 'noumk',
@@ -141,6 +141,56 @@ $(document).ready(function(){
 				orderable: false
 			}
 		]
+    });
+	$('#approve').on('click', function(e) {
+	e.preventDefault();
+		$('#data-umk-table').DataTable({
+			scrollX   : true,
+				processing: true,
+				serverSide: true,
+				language: {
+					processing: '<i class="fa fa-spinner fa-spin fa-2x fa-fw"></i> <br> Loading...'
+				},
+			ajax: {
+				url: "{{ route('uang_muka_kerja.index.json') }}",
+			},
+			columns: [
+				{
+					data: 'radio',
+					name: 'radio',
+					// orderable: false
+				},
+				{
+					data: 'tgl_panjar',
+					name: 'tgl_panjar'
+				},
+				{
+					data: 'noumk',
+					name: 'noumk'
+				},
+				{
+					data: 'no_kas',
+					name: 'no_kas'
+				},
+				{
+					data: 'jenisum',
+					name: 'jenisum'
+				},
+				{
+					data: 'keterangan',
+					name: 'keterangan'
+				},
+				{
+					data: 'jumlah',
+					name: 'jumlah'
+				},
+				{
+					data: 'action',
+					name: 'action',
+					orderable: false
+				}
+			]
+		});
     });
 });
 

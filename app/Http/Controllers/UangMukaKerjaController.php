@@ -28,9 +28,7 @@ class UangMukaKerjaController extends Controller
     {
         if($request->ajax())
         {               
-                $datas = UmkModel::all()->chunk(100000);
-                foreach($datas as $data)
-                {
+                $data = UmkModel::orderBy('no_umk','desc')->get();
                 return DataTables::of($data)
                 ->addColumn('action', function($data){
                     if($data->app_pbd == 'Y'){
@@ -43,6 +41,9 @@ class UangMukaKerjaController extends Controller
                         }
                     }
                     return $button;
+                })
+                ->addColumn('tglpanjar', function ($data) {
+                    return Carbon::parse($data->tgl_panjar)->translatedFormat('d-m-Y');
                 })
                 ->addColumn('noumk', function($data){
                         $button = '<a align="center" >'.$data->no_umk.'</a>';
@@ -73,9 +74,9 @@ class UangMukaKerjaController extends Controller
                     }
                     return $button;
                 })
-                ->rawColumns(['action','radio','jenisum','jumlah','noumk'])
+                ->rawColumns(['action','radio','jenisum','jumlah','noumk','tglpanjar'])
                 ->make(true);
-            }
+            
         }
     }
     /**

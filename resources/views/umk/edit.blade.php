@@ -51,7 +51,7 @@
 					<div class="form-group row">
 						<label for="spd-input" class="col-2 col-form-label">No. UMK</label>
 						<div class="col-10">
-                            <input  class="form-control" type="text" value="{{$data_umk->no_umk}}" id="no_umk" name="no_umk" size="25" maxlength="25" readonly>
+                            <input style="background-color:#DCDCDC; cursor:not-allowed"  class="form-control" type="text" value="{{$data_umk->no_umk}}" id="no_umk" name="no_umk" size="25" maxlength="25" readonly>
                         </div>
 					</div>
 					<div class="form-group row">
@@ -77,15 +77,13 @@
 						</div>
 					</div>
 					<div class="form-group row">
-						<label for="jenis-dinas-input" class="col-2 col-form-label">No. Panjar</label>
-						<div class="col-10">
-                            <input class="form-control" type="text" value="" name="no_panjar" id="no_panjar">
-						</div>
-					</div>
-					<div class="form-group row">
 						<label for="dari-input" class="col-2 col-form-label">Mata Uang</label>
 						<div class="col-10">
-                            <input class="form-control" type="text" value="{{$data_umk->ci}}" name="ci" id="ci" size="1" maxlength="1" >
+							<select class="form-control" name="ci" id="ci">
+								<option value="">-Pilih-</option>
+								<option value="1" >1.Rp</option>
+								<option value="2" >2.USD</option>
+							</select>
 						</div>
 					</div>
 					<div class="form-group row">
@@ -104,7 +102,7 @@
 					<div class="form-group row">
 						<label for="example-datetime-local-input" class="col-2 col-form-label">Jumlah</label>
 						<div class="col-10">
-                            <input  class="form-control" type="text" value="Rp. <?php echo number_format($count, 0, ',', '.'); ?>"  size="16" maxlength="16" readonly>
+                            <input style="background-color:#DCDCDC; cursor:not-allowed" class="form-control" type="text" value="Rp. <?php echo number_format($count, 0, ',', '.'); ?>"  size="16" maxlength="16" readonly>
 							<input  class="form-control" type="text" value="{{$count}}" name="jumlah" id="jumlah" size="16" maxlength="16" hidden readonly>
 						</div>
 					</div>
@@ -214,11 +212,11 @@
                         @foreach($data_umks as $data_umk)
                         <input  class="form-control" hidden type="text" value="{{$data_umk->no_umk}}"  name="no_umk">
                         @endforeach
-                    <div class="form-group row">
+                    <div class="form-group row ">
 						<label for="example-text-input" class="col-2 col-form-label">No. Urut</label>
 						<label for="example-text-input" class=" col-form-label">:</label>
 						<div class="col-2">
-							<input  class="form-control" type="text" value="{{$no_umk_details}}"  name="no" readonly>
+							<input style="background-color:#DCDCDC; cursor:not-allowed"  class="form-control" type="text" value="{{$no_umk_details}}"  name="no" readonly>
 						</div>
 					</div>
 
@@ -226,7 +224,7 @@
 						<label for="example-text-input" class="col-2 col-form-label">Keterangan</label>
 						<label for="example-text-input" class=" col-form-label">:</label>
 						<div class="col-8">
-							<input  class="form-control" type="text" value=""  name="keterangan">
+							<textarea  class="form-control" type="text" value=""  name="keterangan"></textarea>
 						</div>
 					</div>
 									
@@ -234,7 +232,7 @@
 					<div class="form-group row">
 						<label for="example-text-input" class="col-2 col-form-label">Account</label>
 						<label for="example-text-input" class=" col-form-label">:</label>
-						<div  class="col-3" >
+						<div  class="col-8" >
 							<select name="acc"  class="form-control selectpicker" data-live-search="true">
 								<option value="">-Pilih-</option>
 									@foreach($data_account as $row)
@@ -247,7 +245,7 @@
 					<div class="form-group row">
 						<label for="example-text-input" class="col-2 col-form-label">Kode Bagian</label>
 						<label for="example-text-input" class=" col-form-label">:</label>
-						<div  class="col-3">
+						<div  class="col-8">
 							<select name="bagian"  class="form-control selectpicker" data-live-search="true">
 								<option value="">-Pilih-</option>
 									@foreach($data_bagian as $row)
@@ -260,7 +258,7 @@
 					<div class="form-group row">
 						<label for="example-text-input" class="col-2 col-form-label">Perintah Kerja</label>
 						<label for="example-text-input" class=" col-form-label">:</label>
-						<div class="col-4">
+						<div class="col-8">
 							<input  class="form-control" type="text" value="000"  name="pk" size="6" maxlength="6">
 						</div>
 					</div>
@@ -268,7 +266,7 @@
 					<div class="form-group row">
 						<label for="example-text-input" class="col-2 col-form-label">Jenis Biaya</label>
 						<label for="example-text-input" class=" col-form-label">:</label>
-						<div  class="col-3">
+						<div  class="col-8">
 							<select name="jb"  class="form-control selectpicker" data-live-search="true">
 								<option value="">-Pilih-</option>
 									@foreach($data_jenisbiaya as $row)
@@ -281,7 +279,7 @@
 					<div class="form-group row">
 						<label for="example-text-input" class="col-2 col-form-label">C. Judex</label>
 						<label for="example-text-input" class=" col-form-label">:</label>
-						<div class="col-3">
+						<div class="col-8">
 							<select name="cj" class="form-control selectpicker" data-live-search="true">
 								<option value="">-Pilih-</option>
 									@foreach($data_cj as $row)
@@ -295,8 +293,8 @@
 					<div class="form-group row">
 						<label for="example-text-input" class="col-2 col-form-label">Jumlah</label>
 						<label for="example-text-input" class=" col-form-label">:</label>
-						<div class="col-4">
-							<input  class="form-control" type="text" value="" name="nilai" onkeypress="return hanyaAngka(event)" required>
+						<div class="col-8">
+							<input  class="form-control" type="text" value="" name="nilai" onkeypress="return hanyaAngka(event)" autocomplete='off' required>
 						</div>
 					</div>
 
@@ -328,7 +326,7 @@
 						<label for="example-text-input" class="col-2 col-form-label">No. Urut</label>
 						<label for="example-text-input" class=" col-form-label">:</label>
 						<div class="col-2">
-							<input  class="form-control" type="text" value="{{$no_umk_details}}" id="no" name="no" readonly>
+							<input style="background-color:#DCDCDC; cursor:not-allowed"  class="form-control" type="text" value="{{$no_umk_details}}" id="no" name="no" readonly>
 						</div>
 					</div>
 
@@ -336,7 +334,7 @@
 						<label for="example-text-input" class="col-2 col-form-label">Keterangan</label>
 						<label for="example-text-input" class=" col-form-label">:</label>
 						<div class="col-8">
-							<input  class="form-control" type="text" value="" id="keterangan" name="keterangan">
+							<textarea  class="form-control" type="text" value="" id="keterangan" name="keterangan"></textarea>
 						</div>
 					</div>
 									
@@ -414,7 +412,7 @@
 						<label for="example-text-input" class="col-2 col-form-label">Jumlah</label>
 						<label for="example-text-input" class=" col-form-label">:</label>
 						<div class="col-4">
-							<input  class="form-control" type="text" value="" id="nilai" name="nilai" onkeypress="return hanyaAngka(event)">
+							<input  class="form-control" type="text" value="" id="nilai" name="nilai" onkeypress="return hanyaAngka(event)" autocomplete='off'>
 						</div>
 					</div>
 
@@ -453,7 +451,7 @@ $('#form-update-umk').submit(function(){
 			success : function(data){
 			   console.log(data);
 				swal({
-                    text: "Edit Data Uang Muka Kerja Berhasil.",
+                    text: "Data Berhasil Disimpan.",
                     type: "success"
                 }).then(function() {
                     window.location.replace("{{route('uang_muka_kerja.index')}}");;

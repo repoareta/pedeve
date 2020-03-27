@@ -7,7 +7,7 @@
                 <h6 style="text-align:center; padding-top:20px;" class="kt-menu__section-text">
                     Welcome
                 </h6>
-                <h4 style="text-align:center; color:#ffffff;" >Muhammad ali</h4>
+                <h4 style="text-align:center; color:#ffffff;" >{{Auth::user()->usernm}}</h4>
             </li>
 
             @php

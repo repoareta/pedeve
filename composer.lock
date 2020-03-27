@@ -4,7 +4,7 @@
         "Read more about it at https://getcomposer.org/doc/01-basic-usage.md#installing-dependencies",
         "This file is @generated automatically"
     ],
-    "content-hash": "322f065d0c2a28a9f6a603bdf6542d58",
+    "content-hash": "28371b2ca3329dd30f20cd028444e975",
     "packages": [
         {
             "name": "barryvdh/laravel-dompdf",
@@ -3859,6 +3859,41 @@
             "time": "2019-10-24T08:53:34+00:00"
         },
         {
+            "name": "tuta/terbilang",
+            "version": "dev-master",
+            "source": {
+                "type": "git",
+                "url": "https://github.com/tutacare/terbilang.git",
+                "reference": "5dd7c8ad9ac4ae4e7e950ccff4282ba271587f5e"
+            },
+            "dist": {
+                "type": "zip",
+                "url": "https://api.github.com/repos/tutacare/terbilang/zipball/5dd7c8ad9ac4ae4e7e950ccff4282ba271587f5e",
+                "reference": "5dd7c8ad9ac4ae4e7e950ccff4282ba271587f5e",
+                "shasum": ""
+            },
+            "type": "library",
+            "autoload": {
+                "psr-4": {
+                    "Tuta\\Terbilang\\": "src/"
+                }
+            },
+            "notification-url": "https://packagist.org/downloads/",
+            "license": [
+                "MIT"
+            ],
+            "authors": [
+                {
+                    "name": "Irfan Mahfudz Guntur",
+                    "email": "irfanmg@mytuta.com",
+                    "homepage": "http://mytuta.com",
+                    "role": "Developer"
+                }
+            ],
+            "description": "Menampilkan nilai terbilang dari jumlah uang atau angka",
+            "time": "2015-12-16T07:54:31+00:00"
+        },
+        {
             "name": "vlucas/phpdotenv",
             "version": "v3.6.1",
             "source": {
@@ -6279,7 +6314,9 @@
     ],
     "aliases": [],
     "minimum-stability": "dev",
-    "stability-flags": [],
+    "stability-flags": {
+        "tuta/terbilang": 20
+    },
     "prefer-stable": true,
     "prefer-lowest": false,
     "platform": {

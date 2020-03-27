@@ -26,7 +26,9 @@ class PermintaanBayarController extends Controller
 
     public function indexJson()
     {
-        $bayar_list = PermintaanBayarModel::all();
+        $bayar_list = \DB::table('umu_bayar_header AS a')
+                        ->select(\DB::raw('a.*, (SELECT sum(b.nilai)  FROM umu_bayar_detail as b WHERE b.no_bayar=a.no_bayar) AS nilai'))
+                        ->get();
         
         return datatables()->of($bayar_list)
             ->addColumn('no_bayar', function ($row) {
@@ -90,7 +92,7 @@ class PermintaanBayarController extends Controller
             $data_no_bayar->no_bayar;
         }
         $no_bayar_max = $data_no_bayar->no_bayar;
-        if(empty($no_bayar_max)) {
+        if(!empty($no_bayar_max)) {
             $permintaan_header_count= sprintf("%03s", abs($no_bayar_max + 1)). '/CS/' . date('d/m/Y');
         }else {
             $permintaan_header_count= sprintf("%03s", 1). '/CS/' . date('d/m/Y');
@@ -135,6 +137,7 @@ class PermintaanBayarController extends Controller
             'keterangan' => $request->keterangan,
             'kepada' => $request->dibayar,
             'debet_dari' => $request->debetdari,
+            'rekyes' => $request->rekyes,
             'debet_no' => $request->nodebet,
             'debet_tgl' => $request->tgldebet,
             'no_kas' => $request->nokas,
@@ -320,15 +323,13 @@ class PermintaanBayarController extends Controller
     public function rekapExport($id)
     {
         $nobayar=str_replace('-', '/', $id);
-        $bayar_header_list = PermintaanBayarModel::where('no_bayar', $nobayar)
+        $bayar_header_list = \DB::table('umu_bayar_header AS a')
+        ->select(\DB::raw('a.*, (SELECT sum(b.nilai)  FROM umu_bayar_detail as b WHERE b.no_bayar=a.no_bayar) AS nilai'))
+        ->where('a.no_bayar',$nobayar)
         ->get();
+        $list_acount =PermintaanDetailModel::where('no_bayar', $nobayar)->distinct()->get();
         // dd($bayar_header_list);
-        $pdf = PDF::loadview('permintaan_bayar.export', ['bayar_header_list' => $bayar_header_list])->setPaper('a4', 'Portrait');
-        $pdf->output();
-        $dom_pdf = $pdf->getDomPDF();
-
-        $canvas = $dom_pdf ->get_canvas();
-        $canvas->page_text(0, 0, "Page {PAGE_NUM} of {PAGE_COUNT}", null, 10, array(0, 0, 0));
+        $pdf = PDF::loadview('permintaan_bayar.export', compact('list_acount','bayar_header_list'))->setPaper('a4', 'Portrait');
         // return $pdf->download('rekap_permint_'.date('Y-m-d H:i:s').'.pdf');
         return $pdf->stream();
     }
@@ -336,15 +337,21 @@ class PermintaanBayarController extends Controller
     {
         $mulai = date($request->mulai);
         $sampai = date($request->sampai);
-        $bayar_header_list = PermintaanBayarModel::whereBetween('tgl_bayar', [$mulai, $sampai])
+        $bayar_header_list = \DB::table('umu_bayar_header AS a')
+        ->select(\DB::raw('a.*, (SELECT sum(b.nilai)  FROM umu_bayar_detail as b WHERE b.no_bayar=a.no_bayar) AS nilai'))
+        ->whereBetween('tgl_bayar', [$mulai, $sampai])
         ->get();
-        // dd($bayar_header_list);
-        $pdf = PDF::loadview('permintaan_bayar.exportrange', ['bayar_header_list' => $bayar_header_list])->setPaper('a4', 'landscape');
+        $bayar_header_list_total =PermintaanBayarModel::select(\DB::raw('SUM(umu_bayar_detail.nilai) as nilai'))
+        ->Join('umu_bayar_detail', 'umu_bayar_detail.no_bayar', '=', 'umu_bayar_header.no_bayar')
+        ->whereBetween('umu_bayar_header.tgl_bayar', [$mulai, $sampai])
+        ->get();
+        // dd($bayar_header_list_total);
+        $pdf = PDF::loadview('permintaan_bayar.exportrange', compact('bayar_header_list_total','bayar_header_list'))->setPaper('a4', 'landscape');
         $pdf->output();
         $dom_pdf = $pdf->getDomPDF();
 
         $canvas = $dom_pdf ->get_canvas();
-        $canvas->page_text(670, 120, "Page {PAGE_NUM} of {PAGE_COUNT}", null, 10, array(0, 0, 0));
+        $canvas->page_text(700, 120, "Page {PAGE_NUM} of {PAGE_COUNT}", null, 10, array(0, 0, 0));
         // return $pdf->download('rekap_permint_'.date('Y-m-d H:i:s').'.pdf');
         return $pdf->stream();
     }
