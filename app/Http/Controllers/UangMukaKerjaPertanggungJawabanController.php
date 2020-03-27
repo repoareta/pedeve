@@ -13,7 +13,7 @@ class UangMukaKerjaPertanggungJawabanController extends Controller
      */
     public function index()
     {
-        return view('umk.index');
+        return view('umk_pertanggungjawaban.index');
     }
 
     /**
