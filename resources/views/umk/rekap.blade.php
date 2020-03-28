@@ -29,7 +29,7 @@
 				<i class="kt-font-brand flaticon2-line-chart"></i>
 			</span>
 			<h3 class="kt-portlet__head-title">
-				Tabel Umum Rekap Uang Muka Kerja
+				Tabel Umum Report Uang Muka Kerja
 			</h3>			
 		</div>
 		<div class="kt-portlet__head-toolbar">

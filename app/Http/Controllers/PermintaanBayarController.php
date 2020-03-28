@@ -3,6 +3,7 @@
 namespace App\Http\Controllers;
 
 use App\PermintaanBayarModel;
+use App\VendorModel;
 use App\PermintaanDetailModel;
 use App\Models\UmuDebetNota;
 use Illuminate\Http\Request;
@@ -68,7 +69,7 @@ class PermintaanBayarController extends Controller
                     if($row->app_sdm == 'Y'){
                     $radio = '<label class="kt-radio kt-radio--bold kt-radio--brand"><input class="btn-radio" type="radio" disabled class="btn-radio" ><span></span></label>';
                     }else{
-                        $radio = '<label  class="kt-radio kt-radio--bold kt-radio--brand"><input type="radio" class="btn-radio" dataumk="'.$row->no_bayar.'" data-id="'.str_replace('/', '-', $row->no_bayar).'" name="btn-radio"><span></span></label>';
+                        $radio = '<label  class="kt-radio kt-radio--bold kt-radio--brand"><input type="radio" class="btn-radio" databayar="'.$row->no_bayar.'" data-id="'.str_replace('/', '-', $row->no_bayar).'" name="btn-radio"><span></span></label>';
                     }
                 }
                 return $radio;
@@ -97,7 +98,8 @@ class PermintaanBayarController extends Controller
         }else {
             $permintaan_header_count= sprintf("%03s", 1). '/CS/' . date('d/m/Y');
         }
-        return view('permintaan_bayar.create',compact('debit_nota','permintaan_header_count'));
+        $vendor = VendorModel::all();
+        return view('permintaan_bayar.create',compact('debit_nota','permintaan_header_count','vendor'));
     }
 
     /**
@@ -242,6 +244,7 @@ class PermintaanBayarController extends Controller
         $data_jenisbiaya = DB::select("select kode,keterangan from jenisbiaya order by kode");
         $data_cj = DB::select("select kode,nama from cashjudex order by kode");
         $count= PermintaanDetailModel::where('no_bayar',$nobayars)->select('no_bayar')->sum('nilai');
+        $vendor=VendorModel::all();
         if(!empty($no_urut) == null)
         { 
             foreach($no_uruts as $no_urut)
@@ -260,7 +263,8 @@ class PermintaanBayarController extends Controller
             'data_cj',
             'no_bayar_details',
             'data_bayar_details',
-            'count'
+            'count',
+            'vendor'
         ));
     }
 

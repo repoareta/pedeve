@@ -82,12 +82,20 @@ Route::group(['middleware'=> ['auth','checkRole:1']], function () {
         
         // Anggaran
         Route::get('anggaran', 'AnggaranController@index')->name('anggaran.index');
+        
+        //vendor
+        Route::get('vendor', 'VendorController@index')->name('vendor.index');
+        Route::get('vendor/index_json', 'VendorController@indexJson')->name('vendor.index.json');
+        Route::get('vendor/create', 'VendorController@create')->name('vendor.create');
+        Route::post('vendor/store', 'VendorController@store')->name('vendor.store');
+        Route::get('vendor/edit/{id}', 'VendorController@edit')->name('vendor.edit');
+        Route::delete('vendor/delete', 'VendorController@delete')->name('vendor.delete');
+
     });
-});
+
 
 
 //MODUL SDM & Payroll
-Route::group(['middleware'=>['auth','checkRole:2']], function () {
     Route::prefix('sdm')->group(function () {
         // Tabel data Master
         Route::get('tabel_data_master', 'TabelDataMasterController@index')->name('tabel_data_master.index');
@@ -136,14 +144,3 @@ Route::group(['middleware'=>['auth','checkRole:2']], function () {
     });
 });
 
-//MODUL PERBENDAHARAAN
-Route::group(['middleware'=>['auth','checkRole:3']], function () {
-});
-
-//MODUL KONTROLER
-Route::group(['middleware'=>['auth','checkRole:4']], function () {
-});
-
-//MODUL ADMINISTRATOR
-Route::group(['middleware'=>['auth','checkRole:5']], function () {
-});

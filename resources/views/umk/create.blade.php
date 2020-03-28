@@ -52,7 +52,7 @@
 					</div>
 				
 					<div class="form-group row">
-						<label for="spd-input" class="col-2 col-form-label">No. UMK</label>
+						<label for="spd-input" class="col-2 col-form-label">No. UMK<span style="color:red;">*</span></label>
 						<div class="col-10">
 							<?php $data_no_umk = str_replace('/', '-', $no_umk); ?>
 							<input  class="form-control" type="hidden" value="{{$data_no_umk}}" id="noumk"  size="25" maxlength="25" readonly>
@@ -60,54 +60,60 @@
 						</div>
 					</div>
 					<div class="form-group row">
-						<label for="nopek-input" class="col-2 col-form-label">Tanggal</label>
+						<label for="nopek-input" class="col-2 col-form-label">Tanggal<span style="color:red;">*</span></label>
 						<div class="col-10">
 							<input class="form-control" type="text" name="tgl_panjar" value="{{ date('Y-m-d') }}" id="datepicker" id="tgl_panjar" size="15" maxlength="15" required>
 
 						</div>
 					</div>
 					<div class="form-group row">
-						<label for="example-email-input" class="col-2 col-form-label">Jenis Uang Muka</label>
-						<div class="col-10">
-						<select class="form-control" id="jenis_um" name="jenis_um" required>
-							<option value="">-Pilih-</option>
-							<option value="K" >Uang Muka Kerja</option>
-							<option value="D" >Uang Muka Dinas</option>
-						</select>
+							<label for="jenis-dinas-input" class="col-2 col-form-label">Dibayar Kepada<span style="color:red;">*</span></label>
+							<div class="col-10">
+								<select name="kepada" id="kepada" class="form-control selectpicker" data-live-search="true" required>
+									<option value="">- Pilih -</option>
+									@foreach ($vendor as $row)
+									<option value="{{ $row->nama }}">{{ $row->nama }}</option>
+									@endforeach
+								</select>
+							</div>
+						</div>
+					<div class="form-group row">
+						<label for="example-email-input" class="col-2 col-form-label">Jenis Uang Muka<span style="color:red;">*</span></label>
+						<div class="col-6">
+							<input style=" width: 26px;height: 26px;margin-left:50px;" value="K" type="radio"id="jenis_um" name="jenis_um" checked  autocomplete='off' />  <label style="font-size:14px; margin-left:10px;">Uang Muka Kerja</label>
+							<input style=" width: 26px;height: 26px;margin-left:50px;" value="D" type="radio"  id="jenis_um" name="jenis_um"   autocomplete='off'/><label style="font-size:14px; margin-left:10px;"> Uang Muka Dinas</label>
 						</div>
 					</div>
 					<div class="form-group row">
-						<label for="id-pekerja;-input" class="col-2 col-form-label">Bulan Buku</label>
+						<label for="id-pekerja;-input" class="col-2 col-form-label">Bulan Buku<span style="color:red;">*</span></label>
 						<div class="col-10">
-							<input class="form-control" type="text" y value="{{ date('Ym') }}" id="bulan_buku" name="bulan_buku" size="6" maxlength="6" required>
+							<input class="form-control" type="text"  value="{{ date('Ym') }}" id="bulan_buku" name="bulan_buku" size="6" maxlength="6" required>
 						</div>
 					</div>
 					<div class="form-group row">
-						<label for="dari-input" class="col-2 col-form-label">Mata Uang</label>
+						<label for="dari-input" class="col-2 col-form-label">Mata Uang<span style="color:red;">*</span></label>
 						<div class="col-10">
-							<select class="form-control" name="ci" id="ci">
-								<option value="">-Pilih-</option>
-								<option value="1" >1.Rp</option>
-								<option value="2" >2.USD</option>
-							</select>
+							<input id="ci"   style=" width: 26px;height: 26px;margin-left:50px;" value="1" type="radio"  name="ci" onclick="displayResult(1)"  checked />  <label style="font-size:14px; margin-left:10px;">1.Rp</label>
+							<input  id="ci" style=" width: 26px;height: 26px;margin-left:50px;" value="2" type="radio"    name="ci"  onclick="displayResult(2)" /><label style="font-size:14px; margin-left:10px;"> 2.USD</label>
 						</div>
 					</div>
 					<div class="form-group row">
-						<label for="tujuan-input" class="col-2 col-form-label">Kurs</label>
+						<label for="tujuan-input" class="col-2 col-form-label">Kurs <span style="color:red;display:none" id="simbol-kurs">*</span></label>
 						<div class="col-10">
-							<input class="form-control" type="text" value="" name="kurs" id="kurs" size="10" maxlength="10" autocomplete='off'>
+							<input class="form-control" type="text" value="0" name="kurs" id="kurs" size="10" maxlength="10" autocomplete='off' onkeypress="return hanyaAngka(event)" >
 						</div>
 					</div>
 					<div class="form-group row">
-						<label for="example-datetime-local-input" class="col-2 col-form-label">Untuk</label>
+						<label for="example-datetime-local-input" class="col-2 col-form-label">Untuk<span style="color:red;">*</span></label>
 						<div class="col-10">
-							<textarea  class="form-control" type="text" value="" name="untuk" id="untuk" size="70" maxlength="200" required></textarea>
+							<textarea  class="form-control" type="text" value="" name="untuk" id="untuk" size="70" maxlength="200" required oninvalid="this.setCustomValidity('Untuk Harus Diisi..')" oninput="setCustomValidity('')"></textarea>
 						</div>
 					</div>
 					<div class="form-group row">
 						<label for="example-datetime-local-input" class="col-2 col-form-label">Jumlah</label>
 						<div class="col-10">
-							<input style="background-color:#DCDCDC; cursor:not-allowed" class="form-control" type="text" value="Rp. 0" name="jumlah" id="jumlah" size="70" maxlength="200" readonly value="Rp. 0,-">
+							<input style="background-color:#DCDCDC; cursor:not-allowed" class="form-control" type="text" value="Rp. 0"  readonly>
+							<input class="form-control" type="hidden" value="" name="jumlah" id="jumlah" size="70" maxlength="200" readonly>
 						</div>
 					</div>
 					<div style="float:right;">
@@ -189,6 +195,21 @@
 		$('#kt_table').DataTable();
 	});
 
+function displayResult(ci){ 
+		if(ci == 1)
+		{
+		$('#kurs').val(0);
+		$('#simbol-kurs').hide();
+		$( "#kurs" ).prop( "required", false );
+
+		}else{
+		$('#kurs').val("");
+		$('#simbol-kurs').show();
+		$( "#kurs" ).prop( "required", true );
+		}
+	}
+
+
 // Class definition
 var KTBootstrapDatepicker = function () {
 
@@ -267,6 +288,14 @@ KTBootstrapDatepicker.init();
 		});	
 		return false;
 	});
+
+	function hanyaAngka(evt) {
+		  var charCode = (evt.which) ? evt.which : event.keyCode
+		   if (charCode > 31 && (charCode < 48 || charCode > 57))
+ 
+		    return false;
+		  return true;
+		}
 </script>
 
 @endsection

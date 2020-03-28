@@ -55,54 +55,60 @@
 						</div>
 					
 						<div class="form-group row">
-							<label for="spd-input" class="col-2 col-form-label">No. Permintaan</label>
+							<label for="spd-input" class="col-2 col-form-label">No. Permintaan<span style="color:red;">*</span></label>
 							<div class="col-5">
 							<?php $data_no_bayar = str_replace('/', '-', $permintaan_header_count); ?>
 								<input  class="form-control" type="hidden" value="{{$data_no_bayar}}" id="noumk"  size="25" maxlength="25" readonly>
 								<input style="background-color:#DCDCDC; cursor:not-allowed" class="form-control" type="text" name="nobayar" value="{{ $permintaan_header_count }}" id="nobayar" readonly>
 							</div>
 
-							<label for="spd-input" class="col-2 col-form-label">Tanggal</label>
+							<label for="spd-input" class="col-2 col-form-label">Tanggal<span style="color:red;">*</span></label>
 							<div class="col-3">
 								<input class="form-control" type="text" name="tanggal" id="tanggal" value="{{ date('Y-m-d') }}">
 							</div>
 						</div>
 						<div class="form-group row">
-							<label for="nopek-input" class="col-2 col-form-label">Terlampir</label>
+							<label for="nopek-input" class="col-2 col-form-label">Terlampir<span style="color:red;">*</span></label>
 							<div class="col-10">
 								<textarea class="form-control" type="text" name="lampiran" value=""  id="lampiran"  required oninvalid="this.setCustomValidity('Terlampir Harus Diisi..')" oninput="setCustomValidity('')"></textarea>
 							</div>
 						</div>
 						<div class="form-group row">
-							<label for="id-pekerja;-input" class="col-2 col-form-label">Keterangan</label>
+							<label for="id-pekerja;-input" class="col-2 col-form-label">Keterangan<span style="color:red;">*</span></label>
 							<div class="col-10">
 								<textarea class="form-control" type="text" value=""  id="keterangan" name="keterangan" size="50" maxlength="200" required oninvalid="this.setCustomValidity('Keterangan Harus Diisi..')" oninput="setCustomValidity('')"></textarea>
 							</div>
 						</div>
 						<div class="form-group row">
-							<label for="jenis-dinas-input" class="col-2 col-form-label">Dibayar Kepada</label>
+							<label for="" class="col-2 col-form-label">Dibayar Kepada<span style="color:red;">*</span></label>
 							<div class="col-10">
-								<input class="form-control" type="text" value="" name="dibayar" id="dibayar" size="50" maxlength="200" autocomplete='off'>
+								<select name="dibayar" id="dibayar" class="form-control selectpicker" data-live-search="true" required>
+									<option value="">- Pilih -</option>
+									@foreach ($vendor as $row)
+									<option value="{{ $row->nama }}">{{ $row->nama }}</option>
+									@endforeach
+								</select>
 								<input name="rekyes" type="hidden" id="rekyes" value="1"></td>
 							</div>
 						</div>
 						<div class="form-group row">
-							<label for="dari-input" class="col-2 col-form-label">Debet Dari</label>
+							<label for="dari-input" class="col-2 col-form-label">Debet Dari<span style="color:red;">*</span></label>
 							<div class="col-10">
-								<select name="debetdari" id="select-debetdari" class="form-control selectpicker" data-live-search="true">
+								<select name="debetdari" id="select-debetdari" class="form-control selectpicker" data-live-search="true" required>
 									<option value="">- Pilih -</option>
 									@foreach ($debit_nota as $row)
 									<option value="{{ $row->kode }}">{{ $row->kode.' - '.$row->keterangan }}</option>
 									@endforeach
 								</select>
+								
 							</div>
 						</div>
 						<div class="form-group row">
-							<label class="col-2 col-form-label">No. Debet</label>
+							<label class="col-2 col-form-label">No. Debet<span style="color:red;">*</span></label>
 							<div class="col-5">
 								<input class="form-control" type="text" name="nodebet" id="nodebet" value="" size="15" maxlength="15" required oninvalid="this.setCustomValidity('No. Debet Harus Diisi..')" oninput="setCustomValidity('')" autocomplete='off'>
 							</div>
-							<label class="col-2 col-form-label">Tgl Debet</label>
+							<label class="col-2 col-form-label">Tgl Debet<span style="color:red;">*</span></label>
 							<div class="col-3" >
 								<input class="form-control" type="text" name="tgldebet" value="" data-date-format="dd/MM/yyyy" id="tgldebet" size="15" maxlength="15" required autocomplete='off'>
 							</div>
@@ -112,7 +118,7 @@
 							<div class="col-5">
 								<input style="background-color:#DCDCDC; cursor:not-allowed" readonly  class="form-control" name="nokas" type="text" value="" id="nokas" size="10" maxlength="25" autocomplete='off'>
 							</div>
-							<label for="spd-input"  class="col-2 col-form-label">Bulan Buku</label>
+							<label for="spd-input"  class="col-2 col-form-label">Bulan Buku<span style="color:red;">*</span></label>
 							<div class="col-3" >
 								<input class="form-control" type="text" value="{{ date('Ym') }}"  id="bulanbuku" name="bulanbuku" size="6" maxlength="6" required oninvalid="this.setCustomValidity('Bulan Buku Harus Diisi..')" oninput="setCustomValidity('')" autocomplete='off'>
 							</div>
@@ -120,16 +126,17 @@
 						<div class="form-group row">
 							<label for="spd-input" class="col-2 col-form-label">CI</label>
 							<div class="col-5">
-								<input class="form-control" type="text" name="ci" value="" id="ci" size="1" maxlength="1" autocomplete='off'>
+									<input id="ci"   style=" width: 26px;height: 26px;margin-left:50px;" value="1" type="radio"  name="ci" onclick="displayResult(1)"  checked />  <label style="font-size:14px; margin-left:10px;">1.Rp</label>
+									<input  id="ci" style=" width: 26px;height: 26px;margin-left:50px;" value="2" type="radio"    name="ci"  onclick="displayResult(2)" /><label style="font-size:14px; margin-left:10px;"> 2.USD</label>
 							</div>
 
-							<label for="spd-input" class="col-2 col-form-label">Kurs</label>
+							<label for="spd-input" class="col-2 col-form-label">Kurs<span style="color:red;display:none" id="simbol-kurs">*</span></label>
 							<div class="col-3">
-								<input class="form-control" type="text" name="kurs" id="kurs" value="" size="10" maxlength="10" autocomplete='off'>
+							<input class="form-control" type="text" value="0" name="kurs" id="kurs" size="10" maxlength="10" autocomplete='off' onkeypress="return hanyaAngka(event)" >
 							</div>
 						</div>
 						<div class="form-group row">
-							<label for="mulai-input" class="col-2 col-form-label">Periode</label>
+							<label for="mulai-input" class="col-2 col-form-label">Periode <span style="color:red;">*</span></label>
 							<div class="col-10">
 								<div class="input-daterange input-group" id="date_range_picker">
 									<input type="text" class="form-control" name="mulai" required autocomplete='off'/>
@@ -143,7 +150,8 @@
 						<div class="form-group row">
 							<label class="col-2 col-form-label">Total Nilai</label>
 							<div class="col-4">
-								<input style="background-color:#DCDCDC; cursor:not-allowed" class="form-control" name="totalnilai" type="text" value="" id="totalnilai"  readonly>
+								<input style="background-color:#DCDCDC; cursor:not-allowed" class="form-control" type="text" value="Rp. 0" readonly>
+								<input style="background-color:#DCDCDC; cursor:not-allowed" class="form-control" name="totalnilai" type="hidden" value="" id="totalnilai"  readonly>
 							</div>
 						</div>
 						<div style="float:right;">
@@ -223,6 +231,8 @@
 	$(document).ready(function () {
 		$('#tabel-detail-permintaan').DataTable();
 
+
+		
 
 
 		$('#form-create-permintaan-bayar').submit(function(){
@@ -322,6 +332,27 @@ return {
 
 KTBootstrapDatepicker.init();
 });
+
+		function displayResult(ci){ 
+			if(ci == 1)
+			{
+				$('#kurs').val(0);
+				$('#simbol-kurs').hide();
+				$( "#kurs" ).prop( "required", false );
+
+			}else{
+				$('#kurs').val("");
+				$('#simbol-kurs').show();
+				$( "#kurs" ).prop( "required", true );
+			}
+		}
+		function hanyaAngka(evt) {
+		  var charCode = (evt.which) ? evt.which : event.keyCode
+		   if (charCode > 31 && (charCode < 48 || charCode > 57))
+ 
+		    return false;
+		  return true;
+		}
 </script>
 
 @endsection

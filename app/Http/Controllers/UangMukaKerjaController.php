@@ -3,6 +3,7 @@
 namespace App\Http\Controllers;
 
 use App\UmkModel;
+use App\VendorModel;
 use App\DetailUmkModel;
 use Illuminate\Http\Request;
 use DataTables;
@@ -97,7 +98,8 @@ class UangMukaKerjaController extends Controller
         }else {
             $no_umk= sprintf("%03s", 1). '/' . $awal .'/' . date('d/m/Y');
         }
-        return view('umk.create', compact('no_umk'));
+        $vendor = VendorModel::all();
+        return view('umk.create', compact('no_umk','vendor'));
     }
 
     /**
@@ -111,6 +113,7 @@ class UangMukaKerjaController extends Controller
             DB::table('kerja_header')
             ->where('no_umk', $request->no_umk)
             ->update([
+            'kepada' => $request->kepada,
             'tgl_panjar' => $request->tgl_panjar,
             'bulan_buku' => $request->bulan_buku,
             'keterangan' => $request->untuk,
@@ -123,6 +126,7 @@ class UangMukaKerjaController extends Controller
             return response()->json();
         }else{
             DB::table('kerja_header')->insert([
+                'kepada' => $request->kepada,
                 'tgl_panjar' => $request->tgl_panjar,
                 'app_sdm' => 'N',
                 'bulan_buku' => $request->bulan_buku,
@@ -187,7 +191,6 @@ class UangMukaKerjaController extends Controller
                 'app_sdm_oleh' => $request->userid,
                 'app_sdm_tgl' => $request->tgl_app,
             ]);
-            Alert::success('Pembatalan Approval Telah Berhasil.', 'Silakan Approval Kembali.');
             return redirect()->route('uang_muka_kerja.index');
         }else{
             UmkModel::where('no_umk', $noumk)
@@ -211,7 +214,7 @@ class UangMukaKerjaController extends Controller
         $data_jenisbiaya = DB::select("select kode,keterangan from jenisbiaya order by kode");
         $data_cj = DB::select("select kode,nama from cashjudex order by kode");
         $count= DetailUmkModel::where('no_umk',$noumk)->select('no_umk')->sum('nilai');
-
+        $vendor=VendorModel::all();
         if(!empty($no_urut) == null)
         {
             foreach($no_uruts as $no_urut)
@@ -222,7 +225,16 @@ class UangMukaKerjaController extends Controller
             $no_umk_details= 1;
         }
         
-            return view('umk.edit', compact('data_umks','data_umk_details','no_umk_details','data_account','data_bagian','data_jenisbiaya','data_cj','count'));
+            return view('umk.edit', compact(
+                'data_umks',
+                'data_umk_details',
+                'no_umk_details',
+                'data_account',
+                'data_bagian',
+                'data_jenisbiaya',
+                'data_cj',
+                'count',
+                'vendor'));
     }
 
     

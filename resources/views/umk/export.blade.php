@@ -114,7 +114,7 @@
         </table>
         <table width="100%" style="font-size: 10pt; padding-top:10px;">
                 <tr style="font-size: 10pt;">
-                    <td align="center" width="200"><u>{{$request->menyetujui}}</u></td><td align="center" width="200"><u>{{$request->pemohon}}</u></td><br>
+                    <td align="center" width="200"><u>{{strtoupper($request->menyetujui)}}</u></td><td align="center" width="200"><u>{{strtoupper($request->pemohon)}}</u></td><br>
                 </tr>
         </table>
     </body>

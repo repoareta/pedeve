@@ -47,6 +47,10 @@
                     'anggaran.index'
                 ); // isi nama semua route anggaran
 
+                $vendor = array(
+                    'vendor.index'
+                ); // isi nama semua route anggaran
+
                 $rekap_spd = array(
                     'perjalanan_dinas.rekap'
                 );
@@ -67,6 +71,7 @@
                     $umk_pertanggungjawaban,
                     $permintaan_bayar,
                     $anggaran,
+                    $vendor,
                     $report_umum_menu
                 ); // array merge semua submenu
 
@@ -289,6 +294,16 @@
                                     </li>
                                 </ul>
                             </div>
+                        </li>
+                        <li class="kt-menu__item  kt-menu__item{{ set_active_submenu($anggaran) }}" aria-haspopup="true">
+                            <a href="{{ route('vendor.index') }}" class="kt-menu__link ">
+                                <i class="kt-menu__link-bullet kt-menu__link-bullet--dot">
+                                    <span></span>
+                                </i>
+                                <span class="kt-menu__link-text">
+                                    Vendor
+                                </span>
+                            </a>
                         </li>
                     </ul>
                 </div>

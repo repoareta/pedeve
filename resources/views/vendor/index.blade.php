@@ -6,15 +6,15 @@
 	<div class="kt-container  kt-container--fluid ">
 		<div class="kt-subheader__main">
 			<h3 class="kt-subheader__title">
-				Permintaan Bayar </h3>
+				Vendor </h3>
 			<span class="kt-subheader__separator kt-hidden"></span>
 			<div class="kt-subheader__breadcrumbs">
 				<a href="#" class="kt-subheader__breadcrumbs-home"><i class="flaticon2-shelter"></i></a>
 				<span class="kt-subheader__breadcrumbs-separator"></span>
 				<a href="" class="kt-subheader__breadcrumbs-link">
-					Umum </a>
+					Vendor </a>
 				<span class="kt-subheader__breadcrumbs-separator"></span>
-				<span class="kt-subheader__breadcrumbs-link kt-subheader__breadcrumbs-link--active">Permintaan Bayar</span>
+				<span class="kt-subheader__breadcrumbs-link kt-subheader__breadcrumbs-link--active">Vendor</span>
 			</div>
 		</div>
 	</div>
@@ -29,33 +29,27 @@
 				<i class="kt-font-brand flaticon2-line-chart"></i>
 			</span>
 			<h3 class="kt-portlet__head-title">
-				Tabel Umum Permintaan Bayar
-			</h3>			
+				Tabel Vendor
+			</h3>
 		</div>
 		<div class="kt-portlet__head-toolbar">
 			<div class="kt-portlet__head-wrapper">
 				<div class="kt-portlet__head-actions">
-					<a href="{{ route('permintaan_bayar.create') }}">
+					<a href="{{ route('vendor.create') }}">
 						<span style="font-size: 2em;" class="kt-font-success">
 							<i class="fas fa-plus-circle"></i>
 						</span>
 					</a>
 	
-					<a href="#" id="editRow">
+					<a href="#">
 						<span style="font-size: 2em;" class="kt-font-warning">
-							<i class="fas fa-edit"></i>
+							<i class="fas fa-edit" id="editRow"></i>
 						</span>
 					</a>
 	
-					<a href="#" id="deleteRow">
-						<span style="font-size: 2em;" class="kt-font-danger">
-							<i class="fas fa-times-circle"></i>
-						</span>
-					</a>
-
 					<a href="#">
-						<span style="font-size: 2em;" class="kt-font-info">
-							<i class="fas fa-file-export" id="reportRow"></i>
+						<span style="font-size: 2em;"  class="kt-font-danger">
+							<i class="fas fa-times-circle" id="deleteRow"></i>
 						</span>
 					</a>
 				</div>
@@ -63,81 +57,59 @@
 		</div>
 	</div>
 	<div class="kt-portlet__body">
-
+		<div class="card-body table-responsive">
 		<!--begin: Datatable -->
-		<table class="table table-striped table-bordered table-hover table-checkable" id="table-permintaan">
+		<table id="data-vendor" class="table table-striped table-bordered table-hover table-checkable">
 			<thead class="thead-light">
 				<tr>
 					<th></th>
-					<th>No. Permintaan</th>
-					<th>No. Kas/Bank</th>
-					<th>Kepada</th>
-					<th>Keterangan</th>
-					<th>Lampiran</th>
-					<th>Nilai</th>
-					<th>Approval</th>
+					<th>Nama</th>
+					<th>Alamat</th>
+					<th>No Telp</th>
 				</tr>
 			</thead>
 			<tbody>
+				
 			</tbody>
 		</table>
 
 		<!--end: Datatable -->
+		</div>
 	</div>
 </div>
 </div>
+
+
 @endsection
 
 @section('scripts')
-	<script type="text/javascript">
-	$(document).ready(function () {
-		$('#table-permintaan').DataTable({
+<script type="text/javascript">
+$(document).ready(function(){
+	$('#data-vendor').DataTable({
 			scrollX   : true,
 			processing: true,
 			serverSide: true,
 			language: {
             	processing: '<i class="fa fa-spinner fa-spin fa-2x fa-fw"></i> <br> Loading...'
 			},
-			ajax      : "{{ route('permintaan_bayar.index.json') }}",
+			ajax      : "{{ route('vendor.index.json') }}",
 			columns: [
-				{data: 'action_radio', name: 'aksi', orderable: false, searchable: false},
-				{data: 'no_bayar', name: 'no_bayar'},
-				{data: 'no_kas', name: 'no_kas'},
-				{data: 'kepada', name: 'kepada'},
-				{data: 'keterangan', name: 'keterangan'},
-				{data: 'lampiran', name: 'lampiran'},
-				{data: 'nilai', name: 'nilai'},
-				{data: 'action', name: 'aksi' , orderable: false, searchable: false},
+				{data: 'action', name: 'action'},
+				{data: 'nama', name: 'nama'},
+				{data: 'alamat', name: 'alamat'},
+				{data: 'telpon', name: 'telpon'},
 			]
-    	});
+	});
 
-//report Uang Muka Kerja 
-$('#reportRow').on('click', function(e) {
-	e.preventDefault();
 
-	if($('input[class=btn-radio-rekap]').is(':checked')) { 
-		$("input[class=btn-radio-rekap]:checked").each(function() {  
-			e.preventDefault();
-			var dataid = $(this).attr('data-id-rekap');
-				location.replace("/umum/permintaan_bayar/rekap/"+dataid);
-		});
-	} else{
-			swal({
-					title: "Tandai baris yang akan dicetak!",
-					type: "success"
-				}) ;  
-	}
-	
-});
-
-		//edit permintaan bayar
-		$('#editRow').click(function(e) {
+	//edit vendor
+	$('#editRow').click(function(e) {
 			e.preventDefault();
 
 			if($('input[class=btn-radio]').is(':checked')) { 
 				$("input[class=btn-radio]:checked").each(function(){
 					var id = $(this).attr('data-id');
-					location.replace("/umum/permintaan_bayar/edit/"+id);
+					location.replace("/umum/vendor/edit/"+id);
 				});
 			} else {
 					swal({
@@ -147,8 +119,9 @@ $('#reportRow').on('click', function(e) {
 			}
 		});
 
-		//delete permintaan bayar
-		$('#deleteRow').click(function(e) {
+
+	//delete vendor
+	$('#deleteRow').click(function(e) {
 			e.preventDefault();
 			if($('input[class=btn-radio]').is(':checked')) { 
 				$("input[class=btn-radio]:checked").each(function() {
@@ -156,7 +129,7 @@ $('#reportRow').on('click', function(e) {
 					// delete stuff
 					swal({
 						title: "Data yang akan di hapus?",
-						text: "No. Panjar : " + id,
+						text: "No Vendor : " + id,
 						icon: "warning",
 						buttons: true,
 						dangerMode: true,
@@ -164,7 +137,7 @@ $('#reportRow').on('click', function(e) {
 					.then((willDelete) => {
 						if (willDelete) {
 							$.ajax({
-								url: "{{ route('permintaan_bayar.delete') }}",
+								url: "{{ route('vendor.delete') }}",
 								type: 'DELETE',
 								dataType: 'json',
 								data: {
@@ -177,7 +150,7 @@ $('#reportRow').on('click', function(e) {
 											text: "Success",
 											type: "success"
 									}).then(function() {
-										location.replace("{{ route('permintaan_bayar.index') }}");
+										location.replace("{{ route('vendor.index') }}");
 									});
 								},
 								error: function () {
@@ -195,6 +168,8 @@ $('#reportRow').on('click', function(e) {
 			}
 			
 		});
-	});
-	</script>
+
+
+});		
+</script>
 @endsection

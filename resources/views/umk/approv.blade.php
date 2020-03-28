@@ -52,7 +52,7 @@
             <div class="form-group row">
                 <label for="mulai-input" class="col-2 col-form-label">No.Dokumen</label>
                 <div class="col-3">
-                        <input type="text" class="form-control" name="noumk" value="{{$data->no_umk}}" readonly />
+                        <input style="background-color:#DCDCDC; cursor:not-allowed" type="text" class="form-control" name="noumk" value="{{$data->no_umk}}" readonly />
                         <input type="text" class="form-control" hidden name="userid" value="{{Auth::user()->userid}}" readonly />
                 </div>
             </div>
@@ -60,7 +60,7 @@
                 <label for="mulai-input" class="col-2 col-form-label">Tanggal Approval</label>
                 <div class="col-2">
                     <div class="input-daterange input-group" >
-                        <input type="text" class="form-control" name="tgl_app" id="date_range_picker" value="<?php echo date("Y-m-d", strtotime($data->app_sdm_tgl)) ?>"/>
+                        <input type="text" class="form-control" name="tgl_app" id="date_range_picker" value="" required  autocomplete='off'/>
                     </div>
                 </div>
             </div>

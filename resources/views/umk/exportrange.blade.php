@@ -48,7 +48,12 @@
                     <img align="right" src="{{public_path() . '/images/pertamina.jpg'}}" width="160px" height="80px"  style="padding-right:70px;"><br>
                    <font style="font-size: 12pt;font-weight: bold "> PT. PERTAMINA PEDEVE INDONESIA</font><br>
                    <font style="font-size: 12pt;font-weight: bold ">REKAP UANG MUKA KERJA</font><br>
-                   <font style="font-size: 12pt;font-weight: bold ">BULAN PEBRUARI 2020</font><br>
+                   <?php 
+                    foreach ($umk_header_list as $umk){
+                        $tglpanjar=$umk->tgl_panjar;
+                    }
+                   ?>
+                   <font style="font-size: 12pt;font-weight: bold ">BULAN <?php echo strtoupper(date("M Y", strtotime($tglpanjar))) ?></font><br>
                     </td>
                 </tr>
             </table>
