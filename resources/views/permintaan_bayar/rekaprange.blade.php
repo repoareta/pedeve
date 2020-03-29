@@ -6,7 +6,7 @@
 	<div class="kt-container  kt-container--fluid ">
 		<div class="kt-subheader__main">
 			<h3 class="kt-subheader__title">
-				Uang Muka Kerja </h3>
+				Permintaan Bayar </h3>
 			<span class="kt-subheader__separator kt-hidden"></span>
 			<div class="kt-subheader__breadcrumbs">
 				<a href="#" class="kt-subheader__breadcrumbs-home"><i class="flaticon2-shelter"></i></a>
@@ -14,7 +14,7 @@
 				<a href="" class="kt-subheader__breadcrumbs-link">
 					Umum </a>
 				<span class="kt-subheader__breadcrumbs-separator"></span>
-				<span class="kt-subheader__breadcrumbs-link kt-subheader__breadcrumbs-link--active">Uang Muka Kerja</span>
+				<span class="kt-subheader__breadcrumbs-link kt-subheader__breadcrumbs-link--active">Permintaan Bayar</span>
 			</div>
 		</div>
 	</div>
@@ -29,13 +29,7 @@
 				<i class="kt-font-brand flaticon2-line-chart"></i>
 			</span>
 			<h3 class="kt-portlet__head-title">
-            @foreach($data_app as $data)
-                @if($data->app_sdm == 'Y')
-				Tabel <span style="color:blue;">Pembatalan</span> Approval Uang Muka Kerja
-                @elseif($data->app_sdm == 'N')
-				Tabel <span style="color:blue;">Eksekusi</span> Approval Uang Muka Kerja
-                @endif
-            @endforeach
+				Tabel Umum Rekap Permintaan Bayar
 			</h3>			
 		</div>
 		<div class="kt-portlet__head-toolbar">
@@ -46,30 +40,27 @@
 		</div>
 	</div>
 	<div class="kt-portlet__body">
-        <form class="kt-form kt-form--label-right" action="{{ route('uang_muka_kerja.store.app') }}" method="post">
+        <form class="kt-form kt-form--label-right" action="{{ route('permintaan_bayar.rekap.export.range') }}" method="post">
             @csrf
-            @foreach($data_app as $data)
             <div class="form-group row">
-                <label for="mulai-input" class="col-2 col-form-label">No.Dokumen</label>
-                <div class="col-3">
-                        <input style="background-color:#DCDCDC; cursor:not-allowed" type="text" class="form-control" name="noumk" value="{{$data->no_umk}}" readonly />
-                        <input type="text" class="form-control" hidden name="userid" value="{{Auth::user()->userid}}" readonly />
-                </div>
-            </div>
-            <div class="form-group row">
-                <label for="mulai-input" class="col-2 col-form-label">Tanggal Approval</label>
-                <div class="col-2">
-                    <div class="input-daterange input-group" >
-                        <input type="text" class="form-control" name="tgl_app" id="date_range_picker" value="" required  autocomplete='off'/>
+                <label for="mulai-input" class="col-2 col-form-label">Mulai</label>
+                <div class="col-8">
+                    <div class="input-daterange input-group" id="date_range_picker">
+                        <input type="text" class="form-control" name="mulai" autocomplete="off" />
+                        <div class="input-group-append">
+                            <span class="input-group-text">Sampai</span>
+                        </div>
+                        <input type="text" class="form-control" name="sampai" autocomplete="off" />
                     </div>
+                    <span class="form-text text-muted">Pilih rentang waktu rekap permintaan bayar</span>
                 </div>
             </div>
-            @endforeach
+
             <div class="kt-form__actions">
                 <div class="row">
                     <div class="col-2"></div>
                     <div class="col-10">
-                        <a  href="{{ route('uang_muka_kerja.index') }}" class="btn btn-warning"><i class="fa fa-reply" aria-hidden="true"></i> Batal</a>
+                        <a  href="{{ url()->previous() }}" class="btn btn-warning"><i class="fa fa-reply" aria-hidden="true"></i> Batal</a>
                         <button type="submit" class="btn btn-brand"><i class="fa fa-check" aria-hidden="true"></i> Submit</button>
                     </div>
                 </div>

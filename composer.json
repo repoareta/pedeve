@@ -16,6 +16,7 @@
         "laravel/framework": "^6.2",
         "laravel/tinker": "^2.0",
         "proengsoft/laravel-jsvalidation": "^3.0",
+        "tuta/terbilang": "dev-master",
         "yajra/laravel-datatables": "^1.5",
         "yajra/laravel-datatables-oracle": "~9.0"
     },

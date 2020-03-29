@@ -7,7 +7,7 @@
                 <h6 style="text-align:center; padding-top:20px;" class="kt-menu__section-text">
                     Welcome
                 </h6>
-                <h4 style="text-align:center; color:#ffffff;" >Muhammad ali</h4>
+                <h4 style="text-align:center; color:#ffffff;" >{{Auth::user()->usernm}}</h4>
             </li>
 
             @php
@@ -47,15 +47,19 @@
                     'anggaran.index'
                 ); // isi nama semua route anggaran
 
+                $vendor = array(
+                    'vendor.index'
+                ); // isi nama semua route anggaran
+
                 $rekap_spd = array(
                     'perjalanan_dinas.rekap'
                 );
 
                 $rekap_umk = array(
-                    'uang_muka_kerja.rekap'
+                    'uang_muka_kerja.rekap.range'
                 );
                 $rekap_permintaan_bayar = array(
-                    'permintaan_bayar.rekap'
+                    'permintaan_bayar.rekap.range'
                 );
 
                 $report_umum_menu = array_merge($rekap_spd, $rekap_umk, $rekap_permintaan_bayar); // isi nama semua route report umum
@@ -67,6 +71,7 @@
                     $umk_pertanggungjawaban,
                     $permintaan_bayar,
                     $anggaran,
+                    $vendor,
                     $report_umum_menu
                 ); // array merge semua submenu
 
@@ -272,7 +277,7 @@
                                         </a>
                                     </li>
                                     <li class="kt-menu__item kt-menu__item{{ set_active_submenu($rekap_umk) }}" aria-haspopup="true">
-                                        <a href="{{route('uang_muka_kerja.rekap')}}" class="kt-menu__link ">
+                                        <a href="{{route('uang_muka_kerja.rekap.range')}}" class="kt-menu__link ">
                                             <i class="kt-menu__link-bullet kt-menu__link-bullet--line">
                                                 <span></span>
                                             </i>
@@ -280,7 +285,7 @@
                                         </a>
                                     </li>
                                     <li class="kt-menu__item kt-menu__item{{ set_active_submenu($rekap_permintaan_bayar) }}" aria-haspopup="true">
-                                        <a href="{{route('permintaan_bayar.rekap')}}" class="kt-menu__link ">
+                                        <a href="{{route('permintaan_bayar.rekap.range')}}" class="kt-menu__link ">
                                             <i class="kt-menu__link-bullet kt-menu__link-bullet--line">
                                                 <span></span>
                                             </i>
@@ -289,6 +294,16 @@
                                     </li>
                                 </ul>
                             </div>
+                        </li>
+                        <li class="kt-menu__item  kt-menu__item{{ set_active_submenu($anggaran) }}" aria-haspopup="true">
+                            <a href="{{ route('vendor.index') }}" class="kt-menu__link ">
+                                <i class="kt-menu__link-bullet kt-menu__link-bullet--dot">
+                                    <span></span>
+                                </i>
+                                <span class="kt-menu__link-text">
+                                    Vendor
+                                </span>
+                            </a>
                         </li>
                     </ul>
                 </div>

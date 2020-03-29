@@ -17,7 +17,7 @@
 				<a href="" class="kt-subheader__breadcrumbs-link">
 					Permintaan Bayar </a>
 				<span class="kt-subheader__breadcrumbs-separator"></span>
-				<span class="kt-subheader__breadcrumbs-link kt-subheader__breadcrumbs-link--active">Tambah</span>
+				<span class="kt-subheader__breadcrumbs-link kt-subheader__breadcrumbs-link--active">Edit</span>
 			</div>
 		</div>
 	</div>
@@ -32,7 +32,7 @@
 					<i class="kt-font-brand flaticon2-plus-1"></i>
 				</span>
 				<h3 class="kt-portlet__head-title">
-					Tambah Permintaan Bayar
+					Menu Permintaan Bayar
 				</h3>			
 			</div>
 			<div class="kt-portlet__head-toolbar">
@@ -55,88 +55,92 @@
 						</div>
                         @foreach($data_bayars as $data_bayar)
 						<div class="form-group row">
-							<label for="spd-input" class="col-2 col-form-label">No. Permintaan</label>
+							<label for="spd-input" class="col-2 col-form-label">No. Permintaan<span style="color:red;">*</span></label>
 							<div class="col-5">
-								<input class="form-control" type="text" name="nobayar" value="{{$data_bayar->no_bayar}}" id="nobayar">
+								<input style="background-color:#DCDCDC; cursor:not-allowed" class="form-control" type="text" name="nobayar" value="{{$data_bayar->no_bayar}}" id="nobayar">
 							</div>
 
-							<label for="spd-input" class="col-2 col-form-label">Tanggal</label>
+							<label for="spd-input" class="col-2 col-form-label">Tanggal<span style="color:red;">*</span></label>
 							<div class="col-3">
-								<input class="form-control" type="text" name="tanggal" id="tanggal" value="<?php echo date("d/m/Y", strtotime($data_bayar->tgl_bayar)) ?>">
+								<input class="form-control" type="text" name="tanggal" id="tanggal" value="<?php echo date("Y-m-d", strtotime($data_bayar->tgl_bayar)) ?>">
 							</div>
 						</div>
 						<div class="form-group row">
-							<label for="nopek-input" class="col-2 col-form-label">Terlampir</label>
+							<label for="nopek-input" class="col-2 col-form-label">Terlampir<span style="color:red;">*</span></label>
 							<div class="col-10">
-								<input class="form-control" type="text" name="lampiran" value="{{$data_bayar->lampiran}}"  id="lampiran"  required>
+								<textarea class="form-control" type="text" name="lampiran" value=""  id="lampiran"  required>{{$data_bayar->lampiran}}</textarea>
 							</div>
 						</div>
 						<div class="form-group row">
-							<label for="id-pekerja;-input" class="col-2 col-form-label">Keterangan</label>
+							<label for="id-pekerja;-input" class="col-2 col-form-label">Keterangan<span style="color:red;">*</span></label>
 							<div class="col-10">
-								<input class="form-control" type="text" value="{{$data_bayar->keterangan}}"  name="keterangan" size="50" maxlength="200" required>
+								<textarea class="form-control" type="text" value=""  name="keterangan" size="50" maxlength="200" required>{{$data_bayar->keterangan}}</textarea>
 							</div>
 						</div>
 						<div class="form-group row">
-							<label for="jenis-dinas-input" class="col-2 col-form-label">Dibayar Kepada</label>
+							<label for="jenis-dinas-input" class="col-2 col-form-label">Dibayar Kepada<span style="color:red;">*</span></label>
 							<div class="col-10">
-								<input class="form-control" type="text" value="{{$data_bayar->kepada}}" name="dibayar" id="dibayar" size="50" maxlength="200">
+								<select name="dibayar" id="dibayar" class="form-control selectpicker" data-live-search="true" required>
+									<option value="">- Pilih -</option>
+									@foreach ($vendor as $row)
+									<option value="{{ $row->nama }}" <?php if($row->nama  == $data_bayar->kepada ) echo 'selected' ; ?>>{{ $row->nama }}</option>
+									@endforeach
+								</select>
 							</div>
 						</div>
-                        @endforeach
-                        @foreach($data_bayars as $data_bayar)
 						<div class="form-group row">
-							<label for="dari-input" class="col-2 col-form-label">Debet Dari</label>
+							<label for="dari-input" class="col-2 col-form-label">Debet Dari<span style="color:red;">*</span></label>
 							<div class="col-10">
-								<select name="debetdari" id="select-debetdari" class="form-control selectpicker" data-live-search="true">
-                                    <option value="">- Pilih Nopek -</option>
+								<select name="debetdari" id="select-debetdari" class="form-control selectpicker" data-live-search="true" required>
+                                    <option value="">- Pilih -</option>
 									@foreach ($debit_nota as $row)
-									<option value="{{ $row->kode }}">{{ $row->kode.' - '.$row->keterangan }}</option>
+									<option value="{{ $row->kode }}" <?php if($row->kode == $data_bayar->debet_dari ) echo 'selected' ; ?>>{{ $row->kode.' - '.$row->keterangan }}</option>
 									@endforeach
 									
 								</select>
 							</div>
 						</div>
 						<div class="form-group row">
-							<label class="col-2 col-form-label">No. Debet</label>
+							<label class="col-2 col-form-label">No. Debet<span style="color:red;">*</span></label>
 							<div class="col-5">
 								<input class="form-control" type="text" name="nodebet" id="nodebet" value="{{$data_bayar->debet_no}}" size="15" maxlength="15" required>
 							</div>
-							<label class="col-2 col-form-label">Tgl Debet</label>
+							<label class="col-2 col-form-label">Tgl Debet<span style="color:red;">*</span></label>
 							<div class="col-3" >
-								<input class="form-control" type="text" name="tgldebet" value="<?php echo date("d/m/Y", strtotime($data_bayar->debet_tgl)) ?>" data-date-format="dd/MM/yyyy" id="tgldebet" size="15" maxlength="15" required>
+								<input class="form-control" type="text" name="tgldebet" value="<?php echo date("Y-m-d", strtotime($data_bayar->debet_tgl)) ?>" id="tgldebet" size="15" maxlength="15" required>
 							</div>
 						</div>
 						<div class="form-group row">
 							<label for="spd-input"  class="col-2 col-form-label">No. Kas</label>
 							<div class="col-5">
-								<input  class="form-control" name="nokas" type="text" value="{{$data_bayar->no_kas}}" id="nokas" size="10" maxlength="25">
+								<input style="background-color:#DCDCDC; cursor:not-allowed" readonly  class="form-control" name="nokas" type="text" value="{{$data_bayar->no_kas}}" id="nokas" size="10" maxlength="25">
 							</div>
-							<label for="spd-input"  class="col-2 col-form-label">Bulan Buku</label>
+							<label for="spd-input"  class="col-2 col-form-label">Bulan Buku<span style="color:red;">*</span></label>
 							<div class="col-3" >
 								<input class="form-control" type="text" value="{{$data_bayar->bulan_buku}}" data-date-format="yyyymm" id="bulanbuku" name="bulanbuku" size="6" maxlength="6" required>
 							</div>
 						</div>
 						<div class="form-group row">
-							<label for="spd-input" class="col-2 col-form-label">CI</label>
+							<label for="spd-input" class="col-2 col-form-label">CI<span style="color:red;">*</span></label>
 							<div class="col-5">
-								<input class="form-control" type="text" name="ci" value="{{$data_bayar->ci}}" id="ci" size="1" maxlength="1">
+								<input id="ci"   style=" width: 26px;height: 26px;margin-left:50px;" value="1" <?php if ($data_bayar->ci == '1' )  echo 'checked' ; ?> type="radio"  name="ci" onclick="displayResult(1)"  checked />  <label style="font-size:14px; margin-left:10px;">1.Rp</label>
+									<input  id="ci" style=" width: 26px;height: 26px;margin-left:50px;" value="2" <?php if ($data_bayar->ci == '2' )  echo 'checked' ; ?> type="radio"    name="ci"  onclick="displayResult(2)" /><label style="font-size:14px; margin-left:10px;"> 2.USD</label>
 							</div>
 
-							<label for="spd-input" class="col-2 col-form-label">Kurs</label>
+							<label for="spd-input" class="col-2 col-form-label">Kurs<span style="color:red;">*</span></label>
 							<div class="col-3">
-								<input class="form-control" type="text" name="kurs" id="kurs" value="{{$data_bayar->rate}}" size="10" maxlength="10">
+								<input class="form-control" type="text" name="kurs" id="kurs" value="<?php echo number_format($data_bayar->rate, 0, ',', '.'); ?>" size="10" maxlength="10" onkeypress="return hanyaAngka(event)">
 							</div>
 						</div>
 						<div class="form-group row">
-							<label for="mulai-input" class="col-2 col-form-label">Periode</label>
+							<label for="mulai-input" class="col-2 col-form-label">Periode<span style="color:red;">*</span></label>
 							<div class="col-10">
 								<div class="input-daterange input-group" id="date_range_picker">
-									<input type="text" class="form-control" name="mulai" value="<?php echo date("d/m/Y", strtotime($data_bayar->mulai)) ?>" />
+									<input type="text" class="form-control" name="mulai" value="<?php echo date("Y-m-d", strtotime($data_bayar->mulai)) ?>" />
 									<div class="input-group-append">
 										<span class="input-group-text">s/d</span>
 									</div>
-									<input type="text" class="form-control" name="sampai"  value="<?php echo date("d/m/Y", strtotime($data_bayar->sampai)) ?>"/>
+									<input type="text" class="form-control" name="sampai"  value="<?php echo date("Y-m-d", strtotime($data_bayar->sampai)) ?>"/>
 								</div>
 							</div>
 						</div>
@@ -144,7 +148,7 @@
 						<div class="form-group row">
 							<label class="col-2 col-form-label">Total Nilai</label>
 							<div class="col-4">
-								<input  class="form-control" name="totalnilai" type="text" id="totalnilai" value="Rp. <?php echo number_format($count, 0, ',', '.'); ?>"  readonly>
+								<input style="background-color:#DCDCDC; cursor:not-allowed"  class="form-control" name="totalnilai" type="text" id="totalnilai" value="Rp. <?php echo number_format($count, 0, ',', '.'); ?>"  readonly>
 							</div>
 						</div>
 						<div style="float:right;">
@@ -255,15 +259,15 @@
 						<label for="example-text-input" class="col-2 col-form-label">No. Urut</label>
 						<label for="example-text-input" class=" col-form-label">:</label>
 						<div class="col-2">
-							<input  class="form-control" type="text" value="{{$no_bayar_details}}"  name="no" readonly>
+							<input style="background-color:#DCDCDC; cursor:not-allowed"  class="form-control" type="text" value="{{$no_bayar_details}}"  name="no" readonly>
 						</div>
 					</div>
 
 					<div class="form-group row">
-						<label for="example-text-input" class="col-2 col-form-label">Keterangan</label>
+						<label for="example-text-input" class="col-2 col-form-label">Keterangan<span style="color:red;">*</span></label>
 						<label for="example-text-input" class=" col-form-label">:</label>
 						<div class="col-8">
-							<input  class="form-control" type="text" value=""  name="keterangan">
+							<textarea  class="form-control" type="text" value=""  name="keterangan" required oninvalid="this.setCustomValidity('Keterangan Harus Diisi..')" oninput="setCustomValidity('')"></textarea>
 						</div>
 					</div>
 									
@@ -331,10 +335,10 @@
 									
 
 					<div class="form-group row">
-						<label for="example-text-input" class="col-2 col-form-label">Jumlah</label>
+						<label for="example-text-input" class="col-2 col-form-label">Jumlah<span style="color:red;">*</span></label>
 						<label for="example-text-input" class=" col-form-label">:</label>
 						<div class="col-4">
-							<input  class="form-control" type="text" value="" name="nilai" onkeypress="return hanyaAngka(event)" required>
+							<input  class="form-control" type="text" value="" name="nilai" onkeypress="return hanyaAngka(event)" required oninvalid="this.setCustomValidity('Jumlah Harus Diisi..')" oninput="setCustomValidity('')" autocomplete='off'>
 						</div>
 					</div>
 
@@ -367,15 +371,15 @@
 						<label for="example-text-input" class="col-2 col-form-label">No. Urut</label>
 						<label for="example-text-input" class=" col-form-label">:</label>
 						<div class="col-2">
-							<input  class="form-control" type="text" value="{{$no_bayar_details}}" id="no" name="no" readonly>
+							<input style="background-color:#DCDCDC; cursor:not-allowed"  class="form-control" type="text" value="{{$no_bayar_details}}" id="no" name="no" readonly>
 						</div>
 					</div>
 
 					<div class="form-group row">
-						<label for="example-text-input" class="col-2 col-form-label">Keterangan</label>
+						<label for="example-text-input" class="col-2 col-form-label">Keterangan<span style="color:red;">*</span></label>
 						<label for="example-text-input" class=" col-form-label">:</label>
 						<div class="col-8">
-							<input  class="form-control" type="text" value="" id="keterangan" name="keterangan">
+							<textarea  class="form-control" type="text" value="" id="keterangan" name="keterangan"></textarea>
 						</div>
 					</div>
 									
@@ -450,10 +454,10 @@
 									
 
 					<div class="form-group row">
-						<label for="example-text-input" class="col-2 col-form-label">Jumlah</label>
+						<label for="example-text-input" class="col-2 col-form-label">Jumlah<span style="color:red;">*</span></label>
 						<label for="example-text-input" class=" col-form-label">:</label>
 						<div class="col-4">
-							<input  class="form-control" type="text" value="" id="nilai" name="nilai" onkeypress="return hanyaAngka(event)">
+							<input  class="form-control" type="text" value="" id="nilai" name="nilai" onkeypress="return hanyaAngka(event)" autocomplete='off'>
 						</div>
 					</div>
 
@@ -491,7 +495,7 @@
 				success : function(data){
 				console.log(data);
 					swal({
-						title: "Data Berhasil Diedit!",
+						title: "Data Berhasil Disimpan!",
 						text: "Success!",
 						type: "success"
 					}).then(function() {

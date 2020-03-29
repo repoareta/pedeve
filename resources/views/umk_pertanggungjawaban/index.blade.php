@@ -6,7 +6,7 @@
 	<div class="kt-container  kt-container--fluid ">
 		<div class="kt-subheader__main">
 			<h3 class="kt-subheader__title">
-				Permintaan Bayar </h3>
+				Panjar Dinas </h3>
 			<span class="kt-subheader__separator kt-hidden"></span>
 			<div class="kt-subheader__breadcrumbs">
 				<a href="#" class="kt-subheader__breadcrumbs-home"><i class="flaticon2-shelter"></i></a>
@@ -14,7 +14,7 @@
 				<a href="" class="kt-subheader__breadcrumbs-link">
 					Umum </a>
 				<span class="kt-subheader__breadcrumbs-separator"></span>
-				<span class="kt-subheader__breadcrumbs-link kt-subheader__breadcrumbs-link--active">Permintaan Bayar</span>
+				<span class="kt-subheader__breadcrumbs-link kt-subheader__breadcrumbs-link--active">Uang Muka Kerja</span>
 			</div>
 		</div>
 	</div>
@@ -29,13 +29,13 @@
 				<i class="kt-font-brand flaticon2-line-chart"></i>
 			</span>
 			<h3 class="kt-portlet__head-title">
-				Tabel Umum Permintaan Bayar
+				Tabel Umum Pertanggungjawaban UMK
 			</h3>			
 		</div>
 		<div class="kt-portlet__head-toolbar">
 			<div class="kt-portlet__head-wrapper">
 				<div class="kt-portlet__head-actions">
-					<a href="{{ route('permintaan_bayar.create') }}">
+					<a href="{{ route('perjalanan_dinas.create') }}">
 						<span style="font-size: 2em;" class="kt-font-success">
 							<i class="fas fa-plus-circle"></i>
 						</span>
@@ -55,7 +55,7 @@
 
 					<a href="#">
 						<span style="font-size: 2em;" class="kt-font-info">
-							<i class="fas fa-file-export" id="reportRow"></i>
+							<i class="fas fa-file-export"></i>
 						</span>
 					</a>
 				</div>
@@ -65,15 +65,15 @@
 	<div class="kt-portlet__body">
 
 		<!--begin: Datatable -->
-		<table class="table table-striped table-bordered table-hover table-checkable" id="table-permintaan">
+		<table class="table table-striped table-bordered table-hover table-checkable" id="kt_table" width="100%">
 			<thead class="thead-light">
 				<tr>
 					<th></th>
-					<th>No. Permintaan</th>
+					<th>No. PUMK</th>
+					<th>No. UMK</th>
 					<th>No. Kas/Bank</th>
-					<th>Kepada</th>
+					<th>Pegawai</th>
 					<th>Keterangan</th>
-					<th>Lampiran</th>
 					<th>Nilai</th>
 					<th>Approval</th>
 				</tr>
@@ -91,68 +91,47 @@
 @section('scripts')
 	<script type="text/javascript">
 	$(document).ready(function () {
-		$('#table-permintaan').DataTable({
+		var t = $('#kt_table').DataTable({
 			scrollX   : true,
 			processing: true,
 			serverSide: true,
 			language: {
             	processing: '<i class="fa fa-spinner fa-spin fa-2x fa-fw"></i> <br> Loading...'
 			},
-			ajax      : "{{ route('permintaan_bayar.index.json') }}",
+			ajax      : "{{ route('perjalanan_dinas.index.json') }}",
 			columns: [
-				{data: 'action_radio', name: 'aksi', orderable: false, searchable: false},
-				{data: 'no_bayar', name: 'no_bayar'},
-				{data: 'no_kas', name: 'no_kas'},
-				{data: 'kepada', name: 'kepada'},
+				{data: 'action', name: 'aksi', orderable: false, searchable: false},
+				{data: 'no_panjar', name: 'no_panjar'},
+				{data: 'no_umk', name: 'no_umk'},
+				{data: 'jenis_dinas', name: 'jenis'},
+				{data: 'mulai', name: 'mulai'},
+				{data: 'sampai', name: 'sampai'},
 				{data: 'keterangan', name: 'keterangan'},
-				{data: 'lampiran', name: 'lampiran'},
-				{data: 'nilai', name: 'nilai'},
-				{data: 'action', name: 'aksi' , orderable: false, searchable: false},
+				{data: 'nilai', name: 'nilai', class:'text-right'}
 			]
-    	});
-
-//report Uang Muka Kerja 
-$('#reportRow').on('click', function(e) {
-	e.preventDefault();
-
-	if($('input[class=btn-radio-rekap]').is(':checked')) { 
-		$("input[class=btn-radio-rekap]:checked").each(function() {  
-			e.preventDefault();
-			var dataid = $(this).attr('data-id-rekap');
-				location.replace("/umum/permintaan_bayar/rekap/"+dataid);
 		});
-	} else{
-			swal({
-					title: "Tandai baris yang akan dicetak!",
-					type: "success"
-				}) ;  
-	}
-	
-});
 
-		//edit permintaan bayar
 		$('#editRow').click(function(e) {
 			e.preventDefault();
-
-			if($('input[class=btn-radio]').is(':checked')) { 
-				$("input[class=btn-radio]:checked").each(function(){
-					var id = $(this).attr('data-id');
-					location.replace("/umum/permintaan_bayar/edit/"+id);
+			if($('input[type=radio]').is(':checked')) { 
+				$("input[type=radio]:checked").each(function() {
+					var id = $(this).val().split("/").join("-");
+					// go to page edit
+					window.location.href = "{{ url('umum/perjalanan_dinas/edit') }}" + '/' + id;
 				});
 			} else {
-					swal({
-						title: "Tandai baris yang akan diedit!",
-						type: "success"
-					}) ; 
+				swal({
+					title: "Tandai baris yang akan dihapus!",
+					type: "success"
+				}) ; 
 			}
 		});
 
-		//delete permintaan bayar
 		$('#deleteRow').click(function(e) {
 			e.preventDefault();
-			if($('input[class=btn-radio]').is(':checked')) { 
-				$("input[class=btn-radio]:checked").each(function() {
-					var id = $(this).attr('data-id');
+			if($('input[type=radio]').is(':checked')) { 
+				$("input[type=radio]:checked").each(function() {
+					var id = $(this).val();
 					// delete stuff
 					swal({
 						title: "Data yang akan di hapus?",
@@ -164,7 +143,7 @@ $('#reportRow').on('click', function(e) {
 					.then((willDelete) => {
 						if (willDelete) {
 							$.ajax({
-								url: "{{ route('permintaan_bayar.delete') }}",
+								url: "{{ route('perjalanan_dinas.delete') }}",
 								type: 'DELETE',
 								dataType: 'json',
 								data: {
@@ -177,7 +156,7 @@ $('#reportRow').on('click', function(e) {
 											text: "Success",
 											type: "success"
 									}).then(function() {
-										location.replace("{{ route('permintaan_bayar.index') }}");
+										t.ajax.reload();
 									});
 								},
 								error: function () {
@@ -193,8 +172,8 @@ $('#reportRow').on('click', function(e) {
 					type: "success"
 				}) ; 
 			}
-			
 		});
+
 	});
 	</script>
 @endsection

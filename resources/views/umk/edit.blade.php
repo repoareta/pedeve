@@ -14,7 +14,10 @@
 				<a href="" class="kt-subheader__breadcrumbs-link">
 					Umum </a>
 				<span class="kt-subheader__breadcrumbs-separator"></span>
-				<span class="kt-subheader__breadcrumbs-link kt-subheader__breadcrumbs-link--active">Uang Muka Kerja</span>
+				<a href="" class="kt-subheader__breadcrumbs-link">
+					Uang Muka Kerja </a>
+				<span class="kt-subheader__breadcrumbs-separator"></span>
+				<span class="kt-subheader__breadcrumbs-link kt-subheader__breadcrumbs-link--active">Edit</span>
 			</div>
 		</div>
 	</div>
@@ -29,7 +32,7 @@
 				<i class="kt-font-brand flaticon2-line-chart"></i>
 			</span>
 			<h3 class="kt-portlet__head-title">
-				Menu Tambah Uang Muka Kerja
+				Menu Uang Muka Kerja
 			</h3>
 		</div>
 	</div>
@@ -49,62 +52,65 @@
 					</div>
                     @foreach($data_umks as $data_umk)
 					<div class="form-group row">
-						<label for="spd-input" class="col-2 col-form-label">No. UMK</label>
+						<label for="spd-input" class="col-2 col-form-label">No. UMK<span style="color:red;">*</span></label>
 						<div class="col-10">
-                            <input  class="form-control" type="text" value="{{$data_umk->no_umk}}" id="no_umk" name="no_umk" size="25" maxlength="25" readonly>
+                            <input style="background-color:#DCDCDC; cursor:not-allowed"  class="form-control" type="text" value="{{$data_umk->no_umk}}" id="no_umk" name="no_umk" size="25" maxlength="25" readonly>
                         </div>
 					</div>
 					<div class="form-group row">
-						<label for="nopek-input" class="col-2 col-form-label">Tanggal</label>
+						<label for="nopek-input" class="col-2 col-form-label">Tanggal<span style="color:red;">*</span></label>
 						<div class="col-10">
                             <input class="form-control" type="text" name="tgl_panjar" id="tgl_panjar" value="<?php echo date("Y-m-d", strtotime($data_umk->tgl_panjar)) ?>" size="15" maxlength="15">
 						</div>
 					</div>
 					<div class="form-group row">
-						<label for="example-email-input" class="col-2 col-form-label">Jenis Uang Muka</label>
+						<label for="jenis-dinas-input" class="col-2 col-form-label">Dibayar Kepada<span style="color:red;">*</span></label>
 						<div class="col-10">
-						    <select class="form-control" id="jenis_um" name="jenis_um">
-                                <option value="">-Pilih-</option>
-								<option value="K" <?php if ($data_umk->jenis_um == 'K' ) echo 'selected' ; ?> >Uang Muka Kerja</option>
-								<option value="D" <?php if ($data_umk->jenis_um == 'D' ) echo 'selected' ; ?>>Uang Muka Dinas</option>
-							</select>
+								<select name="kepada" id="kepada" class="form-control selectpicker" data-live-search="true" required>
+									<option value="">- Pilih -</option>
+									@foreach ($vendor as $row)
+									<option value="{{ $row->nama }}"  <?php if($row->nama  == $data_umk->kepada ) echo 'selected' ; ?>>{{ $row->nama }}</option>
+									@endforeach
+								</select>
 						</div>
 					</div>
 					<div class="form-group row">
-						<label for="id-pekerja;-input" class="col-2 col-form-label">Bulan Buku</label>
+						<label for="example-email-input" class="col-2 col-form-label">Jenis Uang Muka<span style="color:red;">*</span></label>
+						<div class="col-6">
+							<input style=" width: 26px;height: 26px;margin-left:50px;" value="K" <?php if ($data_umk->jenis_um == 'K' )  echo 'checked' ; ?> type="radio" id="jenis_um" name="jenis_um" />  <label style="font-size:14px; margin-left:10px;">Uang Muka Kerja</label>
+							<input style=" width: 26px;height: 26px;margin-left:50px;" value="D" <?php if ($data_umk->jenis_um == 'D' )  echo 'checked' ; ?> type="radio"  id="jenis_um" name="jenis_um"/><label style="font-size:14px; margin-left:10px;"> Uang Muka Dinas</label>
+						</div>
+					</div>
+					<div class="form-group row">
+						<label for="id-pekerja;-input" class="col-2 col-form-label">Bulan Buku<span style="color:red;">*</span></label>
 						<div class="col-10">
                             <input class="form-control" type="text" value="{{$data_umk->bulan_buku}}"   name="bulan_buku" id="bulan_buku" size="6" maxlength="6">
 						</div>
 					</div>
 					<div class="form-group row">
-						<label for="jenis-dinas-input" class="col-2 col-form-label">No. Panjar</label>
+						<label for="dari-input" class="col-2 col-form-label">Mata Uang<span style="color:red;">*</span></label>
 						<div class="col-10">
-                            <input class="form-control" type="text" value="" name="no_panjar" id="no_panjar">
+							<input id="ci"   style=" width: 26px;height: 26px;margin-left:50px;" value="1" <?php if ($data_umk->ci == '1' )  echo 'checked' ; ?> type="radio"  name="ci" onclick="displayResult(1)"  />  <label style="font-size:14px; margin-left:10px;">1.Rp</label>
+							<input  id="ci" style=" width: 26px;height: 26px;margin-left:50px;" value="2" <?php if ($data_umk->ci == '2' )  echo 'checked' ; ?> type="radio"    name="ci"  onclick="displayResult(2)" /><label style="font-size:14px; margin-left:10px;"> 2.USD</label>
 						</div>
 					</div>
 					<div class="form-group row">
-						<label for="dari-input" class="col-2 col-form-label">Mata Uang</label>
-						<div class="col-10">
-                            <input class="form-control" type="text" value="{{$data_umk->ci}}" name="ci" id="ci" size="1" maxlength="1" >
-						</div>
-					</div>
-					<div class="form-group row">
-						<label for="tujuan-input" class="col-2 col-form-label">Kurs</label>
+						<label for="tujuan-input" class="col-2 col-form-label">Kurs<span style="color:red;">*</span></label>
 						<div class="col-10">
                             <input class="form-control" type="text" value="<?php echo number_format($data_umk->rate, 0, ',', '.'); ?>" name="kurs"  size="10" maxlength="10">
                             <input class="form-control" type="text" hidden value="{{$data_umk->rate}}" name="kurs"  size="10" maxlength="10">
 						</div>
 					</div>
 					<div class="form-group row">
-						<label for="example-datetime-local-input" class="col-2 col-form-label">Untuk</label>
+						<label for="example-datetime-local-input" class="col-2 col-form-label">Untuk<span style="color:red;">*</span></label>
 						<div class="col-10">
-                            <input  class="form-control" type="text" value="{{$data_umk->keterangan}}" name="untuk" id="untuk" size="70" maxlength="200">
+							<textarea  class="form-control" type="text"  name="untuk" id="untuk" size="70" maxlength="200" required oninvalid="this.setCustomValidity('Untuk Harus Diisi..')" oninput="setCustomValidity('')">{{$data_umk->keterangan}}</textarea>
 						</div>
 					</div>
 					<div class="form-group row">
-						<label for="example-datetime-local-input" class="col-2 col-form-label">Jumlah</label>
+						<label for="example-datetime-local-input" class="col-2 col-form-label">Jumlah<span style="color:red;">*</span></label>
 						<div class="col-10">
-                            <input  class="form-control" type="text" value="Rp. <?php echo number_format($count, 0, ',', '.'); ?>"  size="16" maxlength="16" readonly>
+                            <input style="background-color:#DCDCDC; cursor:not-allowed" class="form-control" type="text" value="Rp. <?php echo number_format($count, 0, ',', '.'); ?>"  size="16" maxlength="16" readonly>
 							<input  class="form-control" type="text" value="{{$count}}" name="jumlah" id="jumlah" size="16" maxlength="16" hidden readonly>
 						</div>
 					</div>
@@ -214,19 +220,19 @@
                         @foreach($data_umks as $data_umk)
                         <input  class="form-control" hidden type="text" value="{{$data_umk->no_umk}}"  name="no_umk">
                         @endforeach
-                    <div class="form-group row">
-						<label for="example-text-input" class="col-2 col-form-label">No. Urut</label>
+                    <div class="form-group row ">
+						<label for="example-text-input" class="col-2 col-form-label">No. Urut<span style="color:red;">*</span></label>
 						<label for="example-text-input" class=" col-form-label">:</label>
 						<div class="col-2">
-							<input  class="form-control" type="text" value="{{$no_umk_details}}"  name="no" readonly>
+							<input style="background-color:#DCDCDC; cursor:not-allowed"  class="form-control" type="text" value="{{$no_umk_details}}"  name="no" readonly>
 						</div>
 					</div>
 
 					<div class="form-group row">
-						<label for="example-text-input" class="col-2 col-form-label">Keterangan</label>
+						<label for="example-text-input" class="col-2 col-form-label">Keterangan<span style="color:red;">*</span></label>
 						<label for="example-text-input" class=" col-form-label">:</label>
 						<div class="col-8">
-							<input  class="form-control" type="text" value=""  name="keterangan">
+							<textarea  class="form-control" type="text" value=""  name="keterangan" required oninvalid="this.setCustomValidity('Keterangan Harus Diisi..')" oninput="setCustomValidity('')"></textarea>
 						</div>
 					</div>
 									
@@ -234,7 +240,7 @@
 					<div class="form-group row">
 						<label for="example-text-input" class="col-2 col-form-label">Account</label>
 						<label for="example-text-input" class=" col-form-label">:</label>
-						<div  class="col-3" >
+						<div  class="col-8" >
 							<select name="acc"  class="form-control selectpicker" data-live-search="true">
 								<option value="">-Pilih-</option>
 									@foreach($data_account as $row)
@@ -247,7 +253,7 @@
 					<div class="form-group row">
 						<label for="example-text-input" class="col-2 col-form-label">Kode Bagian</label>
 						<label for="example-text-input" class=" col-form-label">:</label>
-						<div  class="col-3">
+						<div  class="col-8">
 							<select name="bagian"  class="form-control selectpicker" data-live-search="true">
 								<option value="">-Pilih-</option>
 									@foreach($data_bagian as $row)
@@ -260,7 +266,7 @@
 					<div class="form-group row">
 						<label for="example-text-input" class="col-2 col-form-label">Perintah Kerja</label>
 						<label for="example-text-input" class=" col-form-label">:</label>
-						<div class="col-4">
+						<div class="col-8">
 							<input  class="form-control" type="text" value="000"  name="pk" size="6" maxlength="6">
 						</div>
 					</div>
@@ -268,7 +274,7 @@
 					<div class="form-group row">
 						<label for="example-text-input" class="col-2 col-form-label">Jenis Biaya</label>
 						<label for="example-text-input" class=" col-form-label">:</label>
-						<div  class="col-3">
+						<div  class="col-8">
 							<select name="jb"  class="form-control selectpicker" data-live-search="true">
 								<option value="">-Pilih-</option>
 									@foreach($data_jenisbiaya as $row)
@@ -281,7 +287,7 @@
 					<div class="form-group row">
 						<label for="example-text-input" class="col-2 col-form-label">C. Judex</label>
 						<label for="example-text-input" class=" col-form-label">:</label>
-						<div class="col-3">
+						<div class="col-8">
 							<select name="cj" class="form-control selectpicker" data-live-search="true">
 								<option value="">-Pilih-</option>
 									@foreach($data_cj as $row)
@@ -293,10 +299,10 @@
 									
 
 					<div class="form-group row">
-						<label for="example-text-input" class="col-2 col-form-label">Jumlah</label>
+						<label for="example-text-input" class="col-2 col-form-label">Jumlah<span style="color:red;">*</span></label>
 						<label for="example-text-input" class=" col-form-label">:</label>
-						<div class="col-4">
-							<input  class="form-control" type="text" value="" name="nilai" onkeypress="return hanyaAngka(event)" required>
+						<div class="col-8">
+							<input  class="form-control" type="text" value="" name="nilai" onkeypress="return hanyaAngka(event)" required oninvalid="this.setCustomValidity('Jumlah Harus Diisi..')" oninput="setCustomValidity('')" autocomplete='off'>
 						</div>
 					</div>
 
@@ -328,7 +334,7 @@
 						<label for="example-text-input" class="col-2 col-form-label">No. Urut</label>
 						<label for="example-text-input" class=" col-form-label">:</label>
 						<div class="col-2">
-							<input  class="form-control" type="text" value="{{$no_umk_details}}" id="no" name="no" readonly>
+							<input style="background-color:#DCDCDC; cursor:not-allowed"  class="form-control" type="text" value="{{$no_umk_details}}" id="no" name="no" readonly>
 						</div>
 					</div>
 
@@ -336,7 +342,7 @@
 						<label for="example-text-input" class="col-2 col-form-label">Keterangan</label>
 						<label for="example-text-input" class=" col-form-label">:</label>
 						<div class="col-8">
-							<input  class="form-control" type="text" value="" id="keterangan" name="keterangan">
+							<textarea  class="form-control" type="text" value="" id="keterangan" name="keterangan"></textarea>
 						</div>
 					</div>
 									
@@ -414,7 +420,7 @@
 						<label for="example-text-input" class="col-2 col-form-label">Jumlah</label>
 						<label for="example-text-input" class=" col-form-label">:</label>
 						<div class="col-4">
-							<input  class="form-control" type="text" value="" id="nilai" name="nilai" onkeypress="return hanyaAngka(event)">
+							<input  class="form-control" type="text" value="" id="nilai" name="nilai" onkeypress="return hanyaAngka(event)" autocomplete='off'>
 						</div>
 					</div>
 
@@ -453,7 +459,7 @@ $('#form-update-umk').submit(function(){
 			success : function(data){
 			   console.log(data);
 				swal({
-                    text: "Edit Data Uang Muka Kerja Berhasil.",
+                    text: "Data Berhasil Disimpan.",
                     type: "success"
                 }).then(function() {
                     window.location.replace("{{route('uang_muka_kerja.index')}}");;

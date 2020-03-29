@@ -34,9 +34,10 @@ Route::group(['middleware'=> ['auth','checkRole:1']], function () {
         Route::get('uang_muka_kerja/edit/{no}', 'UangMukaKerjaController@edit')->name('uang_muka_kerja.edit');
         Route::get('uang_muka_kerja/edit_detail/{id}/{no}', 'UangMukaKerjaController@edit_detail')->name('uang_muka_kerja.edit.detail');
         Route::get('uang_muka_kerja/approv/{id}', 'UangMukaKerjaController@approv')->name('uang_muka_kerja.approv');
-        Route::get('uang_muka_kerja/rekap', 'UangMukaKerjaController@rekap')->name('uang_muka_kerja.rekap');
-        Route::get('uang_muka_kerja/rekap/export/{id}', 'UangMukaKerjaController@rekapExport')->name('uang_muka_kerja.rekap.export');
-        Route::get('uang_muka_kerja/rekap/export/range', 'UangMukaKerjaController@rekapExportRange')->name('uang_muka_kerja.rekap.export.range');
+        Route::get('uang_muka_kerja/rekap/{id}', 'UangMukaKerjaController@rekap')->name('uang_muka_kerja.rekap');
+        Route::get('uang_muka_kerja/rekaprange', 'UangMukaKerjaController@rekapRange')->name('uang_muka_kerja.rekap.range');
+        Route::post('uang_muka_kerja/rekap/export', 'UangMukaKerjaController@rekapExport')->name('uang_muka_kerja.rekap.export');
+        Route::post('uang_muka_kerja/rekap/export/range', 'UangMukaKerjaController@rekapExportRange')->name('uang_muka_kerja.rekap.export.range');
 
         Route::get('uang_muka_kerja/pertanggungjawaban', 'UangMukaKerjaPertanggungJawabanController@index')->name('uang_muka_kerja.pertanggungjawaban.index');
         Route::get('uang_muka_kerja/pertanggungjawaban/index_json', 'UangMukaKerjaPertanggungJawabanController@indexJson')->name('uang_muka_kerja.pertanggungjawaban.index.json');
@@ -74,18 +75,27 @@ Route::group(['middleware'=> ['auth','checkRole:1']], function () {
         Route::get('permintaan_bayar/approv/{id}', 'PermintaanBayarController@approv')->name('permintaan_bayar.approv');
         Route::delete('permintaan_bayar/delete', 'PermintaanBayarController@delete')->name('permintaan_bayar.delete');
         Route::delete('permintaan_bayar/delete_detail', 'PermintaanBayarController@deleteDetail')->name('permintaan_bayar.delete.detail');
-        Route::get('permintaan_bayar/rekap', 'PermintaanBayarController@rekap')->name('permintaan_bayar.rekap');
-        Route::get('permintaan_bayar/rekap/export/{id}', 'PermintaanBayarController@rekapExport')->name('permintaan_bayar.rekap.export');
+        Route::get('permintaan_bayar/rekap/{id}', 'PermintaanBayarController@rekap')->name('permintaan_bayar.rekap');
+        Route::get('permintaan_bayar/rekaprange', 'PermintaanBayarController@rekapRange')->name('permintaan_bayar.rekap.range');
+        Route::post('permintaan_bayar/rekap/export', 'PermintaanBayarController@rekapExport')->name('permintaan_bayar.rekap.export');
         Route::post('permintaan_bayar/rekap/export/range', 'PermintaanBayarController@rekapExportRange')->name('permintaan_bayar.rekap.export.range');
         
         // Anggaran
         Route::get('anggaran', 'AnggaranController@index')->name('anggaran.index');
+        
+        //vendor
+        Route::get('vendor', 'VendorController@index')->name('vendor.index');
+        Route::get('vendor/index_json', 'VendorController@indexJson')->name('vendor.index.json');
+        Route::get('vendor/create', 'VendorController@create')->name('vendor.create');
+        Route::post('vendor/store', 'VendorController@store')->name('vendor.store');
+        Route::get('vendor/edit/{id}', 'VendorController@edit')->name('vendor.edit');
+        Route::delete('vendor/delete', 'VendorController@delete')->name('vendor.delete');
+
     });
-});
+
 
 
 //MODUL SDM & Payroll
-Route::group(['middleware'=>['auth','checkRole:2']], function () {
     Route::prefix('sdm')->group(function () {
         // Tabel data Master
         Route::get('tabel_data_master', 'TabelDataMasterController@index')->name('tabel_data_master.index');
@@ -134,14 +144,3 @@ Route::group(['middleware'=>['auth','checkRole:2']], function () {
     });
 });
 
-//MODUL PERBENDAHARAAN
-Route::group(['middleware'=>['auth','checkRole:3']], function () {
-});
-
-//MODUL KONTROLER
-Route::group(['middleware'=>['auth','checkRole:4']], function () {
-});
-
-//MODUL ADMINISTRATOR
-Route::group(['middleware'=>['auth','checkRole:5']], function () {
-});

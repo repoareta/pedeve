@@ -13,9 +13,9 @@
             /** Define now the real margins of every page in the PDF **/
             body {
                 margin-top: 5cm;
-                margin-left: 2cm;
-                margin-right: 2cm;
-                margin-bottom: 2cm;
+                margin-left: 1cm;
+                margin-right: 1cm;
+                margin-bottom: 1cm;
             }
 
             /** Define the header rules **/
@@ -45,19 +45,25 @@
             <table width="100%"  >
                 <tr>
                     <td align="center" style="padding-left:200px;">
-                    <img align="right" src="{{public_path() . '/images/pertamina.jpg'}}" width="160px" height="80px"  style="padding-right:70px;"><br>
+                    <img align="right" src="{{public_path() . '/images/pertamina.jpg'}}" width="160px" height="80px"  style="padding-right:50px;"><br>
                    <font style="font-size: 12pt;font-weight: bold "> PT. PERTAMINA PEDEVE INDONESIA</font><br>
                    <font style="font-size: 12pt;font-weight: bold ">REKAP PERMINTAAN BAYAR</font><br>
-                   <font style="font-size: 12pt;font-weight: bold ">BULAN PEBRUARI 2020</font><br>
+                   <?php 
+                    foreach ($bayar_header_list as $bayar){
+                        $tglbayar=$bayar->tgl_bayar;
+                    }
+                   ?>
+                   <font style="font-size: 12pt;font-weight: bold ">BULAN <?php echo strtoupper(date("M Y", strtotime($tglbayar))) ?></font><br>
                     </td>
                 </tr>
             </table>
         </header>
         <!-- Wrap the content of your PDF inside a main tag -->
         <main>
-            <table border="1" style="margin-top:20px;width:100%;border-collapse: collapse;" class="table">
+            <table border="1" style="margin-top:10px;width:100%;border-collapse: collapse;" class="table">
             <thead>
                 <tr>
+                    <th>NO</th>
                     <th>NO. BAYAR</th>
                     <th>NO. KAS</th>
                     <th>KEPADA</th>
@@ -67,8 +73,11 @@
                 </tr>
             </thead>
             <tbody>
+            <?php $no=0; ?>
                 @foreach ($bayar_header_list as $bayar)
+                <?php $no++; ?>
                     <tr>
+                        <td align="center">{{ $no }}</td>
                         <td>{{ $bayar->no_bayar }}</td>
                         <td>{{ $bayar->no_kas }}</td>
                         <td>{{ $bayar->kepada }}</td>
@@ -85,7 +94,9 @@
             <thead>
                 <tr>
                     <td align="right">TOTAL : Rp. </td>
-                    <td align="center" width="85"> 1.000.000,00</td>
+                    @foreach ($bayar_header_list_total as $bayar)
+                    <td align="center" width="65"><?php echo number_format($bayar->nilai, 0, ',', '.'); ?></td>
+                    @endforeach
                 </tr>
             </thead>
         </table>

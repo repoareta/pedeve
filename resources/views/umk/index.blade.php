@@ -112,8 +112,8 @@ $(document).ready(function(){
 				// orderable: false
 			},
 			{
-				data: 'tgl_panjar',
-				name: 'tgl_panjar'
+				data: 'tglpanjar',
+				name: 'tglpanjar'
 			},
 			{
 				data: 'noumk',
@@ -161,7 +161,7 @@ $(".btn-radio-rekap:checked").each(function() {
 				type: "success"
 				}) ;  
 	}  else {  
-		location.replace("/umum/uang_muka_kerja/rekap/export/"+dataid);
+		location.replace("/umum/uang_muka_kerja/rekap/"+dataid);
 	}	
 				
 });
