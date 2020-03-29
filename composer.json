@@ -10,7 +10,7 @@
     "require": {
         "php": "^7.2",
         "barryvdh/laravel-dompdf": "^0.8.6",
-        "caouecs/laravel-lang": "~5.0",
+        "caouecs/laravel-lang": "^6.0",
         "davejamesmiller/laravel-breadcrumbs": "^5.3",
         "fideloper/proxy": "^4.0",
         "laravel/framework": "^6.2",
@@ -67,6 +67,9 @@
         ],
         "post-create-project-cmd": [
             "@php artisan key:generate --ansi"
+        ],
+        "post-update-cmd": [
+            "php artisan vendor:publish --provider=\"Proengsoft\\JsValidation\\JsValidationServiceProvider\" --tag=public --force"
         ]
     }
 }
