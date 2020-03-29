@@ -10,4 +10,9 @@ class PUmkHeader extends Model
     protected $primaryKey = 'no_pumk'; // or null
     public $timestamps = false;
     public $incrementing = false;
+
+    public function pumk_detail()
+    {
+        return $this->hasMany('App\Models\PUmkDetail', 'no_pumk');
+    }
 }

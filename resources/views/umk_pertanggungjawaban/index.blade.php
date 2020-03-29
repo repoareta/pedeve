@@ -6,7 +6,7 @@
 	<div class="kt-container  kt-container--fluid ">
 		<div class="kt-subheader__main">
 			<h3 class="kt-subheader__title">
-				Panjar Dinas </h3>
+				Uang Muka Kerja </h3>
 			<span class="kt-subheader__separator kt-hidden"></span>
 			<div class="kt-subheader__breadcrumbs">
 				<a href="#" class="kt-subheader__breadcrumbs-home"><i class="flaticon2-shelter"></i></a>
@@ -98,16 +98,16 @@
 			language: {
             	processing: '<i class="fa fa-spinner fa-spin fa-2x fa-fw"></i> <br> Loading...'
 			},
-			ajax      : "{{ route('perjalanan_dinas.index.json') }}",
+			ajax      : "{{ route('uang_muka_kerja.pertanggungjawaban.index.json') }}",
 			columns: [
 				{data: 'action', name: 'aksi', orderable: false, searchable: false},
-				{data: 'no_panjar', name: 'no_panjar'},
+				{data: 'no_pumk', name: 'no_pumk'},
 				{data: 'no_umk', name: 'no_umk'},
-				{data: 'jenis_dinas', name: 'jenis'},
-				{data: 'mulai', name: 'mulai'},
-				{data: 'sampai', name: 'sampai'},
+				{data: 'no_kas', name: 'no_kas'},
+				{data: 'nama', name: 'nama'},
 				{data: 'keterangan', name: 'keterangan'},
-				{data: 'nilai', name: 'nilai', class:'text-right'}
+				{data: 'nilai', name: 'nilai', class:'text-right'},
+				{data: 'approval', name: 'approval', class:'text-center'}
 			]
 		});
 

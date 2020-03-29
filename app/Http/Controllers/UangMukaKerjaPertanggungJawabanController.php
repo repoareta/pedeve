@@ -5,10 +5,8 @@ namespace App\Http\Controllers;
 use Illuminate\Http\Request;
 
 // Load Model
-use App\Models\PPanjarHeader;
-use App\Models\PPanjarDetail;
-use App\Models\SdmMasterPegawai;
-use App\Models\SdmTblKdjab;
+use App\Models\PUmkHeader;
+use App\Models\PUmkDetail;
 
 // Load Plugin
 use Carbon\Carbon;
@@ -34,23 +32,33 @@ class UangMukaKerjaPertanggungJawabanController extends Controller
      */
     public function indexJson()
     {
-        $panjar_list = PPanjarHeader::all();
+        $pumk_list = PUmkHeader::all();
 
-        return datatables()->of($panjar_list)
-            ->addColumn('tgl_ppanjar', function ($row) {
-                return Carbon::parse($row->tgl_ppanjar)->translatedFormat('d F Y');
-            })
-            ->addColumn('nopek', function ($row) {
+        return datatables()->of($pumk_list)
+            ->addColumn('nama', function ($row) {
                 return $row->nopek." - ".$row->nama;
             })
-            ->addColumn('jmlpanjar', function ($row) {
-                return currency_idr($row->jmlpanjar);
+            ->addColumn('nilai', function ($row) {
+                return currency_idr($row->pumk_detail->sum('nilai'));
+            })
+            ->addColumn('approval', function ($row) {
+                if ($row->app_pbd == 'Y') {
+                    $button = '<span style="font-size: 2em;" class="kt-font-success"><i class="fas fa-check-circle" title="Data Sudah di proses perbendaharaan"></i></span>';
+                } else {
+                    if ($row->app_sdm == 'Y') {
+                        $button = '<a href="'. route('uang_muka_kerja.pertanggungjawaban.approval', ['no_pumk' => str_replace('/', '-', $row->no_pumk)]).'"><span style="font-size: 2em;" class="kt-font-warning"><i class="fas fa-check-circle" title="Batalkan Approval"></i></span></a>';
+                    } else {
+                        $button = '<a href="'. route('uang_muka_kerja.pertanggungjawaban.approval', ['no_pumk' => str_replace('/', '-', $row->no_pumk)]).'"><span style="font-size: 2em;" class="kt-font-danger"><i class="fas fa-ban" title="Klik untuk Approval"></i></span></a>';
+                    }
+                }
+
+                return $button;
             })
             ->addColumn('action', function ($row) {
                 $radio = '<label class="kt-radio kt-radio--bold kt-radio--brand"><input type="radio" name="radio1" value="'.$row->no_panjar.'"><span></span></label>';
                 return $radio;
             })
-            ->rawColumns(['action'])
+            ->rawColumns(['action', 'approval'])
             ->make(true);
     }
 
