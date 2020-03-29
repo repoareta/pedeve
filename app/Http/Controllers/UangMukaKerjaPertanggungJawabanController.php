@@ -7,6 +7,9 @@ use Illuminate\Http\Request;
 // Load Model
 use App\Models\PUmkHeader;
 use App\Models\PUmkDetail;
+use App\Models\UmkHeader;
+use App\Models\SdmMasterPegawai;
+use App\Models\SdmTblKdjab;
 
 // Load Plugin
 use Carbon\Carbon;
@@ -69,7 +72,25 @@ class UangMukaKerjaPertanggungJawabanController extends Controller
      */
     public function create()
     {
-        //
+        $pegawai_list = SdmMasterPegawai::where('status', '<>', 'P')
+        ->orderBy('nama', 'ASC')
+        ->get();
+
+        $jabatan_list = SdmTblKdjab::distinct('keterangan')
+        ->orderBy('keterangan', 'ASC')
+        ->get();
+
+        $pumk_header_list = PUmkHeader::select('no_umk')->whereNotNull('no_umk')->get()->toArray();
+        $umk_header_list = UmkHeader::whereNotIn('no_umk', $pumk_header_list)->get();
+
+        $pumk_header_count = PUmkHeader::all()->count();
+
+        return view('umk_pertanggungjawaban.create', compact(
+            'pegawai_list',
+            'umk_header_list',
+            'pumk_header_count',
+            'jabatan_list'
+        ));
     }
 
     /**
@@ -80,7 +101,7 @@ class UangMukaKerjaPertanggungJawabanController extends Controller
      */
     public function store(Request $request)
     {
-        //
+        dd($request);
     }
 
     /**

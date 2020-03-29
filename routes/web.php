@@ -44,6 +44,10 @@ Route::group(['middleware'=> ['auth','checkRole:1']], function () {
         // P UANG MUKA KERJA START
         Route::get('uang_muka_kerja/pertanggungjawaban', 'UangMukaKerjaPertanggungJawabanController@index')->name('uang_muka_kerja.pertanggungjawaban.index');
         Route::get('uang_muka_kerja/pertanggungjawaban/index_json', 'UangMukaKerjaPertanggungJawabanController@indexJson')->name('uang_muka_kerja.pertanggungjawaban.index.json');
+
+        Route::get('uang_muka_kerja/pertanggungjawaban/create', 'UangMukaKerjaPertanggungJawabanController@create')->name('uang_muka_kerja.pertanggungjawaban.create');
+        Route::post('uang_muka_kerja/pertanggungjawaban/store', 'UangMukaKerjaPertanggungJawabanController@store')->name('uang_muka_kerja.pertanggungjawaban.store');
+
         Route::get('uang_muka_kerja/pertanggungjawaban/approval/{no_pumk}', 'UangMukaKerjaPertanggungJawabanController@approv')->name('uang_muka_kerja.pertanggungjawaban.approval');
         Route::delete('uang_muka_kerja/pertanggungjawaban/delete', 'UangMukaKerjaPertanggungJawabanController@delete')->name('uang_muka_kerja.pertanggungjawaban.delete');
         // P UANG MUKA KERJA END

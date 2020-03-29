@@ -35,7 +35,7 @@
 		<div class="kt-portlet__head-toolbar">
 			<div class="kt-portlet__head-wrapper">
 				<div class="kt-portlet__head-actions">
-					<a href="{{ route('perjalanan_dinas.create') }}">
+					<a href="{{ route('uang_muka_kerja.pertanggungjawaban.create') }}">
 						<span style="font-size: 2em;" class="kt-font-success">
 							<i class="fas fa-plus-circle"></i>
 						</span>
