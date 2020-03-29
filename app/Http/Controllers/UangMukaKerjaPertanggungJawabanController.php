@@ -55,7 +55,7 @@ class UangMukaKerjaPertanggungJawabanController extends Controller
                 return $button;
             })
             ->addColumn('action', function ($row) {
-                $radio = '<label class="kt-radio kt-radio--bold kt-radio--brand"><input type="radio" name="radio1" value="'.$row->no_panjar.'"><span></span></label>';
+                $radio = '<label class="kt-radio kt-radio--bold kt-radio--brand"><input type="radio" name="radio1" value="'.$row->no_pumk.'"><span></span></label>';
                 return $radio;
             })
             ->rawColumns(['action', 'approval'])
@@ -123,8 +123,11 @@ class UangMukaKerjaPertanggungJawabanController extends Controller
      * @param  int  $id
      * @return \Illuminate\Http\Response
      */
-    public function destroy($id)
+    public function delete(Request $request)
     {
-        //
+        PUmkHeader::where('no_pumk', $request->id)->delete();
+        PUmkDetail::where('no_pumk', $request->id)->delete();
+
+        return response()->json();
     }
 }

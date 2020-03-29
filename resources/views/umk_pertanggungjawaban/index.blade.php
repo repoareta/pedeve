@@ -135,7 +135,7 @@
 					// delete stuff
 					swal({
 						title: "Data yang akan di hapus?",
-						text: "No. Panjar : " + id,
+						text: "No. P UMK : " + id,
 						icon: "warning",
 						buttons: true,
 						dangerMode: true,
@@ -143,7 +143,7 @@
 					.then((willDelete) => {
 						if (willDelete) {
 							$.ajax({
-								url: "{{ route('perjalanan_dinas.delete') }}",
+								url: "{{ route('uang_muka_kerja.pertanggungjawaban.delete') }}",
 								type: 'DELETE',
 								dataType: 'json',
 								data: {
@@ -152,9 +152,9 @@
 								},
 								success: function () {
 									swal({
-											title: "Delete",
-											text: "Success",
-											type: "success"
+										title: "Delete",
+										text: "Success",
+										type: "success"
 									}).then(function() {
 										t.ajax.reload();
 									});
