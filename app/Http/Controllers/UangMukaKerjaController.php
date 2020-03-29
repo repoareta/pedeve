@@ -29,7 +29,7 @@ class UangMukaKerjaController extends Controller
     {
         if($request->ajax())
         {               
-                $data = UmkModel::orderBy('no_umk','desc')->get();
+                $data = UmkModel::orderBy('tgl_panjar','desc')->get();
                 return DataTables::of($data)
                 ->addColumn('action', function($data){
                     if($data->app_pbd == 'Y'){
@@ -332,10 +332,11 @@ class UangMukaKerjaController extends Controller
     {
         $mulai = date($request->mulai);
         $sampai = date($request->sampai);
-        $umk_header_list = UmkModel::whereBetween('tgl_panjar', [$mulai, $sampai])
+        $umk_header_list = UmkModel::whereBetween('tgl_panjar', [$mulai, $sampai])->where('app_pbd', 'Y')
         ->get();
         // dd($umk_header_list);
-        $list_acount =UmkModel::whereBetween('tgl_panjar', [$mulai, $sampai])->select('jumlah')->sum('jumlah');
+        $list_acount =UmkModel::whereBetween('tgl_panjar', [$mulai, $sampai])
+        ->where('app_pbd', 'Y')->select('jumlah')->sum('jumlah');
         $pdf = PDF::loadview('umk.exportrange',compact('umk_header_list','list_acount'))->setPaper('a4', 'landscape');
         $pdf->output();
         $dom_pdf = $pdf->getDomPDF();
