@@ -35,7 +35,7 @@
 		<div class="kt-portlet__head-toolbar">
 			<div class="kt-portlet__head-wrapper">
 				<div class="kt-portlet__head-actions">
-					{{-- <a href="{{ route('perjalanan_dinas.create') }}">
+					<a href="{{ route('perjalanan_dinas.create') }}">
 						<span style="font-size: 2em;" class="kt-font-success">
 							<i class="fas fa-plus-circle"></i>
 						</span>
@@ -57,7 +57,7 @@
 						<span style="font-size: 2em;" class="kt-font-info">
 							<i class="fas fa-file-export"></i>
 						</span>
-					</a> --}}
+					</a>
 				</div>
 			</div>
 		</div>
@@ -69,6 +69,7 @@
 			<thead class="thead-light">
 				<tr>
 					<th>Nama Master</th>
+					<th>Tahun</th>
 					<th>Nilai</th>
 					<th>Realisasi</th>
 					<th>Sisa</th>
@@ -78,9 +79,10 @@
 				@foreach ($anggaran_main_list as $anggaran)
 					<tr>
 						<td>{{ $anggaran->nama_main }}</td>
+						<td>{{ $anggaran->tahun }}</td>
 						<td>{{ currency_idr($anggaran->nilai_real) }}</td>
-						<td>{{ currency_idr($anggaran->nilai_real) }}</td>
-						<td>{{ currency_idr($anggaran->nilai_real) }}</td>
+						<td>{{ currency_idr($anggaran->anggaran_submain->sum('nilai')) }}</td>
+						<td>{{ currency_idr($anggaran->nilai_real - $anggaran->anggaran_submain->sum('nilai')) }}</td>
 					</tr>
 				@endforeach
 			</tbody>
