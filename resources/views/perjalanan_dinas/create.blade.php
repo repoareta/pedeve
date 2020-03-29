@@ -330,7 +330,9 @@
 
 	$(document).ready(function () {
 
-		$('.kt-select2').select2();
+		$('.kt-select2').select2().on('change', function() {
+			$(this).valid();
+		});
 
 		var t = $('#kt_table').DataTable({
 			scrollX   : true,
