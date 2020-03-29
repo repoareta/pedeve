@@ -29,6 +29,7 @@ class PermintaanBayarController extends Controller
     {
         $bayar_list = \DB::table('umu_bayar_header AS a')
                         ->select(\DB::raw('a.*, (SELECT sum(b.nilai)  FROM umu_bayar_detail as b WHERE b.no_bayar=a.no_bayar) AS nilai'))
+                        ->orderBy('a.tgl_bayar', 'desc')
                         ->get();
         
         return datatables()->of($bayar_list)
@@ -362,10 +363,12 @@ class PermintaanBayarController extends Controller
         $bayar_header_list = \DB::table('umu_bayar_header AS a')
         ->select(\DB::raw('a.*, (SELECT sum(b.nilai)  FROM umu_bayar_detail as b WHERE b.no_bayar=a.no_bayar) AS nilai'))
         ->whereBetween('tgl_bayar', [$mulai, $sampai])
+        ->where('app_pbd', 'Y')
         ->get();
         $bayar_header_list_total =PermintaanBayarModel::select(\DB::raw('SUM(umu_bayar_detail.nilai) as nilai'))
         ->Join('umu_bayar_detail', 'umu_bayar_detail.no_bayar', '=', 'umu_bayar_header.no_bayar')
         ->whereBetween('umu_bayar_header.tgl_bayar', [$mulai, $sampai])
+        ->where('app_pbd', 'Y')
         ->get();
         // dd($bayar_header_list_total);
         $pdf = PDF::loadview('permintaan_bayar.exportrange', compact('bayar_header_list_total','bayar_header_list'))->setPaper('a4', 'landscape');
