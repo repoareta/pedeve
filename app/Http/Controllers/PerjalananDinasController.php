@@ -119,10 +119,13 @@ class PerjalananDinasController extends Controller
      */
     public function store(PerjalananDinasStore $request)
     {
+        $pegawai = SdmMasterPegawai::find($request->nopek);
+        
         $panjar_header = new PanjarHeader;
         $panjar_header->no_panjar = $request->no_spd;
         $panjar_header->tgl_panjar = $request->tanggal;
         $panjar_header->nopek = $request->nopek;
+        $panjar_header->nama = $pegawai->nama;
         $panjar_header->jabatan = $request->jabatan;
         $panjar_header->gol = $request->golongan;
         $panjar_header->ktp = $request->ktp;
@@ -252,9 +255,12 @@ class PerjalananDinasController extends Controller
         $no_panjar = str_replace('-', '/', $no_panjar);
         $panjar_header = PanjarHeader::find($no_panjar);
 
+        $pegawai = SdmMasterPegawai::find($request->nopek);
+
         $panjar_header->no_panjar = $request->no_spd;
         $panjar_header->tgl_panjar = $request->tanggal;
         $panjar_header->nopek = $request->nopek;
+        $panjar_header->nama = $pegawai->nama;
         $panjar_header->jabatan = $request->jabatan;
         $panjar_header->gol = $request->golongan;
         $panjar_header->ktp = $request->ktp;

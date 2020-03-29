@@ -55,7 +55,7 @@
 					<div class="form-group row">
 						<label for="spd-input" class="col-2 col-form-label">No. SPD</label>
 						<div class="col-5">
-							<input class="form-control" type="text" name="no_spd" value="{{ ($panjar_header_count + 1).'/PDV/CS/'.date('Y') }}" id="spd">
+							<input class="form-control" type="text" name="no_spd" value="{{ ($panjar_header_count + 1).'/PDV/CS/'.date('Y') }}" id="no_spd">
 						</div>
 
 						<label for="spd-input" class="col-2 col-form-label">Tanggal Panjar</label>
@@ -394,6 +394,10 @@
 
 			if ($('#biaya-error').length){
 				$("#biaya-error").insertAfter("#biaya-nya");
+			}
+
+			if ($('#sampai-error').length){
+				$("#sampai-error").addClass("float-right");
 			}
 		});
 
