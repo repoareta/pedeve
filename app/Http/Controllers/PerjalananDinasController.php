@@ -151,7 +151,7 @@ class PerjalananDinasController extends Controller
                 $panjar_detail->nopek = $panjar['nopek'];
                 $panjar_detail->nama = $panjar['nama'];
                 $panjar_detail->jabatan = $panjar['jabatan'];
-                $panjar_detail->status = $panjar['golongan'];
+                $panjar_detail->status = $panjar['golongan'] = $panjar['status'];
                 $panjar_detail->keterangan = $panjar['keterangan'];
     
                 $panjar_detail->save();
