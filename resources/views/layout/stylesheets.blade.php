@@ -1,31 +1,35 @@
-{{-- Datatables --}}
-<link href="{{ asset('plugins/datatables/datatables.bundle.css') }}" rel="stylesheet" type="text/css">
-{{-- <link href="https://cdn.datatables.net/1.10.20/css/dataTables.bootstrap4.min.css" rel="stylesheet" type="text/css" > --}}
-{{-- Global CSS --}}
-<link href="{{ asset('css/app.css') }}" rel="stylesheet" type="text/css">
+<!--begin::Fonts -->
+<script src="https://ajax.googleapis.com/ajax/libs/webfont/1.6.16/webfont.js"></script>
+<script>
+    WebFont.load({
+        google: {
+            "families": ["Roboto:300,400,500,600,700", "DM Sans:400,400i,500,500i,700,700i"]
+        },
+        active: function () {
+            sessionStorage.fonts = true;
+        }
+    });
+</script>
 
-{{-- custom style --}}
-<style>
-.kt-portlet .kt-portlet__head {
-    justify-content: start;
-}
+<!--end::Fonts -->
 
-.kt-portlet__head-actions {
-    margin-left: 10px;
-}
+<!--begin::Page Vendors Styles(used by this page) -->
+<link href="{{ asset('metronic/vendors/custom/datatables/datatables.bundle.css') }}" rel="stylesheet" type="text/css" />
 
-.kt-radio {
-    display: inline-block;
-    position: relative;
-    padding-left: 10px;
-    text-align: left;
-    margin-bottom: 10px;
-    cursor: pointer;
-    font-size: 1rem;
-    transition: all 0.3s ease;
-}
+<!--end::Page Vendors Styles -->
 
-td.sorting_1 {
-    padding-top: 0px;
-}
-</style>
+<!--begin::Global Theme Styles(used by all pages) -->
+<link href="{{ asset('metronic/vendors/global/vendors.bundle.css') }}" rel="stylesheet" type="text/css" />
+<link href="{{ asset('metronic/css/style.bundle.css') }}" rel="stylesheet" type="text/css" />
+
+<!--end::Global Theme Styles -->
+
+<!--begin::Layout Skins(used by all pages) -->
+<link href="{{ asset('metronic/css/skins/header/base/light.css') }}" rel="stylesheet" type="text/css" />
+<link href="{{ asset('metronic/css/skins/header/menu/light.css') }}" rel="stylesheet" type="text/css" />
+<link href="{{ asset('metronic/css/skins/brand/dark.css') }}" rel="stylesheet" type="text/css" />
+<link href="{{ asset('metronic/css/skins/aside/dark.css') }}" rel="stylesheet" type="text/css" />
+
+<!--begin::App Style -->
+<link href="{{ asset('metronic/css/app.css') }}" rel="stylesheet" type="text/css" />
+<!--end::Custom Style -->
