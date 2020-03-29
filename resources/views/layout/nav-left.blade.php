@@ -19,6 +19,7 @@
 
                 $perjalanan_dinas_pertanggungjawaban = array(
                     'perjalanan_dinas.pertanggungjawaban.index',
+                    'perjalanan_dinas.pertanggungjawaban.create',
                 ); // isi nama semua route perjalanan dinas
 
                 $perjalanan_dinas_menu = array_merge($perjalanan_dinas, $perjalanan_dinas_pertanggungjawaban);

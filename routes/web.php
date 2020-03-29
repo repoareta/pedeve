@@ -62,6 +62,7 @@ Route::group(['middleware'=> ['auth','checkRole:1']], function () {
         Route::get('perjalanan_dinas/pertanggungjawaban/index_json', 'PerjalananDinasPertanggungJawabanController@indexJson')->name('perjalanan_dinas.pertanggungjawaban.index.json');
 
         Route::get('perjalanan_dinas/pertanggungjawaban/create', 'PerjalananDinasPertanggungJawabanController@create')->name('perjalanan_dinas.pertanggungjawaban.create');
+        Route::post('perjalanan_dinas/pertanggungjawaban/store', 'PerjalananDinasPertanggungJawabanController@store')->name('perjalanan_dinas.pertanggungjawaban.store');
 
         // Permintaan Bayar
         Route::get('permintaan_bayar', 'PermintaanBayarController@index')->name('permintaan_bayar.index');
@@ -90,12 +91,11 @@ Route::group(['middleware'=> ['auth','checkRole:1']], function () {
         Route::post('vendor/store', 'VendorController@store')->name('vendor.store');
         Route::get('vendor/edit/{id}', 'VendorController@edit')->name('vendor.edit');
         Route::delete('vendor/delete', 'VendorController@delete')->name('vendor.delete');
-
     });
 
 
 
-//MODUL SDM & Payroll
+    //MODUL SDM & Payroll
     Route::prefix('sdm')->group(function () {
         // Tabel data Master
         Route::get('tabel_data_master', 'TabelDataMasterController@index')->name('tabel_data_master.index');
@@ -143,4 +143,3 @@ Route::group(['middleware'=> ['auth','checkRole:1']], function () {
         Route::get('implementasi_gcg/edit', 'ImplementasiGcgController@edit')->name('implementasi_gcg.edit');
     });
 });
-
