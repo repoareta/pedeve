@@ -517,10 +517,12 @@
 					});
 				});
 			} else {
-				swal({
-					title: "Tandai baris yang akan dihapus",
-					type: "success"
-				}) ; 
+				Swal.fire({
+					type: 'warning',
+					timer: 2000,
+					title: 'Oops...',
+					text: 'Tandai baris yang ingin dihapus'
+				});
 			}
 		});
 
@@ -563,10 +565,12 @@
 					
 				});
 			} else {
-				swal({
-					title: "Tandai baris yang akan diubah",
-					icon: "success"
-				}) ; 
+				Swal.fire({
+					type: 'warning',
+					timer: 2000,
+					title: 'Oops...',
+					text: 'Tandai baris yang ingin diubah'
+				});
 			}
 		});
 

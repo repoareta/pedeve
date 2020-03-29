@@ -12,6 +12,7 @@ use App\Models\SdmTblKdjab;
 
 //load form request (for validation)
 use App\Http\Requests\PerjalananDinasStore;
+use App\Http\Requests\PerjalananDinasUpdate;
 
 // Load Plugin
 use Carbon\Carbon;
@@ -250,7 +251,7 @@ class PerjalananDinasController extends Controller
      * @param  int  $id
      * @return \Illuminate\Http\Response
      */
-    public function update(Request $request, $no_panjar)
+    public function update(PerjalananDinasUpdate $request, $no_panjar)
     {
         $no_panjar = str_replace('-', '/', $no_panjar);
         $panjar_header = PanjarHeader::find($no_panjar);

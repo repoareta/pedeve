@@ -447,12 +447,12 @@
 						_token:"{{ csrf_token() }}"		
 					},
 					success: function(dataResult){
-						swal({
+						Swal.fire({
+							type : 'success',
 							title: swal_title,
-							text: "Success",
-							icon: "success",
+							text : 'Success',
 							timer: 2000
-						})
+						});
 						// close modal
 						$('#kt_modal_4').modal('toggle');
 						// clear form
@@ -477,16 +477,26 @@
 			if($('input[type=radio]').is(':checked')) { 
 				$("input[type=radio]:checked").each(function() {
 					var no_nopek = $(this).val();
-					// delete stuff
-					swal({
-						title: "Data yang akan di hapus?",
-						text: "Nopek : " + no_nopek,
-						icon: "warning",
-						buttons: true,
-						dangerMode: true,
+					
+					const swalWithBootstrapButtons = Swal.mixin({
+					customClass: {
+						confirmButton: 'btn btn-primary',
+						cancelButton: 'btn btn-danger'
+					},
+						buttonsStyling: false
 					})
-					.then((willDelete) => {
-						if (willDelete) {
+
+					swalWithBootstrapButtons.fire({
+						title: "Data yang akan dihapus?",
+						text: "Nopek : " + no_nopek,
+						type: 'warning',
+						showCancelButton: true,
+						reverseButtons: true,
+						confirmButtonText: 'Ya, hapus',
+						cancelButtonText: 'Batalkan'
+					})
+					.then((result) => {
+						if (result.value) {
 							$.ajax({
 								url: "{{ route('perjalanan_dinas.delete.detail') }}",
 								type: 'DELETE',
@@ -497,11 +507,11 @@
 									"_token": "{{ csrf_token() }}",
 								},
 								success: function () {
-									swal({
-										title: "Hapus Detail Panjar",
-										text: "Success",
-										icon: "success",
-										timer: 2000
+									Swal.fire({
+										type  : 'success',
+										title : 'Hapus Detail Panjar ' + no_nopek,
+										text  : 'Success',
+										timer : 2000
 									}).then(function() {
 										t.ajax.reload();
 									});
@@ -514,10 +524,12 @@
 					});
 				});
 			} else {
-				swal({
-					title: "Tandai baris yang akan dihapus",
-					type: "success"
-				}) ; 
+				Swal.fire({
+					type: 'warning',
+					timer: 2000,
+					title: 'Oops...',
+					text: 'Tandai baris yang ingin dihapus'
+				});
 			}
 		});
 
@@ -559,10 +571,12 @@
 					
 				});
 			} else {
-				swal({
-					title: "Tandai baris yang akan diubah",
-					icon: "success"
-				}) ; 
+				Swal.fire({
+					type: 'warning',
+					timer: 2000,
+					title: 'Oops...',
+					text: 'Tandai baris yang ingin diubah'
+				});
 			}
 		});
 
