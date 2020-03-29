@@ -1,0 +1,65 @@
+.modal-footer.modal-action-form {
+    background-color: #f7f8fa;
+}
+
+.modal .modal-header .modal-icon {
+    font-size: 1.3rem;
+    color: #a7abc3;
+    padding-right: 0.75rem;
+}
+
+.dataTable .btn {
+    margin-bottom: 3px;
+}
+
+.kt-widget19.team-thumbnail .kt-widget19__pic .kt-widget19__labels {
+    right: 25px;
+    left: auto;
+}
+
+.kt-widget19.team-thumbnail .kt-widget19__wrapper .kt-widget19__content .kt-widget19__stats {
+    margin: 0 10px;
+}
+
+.kt-widget--user-profile-4 .kt-widget__desc {
+    display: block;
+    font-weight: 500;
+    font-size: 1.1rem;
+    color: #a7abc3;
+    text-align: center;
+}
+
+.kt-widget.kt-widget--user-profile-4 .kt-widget__head .kt-widget__media .kt-widget__img {
+    border-radius: 4px;
+}
+
+.kt-subheader .kt-subheader__main {
+    display: flex;
+    justify-content: flex-start;
+    align-items: center;
+    flex-wrap: wrap;
+    padding-top: 15px;
+}
+
+.kt-portlet .kt-portlet__head {
+    justify-content: start;
+}
+
+.kt-portlet__head-actions {
+    margin-left: 10px;
+}
+
+.kt-radio {
+    display: inline-block;
+    position: relative;
+    padding-left: 10px;
+    text-align: left;
+    margin-bottom: 10px;
+    cursor: pointer;
+    font-size: 1rem;
+    transition: all 0.3s ease;
+}
+
+td.sorting_1 {
+    padding-top: 0px;
+}
