@@ -115,7 +115,7 @@
 				$("input[type=radio]:checked").each(function() {
 					var id = $(this).val().split("/").join("-");
 					// go to page edit
-					window.location.href = "{{ url('umum/perjalanan_dinas/edit') }}" + '/' + id;
+					window.location.href = "{{ url('umum/perjalanan_dinas/pertanggungjawaban/edit') }}" + '/' + id;
 				});
 			} else {
 				swal({
@@ -131,28 +131,38 @@
 				$("input[type=radio]:checked").each(function() {
 					var id = $(this).val();
 					// delete stuff
-					swal({
-						title: "Data yang akan di hapus?",
-						text: "No. Panjar : " + id,
-						icon: "warning",
-						buttons: true,
-						dangerMode: true,
+					const swalWithBootstrapButtons = Swal.mixin({
+					customClass: {
+						confirmButton: 'btn btn-primary',
+						cancelButton: 'btn btn-danger'
+					},
+						buttonsStyling: false
 					})
-					.then((willDelete) => {
-						if (willDelete) {
+
+					swalWithBootstrapButtons.fire({
+						title: "Data yang akan dihapus?",
+						text: "No. PJ Panjar : " + id,
+						type: 'warning',
+						showCancelButton: true,
+						reverseButtons: true,
+						confirmButtonText: 'Ya, hapus',
+						cancelButtonText: 'Batalkan'
+					})
+					.then((result) => {
+						if (result.value) {
 							$.ajax({
-								url: "{{ route('perjalanan_dinas.delete') }}",
+								url: "{{ route('perjalanan_dinas.pertanggungjawaban.delete') }}",
 								type: 'DELETE',
-								dataType: 'json',
 								data: {
 									"id": id,
 									"_token": "{{ csrf_token() }}",
 								},
 								success: function () {
-									swal({
-											title: "Delete",
-											text: "Success",
-											type: "success"
+									Swal.fire({
+										type  : 'success',
+										title : 'Hapus Detail PJ Panjar ' + id,
+										text  : 'Success',
+										timer : 2000
 									}).then(function() {
 										t.ajax.reload();
 									});

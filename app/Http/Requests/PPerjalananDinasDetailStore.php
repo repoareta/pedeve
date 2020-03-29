@@ -24,7 +24,10 @@ class PPerjalananDinasDetailStore extends FormRequest
     public function rules()
     {
         return [
-            //
+            'nopek_detail' => 'required',
+            'keterangan_detail' => 'required',
+            'nilai_detail' => 'required',
+            'qty_detail' => 'required',
         ];
     }
 }
