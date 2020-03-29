@@ -24,7 +24,21 @@ class PerjalananDinasStore extends FormRequest
     public function rules()
     {
         return [
-            'ktp' => 'required'
+            'no_spd'      => 'required',
+            'tanggal'     => 'required',
+            'nopek'       => 'required',
+            'jabatan'     => 'required',
+            'golongan'    => 'required',
+            'ktp'         => 'required',
+            'jenis_dinas' => 'required',
+            'dari'        => 'required',
+            'tujuan'      => 'required',
+            'mulai'       => 'required',
+            'sampai'      => 'required',
+            'kendaraan'   => 'required',
+            'biaya'       => 'required',
+            'keterangan'  => 'required',
+            'jumlah'      => 'required',
         ];
     }
 }

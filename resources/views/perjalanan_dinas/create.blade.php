@@ -72,6 +72,7 @@
 								<option value="{{ $pegawai->nopeg }}">{{ $pegawai->nopeg.' - '.$pegawai->nama }}</option>
 								@endforeach
 							</select>
+							<div id="nopek-nya"></div>
 						</div>
 					</div>
 					<div class="form-group row">
@@ -83,6 +84,7 @@
 									<option value="{{ $jabatan->keterangan }}">{{ $jabatan->keterangan }}</option>
 								@endforeach
 							</select>
+							<div id="jabatan-nya"></div>
 						</div>
 
 						<label for="example-email-input" class="col-2 col-form-label">Golongan</label>
@@ -106,6 +108,7 @@
 								<option value="SIJ">SIJ</option>
 								<option value="CUTI">CUTI</option>
 							</select>
+							<div id="jenis_dinas-nya"></div>
 						</div>
 					</div>
 					<div class="form-group row">
@@ -135,14 +138,14 @@
 					</div>
 
 					<div class="form-group row">
-						<label for="example-week-input" class="col-2 col-form-label">Kendaraan</label>
+						<label for="kendaraan" class="col-2 col-form-label">Kendaraan</label>
 						<div class="col-10">
 							<input class="form-control" type="text" name="kendaraan" id="kendaraan">
 						</div>
 					</div>
 
 					<div class="form-group row">
-						<label for="example-week-input" class="col-2 col-form-label">Biaya</label>
+						<label for="biaya" class="col-2 col-form-label">Biaya</label>
 						<div class="col-10">
 							<select class="form-control kt-select2" name="biaya" id="biaya">
 								<option value="">- Pilih Biaya -</option>
@@ -150,20 +153,21 @@
 								<option value="K">Ditanggung Pribadi</option>
 								<option value="U">Ditanggung PPU</option>
 							</select>
+							<div id="biaya-nya"></div>
 						</div>
 					</div>
 
 					<div class="form-group row">
-						<label for="example-month-input" class="col-2 col-form-label">Keterangan</label>
+						<label for="keterangan" class="col-2 col-form-label">Keterangan</label>
 						<div class="col-10">
 							<textarea class="form-control" name="keterangan" id="keterangan"></textarea>
 						</div>
 					</div>
 
 					<div class="form-group row">
-						<label for="example-week-input" class="col-2 col-form-label">Jumlah</label>
+						<label for="jumlah" class="col-2 col-form-label">Jumlah</label>
 						<div class="col-10">
-							<input class="form-control" type="number" name="jumlah" id="example-week-input">
+							<input class="form-control" type="number" name="jumlah" id="jumlah">
 						</div>
 					</div>
 
@@ -246,7 +250,7 @@
 				<button type="button" class="close" data-dismiss="modal" aria-label="Close">
 				</button>
 			</div>
-			<form class="kt-form kt-form--label-right">
+			<form class="kt-form kt-form--label-right" action="" method="POST" id="formPanjarDinasDetail">
 				<div class="modal-body">
 					<div class="form-group row">
 						<label for="spd-input" class="col-2 col-form-label">No. Urut</label>
@@ -271,6 +275,7 @@
 									<option value="{{ $pegawai->nopeg.'-'.$pegawai->nama }}">{{ $pegawai->nopeg.' - '.$pegawai->nama }}</option>
 								@endforeach
 							</select>
+							<div id="nopek_detail-nya"></div>
 						</div>
 					</div>
 
@@ -283,6 +288,7 @@
 									<option value="{{ $jabatan->keterangan }}">{{ $jabatan->keterangan }}</option>
 								@endforeach
 							</select>
+							<div id="jabatan_detail-nya"></div>
 						</div>
 					</div>
 
@@ -295,7 +301,7 @@
 				</div>
 				<div class="modal-footer">
 					<button type="button" class="btn btn-warning" data-dismiss="modal"><i class="fa fa-reply" aria-hidden="true"></i> Batal</button>
-					<button type="button" id="saveDetail" class="btn btn-primary"><i class="fa fa-check" aria-hidden="true"></i> Simpan</button>
+					<button type="submit" class="btn btn-primary"><i class="fa fa-check" aria-hidden="true"></i> Simpan</button>
 				</div>
 			</form>
 		</div>
@@ -306,6 +312,12 @@
 @endsection
 
 @section('scripts')
+<!-- Laravel Javascript Validation -->
+<script type="text/javascript" src="{{ asset('vendor/jsvalidation/js/jsvalidation.js')}}"></script>
+
+{!! JsValidator::formRequest('App\Http\Requests\PerjalananDinasStore', '#formPanjarDinas') !!}
+{!! JsValidator::formRequest('App\Http\Requests\PerjalananDinasDetailStore', '#formPanjarDinasDetail') !!}
+
 <script type="text/javascript">
 
 	function refreshTable() {
@@ -368,63 +380,93 @@
 			format   : 'yyyy-mm-dd'
 		});
 
-		$('#saveDetail').click(function(e) {
-			var no = $('#no_urut').val();
-			var keterangan = $('#keterangan_detail').val();
-			var nopek = $('#nopek_detail').val().split('-')[0];
-			var nama = $('#nopek_detail').val().split('-')[1];
-			var jabatan = $('#jabatan_detail').val();
-			var golongan = $('#golongan_detail').val();
-
-			var state = $('#title_modal').data('state');
-
-			var url, session, swal_title;
-
-			if(state == 'add'){
-				url = "{{ route('perjalanan_dinas.store.detail') }}";
-				session = true;
-				swal_title = "Tambah Detail Panjar";
-			} else {
-				url = "{{ route('perjalanan_dinas.update.detail') }}";
-				session = true;
-				swal_title = "Update Detail Panjar";
+		$("#formPanjarDinas").on('submit', function(){
+			if ($('#nopek-error').length){
+				$("#nopek-error").insertAfter("#nopek-nya");
 			}
 
-			$.ajax({
-				url: url,
-				type: "POST",
-				data: {
-					no: no,
-					keterangan: keterangan,
-					nopek: nopek,
-					nama: nama,
-					jabatan: jabatan,				
-					golongan: golongan,
-					session: session,
-					_token:"{{ csrf_token() }}"		
-				},
-				success: function(dataResult){
-					swal({
-						title: swal_title,
-						text: "Success",
-						icon: "success",
-						timer: 2000
-					})
-					// close modal
-					$('#kt_modal_4').modal('toggle');
-					// clear form
-					$('#kt_modal_4').on('hidden.bs.modal', function () {
-						$(this).find('form').trigger('reset');
-						$('#nopek_detail').val('').trigger('change');
-						$('#jabatan_detail').val('').trigger('change');
-					});
-					// append to datatable
-					t.ajax.reload();
-				},
-				error: function () {
-					alert("Terjadi kesalahan, coba lagi nanti");
+			if ($('#jabatan-error').length){
+				$("#jabatan-error").insertAfter("#jabatan-nya");
+			}
+
+			if ($('#jenis_dinas-error').length){
+				$("#jenis_dinas-error").insertAfter("#jenis_dinas-nya");
+			}
+
+			if ($('#biaya-error').length){
+				$("#biaya-error").insertAfter("#biaya-nya");
+			}
+		});
+
+		$("#formPanjarDinasDetail").on('submit', function(){
+			if ($('#nopek_detail-error').length){
+				$("#nopek_detail-error").insertAfter("#nopek_detail-nya");
+			}
+
+			if ($('#jabatan_detail-error').length){
+				$("#jabatan_detail-error").insertAfter("#jabatan_detail-nya");
+			}
+
+			if($(this).valid()) {
+				// do your ajax stuff here
+				var no = $('#no_urut').val();
+				var keterangan = $('#keterangan_detail').val();
+				var nopek = $('#nopek_detail').val().split('-')[0];
+				var nama = $('#nopek_detail').val().split('-')[1];
+				var jabatan = $('#jabatan_detail').val();
+				var golongan = $('#golongan_detail').val();
+
+				var state = $('#title_modal').data('state');
+
+				var url, session, swal_title;
+
+				if(state == 'add'){
+					url = "{{ route('perjalanan_dinas.store.detail') }}";
+					session = true;
+					swal_title = "Tambah Detail Panjar";
+				} else {
+					url = "{{ route('perjalanan_dinas.update.detail') }}";
+					session = true;
+					swal_title = "Update Detail Panjar";
 				}
-			});
+
+				$.ajax({
+					url: url,
+					type: "POST",
+					data: {
+						no: no,
+						keterangan: keterangan,
+						nopek: nopek,
+						nama: nama,
+						jabatan: jabatan,				
+						golongan: golongan,
+						session: session,
+						_token:"{{ csrf_token() }}"		
+					},
+					success: function(dataResult){
+						swal({
+							title: swal_title,
+							text: "Success",
+							icon: "success",
+							timer: 2000
+						})
+						// close modal
+						$('#kt_modal_4').modal('toggle');
+						// clear form
+						$('#kt_modal_4').on('hidden.bs.modal', function () {
+							$(this).find('form').trigger('reset');
+							$('#nopek_detail').val('').trigger('change');
+							$('#jabatan_detail').val('').trigger('change');
+						});
+						// append to datatable
+						t.ajax.reload();
+					},
+					error: function () {
+						alert("Terjadi kesalahan, coba lagi nanti");
+					}
+				});
+			}
+			return false;
 		});
 
 		$('#deleteRow').click(function(e) {
@@ -482,8 +524,8 @@
 			if($('input[type=radio]').is(':checked')) { 
 				$("input[type=radio]:checked").each(function() {
 					// get value from row					
-					var no_nopek = $(this).val().split('-')[1];
 					var no_urut = $(this).val().split('-')[0];
+					var no_nopek = $(this).val().split('-')[1];
 					$.ajax({
 						url: "{{ route('perjalanan_dinas.show.json.detail') }}",
 						type: 'GET',
@@ -523,9 +565,4 @@
 
 	});
 </script>
-
-<!-- Laravel Javascript Validation -->
-<script type="text/javascript" src="{{ asset('vendor/jsvalidation/js/jsvalidation.js')}}"></script>
-
-{!! JsValidator::formRequest('App\Http\Requests\PerjalananDinasStore', '#formPanjarDinas') !!}
 @endsection
