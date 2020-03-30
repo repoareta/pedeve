@@ -359,7 +359,7 @@ class PermintaanBayarController extends Controller
     }
     public function rekapExportRange(Request $request)
     {
-        if($request->export == 1)
+        if($request->submit == 'pdf')
         {
             $mulai = date($request->mulai);
             $sampai = date($request->sampai);
@@ -399,7 +399,7 @@ class PermintaanBayarController extends Controller
             $canvas->page_text(700, 120, "Page {PAGE_NUM} of {PAGE_COUNT}", null, 10, array(0, 0, 0));
             // return $pdf->download('rekap_permint_'.date('Y-m-d H:i:s').'.pdf');
             return $pdf->stream();
-        }elseif($request->export == 2) {
+        }elseif($request->submit == 'xlsx') {
             $mulai = date($request->mulai);
             $sampai = date($request->sampai);
             $pecahkan = explode('-', $request->mulai);

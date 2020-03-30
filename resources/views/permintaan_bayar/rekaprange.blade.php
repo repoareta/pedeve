@@ -43,17 +43,6 @@
         <form class="kt-form kt-form--label-right" action="{{ route('permintaan_bayar.rekap.export.range') }}" method="post">
             @csrf
             <div class="form-group row">
-				<label for="jenis-dinas-input" class="col-2 col-form-label">Export</label>
-				<div class="col-8">
-					<select name="export" id="" class="form-control" required oninvalid="this.setCustomValidity('Export Harus Diisi..')" oninput="setCustomValidity('')"> 
-                        <option value="">--Pilih--</option>
-                        <option value="1">PDF</option>
-                        <option value="2">EXCEL</option>
-                        <option value="3">CSV</option>
-                    </select>
-				</div>
-			</div>
-            <div class="form-group row">
                 <label for="mulai-input" class="col-2 col-form-label">Mulai</label>
                 <div class="col-8">
                     <div class="input-daterange input-group" id="date_range_picker">
@@ -72,7 +61,9 @@
                     <div class="col-2"></div>
                     <div class="col-10">
                         <a  href="{{ url()->previous() }}" class="btn btn-warning"><i class="fa fa-reply" aria-hidden="true"></i> Batal</a>
-                        <button type="submit" class="btn btn-brand"><i class="fa fa-check" aria-hidden="true"></i> Submit</button>
+                        <button type="submit" name="submit" value="pdf" class="btn btn-danger"><i class="fa fa-file-pdf" aria-hidden="true"></i> Export .PDF</button>
+                        <button type="submit" name="submit" value="csv" class="btn btn-success"><i class="fa fa-file-csv" aria-hidden="true"></i> Export .CSV</button>
+                        <button type="submit" name="submit" value="xlsx" class="btn btn-info"><i class="fa fa-file-csv" aria-hidden="true"></i> Export .EXCEL</button>
                     </div>
                 </div>
             </div>
