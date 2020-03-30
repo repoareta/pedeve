@@ -2,12 +2,13 @@
 
 namespace App\Http\Controllers;
 
-use App\UmkModel;
-use App\VendorModel;
-use App\DetailUmkModel;
+use App\Models\Umk;
+use App\Models\Vendor;
+use App\Models\DetailUmk;
 use Illuminate\Http\Request;
 use DataTables;
 use Carbon\Carbon;
+use PhpOffice\PhpSpreadsheet\Spreadsheet;
 use DB;
 use Session;
 use PDF;
@@ -29,7 +30,7 @@ class UangMukaKerjaController extends Controller
     {
         if($request->ajax())
         {               
-                $data = UmkModel::orderBy('tgl_panjar','desc')->get();
+                $data = Umk::orderBy('tgl_panjar','desc')->get();
                 return DataTables::of($data)
                 ->addColumn('action', function($data){
                     if($data->app_pbd == 'Y'){
@@ -98,7 +99,7 @@ class UangMukaKerjaController extends Controller
         }else {
             $no_umk= sprintf("%03s", 1). '/' . $awal .'/' . date('d/m/Y');
         }
-        $vendor = VendorModel::all();
+        $vendor = Vendor::all();
         return view('umk.create', compact('no_umk','vendor'));
     }
 
@@ -146,7 +147,7 @@ class UangMukaKerjaController extends Controller
     {      
         $check_data =  DB::select("select * from kerja_detail where no = '$request->no' and  no_umk = '$request->no_umk'");
         if(!empty($check_data)){
-            DetailUmkModel::where('no_umk', $request->no_umk)
+            DetailUmk::where('no_umk', $request->no_umk)
             ->where('no', $request->no)
             ->update([
             'no' => $request->no,
@@ -161,7 +162,7 @@ class UangMukaKerjaController extends Controller
             ]);
             return response()->json();
         }else{
-            DetailUmkModel::insert([
+            DetailUmk::insert([
             'no' => $request->no,
             'keterangan' => $request->keterangan,
             'account' => $request->acc,
@@ -179,13 +180,13 @@ class UangMukaKerjaController extends Controller
     public function storeApp(Request $request)
     {      
         $noumk=str_replace('-', '/', $request->noumk);
-        $data_app = UmkModel::where('no_umk',$noumk)->select('*')->get();
+        $data_app = Umk::where('no_umk',$noumk)->select('*')->get();
         foreach($data_app as $data)
         {
             $check_data = $data->app_sdm;
         }
         if($check_data == 'Y'){
-            UmkModel::where('no_umk', $noumk)
+            Umk::where('no_umk', $noumk)
             ->update([
                 'app_sdm' => 'N',
                 'app_sdm_oleh' => $request->userid,
@@ -193,7 +194,7 @@ class UangMukaKerjaController extends Controller
             ]);
             return redirect()->route('uang_muka_kerja.index');
         }else{
-            UmkModel::where('no_umk', $noumk)
+            Umk::where('no_umk', $noumk)
             ->update([
                 'app_sdm' => 'Y',
                 'app_sdm_oleh' => $request->userid,
@@ -208,13 +209,13 @@ class UangMukaKerjaController extends Controller
         $noumk=str_replace('-', '/', $no);
         $data_umks = DB::select("select * from kerja_header where no_umk = '$noumk'");
         $no_uruts = DB::select("select max(no) as no from kerja_detail where no_umk = '$noumk'");
-        $data_umk_details = DetailUmkModel::where('no_umk',$noumk)->get();
+        $data_umk_details = DetailUmk::where('no_umk',$noumk)->get();
         $data_account = DB::select("select kodeacct, descacct FROM account where LENGTH(kodeacct)=6 AND kodeacct NOT LIKE '%X%'");
         $data_bagian = DB::select("SELECT A.kode,A.nama FROM sdm_tbl_kdbag A ORDER BY A.kode");
         $data_jenisbiaya = DB::select("select kode,keterangan from jenisbiaya order by kode");
         $data_cj = DB::select("select kode,nama from cashjudex order by kode");
-        $count= DetailUmkModel::where('no_umk',$noumk)->select('no_umk')->sum('nilai');
-        $vendor=VendorModel::all();
+        $count= DetailUmk::where('no_umk',$noumk)->select('no_umk')->sum('nilai');
+        $vendor=Vendor::all();
         if(!empty($no_urut) == null)
         {
             foreach($no_uruts as $no_urut)
@@ -249,7 +250,7 @@ class UangMukaKerjaController extends Controller
     {
         $noumk=str_replace('-', '/', $dataid);
 
-            $data = DetailUmkModel::where('no', $datano)->where('no_umk', $noumk)->distinct()->get();
+            $data = DetailUmk::where('no', $datano)->where('no_umk', $noumk)->distinct()->get();
             return response()->json($data[0]);
 
     }
@@ -268,8 +269,8 @@ class UangMukaKerjaController extends Controller
 
     public function delete(Request $request)
     {
-        UmkModel::where('no_umk', $request->id)->delete();
-        DetailUmkModel::where('no_umk', $request->id)->delete();
+        Umk::where('no_umk', $request->id)->delete();
+        DetailUmk::where('no_umk', $request->id)->delete();
         return response()->json();
     }
 
@@ -282,7 +283,7 @@ class UangMukaKerjaController extends Controller
     public function deleteDetail(Request $request)
     {
 
-        DetailUmkModel::where('no', $request->no)
+        DetailUmk::where('no', $request->no)
         ->where('no_umk', $request->id)
         ->delete();
         return response()->json();
@@ -292,14 +293,14 @@ class UangMukaKerjaController extends Controller
     public function approv($id)
     {
         $noumk=str_replace('-', '/', $id);
-        $data_app = UmkModel::where('no_umk',$noumk)->select('*')->get();
+        $data_app = Umk::where('no_umk',$noumk)->select('*')->get();
         return view('umk.approv',compact('data_app'));
     }
 
     public function rekap($id)
     {
         $noumk=str_replace('-', '/', $id);
-        $data_report = UmkModel::where('no_umk',$noumk)->select('*')->get();
+        $data_report = Umk::where('no_umk',$noumk)->select('*')->get();
         return view('umk.rekap',compact('data_report'));
     }
 
@@ -311,13 +312,13 @@ class UangMukaKerjaController extends Controller
     public function rekapExport(Request $request)
     {
         $noumk=$request->noumk;
-        $header_list = UmkModel::where('no_umk', $noumk)->get();
+        $header_list = Umk::where('no_umk', $noumk)->get();
         foreach($header_list as $data_report)
         {
             $data_report;
         }
-        $detail_list = DetailUmkModel::where('no_umk', $noumk)->get();
-        $list_acount =DetailUmkModel::where('no_umk',$noumk)->select('nilai')->sum('nilai');
+        $detail_list = DetailUmk::where('no_umk', $noumk)->get();
+        $list_acount =DetailUmk::where('no_umk',$noumk)->select('nilai')->sum('nilai');
         $pdf = PDF::loadview('umk.export', compact('list_acount','data_report','detail_list','request'))->setPaper('a4', 'Portrait');
         $pdf->output();
         $dom_pdf = $pdf->getDomPDF();
@@ -330,21 +331,97 @@ class UangMukaKerjaController extends Controller
 
     public function rekapExportRange(Request $request)
     {
-        $mulai = date($request->mulai);
-        $sampai = date($request->sampai);
-        $umk_header_list = UmkModel::whereBetween('tgl_panjar', [$mulai, $sampai])->where('app_pbd', 'Y')
-        ->get();
-        // dd($umk_header_list);
-        $list_acount =UmkModel::whereBetween('tgl_panjar', [$mulai, $sampai])
-        ->where('app_pbd', 'Y')->select('jumlah')->sum('jumlah');
-        $pdf = PDF::loadview('umk.exportrange',compact('umk_header_list','list_acount'))->setPaper('a4', 'landscape');
-        $pdf->output();
-        $dom_pdf = $pdf->getDomPDF();
-
-        $canvas = $dom_pdf ->get_canvas();
-        $canvas->page_text(690, 100, "Page {PAGE_NUM} of {PAGE_COUNT}", null, 10, array(0, 0, 0));
-        // return $pdf->download('rekap_umk_'.date('Y-m-d H:i:s').'.pdf');
-        return $pdf->stream();
+        if($request->export == 1)
+        {
+            $mulai = date($request->mulai);
+            $sampai = date($request->sampai);
+            $pecahkan = explode('-', $request->mulai);
+            $array_bln	 = array (
+                1 =>   'Januari',
+                'Februari',
+                'Maret',
+                'April',
+                'Mei',
+                'Juni',
+                'Juli',
+                'Agustus',
+                'September',
+                'Oktober',
+                'November',
+                'Desember'
+              );
+              
+            $bulan= strtoupper($array_bln[ (int)$pecahkan[1] ]);
+            $tahun=$pecahkan[0];
+            $umk_header_list = Umk::whereBetween('tgl_panjar', [$mulai, $sampai])->where('app_pbd', 'Y')
+            ->get();
+            // dd($umk_header_list);
+            $list_acount =Umk::whereBetween('tgl_panjar', [$mulai, $sampai])
+            ->where('app_pbd', 'Y')->select('jumlah')->sum('jumlah');
+            $pdf = PDF::loadview('umk.exportrange',compact('umk_header_list','list_acount','bulan','tahun'))->setPaper('a4', 'landscape');
+            $pdf->output();
+            $dom_pdf = $pdf->getDomPDF();
+    
+            $canvas = $dom_pdf ->get_canvas();
+            $canvas->page_text(690, 100, "Page {PAGE_NUM} of {PAGE_COUNT}", null, 10, array(0, 0, 0));
+            // return $pdf->download('rekap_umk_'.date('Y-m-d H:i:s').'.pdf');
+            return $pdf->stream();
+        }elseif($request->export == 2)
+        {
+            $mulai = date($request->mulai);
+            $sampai = date($request->sampai);
+            $pecahkan = explode('-', $request->mulai);
+            $array_bln	 = array (
+                1 =>   'Januari',
+                'Februari',
+                'Maret',
+                'April',
+                'Mei',
+                'Juni',
+                'Juli',
+                'Agustus',
+                'September',
+                'Oktober',
+                'November',
+                'Desember'
+              );
+              
+            $bulan= strtoupper($array_bln[ (int)$pecahkan[1] ]);
+            $tahun=$pecahkan[0];
+            $umk_header_list = Umk::whereBetween('tgl_panjar', [$mulai, $sampai])->where('app_pbd', 'Y')
+            ->get();
+            $list_acount =Umk::whereBetween('tgl_panjar', [$mulai, $sampai])
+            ->where('app_pbd', 'Y')->select('jumlah')->sum('jumlah');
+            $excel=new Spreadsheet;
+            return view('umk.exportexcel',compact('umk_header_list','list_acount','excel','bulan','tahun'));
+        }else{
+            $mulai = date($request->mulai);
+            $sampai = date($request->sampai);
+            $pecahkan = explode('-', $request->mulai);
+            $array_bln	 = array (
+                1 =>   'Januari',
+                'Februari',
+                'Maret',
+                'April',
+                'Mei',
+                'Juni',
+                'Juli',
+                'Agustus',
+                'September',
+                'Oktober',
+                'November',
+                'Desember'
+              );
+              
+            $bulan= strtoupper($array_bln[ (int)$pecahkan[1] ]);
+            $tahun=$pecahkan[0];
+            $umk_header_list = Umk::whereBetween('tgl_panjar', [$mulai, $sampai])->where('app_pbd', 'Y')
+            ->get();
+            $list_acount =Umk::whereBetween('tgl_panjar', [$mulai, $sampai])
+            ->where('app_pbd', 'Y')->select('jumlah')->sum('jumlah');
+            $excel=new Spreadsheet;
+            return view('umk.exportcsv',compact('umk_header_list','list_acount','excel','bulan','tahun'));
+        }
     }
 
 }

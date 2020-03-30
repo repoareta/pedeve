@@ -43,6 +43,17 @@
         <form class="kt-form kt-form--label-right" action="{{ route('uang_muka_kerja.rekap.export.range') }}" method="post">
             @csrf
             <div class="form-group row">
+				<label for="jenis-dinas-input" class="col-2 col-form-label">Export</label>
+				<div class="col-8">
+					<select name="export" id="" class="form-control" required oninvalid="this.setCustomValidity('Export Harus Diisi..')" oninput="setCustomValidity('')"> 
+                        <option value="">--Pilih--</option>
+                        <option value="1">PDF</option>
+                        <option value="2">EXCEL</option>
+                        <option value="3">CSV</option>
+                    </select>
+				</div>
+			</div>
+            <div class="form-group row">
                 <label for="mulai-input" class="col-2 col-form-label">Mulai</label>
                 <div class="col-8">
                     <div class="input-daterange input-group" id="date_range_picker">

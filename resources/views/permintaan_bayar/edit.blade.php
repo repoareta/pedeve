@@ -123,8 +123,8 @@
 						<div class="form-group row">
 							<label for="spd-input" class="col-2 col-form-label">CI<span style="color:red;">*</span></label>
 							<div class="col-5">
-								<input id="ci"   style=" width: 26px;height: 26px;margin-left:50px;" value="1" <?php if ($data_bayar->ci == '1' )  echo 'checked' ; ?> type="radio"  name="ci" onclick="displayResult(1)"  checked />  <label style="font-size:14px; margin-left:10px;">1.Rp</label>
-									<input  id="ci" style=" width: 26px;height: 26px;margin-left:50px;" value="2" <?php if ($data_bayar->ci == '2' )  echo 'checked' ; ?> type="radio"    name="ci"  onclick="displayResult(2)" /><label style="font-size:14px; margin-left:10px;"> 2.USD</label>
+								<input id="ci"   style=" width: 26px;height: 26px;margin-left:50px;" value="1" <?php if ($data_bayar->ci == '1' )  echo 'checked' ; ?> type="radio"  name="ci" onclick="displayResult(1)"  checked />  <label style="font-size:14px; margin-left:10px;">IDR</label>
+									<input  id="ci" style=" width: 26px;height: 26px;margin-left:50px;" value="2" <?php if ($data_bayar->ci == '2' )  echo 'checked' ; ?> type="radio"    name="ci"  onclick="displayResult(2)" /><label style="font-size:14px; margin-left:10px;"> USD</label>
 							</div>
 
 							<label for="spd-input" class="col-2 col-form-label">Kurs<span style="color:red;">*</span></label>

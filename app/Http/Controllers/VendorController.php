@@ -3,7 +3,7 @@
 namespace App\Http\Controllers;
 
 use Illuminate\Http\Request;
-use App\VendorModel;
+use App\Models\Vendor;
 use Carbon\Carbon;
 use Session;
 use DB;
@@ -24,7 +24,7 @@ class VendorController extends Controller
     {
         if($request->ajax())
         {               
-                $data = VendorModel::all();
+                $data = Vendor::all();
                 return datatables()->of($data)
                 ->addColumn('action', function ($data) {
                         $radio = '<label  class="kt-radio kt-radio--bold kt-radio--brand"><input type="radio" class="btn-radio" data-id="'.$data->vendorid.'" value="'.$data->vendorid.'" name="btn-radio"><span></span></label>';
@@ -57,7 +57,7 @@ class VendorController extends Controller
         $check_data =  DB::select("select * from tbl_vendor where vendorid = '$request->vendorid'");
         if(!empty($check_data))
         {
-            VendorModel::where('vendorid', $request->vendorid)
+            Vendor::where('vendorid', $request->vendorid)
                 ->update([
                 'nama' => $request->nama,
                 'alamat' => $request->alamat,
@@ -93,7 +93,7 @@ class VendorController extends Controller
      */
     public function edit($id)
     {
-        $data_vendor =  VendorModel::where('vendorid', $id)->get();
+        $data_vendor =  Vendor::where('vendorid', $id)->get();
         return view('vendor.edit', compact('data_vendor'));
     }
 
@@ -117,7 +117,7 @@ class VendorController extends Controller
      */
     public function delete(Request $request)
     {
-        VendorModel::where('vendorid', $request->id)->delete();
+        Vendor::where('vendorid', $request->id)->delete();
         return response()->json();
     }
 }

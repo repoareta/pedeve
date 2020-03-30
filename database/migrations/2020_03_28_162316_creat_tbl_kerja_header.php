@@ -13,9 +13,9 @@ class CreatTblKerjaHeader extends Migration
      */
     public function up()
     {
-        // Schema::create('kerja_header', function (Blueprint $table) {
-        //     $table->string('kepada', 200); => nambah colom kepada
-        // });
+        Schema::create('kerja_header', function (Blueprint $table) {
+            $table->string('kepada', 200);
+        });
     }
 
     /**
@@ -25,6 +25,6 @@ class CreatTblKerjaHeader extends Migration
      */
     public function down()
     {
-        // Schema::dropIfExists('kerja_header');
+        Schema::dropIfExists('kerja_header');
     }
 }
