@@ -15,9 +15,9 @@
 					Umum </a>
 				<span class="kt-subheader__breadcrumbs-separator"></span>
 				<a href="" class="kt-subheader__breadcrumbs-link">
-					Perjalanan Dinas </a>
+					Pertanggungjawaban Perjalanan Dinas </a>
 				<span class="kt-subheader__breadcrumbs-separator"></span>
-				<span class="kt-subheader__breadcrumbs-link kt-subheader__breadcrumbs-link--active">Tambah</span>
+				<span class="kt-subheader__breadcrumbs-link kt-subheader__breadcrumbs-link--active">Ubah</span>
 			</div>
 		</div>
 	</div>
@@ -32,7 +32,7 @@
 					<i class="kt-font-brand flaticon2-plus-1"></i>
 				</span>
 				<h3 class="kt-portlet__head-title">
-					Tambah Panjar Dinas
+					Ubah Pertanggungjawaban Panjar Dinas
 				</h3>			
 			</div>
 			<div class="kt-portlet__head-toolbar">
@@ -40,147 +40,103 @@
 				</div>
 			</div>
 		</div>
-			<div class="kt-portlet__body">
-				<div class="form-group form-group-last">
-					<div class="alert alert-secondary" role="alert">
-						<div class="alert-text">
-							<h5 class="kt-portlet__head-title">
-								Header Panjar Dinas
-							</h5>	
+		<div class="kt-portlet__body">
+			<div class="form-group form-group-last">
+				<div class="alert alert-secondary" role="alert">
+					<div class="alert-text">
+						<h5 class="kt-portlet__head-title">
+							Header Pertanggungjawaban Panjar Dinas
+						</h5>	
+					</div>
+				</div>
+			</div>
+			<form class="kt-form kt-form--label-right" id="formPPanjarDinas" action="{{ route('perjalanan_dinas.pertanggungjawaban.update', ['no_ppanjar' => Request::segment(5)]) }}" method="POST">
+				@csrf
+				<div class="form-group row">
+					<label for="spd-input" class="col-2 col-form-label">No. PJ Panjar</label>
+					<div class="col-5">
+						<input class="form-control" type="text" name="no_pj_panjar" value="{{ $ppanjar_header->no_ppanjar }}" id="no_pj_panjar">
+					</div>
+
+					<label for="spd-input" class="col-2 col-form-label">Tanggal PJ Panjar</label>
+					<div class="col-3">
+						<input class="form-control" type="text" name="tanggal" id="tanggal" value="{{ date('Y-m-d', strtotime($ppanjar_header->tgl_ppanjar)) }}">
+					</div>
+				</div>
+
+				
+				<div class="form-group row">
+					<label for="example-email-input" class="col-2 col-form-label">No. Panjar</label>
+					<div class="col-5">
+						<select class="form-control kt-select2" name="no_panjar" id="no_panjar">
+							<option value="">- Pilih No. Panjar -</option>
+							@foreach ($panjar_header_list as $panjar_header)
+								<option value="{{ $panjar_header->no_panjar }}" @if($panjar_header->no_panjar == $ppanjar_header->no_panjar)
+									selected
+								@endif>{{ $panjar_header->no_panjar }}</option>
+							@endforeach
+						</select>
+						<div id="no_panjar-nya"></div>
+					</div>
+
+					<label for="example-email-input" class="col-2 col-form-label">Keterangan</label>
+					<div class="col-3">
+						<input class="form-control" type="text" name="keterangan" id="keterangan" value="{{ $ppanjar_header->keterangan }}">
+					</div>
+				</div>
+
+				<div class="form-group row">
+					<label for="nopek-input" class="col-2 col-form-label">Nopek</label>
+					<div class="col-10">
+						<select class="form-control kt-select2" id="nopek" name="nopek">
+							<option value="">- Pilih Nopek -</option>
+							@foreach ($pegawai_list as $pegawai)
+							<option value="{{ $pegawai->nopeg }}" @if($pegawai->nopeg == $ppanjar_header->nopek)
+								selected
+							@endif>{{ $pegawai->nopeg.' - '.$pegawai->nama }}</option>
+							@endforeach
+						</select>
+						<div id="nopek-nya"></div>
+					</div>
+				</div>
+
+				<div class="form-group row">
+					<label for="example-email-input" class="col-2 col-form-label">Jabatan</label>
+					<div class="col-5">
+						<select class="form-control kt-select2" name="jabatan" id="jabatan">
+							<option value="">- Pilih Jabatan -</option>
+							@foreach ($jabatan_list as $jabatan)
+								<option value="{{ $jabatan->keterangan }}" @if($jabatan->keterangan == $ppanjar_header->pangkat)
+									selected
+								@endif>{{ $jabatan->keterangan }}</option>
+							@endforeach
+						</select>
+						<div id="jabatan-nya"></div>
+					</div>
+
+					<label for="example-email-input" class="col-2 col-form-label">Golongan</label>
+					<div class="col-3">
+						<input class="form-control" type="text" name="golongan" id="golongan" value="{{ $ppanjar_header->gol }}">
+					</div>
+				</div>
+
+				<div class="form-group row">
+					<label for="jumlah" class="col-2 col-form-label">Jumlah</label>
+					<div class="col-10">
+						<input class="form-control" type="number" name="jumlah" id="jumlah" value="{{ $ppanjar_header->jmlpanjar }}">
+					</div>
+				</div>
+
+				<div class="kt-form__actions">
+					<div class="row">
+						<div class="col-2"></div>
+						<div class="col-10">
+							<a  href="{{ url()->previous() }}" class="btn btn-warning"><i class="fa fa-reply" aria-hidden="true"></i> Batal</a>
+							<button type="submit" class="btn btn-brand"><i class="fa fa-check" aria-hidden="true"></i> Simpan</button>
 						</div>
 					</div>
 				</div>
-				<form class="kt-form kt-form--label-right" id="formPanjarDinas" action="{{ route('perjalanan_dinas.store') }}" method="POST">
-					@csrf
-					<div class="form-group row">
-						<label for="spd-input" class="col-2 col-form-label">No. SPD</label>
-						<div class="col-5">
-							<input class="form-control" type="text" name="no_spd" value="{{ ($panjar_header_count + 1).'/PDV/CS/'.date('Y') }}" id="no_spd">
-						</div>
-
-						<label for="spd-input" class="col-2 col-form-label">Tanggal Panjar</label>
-						<div class="col-3">
-							<input class="form-control" type="text" name="tanggal" id="tanggal" value="{{ date('Y-m-d') }}">
-						</div>
-					</div>
-					<div class="form-group row">
-						<label for="nopek-input" class="col-2 col-form-label">Nopek</label>
-						<div class="col-10">
-							<select class="form-control kt-select2" id="nopek" name="nopek">
-								<option value="">- Pilih Nopek -</option>
-								@foreach ($pegawai_list as $pegawai)
-								<option value="{{ $pegawai->nopeg }}">{{ $pegawai->nopeg.' - '.$pegawai->nama }}</option>
-								@endforeach
-							</select>
-							<div id="nopek-nya"></div>
-						</div>
-					</div>
-					<div class="form-group row">
-						<label for="example-email-input" class="col-2 col-form-label">Jabatan</label>
-						<div class="col-5">
-							<select class="form-control kt-select2" name="jabatan" id="jabatan">
-								<option value="">- Pilih Jabatan -</option>
-								@foreach ($jabatan_list as $jabatan)
-									<option value="{{ $jabatan->keterangan }}">{{ $jabatan->keterangan }}</option>
-								@endforeach
-							</select>
-							<div id="jabatan-nya"></div>
-						</div>
-
-						<label for="example-email-input" class="col-2 col-form-label">Golongan</label>
-						<div class="col-3">
-							<input class="form-control" type="text" name="golongan" id="golongan">
-						</div>
-					</div>
-					<div class="form-group row">
-						<label for="id-pekerja;-input" class="col-2 col-form-label">KTP/Passport</label>
-						<div class="col-10">
-							<input class="form-control" type="text" name="ktp" id="ktp">
-						</div>
-					</div>
-					<div class="form-group row">
-						<label for="jenis-dinas-input" class="col-2 col-form-label">Jenis Dinas</label>
-						<div class="col-10">
-							<select class="form-control kt-select2" name="jenis_dinas" id="jenis_dinas">
-								<option value="">- Pilih Jenis Dinas -</option>
-								<option value="DN">PDN-DN</option>
-								<option value="LN">PDN-LN</option>
-								<option value="SIJ">SIJ</option>
-								<option value="CUTI">CUTI</option>
-							</select>
-							<div id="jenis_dinas-nya"></div>
-						</div>
-					</div>
-					<div class="form-group row">
-						<label for="dari-input" class="col-2 col-form-label">Dari/Asal</label>
-						<div class="col-10">
-							<input class="form-control" type="text" name="dari" id="dari">
-						</div>
-					</div>
-					<div class="form-group row">
-						<label for="tujuan-input" class="col-2 col-form-label">Tujuan</label>
-						<div class="col-10">
-							<input class="form-control" type="text" name="tujuan" id="tujuan">
-						</div>
-					</div>
-					<div class="form-group row">
-						<label for="mulai-input" class="col-2 col-form-label">Mulai</label>
-						<div class="col-10">
-							<div class="input-daterange input-group" id="date_range_picker">
-								<input type="text" class="form-control" name="mulai" autocomplete="off" />
-								<div class="input-group-append">
-									<span class="input-group-text">Sampai</span>
-								</div>
-								<input type="text" class="form-control" name="sampai" autocomplete="off" />
-							</div>
-							<span class="form-text text-muted">Pilih rentang waktu mulai dan sampai</span>
-						</div>
-					</div>
-
-					<div class="form-group row">
-						<label for="kendaraan" class="col-2 col-form-label">Kendaraan</label>
-						<div class="col-10">
-							<input class="form-control" type="text" name="kendaraan" id="kendaraan">
-						</div>
-					</div>
-
-					<div class="form-group row">
-						<label for="biaya" class="col-2 col-form-label">Biaya</label>
-						<div class="col-10">
-							<select class="form-control kt-select2" name="biaya" id="biaya">
-								<option value="">- Pilih Biaya -</option>
-								<option value="P">Ditanggung Perusahaan</option>
-								<option value="K">Ditanggung Pribadi</option>
-								<option value="U">Ditanggung PPU</option>
-							</select>
-							<div id="biaya-nya"></div>
-						</div>
-					</div>
-
-					<div class="form-group row">
-						<label for="keterangan" class="col-2 col-form-label">Keterangan</label>
-						<div class="col-10">
-							<textarea class="form-control" name="keterangan" id="keterangan"></textarea>
-						</div>
-					</div>
-
-					<div class="form-group row">
-						<label for="jumlah" class="col-2 col-form-label">Jumlah</label>
-						<div class="col-10">
-							<input class="form-control" type="number" name="jumlah" id="jumlah">
-						</div>
-					</div>
-
-					<div class="kt-form__actions">
-						<div class="row">
-							<div class="col-2"></div>
-							<div class="col-10">
-								<a  href="{{ url()->previous() }}" class="btn btn-warning"><i class="fa fa-reply" aria-hidden="true"></i> Batal</a>
-								<button type="submit" class="btn btn-brand"><i class="fa fa-check" aria-hidden="true"></i> Simpan</button>
-							</div>
-						</div>
-					</div>
-				</form>
+			</form>
 		</div>
 		{{-- END BODY --}}
 
@@ -224,22 +180,18 @@
 						<th></th>
 						<th>No</th>
 						<th>Nopek</th>
-						<th>Nama</th>
-						<th>Gol</th>
-						<th>Jabatan</th>
 						<th>Keterangan</th>
+						<th>Nilai</th>
+						<th>Qty</th>
+						<th>Total</th>
 					</tr>
 				</thead>
 				<tbody>
 				</tbody>
 			</table>
 		</div>
-		
 	</div>	
 </div>
-
-
-
 
 <!--begin::Modal-->
 <div class="modal fade" id="kt_modal_4" tabindex="-1" role="dialog" aria-labelledby="exampleModalLabel" aria-hidden="true">
@@ -312,15 +264,16 @@
 @endsection
 
 @section('scripts')
-{!! JsValidator::formRequest('App\Http\Requests\PerjalananDinasStore', '#formPanjarDinas') !!}
-{!! JsValidator::formRequest('App\Http\Requests\PerjalananDinasDetailStore', '#formPanjarDinasDetail') !!}
+{!! JsValidator::formRequest('App\Http\Requests\PerjalananDinasUpdate', '#formPPanjarDinas') !!}
+{!! JsValidator::formRequest('App\Http\Requests\PerjalananDinasDetailStore', '#formPPanjarDinasDetailStore') !!}
+{!! JsValidator::formRequest('App\Http\Requests\PerjalananDinasDetailUpdate', '#formPPanjarDinasDetailUpdate') !!}
 
 <script type="text/javascript">
 
 	function refreshTable() {
 		var table = $('#kt_table').DataTable();
 		table.clear();
-		table.ajax.url("{{ route('perjalanan_dinas.index.json.detail', ['no_panjar' => 'null']) }}").load(function() {
+		table.ajax.url("{{ route('perjalanan_dinas.index.json.detail', ['no_panjar' => str_replace('/', '-', $panjar_header->no_panjar)]) }}").load(function() {
 			// Callback loads updated row count into a DOM element
 			// (a Bootstrap badge on a menu item in this case):
 			var rowCount = table.rows().count();
@@ -341,7 +294,7 @@
 			language: {
 				processing: '<i class="fa fa-spinner fa-spin fa-2x fa-fw"></i> <br> Loading...'
 			},
-			ajax: "{{ route('perjalanan_dinas.index.json.detail', ['no_panjar' => 'null']) }}",
+			ajax: "{{ route('perjalanan_dinas.index.json.detail', ['no_panjar' => str_replace('/', '-', $panjar_header->no_panjar)]) }}",
 			columns: [
 				{data: 'action', name: 'aksi', orderable: false, searchable: false},
 				{data: 'no', name: 'no'},
@@ -362,14 +315,6 @@
 			$('#title_modal').data('state', 'add');
 		});
 
-		// range picker
-		$('#date_range_picker').datepicker({
-			todayHighlight: true,
-			// autoclose: true,
-			// language : 'id',
-			format   : 'yyyy-mm-dd'
-		});
-
 		// minimum setup
 		$('#tanggal').datepicker({
 			todayHighlight: true,
@@ -379,25 +324,17 @@
 			format   : 'yyyy-mm-dd'
 		});
 
-		$("#formPanjarDinas").on('submit', function(){
+		$("#formPPanjarDinas").on('submit', function(){
+			if ($('#no_panjar-error').length){
+				$("#no_panjar-error").insertAfter("#no_panjar-nya");
+			}
+
 			if ($('#nopek-error').length){
 				$("#nopek-error").insertAfter("#nopek-nya");
 			}
 
 			if ($('#jabatan-error').length){
 				$("#jabatan-error").insertAfter("#jabatan-nya");
-			}
-
-			if ($('#jenis_dinas-error').length){
-				$("#jenis_dinas-error").insertAfter("#jenis_dinas-nya");
-			}
-
-			if ($('#biaya-error').length){
-				$("#biaya-error").insertAfter("#biaya-nya");
-			}
-
-			if ($('#sampai-error').length){
-				$("#sampai-error").addClass("float-right");
 			}
 		});
 
@@ -425,11 +362,11 @@
 
 				if(state == 'add'){
 					url = "{{ route('perjalanan_dinas.store.detail') }}";
-					session = true;
+					session = false;
 					swal_title = "Tambah Detail Panjar";
 				} else {
 					url = "{{ route('perjalanan_dinas.update.detail') }}";
-					session = true;
+					session = false;
 					swal_title = "Update Detail Panjar";
 				}
 
@@ -438,6 +375,7 @@
 					type: "POST",
 					data: {
 						no: no,
+						no_panjar: "{{ $panjar_header->no_panjar }}",
 						keterangan: keterangan,
 						nopek: nopek,
 						nama: nama,
@@ -447,12 +385,12 @@
 						_token:"{{ csrf_token() }}"		
 					},
 					success: function(dataResult){
-						Swal.fire({
-							type : 'success',
+						swal({
 							title: swal_title,
-							text : 'Success',
+							text: "Success",
+							icon: "success",
 							timer: 2000
-						});
+						})
 						// close modal
 						$('#kt_modal_4').modal('toggle');
 						// clear form
@@ -477,41 +415,32 @@
 			if($('input[type=radio]').is(':checked')) { 
 				$("input[type=radio]:checked").each(function() {
 					var no_nopek = $(this).val();
-					
-					const swalWithBootstrapButtons = Swal.mixin({
-					customClass: {
-						confirmButton: 'btn btn-primary',
-						cancelButton: 'btn btn-danger'
-					},
-						buttonsStyling: false
-					})
-
-					swalWithBootstrapButtons.fire({
-						title: "Data yang akan dihapus?",
+					// delete stuff
+					swal({
+						title: "Data yang akan di hapus?",
 						text: "Nopek : " + no_nopek,
-						type: 'warning',
-						showCancelButton: true,
-						reverseButtons: true,
-						confirmButtonText: 'Ya, hapus',
-						cancelButtonText: 'Batalkan'
+						icon: "warning",
+						buttons: true,
+						dangerMode: true,
 					})
-					.then((result) => {
-						if (result.value) {
+					.then((willDelete) => {
+						if (willDelete) {
 							$.ajax({
 								url: "{{ route('perjalanan_dinas.delete.detail') }}",
 								type: 'DELETE',
 								dataType: 'json',
 								data: {
 									"no_nopek": no_nopek,
-									"session": true,
+									"no_panjar": "{{ $panjar_header->no_panjar }}",
+									"session": false,
 									"_token": "{{ csrf_token() }}",
 								},
 								success: function () {
-									Swal.fire({
-										type  : 'success',
-										title : 'Hapus Detail Panjar ' + no_nopek,
-										text  : 'Success',
-										timer : 2000
+									swal({
+										title: "Hapus Detail Panjar",
+										text: "Success",
+										icon: "success",
+										timer: 2000
 									}).then(function() {
 										t.ajax.reload();
 									});
@@ -547,7 +476,8 @@
 						data: {
 							"no_urut": no_urut,
 							"no_nopek": no_nopek,
-							"session": true,
+							"no_panjar": "{{ $panjar_header->no_panjar }}",
+							"session": false,
 							"_token": "{{ csrf_token() }}",
 						},
 						success: function (response) {

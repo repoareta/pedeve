@@ -35,13 +35,14 @@
 <!--begin::Global Theme Bundle(used by all pages) -->
 <script src="{{ asset('metronic/vendors/global/vendors.bundle.js') }}" type="text/javascript"></script>
 <script src="{{ asset('metronic/js/scripts.bundle.js') }}" type="text/javascript"></script>
-
 <!--end::Global Theme Bundle -->
+
 <!--begin::Page Vendors(used by this page) -->
 <script src="{{ asset('metronic/vendors/custom/datatables/datatables.bundle.js') }}" type="text/javascript"></script>
-
-
 <script src="https://unpkg.com/sweetalert/dist/sweetalert.min.js"></script>
+
+<!-- Laravel Javascript Validation -->
+<script type="text/javascript" src="{{ asset('vendor/jsvalidation/js/jsvalidation.js')}}"></script>
 <!--end::Page Vendors -->
 
 @yield("scripts")

@@ -4,10 +4,10 @@ namespace App\Models;
 
 use Illuminate\Database\Eloquent\Model;
 
-class SdmMasterPegawai extends Model
+class AnggaranDetail extends Model
 {
-    protected $table = "sdm_master_pegawai";
-    protected $primaryKey = 'nopeg'; // or null
+    protected $table = "anggaran_detail";
+    protected $primaryKey = 'kode'; // or null
     public $timestamps = false;
     public $incrementing = false;
 }

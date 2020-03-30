@@ -10,6 +10,10 @@ use App\Models\PanjarDetail;
 use App\Models\SdmMasterPegawai;
 use App\Models\SdmTblKdjab;
 
+//load form request (for validation)
+use App\Http\Requests\PerjalananDinasStore;
+use App\Http\Requests\PerjalananDinasUpdate;
+
 // Load Plugin
 use Carbon\Carbon;
 use Session;
@@ -114,12 +118,15 @@ class PerjalananDinasController extends Controller
      * @param  \Illuminate\Http\Request  $request
      * @return \Illuminate\Http\Response
      */
-    public function store(Request $request)
+    public function store(PerjalananDinasStore $request)
     {
+        $pegawai = SdmMasterPegawai::find($request->nopek);
+        
         $panjar_header = new PanjarHeader;
         $panjar_header->no_panjar = $request->no_spd;
         $panjar_header->tgl_panjar = $request->tanggal;
         $panjar_header->nopek = $request->nopek;
+        $panjar_header->nama = $pegawai->nama;
         $panjar_header->jabatan = $request->jabatan;
         $panjar_header->gol = $request->golongan;
         $panjar_header->ktp = $request->ktp;
@@ -144,7 +151,7 @@ class PerjalananDinasController extends Controller
                 $panjar_detail->nopek = $panjar['nopek'];
                 $panjar_detail->nama = $panjar['nama'];
                 $panjar_detail->jabatan = $panjar['jabatan'];
-                $panjar_detail->status = $panjar['golongan'];
+                $panjar_detail->status = $panjar['golongan'] = $panjar['status'];
                 $panjar_detail->keterangan = $panjar['keterangan'];
     
                 $panjar_detail->save();
@@ -190,11 +197,13 @@ class PerjalananDinasController extends Controller
 
     public function showJsonDetail(Request $request)
     {
-        $nopek = substr($request->no_nopek, strpos($request->no_nopek, "-") + 1);
+        // $nopek = substr($request->no_nopek, strpos($request->no_nopek, "-") + 1);
+        $nopek = $request->no_nopek;
+        $no = $request->no_urut;
 
         if ($request->session == 'true') {
             foreach (session('panjar_detail') as $key => $value) {
-                if ($value['nopek'] == $nopek) {
+                if ($value['nopek'] == $nopek and $value['no'] == $no) {
                     $data = session("panjar_detail.$key");
                 }
             }
@@ -242,14 +251,17 @@ class PerjalananDinasController extends Controller
      * @param  int  $id
      * @return \Illuminate\Http\Response
      */
-    public function update(Request $request, $no_panjar)
+    public function update(PerjalananDinasUpdate $request, $no_panjar)
     {
         $no_panjar = str_replace('-', '/', $no_panjar);
         $panjar_header = PanjarHeader::find($no_panjar);
 
+        $pegawai = SdmMasterPegawai::find($request->nopek);
+
         $panjar_header->no_panjar = $request->no_spd;
         $panjar_header->tgl_panjar = $request->tanggal;
         $panjar_header->nopek = $request->nopek;
+        $panjar_header->nama = $pegawai->nama;
         $panjar_header->jabatan = $request->jabatan;
         $panjar_header->gol = $request->golongan;
         $panjar_header->ktp = $request->ktp;
@@ -289,6 +301,7 @@ class PerjalananDinasController extends Controller
                     $panjar_detail->nama = $request->nama;
                     $panjar_detail->jabatan = $request->jabatan;
                     $panjar_detail->golongan = $request->golongan;
+                    $panjar_detail->status = $request->golongan;
                     $panjar_detail->keterangan = $request->keterangan;
 
                     // dd($panjar_detail);
