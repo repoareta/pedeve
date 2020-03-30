@@ -1,18 +1,18 @@
 <?php
 
-namespace App;
+namespace App\Models;
 
 use Illuminate\Database\Eloquent\Model;
 
-class AccountModel extends Model
+class Account extends Model
 {
     protected $primaryKey = "kodeacct";
     public $timestamps = false;
     protected $table="account";
     protected $fillable=['kodeacct','descacct','userid', 'update_date','flag','jenis'];
 
-   public function detailumkmodel()
+   public function detailumk()
     {
-        return $this->belongToMany('App\DetailUmkModel');
+        return $this->belongToMany('App\DetailUmk');
     }
 }

@@ -61,7 +61,9 @@
                     <div class="col-2"></div>
                     <div class="col-10">
                         <a  href="{{ url()->previous() }}" class="btn btn-warning"><i class="fa fa-reply" aria-hidden="true"></i> Batal</a>
-                        <button type="submit" class="btn btn-brand"><i class="fa fa-check" aria-hidden="true"></i> Submit</button>
+                        <button type="submit" name="submit" value="pdf" class="btn btn-danger"><i class="fa fa-file-pdf" aria-hidden="true"></i> Export .PDF</button>
+                        <button type="submit" name="submit" value="csv" class="btn btn-success"><i class="fa fa-file-csv" aria-hidden="true"></i> Export .CSV</button>
+                        <button type="submit" name="submit" value="xlsx" class="btn btn-info"><i class="fa fa-file-csv" aria-hidden="true"></i> Export .EXCEL</button>
                     </div>
                 </div>
             </div>

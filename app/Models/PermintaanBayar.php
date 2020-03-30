@@ -1,19 +1,19 @@
 <?php
 
-namespace App;
+namespace App\Models;
 
 use Illuminate\Database\Eloquent\Model;
 
-class PermintaanBayarModel extends Model
+class PermintaanBayar extends Model
 {
     // protected $primaryKey = 'no_bayar';
     public $incrementing = false;
     public $timestamps = false;
     protected $table="umu_bayar_header";
 
-    public function permintaandetailmodel()
+    public function permintaandetail()
     {
-        return $this->hasMany(PermintaanDetailModel::class);
+        return $this->hasMany(PermintaanDetail::class);
     }
 
 }

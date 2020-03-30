@@ -50,7 +50,9 @@
                 ); // isi nama semua route anggaran
 
                 $vendor = array(
-                    'vendor.index'
+                    'vendor.index',
+                    'vendor.create',
+                    'vendor.edit'
                 ); // isi nama semua route anggaran
 
                 $rekap_spd = array(
@@ -297,7 +299,7 @@
                                 </ul>
                             </div>
                         </li>
-                        <li class="kt-menu__item  kt-menu__item{{ set_active_submenu($anggaran) }}" aria-haspopup="true">
+                        <li class="kt-menu__item  kt-menu__item{{ set_active_submenu($vendor) }}" aria-haspopup="true">
                             <a href="{{ route('vendor.index') }}" class="kt-menu__link ">
                                 <i class="kt-menu__link-bullet kt-menu__link-bullet--dot">
                                     <span></span>

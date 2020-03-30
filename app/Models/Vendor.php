@@ -1,10 +1,10 @@
 <?php
 
-namespace App;
+namespace App\Models;
 
 use Illuminate\Database\Eloquent\Model;
 
-class VendorModel extends Model
+class Vendor extends Model
 {
     public $incrementing = false;
     public $timestamps = false;

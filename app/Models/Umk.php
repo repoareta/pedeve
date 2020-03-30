@@ -1,10 +1,10 @@
 <?php
 
-namespace App;
+namespace App\Models;
 
 use Illuminate\Database\Eloquent\Model;
 
-class UmkModel extends Model
+class Umk extends Model
 {
     protected $primaryKey = 'no_umk';
     public $incrementing = false;
@@ -12,8 +12,8 @@ class UmkModel extends Model
     protected $table="kerja_header";
     protected $fillable=['tgl_panjar','app_sdm','app_sdm_oleh', 'app_sdm_tgl','app_pbd_oleh','app_pbd_tgl','no_kas','bulan_buku','keterangan','ci','app_pbd','rate','jenis_um','no_umk','jumlah'];
 
-    public function detailumkmodel()
+    public function detailumk()
     {
-        return $this->hasMany('App\DetailUmkModel');
+        return $this->hasMany('App\DetailUmk');
     }
 }

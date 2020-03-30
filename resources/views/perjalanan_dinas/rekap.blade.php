@@ -40,7 +40,7 @@
 		</div>
 	</div>
 	<div class="kt-portlet__body">
-        <form class="kt-form kt-form--label-right" action="{{ route('perjalanan_dinas.rekap.export') }}" method="post">
+        <form class="kt-form kt-form--label-right" action="{{ route('perjalanan_dinas.rekap.export') }}" method="post" id="formRekapSPD">
             @csrf
             <div class="form-group row">
                 <label for="mulai-input" class="col-2 col-form-label">Mulai</label>
@@ -61,7 +61,8 @@
                     <div class="col-2"></div>
                     <div class="col-10">
                         <a  href="{{ url()->previous() }}" class="btn btn-warning"><i class="fa fa-reply" aria-hidden="true"></i> Batal</a>
-                        <button type="submit" class="btn btn-brand"><i class="fa fa-check" aria-hidden="true"></i> Submit</button>
+                        <button type="submit" name="submit" value="pdf" class="btn btn-danger"><i class="fa fa-file-pdf" aria-hidden="true"></i> Export .PDF</button>
+                        <button type="submit" name="submit" value="csv" class="btn btn-success"><i class="fa fa-file-csv" aria-hidden="true"></i> Export .CSV</button>
                     </div>
                 </div>
             </div>
@@ -72,48 +73,20 @@
 @endsection
 
 @section('scripts')
+{!! JsValidator::formRequest('App\Http\Requests\RekapSPDStore', '#formRekapSPD') !!}
 <script type="text/javascript">
 $(document).ready(function () {
-    // Class definition
-    var KTBootstrapDatepicker = function () {
+    // range picker
+    $('#date_range_picker').datepicker({
+        todayHighlight: true,
+        format   : 'yyyy-mm-dd',
+    });
 
-    var arrows;
-    if (KTUtil.isRTL()) {
-        arrows = {
-            leftArrow: '<i class="la la-angle-right"></i>',
-            rightArrow: '<i class="la la-angle-left"></i>'
+    $("#formRekapSPD").on('submit', function(){
+        if ($('#sampai-error').length){
+            $("#sampai-error").addClass("float-right");
         }
-    } else {
-        arrows = {
-            leftArrow: '<i class="la la-angle-left"></i>',
-            rightArrow: '<i class="la la-angle-right"></i>'
-        }
-    }
-
-    // Private functions
-    var demos = function () {
-
-        // range picker
-        $('#date_range_picker').datepicker({
-            rtl: KTUtil.isRTL(),
-            todayHighlight: true,
-            templates: arrows,
-            // autoclose: true,
-            // language : 'id',
-            format   : 'yyyy-mm-dd',
-            orientation: 'bottom'
-        });
-    };
-
-    return {
-        // public functions
-        init: function() {
-            demos(); 
-        }
-    };
-    }();
-
-    KTBootstrapDatepicker.init(); 
+    });
 });
 </script>
 @endsection

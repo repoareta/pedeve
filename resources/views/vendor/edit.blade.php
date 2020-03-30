@@ -55,13 +55,13 @@
 						<label for="spd-input" class="col-2 col-form-label">Nama Vendor<span style="color:red;">*</span></label>
 						<div class="col-10">
                             <input type="hidden" value="{{$data->vendorid}}" name="vendorid">
-							<input  class="form-control" type="text" value="{{$data->nama}}" id="nama" name="nama" size="25" maxlength="25" required oninvalid="this.setCustomValidity('Nama Vendor Harus Diisi..')" oninput="setCustomValidity('')" autocomplete='off'>
+							<input  class="form-control" type="text" value="{{$data->nama}}" id="nama" name="nama"  required oninvalid="this.setCustomValidity('Nama Vendor Harus Diisi..')" oninput="setCustomValidity('')" autocomplete='off'>
 						</div>
 					</div>
 					<div class="form-group row">
 						<label for="nopek-input" class="col-2 col-form-label">Alamat Vendor<span style="color:red;">*</span></label>
 						<div class="col-10">
-							<input class="form-control" type="text" name="alamat" value="{{$data->alamat}}"  id="alamat" size="15" maxlength="15" required oninvalid="this.setCustomValidity('Alamat Harus Diisi..')" oninput="setCustomValidity('')" autocomplete='off'>
+							<textarea class="form-control" type="text" name="alamat" value=""  id="alamat"  required oninvalid="this.setCustomValidity('Alamat Harus Diisi..')" oninput="setCustomValidity('')" autocomplete='off'>{{$data->alamat}}</textarea>
 
 						</div>
 					</div>

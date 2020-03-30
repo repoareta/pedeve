@@ -53,7 +53,7 @@
                         $tglpanjar=$umk->tgl_panjar;
                     }
                    ?>
-                   <font style="font-size: 12pt;font-weight: bold ">BULAN <?php echo strtoupper(date("M Y", strtotime($tglpanjar))) ?></font><br>
+                   <font style="font-size: 12pt;font-weight: bold ">BULAN {{$bulan}} {{$tahun}}</font><br>
                     </td>
                 </tr>
             </table>
@@ -68,7 +68,6 @@
                     <th>NO. KAS</th>
                     <th>KEPADA</th>
                     <th>KETERANGAN</th>
-                    <th>LAMPIRAN</th>
                     <th>JUMLAH</th>
                 </tr>
             </thead>
@@ -82,7 +81,6 @@
                         <td>{{ $umk->no_kas }}</td>
                         <td>{{ $umk->kepada }}</td>
                         <td>{{ $umk->keterangan }}</td>
-                        <td>{{ $umk->lampiran }}</td>
                         <td>Rp.  <?php echo number_format($umk->jumlah, 0, ',', '.'); ?></td>
                     
                     </tr>

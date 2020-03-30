@@ -1,17 +1,17 @@
 <?php
 
-namespace App;
+namespace App\Models;
 
 use Illuminate\Database\Eloquent\Model;
 
-class CashjudexModel extends Model
+class Cashjudex extends Model
 {
     public $timestamps = false;
     protected $table="cashjudex";
     protected $fillable=['kode','nama'];
 
-    public function detailumkmodel()
+    public function detailumk()
     {
-        return $this->belongToMany('App\DetailUmkModel');
+        return $this->belongToMany('App\DetailUmk');
     }
 }

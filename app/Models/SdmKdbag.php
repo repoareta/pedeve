@@ -1,17 +1,17 @@
 <?php
 
-namespace App;
+namespace App\Models;
 
 use Illuminate\Database\Eloquent\Model;
 
-class SdmKdbagModel extends Model
+class SdmKdbag extends Model
 {
     public $timestamps = false;
     protected $table="sdm_tbl_kdbag";
     protected $fillable=['kode','nama'];
 
-    public function detailumkmodel()
+    public function detailumk()
     {
-        return $this->hasMany('App\DetailUmkModel');
+        return $this->hasMany('App\DetailUmk');
     }
 }
