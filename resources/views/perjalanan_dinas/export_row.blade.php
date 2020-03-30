@@ -204,13 +204,13 @@
                     {{ $panjar_header->nama }}
                   </td>
                   <td colspan="2" class="text-center border-less">
-                    {{ $panjar_header->nama }}
+                    {{-- {{ $panjar_header->nama }} --}}
                   </td>
                   <td class="text-center border-less">
-                    {{ $panjar_header->nama }}
+                    {{-- {{ $panjar_header->nama }} --}}
                   </td>
                   <td class="text-center border-less">
-                    {{ $panjar_header->nama }}
+                    {{-- {{ $panjar_header->nama }} --}}
                   </td>
                 </tr>
 
@@ -234,7 +234,7 @@
                 <tr>
                   <td colspan="5" class="border-less"></td>
                   <td class="text-center border-less">
-                    NONAME
+                    
                   </td>
                 </tr>
               </tbody>
