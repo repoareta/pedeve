@@ -14,10 +14,14 @@ use App\Models\SdmTblKdjab;
 use App\Http\Requests\PerjalananDinasStore;
 use App\Http\Requests\PerjalananDinasUpdate;
 
+//load export CSV
+use App\Exports\RekapSPD;
+
 // Load Plugin
 use Carbon\Carbon;
 use Session;
 use PDF;
+use Excel;
 
 class PerjalananDinasController extends Controller
 {
@@ -389,6 +393,11 @@ class PerjalananDinasController extends Controller
         $panjar_header_list = PanjarHeader::whereBetween('tgl_panjar', [$mulai, $sampai])
         ->get();
         // dd($panjar_header_list);
+
+
+        if ($request->submit == 'csv') {
+            return Excel::download(new RekapSPD($panjar_header_list), 'rekap_spd_'.date('Y-m-d H:i:s').'.csv');
+        }
 
         $pdf = PDF::loadview('perjalanan_dinas.export', ['panjar_header_list' => $panjar_header_list]);
         return $pdf->stream('rekap_spd_'.date('Y-m-d H:i:s').'.pdf');
