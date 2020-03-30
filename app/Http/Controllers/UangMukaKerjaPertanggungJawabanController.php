@@ -101,7 +101,21 @@ class UangMukaKerjaPertanggungJawabanController extends Controller
      */
     public function store(Request $request)
     {
-        dd($request);
+        $pegawai = SdmMasterPegawai::find($request->nopek);
+        
+        $pumk_header = new PUmkHeader;
+        $pumk_header->no_pumk = $request->no_pumk;
+        $pumk_header->no_umk = $request->no_umk;
+        $pumk_header->keterangan = $request->keterangan;
+        $pumk_header->tgl_pumk = $request->tanggal;
+        $pumk_header->nopek = $request->nopek;
+        $pumk_header->nama = $pegawai->nama;
+        $pumk_header->app_sdm = 'N';
+        $pumk_header->app_pbd = 'N';
+        // Save Panjar Header
+        $pumk_header->save();
+
+        return redirect()->route('uang_muka_kerja.pertanggungjawaban.index');
     }
 
     /**
