@@ -292,9 +292,9 @@
 				{data: 'no', name: 'no'},
 				{data: 'nopek', name: 'nopek'},
 				{data: 'keterangan', name: 'keterangan'},
-				{data: 'nilai', name: 'nilai'},
-				{data: 'qty', name: 'qty'},
-				{data: 'total', name: 'total'}
+				{data: 'nilai', name: 'nilai', class:'text-right'},
+				{data: 'qty', name: 'qty', class:'text-right'},
+				{data: 'total', name: 'total', class:'text-right'}
 			],
 			order: [[ 0, "asc" ], [ 1, "asc" ]]
 		});
@@ -352,7 +352,7 @@
 					session = true;
 					swal_title = "Tambah Detail Pertanggungjawaban Panjar";
 				} else {
-					url = "{{ route('perjalanan_dinas.update.detail') }}";
+					url = "{{ route('perjalanan_dinas.pertanggungjawaban.detail.update') }}";
 					session = true;
 					swal_title = "Update Detail Panjar";
 				}

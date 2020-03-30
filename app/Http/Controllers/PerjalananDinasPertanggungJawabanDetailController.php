@@ -79,20 +79,24 @@ class PerjalananDinasPertanggungJawabanDetailController extends Controller
      * @param  int  $id
      * @return \Illuminate\Http\Response
      */
-    public function show($id)
+    public function show(Request $request)
     {
-        //
-    }
+        // $nopek = substr($request->no_nopek, strpos($request->no_nopek, "-") + 1);
+        $nopek = $request->no_nopek;
+        $no = $request->no_urut;
 
-    /**
-     * Show the form for editing the specified resource.
-     *
-     * @param  int  $id
-     * @return \Illuminate\Http\Response
-     */
-    public function edit($id)
-    {
-        //
+        if ($request->session == 'true') {
+            foreach (session('ppanjar_detail') as $key => $value) {
+                if ($value['nopek'] == $nopek and $value['no'] == $no) {
+                    $data = session("ppanjar_detail.$key");
+                }
+            }
+        } else {
+            $data = PPanjarDetail::where('no_ppanjar', $request->no_ppanjar)
+            ->where('nopek', $nopek)->first();
+        }
+
+        return response()->json($data, 200);
     }
 
     /**
@@ -102,9 +106,53 @@ class PerjalananDinasPertanggungJawabanDetailController extends Controller
      * @param  int  $id
      * @return \Illuminate\Http\Response
      */
-    public function update(Request $request, $id)
+    public function update(Request $request)
     {
-        //
+        if ($request->session == 'true') {
+            // delete session
+            foreach (session('ppanjar_detail') as $key => $value) {
+                if ($value['nopek'] == $request->nopek) {
+                    session()->forget("ppanjar_detail.$key");
+
+                    $ppanjar_detail = new PPanjarDetail;
+                    $ppanjar_detail->no = $request->no;
+                    $ppanjar_detail->no_ppanjar = $request->no_ppanjar ? $request->no_ppanjar : null; // for add update only
+                    $ppanjar_detail->nopek = $request->nopek;
+                    $ppanjar_detail->keterangan = $request->keterangan;
+                    $ppanjar_detail->nilai = $request->nilai;
+                    $ppanjar_detail->qty = $request->qty;
+                    $ppanjar_detail->total = $ppanjar_detail->nilai * $ppanjar_detail->qty;
+
+                    // dd($panjar_detail);
+
+                    if (session('ppanjar_detail')) {
+                        session()->push('ppanjar_detail', $ppanjar_detail);
+                    } else {
+                        session()->put('ppanjar_detail', []);
+                        session()->push('ppanjar_detail', $ppanjar_detail);
+                    }
+                }
+            }
+        } else {
+            // Dari Database
+            $panjar_detail = PPanjarDetail::where('no_ppanjar', $request->no_ppanjar)
+            ->where('no', $request->no)
+            ->delete();
+
+            $ppanjar_detail = new PPanjarDetail;
+            $ppanjar_detail->no = $request->no;
+            $ppanjar_detail->no_ppanjar = $request->no_ppanjar ? $request->no_ppanjar : null; // for add update only
+            $ppanjar_detail->nopek = $request->nopek;
+            $ppanjar_detail->keterangan = $request->keterangan;
+            $ppanjar_detail->nilai = $request->nilai;
+            $ppanjar_detail->qty = $request->qty;
+            $ppanjar_detail->total = $ppanjar_detail->nilai * $ppanjar_detail->qty;
+
+            $ppanjar_detail->save();
+        }
+
+        $data = $ppanjar_detail;
+        return response()->json($data, 200);
     }
 
     /**
@@ -126,8 +174,8 @@ class PerjalananDinasPertanggungJawabanDetailController extends Controller
             }
         } else {
             // delete Database
-            PanjarDetail::where('nopek', $nopek)
-            ->where('no_ppanjar', $request->no_panjar)
+            PPanjarDetail::where('nopek', $nopek)
+            ->where('no_ppanjar', $request->no_ppanjar)
             ->delete();
         }
 

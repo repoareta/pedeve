@@ -198,16 +198,29 @@
 	<div class="modal-dialog modal-lg" role="document">
 		<div class="modal-content">
 			<div class="modal-header">
-				<h5 class="modal-title" id="title_modal" data-state="add">Tambah Detail Panjar Dinas</h5>
+				<h5 class="modal-title" id="title_modal" data-state="add">Tambah Detail Pertanggungjawaban Panjar Dinas</h5>
 				<button type="button" class="close" data-dismiss="modal" aria-label="Close">
 				</button>
 			</div>
-			<form class="kt-form kt-form--label-right" action="" method="POST" id="formPanjarDinasDetail">
+			<form class="kt-form kt-form--label-right" action="" method="POST" id="formPPanjarDinasDetailStore">
 				<div class="modal-body">
 					<div class="form-group row">
 						<label for="spd-input" class="col-2 col-form-label">No. Urut</label>
 						<div class="col-10">
 							<input class="form-control" type="number" name="no_urut" id="no_urut">
+						</div>
+					</div>
+
+					<div class="form-group row">
+						<label for="spd-input" class="col-2 col-form-label">Nopek</label>
+						<div class="col-10">
+							<select class="form-control kt-select2" id="nopek_detail" name="nopek_detail" style="width: 100% !important;">
+								<option value="">- Pilih Nopek -</option>
+								@foreach ($pegawai_list as $pegawai)
+									<option value="{{ $pegawai->nopeg }}">{{ $pegawai->nopeg.' - '.$pegawai->nama }}</option>
+								@endforeach
+							</select>
+							<div id="nopek_detail-nya"></div>
 						</div>
 					</div>
 
@@ -219,37 +232,19 @@
 					</div>
 
 					<div class="form-group row">
-						<label for="spd-input" class="col-2 col-form-label">Nopek</label>
+						<label for="spd-input" class="col-2 col-form-label">Nilai</label>
 						<div class="col-10">
-							<select class="form-control kt-select2" id="nopek_detail" name="nopek_detail" style="width: 100% !important;">
-								<option value="">- Pilih Nopek -</option>
-								@foreach ($pegawai_list as $pegawai)
-									<option value="{{ $pegawai->nopeg.'-'.$pegawai->nama }}">{{ $pegawai->nopeg.' - '.$pegawai->nama }}</option>
-								@endforeach
-							</select>
-							<div id="nopek_detail-nya"></div>
+							<input class="form-control" type="text" name="nilai_detail" id="nilai_detail">
 						</div>
 					</div>
 
 					<div class="form-group row">
-						<label for="spd-input" class="col-2 col-form-label">Jabatan</label>
+						<label for="spd-input" class="col-2 col-form-label">Qty</label>
 						<div class="col-10">
-							<select class="form-control kt-select2" name="jabatan_detail" id="jabatan_detail" style="width: 100% !important;">
-								<option value="">- Pilih Jabatan -</option>
-								@foreach ($jabatan_list as $jabatan)
-									<option value="{{ $jabatan->keterangan }}">{{ $jabatan->keterangan }}</option>
-								@endforeach
-							</select>
-							<div id="jabatan_detail-nya"></div>
+							<input class="form-control" type="text" name="qty_detail" id="qty_detail">
 						</div>
 					</div>
 
-					<div class="form-group row">
-						<label for="spd-input" class="col-2 col-form-label">Golongan</label>
-						<div class="col-10">
-							<input class="form-control" type="text" name="golongan_detail" id="golongan_detail">
-						</div>
-					</div>
 				</div>
 				<div class="modal-footer">
 					<button type="button" class="btn btn-warning" data-dismiss="modal"><i class="fa fa-reply" aria-hidden="true"></i> Batal</button>
@@ -273,7 +268,7 @@
 	function refreshTable() {
 		var table = $('#kt_table').DataTable();
 		table.clear();
-		table.ajax.url("{{ route('perjalanan_dinas.index.json.detail', ['no_panjar' => str_replace('/', '-', $panjar_header->no_panjar)]) }}").load(function() {
+		table.ajax.url("{{ route('perjalanan_dinas.pertanggungjawaban.detail.index.json', ['no_ppanjar' => str_replace('/', '-', $ppanjar_header->no_ppanjar)]) }}").load(function() {
 			// Callback loads updated row count into a DOM element
 			// (a Bootstrap badge on a menu item in this case):
 			var rowCount = table.rows().count();
@@ -294,15 +289,15 @@
 			language: {
 				processing: '<i class="fa fa-spinner fa-spin fa-2x fa-fw"></i> <br> Loading...'
 			},
-			ajax: "{{ route('perjalanan_dinas.index.json.detail', ['no_panjar' => str_replace('/', '-', $panjar_header->no_panjar)]) }}",
+			ajax: "{{ route('perjalanan_dinas.pertanggungjawaban.detail.index.json', ['no_ppanjar' => str_replace('/', '-', $ppanjar_header->no_ppanjar)]) }}",
 			columns: [
 				{data: 'action', name: 'aksi', orderable: false, searchable: false},
 				{data: 'no', name: 'no'},
 				{data: 'nopek', name: 'nopek'},
-				{data: 'nama', name: 'nama'},
-				{data: 'golongan', name: 'golongan'},
-				{data: 'jabatan', name: 'jabatan'},
-				{data: 'keterangan', name: 'keterangan'}
+				{data: 'keterangan', name: 'keterangan'},
+				{data: 'nilai', name: 'nilai', class:'text-right'},
+				{data: 'qty', name: 'qty', class:'text-right'},
+				{data: 'total', name: 'total', class:'text-right'}
 			],
 			order: [[ 0, "asc" ], [ 1, "asc" ]]
 		});
@@ -338,13 +333,9 @@
 			}
 		});
 
-		$("#formPanjarDinasDetail").on('submit', function(){
+		$("#formPPanjarDinasDetailStore").on('submit', function(){
 			if ($('#nopek_detail-error').length){
 				$("#nopek_detail-error").insertAfter("#nopek_detail-nya");
-			}
-
-			if ($('#jabatan_detail-error').length){
-				$("#jabatan_detail-error").insertAfter("#jabatan_detail-nya");
 			}
 
 			if($(this).valid()) {
@@ -352,22 +343,22 @@
 				var no = $('#no_urut').val();
 				var keterangan = $('#keterangan_detail').val();
 				var nopek = $('#nopek_detail').val().split('-')[0];
-				var nama = $('#nopek_detail').val().split('-')[1];
-				var jabatan = $('#jabatan_detail').val();
-				var golongan = $('#golongan_detail').val();
+				var nilai = $('#nilai_detail').val();
+				var qty = $('#qty_detail').val();
+				var total = nilai*qty;
 
 				var state = $('#title_modal').data('state');
 
 				var url, session, swal_title;
 
 				if(state == 'add'){
-					url = "{{ route('perjalanan_dinas.store.detail') }}";
+					url = "{{ route('perjalanan_dinas.pertanggungjawaban.detail.store') }}";
 					session = false;
-					swal_title = "Tambah Detail Panjar";
+					swal_title = "Tambah Detail Pertanggungjawaban Panjar Dinas";
 				} else {
-					url = "{{ route('perjalanan_dinas.update.detail') }}";
+					url = "{{ route('perjalanan_dinas.pertanggungjawaban.detail.update') }}";
 					session = false;
-					swal_title = "Update Detail Panjar";
+					swal_title = "Update Detail Pertanggungjawaban Panjar Dinas";
 				}
 
 				$.ajax({
@@ -375,29 +366,28 @@
 					type: "POST",
 					data: {
 						no: no,
-						no_panjar: "{{ $panjar_header->no_panjar }}",
+						no_ppanjar: "{{ $ppanjar_header->no_ppanjar }}",
 						keterangan: keterangan,
 						nopek: nopek,
-						nama: nama,
-						jabatan: jabatan,				
-						golongan: golongan,
+						nilai: nilai,
+						qty: qty,
+						total: total,
 						session: session,
 						_token:"{{ csrf_token() }}"		
 					},
 					success: function(dataResult){
-						swal({
+						Swal.fire({
+							type : 'success',
 							title: swal_title,
-							text: "Success",
-							icon: "success",
+							text : 'Success',
 							timer: 2000
-						})
+						});
 						// close modal
 						$('#kt_modal_4').modal('toggle');
 						// clear form
 						$('#kt_modal_4').on('hidden.bs.modal', function () {
 							$(this).find('form').trigger('reset');
 							$('#nopek_detail').val('').trigger('change');
-							$('#jabatan_detail').val('').trigger('change');
 						});
 						// append to datatable
 						t.ajax.reload();
@@ -415,32 +405,42 @@
 			if($('input[type=radio]').is(':checked')) { 
 				$("input[type=radio]:checked").each(function() {
 					var no_nopek = $(this).val();
-					// delete stuff
-					swal({
-						title: "Data yang akan di hapus?",
-						text: "Nopek : " + no_nopek,
-						icon: "warning",
-						buttons: true,
-						dangerMode: true,
+					
+					const swalWithBootstrapButtons = Swal.mixin({
+					customClass: {
+						confirmButton: 'btn btn-primary',
+						cancelButton: 'btn btn-danger'
+					},
+						buttonsStyling: false
 					})
-					.then((willDelete) => {
-						if (willDelete) {
+
+					swalWithBootstrapButtons.fire({
+						title: "Data yang akan dihapus?",
+						text: "Nopek : " + no_nopek,
+						type: 'warning',
+						showCancelButton: true,
+						reverseButtons: true,
+						confirmButtonText: 'Ya, hapus',
+						cancelButtonText: 'Batalkan'
+					})
+					.then((result) => {
+						if (result.value) {
 							$.ajax({
-								url: "{{ route('perjalanan_dinas.delete.detail') }}",
+								url: "{{ route('perjalanan_dinas.pertanggungjawaban.detail.delete') }}",
 								type: 'DELETE',
 								dataType: 'json',
 								data: {
 									"no_nopek": no_nopek,
-									"no_panjar": "{{ $panjar_header->no_panjar }}",
+									"no_ppanjar": "{{ $ppanjar_header->no_ppanjar }}",
 									"session": false,
 									"_token": "{{ csrf_token() }}",
 								},
 								success: function () {
-									swal({
-										title: "Hapus Detail Panjar",
-										text: "Success",
-										icon: "success",
-										timer: 2000
+									Swal.fire({
+										type  : 'success',
+										title : 'Hapus Detail Pertanggungjawaban Panjar ' + no_nopek,
+										text  : 'Success',
+										timer : 2000
 									}).then(function() {
 										t.ajax.reload();
 									});
@@ -471,12 +471,12 @@
 					var no_urut = $(this).val().split('-')[0];
 					var no_nopek = $(this).val().split('-')[1];
 					$.ajax({
-						url: "{{ route('perjalanan_dinas.show.json.detail') }}",
+						url: "{{ route('perjalanan_dinas.pertanggungjawaban.detail.show') }}",
 						type: 'GET',
 						data: {
 							"no_urut": no_urut,
 							"no_nopek": no_nopek,
-							"no_panjar": "{{ $panjar_header->no_panjar }}",
+							"no_ppanjar": "{{ $ppanjar_header->no_ppanjar }}",
 							"session": false,
 							"_token": "{{ csrf_token() }}",
 						},
@@ -485,9 +485,9 @@
 							// append value
 							$('#no_urut').val(response.no);
 							$('#keterangan_detail').val(response.keterangan);
-							$('#nopek_detail').val(response.nopek + '-' + response.nama).trigger('change');
-							$('#jabatan_detail').val(response.jabatan).trigger('change');
-							$('#golongan_detail').val(response.status);
+							$('#nopek_detail').val(response.nopek).trigger('change');
+							$('#nilai_detail').val(response.nilai);
+							$('#qty_detail').val(response.qty);
 							// title
 							$('#title_modal').text('Ubah Detail Panjar Dinas');
 							$('#title_modal').data('state', 'update');
