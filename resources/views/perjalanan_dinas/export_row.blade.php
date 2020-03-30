@@ -60,37 +60,37 @@
               <tr>
                 <td>No. KTP/Passport</td>
                 <td>:</td>
-                <td>{{ $panjar_header->jabatan }}</td>
+                <td>{{ $panjar_header->ktp }}</td>
               </tr>
               <tr>
                 <td>Dari/Asal</td>
                 <td>:</td>
-                <td>{{ $panjar_header->jabatan }}</td>
+                <td>{{ $panjar_header->dari }}</td>
               </tr>
               <tr>
                 <td>Tempat Tujuan</td>
                 <td>:</td>
-                <td>{{ $panjar_header->jabatan }}</td>
+                <td>{{ $panjar_header->tujuan }}</td>
               </tr>
               <tr>
                 <td>Terhitung Mulai Tanggal</td>
                 <td>:</td>
-                <td>{{ $panjar_header->jabatan }}</td>
+                <td>{{ $panjar_header->mulai }}</td>
               </tr>
               <tr>
                 <td>Berangkat/Kembali Tanggal</td>
                 <td>:</td>
-                <td>{{ $panjar_header->jabatan }}</td>
+                <td>{{ $panjar_header->sampai }}</td>
               </tr>
               <tr>
                 <td>Berkendaraan</td>
                 <td>:</td>
-                <td>{{ $panjar_header->jabatan }}</td>
+                <td>{{ $panjar_header->kendaraan }}</td>
               </tr>
               <tr>
                 <td>Biaya Ditanggung Oleh</td>
                 <td>:</td>
-                <td>{{ $panjar_header->jabatan }}</td>
+                <td>{{ $panjar_header->ditanggung_oleh }}</td>
               </tr>
             </table>
         </div>
