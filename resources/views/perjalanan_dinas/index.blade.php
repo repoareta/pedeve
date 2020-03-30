@@ -53,7 +53,7 @@
 						</span>
 					</a>
 
-					<a href="#">
+					<a href="#" id="exportRow">
 						<span style="font-size: 2em;" class="kt-font-info">
 							<i class="fas fa-file-export"></i>
 						</span>
@@ -169,6 +169,36 @@
 									alert("Terjadi kesalahan, coba lagi nanti");
 								}
 							});
+						}
+					});
+				});
+			} else {
+				swal({
+					title: "Tandai baris yang akan dihapus!",
+					type: "success"
+				}) ; 
+			}
+		});
+
+		$('#exportRow').click(function(e) {
+			e.preventDefault();
+			if($('input[type=radio]').is(':checked')) { 
+				$("input[type=radio]:checked").each(function() {
+					var id = $(this).val();
+					// delete stuff
+					swal({
+						title: "Data yang akan dicetak?",
+						text: "No. Panjar : " + id,
+						icon: "warning",
+						buttons: true,
+						dangerMode: true,
+					})
+					.then((willDelete) => {
+						if (willDelete) {
+							var id = $(this).val().split("/").join("-");
+							// go to page edit
+							var url = "{{ url('umum/perjalanan_dinas/export') }}" + '/' + id;
+							window.open(url, '_blank');
 						}
 					});
 				});

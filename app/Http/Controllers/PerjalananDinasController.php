@@ -391,6 +391,15 @@ class PerjalananDinasController extends Controller
         // dd($panjar_header_list);
 
         $pdf = PDF::loadview('perjalanan_dinas.export', ['panjar_header_list' => $panjar_header_list]);
-        return $pdf->download('rekap_spd_'.date('Y-m-d H:i:s').'.pdf');
+        return $pdf->stream('rekap_spd_'.date('Y-m-d H:i:s').'.pdf');
+    }
+
+    public function rowExport($no_panjar)
+    {
+        $no_panjar = str_replace('-', '/', $no_panjar);
+        $panjar_header = PanjarHeader::find($no_panjar);
+
+        $pdf = PDF::loadview('perjalanan_dinas.export_row', ['panjar_header' => $panjar_header]);
+        return $pdf->stream('rekap_spd_'.date('Y-m-d H:i:s').'.pdf');
     }
 }
