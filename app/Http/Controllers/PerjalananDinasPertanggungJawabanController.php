@@ -106,6 +106,24 @@ class PerjalananDinasPertanggungJawabanController extends Controller
         // Save Panjar Header
         $ppanjar_header->save();
 
+        // Save Panjar Detail;
+        if (session('ppanjar_detail')) {
+            foreach (session('ppanjar_detail') as $ppanjar) {
+                $ppanjar_detail = new PPanjarDetail;
+                $ppanjar_detail->no = $ppanjar['no'];
+                $ppanjar_detail->no_ppanjar = $request->no_pj_panjar;
+                $ppanjar_detail->keterangan = $ppanjar['keterangan'];
+                $ppanjar_detail->nilai = $ppanjar['nilai'];
+                $ppanjar_detail->qty = $ppanjar['qty'];
+                $ppanjar_detail->nopek = $ppanjar['nopek'];
+                $ppanjar_detail->total = $ppanjar['total'];
+
+                $ppanjar_detail->save();
+            }
+
+            session()->forget('ppanjar_detail');
+        }
+
         return redirect()->route('perjalanan_dinas.pertanggungjawaban.index');
     }
 

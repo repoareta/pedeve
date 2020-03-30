@@ -67,6 +67,8 @@ Route::group(['middleware'=> ['auth','checkRole:1']], function () {
         Route::delete('perjalanan_dinas/delete_detail', 'PerjalananDinasController@deleteDetail')->name('perjalanan_dinas.delete.detail');
         Route::get('perjalanan_dinas/rekap', 'PerjalananDinasController@rekap')->name('perjalanan_dinas.rekap');
         Route::post('perjalanan_dinas/rekap/export', 'PerjalananDinasController@rekapExport')->name('perjalanan_dinas.rekap.export');
+
+        Route::get('perjalanan_dinas/export/{no_panjar}', 'PerjalananDinasController@rowExport')->name('perjalanan_dinas.export');
         // PERJALANAN DINAS END
 
         // P PERJALANAN DINAS START
@@ -85,7 +87,11 @@ Route::group(['middleware'=> ['auth','checkRole:1']], function () {
         // P PERJALANAN DINAS DETAIL START
         Route::get('perjalanan_dinas/pertanggungjawaban/detail/index_json', 'PerjalananDinasPertanggungJawabanDetailController@indexJson')->name('perjalanan_dinas.pertanggungjawaban.detail.index.json');
 
+        Route::get('perjalanan_dinas/pertanggungjawaban/detail/show', 'PerjalananDinasPertanggungJawabanDetailController@show')->name('perjalanan_dinas.pertanggungjawaban.detail.show');
+
         Route::post('perjalanan_dinas/pertanggungjawaban/detail/store', 'PerjalananDinasPertanggungJawabanDetailController@store')->name('perjalanan_dinas.pertanggungjawaban.detail.store');
+
+        Route::post('perjalanan_dinas/pertanggungjawaban/detail/update', 'PerjalananDinasPertanggungJawabanDetailController@update')->name('perjalanan_dinas.pertanggungjawaban.detail.update');
 
         Route::delete('perjalanan_dinas/pertanggungjawaban/detail/delete', 'PerjalananDinasPertanggungJawabanDetailController@delete')->name('perjalanan_dinas.pertanggungjawaban.detail.delete');
         // P PERJALANAN DINAS DETAIL END
