@@ -111,7 +111,7 @@
 						<label for="example-datetime-local-input" class="col-2 col-form-label">Jumlah<span style="color:red;">*</span></label>
 						<div class="col-10">
                             <input style="background-color:#DCDCDC; cursor:not-allowed" class="form-control" type="text" value="Rp. <?php echo number_format($count, 0, ',', '.'); ?>"  size="16" maxlength="16" readonly>
-							<input  class="form-control" type="text" value="{{$count}}" name="jumlah" id="jumlah" size="16" maxlength="16" hidden readonly>
+							<input  class="form-control" type="text" value="<?php echo number_format($count, 0, '', ''); ?>" name="jumlah" id="jumlah" size="16" maxlength="16" hidden readonly>
 						</div>
 					</div>
 					<div style="float:right;">
