@@ -164,7 +164,7 @@
 									Swal.fire({
 										type  : 'success',
 										title : 'Hapus No. Panjar ' + id,
-										text  : 'Success',
+										text  : 'Berhasil',
 										timer : 2000
 									}).then(function() {
 										t.ajax.reload();
@@ -187,16 +187,26 @@
 			if($('input[type=radio]').is(':checked')) { 
 				$("input[type=radio]:checked").each(function() {
 					var id = $(this).val();
-					// delete stuff
-					swal({
+					
+					const swalWithBootstrapButtons = Swal.mixin({
+					customClass: {
+						confirmButton: 'btn btn-primary',
+						cancelButton: 'btn btn-danger'
+					},
+						buttonsStyling: false
+					})
+
+					swalWithBootstrapButtons.fire({
 						title: "Data yang akan dicetak?",
 						text: "No. Panjar : " + id,
-						icon: "warning",
-						buttons: true,
-						dangerMode: true,
+						type: 'warning',
+						showCancelButton: true,
+						reverseButtons: true,
+						confirmButtonText: 'Cetak',
+						cancelButtonText: 'Batalkan'
 					})
-					.then((willDelete) => {
-						if (willDelete) {
+					.then((result) => {
+						if (result.value) {
 							var id = $(this).val().split("/").join("-");
 							// go to page edit
 							var url = "{{ url('umum/perjalanan_dinas/export') }}" + '/' + id;

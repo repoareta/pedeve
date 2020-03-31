@@ -29,7 +29,7 @@ class PerjalananDinasStore extends FormRequest
             'nopek'       => 'required',
             'jabatan'     => 'required',
             'golongan'    => 'required',
-            'ktp'         => 'required',
+            'ktp'         => 'required|numeric',
             'jenis_dinas' => 'required',
             'dari'        => 'required',
             'tujuan'      => 'required',
