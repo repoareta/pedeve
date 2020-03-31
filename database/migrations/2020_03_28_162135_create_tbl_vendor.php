@@ -4,7 +4,7 @@ use Illuminate\Database\Migrations\Migration;
 use Illuminate\Database\Schema\Blueprint;
 use Illuminate\Support\Facades\Schema;
 
-class CreatTblVendor extends Migration
+class CreateTblVendor extends Migration
 {
     /**
      * Run the migrations.
@@ -17,7 +17,7 @@ class CreatTblVendor extends Migration
             $table->increments('vendorid');
             $table->string('nama', 100);
             $table->text('alamat');
-            $table->string('telpon',20);
+            $table->string('telpon', 20);
         });
     }
 
