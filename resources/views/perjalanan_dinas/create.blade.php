@@ -197,22 +197,18 @@
 				<div class="kt-portlet__head-wrapper">
 					<div class="kt-portlet__head-actions">
 						<a href="#" id="openDetail">
-							<span style="font-size: 2em;" class="kt-font-success">
+							<span style="font-size: 2em;" class="kt-font-success" data-toggle="kt-tooltip" data-placement="top" title="Tambah Data">
 								<i class="fas fa-plus-circle"></i>
 							</span>
 						</a>
 		
-						<a href="#" id="editRow">
-							<span style="font-size: 2em;" class="kt-font-warning">
-								<i class="fas fa-edit"></i>
-							</span>
-						</a>
+						<span style="font-size: 2em;" class="kt-font-warning pointer-link" id="editRow" data-toggle="kt-tooltip" data-placement="top" title="Ubah Data">
+							<i class="fas fa-edit"></i>
+						</span>
 		
-						<a href="#" id="deleteRow">
-							<span style="font-size: 2em;" class="kt-font-danger">
-								<i class="fas fa-times-circle"></i>
-							</span>
-						</a>
+						<span style="font-size: 2em;" class="kt-font-danger pointer-link" id="deleteRow" data-toggle="kt-tooltip" data-placement="top" title="Hapus Data">
+							<i class="fas fa-times-circle"></i>
+						</span>
 					</div>
 				</div>
 			</div>
@@ -524,12 +520,7 @@
 					});
 				});
 			} else {
-				Swal.fire({
-					type: 'warning',
-					timer: 2000,
-					title: 'Oops...',
-					text: 'Tandai baris yang ingin dihapus'
-				});
+				swalAlertInit('hapus');
 			}
 		});
 
@@ -571,12 +562,7 @@
 					
 				});
 			} else {
-				Swal.fire({
-					type: 'warning',
-					timer: 2000,
-					title: 'Oops...',
-					text: 'Tandai baris yang ingin diubah'
-				});
+				swalAlertInit('ubah');
 			}
 		});
 

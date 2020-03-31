@@ -75,3 +75,7 @@ th {
 td.no-wrap {
     white-space: nowrap;
 }
+
+.pointer-link {
+    cursor: pointer;
+}

@@ -45,4 +45,14 @@
 <script type="text/javascript" src="{{ asset('vendor/jsvalidation/js/jsvalidation.js')}}"></script>
 <!--end::Page Vendors -->
 
+<script type="text/javascript">
+    function swalAlertInit(text) {
+		Swal.fire({
+			type: 'warning',
+			timer: 2000,
+			title: 'Oops...',
+			text: 'Tandai baris yang ingin di' + text
+		});
+	}
+</script>
 @yield("scripts")

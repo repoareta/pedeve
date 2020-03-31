@@ -41,15 +41,15 @@
 						</span>
 					</a>
 	
-					<span style="font-size: 2em;" class="kt-font-warning" id="editRow" data-toggle="kt-tooltip" data-placement="top" title="Ubah Data">
+					<span style="font-size: 2em;" class="kt-font-warning pointer-link" id="editRow" data-toggle="kt-tooltip" data-placement="top" title="Ubah Data">
 						<i class="fas fa-edit"></i>
 					</span>
 	
-					<span style="font-size: 2em;" class="kt-font-danger" id="deleteRow" data-toggle="kt-tooltip" data-placement="top" title="Hapus Data">
+					<span style="font-size: 2em;" class="kt-font-danger pointer-link" id="deleteRow" data-toggle="kt-tooltip" data-placement="top" title="Hapus Data">
 						<i class="fas fa-times-circle"></i>
 					</span>
 
-					<span style="font-size: 2em;" class="kt-font-info" id="exportRow" data-toggle="kt-tooltip" data-placement="top" title="Cetak Data">
+					<span style="font-size: 2em;" class="kt-font-info pointer-link" id="exportRow" data-toggle="kt-tooltip" data-placement="top" title="Cetak Data">
 						<i class="fas fa-print"></i>
 					</span>
 				</div>
@@ -111,19 +111,19 @@
 			]
 		});
 
+		
+
 		$('#editRow').click(function(e) {
 			e.preventDefault();
 			if($('input[type=radio]').is(':checked')) { 
 				$("input[type=radio]:checked").each(function() {
 					var id = $(this).val().split("/").join("-");
+					var url = '{{ route("perjalanan_dinas.edit", ":no_panjar") }}';
 					// go to page edit
-					window.location.href = "{{ url('umum/perjalanan_dinas/edit') }}" + '/' + id;
+					window.location.href = url.replace(':no_panjar',id);
 				});
 			} else {
-				swal({
-					title: "Tandai baris yang akan diubah!",
-					type: "success"
-				}) ; 
+				swalAlertInit('ubah');
 			}
 		});
 
@@ -133,15 +133,25 @@
 				$("input[type=radio]:checked").each(function() {
 					var id = $(this).val();
 					// delete stuff
-					swal({
-						title: "Data yang akan di hapus?",
-						text: "No. Panjar : " + id,
-						icon: "warning",
-						buttons: true,
-						dangerMode: true,
+					const swalWithBootstrapButtons = Swal.mixin({
+					customClass: {
+						confirmButton: 'btn btn-primary',
+						cancelButton: 'btn btn-danger'
+					},
+						buttonsStyling: false
 					})
-					.then((willDelete) => {
-						if (willDelete) {
+
+					swalWithBootstrapButtons.fire({
+						title: "Data yang akan dihapus?",
+						text: "No. Panjar : " + id,
+						type: 'warning',
+						showCancelButton: true,
+						reverseButtons: true,
+						confirmButtonText: 'Ya, hapus',
+						cancelButtonText: 'Batalkan'
+					})
+					.then((result) => {
+						if (result.value) {
 							$.ajax({
 								url: "{{ route('perjalanan_dinas.delete') }}",
 								type: 'DELETE',
@@ -151,10 +161,11 @@
 									"_token": "{{ csrf_token() }}",
 								},
 								success: function () {
-									swal({
-											title: "Delete",
-											text: "Success",
-											type: "success"
+									Swal.fire({
+										type  : 'success',
+										title : 'Hapus No. Panjar ' + id,
+										text  : 'Success',
+										timer : 2000
 									}).then(function() {
 										t.ajax.reload();
 									});
@@ -167,10 +178,7 @@
 					});
 				});
 			} else {
-				swal({
-					title: "Tandai baris yang akan dihapus!",
-					type: "success"
-				}) ; 
+				swalAlertInit('hapus');
 			}
 		});
 
@@ -197,10 +205,7 @@
 					});
 				});
 			} else {
-				swal({
-					title: "Tandai baris yang akan dicetak!",
-					type: "success"
-				}) ; 
+				swalAlertInit('cetak');
 			}
 		});
 
