@@ -42,7 +42,7 @@ class PerjalananDinasController extends Controller
      */
     public function indexJson()
     {
-        $panjar_list = PanjarHeader::all();
+        $panjar_list = PanjarHeader::orderBy('tgl_panjar', 'desc')->get();
 
         return datatables()->of($panjar_list)
             ->addColumn('mulai', function ($row) {

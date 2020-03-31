@@ -54,5 +54,14 @@
 			text: 'Tandai baris yang ingin di' + text
 		});
 	}
+
+    function swalSuccessInit(title) {
+        Swal.fire({
+            type : 'success',
+            title: title,
+            text : 'Berhasil',
+            timer: 2000
+        });
+    }
 </script>
 @yield("scripts")
