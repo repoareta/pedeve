@@ -60,7 +60,11 @@
     transition: all 0.3s ease;
 }
 
-td.sorting_1 {
+/* td.sorting_1 {
+    padding-top: 0px;
+} */
+
+td.radio-button {
     padding-top: 0px;
 }
 

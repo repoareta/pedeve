@@ -6,15 +6,18 @@
 	<div class="kt-container  kt-container--fluid ">
 		<div class="kt-subheader__main">
 			<h3 class="kt-subheader__title">
-				Panjar Dinas </h3>
+				Anggaran </h3>
 			<span class="kt-subheader__separator kt-hidden"></span>
 			<div class="kt-subheader__breadcrumbs">
 				<a href="#" class="kt-subheader__breadcrumbs-home"><i class="flaticon2-shelter"></i></a>
 				<span class="kt-subheader__breadcrumbs-separator"></span>
 				<a href="" class="kt-subheader__breadcrumbs-link">
-					Umum </a>
+					Umum 
+				</a>
 				<span class="kt-subheader__breadcrumbs-separator"></span>
-				<span class="kt-subheader__breadcrumbs-link kt-subheader__breadcrumbs-link--active">Perjalanan Dinas</span>
+				<span class="kt-subheader__breadcrumbs-link">Anggaran</span>
+				<span class="kt-subheader__breadcrumbs-separator"></span>
+				<span class="kt-subheader__breadcrumbs-link kt-subheader__breadcrumbs-link--active">Submain</span>
 			</div>
 		</div>
 	</div>
@@ -29,13 +32,13 @@
 				<i class="kt-font-brand flaticon2-line-chart"></i>
 			</span>
 			<h3 class="kt-portlet__head-title">
-				Tabel Umum Panjar Dinas
+				Tabel Umum Anggaran Submain
 			</h3>			
 		</div>
 		<div class="kt-portlet__head-toolbar">
 			<div class="kt-portlet__head-wrapper">
 				<div class="kt-portlet__head-actions">
-					<a href="{{ route('perjalanan_dinas.create') }}">
+					<a href="{{ route('anggaran.create') }}">
 						<span style="font-size: 2em;" class="kt-font-success" data-toggle="kt-tooltip" data-placement="top" title="Tambah Data">
 							<i class="fas fa-plus-circle"></i>
 						</span>
@@ -49,9 +52,11 @@
 						<i class="fas fa-times-circle"></i>
 					</span>
 
-					<span style="font-size: 2em;" class="kt-font-info pointer-link" id="exportRow" data-toggle="kt-tooltip" data-placement="top" title="Cetak Data">
-						<i class="fas fa-print"></i>
-					</span>
+					<a href="{{ route('anggaran.index') }}">
+						<span style="font-size: 2em;" class="kt-font-info" data-toggle="kt-tooltip" data-placement="top" title="Kembali ke Anggaran">
+							<i class="fas fa-arrow-left"></i>
+						</span>
+					</a>
 				</div>
 			</div>
 		</div>
@@ -63,16 +68,11 @@
 			<thead class="thead-light">
 				<tr>
 					<th></th>
-					<th>No. Panjar</th>
-					<th>No. UMK</th>
-					<th>Jenis</th>
-					<th>Mulai</th>
-					<th>Sampai</th>
-					<th>Dari</th>
-					<th>Tujuan</th>
-					<th>Nopek</th>
-					<th>Keterangan</th>
+					<th>Kode Submain</th>
+					<th>Nama</th>
+					<th>Tahun</th>
 					<th>Nilai</th>
+					<th>Realisasi</th>
 				</tr>
 			</thead>
 			<tbody>
@@ -95,19 +95,14 @@
 			language: {
             	processing: '<i class="fa fa-spinner fa-spin fa-2x fa-fw"></i> <br> Loading...'
 			},
-			ajax      : "{{ route('perjalanan_dinas.index.json') }}",
+			ajax      : "{{ route('anggaran.submain.index.json', ['kode_main' => $kode_main]) }}",
 			columns: [
-				{data: 'action', name: 'aksi', orderable: false, searchable: false, class:'radio-button'},
-				{data: 'no_panjar', name: 'no_panjar', class:'no-wrap'},
-				{data: 'no_umk', name: 'no_umk'},
-				{data: 'jenis_dinas', name: 'jenis'},
-				{data: 'mulai', name: 'mulai', class:'no-wrap'},
-				{data: 'sampai', name: 'sampai', class:'no-wrap'},
-				{data: 'dari', name: 'dari', class:'no-wrap'},
-				{data: 'tujuan', name: 'tujuan', class:'no-wrap'},
-				{data: 'nopek', name: 'nopek', class:'no-wrap'},
-				{data: 'keterangan', name: 'keterangan'},
-				{data: 'nilai', name: 'nilai', class:'text-right no-wrap'}
+				{data: 'action', name: 'action', orderable: false, searchable: false, class:'radio-button'},
+				{data: 'kode_submain', name: 'kode_submain', class:'no-wrap'},
+				{data: 'nama_submain', name: 'nama_submain'},
+				{data: 'tahun', name: 'tahun'},
+				{data: 'nilai', name: 'nilai'},
+				{data: 'nilai_real', name: 'nilai_real'}
 			]
 		});
 
@@ -179,43 +174,6 @@
 				});
 			} else {
 				swalAlertInit('hapus');
-			}
-		});
-
-		$('#exportRow').click(function(e) {
-			e.preventDefault();
-			if($('input[type=radio]').is(':checked')) { 
-				$("input[type=radio]:checked").each(function() {
-					var id = $(this).val();
-					
-					const swalWithBootstrapButtons = Swal.mixin({
-					customClass: {
-						confirmButton: 'btn btn-primary',
-						cancelButton: 'btn btn-danger'
-					},
-						buttonsStyling: false
-					})
-
-					swalWithBootstrapButtons.fire({
-						title: "Data yang akan dicetak?",
-						text: "No. Panjar : " + id,
-						type: 'warning',
-						showCancelButton: true,
-						reverseButtons: true,
-						confirmButtonText: 'Cetak',
-						cancelButtonText: 'Batalkan'
-					})
-					.then((result) => {
-						if (result.value) {
-							var id = $(this).val().split("/").join("-");
-							// go to page edit
-							var url = "{{ url('umum/perjalanan_dinas/export') }}" + '/' + id;
-							window.open(url, '_blank');
-						}
-					});
-				});
-			} else {
-				swalAlertInit('cetak');
 			}
 		});
 
