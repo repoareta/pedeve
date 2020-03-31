@@ -48,7 +48,9 @@
                 ); // isi nama semua route permintaan_bayar
 
                 $anggaran = array(
-                    'anggaran.index'
+                    'anggaran.index',
+                    'anggaran.submain',
+                    'anggaran.submain.detail',
                 ); // isi nama semua route anggaran
 
                 $vendor = array(

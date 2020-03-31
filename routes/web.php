@@ -115,6 +115,17 @@ Route::group(['middleware'=> ['auth','checkRole:1']], function () {
         
         // Anggaran
         Route::get('anggaran', 'AnggaranController@index')->name('anggaran.index');
+        Route::get('anggaran/index_json', 'AnggaranController@indexJson')->name('anggaran.index.json');
+        Route::get('anggaran/create', 'AnggaranController@create')->name('anggaran.create');
+
+        // ANGGARAN SUBMAIN
+        Route::get('anggaran/submain/{kode_main}', 'AnggaranSubmainController@index')->name('anggaran.submain');
+        Route::get('anggaran/submain/index_json/{kode_main}', 'AnggaranSubmainController@indexJson')->name('anggaran.submain.index.json');
+
+        // ANGGARAN SUBMAIN DETAIL START
+        Route::get('anggaran/submain/detail/{kode_main}/{kode_submain}', 'AnggaranSubmainDetailController@index')->name('anggaran.submain.detail');
+        Route::get('anggaran/submain/detail_json/{kode_submain}', 'AnggaranSubmainDetailController@indexJson')->name('anggaran.submain.detail.index.json');
+        // ANGGARAN SUBMAIN DETAIL END
         
         //vendor
         Route::get('vendor', 'VendorController@index')->name('vendor.index');

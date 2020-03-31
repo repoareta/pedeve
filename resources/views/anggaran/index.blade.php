@@ -35,29 +35,23 @@
 		<div class="kt-portlet__head-toolbar">
 			<div class="kt-portlet__head-wrapper">
 				<div class="kt-portlet__head-actions">
-					<a href="{{ route('perjalanan_dinas.create') }}">
-						<span style="font-size: 2em;" class="kt-font-success">
+					<a href="{{ route('anggaran.create') }}">
+						<span style="font-size: 2em;" class="kt-font-success" data-toggle="kt-tooltip" data-placement="top" title="Tambah Data">
 							<i class="fas fa-plus-circle"></i>
 						</span>
 					</a>
 	
-					<a href="#">
-						<span style="font-size: 2em;" class="kt-font-warning">
-							<i class="fas fa-edit"></i>
-						</span>
-					</a>
+					<span style="font-size: 2em;" class="kt-font-warning pointer-link" id="editRow" data-toggle="kt-tooltip" data-placement="top" title="Ubah Data">
+						<i class="fas fa-edit"></i>
+					</span>
 	
-					<a href="#">
-						<span style="font-size: 2em;" class="kt-font-danger">
-							<i class="fas fa-times-circle"></i>
-						</span>
-					</a>
+					<span style="font-size: 2em;" class="kt-font-danger pointer-link" id="deleteRow" data-toggle="kt-tooltip" data-placement="top" title="Hapus Data">
+						<i class="fas fa-times-circle"></i>
+					</span>
 
-					<a href="#">
-						<span style="font-size: 2em;" class="kt-font-info">
-							<i class="fas fa-file-export"></i>
-						</span>
-					</a>
+					<span style="font-size: 2em;" class="kt-font-info pointer-link" id="exportRow" data-toggle="kt-tooltip" data-placement="top" title="Cetak Data">
+						<i class="fas fa-print"></i>
+					</span>
 				</div>
 			</div>
 		</div>
@@ -65,9 +59,11 @@
 	<div class="kt-portlet__body">
 
 		<!--begin: Datatable -->
-		<table class="table table-striped table-bordered table-hover table-checkable" id="kt_table">
+		<table class="table table-striped table-bordered table-hover table-checkable" id="kt_table" width="100%">
 			<thead class="thead-light">
 				<tr>
+					<th></th>
+					<th>Kode</th>
 					<th>Nama Master</th>
 					<th>Tahun</th>
 					<th>Nilai</th>
@@ -76,15 +72,6 @@
 				</tr>
 			</thead>
 			<tbody>
-				@foreach ($anggaran_main_list as $anggaran)
-					<tr>
-						<td>{{ $anggaran->nama_main }}</td>
-						<td>{{ $anggaran->tahun }}</td>
-						<td>{{ currency_idr($anggaran->nilai_real) }}</td>
-						<td>{{ currency_idr($anggaran->anggaran_submain->sum('nilai')) }}</td>
-						<td>{{ currency_idr($anggaran->nilai_real - $anggaran->anggaran_submain->sum('nilai')) }}</td>
-					</tr>
-				@endforeach
 			</tbody>
 		</table>
 
@@ -97,7 +84,133 @@
 @section('scripts')
 	<script type="text/javascript">
 	$(document).ready(function () {
-		$('#kt_table').DataTable();
+		var t = $('#kt_table').DataTable({
+			scrollX   : true,
+			processing: true,
+			serverSide: true,
+			language: {
+            	processing: '<i class="fa fa-spinner fa-spin fa-2x fa-fw"></i> <br> Loading...'
+			},
+			ajax      : "{{ route('anggaran.index.json') }}",
+			columns: [
+				{data: 'action', name: 'aksi', orderable: false, searchable: false, class:'radio-button'},
+				{data: 'kode_main', name: 'kode_main', class:'no-wrap'},
+				{data: 'nama_main', name: 'nama_main'},
+				{data: 'tahun', name: 'tahun'},
+				{data: 'nilai_real', name: 'nilai_real'},
+				{data: 'realisasi', name: 'realisasi', class:'no-wrap'},
+				{data: 'sisa', name: 'sisa', class:'no-wrap'}
+			]
+		});
+
+		
+
+		$('#editRow').click(function(e) {
+			e.preventDefault();
+			if($('input[type=radio]').is(':checked')) { 
+				$("input[type=radio]:checked").each(function() {
+					var id = $(this).val().split("/").join("-");
+					var url = '{{ route("perjalanan_dinas.edit", ":no_panjar") }}';
+					// go to page edit
+					window.location.href = url.replace(':no_panjar',id);
+				});
+			} else {
+				swalAlertInit('ubah');
+			}
+		});
+
+		$('#deleteRow').click(function(e) {
+			e.preventDefault();
+			if($('input[type=radio]').is(':checked')) { 
+				$("input[type=radio]:checked").each(function() {
+					var id = $(this).val();
+					// delete stuff
+					const swalWithBootstrapButtons = Swal.mixin({
+					customClass: {
+						confirmButton: 'btn btn-primary',
+						cancelButton: 'btn btn-danger'
+					},
+						buttonsStyling: false
+					})
+
+					swalWithBootstrapButtons.fire({
+						title: "Data yang akan dihapus?",
+						text: "No. Panjar : " + id,
+						type: 'warning',
+						showCancelButton: true,
+						reverseButtons: true,
+						confirmButtonText: 'Ya, hapus',
+						cancelButtonText: 'Batalkan'
+					})
+					.then((result) => {
+						if (result.value) {
+							$.ajax({
+								url: "{{ route('perjalanan_dinas.delete') }}",
+								type: 'DELETE',
+								dataType: 'json',
+								data: {
+									"id": id,
+									"_token": "{{ csrf_token() }}",
+								},
+								success: function () {
+									Swal.fire({
+										type  : 'success',
+										title : 'Hapus No. Panjar ' + id,
+										text  : 'Berhasil',
+										timer : 2000
+									}).then(function() {
+										t.ajax.reload();
+									});
+								},
+								error: function () {
+									alert("Terjadi kesalahan, coba lagi nanti");
+								}
+							});
+						}
+					});
+				});
+			} else {
+				swalAlertInit('hapus');
+			}
+		});
+
+		$('#exportRow').click(function(e) {
+			e.preventDefault();
+			if($('input[type=radio]').is(':checked')) { 
+				$("input[type=radio]:checked").each(function() {
+					var id = $(this).val();
+					
+					const swalWithBootstrapButtons = Swal.mixin({
+					customClass: {
+						confirmButton: 'btn btn-primary',
+						cancelButton: 'btn btn-danger'
+					},
+						buttonsStyling: false
+					})
+
+					swalWithBootstrapButtons.fire({
+						title: "Data yang akan dicetak?",
+						text: "No. Panjar : " + id,
+						type: 'warning',
+						showCancelButton: true,
+						reverseButtons: true,
+						confirmButtonText: 'Cetak',
+						cancelButtonText: 'Batalkan'
+					})
+					.then((result) => {
+						if (result.value) {
+							var id = $(this).val().split("/").join("-");
+							// go to page edit
+							var url = "{{ url('umum/perjalanan_dinas/export') }}" + '/' + id;
+							window.open(url, '_blank');
+						}
+					});
+				});
+			} else {
+				swalAlertInit('cetak');
+			}
+		});
+
 	});
 	</script>
 @endsection

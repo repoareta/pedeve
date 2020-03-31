@@ -18,6 +18,7 @@
         "maatwebsite/excel": "^3.1",
         "phpoffice/phpspreadsheet": "^1.11",
         "proengsoft/laravel-jsvalidation": "^3.0",
+        "realrashid/sweet-alert": "^3.1",
         "tuta/terbilang": "dev-master",
         "yajra/laravel-datatables": "^1.5",
         "yajra/laravel-datatables-oracle": "~9.0"

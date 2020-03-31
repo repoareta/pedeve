@@ -5,25 +5,18 @@ namespace App\Http\Controllers;
 use Illuminate\Http\Request;
 
 // load model
-use App\Models\AnggaranMain;
+use App\Models\AnggaranDetail;
 
-// Load Plugin
-use Carbon\Carbon;
-use Session;
-use PDF;
-use Excel;
-use Alert;
-
-class AnggaranController extends Controller
+class AnggaranSubMainDetailController extends Controller
 {
     /**
      * Display a listing of the resource.
      *
      * @return \Illuminate\Http\Response
      */
-    public function index()
+    public function index($kode_main, $kode_submain)
     {
-        return view('anggaran.index');
+        return view('anggaran_submain_detail.index', compact('kode_main', 'kode_submain'));
     }
 
     /**
@@ -31,30 +24,21 @@ class AnggaranController extends Controller
      *
      * @return void
      */
-    public function indexJson()
+    public function indexJson($kode_submain)
     {
-        $anggaran_list = AnggaranMain::orderBy('tahun', 'desc')->get();
+        $anggaran_list = AnggaranDetail::where('kode_submain', $kode_submain)
+        ->orderBy('tahun', 'desc')
+        ->get();
 
         return datatables()->of($anggaran_list)
-            ->addColumn('nama_main', function ($row) {
-                $link = '<a href="'.route('anggaran.submain', ['kode_main' => $row->kode_main]).'">'.$row->nama_main.'</a>';
-
-                return $link;
-            })
-            ->addColumn('nilai_real', function ($row) {
-                return currency_idr($row->nilai_real);
-            })
-            ->addColumn('realisasi', function ($row) {
-                return currency_idr($row->anggaran_submain->sum('nilai'));
-            })
-            ->addColumn('sisa', function ($row) {
-                return currency_idr($row->nilai_real - $row->anggaran_submain->sum('nilai'));
+            ->addColumn('nilai', function ($row) {
+                return currency_idr($row->nilai);
             })
             ->addColumn('action', function ($row) {
-                $radio = '<label class="kt-radio kt-radio--bold kt-radio--brand"><input type="radio" name="radio1" value="'.$row->kode_main.'"><span></span></label>';
+                $radio = '<label class="kt-radio kt-radio--bold kt-radio--brand"><input type="radio" name="radio1" value="'.$row->kode.'"><span></span></label>';
                 return $radio;
             })
-            ->rawColumns(['action', 'nama_main'])
+            ->rawColumns(['action'])
             ->make(true);
     }
 

@@ -22,6 +22,7 @@ use Carbon\Carbon;
 use Session;
 use PDF;
 use Excel;
+use Alert;
 
 class PerjalananDinasController extends Controller
 {
@@ -42,7 +43,7 @@ class PerjalananDinasController extends Controller
      */
     public function indexJson()
     {
-        $panjar_list = PanjarHeader::all();
+        $panjar_list = PanjarHeader::orderBy('tgl_panjar', 'desc')->get();
 
         return datatables()->of($panjar_list)
             ->addColumn('mulai', function ($row) {
@@ -164,6 +165,7 @@ class PerjalananDinasController extends Controller
             session()->forget('panjar_detail');
         }
 
+        Alert::success('Simpan Panjar Dinas', 'Berhasil')->persistent(true)->autoClose(2000);
         return redirect()->route('perjalanan_dinas.index');
     }
 

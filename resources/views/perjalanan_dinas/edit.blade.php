@@ -201,22 +201,18 @@
 				<div class="kt-portlet__head-wrapper">
 					<div class="kt-portlet__head-actions">
 						<a href="#" id="openDetail">
-							<span style="font-size: 2em;" class="kt-font-success">
+							<span style="font-size: 2em;" class="kt-font-success" data-toggle="kt-tooltip" data-placement="top" title="Tambah Data">
 								<i class="fas fa-plus-circle"></i>
 							</span>
 						</a>
 		
-						<a href="#" id="editRow">
-							<span style="font-size: 2em;" class="kt-font-warning">
-								<i class="fas fa-edit"></i>
-							</span>
-						</a>
+						<span style="font-size: 2em;" class="kt-font-warning pointer-link" id="editRow" data-toggle="kt-tooltip" data-placement="top" title="Ubah Data">
+							<i class="fas fa-edit"></i>
+						</span>
 		
-						<a href="#" id="deleteRow">
-							<span style="font-size: 2em;" class="kt-font-danger">
-								<i class="fas fa-times-circle"></i>
-							</span>
-						</a>
+						<span style="font-size: 2em;" class="kt-font-danger pointer-link" id="deleteRow" data-toggle="kt-tooltip" data-placement="top" title="Hapus Data">
+							<i class="fas fa-times-circle"></i>
+						</span>
 					</div>
 				</div>
 			</div>
@@ -449,12 +445,7 @@
 						_token:"{{ csrf_token() }}"		
 					},
 					success: function(dataResult){
-						swal({
-							title: swal_title,
-							text: "Success",
-							icon: "success",
-							timer: 2000
-						})
+						swalSuccessInit(swal_title);
 						// close modal
 						$('#kt_modal_4').modal('toggle');
 						// clear form
@@ -480,15 +471,25 @@
 				$("input[type=radio]:checked").each(function() {
 					var no_nopek = $(this).val();
 					// delete stuff
-					swal({
-						title: "Data yang akan di hapus?",
-						text: "Nopek : " + no_nopek,
-						icon: "warning",
-						buttons: true,
-						dangerMode: true,
+					const swalWithBootstrapButtons = Swal.mixin({
+					customClass: {
+						confirmButton: 'btn btn-primary',
+						cancelButton: 'btn btn-danger'
+					},
+						buttonsStyling: false
 					})
-					.then((willDelete) => {
-						if (willDelete) {
+
+					swalWithBootstrapButtons.fire({
+						title: "Data yang akan dihapus?",
+						text: "Nopek : " + no_nopek,
+						type: 'warning',
+						showCancelButton: true,
+						reverseButtons: true,
+						confirmButtonText: 'Ya, hapus',
+						cancelButtonText: 'Batalkan'
+					})
+					.then((result) => {
+						if (result.value) {
 							$.ajax({
 								url: "{{ route('perjalanan_dinas.delete.detail') }}",
 								type: 'DELETE',
@@ -500,10 +501,10 @@
 									"_token": "{{ csrf_token() }}",
 								},
 								success: function () {
-									swal({
-										title: "Hapus Detail Panjar",
-										text: "Success",
-										icon: "success",
+									Swal.fire({
+										type : 'success',
+										title: 'Hapus detail Panjar',
+										text : 'Berhasil',
 										timer: 2000
 									}).then(function() {
 										t.ajax.reload();
@@ -517,12 +518,7 @@
 					});
 				});
 			} else {
-				Swal.fire({
-					type: 'warning',
-					timer: 2000,
-					title: 'Oops...',
-					text: 'Tandai baris yang ingin dihapus'
-				});
+				swalAlertInit('hapus');
 			}
 		});
 
@@ -565,12 +561,7 @@
 					
 				});
 			} else {
-				Swal.fire({
-					type: 'warning',
-					timer: 2000,
-					title: 'Oops...',
-					text: 'Tandai baris yang ingin diubah'
-				});
+				swalAlertInit('ubah');
 			}
 		});
 
