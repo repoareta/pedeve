@@ -399,7 +399,18 @@ class PerjalananDinasController extends Controller
             return Excel::download(new RekapSPD($panjar_header_list), 'rekap_spd_'.date('Y-m-d H:i:s').'.csv');
         }
 
-        $pdf = PDF::loadview('perjalanan_dinas.export', ['panjar_header_list' => $panjar_header_list]);
+        if ($request->submit == 'xlsx') {
+            return Excel::download(new RekapSPD($panjar_header_list), 'rekap_spd_'.date('Y-m-d H:i:s').'.xlsx');
+        }
+
+        // return default PDF
+        $pdf = PDF::loadview('perjalanan_dinas.export', [
+            'panjar_header_list' => $panjar_header_list,
+            'mulai' => $mulai,
+            'sampai' => $sampai
+        ])
+        ->setPaper('a4', 'landscape');
+
         return $pdf->stream('rekap_spd_'.date('Y-m-d H:i:s').'.pdf');
     }
 
