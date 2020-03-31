@@ -4,7 +4,7 @@ use Illuminate\Database\Migrations\Migration;
 use Illuminate\Database\Schema\Blueprint;
 use Illuminate\Support\Facades\Schema;
 
-class CreatTblVendor extends Migration
+class DropTblKerjaHeader extends Migration
 {
     /**
      * Run the migrations.
@@ -13,12 +13,7 @@ class CreatTblVendor extends Migration
      */
     public function up()
     {
-        Schema::create('tbl_vendor', function (Blueprint $table) {
-            $table->increments('vendorid');
-            $table->string('nama', 100);
-            $table->text('alamat');
-            $table->string('telpon',20);
-        });
+        Schema::drop('kerja_header');
     }
 
     /**
@@ -28,6 +23,6 @@ class CreatTblVendor extends Migration
      */
     public function down()
     {
-        Schema::dropIfExists('tbl_vendor');
+        //
     }
 }
