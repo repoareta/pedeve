@@ -22,6 +22,7 @@ use Carbon\Carbon;
 use Session;
 use PDF;
 use Excel;
+use Alert;
 
 class PerjalananDinasController extends Controller
 {
@@ -164,6 +165,7 @@ class PerjalananDinasController extends Controller
             session()->forget('panjar_detail');
         }
 
+        Alert::success('Simpan Panjar Dinas', 'Berhasil')->persistent(true)->autoClose(2000);
         return redirect()->route('perjalanan_dinas.index');
     }
 
