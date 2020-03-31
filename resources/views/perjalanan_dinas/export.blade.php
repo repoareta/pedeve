@@ -82,17 +82,19 @@ th {
 
 </style>
 <body>
-    <div class="row">
+    <div class="row" style="margin-bottom:20px;">
         <div class="text-center">
             <p>
-                PT PERTAMINA PEDEVE INDONESIA
+                <b>PT PERTAMINA PEDEVE INDONESIA
                 <br>
                 REKAP PANJAR DINAS
+                <br>
+                Periode 
+                {{ Carbon\Carbon::parse($mulai)->translatedFormat('d F Y') }} 
+                sampai
+                {{ Carbon\Carbon::parse($sampai)->translatedFormat('d F Y') }}
+                </b>
             </p>
-            Periode 
-            {{ Carbon\Carbon::parse($mulai)->translatedFormat('d F Y') }} 
-            sampai
-            {{ Carbon\Carbon::parse($sampai)->translatedFormat('d F Y') }}
         </div>
 
         <div>
@@ -127,7 +129,7 @@ th {
                         <td class="text-center">{{ $i++ }}</td>
                         <td>{{ $panjar->no_panjar }}</td>
                         <td>{{ $panjar->no_umk }}</td>
-                        <td>{{ $panjar->jenis_dinas }}</td>
+                        <td class="text-center">{{ $panjar->jenis_dinas }}</td>
                         <td>{{ date('d/m/Y', strtotime($panjar->mulai)) }}</td>
                         <td>{{ date('d/m/Y', strtotime($panjar->sampai)) }}</td>
                         <td>{{ $panjar->dari }}</td>
