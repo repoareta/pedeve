@@ -36,28 +36,22 @@
 			<div class="kt-portlet__head-wrapper">
 				<div class="kt-portlet__head-actions">
 					<a href="{{ route('perjalanan_dinas.create') }}">
-						<span style="font-size: 2em;" class="kt-font-success">
+						<span style="font-size: 2em;" class="kt-font-success" data-toggle="kt-tooltip" data-placement="top" title="Tambah Data">
 							<i class="fas fa-plus-circle"></i>
 						</span>
 					</a>
 	
-					<a href="#" id="editRow">
-						<span style="font-size: 2em;" class="kt-font-warning">
-							<i class="fas fa-edit"></i>
-						</span>
-					</a>
+					<span style="font-size: 2em;" class="kt-font-warning" id="editRow" data-toggle="kt-tooltip" data-placement="top" title="Ubah Data">
+						<i class="fas fa-edit"></i>
+					</span>
 	
-					<a href="#" id="deleteRow">
-						<span style="font-size: 2em;" class="kt-font-danger">
-							<i class="fas fa-times-circle"></i>
-						</span>
-					</a>
+					<span style="font-size: 2em;" class="kt-font-danger" id="deleteRow" data-toggle="kt-tooltip" data-placement="top" title="Hapus Data">
+						<i class="fas fa-times-circle"></i>
+					</span>
 
-					<a href="#" id="exportRow">
-						<span style="font-size: 2em;" class="kt-font-info">
-							<i class="fas fa-print"></i>
-						</span>
-					</a>
+					<span style="font-size: 2em;" class="kt-font-info" id="exportRow" data-toggle="kt-tooltip" data-placement="top" title="Cetak Data">
+						<i class="fas fa-print"></i>
+					</span>
 				</div>
 			</div>
 		</div>
@@ -104,16 +98,16 @@
 			ajax      : "{{ route('perjalanan_dinas.index.json') }}",
 			columns: [
 				{data: 'action', name: 'aksi', orderable: false, searchable: false},
-				{data: 'no_panjar', name: 'no_panjar'},
+				{data: 'no_panjar', name: 'no_panjar', class:'no-wrap'},
 				{data: 'no_umk', name: 'no_umk'},
 				{data: 'jenis_dinas', name: 'jenis'},
-				{data: 'mulai', name: 'mulai'},
-				{data: 'sampai', name: 'sampai'},
-				{data: 'dari', name: 'dari'},
-				{data: 'tujuan', name: 'tujuan'},
-				{data: 'nopek', name: 'nopek'},
+				{data: 'mulai', name: 'mulai', class:'no-wrap'},
+				{data: 'sampai', name: 'sampai', class:'no-wrap'},
+				{data: 'dari', name: 'dari', class:'no-wrap'},
+				{data: 'tujuan', name: 'tujuan', class:'no-wrap'},
+				{data: 'nopek', name: 'nopek', class:'no-wrap'},
 				{data: 'keterangan', name: 'keterangan'},
-				{data: 'nilai', name: 'nilai', class:'text-right'}
+				{data: 'nilai', name: 'nilai', class:'text-right no-wrap'}
 			]
 		});
 
@@ -127,7 +121,7 @@
 				});
 			} else {
 				swal({
-					title: "Tandai baris yang akan dihapus!",
+					title: "Tandai baris yang akan diubah!",
 					type: "success"
 				}) ; 
 			}
@@ -204,7 +198,7 @@
 				});
 			} else {
 				swal({
-					title: "Tandai baris yang akan dihapus!",
+					title: "Tandai baris yang akan dicetak!",
 					type: "success"
 				}) ; 
 			}

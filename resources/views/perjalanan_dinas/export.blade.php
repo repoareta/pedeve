@@ -182,7 +182,7 @@ content: counter(pages);
     if ( isset($pdf) ) { 
         $font = null;
         $size = 9;
-        $y = $pdf->get_height() - 44;
+        $y = $pdf->get_height() - 30;
         $x = $pdf->get_width() - 103;
         $pdf->page_text($x, $y, 'Halaman {PAGE_NUM} dari {PAGE_COUNT}', $font, $size);
     }
