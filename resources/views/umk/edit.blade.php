@@ -90,8 +90,8 @@
 					<div class="form-group row">
 						<label for="dari-input" class="col-2 col-form-label">Mata Uang<span style="color:red;">*</span></label>
 						<div class="col-10">
-							<input id="ci"   style=" width: 26px;height: 26px;margin-left:50px;" value="1" <?php if ($data_umk->ci == '1' )  echo 'checked' ; ?> type="radio"  name="ci" onclick="displayResult(1)"  />  <label style="font-size:14px; margin-left:10px;">1.Rp</label>
-							<input  id="ci" style=" width: 26px;height: 26px;margin-left:50px;" value="2" <?php if ($data_umk->ci == '2' )  echo 'checked' ; ?> type="radio"    name="ci"  onclick="displayResult(2)" /><label style="font-size:14px; margin-left:10px;"> 2.USD</label>
+							<input id="ci"   style=" width: 26px;height: 26px;margin-left:50px;" value="1" <?php if ($data_umk->ci == '1' )  echo 'checked' ; ?> type="radio"  name="ci" onclick="displayResult(1)"  />  <label style="font-size:14px; margin-left:10px;">IDR</label>
+							<input  id="ci" style=" width: 26px;height: 26px;margin-left:50px;" value="2" <?php if ($data_umk->ci == '2' )  echo 'checked' ; ?> type="radio"    name="ci"  onclick="displayResult(2)" /><label style="font-size:14px; margin-left:10px;"> USD</label>
 						</div>
 					</div>
 					<div class="form-group row">
