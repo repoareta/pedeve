@@ -40,7 +40,7 @@
 		</div>
 	</div>
 	<div class="kt-portlet__body">
-        <form class="kt-form kt-form--label-right" action="{{ route('perjalanan_dinas.rekap.export') }}" method="post" id="formRekapSPD" target="_blank">
+        <form class="kt-form kt-form--label-right" action="{{ route('perjalanan_dinas.rekap.export') }}" method="post" id="formRekapSPD">
             @csrf
             <div class="form-group row">
                 <label for="mulai-input" class="col-2 col-form-label">Mulai</label>
@@ -61,9 +61,9 @@
                     <div class="col-2"></div>
                     <div class="col-10">
                         <a  href="{{ url()->previous() }}" class="btn btn-warning"><i class="fa fa-reply" aria-hidden="true"></i> Batal</a>
-                        <button type="submit" name="submit" value="pdf" class="btn btn-danger"><i class="fa fa-file-pdf" aria-hidden="true"></i> Export .PDF</button>
-                        <button type="submit" name="submit" value="csv" class="btn btn-success"><i class="fa fa-file-csv" aria-hidden="true"></i> Export .CSV</button>
-                        <button type="submit" name="submit" value="xlsx" class="btn btn-success"><i class="fa fa-file-excel" aria-hidden="true"></i> Export .XLSX</button>
+                        <button type="submit" onclick="exportPDF()" name="submit" value="pdf" class="btn btn-danger"><i class="fa fa-file-pdf" aria-hidden="true"></i> Export .PDF</button>
+                        <button type="submit" onclick="exportNonPDF()" name="submit" value="csv" class="btn btn-success"><i class="fa fa-file-csv" aria-hidden="true"></i> Export .CSV</button>
+                        <button type="submit" onclick="exportNonPDF()" name="submit" value="xlsx" class="btn btn-success"><i class="fa fa-file-excel" aria-hidden="true"></i> Export .XLSX</button>
                     </div>
                 </div>
             </div>
@@ -89,5 +89,13 @@ $(document).ready(function () {
         }
     });
 });
+
+function exportPDF() {
+    $("#formRekapSPD").attr("target", "_blank");
+}
+
+function exportNonPDF() {
+    $("#formRekapSPD").removeAttr("target", "_blank");
+}
 </script>
 @endsection
