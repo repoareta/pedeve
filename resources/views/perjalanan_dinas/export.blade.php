@@ -80,6 +80,23 @@ th {
     white-space: nowrap;
 }
 
+footer .pagenum:before {
+    content: counter(page);
+}
+
+#container {
+    position: relative;
+    font: normal 12px Verdana, Arial, sans-serif;
+}
+#bottom-right {
+    position: absolute;
+    bottom: 0;
+}
+
+.pagecount:before {
+content: counter(pages);
+}    
+
 </style>
 <body>
     <div class="row" style="margin-bottom:20px;">
@@ -149,5 +166,27 @@ th {
             </tbody>
         </table>
     </div>
+
+    {{-- <div id="container">
+        <div id="bottom-right">
+            <footer>
+                <div class="pagenum-container text-right">
+                    Halaman 
+                    <span class="pagenum"></span>
+                </div>
+            </footer>
+        </div>
+    </div> --}}
+    
+    <script type='text/php'>
+    if ( isset($pdf) ) { 
+        $font = null;
+        $size = 9;
+        $y = $pdf->get_height() - 44;
+        $x = $pdf->get_width() - 103;
+        $pdf->page_text($x, $y, 'Halaman {PAGE_NUM} dari {PAGE_COUNT}', $font, $size);
+    }
+    </script>
+  
 </body>
 </html>
