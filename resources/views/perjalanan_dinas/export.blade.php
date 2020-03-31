@@ -152,7 +152,7 @@ th {
 
     <script type="text/php">
         if ( isset($pdf) ) {
-            $pdf->page_text(761, 570, "Page {PAGE_NUM} of {PAGE_COUNT}", null, 10, array(0, 0, 0));
+            $pdf->page_text(750, 570, "Page {PAGE_NUM} of {PAGE_COUNT}", null, 10, array(0, 0, 0));
         }
     </script> 
 </body>
