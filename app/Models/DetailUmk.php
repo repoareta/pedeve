@@ -12,6 +12,6 @@ class DetailUmk extends Model
 
     public function umk()
     {
-        return $this->belongsTo('App\Umk');
+        return $this->belongsTo('App\Models\Umk');
     }
 }
