@@ -55,7 +55,7 @@
 
 					<a href="#">
 						<span style="font-size: 2em;" class="kt-font-info">
-							<i class="fas fa-file-export" id="reportRow"></i>
+							<i class="fas fa-print" id="reportRow"></i>
 						</span>
 					</a>
 				</div>
