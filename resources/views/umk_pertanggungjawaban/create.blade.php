@@ -135,7 +135,7 @@
 					<i class="kt-font-brand flaticon2-line-chart"></i>
 				</span>
 				<h3 class="kt-portlet__head-title">
-					Detail Pertanggungjawaban Panjar Dinas
+					Detail Pertanggungjawaban Uang Muka Kerja
 				</h3>			
 			</div>
 			<div class="kt-portlet__head-toolbar">
@@ -168,11 +168,12 @@
 					<tr>
 						<th></th>
 						<th>No</th>
-						<th>Nopek</th>
 						<th>Keterangan</th>
+						<th>Account</th>
+						<th>CJ</th>
+						<th>JB</th>
+						<th>Bagian</th>
 						<th>Nilai</th>
-						<th>Qty</th>
-						<th>Total</th>
 					</tr>
 				</thead>
 				<tbody>
@@ -195,25 +196,12 @@
 				<button type="button" class="close" data-dismiss="modal" aria-label="Close">
 				</button>
 			</div>
-			<form class="kt-form kt-form--label-right" action="" method="POST" id="formPPanjarDinasDetail">
+			<form class="kt-form kt-form--label-right" action="" method="POST" id="formPUmkDetail">
 				<div class="modal-body">
 					<div class="form-group row">
 						<label for="spd-input" class="col-2 col-form-label">No. Urut</label>
 						<div class="col-10">
 							<input class="form-control" type="number" name="no_urut" id="no_urut">
-						</div>
-					</div>
-
-					<div class="form-group row">
-						<label for="spd-input" class="col-2 col-form-label">Nopek</label>
-						<div class="col-10">
-							<select class="form-control kt-select2" id="nopek_detail" name="nopek_detail" style="width: 100% !important;">
-								<option value="">- Pilih Nopek -</option>
-								@foreach ($pegawai_list as $pegawai)
-									<option value="{{ $pegawai->nopeg.'-'.$pegawai->nama }}">{{ $pegawai->nopeg.' - '.$pegawai->nama }}</option>
-								@endforeach
-							</select>
-							<div id="nopek_detail-nya"></div>
 						</div>
 					</div>
 
@@ -225,18 +213,86 @@
 					</div>
 
 					<div class="form-group row">
-						<label for="spd-input" class="col-2 col-form-label">Nilai</label>
-						<div class="col-10">
-							<input class="form-control" type="text" name="nilai_detail" id="nilai_detail">
+						<label for="spd-input" class="col-2 col-form-label">Account</label>
+						<div class="col-5">
+							<select class="form-control kt-select2" id="account_detail" name="account_detail" style="width: 100% !important;">
+								<option value="">- Pilih Nopek -</option>
+								@foreach ($pegawai_list as $pegawai)
+									<option value="{{ $pegawai->nopeg.'-'.$pegawai->nama }}">{{ $pegawai->nopeg.' - '.$pegawai->nama }}</option>
+								@endforeach
+							</select>
+							<div id="account_detail-nya"></div>
+						</div>
+
+						<div class="col-5">
+							<input class="form-control" type="text" name="account_detail" id="account_detail">
 						</div>
 					</div>
 
 					<div class="form-group row">
-						<label for="spd-input" class="col-2 col-form-label">Qty</label>
-						<div class="col-10">
-							<input class="form-control" type="text" name="qty_detail" id="qty_detail">
+						<label for="spd-input" class="col-2 col-form-label">Kode Bagian</label>
+						<div class="col-5">
+							<select class="form-control kt-select2" id="kode_bagian_detail" name="kode_bagian_detail" style="width: 100% !important;">
+								<option value="">- Pilih Nopek -</option>
+								@foreach ($pegawai_list as $pegawai)
+									<option value="{{ $pegawai->nopeg.'-'.$pegawai->nama }}">{{ $pegawai->nopeg.' - '.$pegawai->nama }}</option>
+								@endforeach
+							</select>
+							<div id="kode_bagian_detail-nya"></div>
+						</div>
+
+						<div class="col-5">
+							<input class="form-control" type="text" name="kode_bagian_nilai_detail" id="kode_bagian_nilai_detail">
 						</div>
 					</div>
+
+					<div class="form-group row">
+						<label for="spd-input" class="col-2 col-form-label">Perintah Kerja</label>
+						<div class="col-10">
+							<input class="form-control" type="text" name="perintah_kerja_detail" id="perintah_kerja_detail">
+						</div>
+					</div>
+
+					<div class="form-group row">
+						<label for="spd-input" class="col-2 col-form-label">Jenis Biaya</label>
+						<div class="col-5">
+							<select class="form-control kt-select2" id="jenis_biaya_detail" name="jenis_biaya_detail" style="width: 100% !important;">
+								<option value="">- Pilih Jenis Biaya -</option>
+								@foreach ($pegawai_list as $pegawai)
+									<option value="{{ $pegawai->nopeg.'-'.$pegawai->nama }}">{{ $pegawai->nopeg.' - '.$pegawai->nama }}</option>
+								@endforeach
+							</select>
+							<div id="jenis_biaya_detail-nya"></div>
+						</div>
+
+						<div class="col-5">
+							<input class="form-control" type="text" name="jenis_biaya_nilai_detail" id="jenis_biaya_nilai_detail">
+						</div>
+					</div>
+
+					<div class="form-group row">
+						<label for="spd-input" class="col-2 col-form-label">C.Judex</label>
+						<div class="col-5">
+							<select class="form-control kt-select2" id="c_judex_detail" name="c_judex_detail" style="width: 100% !important;">
+								<option value="">- Pilih Nopek -</option>
+								@foreach ($pegawai_list as $pegawai)
+									<option value="{{ $pegawai->nopeg.'-'.$pegawai->nama }}">{{ $pegawai->nopeg.' - '.$pegawai->nama }}</option>
+								@endforeach
+							</select>
+							<div id="c_judex_detail-nya"></div>
+						</div>
+
+						<div class="col-5">
+							<input class="form-control" type="text" name="c_judex_nilai_detail" id="c_judex_nilai_detail">
+						</div>
+					</div>
+
+					<div class="form-group row">
+						<label for="spd-input" class="col-2 col-form-label">Jumlah</label>
+						<div class="col-10">
+							<input class="form-control" type="number" name="jumlah_detail" id="jumlah_detail">
+						</div>
+					</div>				
 
 				</div>
 				<div class="modal-footer">
@@ -253,7 +309,7 @@
 
 @section('scripts')
 {!! JsValidator::formRequest('App\Http\Requests\PUmkStore', '#formPPUmk') !!}
-{!! JsValidator::formRequest('App\Http\Requests\PPerjalananDinasDetailStore', '#formPPanjarDinasDetail') !!}
+{!! JsValidator::formRequest('App\Http\Requests\PUmkDetailStore', '#formPUmkDetail') !!}
 
 <script type="text/javascript">
 
@@ -289,6 +345,7 @@
 				{data: 'keterangan', name: 'keterangan'},
 				{data: 'nilai', name: 'nilai'},
 				{data: 'qty', name: 'qty'},
+				{data: 'total', name: 'total'},
 				{data: 'total', name: 'total'}
 			],
 			order: [[ 0, "asc" ], [ 1, "asc" ]]
@@ -324,7 +381,7 @@
 			}
 		});
 
-		$("#formPPanjarDinasDetail").on('submit', function(){
+		$("#formPUmkDetail").on('submit', function(){
 			if ($('#nopek_detail-error').length){
 				$("#nopek_detail-error").insertAfter("#nopek_detail-nya");
 			}
