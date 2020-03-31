@@ -34,6 +34,8 @@
 
                 $umk_pertanggungjawaban = array(
                     'uang_muka_kerja.pertanggungjawaban.index',
+                    'uang_muka_kerja.pertanggungjawaban.create',
+                    'uang_muka_kerja.pertanggungjawaban.edit',
                 ); // isi nama semua route UMK
 
                 $umk_menu = array_merge($umk, $umk_pertanggungjawaban);
