@@ -55,9 +55,9 @@ class AnggaranSubMainController extends Controller
      *
      * @return \Illuminate\Http\Response
      */
-    public function create()
+    public function create($kode_main)
     {
-        //
+        return view('anggaran_submain.create', compact('kode_main'));
     }
 
     /**

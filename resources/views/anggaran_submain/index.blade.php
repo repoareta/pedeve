@@ -38,7 +38,7 @@
 		<div class="kt-portlet__head-toolbar">
 			<div class="kt-portlet__head-wrapper">
 				<div class="kt-portlet__head-actions">
-					<a href="{{ route('anggaran.create') }}">
+					<a href="{{ route('anggaran.submain.create', ['kode_main' => $kode_main]) }}">
 						<span style="font-size: 2em;" class="kt-font-success" data-toggle="kt-tooltip" data-placement="top" title="Tambah Data">
 							<i class="fas fa-plus-circle"></i>
 						</span>
