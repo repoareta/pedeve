@@ -404,12 +404,9 @@ class PerjalananDinasController extends Controller
         }
 
         // return default PDF
-        $pdf = PDF::loadview('perjalanan_dinas.export', [
-            'panjar_header_list' => $panjar_header_list,
-            'mulai' => $mulai,
-            'sampai' => $sampai
-        ])
-        ->setPaper('a4', 'landscape');
+        $pdf = PDF::loadview('perjalanan_dinas.export', compact('panjar_header_list', 'mulai', 'sampai'))
+        ->setPaper('a4', 'landscape')
+        ->setOptions(['isPhpEnabled' => true]);
 
         return $pdf->stream('rekap_spd_'.date('Y-m-d H:i:s').'.pdf');
     }
