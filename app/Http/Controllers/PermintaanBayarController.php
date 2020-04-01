@@ -12,6 +12,7 @@ use Carbon\Carbon;
 use DB;
 use Session;
 use PDF;
+use Alert;
 
 
 class PermintaanBayarController extends Controller
@@ -205,6 +206,7 @@ class PermintaanBayarController extends Controller
                 'app_sdm_oleh' => $request->userid,
                 'app_sdm_tgl' => $request->tgl_app,
             ]);
+            Alert::success('No. Bayar : '.$nobayar.' Berhasil Dibatalkan Approval', 'Berhasil')->persistent(true)->autoClose(2000);
             return redirect()->route('permintaan_bayar.index');
         }else{
             PermintaanBayar::where('no_bayar', $nobayar)
@@ -213,6 +215,7 @@ class PermintaanBayarController extends Controller
                 'app_sdm_oleh' => $request->userid,
                 'app_sdm_tgl' => $request->tgl_app,
             ]);
+            Alert::success('No. Bayar : '.$nobayar.' Berhasil Diapproval', 'Berhasil')->persistent(true)->autoClose(2000);
             return redirect()->route('permintaan_bayar.index');
         }
     }

@@ -494,11 +494,12 @@
 				},
 				success : function(data){
 				console.log(data);
-					swal({
-						title: "Data Berhasil Disimpan!",
-						text: "Success!",
-						type: "success"
-					}).then(function() {
+				Swal.fire({
+					type  : 'success',
+					title : 'Data Permintaan Biaya Berhasil Disimpan',
+					text  : 'Berhasil',
+					timer : 2000
+				}).then(function() {
 						window.location.replace("{{ route('permintaan_bayar.index')}}");;
 					});
 				}, 
@@ -536,10 +537,12 @@ if (KTUtil.isRTL()) {
             'X-CSRF-Token': '{{ csrf_token() }}',
             },
 			success : function(data){
-                swal({
-                    text: "Data Detail Permintaan Biaya Berhasil Ditambahkan.",
-                    type: "success"
-                }).then(function() {
+                Swal.fire({
+					type  : 'success',
+					title : 'Data Detail Permintaan Biaya Berhasil Ditambah',
+					text  : 'Berhasil',
+					timer : 2000
+				}).then(function() {
                     location.reload();
                 });
 			}, 
@@ -561,10 +564,12 @@ if (KTUtil.isRTL()) {
             'X-CSRF-Token': '{{ csrf_token() }}',
             },
 			success : function(data){
-                swal({
-                    text: "Data Detail Permintaan Bayar Berhasil Diedit.",
-                    type: "success"
-                }).then(function() {
+                Swal.fire({
+					type  : 'success',
+					title : 'Data Detail Permintaan Biaya Berhasil Diubah',
+					text  : 'Berhasil',
+					timer : 2000
+				}).then(function() {
                     window.location.reload();
                 });
 			}, 
@@ -612,13 +617,10 @@ $(".btn-radio:checked").each(function() {
 	var datano = $(this).attr('data-no');
 	if(dataid == 1)  
 	{  
-		swal({
-				title: "Tandai baris yang akan diedit!",
-				type: "success"
-				}) ; 
+		swalAlertInit('ubah'); 
 	}  else { 
 		$.ajax({
-			url :"/umum/permintaan_bayar/editdetail/"+dataid+'/'+datano,
+			url :"{{('umum/permintaan_bayar/editdetail')}}"+ '/' +dataid+ '/' +datano,
 			type : 'get',
 			dataType:"json",
 			headers: {
@@ -656,24 +658,30 @@ $('#deleteRow').click(function(e) {
 			var dataid = $(this).attr('data-id');
 				if(dataid == 1)  
 				{  
-					swal({
-						title: "Tandai baris yang akan dihapus!",
-						type: "success"
-					}) ; 
+					swalAlertInit('hapus'); 
 				}  else { 
 				$("input[type=radio]:checked").each(function() {
                     var id = $(this).attr('nobayar');
                     var no = $(this).attr('data-no');
 					// delete stuff
-					swal({
-						title: "Data yang akan di hapus?",
-						text: "No. Permintaan : " + id+" Dan No Urut :"+no,
-						icon: "warning",
-						buttons: true,
-						dangerMode: true,
-					})
-					.then((willDelete) => {
-						if (willDelete) {
+					const swalWithBootstrapButtons = Swal.mixin({
+						customClass: {
+							confirmButton: 'btn btn-primary',
+							cancelButton: 'btn btn-danger'
+						},
+							buttonsStyling: false
+						})
+						swalWithBootstrapButtons.fire({
+							title: "Data yang akan dihapus?",
+							text: "No. Bayar : " + id+"dan NO urut :"+no,
+							type: 'warning',
+							showCancelButton: true,
+							reverseButtons: true,
+							confirmButtonText: 'Ya, hapus',
+							cancelButtonText: 'Batalkan'
+						})
+						.then((result) => {
+						if (result.value) {
 							$.ajax({
 								url: "{{ route('permintaan_bayar.delete.detail') }}",
 								type: 'DELETE',
@@ -684,10 +692,11 @@ $('#deleteRow').click(function(e) {
 									"_token": "{{ csrf_token() }}",
 								},
 								success: function () {
-									swal({
-											title: "Delete",
-											text: "Success",
-											type: "success"
+									Swal.fire({
+										type  : 'success',
+										title : 'Hapus Data Detail Permintaan Bayar',
+										text  : 'Berhasil',
+										timer : 2000
 									}).then(function() {
 										location.reload();
 									});

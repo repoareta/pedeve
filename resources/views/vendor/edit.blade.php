@@ -102,11 +102,12 @@ $('#form-edit-vendor').submit(function(){
 				},
 				success : function(data){
 				console.log(data);
-					swal({
-						title: "Data Berhasil Diedit!",
-						text: "Success!",
-						type: "success"
-					}).then(function() {
+				Swal.fire({
+					type  : 'success',
+					title : 'Data Vendor Berhasil Diubah',
+					text  : 'Berhasil',
+					timer : 2000
+				}).then(function() {
 						window.location.replace("{{ route('vendor.index') }}");;
 					});
 				}, 

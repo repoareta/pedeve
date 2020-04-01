@@ -60,7 +60,7 @@
                 <label for="mulai-input" class="col-2 col-form-label">Tanggal Approval</label>
                 <div class="col-2">
                     <div class="input-daterange input-group" >
-                        <input type="text" class="form-control" name="tgl_app" id="date_range_picker" value=""/>
+                        <input type="text" class="form-control" name="tgl_app" id="date_range_picker" value="" required  autocomplete='off'/>
                     </div>
                 </div>
             </div>

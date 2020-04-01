@@ -35,29 +35,23 @@
 		<div class="kt-portlet__head-toolbar">
 			<div class="kt-portlet__head-wrapper">
 				<div class="kt-portlet__head-actions">
-					<a href="{{ route('permintaan_bayar.create') }}">
-						<span style="font-size: 2em;" class="kt-font-success" data-toggle="kt-tooltip" data-placement="top" title="Tambah Data">
-							<i class="fas fa-plus-circle"></i>
-						</span>
-					</a>
+						<a href="{{ route('permintaan_bayar.create') }}">
+							<span style="font-size: 2em;" class="kt-font-success" data-toggle="kt-tooltip" data-placement="top" title="Tambah Data">
+								<i class="fas fa-plus-circle"></i>
+							</span>
+						</a>
 	
-					<a href="#" id="editRow">
-						<span style="font-size: 2em;" class="kt-font-warning" data-toggle="kt-tooltip" data-placement="top" title="Ubah Data">
-							<i class="fas fa-edit"></i>
+						<span style="font-size: 2em;" class="kt-font-warning pointer-link" data-toggle="kt-tooltip" data-placement="top" title="Ubah Data">
+							<i class="fas fa-edit" id="editRow"></i>
 						</span>
-					</a>
 	
-					<a href="#" id="deleteRow">
-						<span style="font-size: 2em;" class="kt-font-danger" data-toggle="kt-tooltip" data-placement="top" title="Hapus Data">
-							<i class="fas fa-times-circle"></i>
+						<span style="font-size: 2em;" class="kt-font-danger pointer-link" data-toggle="kt-tooltip" data-placement="top" title="Hapus Data">
+							<i class="fas fa-times-circle" id="deleteRow"></i>
 						</span>
-					</a>
 
-					<a href="#">
-						<span style="font-size: 2em;" class="kt-font-info" data-toggle="kt-tooltip" data-placement="top" title="Cetak Data">
+						<span style="font-size: 2em;" class="kt-font-info pointer-link" data-toggle="kt-tooltip" data-placement="top" title="Cetak Data">
 							<i class="fas fa-print" id="reportRow"></i>
 						</span>
-					</a>
 				</div>
 			</div>
 		</div>
@@ -118,13 +112,10 @@ $('#reportRow').on('click', function(e) {
 		$("input[class=btn-radio-rekap]:checked").each(function() {  
 			e.preventDefault();
 			var dataid = $(this).attr('data-id-rekap');
-				location.replace("/umum/permintaan_bayar/rekap/"+dataid);
+				location.replace("{{url('umum/permintaan_bayar/rekap')}}"+ '/' +dataid);
 		});
 	} else{
-			swal({
-					title: "Tandai baris yang akan dicetak!",
-					type: "success"
-				}) ;  
+		swalAlertInit('cetak');
 	}
 	
 });
@@ -136,13 +127,10 @@ $('#reportRow').on('click', function(e) {
 			if($('input[class=btn-radio]').is(':checked')) { 
 				$("input[class=btn-radio]:checked").each(function(){
 					var id = $(this).attr('data-id');
-					location.replace("/umum/permintaan_bayar/edit/"+id);
+					location.replace("{{url('umum/permintaan_bayar/edit')}}"+ '/' +id);
 				});
 			} else {
-					swal({
-						title: "Tandai baris yang akan diedit!",
-						type: "success"
-					}) ; 
+				swalAlertInit('ubah');
 			}
 		});
 
@@ -153,15 +141,24 @@ $('#reportRow').on('click', function(e) {
 				$("input[class=btn-radio]:checked").each(function() {
 					var id = $(this).attr('data-id');
 					// delete stuff
-					swal({
-						title: "Data yang akan di hapus?",
-						text: "No. Panjar : " + id,
-						icon: "warning",
-						buttons: true,
-						dangerMode: true,
-					})
-					.then((willDelete) => {
-						if (willDelete) {
+					const swalWithBootstrapButtons = Swal.mixin({
+						customClass: {
+							confirmButton: 'btn btn-primary',
+							cancelButton: 'btn btn-danger'
+						},
+							buttonsStyling: false
+						})
+						swalWithBootstrapButtons.fire({
+							title: "Data yang akan dihapus?",
+							text: "No. bayar : " + id,
+							type: 'warning',
+							showCancelButton: true,
+							reverseButtons: true,
+							confirmButtonText: 'Ya, hapus',
+							cancelButtonText: 'Batalkan'
+						})
+						.then((result) => {
+						if (result.value) {
 							$.ajax({
 								url: "{{ route('permintaan_bayar.delete') }}",
 								type: 'DELETE',
@@ -171,12 +168,13 @@ $('#reportRow').on('click', function(e) {
 									"_token": "{{ csrf_token() }}",
 								},
 								success: function () {
-									swal({
-											title: "Delete",
-											text: "Success",
-											type: "success"
+									Swal.fire({
+										type  : 'success',
+										title : 'Hapus No. UMK ' + id,
+										text  : 'Berhasil',
+										timer : 2000
 									}).then(function() {
-										location.replace("{{ route('permintaan_bayar.index') }}");
+										location.reload();
 									});
 								},
 								error: function () {
@@ -187,10 +185,7 @@ $('#reportRow').on('click', function(e) {
 					});
 				});
 			} else {
-				swal({
-					title: "Tandai baris yang akan dihapus!",
-					type: "success"
-				}) ; 
+				swalAlertInit('hapus');
 			}
 			
 		});

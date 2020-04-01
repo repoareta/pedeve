@@ -101,11 +101,12 @@ $('#form-create-vendor').submit(function(){
 				},
 				success : function(data){
 				console.log(data);
-					swal({
-						title: "Data Berhasil Ditambahkan!",
-						text: "Success!",
-						type: "success"
-					}).then(function() {
+				Swal.fire({
+					type  : 'success',
+					title : 'Data Vendor Berhasil Disimpan',
+					text  : 'Berhasil',
+					timer : 2000
+				}).then(function() {
 						window.location.replace("{{ route('vendor.index') }}");;
 					});
 				}, 
