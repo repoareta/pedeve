@@ -135,7 +135,7 @@
 
 					swalWithBootstrapButtons.fire({
 						title: "Data yang akan dihapus?",
-						text: "No. Panjar : " + id,
+						text: "Kode : " + id,
 						type: 'warning',
 						showCancelButton: true,
 						reverseButtons: true,
@@ -145,7 +145,7 @@
 					.then((result) => {
 						if (result.value) {
 							$.ajax({
-								url: "{{ route('perjalanan_dinas.delete') }}",
+								url: "{{ route('anggaran.delete') }}",
 								type: 'DELETE',
 								dataType: 'json',
 								data: {
@@ -155,7 +155,7 @@
 								success: function () {
 									Swal.fire({
 										type  : 'success',
-										title : 'Hapus No. Panjar ' + id,
+										title : 'Hapus Anggaran ' + id,
 										text  : 'Berhasil',
 										timer : 2000
 									}).then(function() {

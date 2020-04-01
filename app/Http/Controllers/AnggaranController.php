@@ -6,6 +6,11 @@ use Illuminate\Http\Request;
 
 // load model
 use App\Models\AnggaranMain;
+use App\Models\AnggaranSubMain;
+use App\Models\AnggaranDetail;
+
+//load form request (for validation)
+use App\Http\Requests\AnggaranStore;
 
 // Load Plugin
 use Carbon\Carbon;
@@ -13,6 +18,7 @@ use Session;
 use PDF;
 use Excel;
 use Alert;
+use Auth;
 
 class AnggaranController extends Controller
 {
@@ -65,7 +71,7 @@ class AnggaranController extends Controller
      */
     public function create()
     {
-        //
+        return view('anggaran.create');
     }
 
     /**
@@ -74,20 +80,21 @@ class AnggaranController extends Controller
      * @param  \Illuminate\Http\Request  $request
      * @return \Illuminate\Http\Response
      */
-    public function store(Request $request)
+    public function store(AnggaranStore $request)
     {
-        //
-    }
+        $anggaran = new AnggaranMain;
 
-    /**
-     * Display the specified resource.
-     *
-     * @param  int  $id
-     * @return \Illuminate\Http\Response
-     */
-    public function show($id)
-    {
-        //
+        $anggaran->kode_main = $request->kode;
+        $anggaran->nama_main = $request->nama;
+        $anggaran->nilai_real = $request->nilai;
+        $anggaran->inputdate = date('Y-m-d H:i:s');
+        $anggaran->inputuser = Auth::user()->userid;
+        $anggaran->tahun = $request->tahun;
+
+        $anggaran->save();
+
+        Alert::success('Simpan Anggaran', 'Berhasil')->persistent(true)->autoClose(2000);
+        return redirect()->route('anggaran.index');
     }
 
     /**
@@ -119,8 +126,16 @@ class AnggaranController extends Controller
      * @param  int  $id
      * @return \Illuminate\Http\Response
      */
-    public function destroy($id)
+    public function delete(Request $request)
     {
-        //
+        AnggaranMain::find($request->id)
+        ->anggaran_detail()
+        ->get();
+
+        AnggaranMain::find($request->id)
+        ->anggaran_submain()
+        ->get();
+
+        return response()->json();
     }
 }

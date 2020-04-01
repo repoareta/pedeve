@@ -7,6 +7,17 @@ use Illuminate\Http\Request;
 // load model
 use App\Models\AnggaranSubMain;
 
+//load form request (for validation)
+use App\Http\Requests\AnggaranSubmainStore;
+
+// Load Plugin
+use Carbon\Carbon;
+use Session;
+use PDF;
+use Excel;
+use Alert;
+use Auth;
+
 class AnggaranSubMainController extends Controller
 {
     /**
@@ -55,9 +66,9 @@ class AnggaranSubMainController extends Controller
      *
      * @return \Illuminate\Http\Response
      */
-    public function create()
+    public function create($kode_main)
     {
-        //
+        return view('anggaran_submain.create', compact('kode_main'));
     }
 
     /**
@@ -66,9 +77,23 @@ class AnggaranSubMainController extends Controller
      * @param  \Illuminate\Http\Request  $request
      * @return \Illuminate\Http\Response
      */
-    public function store(Request $request)
+    public function store(AnggaranSubmainStore $request, $kode_main)
     {
-        //
+        $anggaran = new AnggaranSubMain;
+
+        $anggaran->kode_main = $kode_main;
+        $anggaran->kode_submain = $request->kode;
+        $anggaran->nama_submain = $request->nama;
+        $anggaran->nilai = $request->nilai;
+        $anggaran->nilai_real = $request->nilai_real;
+        $anggaran->inputdate = date('Y-m-d H:i:s');
+        $anggaran->inputuser = Auth::user()->userid;
+        $anggaran->tahun = $request->tahun;
+
+        $anggaran->save();
+
+        Alert::success('Simpan Anggaran Submain', 'Berhasil')->persistent(true)->autoClose(2000);
+        return redirect()->route('anggaran.submain', ['kode_main' => $kode_main]);
     }
 
     /**
