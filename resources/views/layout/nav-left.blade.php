@@ -49,8 +49,12 @@
 
                 $anggaran = array(
                     'anggaran.index',
-                    'anggaran.submain',
-                    'anggaran.submain.detail',
+                    'anggaran.create',
+                    'anggaran.submain.index',
+                    'anggaran.submain.create',
+                    'anggaran.submain.detail.index',
+                    'anggaran.submain.detail.create',
+                    'anggaran.submain.detail.edit',
                 ); // isi nama semua route anggaran
 
                 $vendor = array(

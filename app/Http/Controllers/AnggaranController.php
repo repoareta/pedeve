@@ -43,7 +43,7 @@ class AnggaranController extends Controller
 
         return datatables()->of($anggaran_list)
             ->addColumn('nama_main', function ($row) {
-                $link = '<a href="'.route('anggaran.submain', ['kode_main' => $row->kode_main]).'">'.$row->nama_main.'</a>';
+                $link = '<a href="'.route('anggaran.submain.index', ['kode_main' => $row->kode_main]).'">'.$row->nama_main.'</a>';
 
                 return $link;
             })
@@ -103,9 +103,9 @@ class AnggaranController extends Controller
      * @param  int  $id
      * @return \Illuminate\Http\Response
      */
-    public function edit($id)
+    public function edit($kode_main)
     {
-        //
+        return view('anggaran.edit', compact('kode_main'));
     }
 
     /**
@@ -130,11 +130,11 @@ class AnggaranController extends Controller
     {
         AnggaranMain::find($request->id)
         ->anggaran_detail()
-        ->get();
+        ->delete();
 
         AnggaranMain::find($request->id)
         ->anggaran_submain()
-        ->get();
+        ->delete();
 
         return response()->json();
     }
