@@ -36,25 +36,25 @@
 			<div class="kt-portlet__head-wrapper">
 				<div class="kt-portlet__head-actions">
 					<a href="{{ route('uang_muka_kerja.create') }}">
-						<span style="font-size: 2em;" class="kt-font-success">
+						<span style="font-size: 2em;" class="kt-font-success" data-toggle="kt-tooltip" data-placement="top" title="Tambah Data">
 							<i class="fas fa-plus-circle"></i>
 						</span>
 					</a>
 	
 					<a href="#">
-						<span style="font-size: 2em;" class="kt-font-warning">
+						<span style="font-size: 2em;" class="kt-font-warning" data-toggle="kt-tooltip" data-placement="top" title="Ubah Data">
 							<i class="fas fa-edit" id="btn-edit-umk"></i>
 						</span>
 					</a>
 	
 					<a href="#">
-						<span style="font-size: 2em;"  class="kt-font-danger">
+						<span style="font-size: 2em;"  class="kt-font-danger" data-toggle="kt-tooltip" data-placement="top" title="Hapus Data">
 							<i class="fas fa-times-circle" id="deleteRow"></i>
 						</span>
 					</a>
 
 					<a href="#">
-						<span style="font-size: 2em;" class="kt-font-info">
+						<span style="font-size: 2em;" class="kt-font-info" data-toggle="kt-tooltip" data-placement="top" title="Cetak Data">
 							<i class="fas fa-print" id="reportRow"></i>
 						</span>
 					</a>
@@ -63,9 +63,8 @@
 		</div>
 	</div>
 	<div class="kt-portlet__body">
-		<div class="card-body table-responsive">
 		<!--begin: Datatable -->
-		<table id="data-umk-table" class="table table-striped table-bordered table-hover table-checkable">
+		<table id="data-umk-table" class="table table-striped table-bordered table-hover table-checkable" width="100%">
 			<thead class="thead-light">
 				<tr>
 					<th><input type="radio" hidden name="btn-radio"  data-id="1" class="btn-radio" checked ><input type="radio" hidden name="btn-radio-rekap"  data-id-rekap="1" class="btn-radio-rekap" checked ></th>
@@ -86,7 +85,6 @@
 		<!--end: Datatable -->
 		</div>
 	</div>
-</div>
 </div>
 
 
@@ -156,12 +154,9 @@ $(".btn-radio-rekap:checked").each(function() {
 
 	if(dataid == 1) 
 	{
-		swal({
-				title: "Tandai baris yang akan dicetak!",
-				type: "success"
-				}) ;  
-	}  else {  
-		location.replace("/umum/uang_muka_kerja/rekap/"+dataid);
+		swalAlertInit('cetak'); 
+	}  else { 
+		location.replace("{{url('umum/uang_muka_kerja/rekap')}}"+ '/' +dataid);
 	}	
 				
 });
@@ -169,7 +164,6 @@ $(".btn-radio-rekap:checked").each(function() {
 //edit
 $('#btn-edit-umk').on('click', function(e) {
 	e.preventDefault();
-
 var allVals = [];  
 $(".btn-radio:checked").each(function() {  
 	e.preventDefault();
@@ -178,12 +172,9 @@ $(".btn-radio:checked").each(function() {
 
 	if(dataid == 1) 
 	{
-		swal({
-				title: "Tandai baris yang akan diedit!",
-				type: "success"
-				}) ;  
+		swalAlertInit('ubah');  
 	}  else {  
-		location.replace("/umum/uang_muka_kerja/edit/"+dataid);
+		location.replace("{{url('umum/uang_muka_kerja/edit')}}"+ '/' +dataid);
 	}	
 				
 });
@@ -199,10 +190,7 @@ $('#deleteRow').click(function(e) {
 				var dataid = $(this).attr('data-id');
 				if(dataid == 1)  
 				{  
-					swal({
-						title: "Tandai baris yang akan dihapus!",
-						type: "success"
-					}) ; 
+					swalAlertInit('hapus'); 
 				}  else { 
 				$("input[type=radio]:checked").each(function() {
 					var id = $(this).attr('dataumk');

@@ -36,19 +36,19 @@
 			<div class="kt-portlet__head-wrapper">
 				<div class="kt-portlet__head-actions">
 					<a href="{{ route('vendor.create') }}">
-						<span style="font-size: 2em;" class="kt-font-success">
+						<span style="font-size: 2em;" class="kt-font-success" data-toggle="kt-tooltip" data-placement="top" title="Tambah Data">
 							<i class="fas fa-plus-circle"></i>
 						</span>
 					</a>
 	
 					<a href="#">
-						<span style="font-size: 2em;" class="kt-font-warning">
+						<span style="font-size: 2em;" class="kt-font-warning" data-toggle="kt-tooltip" data-placement="top" title="Ubah Data">
 							<i class="fas fa-edit" id="editRow"></i>
 						</span>
 					</a>
 	
 					<a href="#">
-						<span style="font-size: 2em;"  class="kt-font-danger">
+						<span style="font-size: 2em;"  class="kt-font-danger" data-toggle="kt-tooltip" data-placement="top" title="Hapus Data">
 							<i class="fas fa-times-circle" id="deleteRow"></i>
 						</span>
 					</a>
@@ -57,7 +57,6 @@
 		</div>
 	</div>
 	<div class="kt-portlet__body">
-		<div class="card-body table-responsive">
 		<!--begin: Datatable -->
 		<table id="data-vendor" class="table table-striped table-bordered table-hover table-checkable">
 			<thead class="thead-light">
@@ -76,7 +75,6 @@
 		<!--end: Datatable -->
 		</div>
 	</div>
-</div>
 </div>
 
 
