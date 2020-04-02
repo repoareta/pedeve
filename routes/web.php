@@ -155,6 +155,7 @@ Route::group(['middleware'=> ['auth','checkRole:1']], function () {
         Route::get('master_pekerja/edit', 'MasterPekerjaController@edit')->name('master_pekerja.edit');
         //potongan koreksi gaji
         Route::get('potongan_koreksi_gaji', 'PotonganKoreksiGajiController@index')->name('potongan_koreksi_gaji.index');
+        Route::get('potongan_koreksi_gaji/index_json', 'PotonganKoreksiGajiController@indexJson')->name('potongan_koreksi_gaji.index.json');
         Route::get('potongan_koreksi_gaji/create', 'PotonganKoreksiGajiController@create')->name('potongan_koreksi_gaji.create');
         Route::get('potongan_koreksi_gaji/edit', 'PotonganKoreksiGajiController@edit')->name('potongan_koreksi_gaji.edit');
         // Lembur

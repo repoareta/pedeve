@@ -6,15 +6,15 @@
 	<div class="kt-container  kt-container--fluid ">
 		<div class="kt-subheader__main">
 			<h3 class="kt-subheader__title">
-				Panjar Dinas </h3>
+				Koreksi Gaji </h3>
 			<span class="kt-subheader__separator kt-hidden"></span>
 			<div class="kt-subheader__breadcrumbs">
 				<a href="#" class="kt-subheader__breadcrumbs-home"><i class="flaticon2-shelter"></i></a>
 				<span class="kt-subheader__breadcrumbs-separator"></span>
 				<a href="" class="kt-subheader__breadcrumbs-link">
-					Umum </a>
+					Payroll </a>
 				<span class="kt-subheader__breadcrumbs-separator"></span>
-				<span class="kt-subheader__breadcrumbs-link kt-subheader__breadcrumbs-link--active">Perjalanan Dinas</span>
+				<span class="kt-subheader__breadcrumbs-link kt-subheader__breadcrumbs-link--active">Koreksi Gaji</span>
 			</div>
 		</div>
 	</div>
@@ -29,35 +29,29 @@
 				<i class="kt-font-brand flaticon2-line-chart"></i>
 			</span>
 			<h3 class="kt-portlet__head-title">
-				Tabel Umum Panjar Dinas
+				Tabel Koreksi Gaji
 			</h3>			
 		</div>
 		<div class="kt-portlet__head-toolbar">
 			<div class="kt-portlet__head-wrapper">
 				<div class="kt-portlet__head-actions">
 					<a href="{{ route('perjalanan_dinas.create') }}">
-						<span style="font-size: 2em;" class="kt-font-success">
+						<span style="font-size: 2em;" class="kt-font-success" data-toggle="kt-tooltip" data-placement="top" title="Tambah Data">
 							<i class="fas fa-plus-circle"></i>
 						</span>
 					</a>
 	
-					<a href="#">
-						<span style="font-size: 2em;" class="kt-font-warning">
-							<i class="fas fa-edit"></i>
-						</span>
-					</a>
+					<span style="font-size: 2em;" class="kt-font-warning pointer-link" id="editRow" data-toggle="kt-tooltip" data-placement="top" title="Ubah Data">
+						<i class="fas fa-edit"></i>
+					</span>
 	
-					<a href="#">
-						<span style="font-size: 2em;" class="kt-font-danger">
-							<i class="fas fa-times-circle"></i>
-						</span>
-					</a>
+					<span style="font-size: 2em;" class="kt-font-danger pointer-link" id="deleteRow" data-toggle="kt-tooltip" data-placement="top" title="Hapus Data">
+						<i class="fas fa-times-circle"></i>
+					</span>
 
-					<a href="#">
-						<span style="font-size: 2em;" class="kt-font-info">
-							<i class="fas fa-file-export"></i>
-						</span>
-					</a>
+					<span style="font-size: 2em;" class="kt-font-info pointer-link" id="exportRow" data-toggle="kt-tooltip" data-placement="top" title="Cetak Data">
+						<i class="fas fa-print"></i>
+					</span>
 				</div>
 			</div>
 		</div>
@@ -65,38 +59,27 @@
 	<div class="kt-portlet__body">
 
 		<!--begin: Datatable -->
-		<table class="table table-striped table-bordered table-hover table-checkable" id="kt_table">
+		<table class="table table-striped table-bordered table-hover table-checkable" id="kt_table" width="100%">
+		<!-- <th colspan="4"><form action="" method="post" enctype="multipart/form-data">
+          <p style="padding-top:15px;"><input style="height:25px; border-radius:10px;" maxlength="16" onkeypress="return number(event)"  required name="ktp"  type="text" placeholder="No KTP/NPWP" autocomplete="off" >  
+            <select style="height:25px; border-radius:10px;" name="reason"  required>
+                <option value="">Pilih Reason</option> 
+                <option value="1">Borrower Baru</option> 
+                <option value="2">Monitoring Borrower </option>
+            </select> 
+            <input style="height:25px; border-radius:10px;" name="submit" type="submit"  value="Search">
+            </p>
+        </form></th> -->
 			<thead class="thead-light">
 				<tr>
 					<th></th>
-					<th>No. Panjar</th>
-					<th>No. UMK</th>
-					<th>Jenis</th>
-					<th>Mutasi</th>
-					<th>Mulai</th>
-					<th>Sampai</th>
-					<th>Dari</th>
-					<th>Tujuan</th>
-					<th>Nopek</th>
-					<th>Keterangan</th>
+					<th>Bulan</th>
+					<th>Pegawai</th>
+					<th>AARD</th>
 					<th>Nilai</th>
 				</tr>
 			</thead>
 			<tbody>
-				<tr>
-					<td>Hehe</td>
-					<td>Hehe</td>
-					<td>Hehe</td>
-					<td>Hehe</td>
-					<td>Hehe</td>
-					<td>Hehe</td>
-					<td>Hehe</td>
-					<td>Hehe</td>
-					<td>Hehe</td>
-					<td>Hehe</td>
-					<td>Hehe</td>
-					<td>Hehe</td>
-				</tr>
 			</tbody>
 		</table>
 
@@ -109,7 +92,24 @@
 @section('scripts')
 	<script type="text/javascript">
 	$(document).ready(function () {
-		$('#kt_table').DataTable();
+		var t = $('#kt_table').DataTable({
+			searching: false,
+			scrollX   : true,
+			processing: true,
+			serverSide: true,
+			language: {
+            	processing: '<i class="fa fa-spinner fa-spin fa-2x fa-fw"></i> <br> Loading...'
+			},
+			ajax      : "{{ route('potongan_koreksi_gaji.index.json') }}",
+			columns: [
+				{data: 'tahunbulan', name: 'tahunbulan'},
+				{data: 'bulan', name: 'bulan'},
+				{data: 'nama', name: 'nama'},
+				{data: 'aard', name: 'aard'},
+				{data: 'nilai', name: 'nilai'},
+			]
+    	});			
 	});
+
 	</script>
 @endsection
