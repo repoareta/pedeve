@@ -92,9 +92,6 @@
 			scrollX   : true,
 			processing: true,
 			serverSide: true,
-			language: {
-            	processing: '<i class="fa fa-spinner fa-spin fa-2x fa-fw"></i> <br> Loading...'
-			},
 			ajax      : "{{ route('perjalanan_dinas.index.json') }}",
 			columns: [
 				{data: 'action', name: 'aksi', orderable: false, searchable: false, class:'radio-button'},

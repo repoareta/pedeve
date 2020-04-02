@@ -146,7 +146,7 @@
 					<i class="kt-font-brand flaticon2-line-chart"></i>
 				</span>
 				<h3 class="kt-portlet__head-title">
-					Detail Panjar Dinas
+					Detail Pertanggungjawaban Panjar Dinas
 				</h3>			
 			</div>
 			<div class="kt-portlet__head-toolbar">
@@ -291,13 +291,13 @@
 			},
 			ajax: "{{ route('perjalanan_dinas.pertanggungjawaban.detail.index.json', ['no_ppanjar' => str_replace('/', '-', $ppanjar_header->no_ppanjar)]) }}",
 			columns: [
-				{data: 'action', name: 'aksi', orderable: false, searchable: false},
+				{data: 'action', name: 'aksi', orderable: false, searchable: false, class:'radio-button'},
 				{data: 'no', name: 'no'},
 				{data: 'nopek', name: 'nopek'},
 				{data: 'keterangan', name: 'keterangan'},
-				{data: 'nilai', name: 'nilai', class:'text-right'},
-				{data: 'qty', name: 'qty', class:'text-right'},
-				{data: 'total', name: 'total', class:'text-right'}
+				{data: 'nilai', name: 'nilai', class:'no-wrap text-right'},
+				{data: 'qty', name: 'qty', class:'no-wrap text-right'},
+				{data: 'total', name: 'total', class:'no-wrap text-right'}
 			],
 			order: [[ 0, "asc" ], [ 1, "asc" ]]
 		});

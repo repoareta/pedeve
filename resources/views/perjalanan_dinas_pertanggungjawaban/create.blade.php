@@ -146,23 +146,17 @@
 			<div class="kt-portlet__head-toolbar">
 				<div class="kt-portlet__head-wrapper">
 					<div class="kt-portlet__head-actions">
-						<a href="#" id="openDetail">
-							<span style="font-size: 2em;" class="kt-font-success">
-								<i class="fas fa-plus-circle"></i>
-							</span>
-						</a>
+						<span style="font-size: 2em;" class="kt-font-success" id="openDetail" data-toggle="kt-tooltip" data-placement="top" title="Tambah Data">
+							<i class="fas fa-plus-circle"></i>
+						</span>
 		
-						<a href="#" id="editRow">
-							<span style="font-size: 2em;" class="kt-font-warning">
-								<i class="fas fa-edit"></i>
-							</span>
-						</a>
+						<span style="font-size: 2em;" class="kt-font-warning pointer-link" id="editRow" data-toggle="kt-tooltip" data-placement="top" title="Ubah Data">
+							<i class="fas fa-edit"></i>
+						</span>
 		
-						<a href="#" id="deleteRow">
-							<span style="font-size: 2em;" class="kt-font-danger">
-								<i class="fas fa-times-circle"></i>
-							</span>
-						</a>
+						<span style="font-size: 2em;" class="kt-font-danger pointer-link" id="deleteRow" data-toggle="kt-tooltip" data-placement="top" title="Hapus Data">
+							<i class="fas fa-times-circle"></i>
+						</span>
 					</div>
 				</div>
 			</div>
@@ -288,13 +282,13 @@
 			},
 			ajax: "{{ route('perjalanan_dinas.pertanggungjawaban.detail.index.json', ['no_ppanjar' => 'null']) }}",
 			columns: [
-				{data: 'action', name: 'aksi', orderable: false, searchable: false},
+				{data: 'action', name: 'aksi', orderable: false, searchable: false, class:'radio-button'},
 				{data: 'no', name: 'no'},
-				{data: 'nopek', name: 'nopek'},
+				{data: 'nopek', name: 'nopek', class:'no-wrap'},
 				{data: 'keterangan', name: 'keterangan'},
-				{data: 'nilai', name: 'nilai', class:'text-right'},
-				{data: 'qty', name: 'qty', class:'text-right'},
-				{data: 'total', name: 'total', class:'text-right'}
+				{data: 'nilai', name: 'nilai', class:'no-wrap text-right'},
+				{data: 'qty', name: 'qty', class:'no-wrap text-right'},
+				{data: 'total', name: 'total', class:'no-wrap text-right'}
 			],
 			order: [[ 0, "asc" ], [ 1, "asc" ]]
 		});
@@ -447,12 +441,7 @@
 					});
 				});
 			} else {
-				Swal.fire({
-					type: 'warning',
-					timer: 2000,
-					title: 'Oops...',
-					text: 'Tandai baris yang ingin dihapus'
-				});
+				swalAlertInit('hapus');
 			}
 		});
 
@@ -494,12 +483,7 @@
 					
 				});
 			} else {
-				Swal.fire({
-					type: 'warning',
-					timer: 2000,
-					title: 'Oops...',
-					text: 'Tandai baris yang ingin diubah'
-				});
+				swalAlertInit('ubah');
 			}
 		});
 
