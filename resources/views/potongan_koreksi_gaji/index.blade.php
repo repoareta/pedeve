@@ -102,8 +102,8 @@
 			},
 			ajax      : "{{ route('potongan_koreksi_gaji.index.json') }}",
 			columns: [
+				{data: 'action', name: 'action'},
 				{data: 'tahunbulan', name: 'tahunbulan'},
-				{data: 'bulan', name: 'bulan'},
 				{data: 'nama', name: 'nama'},
 				{data: 'aard', name: 'aard'},
 				{data: 'nilai', name: 'nilai'},

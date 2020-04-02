@@ -4,6 +4,7 @@ namespace App\Http\Controllers;
 
 use Illuminate\Http\Request;
 use App\Models\KoreksiGaji;
+use DB;
 use PDF;
 use Excel;
 use Alert;
@@ -22,11 +23,20 @@ class PotonganKoreksiGajiController extends Controller
 
     public function indexJson()
     {
-        $koreksi_gaji_list = KoreksiGaji::orderBy('tahun', 'desc')->get();
+        $koreksi_gaji_list = DB::table('pay_koreksigaji as a')
+                        ->join('sdm_master_pegawai as b', 'a.nopek', '=', 'b.nopeg')
+                        ->select('a.*', 'b.nama')
+                        ->orderBy('a.tahun', 'desc')->get();
         
         return datatables()->of($koreksi_gaji_list)
+        ->addColumn('action', function ($row) {
+                return '<label  class="kt-radio kt-radio--bold kt-radio--brand"><input type="radio" class="btn-radio" name="btn-radio"><span></span></label>';
+        })
         ->addColumn('nama', function ($row) {
-            return $row->bulan;
+            return "$row->nopek - $row->nama";
+        })
+        ->addColumn('nilai', function ($row) {
+            return currency_idr($row->nilai);
         })
         
         ->addColumn('tahunbulan', function ($row) {
@@ -47,6 +57,7 @@ class PotonganKoreksiGajiController extends Controller
             $bulan= strtoupper($array_bln[$row->bulan]);
             return $bulan." ".$row->tahun;
         })
+        ->rawColumns(['action'])
             ->make(true);
     }
 
