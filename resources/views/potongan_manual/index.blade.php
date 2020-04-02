@@ -35,7 +35,7 @@
 		<div class="kt-portlet__head-toolbar">
 			<div class="kt-portlet__head-wrapper">
 				<div class="kt-portlet__head-actions">
-					<a href="{{ route('potongan_koreksi_gaji.create') }}">
+					<a href="{{ route('potongan_manual.create') }}">
 						<span style="font-size: 2em;" class="kt-font-success" data-toggle="kt-tooltip" data-placement="top" title="Tambah Data">
 							<i class="fas fa-plus-circle"></i>
 						</span>

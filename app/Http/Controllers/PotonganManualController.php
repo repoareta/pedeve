@@ -76,7 +76,8 @@ class PotonganManualController extends Controller
      */
     public function create()
     {
-        //
+        $data_pegawai = SdmMasterPegawai::all();
+        return view('potongan_manual.create', compact('data_pegawai'));
     }
 
     /**
@@ -87,7 +88,22 @@ class PotonganManualController extends Controller
      */
     public function store(Request $request)
     {
-        //
+        $data_tahun = substr($request->bulantahun,3);
+        $data_bulan = ltrim(substr($request->bulantahun,0,-5), '0');
+        PayHonor::insert([
+            'tahun' => $data_tahun,
+            'bulan' => $data_bulan,
+            'nopek' => $request->nopek,
+            'aard' => 30,
+            'jmlcc' => 0,
+            'ccl' => 0,
+            'nilai' => $request->nilai,
+            'userid' => $request->userid,
+            'pajak' => $request->pajak,
+            
+            // Save Panjar Header
+            ]);
+            return response()->json();
     }
 
     /**
