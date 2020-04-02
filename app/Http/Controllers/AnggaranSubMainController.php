@@ -43,7 +43,7 @@ class AnggaranSubMainController extends Controller
 
         return datatables()->of($anggaran_list)
             ->addColumn('nama_submain', function ($row) {
-                $link = '<a href="'.route('anggaran.submain.detail', ['kode_main' => $row->kode_main, 'kode_submain' => $row->kode_submain]).'">'.$row->nama_submain.'</a>';
+                $link = '<a href="'.route('anggaran.submain.detail.index', ['kode_main' => $row->kode_main, 'kode_submain' => $row->kode_submain]).'">'.$row->nama_submain.'</a>';
 
                 return $link;
             })
