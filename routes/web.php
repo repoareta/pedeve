@@ -167,7 +167,16 @@ Route::group(['middleware'=> ['auth','checkRole:1']], function () {
         Route::get('potongan_koreksi_gaji/edit/{bulan}/{tahun}/{arrd}/{nopek}', 'PotonganKoreksiGajiController@edit')->name('potongan_koreksi_gaji.edit');
         Route::post('potongan_koreksi_gaji/update', 'PotonganKoreksiGajiController@update')->name('potongan_koreksi_gaji.update');
         Route::delete('potongan_koreksi_gaji/delete', 'PotonganKoreksiGajiController@delete')->name('potongan_koreksi_gaji.delete');
-
+        
+        //potongan manual
+        Route::get('potongan_manual', 'PotonganManualController@index')->name('potongan_manual.index');
+        Route::get('potongan_manual/index_json', 'PotonganManualController@indexJson')->name('potongan_manual.index.json');
+        Route::get('potongan_manual/create', 'PotonganManualController@create')->name('potongan_manual.create');
+        Route::post('potongan_manual/store', 'PotonganManualController@store')->name('potongan_manual.store');
+        Route::get('potongan_manual/edit/{bulan}/{tahun}/{arrd}/{nopek}', 'PotonganManualController@edit')->name('potongan_manual.edit');
+        Route::post('potongan_manual/update', 'PotonganManualController@update')->name('potongan_manual.update');
+        Route::delete('potongan_manual/delete', 'PotonganManualController@delete')->name('potongan_manual.delete');
+        
         // Lembur
         Route::get('lembur', 'LemburController@index')->name('lembur.index');
         Route::get('lembur/create', 'LemburController@create')->name('lembur.create');

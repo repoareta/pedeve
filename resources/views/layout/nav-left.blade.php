@@ -97,11 +97,20 @@
                     'master_pekerja.create',
                     'master_pekerja.edit'
                 ); // isi nama semua route master pekerja
-                $potongan_koreksi_gaji = array(
+                $potongan_manual = array(
+                    'potongan_manual.index',
+                    'potongan_manual.create',
+                    'potongan_manual.edit'
+                ); // isi nama semua route potongan koreksi gajian
+                $koreksi_gaji = array(
                     'potongan_koreksi_gaji.index',
                     'potongan_koreksi_gaji.create',
                     'potongan_koreksi_gaji.edit'
-                ); // isi nama semua route potongan koreksi gajian
+                ); // isi nama semua route potongan manual
+                $potongan_koreksi_gaji = array_merge(
+                    $koreksi_gaji,
+                    $potongan_manual
+                ); //isi nama submenu
                 $lembur = array(
                     'lembur.index',
                     'lembur.create',
@@ -359,15 +368,34 @@
                                 </span>
                             </a>
                         </li>
-                        <li class="kt-menu__item kt-menu__item{{ set_active_submenu($potongan_koreksi_gaji) }}" aria-haspopup="true">
-                            <a href="{{ route('potongan_koreksi_gaji.index') }}" class="kt-menu__link ">
+                        <li class="kt-menu__item kt-menu__item--submenu {{ set_active($potongan_koreksi_gaji) }}" aria-haspopup="true" data-ktmenu-submenu-toggle="hover">
+                            <a href="javascript:;" class="kt-menu__link kt-menu__toggle">
                                 <i class="kt-menu__link-bullet kt-menu__link-bullet--dot">
                                     <span></span>
                                 </i>
-                                <span class="kt-menu__link-text">
-                                    Potongan dan Koreksi Gaji
-                                </span>
+                                <span class="kt-menu__link-text">Potongan & Koreksi Gaji</span>
+                                <i class="kt-menu__ver-arrow la la-angle-right"></i>
                             </a>
+                            <div class="kt-menu__submenu "><span class="kt-menu__arrow"></span>
+                                <ul class="kt-menu__subnav">
+                                    <li class="kt-menu__item kt-menu__item{{ set_active_submenu($koreksi_gaji) }}" aria-haspopup="true">
+                                        <a href="{{ route('potongan_koreksi_gaji.index') }}" class="kt-menu__link ">
+                                            <i class="kt-menu__link-bullet kt-menu__link-bullet--line">
+                                                <span></span>
+                                            </i>
+                                            <span class="kt-menu__link-text">Koreksi Gaji</span>
+                                        </a>
+                                    </li>
+                                    <li class="kt-menu__item kt-menu__item{{ set_active_submenu($potongan_manual) }}" aria-haspopup="true">
+                                        <a href="{{route('potongan_manual.index')}}" class="kt-menu__link ">
+                                            <i class="kt-menu__link-bullet kt-menu__link-bullet--line">
+                                                <span></span>
+                                            </i>
+                                            <span class="kt-menu__link-text">Potongan Manual</span>
+                                        </a>
+                                    </li>
+                                </ul>
+                            </div>
                         </li>
                         <li class="kt-menu__item kt-menu__item{{ set_active_submenu($lembur) }}" aria-haspopup="true">
                             <a href="{{ route('lembur.index') }}" class="kt-menu__link ">

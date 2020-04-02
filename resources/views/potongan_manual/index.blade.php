@@ -63,10 +63,11 @@
 			<thead class="thead-light">
 				<tr>
 					<th></th>
+					<th>Tahun</th>
 					<th>Bulan</th>
 					<th>Pegawai</th>
-					<th>AARD</th>
 					<th>Nilai</th>
+					<th>Pajak PPH21</th>
 				</tr>
 			</thead>
 			<tbody>
@@ -90,97 +91,18 @@
 			language: {
             	processing: '<i class="fa fa-spinner fa-spin fa-2x fa-fw"></i> <br> Loading...'
 			},
-			ajax      : "{{ route('potongan_koreksi_gaji.index.json') }}",
+			ajax      : "{{ route('potongan_manual.index.json') }}",
 			columns: [
 				{data: 'action', name: 'action'},
-				{data: 'tahunbulan', name: 'tahunbulan'},
+				{data: 'tahun', name: 'tahun'},
+				{data: 'bulan', name: 'bulan'},
 				{data: 'nama', name: 'nama'},
-				{data: 'aard', name: 'aard'},
 				{data: 'nilai', name: 'nilai'},
+				{data: 'pajak', name: 'pajak'},
 			]
-    	});	
-
-		//edit permintaan bayar
-		$('#editRow').click(function(e) {
-			e.preventDefault();
-
-			if($('input[type=radio]').is(':checked')) { 
-				$("input[type=radio]:checked").each(function(){
-					var tahun = $(this).attr('tahun');
-					var bulan = $(this).attr('bulan');
-					var nopek = $(this).attr('nopek');
-					var aard  = $(this).attr('aard');
-					var nama  = $(this).attr('nama');
-					location.replace("{{url('sdm/potongan_koreksi_gaji/edit')}}"+ '/' +bulan+'/' +tahun+'/'+aard+ '/' +nopek);
-				});
-			} else {
-				swalAlertInit('ubah');
-			}
 		});
 
-		//delete permintaan bayar
-		$('#deleteRow').click(function(e) {
-			e.preventDefault();
-			if($('input[type=radio]').is(':checked')) { 
-				$("input[type=radio]:checked").each(function() {
-					var tahun = $(this).attr('tahun');
-					var bulan = $(this).attr('bulan');
-					var nopek = $(this).attr('nopek');
-					var aard  = $(this).attr('aard');
-					var nama  = $(this).attr('nama');
-					// delete stuff
-					const swalWithBootstrapButtons = Swal.mixin({
-						customClass: {
-							confirmButton: 'btn btn-primary',
-							cancelButton: 'btn btn-danger'
-						},
-							buttonsStyling: false
-						})
-						swalWithBootstrapButtons.fire({
-							title: "Data yang akan dihapus?",
-							text: "Dedail data : "+bulan+ '-'  + tahun+'-' +nama,
-							type: 'warning',
-							showCancelButton: true,
-							reverseButtons: true,
-							confirmButtonText: 'Ya, hapus',
-							cancelButtonText: 'Batalkan'
-						})
-						.then((result) => {
-						if (result.value) {
-							$.ajax({
-								url: "{{ route('potongan_koreksi_gaji.delete') }}",
-								type: 'DELETE',
-								dataType: 'json',
-								data: {
-									"bulan": bulan,
-									"tahun": tahun,
-									"nopek": nopek,
-									"aard": aard,
-									"nama": nama,
-									"_token": "{{ csrf_token() }}",
-								},
-								success: function () {
-									Swal.fire({
-										type  : 'success',
-										title : "Dedail data : "+bulan+ '-'  + tahun+'-' +nama,
-										text  : 'Berhasil',
-										timer : 2000
-									}).then(function() {
-										location.reload();
-									});
-								},
-								error: function () {
-									alert("Terjadi kesalahan, coba lagi nanti");
-								}
-							});
-						}
-					});
-				});
-			} else {
-				swalAlertInit('hapus');
-			}
-			
-		});
+		
 
 	});
 
