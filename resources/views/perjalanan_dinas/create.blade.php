@@ -336,7 +336,7 @@
 			serverSide: true,
 			ajax: "{{ route('perjalanan_dinas.index.json.detail', ['no_panjar' => 'null']) }}",
 			columns: [
-				{data: 'action', name: 'aksi', orderable: false, searchable: false},
+				{data: 'action', name: 'aksi', orderable: false, searchable: false, class:'radio-button'},
 				{data: 'no', name: 'no'},
 				{data: 'nopek', name: 'nopek'},
 				{data: 'nama', name: 'nama'},
