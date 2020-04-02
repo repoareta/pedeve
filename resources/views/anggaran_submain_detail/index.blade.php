@@ -40,7 +40,7 @@
 		<div class="kt-portlet__head-toolbar">
 			<div class="kt-portlet__head-wrapper">
 				<div class="kt-portlet__head-actions">
-					<a href="{{ route('anggaran.create') }}">
+					<a href="{{ route('anggaran.submain.detail.create', ['kode_main' => $kode_main, 'kode_submain' => $kode_submain]) }}">
 						<span style="font-size: 2em;" class="kt-font-success" data-toggle="kt-tooltip" data-placement="top" title="Tambah Data">
 							<i class="fas fa-plus-circle"></i>
 						</span>
@@ -54,7 +54,7 @@
 						<i class="fas fa-times-circle"></i>
 					</span>
 
-					<a href="{{ route('anggaran.submain', ['kode_main' => $kode_main]) }}">
+					<a href="{{ route('anggaran.submain.index', ['kode_main' => $kode_main]) }}">
 						<span style="font-size: 2em;" class="kt-font-info" data-toggle="kt-tooltip" data-placement="top" title="Kembali ke Anggaran Submain {{ $kode_submain }}">
 							<i class="fas fa-arrow-left"></i>
 						</span>
@@ -112,10 +112,13 @@
 			e.preventDefault();
 			if($('input[type=radio]').is(':checked')) { 
 				$("input[type=radio]:checked").each(function() {
-					var id = $(this).val().split("/").join("-");
-					var url = '{{ route("perjalanan_dinas.edit", ":no_panjar") }}';
+					var id = $(this).val();
+					var url = '{{ route("anggaran.submain.detail.edit", [":kode_main", ":kode_submain", ":kode"]) }}';
 					// go to page edit
-					window.location.href = url.replace(':no_panjar',id);
+					window.location.href = url
+					.replace(':kode_main', "{{ $kode_main }}")
+					.replace(':kode_submain', "{{ $kode_submain }}")
+					.replace(':kode', id);
 				});
 			} else {
 				swalAlertInit('ubah');
@@ -138,7 +141,7 @@
 
 					swalWithBootstrapButtons.fire({
 						title: "Data yang akan dihapus?",
-						text: "No. Panjar : " + id,
+						text: "Kode : " + id,
 						type: 'warning',
 						showCancelButton: true,
 						reverseButtons: true,
@@ -148,17 +151,18 @@
 					.then((result) => {
 						if (result.value) {
 							$.ajax({
-								url: "{{ route('perjalanan_dinas.delete') }}",
+								url: "{{ route('anggaran.submain.detail.delete') }}",
 								type: 'DELETE',
 								dataType: 'json',
 								data: {
 									"id": id,
+									"kode_submain": "{{ $kode_submain }}",
 									"_token": "{{ csrf_token() }}",
 								},
 								success: function () {
 									Swal.fire({
 										type  : 'success',
-										title : 'Hapus No. Panjar ' + id,
+										title : 'Hapus Kode ' + id,
 										text  : 'Berhasil',
 										timer : 2000
 									}).then(function() {
