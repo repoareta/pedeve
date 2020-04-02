@@ -100,7 +100,7 @@
 			]
     	});	
 
-		//edit permintaan bayar
+		//edit koreksi gaji
 		$('#editRow').click(function(e) {
 			e.preventDefault();
 
@@ -118,7 +118,7 @@
 			}
 		});
 
-		//delete permintaan bayar
+		//delete koreksi gaji
 		$('#deleteRow').click(function(e) {
 			e.preventDefault();
 			if($('input[type=radio]').is(':checked')) { 

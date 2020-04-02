@@ -102,6 +102,69 @@
 			]
 		});
 
+		//delete potongan manual
+		$('#deleteRow').click(function(e) {
+			e.preventDefault();
+			if($('input[type=radio]').is(':checked')) { 
+				$("input[type=radio]:checked").each(function() {
+					var tahun = $(this).attr('tahun');
+					var bulan = $(this).attr('bulan');
+					var nopek = $(this).attr('nopek');
+					var aard  = $(this).attr('aard');
+					var nama  = $(this).attr('nama');
+					// delete stuff
+					const swalWithBootstrapButtons = Swal.mixin({
+						customClass: {
+							confirmButton: 'btn btn-primary',
+							cancelButton: 'btn btn-danger'
+						},
+							buttonsStyling: false
+						})
+						swalWithBootstrapButtons.fire({
+							title: "Data yang akan dihapus?",
+							text: "Dedail data : "+bulan+ '-'  + tahun+'-' +nama,
+							type: 'warning',
+							showCancelButton: true,
+							reverseButtons: true,
+							confirmButtonText: 'Ya, hapus',
+							cancelButtonText: 'Batalkan'
+						})
+						.then((result) => {
+						if (result.value) {
+							$.ajax({
+								url: "{{ route('potongan_manual.delete') }}",
+								type: 'DELETE',
+								dataType: 'json',
+								data: {
+									"bulan": bulan,
+									"tahun": tahun,
+									"nopek": nopek,
+									"aard": aard,
+									"nama": nama,
+									"_token": "{{ csrf_token() }}",
+								},
+								success: function () {
+									Swal.fire({
+										type  : 'success',
+										title : "Dedail data : "+bulan+ '-'  + tahun+'-' +nama,
+										text  : 'Berhasil',
+										timer : 2000
+									}).then(function() {
+										location.reload();
+									});
+								},
+								error: function () {
+									alert("Terjadi kesalahan, coba lagi nanti");
+								}
+							});
+						}
+					});
+				});
+			} else {
+				swalAlertInit('hapus');
+			}
+			
+		});
 		
 
 	});

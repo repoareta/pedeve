@@ -128,8 +128,13 @@ class PotonganManualController extends Controller
      * @param  int  $id
      * @return \Illuminate\Http\Response
      */
-    public function destroy($id)
+    public function delete(Request $request)
     {
-        //
+        PayHonor::where('tahun', $request->tahun)
+        ->where('bulan',$request->bulan)
+        ->where('nopek',$request->nopek)
+        ->where('aard',$request->aard)
+        ->delete();
+        return response()->json();
     }
 }
