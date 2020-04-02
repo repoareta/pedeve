@@ -103,15 +103,27 @@ class PotonganKoreksiGajiController extends Controller
             ]);
             return response()->json();
     }
+
+    public function edit($bulan,$tahun,$aard,$nopek)
+    {
+        $data_list = KoreksiGaji::where('tahun', $tahun)
+            ->where('bulan',$bulan)
+            ->where('nopek',$nopek)
+            ->where('aard',$aard)
+            ->get();
+        $data_pegawai = SdmMasterPegawai::all();
+        $pay_aard = PayAard::where('jenis', 10)->get();
+        return view('potongan_koreksi_gaji.edit',compact('data_list','data_pegawai','pay_aard'));
+    }
     public function update(Request $request)
     {
-        $data_tahun = substr($request->bulantahun,3);
+        $data_tahun = substr($request->bulantahun,-4);
         $data_bulan = ltrim(substr($request->bulantahun,0,-5), '0');
 
-            KoreksiGaji::where('tahun', $data_tahun)
-            ->where('bulan',$data_bulan)
-            ->where('nopek',$request->nopek)
-            ->where('aard',$request->aard)
+            KoreksiGaji::where('tahun', $request->tahun)
+            ->where('bulan',$request->bulan)
+            ->where('nopek',$request->nopeks)
+            ->where('aard',$request->aards)
             ->update([
                 'tahun' => $data_tahun,
                 'bulan' => $data_bulan,
