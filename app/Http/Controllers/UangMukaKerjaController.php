@@ -192,6 +192,7 @@ class UangMukaKerjaController extends Controller
                 'app_sdm_oleh' => $request->userid,
                 'app_sdm_tgl' => $request->tgl_app,
             ]);
+            Alert::success('No. UMK : '.$noumk.' Berhasil Dibatalkan Approval', 'Berhasil')->persistent(true)->autoClose(2000);
             return redirect()->route('uang_muka_kerja.index');
         }else{
             Umk::where('no_umk', $noumk)
@@ -200,6 +201,7 @@ class UangMukaKerjaController extends Controller
                 'app_sdm_oleh' => $request->userid,
                 'app_sdm_tgl' => $request->tgl_app,
             ]);
+            Alert::success('No. UMK : '.$noumk.' Berhasil Diapproval', 'Berhasil')->persistent(true)->autoClose(2000);
             return redirect()->route('uang_muka_kerja.index');
         }
     }

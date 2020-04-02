@@ -6,14 +6,14 @@ use Illuminate\Database\Eloquent\Model;
 
 class PermintaanBayar extends Model
 {
-    // protected $primaryKey = 'no_bayar';
+    protected $table="umu_bayar_header";
+    protected $primaryKey = 'no_bayar';
     public $incrementing = false;
     public $timestamps = false;
-    protected $table="umu_bayar_header";
 
     public function permintaandetail()
     {
-        return $this->hasMany(PermintaanDetail::class);
+        return $this->hasMany('App\Models\PermintaanDetail', 'no_bayar');
     }
 
 }

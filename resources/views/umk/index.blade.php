@@ -35,29 +35,22 @@
 		<div class="kt-portlet__head-toolbar">
 			<div class="kt-portlet__head-wrapper">
 				<div class="kt-portlet__head-actions">
-					<a href="{{ route('uang_muka_kerja.create') }}">
-						<span style="font-size: 2em;" class="kt-font-success" data-toggle="kt-tooltip" data-placement="top" title="Tambah Data">
-							<i class="fas fa-plus-circle"></i>
-						</span>
-					</a>
-	
-					<a href="#">
-						<span style="font-size: 2em;" class="kt-font-warning" data-toggle="kt-tooltip" data-placement="top" title="Ubah Data">
+						<a href="{{ route('uang_muka_kerja.create') }}">
+							<span style="font-size: 2em;" class="kt-font-success" data-toggle="kt-tooltip" data-placement="top" title="Tambah Data">
+								<i class="fas fa-plus-circle"></i>
+							</span>
+						</a>
+						<span style="font-size: 2em;" class="kt-font-warning pointer-link" data-toggle="kt-tooltip" data-placement="top" title="Ubah Data">
 							<i class="fas fa-edit" id="btn-edit-umk"></i>
 						</span>
-					</a>
-	
-					<a href="#">
-						<span style="font-size: 2em;"  class="kt-font-danger" data-toggle="kt-tooltip" data-placement="top" title="Hapus Data">
+
+						<span style="font-size: 2em;"  class="kt-font-danger pointer-link" data-toggle="kt-tooltip" data-placement="top" title="Hapus Data">
 							<i class="fas fa-times-circle" id="deleteRow"></i>
 						</span>
-					</a>
 
-					<a href="#">
-						<span style="font-size: 2em;" class="kt-font-info" data-toggle="kt-tooltip" data-placement="top" title="Cetak Data">
+						<span style="font-size: 2em;" class="kt-font-info pointer-link" data-toggle="kt-tooltip" data-placement="top" title="Cetak Data">
 							<i class="fas fa-print" id="reportRow"></i>
 						</span>
-					</a>
 				</div>
 			</div>
 		</div>
@@ -195,15 +188,24 @@ $('#deleteRow').click(function(e) {
 				$("input[type=radio]:checked").each(function() {
 					var id = $(this).attr('dataumk');
 					// delete stuff
-					swal({
-						title: "Data yang akan di hapus?",
-						text: "No. UMK : " + id,
-						icon: "warning",
-						buttons: true,
-						dangerMode: true,
-					})
-					.then((willDelete) => {
-						if (willDelete) {
+						const swalWithBootstrapButtons = Swal.mixin({
+						customClass: {
+							confirmButton: 'btn btn-primary',
+							cancelButton: 'btn btn-danger'
+						},
+							buttonsStyling: false
+						})
+						swalWithBootstrapButtons.fire({
+							title: "Data yang akan dihapus?",
+							text: "No. UMK : " + id,
+							type: 'warning',
+							showCancelButton: true,
+							reverseButtons: true,
+							confirmButtonText: 'Ya, hapus',
+							cancelButtonText: 'Batalkan'
+						})
+						.then((result) => {
+						if (result.value) {
 							$.ajax({
 								url: "{{ route('uang_muka_kerja.delete') }}",
 								type: 'DELETE',
@@ -213,10 +215,11 @@ $('#deleteRow').click(function(e) {
 									"_token": "{{ csrf_token() }}",
 								},
 								success: function () {
-									swal({
-											title: "Delete",
-											text: "Success",
-											type: "success"
+									Swal.fire({
+										type  : 'success',
+										title : 'Hapus No. UMK ' + id,
+										text  : 'Berhasil',
+										timer : 2000
 									}).then(function() {
 										location.reload();
 									});

@@ -142,22 +142,18 @@
 					<div class="kt-portlet__head-wrapper">
 						<div class="kt-portlet__head-actions">
 							<a href="#" id="btn-create-detail" data-target="#kt_modal_4">
-								<span style="font-size: 2em;" class="kt-font-success">
+								<span style="font-size: 2em;" class="kt-font-success" data-toggle="kt-tooltip" data-placement="top" title="Tambah Data">
 									<i class="fas fa-plus-circle"></i>
 								</span>
 							</a>
 			
-							<a href="#">
-								<span style="font-size: 2em;" class="kt-font-warning">
-									<i class="fas fa-edit" id="btn-edit-detail"></i>
-								</span>
-							</a>
+							<span style="font-size: 2em;" class="kt-font-warning pointer-link" data-toggle="kt-tooltip" data-placement="top" title="Ubah Data">
+								<i class="fas fa-edit" id="btn-edit-detail"></i>
+							</span>
 			
-							<a href="#">
-								<span style="font-size: 2em;" class="kt-font-danger">
-									<i class="fas fa-times-circle" id="deleteRow"></i>
-								</span>
-							</a>
+							<span style="font-size: 2em;" class="kt-font-danger pointer-link" data-toggle="kt-tooltip" data-placement="top" title="Hapus Data">
+								<i class="fas fa-times-circle" id="deleteRow"></i>
+							</span>
 						</div>
 					</div>
 				</div>
@@ -458,10 +454,12 @@ $('#form-update-umk').submit(function(){
             },
 			success : function(data){
 			   console.log(data);
-				swal({
-                    text: "Data Berhasil Disimpan.",
-                    type: "success"
-                }).then(function() {
+			   Swal.fire({
+					type  : 'success',
+					title : 'Data Berhasil Disimpan',
+					text  : 'Berhasil',
+					timer : 2000
+				}).then(function() {
                     window.location.replace("{{route('uang_muka_kerja.index')}}");;
                 });
 			}, 
@@ -489,12 +487,14 @@ $('#form-update-umk').submit(function(){
             'X-CSRF-Token': '{{ csrf_token() }}',
             },
 			success : function(data){
-                swal({
-                    text: "Data Detail Uang Muka Kerja Berhasil Ditambahkan.",
-                    type: "success"
-                }).then(function() {
-                    location.reload();
-                });
+                Swal.fire({
+					type  : 'success',
+					title : 'Data Detail UMK Berhasil Ditambah',
+					text  : 'Berhasil',
+					timer : 2000
+				}).then(function() {
+					location.reload();
+				});
 			}, 
 			error : function(){
 				alert("Terjadi kesalahan, coba lagi nanti");
@@ -515,12 +515,14 @@ $('#form-update-umk').submit(function(){
             'X-CSRF-Token': '{{ csrf_token() }}',
             },
 			success : function(data){
-                swal({
-                    text: "Data Detail Uang Muka Kerja Berhasil Diedit.",
-                    type: "success"
-                }).then(function() {
-                    window.location.reload();
-                });
+                Swal.fire({
+					type  : 'success',
+					title : 'Data Detail UMK Berhasil Diubah',
+					text  : 'Berhasil',
+					timer : 2000
+				}).then(function() {
+					location.reload();
+				});
 			}, 
 			error : function(){
 				alert("Terjadi kesalahan, coba lagi nanti");
@@ -566,13 +568,10 @@ $(".btn-radio:checked").each(function() {
 	var datano = $(this).attr('data-no');
 	if(dataid == 1)  
 	{  
-		swal({
-				title: "Tandai baris yang akan diedit!",
-				type: "success"
-				}) ; 
+		swalAlertInit('ubah');  
 	}  else { 
 		$.ajax({
-			url :"/umum/uang_muka_kerja/edit_detail/"+dataid+'/'+datano,
+			url :"{{url('umum/uang_muka_kerja/edit_detail')}}"+ '/' +dataid+'/'+datano,
 			type : 'get',
 			dataType:"json",
 			headers: {
@@ -611,24 +610,30 @@ $(".btn-radio:checked").each(function() {
 			var dataid = $(this).attr('data-id');
 				if(dataid == 1)  
 				{  
-					swal({
-						title: "Tandai baris yang akan dihapus!",
-						type: "success"
-					}) ; 
+					swalAlertInit('hapus'); 
 				}  else { 
 				$("input[type=radio]:checked").each(function() {
 					var id = $(this).attr('noumk');
                     var no = $(this).attr('data-no');
 					// delete stuff
-					swal({
-						title: "Data yang akan di hapus?",
-						text: "No. UMK : " + id+"dan NO urut :"+no,
-						icon: "warning",
-						buttons: true,
-						dangerMode: true,
-					})
-					.then((willDelete) => {
-						if (willDelete) {
+					const swalWithBootstrapButtons = Swal.mixin({
+						customClass: {
+							confirmButton: 'btn btn-primary',
+							cancelButton: 'btn btn-danger'
+						},
+							buttonsStyling: false
+						})
+						swalWithBootstrapButtons.fire({
+							title: "Data yang akan dihapus?",
+							text: "No. UMK : " + id+"dan NO urut :"+no,
+							type: 'warning',
+							showCancelButton: true,
+							reverseButtons: true,
+							confirmButtonText: 'Ya, hapus',
+							cancelButtonText: 'Batalkan'
+						})
+						.then((result) => {
+						if (result.value) {
 							$.ajax({
 								url: "{{ route('uang_muka_kerja.delete.detail') }}",
 								type: 'DELETE',
@@ -639,10 +644,11 @@ $(".btn-radio:checked").each(function() {
 									"_token": "{{ csrf_token() }}",
 								},
 								success: function () {
-									swal({
-											title: "Delete",
-											text: "Success",
-											type: "success"
+									Swal.fire({
+										type  : 'success',
+										title : 'Hapus Data Detail UMK',
+										text  : 'Berhasil',
+										timer : 2000
 									}).then(function() {
 										location.reload();
 									});

@@ -41,17 +41,13 @@
 						</span>
 					</a>
 	
-					<a href="#">
-						<span style="font-size: 2em;" class="kt-font-warning" data-toggle="kt-tooltip" data-placement="top" title="Ubah Data">
+						<span style="font-size: 2em;" class="kt-font-warning pointer-link" data-toggle="kt-tooltip" data-placement="top" title="Ubah Data">
 							<i class="fas fa-edit" id="editRow"></i>
 						</span>
-					</a>
 	
-					<a href="#">
-						<span style="font-size: 2em;"  class="kt-font-danger" data-toggle="kt-tooltip" data-placement="top" title="Hapus Data">
+						<span style="font-size: 2em;"  class="kt-font-danger pointer-link" data-toggle="kt-tooltip" data-placement="top" title="Hapus Data">
 							<i class="fas fa-times-circle" id="deleteRow"></i>
 						</span>
-					</a>
 				</div>
 			</div>
 		</div>
@@ -107,13 +103,10 @@ $(document).ready(function(){
 			if($('input[class=btn-radio]').is(':checked')) { 
 				$("input[class=btn-radio]:checked").each(function(){
 					var id = $(this).attr('data-id');
-					location.replace("/umum/vendor/edit/"+id);
+					location.replace("{{url('umum/vendor/edit')}}"+ '/' +id);
 				});
 			} else {
-					swal({
-						title: "Tandai baris yang akan diedit!",
-						type: "success"
-					}) ; 
+				swalAlertInit('ubah');
 			}
 		});
 
@@ -125,15 +118,24 @@ $(document).ready(function(){
 				$("input[class=btn-radio]:checked").each(function() {
 					var id = $(this).attr('data-id');
 					// delete stuff
-					swal({
-						title: "Data yang akan di hapus?",
-						text: "No Vendor : " + id,
-						icon: "warning",
-						buttons: true,
-						dangerMode: true,
-					})
-					.then((willDelete) => {
-						if (willDelete) {
+					const swalWithBootstrapButtons = Swal.mixin({
+						customClass: {
+							confirmButton: 'btn btn-primary',
+							cancelButton: 'btn btn-danger'
+						},
+							buttonsStyling: false
+						})
+						swalWithBootstrapButtons.fire({
+							title: "Data yang akan dihapus?",
+							text: "No. Vendor : " + id,
+							type: 'warning',
+							showCancelButton: true,
+							reverseButtons: true,
+							confirmButtonText: 'Ya, hapus',
+							cancelButtonText: 'Batalkan'
+						})
+						.then((result) => {
+						if (result.value) {
 							$.ajax({
 								url: "{{ route('vendor.delete') }}",
 								type: 'DELETE',
@@ -143,12 +145,13 @@ $(document).ready(function(){
 									"_token": "{{ csrf_token() }}",
 								},
 								success: function () {
-									swal({
-											title: "Delete",
-											text: "Success",
-											type: "success"
+									Swal.fire({
+										type  : 'success',
+										title : 'Hapus No. Vendor ' + id,
+										text  : 'Berhasil',
+										timer : 2000
 									}).then(function() {
-										location.replace("{{ route('vendor.index') }}");
+										location.reload();
 									});
 								},
 								error: function () {
@@ -159,10 +162,7 @@ $(document).ready(function(){
 					});
 				});
 			} else {
-				swal({
-					title: "Tandai baris yang akan dihapus!",
-					type: "success"
-				}) ; 
+				swalAlertInit('hapus');
 			}
 			
 		});

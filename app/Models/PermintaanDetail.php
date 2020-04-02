@@ -11,8 +11,5 @@ class PermintaanDetail extends Model
     public $incrementing = false;
     protected $table="umu_bayar_detail";
 
-    public function permintaanbayar()
-    {
-        return $this->belongsTo(PermintaanBayar::class);
-    }
+    
 }

@@ -247,11 +247,12 @@
 				},
 				success : function(data){
 				console.log(data);
-					swal({
-						title: "Data Berhasil Ditambahkan!",
-						text: "Success!",
-						type: "success"
-					}).then(function() {
+				Swal.fire({
+					type  : 'success',
+					title : 'Data Berhasil Ditambah',
+					text  : 'Berhasil',
+					timer : 2000
+				}).then(function() {
 						window.location.replace("{{ route('permintaan_bayar.edit', ['no' => $data_no_bayar] ) }}");;
 					});
 				}, 

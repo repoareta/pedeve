@@ -12,6 +12,7 @@ use Carbon\Carbon;
 use DB;
 use Session;
 use PDF;
+use Alert;
 
 
 class PermintaanBayarController extends Controller
@@ -28,10 +29,7 @@ class PermintaanBayarController extends Controller
 
     public function indexJson()
     {
-        $bayar_list = \DB::table('umu_bayar_header AS a')
-                        ->select(\DB::raw('a.*, (SELECT sum(b.nilai)  FROM umu_bayar_detail as b WHERE b.no_bayar=a.no_bayar) AS nilai'))
-                        ->orderBy('a.tgl_bayar', 'desc')
-                        ->get();
+        $bayar_list = PermintaanBayar::orderBy('tgl_bayar', 'desc')->get();
         
         return datatables()->of($bayar_list)
             ->addColumn('no_bayar', function ($row) {
@@ -50,7 +48,7 @@ class PermintaanBayarController extends Controller
                 return $row->lampiran;
             })
             ->addColumn('nilai', function ($row) {
-                return currency_idr($row->nilai);
+                return currency_idr($row->permintaandetail->sum('nilai'));
             })
             ->addColumn('action', function ($row) {
                 if($row->app_pbd == 'Y'){
@@ -205,6 +203,7 @@ class PermintaanBayarController extends Controller
                 'app_sdm_oleh' => $request->userid,
                 'app_sdm_tgl' => $request->tgl_app,
             ]);
+            Alert::success('No. Bayar : '.$nobayar.' Berhasil Dibatalkan Approval', 'Berhasil')->persistent(true)->autoClose(2000);
             return redirect()->route('permintaan_bayar.index');
         }else{
             PermintaanBayar::where('no_bayar', $nobayar)
@@ -213,6 +212,7 @@ class PermintaanBayarController extends Controller
                 'app_sdm_oleh' => $request->userid,
                 'app_sdm_tgl' => $request->tgl_app,
             ]);
+            Alert::success('No. Bayar : '.$nobayar.' Berhasil Diapproval', 'Berhasil')->persistent(true)->autoClose(2000);
             return redirect()->route('permintaan_bayar.index');
         }
     }
