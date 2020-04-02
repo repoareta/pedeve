@@ -102,6 +102,24 @@
 			]
 		});
 
+		//edit potongan Manual
+		$('#editRow').click(function(e) {
+			e.preventDefault();
+
+			if($('input[type=radio]').is(':checked')) { 
+				$("input[type=radio]:checked").each(function(){
+					var tahun = $(this).attr('tahun');
+					var bulan = $(this).attr('bulan');
+					var nopek = $(this).attr('nopek');
+					var aard  = $(this).attr('aard');
+					var nama  = $(this).attr('nama');
+					location.replace("{{url('sdm/potongan_manual/edit')}}"+ '/' +bulan+'/' +tahun+'/'+aard+ '/' +nopek);
+				});
+			} else {
+				swalAlertInit('ubah');
+			}
+		});
+
 		//delete potongan manual
 		$('#deleteRow').click(function(e) {
 			e.preventDefault();

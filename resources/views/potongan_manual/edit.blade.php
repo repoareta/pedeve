@@ -6,7 +6,7 @@
 	<div class="kt-container  kt-container--fluid ">
 		<div class="kt-subheader__main">
 			<h3 class="kt-subheader__title">
-				Koreksi Gaji </h3>
+				Honorarium Komite/Rapat </h3>
 			<span class="kt-subheader__separator kt-hidden"></span>
 			<div class="kt-subheader__breadcrumbs">
 				<a href="#" class="kt-subheader__breadcrumbs-home"><i class="flaticon2-shelter"></i></a>
@@ -15,7 +15,7 @@
 					Sdm & Payroll </a>
 				<span class="kt-subheader__breadcrumbs-separator"></span>
 				<a href="" class="kt-subheader__breadcrumbs-link">
-					Koreksi Gaji </a>
+					Honorarium Komite/Rapat </a>
 				<span class="kt-subheader__breadcrumbs-separator"></span>
 				<span class="kt-subheader__breadcrumbs-link kt-subheader__breadcrumbs-link--active">Edit</span>
 			</div>
@@ -32,7 +32,7 @@
 					<i class="kt-font-brand flaticon2-plus-1"></i>
 				</span>
 				<h3 class="kt-portlet__head-title">
-					Edit Koreksi Gaji
+					Edit Honorarium Komite/Rapat
 				</h3>			
 			</div>
 			<div class="kt-portlet__head-toolbar">
@@ -49,7 +49,7 @@
 						<div class="alert alert-secondary" role="alert">
 							<div class="alert-text">
 								<h5 class="kt-portlet__head-title">
-									Header Koreksi Gaji
+									Header Honorarium Komite/Rapat
 								</h5>	
 							</div>
 						</div>
@@ -76,27 +76,16 @@
 							</div>
 						</div>
 						<div class="form-group row">
-							<label for="" class="col-2 col-form-label">AARD<span style="color:red;">*</span></label>
-							<div class="col-10">
-								<select name="aard" id="aard" class="form-control selectpicker" data-live-search="true" required autocomplete='off'>
-									<option value="">- Pilih -</option>
-									@foreach($pay_aard as $data)
-									<option value="{{$data->kode}}" <?php if($data->kode  == $row->aard ) echo 'selected' ; ?>>{{$data->kode}} - {{$data->nama}}</option>
-									@endforeach
-								</select>
-								<input type="hidden" value="{{$row->aard}}" name="aards">
-							</div>
-						</div>
-						<div class="form-group row">
 							<label class="col-2 col-form-label">Nilai<span style="color:red;">*</span></label>
 							<div class="col-4">
 								<input class="form-control" name="nilai" type="text" value="<?php echo number_format($row->nilai, 0, '', ''); ?>" id="nilai" required oninvalid="this.setCustomValidity('Nilai Harus Diisi..')" oninput="setCustomValidity('')" autocomplete='off' onkeypress="return hanyaAngka(event)">
+								<input type="hidden" value="<?php echo number_format($row->pajak, 0, '', ''); ?>" name="pajak" id="pajak">
 							</div>
 						</div>
 						@endforeach
 						<div style="float:right;">
 							<div class="kt-form__actions">
-								<a  href="{{route('potongan_koreksi_gaji.index')}}" class="btn btn-warning"><i class="fa fa-reply" aria-hidden="true"></i>Cancel</a>
+								<a  href="{{route('potongan_manual.index')}}" class="btn btn-warning"><i class="fa fa-reply" aria-hidden="true"></i>Cancel</a>
 								<button type="submit" class="btn btn-brand"><i class="fa fa-check" aria-hidden="true"></i>Save</button>
 							</div>
 						</div>
@@ -113,9 +102,16 @@
 	<script type="text/javascript">
 	$(document).ready(function () {
 
+		$('#nilai').keyup(function(){
+             var nilai=parseInt($('#nilai').val());
+            var pajak=(35/65)*nilai;
+			var a =parseInt(pajak);
+             $('#pajak').val(a);
+        });
+
 		$('#form-edit').submit(function(){
 			$.ajax({
-				url  : "{{route('potongan_koreksi_gaji.update')}}",
+				url  : "{{route('potongan_manual.update')}}",
 				type : "POST",
 				data : $('#form-edit').serialize(),
 				dataType : "JSON",
@@ -130,7 +126,7 @@
 					text  : 'Berhasil',
 					timer : 2000
 				}).then(function() {
-						window.location.replace("{{ route('potongan_koreksi_gaji.index')}}");;
+						window.location.replace("{{ route('potongan_manual.index')}}");;
 					});
 				}, 
 				error : function(){

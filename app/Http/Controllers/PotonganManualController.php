@@ -4,6 +4,8 @@ namespace App\Http\Controllers;
 
 use Illuminate\Http\Request;
 use App\Models\PayHonor;
+use App\Models\PayAard;
+use App\Models\SdmMasterPegawai;
 use DB;
 use PDF;
 use Excel;
@@ -105,11 +107,18 @@ class PotonganManualController extends Controller
      * @param  int  $id
      * @return \Illuminate\Http\Response
      */
-    public function edit($id)
+    public function edit($bulan,$tahun,$aard,$nopek)
     {
-        //
+        $data_list = PayHonor::where('tahun', $tahun)
+            ->where('bulan',$bulan)
+            ->where('nopek',$nopek)
+            ->where('aard',$aard)
+            ->get();
+        $data_pegawai = SdmMasterPegawai::all();
+        return view('potongan_manual.edit',compact('data_list','data_pegawai'));
     }
 
+    
     /**
      * Update the specified resource in storage.
      *
@@ -117,10 +126,27 @@ class PotonganManualController extends Controller
      * @param  int  $id
      * @return \Illuminate\Http\Response
      */
-    public function update(Request $request, $id)
+    public function update(Request $request)
     {
-        //
+        $data_tahun = substr($request->bulantahun,-4);
+        $data_bulan = ltrim(substr($request->bulantahun,0,-5), '0');
+
+            PayHonor::where('tahun', $request->tahun)
+            ->where('bulan',$request->bulan)
+            ->where('nopek',$request->nopeks)
+            ->update([
+                'tahun' => $data_tahun,
+                'bulan' => $data_bulan,
+                'nopek' => $request->nopek,
+                'jmlcc' => 0,
+                'ccl' => 0,
+                'nilai' => $request->nilai,
+                'userid' => $request->userid,
+                'pajak' => $request->pajak,
+            ]);
+            return response()->json();
     }
+   
 
     /**
      * Remove the specified resource from storage.
