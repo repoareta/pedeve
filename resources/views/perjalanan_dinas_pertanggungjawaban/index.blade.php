@@ -12,9 +12,14 @@
 				<a href="#" class="kt-subheader__breadcrumbs-home"><i class="flaticon2-shelter"></i></a>
 				<span class="kt-subheader__breadcrumbs-separator"></span>
 				<a href="" class="kt-subheader__breadcrumbs-link">
-					Umum </a>
+					Umum 
+				</a>
 				<span class="kt-subheader__breadcrumbs-separator"></span>
-				<span class="kt-subheader__breadcrumbs-link kt-subheader__breadcrumbs-link--active">Pertanggungjawaban Perjalanan Dinas</span>
+				<a href="" class="kt-subheader__breadcrumbs-link">
+					Perjalanan Dinas
+				</a>
+				<span class="kt-subheader__breadcrumbs-separator"></span>
+				<span class="kt-subheader__breadcrumbs-link kt-subheader__breadcrumbs-link--active">Pertanggungjawaban</span>
 			</div>
 		</div>
 	</div>
@@ -41,23 +46,17 @@
 						</span>
 					</a>
 	
-					<a href="#" id="editRow">
-						<span style="font-size: 2em;" class="kt-font-warning">
-							<i class="fas fa-edit"></i>
-						</span>
-					</a>
+					<span style="font-size: 2em;" class="kt-font-warning pointer-link" id="editRow" data-toggle="kt-tooltip" data-placement="top" title="Ubah Data">
+						<i class="fas fa-edit"></i>
+					</span>
 	
-					<a href="#" id="deleteRow">
-						<span style="font-size: 2em;" class="kt-font-danger">
-							<i class="fas fa-times-circle"></i>
-						</span>
-					</a>
+					<span style="font-size: 2em;" class="kt-font-danger pointer-link" id="deleteRow" data-toggle="kt-tooltip" data-placement="top" title="Hapus Data">
+						<i class="fas fa-times-circle"></i>
+					</span>
 
-					<a href="#">
-						<span style="font-size: 2em;" class="kt-font-info">
-							<i class="fas fa-file-export"></i>
-						</span>
-					</a>
+					<span style="font-size: 2em;" class="kt-font-info pointer-link" id="exportRow" data-toggle="kt-tooltip" data-placement="top" title="Cetak Data">
+						<i class="fas fa-print"></i>
+					</span>
 				</div>
 			</div>
 		</div>
@@ -99,13 +98,13 @@
 			},
 			ajax      : "{{ route('perjalanan_dinas.pertanggungjawaban.index.json') }}",
 			columns: [
-				{data: 'action', name: 'aksi', orderable: false, searchable: false},
-				{data: 'no_ppanjar', name: 'no_ppanjar'},
-				{data: 'no_panjar', name: 'no_panjar'},
-				{data: 'tgl_ppanjar', name: 'tgl_ppanjar'},
-				{data: 'nopek', name: 'nopek'},
+				{data: 'action', name: 'aksi', orderable: false, searchable: false, class:'radio-button'},
+				{data: 'no_ppanjar', name: 'no_ppanjar', class:'no-wrap'},
+				{data: 'no_panjar', name: 'no_panjar', class:'no-wrap'},
+				{data: 'tgl_ppanjar', name: 'tgl_ppanjar', class:'no-wrap'},
+				{data: 'nopek', name: 'nopek', class:'no-wrap'},
 				{data: 'keterangan', name: 'keterangan'},
-				{data: 'jmlpanjar', name: 'jmlpanjar'},
+				{data: 'jmlpanjar', name: 'jmlpanjar', class:'no-wrap text-right'},
 			]
 		});
 
@@ -114,8 +113,9 @@
 			if($('input[type=radio]').is(':checked')) { 
 				$("input[type=radio]:checked").each(function() {
 					var id = $(this).val().split("/").join("-");
+					var url = '{{ route("perjalanan_dinas.pertanggungjawaban.edit", ":no_panjar") }}';
 					// go to page edit
-					window.location.href = "{{ url('umum/perjalanan_dinas/pertanggungjawaban/edit') }}" + '/' + id;
+					window.location.href = url.replace(':no_panjar', id);
 				});
 			} else {
 				swal({
