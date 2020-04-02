@@ -7,7 +7,7 @@ use Illuminate\Database\Eloquent\Model;
 class KoreksiGaji extends Model
 {
     protected $table = "pay_koreksigaji";
-    protected $primaryKey = null; // or null
+    // protected $primaryKey = null; // or null
     public $timestamps = false;
     public $incrementing = false;
 

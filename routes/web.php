@@ -163,6 +163,7 @@ Route::group(['middleware'=> ['auth','checkRole:1']], function () {
         Route::get('potongan_koreksi_gaji', 'PotonganKoreksiGajiController@index')->name('potongan_koreksi_gaji.index');
         Route::get('potongan_koreksi_gaji/index_json', 'PotonganKoreksiGajiController@indexJson')->name('potongan_koreksi_gaji.index.json');
         Route::get('potongan_koreksi_gaji/create', 'PotonganKoreksiGajiController@create')->name('potongan_koreksi_gaji.create');
+        Route::post('potongan_koreksi_gaji/store', 'PotonganKoreksiGajiController@store')->name('potongan_koreksi_gaji.store');
         Route::get('potongan_koreksi_gaji/edit', 'PotonganKoreksiGajiController@edit')->name('potongan_koreksi_gaji.edit');
         Route::delete('potongan_koreksi_gaji/delete', 'PotonganKoreksiGajiController@delete')->name('potongan_koreksi_gaji.delete');
 

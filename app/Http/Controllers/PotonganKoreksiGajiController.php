@@ -4,6 +4,8 @@ namespace App\Http\Controllers;
 
 use Illuminate\Http\Request;
 use App\Models\KoreksiGaji;
+use App\Models\PayAard;
+use App\Models\SdmMasterPegawai;
 use DB;
 use PDF;
 use Excel;
@@ -25,7 +27,8 @@ class PotonganKoreksiGajiController extends Controller
     {
         $koreksi_gaji_list = DB::table('pay_koreksigaji as a')
                         ->join('sdm_master_pegawai as b', 'a.nopek', '=', 'b.nopeg')
-                        ->select('a.*', 'b.nama')
+                        ->join('pay_tbl_aard as c', 'a.aard', '=', 'c.kode')
+                        ->select('a.*', 'b.nama','c.nama as nama_aard')
                         ->orderBy('a.tahun', 'desc')->get();
         
         return datatables()->of($koreksi_gaji_list)
@@ -34,6 +37,9 @@ class PotonganKoreksiGajiController extends Controller
         })
         ->addColumn('nama', function ($row) {
             return "$row->nopek - $row->nama";
+        })
+        ->addColumn('aard', function ($row) {
+            return "$row->aard - $row->nama_aard";
         })
         ->addColumn('nilai', function ($row) {
             return currency_idr($row->nilai);
@@ -68,7 +74,9 @@ class PotonganKoreksiGajiController extends Controller
      */
     public function create()
     {
-        return view('potongan_koreksi_gaji.create');
+        $data_pegawai = SdmMasterPegawai::all();
+        $pay_aard = PayAard::where('jenis', 10)->get();
+        return view('potongan_koreksi_gaji.create', compact('pay_aard','data_pegawai'));
     }
 
     /**
@@ -79,7 +87,42 @@ class PotonganKoreksiGajiController extends Controller
      */
     public function store(Request $request)
     {
-        //
+        $data_tahun = substr($request->bulantahun,3);
+        $data_bulan = ltrim(substr($request->bulantahun,0,-5), '0');
+            KoreksiGaji::insert([
+            'tahun' => $data_tahun,
+            'bulan' => $data_bulan,
+            'nopek' => $request->nopek,
+            'aard' => $request->aard,
+            'jmlcc' => 0,
+            'ccl' => 0,
+            'nilai' => $request->nilai,
+            'userid' => $request->userid,
+            
+            // Save Panjar Header
+            ]);
+            return response()->json();
+    }
+    public function update(Request $request)
+    {
+        $data_tahun = substr($request->bulantahun,3);
+        $data_bulan = ltrim(substr($request->bulantahun,0,-5), '0');
+
+            KoreksiGaji::where('tahun', $data_tahun)
+            ->where('bulan',$data_bulan)
+            ->where('nopek',$request->nopek)
+            ->where('aard',$request->aard)
+            ->update([
+                'tahun' => $data_tahun,
+                'bulan' => $data_bulan,
+                'nopek' => $request->nopek,
+                'aard' => $request->aard,
+                'jmlcc' => 0,
+                'ccl' => 0,
+                'nilai' => $request->nilai,
+                'userid' => $request->userid,
+            ]);
+            return response()->json();
     }
 
     /**

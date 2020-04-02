@@ -60,7 +60,7 @@ class UangMukaKerjaController extends Controller
                     return $button;
                 })
                 ->addColumn('jumlah', function($data){
-                        $button = '<p align="center">Rp. '.number_format($data->jumlah, 0, ',', '.').'</p>';
+                        $button = '<p align="center">Rp. '.number_format($data->jumlah, 2, ',', '.').'</p>';
                     return $button;
                 })
 
