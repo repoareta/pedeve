@@ -30,7 +30,7 @@ class PotonganKoreksiGajiController extends Controller
         
         return datatables()->of($koreksi_gaji_list)
         ->addColumn('action', function ($row) {
-                return '<label  class="kt-radio kt-radio--bold kt-radio--brand"><input type="radio" class="btn-radio" name="btn-radio"><span></span></label>';
+                return '<label  class="kt-radio kt-radio--bold kt-radio--brand"><input type="radio" class="btn-radio" tahun="'.$row->tahun.'" bulan="'.$row->bulan.'" nopek="'.$row->nopek.'" aard="'.$row->aard.'" nama="'.$row->nama.'" name="btn-radio"><span></span></label>';
         })
         ->addColumn('nama', function ($row) {
             return "$row->nopek - $row->nama";
@@ -88,42 +88,13 @@ class PotonganKoreksiGajiController extends Controller
      * @param  int  $id
      * @return \Illuminate\Http\Response
      */
-    public function show($id)
+    public function delete(Request $request)
     {
-        //
-    }
-
-    /**
-     * Show the form for editing the specified resource.
-     *
-     * @param  int  $id
-     * @return \Illuminate\Http\Response
-     */
-    public function edit($id)
-    {
-        //
-    }
-
-    /**
-     * Update the specified resource in storage.
-     *
-     * @param  \Illuminate\Http\Request  $request
-     * @param  int  $id
-     * @return \Illuminate\Http\Response
-     */
-    public function update(Request $request, $id)
-    {
-        //
-    }
-
-    /**
-     * Remove the specified resource from storage.
-     *
-     * @param  int  $id
-     * @return \Illuminate\Http\Response
-     */
-    public function destroy($id)
-    {
-        //
+        KoreksiGaji::where('tahun', $request->tahun)
+        ->where('bulan',$request->bulan)
+        ->where('nopek',$request->nopek)
+        ->where('aard',$request->aard)
+        ->delete();
+        return response()->json();
     }
 }

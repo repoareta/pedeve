@@ -158,11 +158,14 @@ Route::group(['middleware'=> ['auth','checkRole:1']], function () {
         Route::get('master_pekerja', 'MasterPekerjaController@index')->name('master_pekerja.index');
         Route::get('master_pekerja/create', 'MasterPekerjaController@create')->name('master_pekerja.create');
         Route::get('master_pekerja/edit', 'MasterPekerjaController@edit')->name('master_pekerja.edit');
+        
         //potongan koreksi gaji
         Route::get('potongan_koreksi_gaji', 'PotonganKoreksiGajiController@index')->name('potongan_koreksi_gaji.index');
         Route::get('potongan_koreksi_gaji/index_json', 'PotonganKoreksiGajiController@indexJson')->name('potongan_koreksi_gaji.index.json');
         Route::get('potongan_koreksi_gaji/create', 'PotonganKoreksiGajiController@create')->name('potongan_koreksi_gaji.create');
         Route::get('potongan_koreksi_gaji/edit', 'PotonganKoreksiGajiController@edit')->name('potongan_koreksi_gaji.edit');
+        Route::delete('potongan_koreksi_gaji/delete', 'PotonganKoreksiGajiController@delete')->name('potongan_koreksi_gaji.delete');
+
         // Lembur
         Route::get('lembur', 'LemburController@index')->name('lembur.index');
         Route::get('lembur/create', 'LemburController@create')->name('lembur.create');
