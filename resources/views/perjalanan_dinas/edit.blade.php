@@ -335,9 +335,6 @@
 			scrollX   : true,
 			processing: true,
 			serverSide: true,
-			language: {
-				processing: '<i class="fa fa-spinner fa-spin fa-2x fa-fw"></i> <br> Loading...'
-			},
 			ajax: "{{ route('perjalanan_dinas.index.json.detail', ['no_panjar' => str_replace('/', '-', $panjar_header->no_panjar)]) }}",
 			columns: [
 				{data: 'action', name: 'aksi', orderable: false, searchable: false},
