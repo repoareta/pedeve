@@ -101,12 +101,17 @@
                     'potongan_manual.index',
                     'potongan_manual.create',
                     'potongan_manual.edit'
-                ); // isi nama semua route potongan koreksi gajian
+                ); // isi nama semua route potongan manual gajian
+                $potongan_otomatis = array(
+                    'potongan_otomatis.index',
+                    'potongan_otomatis.create',
+                    'potongan_otomatis.edit'
+                ); // isi nama semua route potongan otomatis gajian
                 $honor_komite = array(
                     'honor_komite.index',
                     'honor_komite.create',
                     'honor_komite.edit'
-                ); // isi nama semua route potongan koreksi gajian
+                ); // isi nama semua route honor komite
                 $koreksi_gaji = array(
                     'potongan_koreksi_gaji.index',
                     'potongan_koreksi_gaji.create',
@@ -115,7 +120,8 @@
                 $potongan_koreksi_gaji = array_merge(
                     $koreksi_gaji,
                     $honor_komite,
-                    $potongan_manual
+                    $potongan_manual,
+                    $potongan_otomatis
                 ); //isi nama submenu
                 $lembur = array(
                     'lembur.index',
@@ -398,6 +404,14 @@
                                                 <span></span>
                                             </i>
                                             <span class="kt-menu__link-text">Potongan Manual</span>
+                                        </a>
+                                    </li>
+                                    <li class="kt-menu__item kt-menu__item{{ set_active_submenu($potongan_otomatis) }}" aria-haspopup="true">
+                                        <a href="{{route('potongan_otomatis.index')}}" class="kt-menu__link ">
+                                            <i class="kt-menu__link-bullet kt-menu__link-bullet--line">
+                                                <span></span>
+                                            </i>
+                                            <span class="kt-menu__link-text">Potongan Otomatis</span>
                                         </a>
                                     </li>
                                     <li class="kt-menu__item kt-menu__item{{ set_active_submenu($honor_komite) }}" aria-haspopup="true">
