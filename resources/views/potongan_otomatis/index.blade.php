@@ -35,7 +35,7 @@
 		<div class="kt-portlet__head-toolbar">
 			<div class="kt-portlet__head-wrapper">
 				<div class="kt-portlet__head-actions">
-					<a href="{{ route('honor_komite.create') }}">
+					<a href="{{ route('potongan_otomatis.create') }}">
 						<span style="font-size: 2em;" class="kt-font-success" data-toggle="kt-tooltip" data-placement="top" title="Tambah Data">
 							<i class="fas fa-plus-circle"></i>
 						</span>
@@ -115,76 +115,76 @@
 		// 			var nopek = $(this).attr('nopek');
 		// 			var aard  = $(this).attr('aard');
 		// 			var nama  = $(this).attr('nama');
-		// 			location.replace("{{url('sdm/honor_komite/edit')}}"+ '/' +bulan+'/' +tahun+'/'+aard+ '/' +nopek);
+		// 			location.replace("{{url('sdm/potongan_otomatis/edit')}}"+ '/' +bulan+'/' +tahun+'/'+aard+ '/' +nopek);
 		// 		});
 		// 	} else {
 		// 		swalAlertInit('ubah');
 		// 	}
 		// });
 
-		//delete potongan manual
-		// $('#deleteRow').click(function(e) {
-		// 	e.preventDefault();
-		// 	if($('input[type=radio]').is(':checked')) { 
-		// 		$("input[type=radio]:checked").each(function() {
-		// 			var tahun = $(this).attr('tahun');
-		// 			var bulan = $(this).attr('bulan');
-		// 			var nopek = $(this).attr('nopek');
-		// 			var aard  = $(this).attr('aard');
-		// 			var nama  = $(this).attr('nama');
-		// 			// delete stuff
-		// 			const swalWithBootstrapButtons = Swal.mixin({
-		// 				customClass: {
-		// 					confirmButton: 'btn btn-primary',
-		// 					cancelButton: 'btn btn-danger'
-		// 				},
-		// 					buttonsStyling: false
-		// 				})
-		// 				swalWithBootstrapButtons.fire({
-		// 					title: "Data yang akan dihapus?",
-		// 					text: "Dedail data : "+bulan+ '-'  + tahun+'-' +nama,
-		// 					type: 'warning',
-		// 					showCancelButton: true,
-		// 					reverseButtons: true,
-		// 					confirmButtonText: 'Ya, hapus',
-		// 					cancelButtonText: 'Batalkan'
-		// 				})
-		// 				.then((result) => {
-		// 				if (result.value) {
-		// 					$.ajax({
-		// 						url: "{{ route('honor_komite.delete') }}",
-		// 						type: 'DELETE',
-		// 						dataType: 'json',
-		// 						data: {
-		// 							"bulan": bulan,
-		// 							"tahun": tahun,
-		// 							"nopek": nopek,
-		// 							"aard": aard,
-		// 							"nama": nama,
-		// 							"_token": "{{ csrf_token() }}",
-		// 						},
-		// 						success: function () {
-		// 							Swal.fire({
-		// 								type  : 'success',
-		// 								title : "Dedail data : "+bulan+ '-'  + tahun+'-' +nama,
-		// 								text  : 'Berhasil',
-		// 								timer : 2000
-		// 							}).then(function() {
-		// 								location.reload();
-		// 							});
-		// 						},
-		// 						error: function () {
-		// 							alert("Terjadi kesalahan, coba lagi nanti");
-		// 						}
-		// 					});
-		// 				}
-		// 			});
-		// 		});
-		// 	} else {
-		// 		swalAlertInit('hapus');
-		// 	}
+		// delete potongan otomatis
+		$('#deleteRow').click(function(e) {
+			e.preventDefault();
+			if($('input[type=radio]').is(':checked')) { 
+				$("input[type=radio]:checked").each(function() {
+					var tahun = $(this).attr('tahun');
+					var bulan = $(this).attr('bulan');
+					var nopek = $(this).attr('nopek');
+					var aard  = $(this).attr('aard');
+					var nama  = $(this).attr('nama');
+					// delete stuff
+					const swalWithBootstrapButtons = Swal.mixin({
+						customClass: {
+							confirmButton: 'btn btn-primary',
+							cancelButton: 'btn btn-danger'
+						},
+							buttonsStyling: false
+						})
+						swalWithBootstrapButtons.fire({
+							title: "Data yang akan dihapus?",
+							text: "Dedail data : "+bulan+ '-'  + tahun+'-' +nama,
+							type: 'warning',
+							showCancelButton: true,
+							reverseButtons: true,
+							confirmButtonText: 'Ya, hapus',
+							cancelButtonText: 'Batalkan'
+						})
+						.then((result) => {
+						if (result.value) {
+							$.ajax({
+								url: "{{ route('potongan_otomatis.delete') }}",
+								type: 'DELETE',
+								dataType: 'json',
+								data: {
+									"bulan": bulan,
+									"tahun": tahun,
+									"nopek": nopek,
+									"aard": aard,
+									"nama": nama,
+									"_token": "{{ csrf_token() }}",
+								},
+								success: function () {
+									Swal.fire({
+										type  : 'success',
+										title : "Dedail data : "+bulan+ '-'  + tahun+'-' +nama,
+										text  : 'Berhasil',
+										timer : 2000
+									}).then(function() {
+										location.reload();
+									});
+								},
+								error: function () {
+									alert("Terjadi kesalahan, coba lagi nanti");
+								}
+							});
+						}
+					});
+				});
+			} else {
+				swalAlertInit('hapus');
+			}
 			
-		// });
+		});
 		
 
 	});
