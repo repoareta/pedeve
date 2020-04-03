@@ -102,6 +102,11 @@
                     'potongan_manual.create',
                     'potongan_manual.edit'
                 ); // isi nama semua route potongan koreksi gajian
+                $honor_komite = array(
+                    'honor_komite.index',
+                    'honor_komite.create',
+                    'honor_komite.edit'
+                ); // isi nama semua route potongan koreksi gajian
                 $koreksi_gaji = array(
                     'potongan_koreksi_gaji.index',
                     'potongan_koreksi_gaji.create',
@@ -109,6 +114,7 @@
                 ); // isi nama semua route potongan manual
                 $potongan_koreksi_gaji = array_merge(
                     $koreksi_gaji,
+                    $honor_komite,
                     $potongan_manual
                 ); //isi nama submenu
                 $lembur = array(
@@ -392,6 +398,14 @@
                                                 <span></span>
                                             </i>
                                             <span class="kt-menu__link-text">Potongan Manual</span>
+                                        </a>
+                                    </li>
+                                    <li class="kt-menu__item kt-menu__item{{ set_active_submenu($honor_komite) }}" aria-haspopup="true">
+                                        <a href="{{route('honor_komite.index')}}" class="kt-menu__link ">
+                                            <i class="kt-menu__link-bullet kt-menu__link-bullet--line">
+                                                <span></span>
+                                            </i>
+                                            <span class="kt-menu__link-text">Honor Komite</span>
                                         </a>
                                     </li>
                                 </ul>
