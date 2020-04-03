@@ -163,9 +163,38 @@ Route::group(['middleware'=> ['auth','checkRole:1']], function () {
         Route::get('potongan_koreksi_gaji', 'PotonganKoreksiGajiController@index')->name('potongan_koreksi_gaji.index');
         Route::get('potongan_koreksi_gaji/index_json', 'PotonganKoreksiGajiController@indexJson')->name('potongan_koreksi_gaji.index.json');
         Route::get('potongan_koreksi_gaji/create', 'PotonganKoreksiGajiController@create')->name('potongan_koreksi_gaji.create');
-        Route::get('potongan_koreksi_gaji/edit', 'PotonganKoreksiGajiController@edit')->name('potongan_koreksi_gaji.edit');
+        Route::post('potongan_koreksi_gaji/store', 'PotonganKoreksiGajiController@store')->name('potongan_koreksi_gaji.store');
+        Route::get('potongan_koreksi_gaji/edit/{bulan}/{tahun}/{arrd}/{nopek}', 'PotonganKoreksiGajiController@edit')->name('potongan_koreksi_gaji.edit');
+        Route::post('potongan_koreksi_gaji/update', 'PotonganKoreksiGajiController@update')->name('potongan_koreksi_gaji.update');
         Route::delete('potongan_koreksi_gaji/delete', 'PotonganKoreksiGajiController@delete')->name('potongan_koreksi_gaji.delete');
-
+        
+        //potongan manual
+        Route::get('potongan_manual', 'PotonganManualController@index')->name('potongan_manual.index');
+        Route::get('potongan_manual/index_json', 'PotonganManualController@indexJson')->name('potongan_manual.index.json');
+        Route::get('potongan_manual/create', 'PotonganManualController@create')->name('potongan_manual.create');
+        Route::post('potongan_manual/store', 'PotonganManualController@store')->name('potongan_manual.store');
+        Route::get('potongan_manual/edit/{bulan}/{tahun}/{arrd}/{nopek}', 'PotonganManualController@edit')->name('potongan_manual.edit');
+        Route::post('potongan_manual/update', 'PotonganManualController@update')->name('potongan_manual.update');
+        Route::delete('potongan_manual/delete', 'PotonganManualController@delete')->name('potongan_manual.delete');
+        
+        //potongan otomatis
+        Route::get('potongan_otomatis', 'PotonganOtomatisController@index')->name('potongan_otomatis.index');
+        Route::get('potongan_otomatis/index_json', 'PotonganOtomatisController@indexJson')->name('potongan_otomatis.index.json');
+        Route::get('potongan_otomatis/create', 'PotonganOtomatisController@create')->name('potongan_otomatis.create');
+        Route::post('potongan_otomatis/store', 'PotonganOtomatisController@store')->name('potongan_otomatis.store');
+        Route::get('potongan_otomatis/edit/{bulan}/{tahun}/{arrd}/{nopek}', 'PotonganOtomatisController@edit')->name('potongan_otomatis.edit');
+        Route::post('potongan_otomatis/update', 'PotonganOtomatisController@update')->name('potongan_otomatis.update');
+        Route::delete('potongan_otomatis/delete', 'PotonganOtomatisController@delete')->name('potongan_otomatis.delete');
+       
+        //honor komite
+        Route::get('honor_komite', 'HonorKomiteController@index')->name('honor_komite.index');
+        Route::get('honor_komite/index_json', 'HonorKomiteController@indexJson')->name('honor_komite.index.json');
+        Route::get('honor_komite/create', 'HonorKomiteController@create')->name('honor_komite.create');
+        Route::post('honor_komite/store', 'HonorKomiteController@store')->name('honor_komite.store');
+        Route::get('honor_komite/edit/{bulan}/{tahun}/{arrd}/{nopek}', 'HonorKomiteController@edit')->name('honor_komite.edit');
+        Route::post('honor_komite/update', 'HonorKomiteController@update')->name('honor_komite.update');
+        Route::delete('honor_komite/delete', 'HonorKomiteController@delete')->name('honor_komite.delete');
+        
         // Lembur
         Route::get('lembur', 'LemburController@index')->name('lembur.index');
         Route::get('lembur/create', 'LemburController@create')->name('lembur.create');

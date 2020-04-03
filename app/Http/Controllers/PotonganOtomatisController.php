@@ -3,7 +3,7 @@
 namespace App\Http\Controllers;
 
 use Illuminate\Http\Request;
-use App\Models\KoreksiGaji;
+use App\Models\PayPotongan;
 use App\Models\PayAard;
 use App\Models\SdmMasterPegawai;
 use DB;
@@ -11,7 +11,7 @@ use PDF;
 use Excel;
 use Alert;
 
-class PotonganKoreksiGajiController extends Controller
+class PotonganOtomatisController extends Controller
 {
     /**
      * Display a listing of the resource.
@@ -20,12 +20,12 @@ class PotonganKoreksiGajiController extends Controller
      */
     public function index()
     {
-        return view('potongan_koreksi_gaji.index');
+        return view('potongan_otomatis.index');
     }
 
     public function indexJson()
     {
-        $koreksi_gaji_list = DB::table('pay_koreksigaji as a')
+        $koreksi_gaji_list = DB::table('pay_potongan as a')
                         ->join('sdm_master_pegawai as b', 'a.nopek', '=', 'b.nopeg')
                         ->join('pay_tbl_aard as c', 'a.aard', '=', 'c.kode')
                         ->select('a.*', 'b.nama','c.nama as nama_aard')
@@ -40,6 +40,12 @@ class PotonganKoreksiGajiController extends Controller
         })
         ->addColumn('aard', function ($row) {
             return "$row->aard - $row->nama_aard";
+        })
+        ->addColumn('jmlcc', function ($row) {
+            return number_format($row->jmlcc, 0, '', '');
+        })
+        ->addColumn('ccl', function ($row) {
+            return number_format($row->ccl,0,'','');
         })
         ->addColumn('nilai', function ($row) {
             return currency_idr($row->nilai);
@@ -74,9 +80,7 @@ class PotonganKoreksiGajiController extends Controller
      */
     public function create()
     {
-        $data_pegawai = SdmMasterPegawai::all();
-        $pay_aard = PayAard::where('jenis', 10)->get();
-        return view('potongan_koreksi_gaji.create', compact('pay_aard','data_pegawai'));
+        //
     }
 
     /**
@@ -87,54 +91,7 @@ class PotonganKoreksiGajiController extends Controller
      */
     public function store(Request $request)
     {
-        $data_tahun = substr($request->bulantahun,3);
-        $data_bulan = ltrim(substr($request->bulantahun,0,-5), '0');
-            KoreksiGaji::insert([
-            'tahun' => $data_tahun,
-            'bulan' => $data_bulan,
-            'nopek' => $request->nopek,
-            'aard' => $request->aard,
-            'jmlcc' => 0,
-            'ccl' => 0,
-            'nilai' => $request->nilai,
-            'userid' => $request->userid,
-            
-            // Save Panjar Header
-            ]);
-            return response()->json();
-    }
-
-    public function edit($bulan,$tahun,$aard,$nopek)
-    {
-        $data_list = KoreksiGaji::where('tahun', $tahun)
-            ->where('bulan',$bulan)
-            ->where('nopek',$nopek)
-            ->where('aard',$aard)
-            ->get();
-        $data_pegawai = SdmMasterPegawai::all();
-        $pay_aard = PayAard::where('jenis', 10)->get();
-        return view('potongan_koreksi_gaji.edit',compact('data_list','data_pegawai','pay_aard'));
-    }
-    public function update(Request $request)
-    {
-        $data_tahun = substr($request->bulantahun,-4);
-        $data_bulan = ltrim(substr($request->bulantahun,0,-5), '0');
-
-            KoreksiGaji::where('tahun', $request->tahun)
-            ->where('bulan',$request->bulan)
-            ->where('nopek',$request->nopeks)
-            ->where('aard',$request->aards)
-            ->update([
-                'tahun' => $data_tahun,
-                'bulan' => $data_bulan,
-                'nopek' => $request->nopek,
-                'aard' => $request->aard,
-                'jmlcc' => 0,
-                'ccl' => 0,
-                'nilai' => $request->nilai,
-                'userid' => $request->userid,
-            ]);
-            return response()->json();
+        //
     }
 
     /**
@@ -143,9 +100,43 @@ class PotonganKoreksiGajiController extends Controller
      * @param  int  $id
      * @return \Illuminate\Http\Response
      */
+    public function show($id)
+    {
+        //
+    }
+
+    /**
+     * Show the form for editing the specified resource.
+     *
+     * @param  int  $id
+     * @return \Illuminate\Http\Response
+     */
+    public function edit($id)
+    {
+        //
+    }
+
+    /**
+     * Update the specified resource in storage.
+     *
+     * @param  \Illuminate\Http\Request  $request
+     * @param  int  $id
+     * @return \Illuminate\Http\Response
+     */
+    public function update(Request $request, $id)
+    {
+        //
+    }
+
+    /**
+     * Remove the specified resource from storage.
+     *
+     * @param  int  $id
+     * @return \Illuminate\Http\Response
+     */
     public function delete(Request $request)
     {
-        KoreksiGaji::where('tahun', $request->tahun)
+        PayPotongan::where('tahun', $request->tahun)
         ->where('bulan',$request->bulan)
         ->where('nopek',$request->nopek)
         ->where('aard',$request->aard)

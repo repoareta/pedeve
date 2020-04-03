@@ -120,7 +120,7 @@
 							</div>
 							<label for="spd-input"  class="col-2 col-form-label">Bulan Buku<span style="color:red;">*</span></label>
 							<div class="col-3" >
-								<input class="form-control" type="text" value="{{ date('Ym') }}"  id="bulanbuku" name="bulanbuku" size="6" maxlength="6" required oninvalid="this.setCustomValidity('Bulan Buku Harus Diisi..')" oninput="setCustomValidity('')" autocomplete='off'>
+								<input class="form-control" type="text" value="{{ date('Ym') }}"  id="bulanbuku" name="bulanbuku" size="6" maxlength="6" required  autocomplete='off'>
 							</div>
 						</div>
 						<div class="form-group row">
