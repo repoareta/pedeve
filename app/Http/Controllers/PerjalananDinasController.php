@@ -398,11 +398,11 @@ class PerjalananDinasController extends Controller
 
 
         if ($request->submit != 'pdf') {
-            return Excel::download(new RekapSPD($panjar_header_list, $request->submit), 'rekap_spd_'.date('Y-m-d H:i:s').'.'.$request->submit);
+            return Excel::download(new RekapSPD($panjar_header_list, $request->submit, $mulai, $sampai), 'rekap_spd_'.date('Y-m-d H:i:s').'.'.$request->submit);
         }
 
         // return default PDF
-        $pdf = PDF::loadview('perjalanan_dinas.export', compact('panjar_header_list', 'mulai', 'sampai'))
+        $pdf = PDF::loadview('perjalanan_dinas.export_pdf', compact('panjar_header_list', 'mulai', 'sampai'))
         ->setPaper('a4', 'landscape')
         ->setOptions(['isPhpEnabled' => true]);
 
