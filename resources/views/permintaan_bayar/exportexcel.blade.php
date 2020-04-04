@@ -3,6 +3,7 @@ use PhpOffice\PhpSpreadsheet\Writer\Xlsx;
 use PhpOffice\PhpSpreadsheet\Style\Border;
 use PhpOffice\PhpSpreadsheet\Style\Alignment;
 use PhpOffice\PhpSpreadsheet\Style\Fill;
+use PhpOffice\PhpSpreadsheet\Worksheet\Drawing;
 $style_col = array(
   'font' => array('bold' => true),
   'alignment' => array(
@@ -17,6 +18,14 @@ $style_col = array(
     'left' => array('style'  => Border::BORDER_MEDIUM)
   )
 );
+$drawing = new Drawing();
+$drawing->setName('Pertamina PDV Logo');
+$drawing->setDescription('Pertamina PEDEVE');
+$drawing->setPath(public_path('/images/pertamina.jpg'));
+$drawing->setResizeProportional(false);
+$drawing->setWidthAndHeight(160, 59);
+$drawing->setCoordinates('A1');
+$drawing->setWorksheet($excel->getActiveSheet());
 $tgl_laporan=date('Y-m-d');
 $excel->getActiveSheet()->mergeCells('A1:G1');
 $excel->getActiveSheet()->mergeCells('A2:G2');

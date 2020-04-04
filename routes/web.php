@@ -205,7 +205,7 @@ Route::group(['middleware'=> ['auth','checkRole:1']], function () {
         Route::get('pinjaman_pekerja/edit', 'PinjamanPekerjaController@edit')->name('pinjaman_pekerja.edit');
         //proses gaji
         Route::get('proses_gaji', 'ProsesGajiController@index')->name('proses_gaji.index');
-        Route::get('proses_gaji/create', 'ProsesGajiController@create')->name('proses_gaji.create');
+        Route::post('proses_gaji/store', 'ProsesGajiController@store')->name('proses_gaji.store');
         Route::get('proses_gaji/edit', 'ProsesGajiController@edit')->name('proses_gaji.edit');
         //proses thr
         Route::get('proses_thr', 'ProsesThrController@index')->name('proses_thr.index');
