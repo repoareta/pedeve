@@ -12,7 +12,8 @@
 				<a href="#" class="kt-subheader__breadcrumbs-home"><i class="flaticon2-shelter"></i></a>
 				<span class="kt-subheader__breadcrumbs-separator"></span>
 				<a href="" class="kt-subheader__breadcrumbs-link">
-					Umum </a>
+					Umum 
+				</a>
 				<span class="kt-subheader__breadcrumbs-separator"></span>
 				<span class="kt-subheader__breadcrumbs-link kt-subheader__breadcrumbs-link--active">Anggaran</span>
 			</div>
@@ -30,28 +31,63 @@
 			</span>
 			<h3 class="kt-portlet__head-title">
 				Tabel Umum Anggaran
-			</h3>			
+			</h3>
+
+			<div class="kt-portlet__head-actions" style="font-size: 2rem">
+				<a href="{{ route('anggaran.create') }}">
+					<span class="kt-font-success" data-toggle="kt-tooltip" data-placement="top" title="Tambah Data">
+						<i class="fas fa-plus-circle"></i>
+					</span>
+				</a>
+
+				<span class="kt-font-warning pointer-link" id="editRow" data-toggle="kt-tooltip" data-placement="top" title="Ubah Data">
+					<i class="fas fa-edit"></i>
+				</span>
+
+				<span class="kt-font-danger pointer-link" id="deleteRow" data-toggle="kt-tooltip" data-placement="top" title="Hapus Data">
+					<i class="fas fa-times-circle"></i>
+				</span>
+
+				{{-- <span class="kt-font-info pointer-link" id="exportRow" data-toggle="kt-tooltip" data-placement="top" title="Cetak Data">
+					<i class="fas fa-print"></i>
+				</span> --}}
+			</div>
 		</div>
 		<div class="kt-portlet__head-toolbar">
 			<div class="kt-portlet__head-wrapper">
 				<div class="kt-portlet__head-actions">
-					<a href="{{ route('anggaran.create') }}">
-						<span style="font-size: 2em;" class="kt-font-success" data-toggle="kt-tooltip" data-placement="top" title="Tambah Data">
-							<i class="fas fa-plus-circle"></i>
-						</span>
-					</a>
-	
-					<span style="font-size: 2em;" class="kt-font-warning pointer-link" id="editRow" data-toggle="kt-tooltip" data-placement="top" title="Ubah Data">
-						<i class="fas fa-edit"></i>
-					</span>
-	
-					<span style="font-size: 2em;" class="kt-font-danger pointer-link" id="deleteRow" data-toggle="kt-tooltip" data-placement="top" title="Hapus Data">
-						<i class="fas fa-times-circle"></i>
-					</span>
-
-					<span style="font-size: 2em;" class="kt-font-info pointer-link" id="exportRow" data-toggle="kt-tooltip" data-placement="top" title="Cetak Data">
-						<i class="fas fa-print"></i>
-					</span>
+					<form action="" class="form-inline kt-form">
+						<div class="form-group">
+							<div class="input-group">
+								<select class="form-control kt-select2" name="" id="">
+									<option value="">- Pilih Tahun -</option>
+									<option value="">2018</option>
+									<option value="">2018</option>
+									<option value="">2018</option>
+									<option value="">2018</option>
+									<option value="">2018</option>
+									<option value="">2018</option>
+									<option value="">2018</option>
+									<option value="">2018</option>
+									<option value="">2018</option>
+									<option value="">2018</option>
+									<option value="">2018</option>
+									<option value="">2018</option>
+									<option value="">2018</option>
+									<option value="">2018</option>
+									<option value="">2018</option>
+									<option value="">2018</option>
+									<option value="">2018</option>
+									<option value="">2018</option>
+								</select>
+								<div class="input-group-append">
+									<button class="btn btn-danger" type="submit">
+										<i class="fa fa-file-pdf" style="color: #ffffff;"></i> Cetak Anggaran .PDF
+									</button>
+								</div>
+							</div>
+						</div>
+					</form>
 				</div>
 			</div>
 		</div>
@@ -84,13 +120,14 @@
 @section('scripts')
 	<script type="text/javascript">
 	$(document).ready(function () {
+		$('.kt-select2').select2().on('change', function() {
+			$(this).valid();
+		});
+
 		var t = $('#kt_table').DataTable({
 			scrollX   : true,
 			processing: true,
 			serverSide: true,
-			language: {
-            	processing: '<i class="fa fa-spinner fa-spin fa-2x fa-fw"></i> <br> Loading...'
-			},
 			ajax      : "{{ route('anggaran.index.json') }}",
 			columns: [
 				{data: 'action', name: 'aksi', orderable: false, searchable: false, class:'radio-button'},

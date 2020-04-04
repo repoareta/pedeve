@@ -93,9 +93,6 @@
 			scrollX   : true,
 			processing: true,
 			serverSide: true,
-			language: {
-            	processing: '<i class="fa fa-spinner fa-spin fa-2x fa-fw"></i> <br> Loading...'
-			},
 			ajax      : "{{ route('anggaran.submain.detail.index.json', ['kode_submain' => $kode_submain]) }}",
 			columns: [
 				{data: 'action', name: 'aksi', orderable: false, searchable: false, class:'radio-button'},
