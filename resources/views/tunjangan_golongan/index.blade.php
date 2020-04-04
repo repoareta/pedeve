@@ -6,7 +6,7 @@
 	<div class="kt-container  kt-container--fluid ">
 		<div class="kt-subheader__main">
 			<h3 class="kt-subheader__title">
-				Koreksi Gaji </h3>
+				Tunjangan Per Golongan </h3>
 			<span class="kt-subheader__separator kt-hidden"></span>
 			<div class="kt-subheader__breadcrumbs">
 				<a href="#" class="kt-subheader__breadcrumbs-home"><i class="flaticon2-shelter"></i></a>
@@ -14,7 +14,7 @@
 				<a href="" class="kt-subheader__breadcrumbs-link">
 					Payroll </a>
 				<span class="kt-subheader__breadcrumbs-separator"></span>
-				<span class="kt-subheader__breadcrumbs-link kt-subheader__breadcrumbs-link--active">Koreksi Gaji</span>
+				<span class="kt-subheader__breadcrumbs-link kt-subheader__breadcrumbs-link--active">Tunjangan Per Golongan</span>
 			</div>
 		</div>
 	</div>
@@ -29,13 +29,13 @@
 				<i class="kt-font-brand flaticon2-line-chart"></i>
 			</span>
 			<h3 class="kt-portlet__head-title">
-				Tabel Koreksi Gaji
+				Tabel Tunjangan Per Golongan
 			</h3>			
 		</div>
 		<div class="kt-portlet__head-toolbar">
 			<div class="kt-portlet__head-wrapper">
 				<div class="kt-portlet__head-actions">
-					<a href="{{ route('potongan_koreksi_gaji.create') }}">
+					<a href="{{ route('tunjangan_golongan.create') }}">
 						<span style="font-size: 2em;" class="kt-font-success" data-toggle="kt-tooltip" data-placement="top" title="Tambah Data">
 							<i class="fas fa-plus-circle"></i>
 						</span>
@@ -60,13 +60,11 @@
 
 		<!--begin: Datatable -->
 		<table class="table table-striped table-bordered table-hover table-checkable" id="kt_table" width="100%">
-			<thead class="thead-light">
+			<thead class="thead-light" align="center">
 				<tr>
 					<th></th>
-					<th>Bulan</th>
-					<th>Pegawai</th>
-					<th>AARD</th>
-					<th>Nilai</th>
+					<th>GOLONGAN</th>
+					<th>NILAI</th>
 				</tr>
 			</thead>
 			<tbody>
@@ -90,44 +88,34 @@
 			language: {
             	processing: '<i class="fa fa-spinner fa-spin fa-2x fa-fw"></i> <br> Loading...'
 			},
-			ajax      : "{{ route('potongan_koreksi_gaji.index.json') }}",
+			ajax      : "{{ route('tunjangan_golongan.index.json') }}",
 			columns: [
 				{data: 'action', name: 'action'},
-				{data: 'tahunbulan', name: 'tahunbulan'},
-				{data: 'nama', name: 'nama'},
-				{data: 'aard', name: 'aard'},
+				{data: 'golongan', name: 'golongan'},
 				{data: 'nilai', name: 'nilai'},
 			]
-    	});	
+		});
 
-		//edit koreksi gaji
+		//edit potongan Manual
 		$('#editRow').click(function(e) {
 			e.preventDefault();
 
 			if($('input[type=radio]').is(':checked')) { 
 				$("input[type=radio]:checked").each(function(){
-					var tahun = $(this).attr('tahun');
-					var bulan = $(this).attr('bulan');
-					var nopek = $(this).attr('nopek');
-					var aard  = $(this).attr('aard');
-					var nama  = $(this).attr('nama');
-					location.replace("{{url('sdm/potongan_koreksi_gaji/edit')}}"+ '/' +bulan+'/' +tahun+'/'+aard+ '/' +nopek);
+					var golongan = $(this).attr('golongan');
+					location.replace("{{url('sdm/tunjangan_golongan/edit')}}"+ '/' +golongan);
 				});
 			} else {
 				swalAlertInit('ubah');
 			}
 		});
 
-		//delete koreksi gaji
+		//delete potongan manual
 		$('#deleteRow').click(function(e) {
 			e.preventDefault();
 			if($('input[type=radio]').is(':checked')) { 
 				$("input[type=radio]:checked").each(function() {
-					var tahun = $(this).attr('tahun');
-					var bulan = $(this).attr('bulan');
-					var nopek = $(this).attr('nopek');
-					var aard  = $(this).attr('aard');
-					var nama  = $(this).attr('nama');
+					var golongan = $(this).attr('golongan');
 					// delete stuff
 					const swalWithBootstrapButtons = Swal.mixin({
 						customClass: {
@@ -138,7 +126,7 @@
 						})
 						swalWithBootstrapButtons.fire({
 							title: "Data yang akan dihapus?",
-							text: "Detail data : "+bulan+ '-'  + tahun+'-' +nama,
+							text: "Dedail data golongan: "+golongan,
 							type: 'warning',
 							showCancelButton: true,
 							reverseButtons: true,
@@ -148,21 +136,17 @@
 						.then((result) => {
 						if (result.value) {
 							$.ajax({
-								url: "{{ route('potongan_koreksi_gaji.delete') }}",
+								url: "{{ route('tunjangan_golongan.delete') }}",
 								type: 'DELETE',
 								dataType: 'json',
 								data: {
-									"bulan": bulan,
-									"tahun": tahun,
-									"nopek": nopek,
-									"aard": aard,
-									"nama": nama,
+									"golongan": golongan,
 									"_token": "{{ csrf_token() }}",
 								},
 								success: function () {
 									Swal.fire({
 										type  : 'success',
-										title : "Detail data : "+bulan+ '-'  + tahun+'-' +nama,
+										title : "Dedail data golongan: "+golongan,
 										text  : 'Berhasil',
 										timer : 2000
 									}).then(function() {
@@ -181,6 +165,7 @@
 			}
 			
 		});
+		
 
 	});
 

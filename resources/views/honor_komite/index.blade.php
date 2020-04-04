@@ -140,7 +140,7 @@
 						})
 						swalWithBootstrapButtons.fire({
 							title: "Data yang akan dihapus?",
-							text: "Dedail data : "+bulan+ '-'  + tahun+'-' +nama,
+							text: "Detail data : "+bulan+ '-'  + tahun+'-' +nama,
 							type: 'warning',
 							showCancelButton: true,
 							reverseButtons: true,
@@ -164,7 +164,7 @@
 								success: function () {
 									Swal.fire({
 										type  : 'success',
-										title : "Dedail data : "+bulan+ '-'  + tahun+'-' +nama,
+										title : "Detail data : "+bulan+ '-'  + tahun+'-' +nama,
 										text  : 'Berhasil',
 										timer : 2000
 									}).then(function() {

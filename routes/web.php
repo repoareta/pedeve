@@ -215,6 +215,15 @@ Route::group(['middleware'=> ['auth','checkRole:1']], function () {
         Route::get('proses_insentif', 'ProsesInsentifController@index')->name('proses_insentif.index');
         Route::get('proses_insentif/create', 'ProsesInsentifController@create')->name('proses_insentif.create');
         Route::get('proses_insentif/edit', 'ProsesInsentifController@edit')->name('proses_insentif.edit');
+        //tunjangan golongan
+        Route::get('tunjangan_golongan', 'TunjanganGolonganController@index')->name('tunjangan_golongan.index');
+        Route::get('tunjangan_golongan/index_json', 'TunjanganGolonganController@indexJson')->name('tunjangan_golongan.index.json');
+        Route::get('tunjangan_golongan/create', 'TunjanganGolonganController@create')->name('tunjangan_golongan.create');
+        Route::post('tunjangan_golongan/cek_golongan/json', 'TunjanganGolonganController@cekGolonganJson')->name('tunjangan_golongan.golongan.json');
+        Route::post('tunjangan_golongan/store', 'TunjanganGolonganController@store')->name('tunjangan_golongan.store');
+        Route::get('tunjangan_golongan/edit/{id}', 'TunjanganGolonganController@edit')->name('tunjangan_golongan.edit');
+        Route::post('tunjangan_golongan/update', 'TunjanganGolonganController@update')->name('tunjangan_golongan.update');
+        Route::delete('tunjangan_golongan/delete', 'TunjanganGolonganController@delete')->name('tunjangan_golongan.delete');
         //proses report sdm payroll
         Route::get('report_sdm_payroll', 'ReportSdmPayrollController@index')->name('report_sdm_payroll.index');
         Route::get('report_sdm_payroll/create', 'ReportSdmPayrollController@create')->name('report_sdm_payroll.create');
