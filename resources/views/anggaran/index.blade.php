@@ -147,9 +147,9 @@
 			if($('input[type=radio]').is(':checked')) { 
 				$("input[type=radio]:checked").each(function() {
 					var id = $(this).val().split("/").join("-");
-					var url = '{{ route("perjalanan_dinas.edit", ":no_panjar") }}';
+					var url = '{{ route("anggaran.edit", ":kode_main") }}';
 					// go to page edit
-					window.location.href = url.replace(':no_panjar',id);
+					window.location.href = url.replace(':kode_main',id);
 				});
 			} else {
 				swalAlertInit('ubah');
