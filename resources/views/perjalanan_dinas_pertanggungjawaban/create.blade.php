@@ -141,23 +141,24 @@
 				</span>
 				<h3 class="kt-portlet__head-title">
 					Detail Pertanggungjawaban Panjar Dinas
-				</h3>			
+				</h3>
+				
+				<div class="kt-portlet__head-actions" style="font-size: 2em;">
+					<span class="kt-font-success" id="openDetail" data-toggle="kt-tooltip" data-placement="top" title="Tambah Data">
+						<i class="fas fa-plus-circle"></i>
+					</span>
+	
+					<span class="kt-font-warning pointer-link" id="editRow" data-toggle="kt-tooltip" data-placement="top" title="Ubah Data">
+						<i class="fas fa-edit"></i>
+					</span>
+	
+					<span class="kt-font-danger pointer-link" id="deleteRow" data-toggle="kt-tooltip" data-placement="top" title="Hapus Data">
+						<i class="fas fa-times-circle"></i>
+					</span>
+				</div>
 			</div>
 			<div class="kt-portlet__head-toolbar">
 				<div class="kt-portlet__head-wrapper">
-					<div class="kt-portlet__head-actions">
-						<span style="font-size: 2em;" class="kt-font-success" id="openDetail" data-toggle="kt-tooltip" data-placement="top" title="Tambah Data">
-							<i class="fas fa-plus-circle"></i>
-						</span>
-		
-						<span style="font-size: 2em;" class="kt-font-warning pointer-link" id="editRow" data-toggle="kt-tooltip" data-placement="top" title="Ubah Data">
-							<i class="fas fa-edit"></i>
-						</span>
-		
-						<span style="font-size: 2em;" class="kt-font-danger pointer-link" id="deleteRow" data-toggle="kt-tooltip" data-placement="top" title="Hapus Data">
-							<i class="fas fa-times-circle"></i>
-						</span>
-					</div>
 				</div>
 			</div>
 		</div>
@@ -277,9 +278,6 @@
 			scrollX   : true,
 			processing: true,
 			serverSide: true,
-			language: {
-				processing: '<i class="fa fa-spinner fa-spin fa-2x fa-fw"></i> <br> Loading...'
-			},
 			ajax: "{{ route('perjalanan_dinas.pertanggungjawaban.detail.index.json', ['no_ppanjar' => 'null']) }}",
 			columns: [
 				{data: 'action', name: 'aksi', orderable: false, searchable: false, class:'radio-button'},
