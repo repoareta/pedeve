@@ -119,10 +119,7 @@
 					window.location.href = url.replace(':no_panjar', id);
 				});
 			} else {
-				swal({
-					title: "Tandai baris yang akan dihapus!",
-					type: "success"
-				}) ; 
+				swalAlertInit('ubah');
 			}
 		});
 
@@ -176,10 +173,7 @@
 					});
 				});
 			} else {
-				swal({
-					title: "Tandai baris yang akan dihapus!",
-					type: "success"
-				}) ; 
+				swalAlertInit('hapus');
 			}
 		});
 
