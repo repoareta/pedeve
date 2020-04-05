@@ -41,9 +41,9 @@
     padding-top: 15px;
 }
 
-.kt-portlet .kt-portlet__head {
+/* .kt-portlet .kt-portlet__head {
     justify-content: start;
-}
+} */
 
 .kt-portlet__head-actions {
     margin-left: 10px;
