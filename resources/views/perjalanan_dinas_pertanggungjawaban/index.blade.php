@@ -35,29 +35,30 @@
 			</span>
 			<h3 class="kt-portlet__head-title">
 				Tabel Umum Pertanggungjawaban Panjar Dinas
-			</h3>			
+			</h3>
+			
+			<div class="kt-portlet__head-actions" style="font-size: 2rem;">
+				<a href="{{ route('perjalanan_dinas.pertanggungjawaban.create') }}">
+					<span class="kt-font-success" data-toggle="kt-tooltip" data-placement="top" title="Tambah Data">
+						<i class="fas fa-plus-circle"></i>
+					</span>
+				</a>
+
+				<span class="kt-font-warning pointer-link" id="editRow" data-toggle="kt-tooltip" data-placement="top" title="Ubah Data">
+					<i class="fas fa-edit"></i>
+				</span>
+
+				<span class="kt-font-danger pointer-link" id="deleteRow" data-toggle="kt-tooltip" data-placement="top" title="Hapus Data">
+					<i class="fas fa-times-circle"></i>
+				</span>
+
+				<span class="kt-font-info pointer-link" id="exportRow" data-toggle="kt-tooltip" data-placement="top" title="Cetak Data">
+					<i class="fas fa-print"></i>
+				</span>
+			</div>
 		</div>
 		<div class="kt-portlet__head-toolbar">
 			<div class="kt-portlet__head-wrapper">
-				<div class="kt-portlet__head-actions">
-					<a href="{{ route('perjalanan_dinas.pertanggungjawaban.create') }}">
-						<span style="font-size: 2em;" class="kt-font-success">
-							<i class="fas fa-plus-circle"></i>
-						</span>
-					</a>
-	
-					<span style="font-size: 2em;" class="kt-font-warning pointer-link" id="editRow" data-toggle="kt-tooltip" data-placement="top" title="Ubah Data">
-						<i class="fas fa-edit"></i>
-					</span>
-	
-					<span style="font-size: 2em;" class="kt-font-danger pointer-link" id="deleteRow" data-toggle="kt-tooltip" data-placement="top" title="Hapus Data">
-						<i class="fas fa-times-circle"></i>
-					</span>
-
-					<span style="font-size: 2em;" class="kt-font-info pointer-link" id="exportRow" data-toggle="kt-tooltip" data-placement="top" title="Cetak Data">
-						<i class="fas fa-print"></i>
-					</span>
-				</div>
 			</div>
 		</div>
 	</div>
@@ -118,10 +119,7 @@
 					window.location.href = url.replace(':no_panjar', id);
 				});
 			} else {
-				swal({
-					title: "Tandai baris yang akan dihapus!",
-					type: "success"
-				}) ; 
+				swalAlertInit('ubah');
 			}
 		});
 
@@ -175,10 +173,7 @@
 					});
 				});
 			} else {
-				swal({
-					title: "Tandai baris yang akan dihapus!",
-					type: "success"
-				}) ; 
+				swalAlertInit('hapus');
 			}
 		});
 

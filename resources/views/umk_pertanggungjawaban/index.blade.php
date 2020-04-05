@@ -30,35 +30,26 @@
 			</span>
 			<h3 class="kt-portlet__head-title">
 				Tabel Umum Pertanggungjawaban UMK
-			</h3>			
+			</h3>
+
+			<div class="kt-portlet__head-actions" style="font-size: 2rem;">
+				<a href="{{ route('uang_muka_kerja.pertanggungjawaban.create') }}">
+					<span class="kt-font-success" data-toggle="kt-tooltip" data-placement="top" title="Tambah Data">
+						<i class="fas fa-plus-circle"></i>
+					</span>
+				</a>
+
+				<span id="editRow" class="kt-font-warning pointer-link" data-toggle="kt-tooltip" data-placement="top" title="Ubah Data">
+					<i class="fas fa-edit"></i>
+				</span>
+
+				<span id="deleteRow" class="kt-font-danger pointer-link" data-toggle="kt-tooltip" data-placement="top" title="Hapus Data">
+					<i class="fas fa-times-circle"></i>
+				</span>
+			</div>
 		</div>
 		<div class="kt-portlet__head-toolbar">
 			<div class="kt-portlet__head-wrapper">
-				<div class="kt-portlet__head-actions">
-					<a href="{{ route('uang_muka_kerja.pertanggungjawaban.create') }}">
-						<span style="font-size: 2em;" class="kt-font-success">
-							<i class="fas fa-plus-circle"></i>
-						</span>
-					</a>
-	
-					<a href="#" id="editRow">
-						<span style="font-size: 2em;" class="kt-font-warning">
-							<i class="fas fa-edit"></i>
-						</span>
-					</a>
-	
-					<a href="#" id="deleteRow">
-						<span style="font-size: 2em;" class="kt-font-danger">
-							<i class="fas fa-times-circle"></i>
-						</span>
-					</a>
-
-					<a href="#">
-						<span style="font-size: 2em;" class="kt-font-info">
-							<i class="fas fa-file-export"></i>
-						</span>
-					</a>
-				</div>
 			</div>
 		</div>
 	</div>
@@ -95,12 +86,9 @@
 			scrollX   : true,
 			processing: true,
 			serverSide: true,
-			language: {
-            	processing: '<i class="fa fa-spinner fa-spin fa-2x fa-fw"></i> <br> Loading...'
-			},
 			ajax      : "{{ route('uang_muka_kerja.pertanggungjawaban.index.json') }}",
 			columns: [
-				{data: 'action', name: 'aksi', orderable: false, searchable: false},
+				{data: 'action', name: 'aksi', orderable: false, searchable: false, class:'radio-button'},
 				{data: 'no_pumk', name: 'no_pumk'},
 				{data: 'no_umk', name: 'no_umk'},
 				{data: 'no_kas', name: 'no_kas'},
@@ -120,10 +108,7 @@
 					window.location.href = "{{ url('umum/perjalanan_dinas/edit') }}" + '/' + id;
 				});
 			} else {
-				swal({
-					title: "Tandai baris yang akan dihapus!",
-					type: "success"
-				}) ; 
+				swalAlertInit('ubah');
 			}
 		});
 
@@ -133,15 +118,25 @@
 				$("input[type=radio]:checked").each(function() {
 					var id = $(this).val();
 					// delete stuff
-					swal({
-						title: "Data yang akan di hapus?",
-						text: "No. P UMK : " + id,
-						icon: "warning",
-						buttons: true,
-						dangerMode: true,
+					const swalWithBootstrapButtons = Swal.mixin({
+					customClass: {
+						confirmButton: 'btn btn-primary',
+						cancelButton: 'btn btn-danger'
+					},
+						buttonsStyling: false
 					})
-					.then((willDelete) => {
-						if (willDelete) {
+
+					swalWithBootstrapButtons.fire({
+						title: "Data yang akan dihapus?",
+						text: "No. P UMK : " + id,
+						type: 'warning',
+						showCancelButton: true,
+						reverseButtons: true,
+						confirmButtonText: 'Ya, hapus',
+						cancelButtonText: 'Batalkan'
+					})
+					.then((result) => {
+						if (result.value) {
 							$.ajax({
 								url: "{{ route('uang_muka_kerja.pertanggungjawaban.delete') }}",
 								type: 'DELETE',
@@ -151,10 +146,11 @@
 									"_token": "{{ csrf_token() }}",
 								},
 								success: function () {
-									swal({
-										title: "Delete",
-										text: "Success",
-										type: "success"
+									Swal.fire({
+										type  : 'success',
+										title : 'Hapus P UMK ' + id,
+										text  : 'Berhasil',
+										timer : 2000
 									}).then(function() {
 										t.ajax.reload();
 									});
@@ -167,10 +163,7 @@
 					});
 				});
 			} else {
-				swal({
-					title: "Tandai baris yang akan dihapus!",
-					type: "success"
-				}) ; 
+				swalAlertInit('hapus');
 			}
 		});
 
