@@ -35,7 +35,7 @@ class UangMukaKerjaPertanggungJawabanController extends Controller
      */
     public function indexJson()
     {
-        $pumk_list = PUmkHeader::all();
+        $pumk_list = PUmkHeader::orderBy('tgl_pumk', 'desc')->get();
 
         return datatables()->of($pumk_list)
             ->addColumn('nama', function ($row) {

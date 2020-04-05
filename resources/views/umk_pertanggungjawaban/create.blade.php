@@ -15,7 +15,12 @@
 					Umum </a>
 				<span class="kt-subheader__breadcrumbs-separator"></span>
 				<a href="" class="kt-subheader__breadcrumbs-link">
-					Pertanggungjawaban Uang Muka Kerja </a>
+					Uang Muka Kerja 
+				</a>
+				<span class="kt-subheader__breadcrumbs-separator"></span>
+				<a href="" class="kt-subheader__breadcrumbs-link">
+					Pertanggungjawaban 
+				</a>
 				<span class="kt-subheader__breadcrumbs-separator"></span>
 				<span class="kt-subheader__breadcrumbs-link kt-subheader__breadcrumbs-link--active">Tambah</span>
 			</div>
@@ -136,29 +141,24 @@
 				</span>
 				<h3 class="kt-portlet__head-title">
 					Detail Pertanggungjawaban Uang Muka Kerja
-				</h3>			
+				</h3>
+
+				<div class="kt-portlet__head-actions" style="font-size: 2rem;">
+					<span id="openDetail" class="kt-font-success pointer-link" data-toggle="kt-tooltip" data-placement="top" title="Tambah Data">
+						<i class="fas fa-plus-circle"></i>
+					</span>
+	
+					<span id="editRow" class="kt-font-warning pointer-link" data-toggle="kt-tooltip" data-placement="top" title="Ubah Data">
+						<i class="fas fa-edit"></i>
+					</span>
+	
+					<span id="deleteRow" class="kt-font-danger pointer-link" data-toggle="kt-tooltip" data-placement="top" title="Hapus Data">
+						<i class="fas fa-times-circle"></i>
+					</span>
+				</div>
 			</div>
 			<div class="kt-portlet__head-toolbar">
 				<div class="kt-portlet__head-wrapper">
-					<div class="kt-portlet__head-actions">
-						<a href="#" id="openDetail">
-							<span style="font-size: 2em;" class="kt-font-success">
-								<i class="fas fa-plus-circle"></i>
-							</span>
-						</a>
-		
-						<a href="#" id="editRow">
-							<span style="font-size: 2em;" class="kt-font-warning">
-								<i class="fas fa-edit"></i>
-							</span>
-						</a>
-		
-						<a href="#" id="deleteRow">
-							<span style="font-size: 2em;" class="kt-font-danger">
-								<i class="fas fa-times-circle"></i>
-							</span>
-						</a>
-					</div>
 				</div>
 			</div>
 		</div>
@@ -225,7 +225,7 @@
 						</div>
 
 						<div class="col-5">
-							<input class="form-control" type="text" name="account_detail" id="account_detail">
+							<input class="form-control" type="text" name="account_detail_name" id="account_detail_name">
 						</div>
 					</div>
 
@@ -382,8 +382,20 @@
 		});
 
 		$("#formPUmkDetail").on('submit', function(){
-			if ($('#nopek_detail-error').length){
-				$("#nopek_detail-error").insertAfter("#nopek_detail-nya");
+			if ($('#account_detail-error').length){
+				$("#account_detail-error").insertAfter("#account_detail-nya");
+			}
+
+			if ($('#kode_bagian_detail-error').length){
+				$("#kode_bagian_detail-error").insertAfter("#kode_bagian_detail-nya");
+			}
+
+			if ($('#jenis_biaya_detail-error').length){
+				$("#jenis_biaya_detail-error").insertAfter("#jenis_biaya_detail-nya");
+			}
+
+			if ($('#c_judex_detail-error').length){
+				$("#c_judex_detail-error").insertAfter("#c_judex_detail-nya");
 			}
 
 			if($(this).valid()) {
