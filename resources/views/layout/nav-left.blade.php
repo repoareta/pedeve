@@ -50,8 +50,10 @@
                 $anggaran = array(
                     'anggaran.index',
                     'anggaran.create',
+                    'anggaran.edit',
                     'anggaran.submain.index',
                     'anggaran.submain.create',
+                    'anggaran.submain.edit',
                     'anggaran.submain.detail.index',
                     'anggaran.submain.detail.create',
                     'anggaran.submain.detail.edit',

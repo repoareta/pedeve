@@ -33,31 +33,33 @@
 			</span>
 			<h3 class="kt-portlet__head-title">
 				Tabel Umum Anggaran Submain
-			</h3>			
+			</h3>
+
+			<div class="kt-portlet__head-actions" style="font-size: 2rem">
+				<a href="{{ route('anggaran.submain.create', ['kode_main' => $kode_main]) }}">
+					<span class="kt-font-success" data-toggle="kt-tooltip" data-placement="top" title="Tambah Data">
+						<i class="fas fa-plus-circle"></i>
+					</span>
+				</a>
+
+				<span class="kt-font-warning pointer-link" id="editRow" data-toggle="kt-tooltip" data-placement="top" title="Ubah Data">
+					<i class="fas fa-edit"></i>
+				</span>
+
+				<span class="kt-font-danger pointer-link" id="deleteRow" data-toggle="kt-tooltip" data-placement="top" title="Hapus Data">
+					<i class="fas fa-times-circle"></i>
+				</span>
+
+				<a href="{{ route('anggaran.index') }}">
+					<span class="kt-font-info" data-toggle="kt-tooltip" data-placement="top" title="Kembali ke Anggaran">
+						<i class="fas fa-arrow-left"></i>
+					</span>
+				</a>
+			</div>
 		</div>
 		<div class="kt-portlet__head-toolbar">
 			<div class="kt-portlet__head-wrapper">
-				<div class="kt-portlet__head-actions">
-					<a href="{{ route('anggaran.submain.create', ['kode_main' => $kode_main]) }}">
-						<span style="font-size: 2em;" class="kt-font-success" data-toggle="kt-tooltip" data-placement="top" title="Tambah Data">
-							<i class="fas fa-plus-circle"></i>
-						</span>
-					</a>
-	
-					<span style="font-size: 2em;" class="kt-font-warning pointer-link" id="editRow" data-toggle="kt-tooltip" data-placement="top" title="Ubah Data">
-						<i class="fas fa-edit"></i>
-					</span>
-	
-					<span style="font-size: 2em;" class="kt-font-danger pointer-link" id="deleteRow" data-toggle="kt-tooltip" data-placement="top" title="Hapus Data">
-						<i class="fas fa-times-circle"></i>
-					</span>
-
-					<a href="{{ route('anggaran.index') }}">
-						<span style="font-size: 2em;" class="kt-font-info" data-toggle="kt-tooltip" data-placement="top" title="Kembali ke Anggaran">
-							<i class="fas fa-arrow-left"></i>
-						</span>
-					</a>
-				</div>
+				
 			</div>
 		</div>
 	</div>
@@ -92,9 +94,6 @@
 			scrollX   : true,
 			processing: true,
 			serverSide: true,
-			language: {
-            	processing: '<i class="fa fa-spinner fa-spin fa-2x fa-fw"></i> <br> Loading...'
-			},
 			ajax      : "{{ route('anggaran.submain.index.json', ['kode_main' => $kode_main]) }}",
 			columns: [
 				{data: 'action', name: 'action', orderable: false, searchable: false, class:'radio-button'},
@@ -113,9 +112,11 @@
 			if($('input[type=radio]').is(':checked')) { 
 				$("input[type=radio]:checked").each(function() {
 					var id = $(this).val().split("/").join("-");
-					var url = '{{ route("perjalanan_dinas.edit", ":no_panjar") }}';
+					var url = '{{ route("anggaran.submain.edit", [":kode_main", ":kode_submain"]) }}';
 					// go to page edit
-					window.location.href = url.replace(':no_panjar',id);
+					window.location.href = url
+					.replace(':kode_main', "{{ $kode_main }}")
+					.replace(':kode_submain', id);
 				});
 			} else {
 				swalAlertInit('ubah');
@@ -138,7 +139,7 @@
 
 					swalWithBootstrapButtons.fire({
 						title: "Data yang akan dihapus?",
-						text: "No. Panjar : " + id,
+						text: "Kode : " + id,
 						type: 'warning',
 						showCancelButton: true,
 						reverseButtons: true,
@@ -148,7 +149,7 @@
 					.then((result) => {
 						if (result.value) {
 							$.ajax({
-								url: "{{ route('perjalanan_dinas.delete') }}",
+								url: "{{ route('anggaran.submain.delete') }}",
 								type: 'DELETE',
 								dataType: 'json',
 								data: {
@@ -158,7 +159,7 @@
 								success: function () {
 									Swal.fire({
 										type  : 'success',
-										title : 'Hapus No. Panjar ' + id,
+										title : 'Hapus Kode ' + id,
 										text  : 'Berhasil',
 										timer : 2000
 									}).then(function() {

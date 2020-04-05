@@ -105,7 +105,8 @@ class AnggaranController extends Controller
      */
     public function edit($kode_main)
     {
-        return view('anggaran.edit', compact('kode_main'));
+        $anggaran = AnggaranMain::find($kode_main);
+        return view('anggaran.edit', compact('anggaran', 'kode_main'));
     }
 
     /**
@@ -115,9 +116,21 @@ class AnggaranController extends Controller
      * @param  int  $id
      * @return \Illuminate\Http\Response
      */
-    public function update(Request $request, $id)
+    public function update(Request $request, $kode_main)
     {
-        //
+        $anggaran = AnggaranMain::find($kode_main);
+
+        $anggaran->kode_main = $request->kode;
+        $anggaran->nama_main = $request->nama;
+        $anggaran->nilai_real = $request->nilai;
+        $anggaran->inputdate = date('Y-m-d H:i:s');
+        $anggaran->inputuser = Auth::user()->userid;
+        $anggaran->tahun = $request->tahun;
+
+        $anggaran->save();
+
+        Alert::success('Ubah Anggaran', 'Berhasil')->persistent(true)->autoClose(2000);
+        return redirect()->route('anggaran.index');
     }
 
     /**

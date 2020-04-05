@@ -93,18 +93,7 @@ class AnggaranSubMainController extends Controller
         $anggaran->save();
 
         Alert::success('Simpan Anggaran Submain', 'Berhasil')->persistent(true)->autoClose(2000);
-        return redirect()->route('anggaran.submain', ['kode_main' => $kode_main]);
-    }
-
-    /**
-     * Display the specified resource.
-     *
-     * @param  int  $id
-     * @return \Illuminate\Http\Response
-     */
-    public function show($id)
-    {
-        //
+        return redirect()->route('anggaran.submain.index', ['kode_main' => $kode_main]);
     }
 
     /**
@@ -113,9 +102,10 @@ class AnggaranSubMainController extends Controller
      * @param  int  $id
      * @return \Illuminate\Http\Response
      */
-    public function edit($id)
+    public function edit($kode_main, $kode_submain)
     {
-        //
+        $anggaran = AnggaranSubMain::find($kode_submain);
+        return view('anggaran_submain.edit', compact('anggaran', 'kode_main', 'kode_submain'));
     }
 
     /**
@@ -125,9 +115,25 @@ class AnggaranSubMainController extends Controller
      * @param  int  $id
      * @return \Illuminate\Http\Response
      */
-    public function update(Request $request, $id)
+    public function update(Request $request, $kode_main, $kode_submain)
     {
-        //
+        $anggaran = AnggaranSubMain::where('kode_main', $kode_main)
+        ->where('kode_submain', $kode_submain)
+        ->first();
+
+        $anggaran->kode_main = $kode_main;
+        $anggaran->kode_submain = $request->kode;
+        $anggaran->nama_submain = $request->nama;
+        $anggaran->nilai = $request->nilai;
+        $anggaran->nilai_real = $request->nilai_real;
+        $anggaran->inputdate = date('Y-m-d H:i:s');
+        $anggaran->inputuser = Auth::user()->userid;
+        $anggaran->tahun = $request->tahun;
+
+        $anggaran->save();
+
+        Alert::success('Ubah Anggaran Submain', 'Berhasil')->persistent(true)->autoClose(2000);
+        return redirect()->route('anggaran.submain.index', ['kode_main' => $kode_main]);
     }
 
     /**
@@ -136,8 +142,17 @@ class AnggaranSubMainController extends Controller
      * @param  int  $id
      * @return \Illuminate\Http\Response
      */
-    public function destroy($id)
+    public function delete(Request $request)
     {
-        //
+        $anggaran = AnggaranSubMain::find($request->id);
+        $anggaran->anggaran_detail()->delete();
+
+        $anggaran->delete();
+
+        if ($anggaran) {
+            return response()->json();
+        }
+
+        dd($anggaran);
     }
 }
