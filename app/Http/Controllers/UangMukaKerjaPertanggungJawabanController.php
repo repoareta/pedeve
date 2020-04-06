@@ -15,6 +15,7 @@ use App\Models\SdmTblKdjab;
 use Carbon\Carbon;
 use Session;
 use PDF;
+use DB;
 
 class UangMukaKerjaPertanggungJawabanController extends Controller
 {
@@ -85,11 +86,20 @@ class UangMukaKerjaPertanggungJawabanController extends Controller
 
         $pumk_header_count = PUmkHeader::all()->count();
 
+        $account_list = DB::select("select kodeacct, descacct FROM account where LENGTH(kodeacct)=6 AND kodeacct NOT LIKE '%X%'");
+        $bagian_list = DB::select("SELECT A.kode,A.nama FROM sdm_tbl_kdbag A ORDER BY A.kode");
+        $jenis_biaya_list = DB::select("select kode,keterangan from jenisbiaya order by kode");
+        $c_judex_list = DB::select("select kode,nama from cashjudex order by kode");
+
         return view('umk_pertanggungjawaban.create', compact(
             'pegawai_list',
             'umk_header_list',
             'pumk_header_count',
-            'jabatan_list'
+            'jabatan_list',
+            'account_list',
+            'bagian_list',
+            'jenis_biaya_list',
+            'c_judex_list'
         ));
     }
 
@@ -116,17 +126,6 @@ class UangMukaKerjaPertanggungJawabanController extends Controller
         $pumk_header->save();
 
         return redirect()->route('uang_muka_kerja.pertanggungjawaban.index');
-    }
-
-    /**
-     * Display the specified resource.
-     *
-     * @param  int  $id
-     * @return \Illuminate\Http\Response
-     */
-    public function show($id)
-    {
-        //
     }
 
     /**

@@ -76,6 +76,10 @@ th {
     white-space: nowrap;
 }
 
+/* th.text-right {
+    text-align: left !important;
+} */
+
 td.no-wrap {
     white-space: nowrap;
 }
