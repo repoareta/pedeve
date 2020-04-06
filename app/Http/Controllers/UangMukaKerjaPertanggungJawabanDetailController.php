@@ -77,23 +77,13 @@ class UangMukaKerjaPertanggungJawabanDetailController extends Controller
                 session()->put('pumk_detail', []);
                 session()->push('pumk_detail', $pumk_detail);
             }
-
-            // reset no_urut session
-            foreach (array_values(array_filter(session('pumk_detail'))) as $key => $value) {
-                $no_urut = $key + 1;
-                if ($value['no'] != $no_urut) {
-                    // ganti no urut dengan yang baru
-                    $update_pumk_detail = $value;
-                    $update_pumk_detail['no']= $no_urut;
-                    $request->session()->put('pumk_detail.'.$key, $update_pumk_detail);
-                }
-            }
+            $this->pumk_detail_reset();
         } else {
             // insert to database
             $pumk_detail->save();
         }
 
-        return response()->json($pumk_detail, 200);
+        return response()->json(session('pumk_detail'), 200);
     }
 
     /**
@@ -155,21 +145,7 @@ class UangMukaKerjaPertanggungJawabanDetailController extends Controller
                 }
             }
 
-            // foreach (array_values(array_filter(session('pumk_detail'))) as $key => $value) {
-            //     $no_urut = $key + 1;
-            //     if ($value['no'] != $no_urut) {
-            //         // dd($value);
-            //         // ganti no urut dengan yang baru
-            //         $update_pumk_detail = $value;
-            //         $update_pumk_detail['no']= $no_urut;
-
-            //         // dd(session('pumk_detail.'.$key));
-
-            //         $request->session()->put('pumk_detail.'.$key, $update_pumk_detail);
-            //     }
-            // }
-
-            // dd(session('pumk_detail'));
+            $this->pumk_detail_reset();
         } else {
             // for Database
             $pumk_detail = PUmkDetail::where('no', $no_urut)
@@ -208,9 +184,11 @@ class UangMukaKerjaPertanggungJawabanDetailController extends Controller
             // delete session
             foreach (session('pumk_detail') as $key => $value) {
                 if ($value['no'] == $request->no) {
-                    $request->session()->forget("pumk_detail.$key");
+                    Session::forget('pumk_detail.' . $key);
                 }
             }
+
+            $this->pumk_detail_reset();
         } else {
             // delete Database
             PUmkDetail::where('no_pumk', $no_pumk)
@@ -218,6 +196,17 @@ class UangMukaKerjaPertanggungJawabanDetailController extends Controller
             ->delete();
         }
 
-        return response()->json(['result' => true], 200);
+        return response()->json(['result' => session('pumk_detail')], 200);
+    }
+
+    public function pumk_detail_reset()
+    {
+        Session::put('pumk_detail', array_values(session('pumk_detail')));
+
+        foreach (session('pumk_detail') as $key => $value) {
+            $update_pumk_detail = $value;
+            $update_pumk_detail['no']= $key + 1;
+            Session::put('pumk_detail.'.$key, $update_pumk_detail);
+        }
     }
 }
