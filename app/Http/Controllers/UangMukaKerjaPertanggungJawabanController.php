@@ -15,6 +15,8 @@ use App\Models\SdmTblKdjab;
 use Carbon\Carbon;
 use Session;
 use PDF;
+use DB;
+use Alert;
 
 class UangMukaKerjaPertanggungJawabanController extends Controller
 {
@@ -35,7 +37,9 @@ class UangMukaKerjaPertanggungJawabanController extends Controller
      */
     public function indexJson()
     {
-        $pumk_list = PUmkHeader::orderBy('tgl_pumk', 'desc')->get();
+        $pumk_list = PUmkHeader::orderBy('tgl_pumk', 'desc')
+        ->orderBy('no_pumk', 'desc')
+        ->get();
 
         return datatables()->of($pumk_list)
             ->addColumn('nama', function ($row) {
@@ -85,11 +89,20 @@ class UangMukaKerjaPertanggungJawabanController extends Controller
 
         $pumk_header_count = PUmkHeader::all()->count();
 
+        $account_list = DB::select("select kodeacct, descacct FROM account where LENGTH(kodeacct)=6 AND kodeacct NOT LIKE '%X%'");
+        $bagian_list = DB::select("SELECT A.kode,A.nama FROM sdm_tbl_kdbag A ORDER BY A.kode");
+        $jenis_biaya_list = DB::select("select kode,keterangan from jenisbiaya order by kode");
+        $c_judex_list = DB::select("select kode,nama from cashjudex order by kode");
+
         return view('umk_pertanggungjawaban.create', compact(
             'pegawai_list',
             'umk_header_list',
             'pumk_header_count',
-            'jabatan_list'
+            'jabatan_list',
+            'account_list',
+            'bagian_list',
+            'jenis_biaya_list',
+            'c_judex_list'
         ));
     }
 
@@ -115,18 +128,28 @@ class UangMukaKerjaPertanggungJawabanController extends Controller
         // Save Panjar Header
         $pumk_header->save();
 
-        return redirect()->route('uang_muka_kerja.pertanggungjawaban.index');
-    }
+        // Save Panjar Detail;
+        if (session('pumk_detail')) {
+            foreach (session('pumk_detail') as $key => $value) {
+                $pumk_detail = new PUmkDetail;
+                $pumk_detail->no = $value['no'];
+                $pumk_detail->keterangan = $value['keterangan'];
+                $pumk_detail->account = $value['account'];
+                $pumk_detail->nilai = $value['nilai'];
+                $pumk_detail->cj = $value['cj'];
+                $pumk_detail->jb = $value['jb'];
+                $pumk_detail->bagian = $value['bagian'];
+                $pumk_detail->pk = $value['pk'];
+                $pumk_detail->no_pumk = $request->no_pumk; // for add edit only
+    
+                $pumk_detail->save();
+            }
+    
+            session()->forget('pumk_detail');
+        }
 
-    /**
-     * Display the specified resource.
-     *
-     * @param  int  $id
-     * @return \Illuminate\Http\Response
-     */
-    public function show($id)
-    {
-        //
+        Alert::success('Simpan Pertanggungjawaban UMK', 'Berhasil')->persistent(true)->autoClose(2000);
+        return redirect()->route('uang_muka_kerja.pertanggungjawaban.index');
     }
 
     /**
