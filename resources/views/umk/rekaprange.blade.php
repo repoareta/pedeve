@@ -52,7 +52,7 @@
                         </div>
                         <input type="text" class="form-control" name="sampai" autocomplete="off" />
                     </div>
-                    <span class="form-text text-muted">Pilih rentang waktu rekap permintaan bayar</span>
+                    <span class="form-text text-muted">Pilih rentang waktu rekap uang muka kerja</span>
                 </div>
             </div>
 
