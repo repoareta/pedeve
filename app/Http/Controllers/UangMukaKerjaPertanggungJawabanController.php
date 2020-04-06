@@ -16,6 +16,7 @@ use Carbon\Carbon;
 use Session;
 use PDF;
 use DB;
+use Alert;
 
 class UangMukaKerjaPertanggungJawabanController extends Controller
 {
@@ -36,7 +37,9 @@ class UangMukaKerjaPertanggungJawabanController extends Controller
      */
     public function indexJson()
     {
-        $pumk_list = PUmkHeader::orderBy('tgl_pumk', 'desc')->get();
+        $pumk_list = PUmkHeader::orderBy('tgl_pumk', 'desc')
+        ->orderBy('no_pumk', 'desc')
+        ->get();
 
         return datatables()->of($pumk_list)
             ->addColumn('nama', function ($row) {
@@ -125,6 +128,27 @@ class UangMukaKerjaPertanggungJawabanController extends Controller
         // Save Panjar Header
         $pumk_header->save();
 
+        // Save Panjar Detail;
+        if (session('pumk_detail')) {
+            foreach (session('pumk_detail') as $key => $value) {
+                $pumk_detail = new PUmkDetail;
+                $pumk_detail->no = $value['no'];
+                $pumk_detail->keterangan = $value['keterangan'];
+                $pumk_detail->account = $value['account'];
+                $pumk_detail->nilai = $value['nilai'];
+                $pumk_detail->cj = $value['cj'];
+                $pumk_detail->jb = $value['jb'];
+                $pumk_detail->bagian = $value['bagian'];
+                $pumk_detail->pk = $value['pk'];
+                $pumk_detail->no_pumk = $request->no_pumk; // for add edit only
+    
+                $pumk_detail->save();
+            }
+    
+            session()->forget('pumk_detail');
+        }
+
+        Alert::success('Simpan Pertanggungjawaban UMK', 'Berhasil')->persistent(true)->autoClose(2000);
         return redirect()->route('uang_muka_kerja.pertanggungjawaban.index');
     }
 
