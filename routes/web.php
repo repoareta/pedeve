@@ -43,14 +43,31 @@ Route::group(['middleware'=> ['auth','checkRole:1']], function () {
 
         // P UANG MUKA KERJA START
         Route::get('uang_muka_kerja/pertanggungjawaban', 'UangMukaKerjaPertanggungJawabanController@index')->name('uang_muka_kerja.pertanggungjawaban.index');
+
         Route::get('uang_muka_kerja/pertanggungjawaban/index_json', 'UangMukaKerjaPertanggungJawabanController@indexJson')->name('uang_muka_kerja.pertanggungjawaban.index.json');
 
         Route::get('uang_muka_kerja/pertanggungjawaban/create', 'UangMukaKerjaPertanggungJawabanController@create')->name('uang_muka_kerja.pertanggungjawaban.create');
         Route::post('uang_muka_kerja/pertanggungjawaban/store', 'UangMukaKerjaPertanggungJawabanController@store')->name('uang_muka_kerja.pertanggungjawaban.store');
 
+        Route::get('uang_muka_kerja/pertanggungjawaban/edit/{no_pumk}', 'UangMukaKerjaPertanggungJawabanController@edit')->name('uang_muka_kerja.pertanggungjawaban.edit');
+        Route::post('uang_muka_kerja/pertanggungjawaban/update/{no_pumk}', 'UangMukaKerjaPertanggungJawabanController@update')->name('uang_muka_kerja.pertanggungjawaban.update');
+
         Route::get('uang_muka_kerja/pertanggungjawaban/approval/{no_pumk}', 'UangMukaKerjaPertanggungJawabanController@approv')->name('uang_muka_kerja.pertanggungjawaban.approval');
+
         Route::delete('uang_muka_kerja/pertanggungjawaban/delete', 'UangMukaKerjaPertanggungJawabanController@delete')->name('uang_muka_kerja.pertanggungjawaban.delete');
         // P UANG MUKA KERJA END
+
+        // P UANG MUKA KERJA DETAIL START
+        Route::get('uang_muka_kerja/pertanggungjawaban/detail/index_json', 'UangMukaKerjaPertanggungJawabanDetailController@indexJson')->name('uang_muka_kerja.pertanggungjawaban.detail.index.json');
+
+        Route::post('uang_muka_kerja/pertanggungjawaban/detail/store', 'UangMukaKerjaPertanggungJawabanDetailController@store')->name('uang_muka_kerja.pertanggungjawaban.detail.store');
+
+        Route::get('uang_muka_kerja/pertanggungjawaban/detail/show/{no}/{no_pumk?}', 'UangMukaKerjaPertanggungJawabanDetailController@show')->name('uang_muka_kerja.pertanggungjawaban.detail.show.json');
+
+        Route::post('uang_muka_kerja/pertanggungjawaban/detail/update/{no}/{no_pumk?}', 'UangMukaKerjaPertanggungJawabanDetailController@update')->name('uang_muka_kerja.pertanggungjawaban.detail.update');
+
+        Route::delete('uang_muka_kerja/pertanggungjawaban/detail/delete', 'UangMukaKerjaPertanggungJawabanDetailController@delete')->name('uang_muka_kerja.pertanggungjawaban.detail.delete');
+        // P UANG MUKA KERJA DETAIL END
         
         // PERJALANAN DINAS START
         Route::get('perjalanan_dinas', 'PerjalananDinasController@index')->name('perjalanan_dinas.index');
