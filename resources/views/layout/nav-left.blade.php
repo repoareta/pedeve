@@ -135,32 +135,32 @@
                     'pinjaman_pekerja.create',
                     'pinjaman_pekerja.edit'
                 ); // isi nama semua route pinjaman pekerjaan
-                $proses_gaji_sdm = array(
+                $proses_gaji = array(
                     'proses_gaji.index',
                     'proses_gaji.create',
                     'proses_gaji.edit'
                 ); // isi nama semua route proses gajian sdm
-                $proses_gaji = array(
-                    'proses_gaji.index',
-                    'proses_gaji.create',
-                    'proses_gaji.edit',
-                    'proses_thr.index',
-                    'proses_thr.create',
-                    'proses_thr.edit',
-                    'proses_insentif.index',
-                    'proses_insentif.create',
-                    'proses_insentif.edit'
-                ); // isi nama semua route proses gajian
                 $proses_thr = array(
                     'proses_thr.index',
                     'proses_thr.create',
                     'proses_thr.edit'
-                ); // isi nama semua route proses thr
+                ); // isi nama semua route proses thr sdm
                 $proses_insentif = array(
                     'proses_insentif.index',
                     'proses_insentif.create',
                     'proses_insentif.edit'
-                ); // isi nama semua route proses insentif
+                ); // isi nama semua route proses insentif sdm
+                $tunjangan_golongan = array(
+                    'tunjangan_golongan.index',
+                    'tunjangan_golongan.create',
+                    'tunjangan_golongan.edit'
+                ); // isi nama semua route tunjangan_golongan sdm
+                $proses_gaji_sdm = array_merge(
+                    $proses_gaji,
+                    $proses_thr,
+                    $proses_insentif,
+                    $tunjangan_golongan
+                ); //isi nama Subdomain proses gaji sdm
                 $report_sdm_payroll = array(
                     'report_sdm_payroll.index',
                     'report_sdm_payroll.create',
@@ -452,33 +452,41 @@
                                 <i class="kt-menu__link-bullet kt-menu__link-bullet--dot">
                                     <span></span>
                                 </i>
-                                <span class="kt-menu__link-text">Proses Gaji</span>
+                                <span class="kt-menu__link-text">Proses Upah</span>
                                 <i class="kt-menu__ver-arrow la la-angle-right"></i>
                             </a>
                             <div class="kt-menu__submenu "><span class="kt-menu__arrow"></span>
                                 <ul class="kt-menu__subnav">
-                                    <li class="kt-menu__item " aria-haspopup="true">
-                                        <a href="custom/apps/user/list-default.html" class="kt-menu__link ">
+                                    <li class="kt-menu__item kt-menu__item{{ set_active_submenu($proses_gaji) }}" aria-haspopup="true">
+                                        <a href="{{ route('proses_gaji.index') }}" class="kt-menu__link ">
                                             <i class="kt-menu__link-bullet kt-menu__link-bullet--line">
                                                 <span></span>
                                             </i>
-                                            <span class="kt-menu__link-text">Proses Gaji</span>
+                                            <span class="kt-menu__link-text">Proses Upah</span>
                                         </a>
                                     </li>
-                                    <li class="kt-menu__item " aria-haspopup="true">
-                                        <a href="custom/apps/user/list-default.html" class="kt-menu__link ">
+                                    <li class="kt-menu__item kt-menu__item{{ set_active_submenu($proses_thr) }}" aria-haspopup="true">
+                                        <a href="{{route('proses_thr.index')}}" class="kt-menu__link ">
                                             <i class="kt-menu__link-bullet kt-menu__link-bullet--line">
                                                 <span></span>
                                             </i>
                                             <span class="kt-menu__link-text">Proses THR</span>
                                         </a>
                                     </li>
-                                    <li class="kt-menu__item " aria-haspopup="true">
-                                        <a href="custom/apps/user/list-default.html" class="kt-menu__link ">
+                                    <li class="kt-menu__item kt-menu__item{{ set_active_submenu($proses_insentif) }}" aria-haspopup="true">
+                                        <a href="{{route('proses_insentif.index')}}" class="kt-menu__link ">
                                             <i class="kt-menu__link-bullet kt-menu__link-bullet--line">
                                                 <span></span>
                                             </i>
                                             <span class="kt-menu__link-text">Proses Insentif </span>
+                                        </a>
+                                    </li>
+                                    <li class="kt-menu__item kt-menu__item{{ set_active_submenu($tunjangan_golongan) }}" aria-haspopup="true">
+                                        <a href="{{route('tunjangan_golongan.index')}}" class="kt-menu__link ">
+                                            <i class="kt-menu__link-bullet kt-menu__link-bullet--line">
+                                                <span></span>
+                                            </i>
+                                            <span class="kt-menu__link-text">Tunjangan Pergolongan</span>
                                         </a>
                                     </li>
                                 </ul>

@@ -6,7 +6,7 @@
 	<div class="kt-container  kt-container--fluid ">
 		<div class="kt-subheader__main">
 			<h3 class="kt-subheader__title">
-				Potongan </h3>
+				Potongan Pinjaman Pegawai </h3>
 			<span class="kt-subheader__separator kt-hidden"></span>
 			<div class="kt-subheader__breadcrumbs">
 				<a href="#" class="kt-subheader__breadcrumbs-home"><i class="flaticon2-shelter"></i></a>
@@ -14,7 +14,7 @@
 				<a href="" class="kt-subheader__breadcrumbs-link">
 					Payroll </a>
 				<span class="kt-subheader__breadcrumbs-separator"></span>
-				<span class="kt-subheader__breadcrumbs-link kt-subheader__breadcrumbs-link--active">Potongan</span>
+				<span class="kt-subheader__breadcrumbs-link kt-subheader__breadcrumbs-link--active">Potongan Pinjaman Pegawai</span>
 			</div>
 		</div>
 	</div>
@@ -29,7 +29,7 @@
 				<i class="kt-font-brand flaticon2-line-chart"></i>
 			</span>
 			<h3 class="kt-portlet__head-title">
-				Tabel Potongan
+				Tabel Potongan Pinjaman Pegawai
 			</h3>			
 		</div>
 		<div class="kt-portlet__head-toolbar">
@@ -63,12 +63,15 @@
 			<thead class="thead-light">
 				<tr>
 					<th></th>
-					<th>Bulan</th>
-					<th>Pegawai</th>
-					<th>AARD</th>
-					<th>Cicilan Ke-</th>
-					<th>Jumlah Cicilan</th>
-					<th>Nilai</th>
+					<th>TAHUN</th>
+					<th>BULAN</th>
+					<th>PEGAWAI</th>
+					<th>POTONGAN</th>
+					<th>JMLCCL</th>
+					<th>CCL KE-</th>
+					<th>NILAI CCL</th>
+					<th>SISA HUTANG</th>
+					<th>TOTAL HUTANG</th>
 				</tr>
 			</thead>
 			<tbody>
@@ -95,32 +98,35 @@
 			ajax      : "{{ route('potongan_otomatis.index.json') }}",
 			columns: [
 				{data: 'action', name: 'action'},
-				{data: 'tahunbulan', name: 'tahunbulan'},
+				{data: 'tahun', name: 'tahun'},
+				{data: 'bulan', name: 'bulan'},
 				{data: 'nama', name: 'nama'},
 				{data: 'aard', name: 'aard'},
 				{data: 'jmlcc', name: 'jmlcc'},
 				{data: 'ccl', name: 'ccl'},
 				{data: 'nilai', name: 'nilai'},
+				{data: 'akhir', name: 'akhir'},
+				{data: 'total', name: 'total'},
 			]
 		});
 
-		//edit potongan Manual
-		// $('#editRow').click(function(e) {
-		// 	e.preventDefault();
+		//edit potongan Otomatis
+		$('#editRow').click(function(e) {
+			e.preventDefault();
 
-		// 	if($('input[type=radio]').is(':checked')) { 
-		// 		$("input[type=radio]:checked").each(function(){
-		// 			var tahun = $(this).attr('tahun');
-		// 			var bulan = $(this).attr('bulan');
-		// 			var nopek = $(this).attr('nopek');
-		// 			var aard  = $(this).attr('aard');
-		// 			var nama  = $(this).attr('nama');
-		// 			location.replace("{{url('sdm/potongan_otomatis/edit')}}"+ '/' +bulan+'/' +tahun+'/'+aard+ '/' +nopek);
-		// 		});
-		// 	} else {
-		// 		swalAlertInit('ubah');
-		// 	}
-		// });
+			if($('input[type=radio]').is(':checked')) { 
+				$("input[type=radio]:checked").each(function(){
+					var tahun = $(this).attr('tahun');
+					var bulan = $(this).attr('bulan');
+					var nopek = $(this).attr('nopek');
+					var aard  = $(this).attr('aard');
+					var nama  = $(this).attr('nama');
+					location.replace("{{url('sdm/potongan_otomatis/edit')}}"+ '/' +bulan+'/' +tahun+'/'+aard+ '/' +nopek);
+				});
+			} else {
+				swalAlertInit('ubah');
+			}
+		});
 
 		// delete potongan otomatis
 		$('#deleteRow').click(function(e) {
@@ -142,7 +148,7 @@
 						})
 						swalWithBootstrapButtons.fire({
 							title: "Data yang akan dihapus?",
-							text: "Dedail data : "+bulan+ '-'  + tahun+'-' +nama,
+							text: "Detail data : "+bulan+ '-'  + tahun+'-' +nama,
 							type: 'warning',
 							showCancelButton: true,
 							reverseButtons: true,
@@ -166,7 +172,7 @@
 								success: function () {
 									Swal.fire({
 										type  : 'success',
-										title : "Dedail data : "+bulan+ '-'  + tahun+'-' +nama,
+										title : "Detail data : "+bulan+ '-'  + tahun+'-' +nama,
 										text  : 'Berhasil',
 										timer : 2000
 									}).then(function() {

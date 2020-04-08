@@ -24,7 +24,7 @@ Route::group(['middleware'=> ['auth','checkRole:1']], function () {
 
         // UMK
         Route::get('uang_muka_kerja', 'UangMukaKerjaController@index')->name('uang_muka_kerja.index');
-        Route::get('uang_muka_kerja/index_json', 'UangMukaKerjaController@indexJson')->name('uang_muka_kerja.index.json');
+        Route::post('uang_muka_kerja/search_json', 'UangMukaKerjaController@searchIndex')->name('uang_muka_kerja.search.index');
         Route::get('uang_muka_kerja/create', 'UangMukaKerjaController@create')->name('uang_muka_kerja.create');
         Route::post('uang_muka_kerja/store', 'UangMukaKerjaController@store')->name('uang_muka_kerja.store');
         Route::post('uang_muka_kerja/store_detail', 'UangMukaKerjaController@storeDetail')->name('uang_muka_kerja.store.detail');
@@ -115,7 +115,7 @@ Route::group(['middleware'=> ['auth','checkRole:1']], function () {
 
         // Permintaan Bayar
         Route::get('permintaan_bayar', 'PermintaanBayarController@index')->name('permintaan_bayar.index');
-        Route::get('permintaan_bayar/index_json', 'PermintaanBayarController@indexJson')->name('permintaan_bayar.index.json');
+        Route::post('permintaan_bayar/search_index', 'PermintaanBayarController@searchIndex')->name('permintaan_bayar.search.index');
         Route::get('permintaan_bayar/create', 'PermintaanBayarController@create')->name('permintaan_bayar.create');
         Route::post('permintaan_bayar/store', 'PermintaanBayarController@store')->name('permintaan_bayar.store');
         Route::post('permintaan_bayar/store_detail', 'PermintaanBayarController@storeDetail')->name('permintaan_bayar.store.detail');
@@ -227,7 +227,7 @@ Route::group(['middleware'=> ['auth','checkRole:1']], function () {
         Route::get('pinjaman_pekerja/edit', 'PinjamanPekerjaController@edit')->name('pinjaman_pekerja.edit');
         //proses gaji
         Route::get('proses_gaji', 'ProsesGajiController@index')->name('proses_gaji.index');
-        Route::get('proses_gaji/create', 'ProsesGajiController@create')->name('proses_gaji.create');
+        Route::post('proses_gaji/store', 'ProsesGajiController@store')->name('proses_gaji.store');
         Route::get('proses_gaji/edit', 'ProsesGajiController@edit')->name('proses_gaji.edit');
         //proses thr
         Route::get('proses_thr', 'ProsesThrController@index')->name('proses_thr.index');
@@ -235,8 +235,17 @@ Route::group(['middleware'=> ['auth','checkRole:1']], function () {
         Route::get('proses_thr/edit', 'ProsesThrController@edit')->name('proses_thr.edit');
         //proses insentif
         Route::get('proses_insentif', 'ProsesInsentifController@index')->name('proses_insentif.index');
-        Route::get('proses_insentif/create', 'ProsesInsentifController@create')->name('proses_insentif.create');
+        Route::post('proses_insentif/store', 'ProsesInsentifController@store')->name('proses_insentif.store');
         Route::get('proses_insentif/edit', 'ProsesInsentifController@edit')->name('proses_insentif.edit');
+        //tunjangan golongan
+        Route::get('tunjangan_golongan', 'TunjanganGolonganController@index')->name('tunjangan_golongan.index');
+        Route::get('tunjangan_golongan/index_json', 'TunjanganGolonganController@indexJson')->name('tunjangan_golongan.index.json');
+        Route::get('tunjangan_golongan/create', 'TunjanganGolonganController@create')->name('tunjangan_golongan.create');
+        Route::post('tunjangan_golongan/cek_golongan/json', 'TunjanganGolonganController@cekGolonganJson')->name('tunjangan_golongan.golongan.json');
+        Route::post('tunjangan_golongan/store', 'TunjanganGolonganController@store')->name('tunjangan_golongan.store');
+        Route::get('tunjangan_golongan/edit/{id}', 'TunjanganGolonganController@edit')->name('tunjangan_golongan.edit');
+        Route::post('tunjangan_golongan/update', 'TunjanganGolonganController@update')->name('tunjangan_golongan.update');
+        Route::delete('tunjangan_golongan/delete', 'TunjanganGolonganController@delete')->name('tunjangan_golongan.delete');
         //proses report sdm payroll
         Route::get('report_sdm_payroll', 'ReportSdmPayrollController@index')->name('report_sdm_payroll.index');
         Route::get('report_sdm_payroll/create', 'ReportSdmPayrollController@create')->name('report_sdm_payroll.create');

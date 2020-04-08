@@ -46,13 +46,13 @@
                 <label for="mulai-input" class="col-2 col-form-label">Mulai</label>
                 <div class="col-8">
                     <div class="input-daterange input-group" id="date_range_picker">
-                        <input type="text" class="form-control" name="mulai" autocomplete="off" />
+                        <input type="text" class="form-control" name="mulai" autocomplete="off" required />
                         <div class="input-group-append">
                             <span class="input-group-text">Sampai</span>
                         </div>
                         <input type="text" class="form-control" name="sampai" autocomplete="off" />
                     </div>
-                    <span class="form-text text-muted">Pilih rentang waktu rekap permintaan bayar</span>
+                    <span class="form-text text-muted">Pilih rentang waktu rekap uang muka kerja</span>
                 </div>
             </div>
 

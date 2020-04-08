@@ -6,7 +6,7 @@
 	<div class="kt-container  kt-container--fluid ">
 		<div class="kt-subheader__main">
 			<h3 class="kt-subheader__title">
-				Koreksi Gaji </h3>
+				Potongan </h3>
 			<span class="kt-subheader__separator kt-hidden"></span>
 			<div class="kt-subheader__breadcrumbs">
 				<a href="#" class="kt-subheader__breadcrumbs-home"><i class="flaticon2-shelter"></i></a>
@@ -14,7 +14,7 @@
 				<a href="" class="kt-subheader__breadcrumbs-link">
 					Payroll </a>
 				<span class="kt-subheader__breadcrumbs-separator"></span>
-				<span class="kt-subheader__breadcrumbs-link kt-subheader__breadcrumbs-link--active">Koreksi Gaji</span>
+				<span class="kt-subheader__breadcrumbs-link kt-subheader__breadcrumbs-link--active">Potongan</span>
 			</div>
 		</div>
 	</div>
@@ -29,13 +29,13 @@
 				<i class="kt-font-brand flaticon2-line-chart"></i>
 			</span>
 			<h3 class="kt-portlet__head-title">
-				Tabel Koreksi Gaji
+				Tabel Potongan
 			</h3>			
 		</div>
 		<div class="kt-portlet__head-toolbar">
 			<div class="kt-portlet__head-wrapper">
 				<div class="kt-portlet__head-actions">
-					<a href="{{ route('potongan_koreksi_gaji.create') }}">
+					<a href="{{ route('potongan_manual.create') }}">
 						<span style="font-size: 2em;" class="kt-font-success" data-toggle="kt-tooltip" data-placement="top" title="Tambah Data">
 							<i class="fas fa-plus-circle"></i>
 						</span>
@@ -66,6 +66,8 @@
 					<th>Bulan</th>
 					<th>Pegawai</th>
 					<th>AARD</th>
+					<th>Cicilan Ke-</th>
+					<th>Jumlah Cicilan</th>
 					<th>Nilai</th>
 				</tr>
 			</thead>
@@ -90,17 +92,19 @@
 			language: {
             	processing: '<i class="fa fa-spinner fa-spin fa-2x fa-fw"></i> <br> Loading...'
 			},
-			ajax      : "{{ route('potongan_koreksi_gaji.index.json') }}",
+			ajax      : "{{ route('potongan_manual.index.json') }}",
 			columns: [
 				{data: 'action', name: 'action'},
 				{data: 'tahunbulan', name: 'tahunbulan'},
 				{data: 'nama', name: 'nama'},
 				{data: 'aard', name: 'aard'},
+				{data: 'ccl', name: 'ccl'},
+				{data: 'jmlcc', name: 'jmlcc'},
 				{data: 'nilai', name: 'nilai'},
 			]
-    	});	
+		});
 
-		//edit koreksi gaji
+		//edit potongan Otomatis
 		$('#editRow').click(function(e) {
 			e.preventDefault();
 
@@ -111,14 +115,14 @@
 					var nopek = $(this).attr('nopek');
 					var aard  = $(this).attr('aard');
 					var nama  = $(this).attr('nama');
-					location.replace("{{url('sdm/potongan_koreksi_gaji/edit')}}"+ '/' +bulan+'/' +tahun+'/'+aard+ '/' +nopek);
+					location.replace("{{url('sdm/potongan_manual/edit')}}"+ '/' +bulan+'/' +tahun+'/'+aard+ '/' +nopek);
 				});
 			} else {
 				swalAlertInit('ubah');
 			}
 		});
 
-		//delete koreksi gaji
+		// delete potongan otomatis
 		$('#deleteRow').click(function(e) {
 			e.preventDefault();
 			if($('input[type=radio]').is(':checked')) { 
@@ -148,7 +152,7 @@
 						.then((result) => {
 						if (result.value) {
 							$.ajax({
-								url: "{{ route('potongan_koreksi_gaji.delete') }}",
+								url: "{{ route('potongan_manual.delete') }}",
 								type: 'DELETE',
 								dataType: 'json',
 								data: {
@@ -181,6 +185,7 @@
 			}
 			
 		});
+		
 
 	});
 

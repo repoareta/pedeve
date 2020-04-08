@@ -36,7 +36,6 @@
 			</h3>
 		</div>
 	</div>
-	<div class="">
 		<div class="card-body table-responsive" >
 		<!--begin: Datatable -->
 		<form  class="kt-form kt-form--label-right" id="form-create-umk">
@@ -80,27 +79,27 @@
 					<div class="form-group row">
 						<label for="example-email-input" class="col-2 col-form-label">Jenis Uang Muka<span style="color:red;">*</span></label>
 						<div class="col-6">
-							<input style=" width: 26px;height: 26px;margin-left:50px;" value="K" type="radio"id="jenis_um" name="jenis_um" checked  autocomplete='off' />  <label style="font-size:14px; margin-left:10px;">Uang Muka Kerja</label>
-							<input style=" width: 26px;height: 26px;margin-left:50px;" value="D" type="radio"  id="jenis_um" name="jenis_um"   autocomplete='off'/><label style="font-size:14px; margin-left:10px;"> Uang Muka Dinas</label>
+							<input style=" width: 17px;height: 17px;margin-left:50px;" value="K" type="radio"  name="jenis_um" checked  autocomplete='off' />  <label style="font-size:12px; margin-left:10px;">Uang Muka Kerja</label>
+							<input style=" width: 17px;height: 17px;margin-left:50px;" value="D" type="radio"   name="jenis_um"   autocomplete='off'/><label style="font-size:12px; margin-left:10px;"> Uang Muka Dinas</label>
 						</div>
 					</div>
 					<div class="form-group row">
 						<label for="id-pekerja;-input" class="col-2 col-form-label">Bulan Buku<span style="color:red;">*</span></label>
-						<div class="col-10">
-							<input class="form-control" type="text"  value="{{ date('Ym') }}" id="bulan_buku" name="bulan_buku" size="6" maxlength="6" required>
+						<div class="col-5">
+							<input class="form-control" type="text"  value="{{$bulan_buku}}"  name="bulan_buku" size="6" maxlength="6" readonly style="background-color:#DCDCDC; cursor:not-allowed" >
 						</div>
 					</div>
 					<div class="form-group row">
 						<label for="dari-input" class="col-2 col-form-label">Mata Uang<span style="color:red;">*</span></label>
 						<div class="col-10">
-							<input id="ci"   style=" width: 26px;height: 26px;margin-left:50px;" value="1" type="radio"  name="ci" onclick="displayResult(1)"  checked />  <label style="font-size:14px; margin-left:10px;">IDR</label>
-							<input  id="ci" style=" width: 26px;height: 26px;margin-left:50px;" value="2" type="radio"    name="ci"  onclick="displayResult(2)" /><label style="font-size:14px; margin-left:10px;"> USD</label>
+							<input    style=" width: 17px;height: 26px;margin-left:50px;" value="1" type="radio"  name="ci" onclick="displayResult(1)"  checked />  <label style="font-size:12px; margin-left:10px;">IDR</label>
+							<input   style=" width: 17px;height: 26px;margin-left:50px;" value="2" type="radio"    name="ci"  onclick="displayResult(2)" /><label style="font-size:12px; margin-left:10px;"> USD</label>
 						</div>
 					</div>
 					<div class="form-group row">
 						<label for="tujuan-input" class="col-2 col-form-label">Kurs <span style="color:red;display:none" id="simbol-kurs">*</span></label>
-						<div class="col-10">
-							<input class="form-control" type="text" value="0" name="kurs" id="kurs" size="10" maxlength="10" autocomplete='off' onkeypress="return hanyaAngka(event)" >
+						<div class="col-2">
+							<input class="form-control" type="text" value="1" name="kurs" id="kurs" size="10" maxlength="10" autocomplete='off' onkeypress="return hanyaAngka(event)"  >
 						</div>
 					</div>
 					<div class="form-group row">
@@ -111,15 +110,18 @@
 					</div>
 					<div class="form-group row">
 						<label for="example-datetime-local-input" class="col-2 col-form-label">Jumlah</label>
-						<div class="col-10">
+						<div class="col-5">
 							<input style="background-color:#DCDCDC; cursor:not-allowed" class="form-control" type="text" value="Rp. 0"  readonly>
 							<input class="form-control" type="hidden" value="" name="jumlah" id="jumlah" size="70" maxlength="200" readonly>
 						</div>
 					</div>
-					<div style="float:right;">
-						<div class="kt-form__actions">
-							<a  href="{{route('uang_muka_kerja.index')}}" class="btn btn-warning"><i class="fa fa-reply" aria-hidden="true"></i>Cancel</a>
-							<button type="submit" class="btn btn-brand"><i class="fa fa-check" aria-hidden="true"></i>Save</button>
+					<div class="kt-form__actions">
+						<div class="row">
+							<div class="col-2"></div>
+							<div class="col-10">
+								<a  href="{{route('uang_muka_kerja.index')}}" class="btn btn-warning"><i class="fa fa-reply" aria-hidden="true"></i>Cancel</a>
+								<button type="submit" class="btn btn-brand"><i class="fa fa-check" aria-hidden="true"></i>Save</button>
+							</div>
 						</div>
 					</div>
 				</div>
@@ -136,27 +138,27 @@
 					<h3 class="kt-portlet__head-title">
 						Detail Uang Muka Kerja
 					</h3>			
-				</div>
-				<div class="kt-portlet__head-toolbar">
-					<div class="kt-portlet__head-wrapper">
-						<div class="kt-portlet__head-actions">
-							<a  href="#" style="cursor:not-allowed" data-toggle="modal" data-target="#kt_modal_4">
-								<span style="font-size: 2em;" class="kt-font-success">
-									<i class="fas fa-plus-circle"></i>
-								</span>
-							</a>
-			
-							<a href="#" style="cursor:not-allowed" data-toggle="modal" data-target="#kt_modal_4">
-								<span style="font-size: 2em;" class="kt-font-warning">
-									<i class="fas fa-edit"></i>
-								</span>
-							</a>
-			
-							<a href="#" style="cursor:not-allowed" data-toggle="modal" data-target="#kt_modal_4">
-								<span style="font-size: 2em;" class="kt-font-danger">
-									<i class="fas fa-times-circle"></i>
-								</span>
-							</a>
+					<div class="kt-portlet__head-toolbar">
+						<div class="kt-portlet__head-wrapper">
+							<div class="kt-portlet__head-actions">
+								<a  href="#" style="cursor:not-allowed" data-toggle="modal" data-target="#kt_modal_4">
+									<span style="font-size: 2em;" class="kt-font-success">
+										<i class="fas fa-plus-circle"></i>
+									</span>
+								</a>
+				
+								<a href="#" style="cursor:not-allowed" data-toggle="modal" data-target="#kt_modal_4">
+									<span style="font-size: 2em;" class="kt-font-warning">
+										<i class="fas fa-edit"></i>
+									</span>
+								</a>
+				
+								<a href="#" style="cursor:not-allowed" data-toggle="modal" data-target="#kt_modal_4">
+									<span style="font-size: 2em;" class="kt-font-danger">
+										<i class="fas fa-times-circle"></i>
+									</span>
+								</a>
+							</div>
 						</div>
 					</div>
 				</div>
@@ -183,7 +185,6 @@
 			</div>
 		</form>
 		<!--end: Datatable -->
-		</div>
 	</div>
 </div>
 </div>
@@ -198,7 +199,7 @@
 function displayResult(ci){ 
 		if(ci == 1)
 		{
-		$('#kurs').val(0);
+		$('#kurs').val(1);
 		$('#simbol-kurs').hide();
 		$( "#kurs" ).prop( "required", false );
 

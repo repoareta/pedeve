@@ -6,18 +6,18 @@
 	<div class="kt-container  kt-container--fluid ">
 		<div class="kt-subheader__main">
 			<h3 class="kt-subheader__title">
-				Panjar Dinas </h3>
+				Proses Upah Bulanan </h3>
 			<span class="kt-subheader__separator kt-hidden"></span>
 			<div class="kt-subheader__breadcrumbs">
 				<a href="#" class="kt-subheader__breadcrumbs-home"><i class="flaticon2-shelter"></i></a>
 				<span class="kt-subheader__breadcrumbs-separator"></span>
 				<a href="" class="kt-subheader__breadcrumbs-link">
-					Umum </a>
+				Sdm & Payroll </a>
 				<span class="kt-subheader__breadcrumbs-separator"></span>
 				<a href="" class="kt-subheader__breadcrumbs-link">
-					Perjalanan Dinas </a>
-				<span class="kt-subheader__breadcrumbs-separator"></span>
-				<span class="kt-subheader__breadcrumbs-link kt-subheader__breadcrumbs-link--active">Tambah</span>
+					 </a>
+				<!-- <span class="kt-subheader__breadcrumbs-separator"></span> -->
+				<span class="kt-subheader__breadcrumbs-link kt-subheader__breadcrumbs-link--active">Proses Upah Bulanan</span>
 			</div>
 		</div>
 	</div>
@@ -32,7 +32,7 @@
 					<i class="kt-font-brand flaticon2-plus-1"></i>
 				</span>
 				<h3 class="kt-portlet__head-title">
-					Tambah Panjar Dinas
+					Proses Upah Bulanan
 				</h3>			
 			</div>
 			<div class="kt-portlet__head-toolbar">
@@ -40,181 +40,107 @@
 				</div>
 			</div>
 		</div>
-		<form class="kt-form kt-form--label-right">
+		<form class="kt-form kt-form--label-right" action="{{route('proses_gaji.store')}}" method="post">
+		{{csrf_field()}}
 			<div class="kt-portlet__body">
 				<div class="form-group form-group-last">
 					<div class="alert alert-secondary" role="alert">
 						<div class="alert-text">
-							Header Panjar Dinas
+							Header Proses Upah Bulanan
 						</div>
 					</div>
 				</div>
+				<input class="form-control" type="hidden" name="userid" value="{{Auth::user()->userid}}">
 				<div class="form-group row">
-					<label for="spd-input" class="col-2 col-form-label">No. SPD</label>
-					<div class="col-10">
-						<input class="form-control" type="text" value="Artisanal kale" id="spd">
+					<label for="dari-input" class="col-2 col-form-label">Status Pekerja<span style="color:red;">*</span></label>
+					<div class="col-6">
+						<select name="prosesupah" id="select-debetdari" class="form-control selectpicker" data-live-search="true">
+							<option value="A">Semua</option>
+							<option value="C">Pekerja Tetap</option>
+							<option value="K">Kontrak</option>
+							<option value="B">Perbantuan</option>
+							<option value="U">Komisaris</option>
+							<option value="O">Komite</option>
+							<option value="N">Pekerja Baru</option>
+						</select>								
 					</div>
 				</div>
 				<div class="form-group row">
-					<label for="nopek-input" class="col-2 col-form-label">Nopek</label>
-					<div class="col-10">
-						<input class="form-control" type="text" value="How do I shoot web" id="example-search-input">
+					<label for="nopek-input" class="col-2 col-form-label">Bulan/Tahun<span style="color:red;">*</span></label>
+					<div class="col-6">
+						<input class="form-control" type="text" name="tanggalupah" value="" id="tanggal" size="7" maxlength="7" required  autocomplete='off'>
+						@if (session('proses'))
+						<small style="color: red;" id="att-kode-proses-upah">Bulan dan tahun yang dimasukan sudah pernah di proses.</small>
+                        @endif
 					</div>
 				</div>
 				<div class="form-group row">
-					<label for="example-email-input" class="col-2 col-form-label">Jabatan</label>
-					<div class="col-10">
-						<input class="form-control" type="text" value="bootstrap@example.com" id="example-email-input">
+					<label for="spd-input" class="col-2 col-form-label"></label>
+					<div class="col-5">
+						<input id="ci"   style=" width: 26px;height: 26px;margin-left:50px;" value="proses" type="radio"  name="radioupah"  checked />  <label style="font-size:14px; margin-left:10px;">Proses</label>
+						<input  id="ci" style=" width: 26px;height: 26px;margin-left:50px;" value="batal" type="radio"    name="radioupah"  /><label style="font-size:14px; margin-left:10px;"> Batalkan</label>
 					</div>
 				</div>
-				<div class="form-group row">
-					<label for="id-pekerja;-input" class="col-2 col-form-label">KTP/Passport</label>
-					<div class="col-10">
-						<input class="form-control" type="text" value="https://getbootstrap.com" id="example-url-input">
-					</div>
-				</div>
-				<div class="form-group row">
-					<label for="jenis-dinas-input" class="col-2 col-form-label">Jenis Dinas</label>
-					<div class="col-10">
-						<input class="form-control" type="text" value="1-(555)-555-5555" id="example-tel-input">
-					</div>
-				</div>
-				<div class="form-group row">
-					<label for="dari-input" class="col-2 col-form-label">Dari/Asal</label>
-					<div class="col-10">
-						<input class="form-control" type="text" value="hunter2" id="example-password-input">
-					</div>
-				</div>
-				<div class="form-group row">
-					<label for="tujuan-input" class="col-2 col-form-label">Tujuan</label>
-					<div class="col-10">
-						<input class="form-control" type="text" value="42" id="example-number-input">
-					</div>
-				</div>
-				<div class="form-group row">
-					<label for="example-datetime-local-input" class="col-2 col-form-label">Mulai</label>
-					<div class="col-10">
-						<input class="form-control" type="datetime-local" value="2011-08-19T13:45:00" id="example-datetime-local-input">
-					</div>
-				</div>
-				<div class="form-group row">
-					<label for="example-date-input" class="col-2 col-form-label">Sampai</label>
-					<div class="col-10">
-						<input class="form-control" type="date" value="2011-08-19" id="example-date-input">
-					</div>
-				</div>
-				<div class="form-group row">
-					<label for="example-month-input" class="col-2 col-form-label">Keterangan</label>
-					<div class="col-10">
-						<input class="form-control" type="month" value="2011-08" id="example-month-input">
-					</div>
-				</div>
-				<div class="form-group row">
-					<label for="example-week-input" class="col-2 col-form-label">Jumlah</label>
-					<div class="col-10">
-						<input class="form-control" type="week" value="2011-W33" id="example-week-input">
-					</div>
-				</div>
-			</div>
-
-				
-			<div class="kt-portlet__head kt-portlet__head">
-				<div class="kt-portlet__head-label">
-					<span class="kt-portlet__head-icon">
-						<i class="kt-font-brand flaticon2-line-chart"></i>
-					</span>
-					<h3 class="kt-portlet__head-title">
-						Detail Panjar Dinas
-					</h3>			
-				</div>
-				<div class="kt-portlet__head-toolbar">
-					<div class="kt-portlet__head-wrapper">
-						<div class="kt-portlet__head-actions">
-							<a href="#" data-toggle="modal" data-target="#kt_modal_4">
-								<span style="font-size: 2em;" class="kt-font-success">
-									<i class="fas fa-plus-circle"></i>
-								</span>
-							</a>
-			
-							<a href="#">
-								<span style="font-size: 2em;" class="kt-font-warning">
-									<i class="fas fa-edit"></i>
-								</span>
-							</a>
-			
-							<a href="#">
-								<span style="font-size: 2em;" class="kt-font-danger">
-									<i class="fas fa-times-circle"></i>
-								</span>
-							</a>
+				<div class="kt-form__actions">
+					<div class="row">
+						<div class="col-2"></div>
+						<div class="col-10">
+							<a  href="#" class="btn btn-warning"><i class="fa fa-reply" aria-hidden="true"></i>Cancel</a>
+							<button type="submit" id="btn-save" class="btn btn-brand"><i class="fa fa-check" aria-hidden="true"></i>Process</button>
 						</div>
 					</div>
 				</div>
-			</div>
-			<div class="kt-portlet__body">
-				<table class="table table-striped table-bordered table-hover table-checkable" id="kt_table">
-					<thead class="thead-light">
-						<tr>
-							<th>No</th>
-							<th>Nopek</th>
-							<th>Nama</th>
-							<th>Gol</th>
-							<th>Jabatan</th>
-							<th>Keterangan</th>
-						</tr>
-					</thead>
-					<tbody>
-						<tr>
-							<td>Hehe</td>
-							<td>Hehe</td>
-							<td>Hehe</td>
-							<td>Hehe</td>
-							<td>Hehe</td>
-							<td>Hehe</td>
-						</tr>
-					</tbody>
-				</table>
 			</div>
 		</form>
 	</div>
 </div>
-
-<!--begin::Modal-->
-<div class="modal fade" id="kt_modal_4" tabindex="-1" role="dialog" aria-labelledby="exampleModalLabel" aria-hidden="true">
-	<div class="modal-dialog modal-lg" role="document">
-		<div class="modal-content">
-			<div class="modal-header">
-				<h5 class="modal-title" id="exampleModalLabel">New message</h5>
-				<button type="button" class="close" data-dismiss="modal" aria-label="Close">
-				</button>
-			</div>
-			<div class="modal-body">
-				<form>
-					<div class="form-group">
-						<label for="recipient-name" class="form-control-label">Recipient:</label>
-						<input type="text" class="form-control" id="recipient-name">
-					</div>
-					<div class="form-group">
-						<label for="message-text" class="form-control-label">Message:</label>
-						<textarea class="form-control" id="message-text"></textarea>
-					</div>
-				</form>
-			</div>
-			<div class="modal-footer">
-				<button type="button" class="btn btn-secondary" data-dismiss="modal">Close</button>
-				<button type="button" class="btn btn-primary">Send message</button>
-			</div>
-		</div>
-	</div>
-</div>
-
-<!--end::Modal-->
 @endsection
 
 @section('scripts')
 	<script type="text/javascript">
 	$(document).ready(function () {
 		$('#kt_table').DataTable();
+
+
+		var KTBootstrapDatepicker = function () {
+
+var arrows;
+if (KTUtil.isRTL()) {
+	arrows = {
+		leftArrow: '<i class="la la-angle-right"></i>',
+		rightArrow: '<i class="la la-angle-left"></i>'
+	}
+} else {
+	arrows = {
+		leftArrow: '<i class="la la-angle-left"></i>',
+		rightArrow: '<i class="la la-angle-right"></i>'
+	}
+}
+
+// Private functions
+var demos = function () {
+
+	// minimum setup
+	$('#tanggal').datepicker({
+		rtl: KTUtil.isRTL(),
+		todayHighlight: true,
+		orientation: "bottom left",
+		templates: arrows,
+		autoclose: true,
+		// language : 'id',
+		format   : 'mm/yyyy'
 	});
-	</script>
+};
+
+return {
+	// public functions
+	init: function() {
+		demos(); 
+	}
+};
+}();
+
+KTBootstrapDatepicker.init();
+});
+</script>
 @endsection

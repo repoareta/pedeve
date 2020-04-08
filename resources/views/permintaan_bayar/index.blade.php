@@ -31,32 +31,38 @@
 			<h3 class="kt-portlet__head-title">
 				Tabel Umum Permintaan Bayar
 			</h3>			
-		</div>
-		<div class="kt-portlet__head-toolbar">
-			<div class="kt-portlet__head-wrapper">
-				<div class="kt-portlet__head-actions">
-						<a href="{{ route('permintaan_bayar.create') }}">
-							<span style="font-size: 2em;" class="kt-font-success" data-toggle="kt-tooltip" data-placement="top" title="Tambah Data">
-								<i class="fas fa-plus-circle"></i>
+			<div class="kt-portlet__head-actions">
+				<div class="kt-portlet__head-wrapper">
+					<div class="kt-portlet__head-actions">
+							<a href="{{ route('permintaan_bayar.create') }}">
+								<span style="font-size: 2em;" class="kt-font-success" data-toggle="kt-tooltip" data-placement="top" title="Tambah Data">
+									<i class="fas fa-plus-circle"></i>
+								</span>
+							</a>
+		
+							<span style="font-size: 2em;" class="kt-font-warning pointer-link" data-toggle="kt-tooltip" data-placement="top" title="Ubah Data">
+								<i class="fas fa-edit" id="editRow"></i>
 							</span>
-						</a>
-	
-						<span style="font-size: 2em;" class="kt-font-warning pointer-link" data-toggle="kt-tooltip" data-placement="top" title="Ubah Data">
-							<i class="fas fa-edit" id="editRow"></i>
-						</span>
-	
-						<span style="font-size: 2em;" class="kt-font-danger pointer-link" data-toggle="kt-tooltip" data-placement="top" title="Hapus Data">
-							<i class="fas fa-times-circle" id="deleteRow"></i>
-						</span>
+		
+							<span style="font-size: 2em;" class="kt-font-danger pointer-link" data-toggle="kt-tooltip" data-placement="top" title="Hapus Data">
+								<i class="fas fa-times-circle" id="deleteRow"></i>
+							</span>
 
-						<span style="font-size: 2em;" class="kt-font-info pointer-link" data-toggle="kt-tooltip" data-placement="top" title="Cetak Data">
-							<i class="fas fa-print" id="reportRow"></i>
-						</span>
+							<span style="font-size: 2em;" class="kt-font-info pointer-link" data-toggle="kt-tooltip" data-placement="top" title="Cetak Data">
+								<i class="fas fa-print" id="reportRow"></i>
+							</span>
+							<span style="font-size: 2em;" class="kt-font-info pointer-link" data-toggle="kt-tooltip" data-placement="top" title="Refresh Ketampilan Tabel Awal">
+								<i class="fas fa-sync-alt" id="show-data"></i>
+							</span>
+					</div>
 				</div>
 			</div>
 		</div>
 	</div>
 	<div class="kt-portlet__body">
+		<div style="float:right;"><form action="{{route('permintaan_bayar.search.index')}}" method="post">{{csrf_field()}}
+		  <p style="font-weight:bold;">No. Permintaan: <input style="width:20%;height:30px;box-radius:50%;border-radius:10px;"  name="permintaan" type="text" size="18" maxlength="18" value="" autocomplete='off'> Tahun: <input style="width:10%;height:30px;box-radius:50%;border-radius:10px;"  name="tahun" type="text" size="4" maxlength="4" value="" onkeypress="return hanyaAngka(event)" autocomplete='off'> Bulan: <input style="width:10%;height:30px;box-radius:50%;border-radius:10px;"  name="bulan" type="text" size="2" maxlength="2" value="" onkeypress="return hanyaAngka(event)" autocomplete='off'> <button type="submit" style="font-size: 20px;margin-left:5px;border-radius:10px;" class="kt-font-info pointer-link" data-toggle="kt-tooltip" data-placement="top" title="Cari Data"> <i class="fa fa-search"></i></button>  
+		</form></div>
 
 		<!--begin: Datatable -->
 		<table class="table table-striped table-bordered table-hover table-checkable" id="table-permintaan">
@@ -72,7 +78,39 @@
 					<th>Approval</th>
 				</tr>
 			</thead>
-			<tbody>
+			<tbody class="thead-light">
+				@foreach($bayar_list as $data)
+				<tr>
+					<td>
+						<?php if($data->app_pbd == 'Y'){
+							 echo'<label class="kt-radio kt-radio--bold kt-radio--brand"><input type="radio" data-id-rekap="'.str_replace('/', '-', $data->no_bayar).'" class="btn-radio-rekap" name="btn-radio-rekap"><span></span></label>';
+						}else{
+							if($data->app_sdm == 'Y'){
+							echo '<label class="kt-radio kt-radio--bold kt-radio--brand"><input class="btn-radio" type="radio" disabled class="btn-radio" ><span></span></label>';
+							}else{
+							 echo '<label  class="kt-radio kt-radio--bold kt-radio--brand"><input type="radio" class="btn-radio" databayar="'.$data->no_bayar.'" data-id="'.str_replace('/', '-', $data->no_bayar).'" name="btn-radio"><span></span></label>';
+							}
+						} ?>
+					</td>
+					<td>{{$data->no_bayar}}</td>
+					<td>{{$data->no_kas}}</td>
+					<td>{{$data->kepada}}</td>
+					<td>{{$data->keterangan}}</td>
+					<td>{{$data->lampiran}}</td>
+					<td>Rp. <?php echo number_format($data->nilai, 2, ',', '.') ?></td>
+					<td>
+						<?php if($data->app_pbd == 'Y'){
+							echo '<p align="center"><span style="font-size: 2em;" class="kt-font-success pointer-link" data-toggle="kt-tooltip" data-placement="top" title="Data Sudah di proses perbendaharaan"><i class="fas fa-check-circle" ></i></span></p>';
+						}else{
+							if($data->app_sdm == 'Y'){
+								echo '<p align="center"><a href="'. route('permintaan_bayar.approv',['id' => str_replace('/', '-', $data->no_bayar)]).'"><span style="font-size: 2em;" class="kt-font-warning pointer-link" data-toggle="kt-tooltip" data-placement="top" title="Batalkan Approval"><i class="fas fa-check-circle" ></i></span></a></p>';
+							}else{
+								echo '<p align="center"><a href="'. route('permintaan_bayar.approv',['id' => str_replace('/', '-', $data->no_bayar)]).'"><span style="font-size: 2em;" class="kt-font-danger pointer-link" data-toggle="kt-tooltip" data-placement="top" title="Klik untuk Approval"><i class="fas fa-ban" ></i></span></a></p>';
+							}
+						} ?>
+					</td>
+				</tr>
+				@endforeach
 			</tbody>
 		</table>
 
@@ -84,25 +122,25 @@
 @section('scripts')
 	<script type="text/javascript">
 	$(document).ready(function () {
+		
 		$('#table-permintaan').DataTable({
 			scrollX   : true,
 			processing: true,
-			serverSide: true,
+			serverSide: false,
+			searching: false,
+			lengthChange: false,
 			language: {
             	processing: '<i class="fa fa-spinner fa-spin fa-2x fa-fw"></i> <br> Loading...'
 			},
-			ajax      : "{{ route('permintaan_bayar.index.json') }}",
-			columns: [
-				{data: 'action_radio', name: 'aksi', orderable: false, searchable: false},
-				{data: 'no_bayar', name: 'no_bayar'},
-				{data: 'no_kas', name: 'no_kas'},
-				{data: 'kepada', name: 'kepada'},
-				{data: 'keterangan', name: 'keterangan'},
-				{data: 'lampiran', name: 'lampiran'},
-				{data: 'nilai', name: 'nilai'},
-				{data: 'action', name: 'aksi' , orderable: false, searchable: false},
-			]
-    	});
+			
+		});
+		
+	$('#show-data').on('click', function(e) {
+	e.preventDefault();
+		location.replace("{{ route('permintaan_bayar.index') }}");
+
+	});
+		
 
 //report Uang Muka Kerja 
 $('#reportRow').on('click', function(e) {
@@ -190,5 +228,12 @@ $('#reportRow').on('click', function(e) {
 			
 		});
 	});
+	function hanyaAngka(evt) {
+		  var charCode = (evt.which) ? evt.which : event.keyCode
+		   if (charCode > 31 && (charCode < 48 || charCode > 57))
+ 
+		    return false;
+		  return true;
+		}
 	</script>
 @endsection
