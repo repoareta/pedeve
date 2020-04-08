@@ -58,30 +58,38 @@
 				</div>
 			</div>
             <div class="form-group row">
-				<label for="jenis-dinas-input" class="col-2 col-form-label">Menyetujui</label>
-				<div class="col-10">
-					<input class="form-control" type="text" value="" name="menyetujui" id="menyetujui" size="50" maxlength="200" required oninvalid="this.setCustomValidity('Menyetujui Harus Diisi..')" oninput="setCustomValidity('')" autocomplete='off'>
+				<label class="col-2 col-form-label">Menyetujui<span style="color:red;">*</span></label>
+				<div class="col-5">
+					<input class="form-control" type="text" value="{{$setuju}}" name="menyetujui" id="menyetujui" size="50" maxlength="200" required oninvalid="this.setCustomValidity('Menyetujui Harus Diisi..')" oninput="setCustomValidity('')" autocomplete='off'>
+				</div>
+				<label class="col-2 col-form-label">Jabatan<span style="color:red;">*</span></label>
+				<div class="col-3" >
+					<input class="form-control" type="text" value="{{$setujus}}" name="menyetujuijb" id="menyetujuijb" size="50" maxlength="200" required oninvalid="this.setCustomValidity('Jabatan Harus Diisi..')" oninput="setCustomValidity('')" autocomplete='off'>
+				</div>
+			</div>
+			<div class="form-group row">
+				<label class="col-2 col-form-label">Pemohon<span style="color:red;">*</span></label>
+				<div class="col-5">
+					<input class="form-control" type="text" value="{{$pemohon}}" name="pemohon" id="pemohon" size="50" maxlength="200" required oninvalid="this.setCustomValidity('Pemohon Harus Diisi..')" oninput="setCustomValidity('')" autocomplete='off'>
+				</div>
+				<label class="col-2 col-form-label">Jabatan<span style="color:red;">*</span></label>
+				<div class="col-3" >
+					<input class="form-control" type="text" value="{{$pemohons}}" name="pemohonjb" id="pemohonjb" size="50" maxlength="200" required oninvalid="this.setCustomValidity('Jabatan Harus Diisi..')" oninput="setCustomValidity('')" autocomplete='off'>
 				</div>
 			</div>
             <div class="form-group row">
-				<label for="jenis-dinas-input" class="col-2 col-form-label">Pemohon</label>
-				<div class="col-10">
-					<input class="form-control" type="text" value="" name="pemohon" id="pemohon" size="50" maxlength="200" required oninvalid="this.setCustomValidity('Pemohon Harus Diisi..')" oninput="setCustomValidity('')" autocomplete='off'>
-				</div>
-			</div>
-            <div class="form-group row">
-				<label for="jenis-dinas-input" class="col-2 col-form-label">Tanggal Surat</label>
-				<div class="col-10">
-                    <input class="form-control" type="text" name="tglsurat" value="" data-date-format="dd/MM/yyyy" id="tglsurat" size="15" maxlength="15" required autocomplete='off'>
+				<label for="jenis-dinas-input" class="col-2 col-form-label">Tanggal Cetak</label>
+				<div class="col-5">
+                    <input class="form-control" type="text" name="tglsurat" value="{{ date('d/m/Y') }}"  id="tglsurat" size="15" maxlength="15" required autocomplete='off'>
 				</div>
 			</div>
 
-            <div class="kt-form__actions" align="right">
+            <div class="kt-form__actions">
                 <div class="row">
                     <div class="col-2"></div>
                     <div class="col-10">
-                        <a  href="{{ route('permintaan_bayar.index') }}" class="btn btn-warning"><i class="fa fa-reply" aria-hidden="true"></i> Batal</a>
-                        <button type="submit" class="btn btn-brand"><i class="fa fa-check" aria-hidden="true"></i> Submit</button>
+                        <a  href="{{ route('uang_muka_kerja.index') }}" class="btn btn-warning"><i class="fa fa-reply" aria-hidden="true"></i> Batal</a>
+                        <button type="submit" class="btn btn-brand"><i class="fa fa-print" aria-hidden="true"></i> Cetak</button>
                     </div>
                 </div>
             </div>

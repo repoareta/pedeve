@@ -77,27 +77,27 @@
 					<div class="form-group row">
 						<label for="example-email-input" class="col-2 col-form-label">Jenis Uang Muka<span style="color:red;">*</span></label>
 						<div class="col-6">
-							<input style=" width: 26px;height: 26px;margin-left:50px;" value="K" <?php if ($data_umk->jenis_um == 'K' )  echo 'checked' ; ?> type="radio" id="jenis_um" name="jenis_um" />  <label style="font-size:14px; margin-left:10px;">Uang Muka Kerja</label>
-							<input style=" width: 26px;height: 26px;margin-left:50px;" value="D" <?php if ($data_umk->jenis_um == 'D' )  echo 'checked' ; ?> type="radio"  id="jenis_um" name="jenis_um"/><label style="font-size:14px; margin-left:10px;"> Uang Muka Dinas</label>
+							<input style=" width: 17px;height: 26px;margin-left:50px;" value="K" <?php if ($data_umk->jenis_um == 'K' )  echo 'checked' ; ?> type="radio" id="jenis_um" name="jenis_um" />  <label style="font-size:12px; margin-left:10px;">Uang Muka Kerja</label>
+							<input style=" width: 17px;height: 26px;margin-left:50px;" value="D" <?php if ($data_umk->jenis_um == 'D' )  echo 'checked' ; ?> type="radio"  id="jenis_um" name="jenis_um"/><label style="font-size:12px; margin-left:10px;"> Uang Muka Dinas</label>
 						</div>
 					</div>
 					<div class="form-group row">
 						<label for="id-pekerja;-input" class="col-2 col-form-label">Bulan Buku<span style="color:red;">*</span></label>
-						<div class="col-10">
-                            <input class="form-control" type="text" value="{{$data_umk->bulan_buku}}"   name="bulan_buku" id="bulan_buku" size="6" maxlength="6">
+						<div class="col-5">
+                            <input class="form-control" type="text" value="{{$data_umk->bulan_buku}}"   name="bulan_buku" size="6" maxlength="6" readonly style="background-color:#DCDCDC; cursor:not-allowed">
 						</div>
 					</div>
 					<div class="form-group row">
 						<label for="dari-input" class="col-2 col-form-label">Mata Uang<span style="color:red;">*</span></label>
 						<div class="col-10">
-							<input id="ci"   style=" width: 26px;height: 26px;margin-left:50px;" value="1" <?php if ($data_umk->ci == '1' )  echo 'checked' ; ?> type="radio"  name="ci" onclick="displayResult(1)"  />  <label style="font-size:14px; margin-left:10px;">IDR</label>
-							<input  id="ci" style=" width: 26px;height: 26px;margin-left:50px;" value="2" <?php if ($data_umk->ci == '2' )  echo 'checked' ; ?> type="radio"    name="ci"  onclick="displayResult(2)" /><label style="font-size:14px; margin-left:10px;"> USD</label>
+							<input id="ci"   style=" width: 17px;height: 26px;margin-left:50px;" value="1" <?php if ($data_umk->ci == '1' )  echo 'checked' ; ?> type="radio"  name="ci" onclick="displayResult(1)"  />  <label style="font-size:12px; margin-left:10px;">IDR</label>
+							<input  id="ci" style=" width: 17px;height: 26px;margin-left:50px;" value="2" <?php if ($data_umk->ci == '2' )  echo 'checked' ; ?> type="radio"    name="ci"  onclick="displayResult(2)" /><label style="font-size:12px; margin-left:10px;"> USD</label>
 						</div>
 					</div>
 					<div class="form-group row">
 						<label for="tujuan-input" class="col-2 col-form-label">Kurs<span style="color:red;">*</span></label>
-						<div class="col-10">
-                            <input class="form-control" type="text" value="<?php echo number_format($data_umk->rate, 0, ',', '.'); ?>" name="kurs"  size="10" maxlength="10">
+						<div class="col-2">
+                            <input class="form-control" type="text" value="<?php echo number_format($data_umk->rate, 0, ',', '.'); ?>" name="kurs"  id="kurs" size="10" maxlength="10">
                             <input class="form-control" type="text" hidden value="{{$data_umk->rate}}" name="kurs"  size="10" maxlength="10">
 						</div>
 					</div>
@@ -109,15 +109,18 @@
 					</div>
 					<div class="form-group row">
 						<label for="example-datetime-local-input" class="col-2 col-form-label">Jumlah<span style="color:red;">*</span></label>
-						<div class="col-10">
+						<div class="col-5">
                             <input style="background-color:#DCDCDC; cursor:not-allowed" class="form-control" type="text" value="Rp. <?php echo number_format($count, 0, ',', '.'); ?>"  size="16" maxlength="16" readonly>
 							<input  class="form-control" type="text" value="<?php echo number_format($count, 0, '', ''); ?>" name="jumlah" id="jumlah" size="16" maxlength="16" hidden readonly>
 						</div>
 					</div>
-					<div style="float:right;">
-						<div class="kt-form__actions">
-							<a  href="{{route('uang_muka_kerja.index')}}" class="btn btn-warning"><i class="fa fa-reply" aria-hidden="true"></i>Cancel</a>
-							<button type="submit" class="btn btn-brand"><i class="fa fa-check" aria-hidden="true"></i>Save</button>
+					<div class="kt-form__actions">
+						<div class="row">
+							<div class="col-2"></div>
+							<div class="col-10">
+								<a  href="{{route('uang_muka_kerja.index')}}" class="btn btn-warning"><i class="fa fa-reply" aria-hidden="true"></i>Cancel</a>
+								<button type="submit" class="btn btn-brand"><i class="fa fa-check" aria-hidden="true"></i>Save</button>
+							</div>
 						</div>
 					</div>
                     @endforeach
@@ -137,23 +140,23 @@
 					<h3 class="kt-portlet__head-title">
 						Detail Uang Muka Kerja
 					</h3>			
-				</div>
-				<div class="kt-portlet__head-toolbar">
-					<div class="kt-portlet__head-wrapper">
-						<div class="kt-portlet__head-actions">
-							<a href="#" id="btn-create-detail" data-target="#kt_modal_4">
-								<span style="font-size: 2em;" class="kt-font-success" data-toggle="kt-tooltip" data-placement="top" title="Tambah Data">
-									<i class="fas fa-plus-circle"></i>
+					<div class="kt-portlet__head-toolbar">
+						<div class="kt-portlet__head-wrapper">
+							<div class="kt-portlet__head-actions">
+								<a href="#" id="btn-create-detail" data-target="#kt_modal_4">
+									<span style="font-size: 2em;" class="kt-font-success" data-toggle="kt-tooltip" data-placement="top" title="Tambah Data">
+										<i class="fas fa-plus-circle"></i>
+									</span>
+								</a>
+				
+								<span style="font-size: 2em;" class="kt-font-warning pointer-link" data-toggle="kt-tooltip" data-placement="top" title="Ubah Data">
+									<i class="fas fa-edit" id="btn-edit-detail"></i>
 								</span>
-							</a>
-			
-							<span style="font-size: 2em;" class="kt-font-warning pointer-link" data-toggle="kt-tooltip" data-placement="top" title="Ubah Data">
-								<i class="fas fa-edit" id="btn-edit-detail"></i>
-							</span>
-			
-							<span style="font-size: 2em;" class="kt-font-danger pointer-link" data-toggle="kt-tooltip" data-placement="top" title="Hapus Data">
-								<i class="fas fa-times-circle" id="deleteRow"></i>
-							</span>
+				
+								<span style="font-size: 2em;" class="kt-font-danger pointer-link" data-toggle="kt-tooltip" data-placement="top" title="Hapus Data">
+									<i class="fas fa-times-circle" id="deleteRow"></i>
+								</span>
+							</div>
 						</div>
 					</div>
 				</div>
@@ -303,9 +306,14 @@
 					</div>
 
 																					
-					<div style="float:right;">
-						<button type="reset"  class="btn btn-warning"  data-dismiss="modal"><i class="fa fa-reply" aria-hidden="true"></i>Cancel</button>
-						<button type="submit" class="btn btn-brand"><i class="fa fa-check" aria-hidden="true"></i>Save</button>
+					<div class="kt-form__actions">
+						<div class="row">
+							<div class="col-2"></div>
+							<div class="col-10">
+								<button type="reset"  class="btn btn-warning"  data-dismiss="modal"><i class="fa fa-reply" aria-hidden="true"></i>Cancel</button>
+								<button type="submit" class="btn btn-brand"><i class="fa fa-check" aria-hidden="true"></i>Save</button>
+							</div>
+						</div>
 					</div>
 				</form>
 			</div>
@@ -421,9 +429,14 @@
 					</div>
 
 																					
-					<div style="float:right;">
-						<button type="reset"  class="btn btn-warning"  data-dismiss="modal"><i class="fa fa-reply" aria-hidden="true"></i>Cancel</button>
-						<button type="submit" class="btn btn-brand"><i class="fa fa-check" aria-hidden="true"></i>Save</button>
+					<div class="kt-form__actions">
+						<div class="row">
+							<div class="col-2"></div>
+							<div class="col-10">
+								<button type="reset"  class="btn btn-warning"  data-dismiss="modal"><i class="fa fa-reply" aria-hidden="true"></i>Cancel</button>
+								<button type="submit" class="btn btn-brand"><i class="fa fa-check" aria-hidden="true"></i>Save</button>
+							</div>
+						</div>
 					</div>
 				</form>
 			</div>
@@ -714,7 +727,19 @@ init: function() {
 }();
 
 KTBootstrapDatepicker.init();
+function displayResult(ci){ 
+			if(ci == 1)
+			{
+				$('#kurs').val(1);
+				$('#simbol-kurs').hide();
+				$( "#kurs" ).prop( "required", false );
 
+			}else{
+				$('#kurs').val("");
+				$('#simbol-kurs').show();
+				$( "#kurs" ).prop( "required", true );
+			}
+		}
 function hanyaAngka(evt) {
 		  var charCode = (evt.which) ? evt.which : event.keyCode
 		   if (charCode > 31 && (charCode < 48 || charCode > 57))

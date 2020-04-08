@@ -452,7 +452,7 @@
                                 <i class="kt-menu__link-bullet kt-menu__link-bullet--dot">
                                     <span></span>
                                 </i>
-                                <span class="kt-menu__link-text">Proses Gaji</span>
+                                <span class="kt-menu__link-text">Proses Upah</span>
                                 <i class="kt-menu__ver-arrow la la-angle-right"></i>
                             </a>
                             <div class="kt-menu__submenu "><span class="kt-menu__arrow"></span>
@@ -462,7 +462,7 @@
                                             <i class="kt-menu__link-bullet kt-menu__link-bullet--line">
                                                 <span></span>
                                             </i>
-                                            <span class="kt-menu__link-text">Proses Gaji</span>
+                                            <span class="kt-menu__link-text">Proses Upah</span>
                                         </a>
                                     </li>
                                     <li class="kt-menu__item kt-menu__item{{ set_active_submenu($proses_thr) }}" aria-haspopup="true">

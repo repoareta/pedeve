@@ -24,7 +24,7 @@ Route::group(['middleware'=> ['auth','checkRole:1']], function () {
 
         // UMK
         Route::get('uang_muka_kerja', 'UangMukaKerjaController@index')->name('uang_muka_kerja.index');
-        Route::get('uang_muka_kerja/index_json', 'UangMukaKerjaController@indexJson')->name('uang_muka_kerja.index.json');
+        Route::post('uang_muka_kerja/search_json', 'UangMukaKerjaController@searchIndex')->name('uang_muka_kerja.search.index');
         Route::get('uang_muka_kerja/create', 'UangMukaKerjaController@create')->name('uang_muka_kerja.create');
         Route::post('uang_muka_kerja/store', 'UangMukaKerjaController@store')->name('uang_muka_kerja.store');
         Route::post('uang_muka_kerja/store_detail', 'UangMukaKerjaController@storeDetail')->name('uang_muka_kerja.store.detail');
@@ -115,7 +115,7 @@ Route::group(['middleware'=> ['auth','checkRole:1']], function () {
 
         // Permintaan Bayar
         Route::get('permintaan_bayar', 'PermintaanBayarController@index')->name('permintaan_bayar.index');
-        Route::get('permintaan_bayar/index_json', 'PermintaanBayarController@indexJson')->name('permintaan_bayar.index.json');
+        Route::post('permintaan_bayar/search_index', 'PermintaanBayarController@searchIndex')->name('permintaan_bayar.search.index');
         Route::get('permintaan_bayar/create', 'PermintaanBayarController@create')->name('permintaan_bayar.create');
         Route::post('permintaan_bayar/store', 'PermintaanBayarController@store')->name('permintaan_bayar.store');
         Route::post('permintaan_bayar/store_detail', 'PermintaanBayarController@storeDetail')->name('permintaan_bayar.store.detail');
@@ -235,7 +235,7 @@ Route::group(['middleware'=> ['auth','checkRole:1']], function () {
         Route::get('proses_thr/edit', 'ProsesThrController@edit')->name('proses_thr.edit');
         //proses insentif
         Route::get('proses_insentif', 'ProsesInsentifController@index')->name('proses_insentif.index');
-        Route::get('proses_insentif/create', 'ProsesInsentifController@create')->name('proses_insentif.create');
+        Route::post('proses_insentif/store', 'ProsesInsentifController@store')->name('proses_insentif.store');
         Route::get('proses_insentif/edit', 'ProsesInsentifController@edit')->name('proses_insentif.edit');
         //tunjangan golongan
         Route::get('tunjangan_golongan', 'TunjanganGolonganController@index')->name('tunjangan_golongan.index');

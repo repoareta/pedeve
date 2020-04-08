@@ -66,7 +66,7 @@
 					</div>
 				</div>
 				<div class="form-group row">
-					<label for="nopek-input" class="col-2 col-form-label">Bulan/Tahun</label>
+					<label for="nopek-input" class="col-2 col-form-label">Bulan/Tahun<span style="color:red;">*</span></label>
 					<div class="col-6">
 						<input class="form-control" type="text" name="tanggalupah" value="" id="tanggal" size="7" maxlength="7" required  autocomplete='off'>
 						@if (session('proses'))

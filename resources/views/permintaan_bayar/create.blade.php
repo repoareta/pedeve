@@ -62,7 +62,8 @@
 								<input style="background-color:#DCDCDC; cursor:not-allowed" class="form-control" type="text" name="nobayar" value="{{ $permintaan_header_count }}" id="nobayar" readonly>
 							</div>
 
-							<label for="spd-input" class="col-2 col-form-label">Tanggal<span style="color:red;">*</span></label>
+							<label for="spd-input" class="col-1 col-form-label"></span></label>
+							<label for="spd-input" class="col-1 col-form-label">Tanggal<span style="color:red;">*</span></label>
 							<div class="col-3">
 								<input class="form-control" type="text" name="tanggal" id="tanggal" value="{{ date('Y-m-d') }}">
 							</div>
@@ -92,6 +93,12 @@
 							</div>
 						</div>
 						<div class="form-group row">
+							<label for="" class="col-2 col-form-label">Rekening Bank<span style="color:red;">*</span></label>
+							<div class="col-10">
+								<input style=" width: 17px;height: 26px;margin-left:50px;" name="rekyes" type="checkbox"  id="rekyes" value="1"></td>
+							</div>
+						</div>
+						<div class="form-group row">
 							<label for="dari-input" class="col-2 col-form-label">Debet Dari<span style="color:red;">*</span></label>
 							<div class="col-10">
 								<select name="debetdari" id="select-debetdari" class="form-control selectpicker" data-live-search="true" required>
@@ -108,7 +115,8 @@
 							<div class="col-5">
 								<input class="form-control" type="text" name="nodebet" id="nodebet" value="" size="15" maxlength="15" required oninvalid="this.setCustomValidity('No. Debet Harus Diisi..')" oninput="setCustomValidity('')" autocomplete='off'>
 							</div>
-							<label class="col-2 col-form-label">Tgl Debet<span style="color:red;">*</span></label>
+							<label for="spd-input" class="col-1 col-form-label"></span></label>
+							<label class="col-1.5 col-form-label">Tgl Debet<span style="color:red;">*</span></label>
 							<div class="col-3" >
 								<input class="form-control" type="text" name="tgldebet" value="" data-date-format="dd/MM/yyyy" id="tgldebet" size="15" maxlength="15" required autocomplete='off'>
 							</div>
@@ -118,21 +126,22 @@
 							<div class="col-5">
 								<input style="background-color:#DCDCDC; cursor:not-allowed" readonly  class="form-control" name="nokas" type="text" value="" id="nokas" size="10" maxlength="25" autocomplete='off'>
 							</div>
-							<label for="spd-input"  class="col-2 col-form-label">Bulan Buku<span style="color:red;">*</span></label>
+							<label for="spd-input" class="col-1 col-form-label"></span></label>
+							<label for="spd-input"  class="col-1.5 col-form-label">Bulan Buku<span style="color:red;">*</span></label>
 							<div class="col-3" >
-								<input class="form-control" type="text" value="{{ date('Ym') }}"  id="bulanbuku" name="bulanbuku" size="6" maxlength="6" required  autocomplete='off'>
+								<input style="background-color:#DCDCDC; cursor:not-allowed" readonly class="form-control" type="text" value="{{$bulan_buku}}"   name="bulanbuku" size="6" maxlength="6"  >
 							</div>
 						</div>
 						<div class="form-group row">
 							<label for="spd-input" class="col-2 col-form-label">CI</label>
 							<div class="col-5">
-									<input id="ci"   style=" width: 26px;height: 26px;margin-left:50px;" value="1" type="radio"  name="ci" onclick="displayResult(1)"  checked />  <label style="font-size:14px; margin-left:10px;">IDR</label>
-									<input  id="ci" style=" width: 26px;height: 26px;margin-left:50px;" value="2" type="radio"    name="ci"  onclick="displayResult(2)" /><label style="font-size:14px; margin-left:10px;"> USD</label>
+									<input id="ci"   style=" width: 17px;height: 26px;margin-left:50px;" value="1" type="radio"  name="ci" onclick="displayResult(1)"  checked />  <label style="font-size:12px; margin-left:10px;">IDR</label>
+									<input  id="ci" style=" width: 17px;height: 26px;margin-left:50px;" value="2" type="radio"    name="ci"  onclick="displayResult(2)" /><label style="font-size:12px; margin-left:10px;"> USD</label>
 							</div>
-
-							<label for="spd-input" class="col-2 col-form-label">Kurs<span style="color:red;display:none" id="simbol-kurs">*</span></label>
+							<label for="spd-input" class="col-1 col-form-label"></span></label>
+							<label for="spd-input" class="col-1 col-form-label">Kurs<span style="color:red;display:none" id="simbol-kurs">*</span></label>
 							<div class="col-3">
-							<input class="form-control" type="text" value="0" name="kurs" id="kurs" size="10" maxlength="10" autocomplete='off' onkeypress="return hanyaAngka(event)" >
+								<input class="form-control" type="text" value="1" name="kurs" id="kurs" size="10" maxlength="10" autocomplete='off' onkeypress="return hanyaAngka(event)" >
 							</div>
 						</div>
 						<div class="form-group row">
@@ -154,10 +163,13 @@
 								<input style="background-color:#DCDCDC; cursor:not-allowed" class="form-control" name="totalnilai" type="hidden" value="" id="totalnilai"  readonly>
 							</div>
 						</div>
-						<div style="float:right;">
-							<div class="kt-form__actions">
-								<a  href="{{route('permintaan_bayar.index')}}" class="btn btn-warning"><i class="fa fa-reply" aria-hidden="true"></i>Cancel</a>
-								<button type="submit" class="btn btn-brand"><i class="fa fa-check" aria-hidden="true"></i>Save</button>
+						<div class="kt-form__actions">
+							<div class="row">
+								<div class="col-2"></div>
+								<div class="col-10">
+									<a  href="{{route('permintaan_bayar.index')}}" class="btn btn-warning"><i class="fa fa-reply" aria-hidden="true"></i>Cancel</a>
+									<button type="submit" class="btn btn-brand"><i class="fa fa-check" aria-hidden="true"></i>Save</button>
+								</div>
 							</div>
 						</div>
 					</div>
@@ -174,27 +186,27 @@
 						<h3 class="kt-portlet__head-title">
 							Detail Permintaan Bayar
 						</h3>			
-					</div>
-					<div class="kt-portlet__head-toolbar">
-						<div class="kt-portlet__head-wrapper">
-							<div class="kt-portlet__head-actions">
-								<a href="#" style="cursor:not-allowed" data-toggle="modal" data-target="#kt_modal_4">
-									<span style="font-size: 2em;" class="kt-font-success">
-										<i class="fas fa-plus-circle"></i>
-									</span>
-								</a>
-				
-								<a href="#" style="cursor:not-allowed" data-toggle="modal" data-target="#kt_modal_4" >
-									<span style="font-size: 2em;" class="kt-font-warning">
-										<i class="fas fa-edit"></i>
-									</span>
-								</a>
-				
-								<a href="#" style="cursor:not-allowed" data-toggle="modal" data-target="#kt_modal_4">
-									<span style="font-size: 2em;" class="kt-font-danger">
-										<i class="fas fa-times-circle"></i>
-									</span>
-								</a>
+						<div class="kt-portlet__head-toolbar">
+							<div class="kt-portlet__head-wrapper">
+								<div class="kt-portlet__head-actions">
+									<a href="#" style="cursor:not-allowed" data-toggle="modal" data-target="#kt_modal_4">
+										<span style="font-size: 2em;" class="kt-font-success">
+											<i class="fas fa-plus-circle"></i>
+										</span>
+									</a>
+					
+									<a href="#" style="cursor:not-allowed" data-toggle="modal" data-target="#kt_modal_4" >
+										<span style="font-size: 2em;" class="kt-font-warning">
+											<i class="fas fa-edit"></i>
+										</span>
+									</a>
+					
+									<a href="#" style="cursor:not-allowed" data-toggle="modal" data-target="#kt_modal_4">
+										<span style="font-size: 2em;" class="kt-font-danger">
+											<i class="fas fa-times-circle"></i>
+										</span>
+									</a>
+								</div>
 							</div>
 						</div>
 					</div>
@@ -337,7 +349,7 @@ KTBootstrapDatepicker.init();
 		function displayResult(ci){ 
 			if(ci == 1)
 			{
-				$('#kurs').val(0);
+				$('#kurs').val(1);
 				$('#simbol-kurs').hide();
 				$( "#kurs" ).prop( "required", false );
 

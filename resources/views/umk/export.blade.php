@@ -184,7 +184,7 @@
                     <td align="center" width="200">MENYETUJUI,</td><td align="center" width="200">PEMOHON,</td><br>
                 </tr>
                 <tr style="font-size: 10pt;">
-                    <td align="center" width="200">CS & BS</td><td align="center" width="200">IA & RM</td><br>
+                    <td align="center" width="200">{{strtoupper($request->menyetujuijb)}}</td><td align="center" width="200">{{strtoupper($request->pemohonjb)}}</td><br>
                 </tr>
         </table>
         <table width="100%" style="font-size: 10pt; padding-top:10px;">
