@@ -40,10 +40,10 @@ class UangMukaKerjaController extends Controller
          }elseif($request->permintaan <>  null and $request->tahun <>  null and $request->bulan ==  null){
             $data_list = DB::select("select  a.no_umk,a.jenis_um,a.app_pbd,a.app_sdm,a.tgl_panjar,a.no_kas,a.keterangan,a.jumlah from kerja_header a where a.no_umk like '$request->permintaan%' and left(a.bulan_buku,4)='$request->tahun' order by a.bulan_buku desc,a.no_umk desc");
          }elseif($request->permintaan ==  null and $request->tahun <>  null and $request->bulan <>  null){
-            $data_list = DB::select("select a.no_umk,a.jenis_um,a.app_pbd,a.app_sdm,a.tgl_panjar,a.no_kas,a.keterangan,a.jumlah from kerja_header a where right(a.no_umk,4)='$request->tahun' and (SUBSTRING(a.no_umk,11,2) ='$request->bulan' or SUBSTRING(a.no_umk,10,2) ='$request->bulan') and SUBSTRING(a.no_umk,10,2) ='$request->bulan' order by a.bulan_buku desc,a.no_umk desc");
+            $data_list = DB::select("select a.no_umk,a.jenis_um,a.app_pbd,a.app_sdm,a.tgl_panjar,a.no_kas,a.keterangan,a.jumlah from kerja_header a where right(a.no_umk,4)='$request->tahun' and (SUBSTRING(a.no_umk,11,2) ='$request->bulan' or SUBSTRING(a.no_umk,10,2) ='$request->bulan') order by a.bulan_buku desc,a.no_umk desc");
             
          }elseif($request->permintaan <>  null and $request->tahun <>  null and $request->bulan <>  null){
-            $data_list = DB::select("select a.no_umk,a.jenis_um,a.app_pbd,a.app_sdm,a.tgl_panjar,a.no_kas,a.keterangan,a.jumlah from kerja_header a where a.no_umk like '$request->permintaan%' and right(a.no_umk,4)='$request->tahun' and (SUBSTRING(a.no_umk,11,2) ='$request->bulan' or SUBSTRING(a.no_umk,10,2) ='$request->bulan') and SUBSTRING(a.no_umk,10,2) ='$request->bulan' order by a.bulan_buku desc,a.no_umk desc");
+            $data_list = DB::select("select a.no_umk,a.jenis_um,a.app_pbd,a.app_sdm,a.tgl_panjar,a.no_kas,a.keterangan,a.jumlah from kerja_header a where a.no_umk like '$request->permintaan%' and right(a.no_umk,4)='$request->tahun' and (SUBSTRING(a.no_umk,11,2) ='$request->bulan' or SUBSTRING(a.no_umk,10,2) ='$request->bulan') order by a.bulan_buku desc,a.no_umk desc");
          }else{
              $data_tahunbulan = DB::select("select max(thnbln) as bulan_buku from timetrans where status='1' and length(thnbln)='6'");
              foreach($data_tahunbulan as $data_bul)

@@ -54,15 +54,36 @@
 							</div>
 						</div>
 						<div class="form-group row">
-							<label for="nopek-input" class="col-2 col-form-label">Bulan/Tahun<span style="color:red;">*</span></label>
-							<div class="col-10">
-								<input class="form-control" type="hidden" name="userid" value="{{Auth::user()->userid}}">
-								<input class="form-control" type="text" name="bulantahun" value="" id="tgldebet" size="7" maxlength="7" required  autocomplete='off'>
-							</div>
+						<label for="spd-input" class="col-2 col-form-label">Bulan Gaji<span style="color:red;">*</span></label>
+						<div class="col-4">
+								<?php 
+									$tgl = date_create(now());
+									$tahun = date_format($tgl, 'Y'); 
+									$bulan = date_format($tgl, 'n'); 
+								?>
+								<select class="form-control" name="bulan" required>
+									<option value="1" <?php if($bulan  == 1 ) echo 'selected' ; ?>>Januari</option>
+									<option value="2" <?php if($bulan  == 2 ) echo 'selected' ; ?>>Februari</option>
+									<option value="3" <?php if($bulan  == 3 ) echo 'selected' ; ?>>Maret</option>
+									<option value="4" <?php if($bulan  == 4 ) echo 'selected' ; ?>>April</option>
+									<option value="5" <?php if($bulan  == 5 ) echo 'selected' ; ?>>Mei</option>
+									<option value="6" <?php if($bulan  == 6 ) echo 'selected' ; ?>>Juni</option>
+									<option value="7" <?php if($bulan  == 7 ) echo 'selected' ; ?>>Juli</option>
+									<option value="8" <?php if($bulan  == 8 ) echo 'selected' ; ?>>Agustus</option>
+									<option value="9" <?php if($bulan  == 9 ) echo 'selected' ; ?>>September</option>
+									<option value="10" <?php if($bulan  ==10  ) echo 'selected' ; ?>>Oktober</option>
+									<option value="11" <?php if($bulan  == 11 ) echo 'selected' ; ?>>November</option>
+									<option value="12" <?php if($bulan  == 12 ) echo 'selected' ; ?>>Desember</option>
+								</select>
+						</div>
+								<div class="col-2" >
+									<input class="form-control" type="text" value="{{$tahun}}"   name="tahun" size="4" maxlength="4" onkeypress="return hanyaAngka(event)" autocomplete='off' required>
+									<input class="form-control" type="hidden" value="{{Auth::user()->userid}}"  name="userid" autocomplete='off'>
+								</div>
 						</div>
 						<div class="form-group row">
 							<label for="" class="col-2 col-form-label">Pegawai<span style="color:red;">*</span></label>
-							<div class="col-10">
+							<div class="col-8">
 								<select name="nopek" id="nopek" class="form-control selectpicker" data-live-search="true" required autocomplete='off'>
 									<option value="">- Pilih -</option>
 									@foreach($data_pegawai as $data)
@@ -72,8 +93,8 @@
 							</div>
 						</div>
 						<div class="form-group row">
-							<label for="" class="col-2 col-form-label">Potongan<span style="color:red;">*</span></label>
-							<div class="col-10">
+							<label for="" class="col-2 col-form-label">Aard<span style="color:red;">*</span></label>
+							<div class="col-8">
 								<select name="aard" id="aard" class="form-control selectpicker" data-live-search="true" required autocomplete='off'>
 									<option value="">- Pilih -</option>
 									@foreach($pay_aard as $data)
@@ -83,17 +104,35 @@
 							</div>
 						</div>
 						<div class="form-group row">
+							<label class="col-2 col-form-label">Cicilan Ke-<span style="color:red;">*</span></label>
+							<div class="col-8">
+								<input class="form-control" name="ccl" type="text" value="" id="ccl" size="3" maxlength="3" required oninvalid="this.setCustomValidity('Cicilan Harus Diisi..')" oninput="setCustomValidity('')" autocomplete='off' onkeypress="return hanyaAngka(event)">
+								<input type="hidden" value="0" name="pajak" id="pajak">
+							</div>
+						</div>
+						<div class="form-group row">
+							<label class="col-2 col-form-label">Jml Cicilan<span style="color:red;">*</span></label>
+							<div class="col-8">
+								<input class="form-control" name="jmlcc" type="text" value="" id="jmlcc" size="5" maxlength="5" required oninvalid="this.setCustomValidity('Jml Cicilan Harus Diisi..')" oninput="setCustomValidity('')" autocomplete='off' onkeypress="return hanyaAngka(event)">
+								<input type="hidden" value="0" name="pajak" id="pajak">
+							</div>
+						</div>
+						<div class="form-group row">
 							<label class="col-2 col-form-label">Nilai<span style="color:red;">*</span></label>
-							<div class="col-4">
-								<input class="form-control" name="nilai" type="text" value="" id="nilai" required oninvalid="this.setCustomValidity('Nilai Harus Diisi..')" oninput="setCustomValidity('')" autocomplete='off' onkeypress="return hanyaAngka(event)">
+							<div class="col-8">
+								<input class="form-control" name="nilai" type="text" value="" id="nilai" size="17" maxlength="17" required oninvalid="this.setCustomValidity('Nilai Harus Diisi..')" oninput="setCustomValidity('')" autocomplete='off' onkeypress="return hanyaAngka(event)">
 								<input type="hidden" value="0" name="pajak" id="pajak">
 							</div>
 						</div>
 						
-						<div style="float:right;">
-							<div class="kt-form__actions">
-								<a  href="{{route('potongan_manual.index')}}" class="btn btn-warning"><i class="fa fa-reply" aria-hidden="true"></i>Cancel</a>
-								<button type="submit" class="btn btn-brand"><i class="fa fa-check" aria-hidden="true"></i>Save</button>
+						<div class="kt-form__actions">
+							<div class="row">
+								<div class="col"></div>
+								<div class="col"></div>
+								<div class="col-10">
+									<a  href="{{route('potongan_manual.index')}}" class="btn btn-warning"><i class="fa fa-reply" aria-hidden="true"></i>Cancel</a>
+									<button type="submit" class="btn btn-brand"><i class="fa fa-check" aria-hidden="true"></i>Save</button>
+								</div>
 							</div>
 						</div>
 					</div>
@@ -109,39 +148,47 @@
 	<script type="text/javascript">
 	$(document).ready(function () {
 
-		$('#form-create').submit(function(){
-			$.ajax({
-				url  : "{{route('potongan_manual.store')}}",
-				type : "POST",
-				data : $('#form-create').serialize(),
-				dataType : "JSON",
-				headers: {
-				'X-CSRF-Token': '{{ csrf_token() }}',
-				},
-				success : function(data){
-				console.log(data);
-				Swal.fire({
-					type  : 'success',
-					title : 'Data Berhasil Ditambah',
-					text  : 'Berhasil',
-					timer : 2000
-				}).then(function() {
-						window.location.replace("{{ route('potongan_manual.index')}}");;
-					});
-				}, 
-				error : function(){
-					alert("Terjadi kesalahan, coba lagi nanti");
-				}
-			});	
-			return false;
-		});
+$('#form-create').submit(function(){
+	$.ajax({
+		url  : "{{route('potongan_manual.store')}}",
+		type : "POST",
+		data : $('#form-create').serialize(),
+		dataType : "JSON",
+		headers: {
+		'X-CSRF-Token': '{{ csrf_token() }}',
+		},
+		success : function(data){
+		console.log(data);
+		if(data == 1){
+			Swal.fire({
+				type  : 'success',
+				title : 'Data Berhasil Ditambah',
+				text  : 'Berhasil',
+				timer : 2000
+			}).then(function() {
+					window.location.replace("{{ route('potongan_manual.index')}}");;
+				});
+		}else{
+			Swal.fire({
+				type  : 'error',
+				title : 'Data Potongan Manual Yang Diinput Sudah Ada.',
+				text  : 'Failed',
+			});
+		}
+		}, 
+		error : function(){
+			alert("Terjadi kesalahan, coba lagi nanti");
+		}
+	});	
+	return false;
+});
 
-		$('#nilai').keyup(function(){
-             var nilai=parseInt($('#nilai').val());
-            var pajak=(35/65)*nilai;
-			var a =parseInt(pajak);
-             $('#pajak').val(a);
-        });
+$('#nilai').keyup(function(){
+		var nilai=parseInt($('#nilai').val());
+	var pajak=(35/65)*nilai;
+	var a =parseInt(pajak);
+		$('#pajak').val(a);
+});
 
 
 

@@ -27,6 +27,7 @@
 
                 $umk = array(
                     'uang_muka_kerja.index',
+                    'uang_muka_kerja.search.index',
                     'uang_muka_kerja.create',
                     'uang_muka_kerja.detail',
                     'uang_muka_kerja.edit',
@@ -42,6 +43,7 @@
                 
                 $permintaan_bayar = array(
                     'permintaan_bayar.index',
+                    'permintaan_bayar.search.index',
                     'permintaan_bayar.create',
                     'permintaan_bayar.detail',
                     'permintaan_bayar.edit',
@@ -101,6 +103,7 @@
                 ); // isi nama semua route master pekerja
                 $potongan_manual = array(
                     'potongan_manual.index',
+                    'potongan_manual.search.index',
                     'potongan_manual.create',
                     'potongan_manual.edit'
                 ); // isi nama semua route potongan manual gajian
@@ -127,6 +130,7 @@
                 ); //isi nama submenu
                 $lembur = array(
                     'lembur.index',
+                    'lembur.search.index',
                     'lembur.create',
                     'lembur.edit'
                 ); // isi nama semua route Lembur
