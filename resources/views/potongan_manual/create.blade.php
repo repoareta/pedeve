@@ -107,21 +107,18 @@
 							<label class="col-2 col-form-label">Cicilan Ke-<span style="color:red;">*</span></label>
 							<div class="col-8">
 								<input class="form-control" name="ccl" type="text" value="" id="ccl" size="3" maxlength="3" required oninvalid="this.setCustomValidity('Cicilan Harus Diisi..')" oninput="setCustomValidity('')" autocomplete='off' onkeypress="return hanyaAngka(event)">
-								<input type="hidden" value="0" name="pajak" id="pajak">
 							</div>
 						</div>
 						<div class="form-group row">
 							<label class="col-2 col-form-label">Jml Cicilan<span style="color:red;">*</span></label>
 							<div class="col-8">
 								<input class="form-control" name="jmlcc" type="text" value="" id="jmlcc" size="5" maxlength="5" required oninvalid="this.setCustomValidity('Jml Cicilan Harus Diisi..')" oninput="setCustomValidity('')" autocomplete='off' onkeypress="return hanyaAngka(event)">
-								<input type="hidden" value="0" name="pajak" id="pajak">
 							</div>
 						</div>
 						<div class="form-group row">
 							<label class="col-2 col-form-label">Nilai<span style="color:red;">*</span></label>
 							<div class="col-8">
 								<input class="form-control" name="nilai" type="text" value="" id="nilai" size="17" maxlength="17" required oninvalid="this.setCustomValidity('Nilai Harus Diisi..')" oninput="setCustomValidity('')" autocomplete='off' onkeypress="return hanyaAngka(event)">
-								<input type="hidden" value="0" name="pajak" id="pajak">
 							</div>
 						</div>
 						
@@ -182,16 +179,6 @@ $('#form-create').submit(function(){
 	});	
 	return false;
 });
-
-$('#nilai').keyup(function(){
-		var nilai=parseInt($('#nilai').val());
-	var pajak=(35/65)*nilai;
-	var a =parseInt(pajak);
-		$('#pajak').val(a);
-});
-
-
-
 
     var KTBootstrapDatepicker = function () {
 

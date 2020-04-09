@@ -201,7 +201,7 @@ Route::group(['middleware'=> ['auth','checkRole:1']], function () {
         
         //potongan otomatis
         Route::get('potongan_otomatis', 'PotonganOtomatisController@index')->name('potongan_otomatis.index');
-        Route::get('potongan_otomatis/index_json', 'PotonganOtomatisController@indexJson')->name('potongan_otomatis.index.json');
+        Route::post('potongan_otomatis/search', 'PotonganOtomatisController@searchIndex')->name('potongan_otomatis.search.index');
         Route::get('potongan_otomatis/create', 'PotonganOtomatisController@create')->name('potongan_otomatis.create');
         Route::post('potongan_otomatis/store', 'PotonganOtomatisController@store')->name('potongan_otomatis.store');
         Route::get('potongan_otomatis/edit/{bulan}/{tahun}/{arrd}/{nopek}', 'PotonganOtomatisController@edit')->name('potongan_otomatis.edit');

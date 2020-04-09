@@ -109,6 +109,7 @@
                 ); // isi nama semua route potongan manual gajian
                 $potongan_otomatis = array(
                     'potongan_otomatis.index',
+                    'potongan_otomatis.search.index',
                     'potongan_otomatis.create',
                     'potongan_otomatis.edit'
                 ); // isi nama semua route potongan otomatis gajian

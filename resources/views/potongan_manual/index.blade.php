@@ -48,8 +48,11 @@
 							<i class="fas fa-times-circle"></i>
 						</span>
 
-						<span style="font-size: 2em;" class="kt-font-info pointer-link" id="exportRow" data-toggle="kt-tooltip" data-placement="top" title="Cetak Data">
+						<!-- <span style="font-size: 2em;" class="kt-font-info pointer-link" id="exportRow" data-toggle="kt-tooltip" data-placement="top" title="Cetak Data">
 							<i class="fas fa-print"></i>
+						</span> -->
+						<span style="font-size: 2em;" class="kt-font-info pointer-link" data-toggle="kt-tooltip" data-placement="top" title="Refresh Ketampilan Tabel Awal">
+							<i class="fas fa-sync-alt" id="show-data"></i>
 						</span>
 					</div>
 				</div>
@@ -169,6 +172,13 @@ $('#editRow').click(function(e) {
 	} else {
 		swalAlertInit('ubah');
 	}
+});
+
+//refresh data
+$('#show-data').on('click', function(e) {
+	e.preventDefault();
+		location.replace("{{ route('potongan_manual.index') }}");
+
 });
 
 // delete potongan otomatis
