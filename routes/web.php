@@ -231,7 +231,7 @@ Route::group(['middleware'=> ['auth','checkRole:1']], function () {
         Route::get('proses_gaji/edit', 'ProsesGajiController@edit')->name('proses_gaji.edit');
         //proses thr
         Route::get('proses_thr', 'ProsesThrController@index')->name('proses_thr.index');
-        Route::get('proses_thr/create', 'ProsesThrController@create')->name('proses_thr.create');
+        Route::post('proses_thr/store', 'ProsesThrController@store')->name('proses_thr.store');
         Route::get('proses_thr/edit', 'ProsesThrController@edit')->name('proses_thr.edit');
         //proses insentif
         Route::get('proses_insentif', 'ProsesInsentifController@index')->name('proses_insentif.index');

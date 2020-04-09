@@ -72,10 +72,13 @@
 
 						</div>
 					</div>
-					<div style="float:right;">
-						<div class="kt-form__actions">
-							<a  href="{{route('vendor.index')}}" class="btn btn-warning"><i class="fa fa-reply" aria-hidden="true"></i>Cancel</a>
-							<button type="submit" class="btn btn-brand"><i class="fa fa-check" aria-hidden="true"></i>Save</button>
+					<div class="kt-form__actions">
+						<div class="row">
+							<div class="col-2"></div>
+							<div class="col-10">
+								<a  href="{{route('vendor.index')}}" class="btn btn-warning"><i class="fa fa-reply" aria-hidden="true"></i>Cancel</a>
+								<button type="submit" class="btn btn-brand"><i class="fa fa-check" aria-hidden="true"></i>Save</button>
+							</div>
 						</div>
 					</div>
 				</div>

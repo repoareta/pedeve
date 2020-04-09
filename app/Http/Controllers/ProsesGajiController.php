@@ -88,7 +88,11 @@ class ProsesGajiController extends Controller
                             if(!empty($data_sdmut)){
                                     foreach($data_sdmut as $data_sdm)
                                     {
-                                        $upahtetap = $data_sdm->ut;
+                                        if($data_sdm->ut <> ""){
+                                            $upahtetap = $data_sdm->ut;
+                                        }else {
+                                            $upahtetap = '0';
+                                        }
                                     }
                             }else{
                                 $upahtetap = '0';
@@ -1059,8 +1063,11 @@ class ProsesGajiController extends Controller
                             $data_sdmut = DB::select("select a.ut from sdm_ut a where a.nopeg='$data->nopeg' and a.mulai=(select max(mulai) from sdm_ut where nopeg='$data->nopeg')");
                             if(!empty($data_sdmut)){
                                     foreach($data_sdmut as $data_sdm)
-                                    {
+                                    {   if($data_sdm->ut <> ""){
                                         $upahtetap = $data_sdm->ut;
+                                        }else {
+                                            $upahtetap = '0';
+                                        }
                                     }
                             }else{
                                 $upahtetap = '0';
@@ -1088,7 +1095,11 @@ class ProsesGajiController extends Controller
                             if(!empty($data_sdmut)){
                                     foreach($data_sdmut as $data_sdm)
                                     {
-                                        $upahtetap = $data_sdm->ut;
+                                        if($data_sdm->ut <> ""){
+                                            $upahtetap = $data_sdm->ut;
+                                        }else {
+                                            $upahtetap = '0';
+                                        }
                                     }
                             }else{
                                 $upahtetap = '0';
@@ -1116,7 +1127,11 @@ class ProsesGajiController extends Controller
                             if(!empty($data_sdmut)){
                                     foreach($data_sdmut as $data_sdm)
                                     {
-                                        $upahtetap = $data_sdm->ut;
+                                        if($data_sdm->ut <> ""){
+                                            $upahtetap = $data_sdm->ut;
+                                        }else {
+                                            $upahtetap = '0';
+                                        }
                                     }
                             }else{
                                 $upahtetap = '0';
@@ -2560,7 +2575,11 @@ class ProsesGajiController extends Controller
                             if(!empty($data_sdmut)){
                                     foreach($data_sdmut as $data_sdm)
                                     {
-                                        $upahtetap = $data_sdm->ut;
+                                        if($data_sdm->ut <> ""){
+                                            $upahtetap = $data_sdm->ut;
+                                        }else {
+                                            $upahtetap = '0';
+                                        }
                                     }
                             }else{
                                 $upahtetap = '0';
@@ -3553,7 +3572,11 @@ class ProsesGajiController extends Controller
                             if(!empty($data_sdmut)){
                                     foreach($data_sdmut as $data_sdm)
                                     {
-                                        $upahtetap = $data_sdm->ut;
+                                        if($data_sdm->ut <> ""){
+                                            $upahtetap = $data_sdm->ut;
+                                        }else {
+                                            $upahtetap = '0';
+                                        }
                                     }
                             }else{
                                 $upahtetap = '0';
@@ -3581,7 +3604,11 @@ class ProsesGajiController extends Controller
                             if(!empty($data_sdmut)){
                                     foreach($data_sdmut as $data_sdm)
                                     {
-                                        $upahtetap = $data_sdm->ut;
+                                        if($data_sdm->ut <> ""){
+                                            $upahtetap = $data_sdm->ut;
+                                        }else {
+                                            $upahtetap = '0';
+                                        }
                                     }
                             }else{
                                 $upahtetap = '0';
@@ -3609,7 +3636,11 @@ class ProsesGajiController extends Controller
                             if(!empty($data_sdmut)){
                                     foreach($data_sdmut as $data_sdm)
                                     {
-                                        $upahtetap = $data_sdm->ut;
+                                        if($data_sdm->ut <> ""){
+                                            $upahtetap = $data_sdm->ut;
+                                        }else {
+                                            $upahtetap = '0';
+                                        }
                                     }
                             }else{
                                 $upahtetap = '0';
