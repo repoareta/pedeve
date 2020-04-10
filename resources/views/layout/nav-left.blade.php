@@ -120,6 +120,7 @@
                 ); // isi nama semua route honor komite
                 $koreksi_gaji = array(
                     'potongan_koreksi_gaji.index',
+                    'potongan_koreksi_gaji.search.index',
                     'potongan_koreksi_gaji.create',
                     'potongan_koreksi_gaji.edit'
                 ); // isi nama semua route potongan manual

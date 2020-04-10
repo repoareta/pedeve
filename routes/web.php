@@ -183,7 +183,7 @@ Route::group(['middleware'=> ['auth','checkRole:1']], function () {
         
         //potongan koreksi gaji
         Route::get('potongan_koreksi_gaji', 'PotonganKoreksiGajiController@index')->name('potongan_koreksi_gaji.index');
-        Route::get('potongan_koreksi_gaji/index_json', 'PotonganKoreksiGajiController@indexJson')->name('potongan_koreksi_gaji.index.json');
+        Route::post('potongan_koreksi_gaji/search', 'PotonganKoreksiGajiController@searchIndex')->name('potongan_koreksi_gaji.search.index');
         Route::get('potongan_koreksi_gaji/create', 'PotonganKoreksiGajiController@create')->name('potongan_koreksi_gaji.create');
         Route::post('potongan_koreksi_gaji/store', 'PotonganKoreksiGajiController@store')->name('potongan_koreksi_gaji.store');
         Route::get('potongan_koreksi_gaji/edit/{bulan}/{tahun}/{arrd}/{nopek}', 'PotonganKoreksiGajiController@edit')->name('potongan_koreksi_gaji.edit');

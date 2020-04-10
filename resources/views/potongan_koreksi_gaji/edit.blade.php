@@ -55,36 +55,46 @@
 						</div>
 						@foreach($data_list as $row)
 						<div class="form-group row">
-							<label for="nopek-input" class="col-2 col-form-label">Bulan/Tahun<span style="color:red;">*</span></label>
-							<div class="col-10">
-								<input class="form-control" type="hidden" name="userid" value="{{Auth::user()->userid}}">
-								<input class="form-control" type="text" name="bulantahun" value="<?php echo $row->bulan?>/{{$row->tahun}}" id="tgldebet" size="7" maxlength="7" required  autocomplete='off'>
-								<input type="hidden" value="{{$row->bulan}}" name="bulan">
-								<input type="hidden" value="{{$row->tahun}}" name="tahun">
-							</div>
+						<label for="spd-input" class="col-2 col-form-label">Bulan/Tahun<span style="color:red;">*</span></label>
+						<div class="col-4">
+							<?php 
+							$array_bln	 = array (
+										1 =>   'Januari',
+										'Februari',
+										'Maret',
+										'April',
+										'Mei',
+										'Juni',
+										'Juli',
+										'Agustus',
+										'September',
+										'Oktober',
+										'November',
+										'Desember'
+									);
+									$bulan= strtoupper($array_bln[$row->bulan]);
+							?>
+						<input class="form-control" type="text" value="{{$bulan}}"readonly style="background-color:#DCDCDC; cursor:not-allowed">
+						<input class="form-control" type="hidden" value="{{$row->bulan}}" name="bulan">
+								
+						</div>
+								<div class="col-2" >
+									<input class="form-control" type="text" value="{{$row->tahun}}" name="tahun" readonly style="background-color:#DCDCDC; cursor:not-allowed">
+									<input class="form-control" type="hidden" value="{{Auth::user()->userid}}"  name="userid" autocomplete='off'>
+								</div>
 						</div>
 						<div class="form-group row">
 							<label for="" class="col-2 col-form-label">Pegawai<span style="color:red;">*</span></label>
 							<div class="col-10">
-								<select name="nopek" id="nopek" class="form-control selectpicker" data-live-search="true" required autocomplete='off'>
-									<option value="">- Pilih -</option>
-									@foreach($data_pegawai as $data)
-									<option value="{{$data->nopeg}}" <?php if($data->nopeg  == $row->nopek ) echo 'selected' ; ?>>{{$data->nopeg}} - {{$data->nama}}</option>
-									@endforeach
-								</select>
-								<input type="hidden" value="{{$row->nopek}}" name="nopeks">
+								<input class="form-control" type="text" value="{{$row->nopek}} - {{$row->nama_nopek}}"  readonly style="background-color:#DCDCDC; cursor:not-allowed">
+								<input class="form-control" type="hidden" value="{{$row->nopek}}" name="nopek">
 							</div>
 						</div>
 						<div class="form-group row">
 							<label for="" class="col-2 col-form-label">AARD<span style="color:red;">*</span></label>
 							<div class="col-10">
-								<select name="aard" id="aard" class="form-control selectpicker" data-live-search="true" required autocomplete='off'>
-									<option value="">- Pilih -</option>
-									@foreach($pay_aard as $data)
-									<option value="{{$data->kode}}" <?php if($data->kode  == $row->aard ) echo 'selected' ; ?>>{{$data->kode}} - {{$data->nama}}</option>
-									@endforeach
-								</select>
-								<input type="hidden" value="{{$row->aard}}" name="aards">
+								<input class="form-control" type="hidden" value="{{$row->aard}}" name="aard">
+								<input class="form-control" type="text" value="{{$row->aard}} - {{$row->nama_aard}}"  readonly style="background-color:#DCDCDC; cursor:not-allowed">
 							</div>
 						</div>
 						<div class="form-group row">
@@ -183,13 +193,13 @@ return {
 
 KTBootstrapDatepicker.init();
 });
-		function hanyaAngka(evt) {
-		  var charCode = (evt.which) ? evt.which : event.keyCode
-		   if (charCode > 31 && (charCode < 48 || charCode > 57))
- 
-		    return false;
-		  return true;
-		}
+function hanyaAngka(evt) {
+	var charCode = (evt.which) ? evt.which : event.keyCode
+	if (charCode > 31 && (charCode < 48 || charCode > 57))
+
+	return false;
+	return true;
+}
 </script>
 
 @endsection

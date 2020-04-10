@@ -57,7 +57,25 @@
 						<div class="form-group row">
 						<label for="spd-input" class="col-2 col-form-label">Bulan Gaji<span style="color:red;">*</span></label>
 						<div class="col-4">
-						<input class="form-control" type="text" value="{{$data->bulan}}" name="bulan" readonly style="background-color:#DCDCDC; cursor:not-allowed">
+							<?php 
+							$array_bln	 = array (
+										1 =>   'Januari',
+										'Februari',
+										'Maret',
+										'April',
+										'Mei',
+										'Juni',
+										'Juli',
+										'Agustus',
+										'September',
+										'Oktober',
+										'November',
+										'Desember'
+									);
+									$bulan= strtoupper($array_bln[$data->bulan]);
+							?>
+						<input class="form-control" type="text" value="{{$bulan}}"readonly style="background-color:#DCDCDC; cursor:not-allowed">
+						<input class="form-control" type="hidden" value="{{$data->bulan}}" name="bulan">
 								
 						</div>
 								<div class="col-2" >
@@ -200,13 +218,13 @@ return {
 
 KTBootstrapDatepicker.init();
 });
-		function hanyaAngka(evt) {
-		  var charCode = (evt.which) ? evt.which : event.keyCode
-		   if (charCode > 31 && (charCode < 48 || charCode > 57))
- 
-		    return false;
-		  return true;
-		}
+function hanyaAngka(evt) {
+	var charCode = (evt.which) ? evt.which : event.keyCode
+	if (charCode > 31 && (charCode < 48 || charCode > 57))
+
+	return false;
+	return true;
+}
 </script>
 
 @endsection
