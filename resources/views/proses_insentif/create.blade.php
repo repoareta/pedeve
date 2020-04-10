@@ -76,7 +76,7 @@
 				<div class="form-group row">
 					<label for="nopek-input" class="col-2 col-form-label">Upah Tetap/All In</label>
 					<div class="col-6">
-						<input class="form-control" type="text" name="upah" value=""  size="4" maxlength="4"   autocomplete='off' onkeypress="return hanyaAngka(event)">
+						<input class="form-control" type="text" name="upah" value=""  size="17" maxlength="17"   autocomplete='off' onkeypress="return hanyaAngka(event)">
 					</div>
 				</div>
 				<div class="form-group row">

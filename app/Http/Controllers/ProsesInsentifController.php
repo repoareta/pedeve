@@ -74,203 +74,203 @@ class ProsesInsentifController extends Controller
                             
                                     // PekerjaTetapIns()
                                     // 1.CARI PEGAWAI YANG STATUS PEKERJA TETAP
-                                    $data_caripegawai = DB::select("select nopeg,kodekeluarga from sdm_master_pegawai where status='C' order by nopeg asc");
-                                    foreach($data_caripegawai as $data_cari)
+                                    $data_caripegawaic = DB::select("select nopeg,kodekeluarga from sdm_master_pegawai where status='C' order by nopeg asc");
+                                    foreach($data_caripegawaic as $data_caript)
                                     {                                
-                                        $nopeg = $data_cari->nopeg;
-                                        $kodekel = $data_cari->kodekeluarga;
+                                        $nopegpt = $data_caript->nopeg;
+                                        $kodekel = $data_caript->kodekeluarga;
                                     
-                                    $data_upahtetap = DB::select("select a.ut from sdm_ut a where a.nopeg='$nopeg' and a.mulai=(select max(mulai) from sdm_ut where nopeg='$nopeg')");
-                                    if(!empty($data_upahtetap)){
-                                        foreach($data_upahtetap as $data_upah)
+                                    $data_upahtetappt = DB::select("select a.ut from sdm_ut a where a.nopeg='$nopegpt' and a.mulai=(select max(mulai) from sdm_ut where nopeg='$nopegpt')");
+                                    if(!empty($data_upahtetappt)){
+                                        foreach($data_upahtetappt as $data_upahpt)
                                         {
-                                            if($data_upah->ut <> ""){
-                                                $upahtetap = $data_upah->ut;
+                                            if($data_upahpt->ut <> ""){
+                                                $upahtetappt = $data_upahpt->ut;
                                             }else {
-                                                $upahtetap = '0';
+                                                $upahtetappt = '0';
                                             }
                                         }
                                     }else {
-                                        $upahtetap = '0';
+                                        $upahtetappt = '0';
                                     }
-                                    $pengali = $upah;
-                                    $insentif = $upahtetap * $upah;
+                                    $pengalipt = $upah;
+                                    $insentifpt = $upahtetappt * $upah;
                                     
                                     // 2.Cari nilai Jamsostek
-                                    $data_carijamsostek = DB::select("select curramount from pay_master_bebanprshn where tahun='$tahungaji' and bulan='$bulangaji' and nopek='$nopeg' and aard='10'");
-                                        if(!empty($data_carijamsostek)){
-                                            foreach($data_carijamsostek as $data_carijam)
+                                    $data_carijamsostekpt = DB::select("select curramount from pay_master_bebanprshn where tahun='$tahungaji' and bulan='$bulangaji' and nopek='$nopegpt' and aard='10'");
+                                        if(!empty($data_carijamsostekpt)){
+                                            foreach($data_carijamsostekpt as $data_carijampt)
                                             {
-                                                if($data_carijam->curramount <> ""){
-                                                    $niljstaccident = $data_carijam->curramount;
+                                                if($data_carijampt->curramount <> ""){
+                                                    $niljstaccidentpt = $data_carijampt->curramount;
                                                 }else {
-                                                    $niljstaccident = '0';
+                                                    $niljstaccidentpt = '0';
                                                 }
                                             }
                                         }else {
-                                            $niljstaccident = '0';
+                                            $niljstaccidentpt = '0';
                                         }
 
-                                    $data_jslife = DB::select("select curramount from pay_master_bebanprshn where tahun='$tahungaji' and bulan='$bulangaji' and nopek='$nopeg' and aard='12'");
-                                        if(!empty($data_jslife)){
-                                            foreach($data_jslife as $data_carilife)
+                                    $data_jslifept = DB::select("select curramount from pay_master_bebanprshn where tahun='$tahungaji' and bulan='$bulangaji' and nopek='$nopegpt' and aard='12'");
+                                        if(!empty($data_jslifept)){
+                                            foreach($data_jslifept as $data_carilifept)
                                             {
-                                                if($data_carilife->curramount <> ""){
-                                                    $niljstlife = $data_carilife->curramount;
+                                                if($data_carilifept->curramount <> ""){
+                                                    $niljstlifept = $data_carilifept->curramount;
                                                 }else {
-                                                    $niljstlife = '0';
+                                                    $niljstlifept = '0';
                                                 }
                                             }
                                         }else {
-                                            $niljstlife = '0';
+                                            $niljstlifept = '0';
                                         }
 
-                                    $data_fasilitas = DB::select("select nilai from pay_master_upah where tahun='$tahungaji' and bulan='$bulangaji' and nopek='$nopeg' and aard='06'");
-                                        if(!empty($data_fasilitas)){
-                                            foreach($data_fasilitas as $data_fasil)
+                                    $data_fasilitaspt = DB::select("select nilai from pay_master_upah where tahun='$tahungaji' and bulan='$bulangaji' and nopek='$nopegpt' and aard='06'");
+                                        if(!empty($data_fasilitaspt)){
+                                            foreach($data_fasilitaspt as $data_fasilpt)
                                             {
-                                                if($data_fasil->nilai <> ""){
-                                                    $fasilitas = $data_fasil->nilai;
+                                                if($data_fasilpt->nilai <> ""){
+                                                    $fasilitaspt = $data_fasilpt->nilai;
                                                 }else {
-                                                    $fasilitas = '0';
+                                                    $fasilitaspt = '0';
                                                 }
                                             }
                                         }else {
-                                            $fasilitas = '0';
+                                            $fasilitaspt = '0';
                                         }
 
                                     // 3.Cari nilai kena pajak upah bulan sebelumnya
-                                    $data_kenapajak = DB::select("select sum(a.nilai) as nilai1 from pay_master_upah a,pay_tbl_aard b where a.tahun='$tahungaji' and a.bulan='$bulangaji' and a.nopek='$nopeg' and a.aard=b.kode and b.kenapajak='Y'");
-                                        if(!empty($data_kenapajak)){
-                                            foreach($data_kenapajak as $data_kenap)
+                                    $data_kenapajakpt = DB::select("select sum(a.nilai) as nilai1 from pay_master_upah a,pay_tbl_aard b where a.tahun='$tahungaji' and a.bulan='$bulangaji' and a.nopek='$nopegpt' and a.aard=b.kode and b.kenapajak='Y'");
+                                        if(!empty($data_kenapajakpt)){
+                                            foreach($data_kenapajakpt as $data_kenappt)
                                             {
-                                                if($data_kenap->nilai1 <> ""){
-                                                    $nilaikenapajak1 = $data_kenap->nilai1;
+                                                if($data_kenappt->nilai1 <> ""){
+                                                    $nilaikenapajak1pt = $data_kenappt->nilai1;
                                                 }else {
-                                                    $nilaikenapajak1 = '0';
+                                                    $nilaikenapajak1pt = '0';
                                                 }
                                             }
                                         }else {
-                                            $nilaikenapajak1 = '0';
+                                            $nilaikenapajak1pt = '0';
                                         }
 
-                                    $data_koreksigaji = DB::select("select sum(a.nilai) as kortam from pay_koreksigaji a where a.tahun='$tahungaji' and a.bulan='$bulangaji' and a.nopek='$nopeg'");
-                                        if(!empty($data_koreksigaji)){
-                                            foreach($data_koreksigaji as $data_koreksig)
+                                    $data_koreksigajipt = DB::select("select sum(a.nilai) as kortam from pay_koreksigaji a where a.tahun='$tahungaji' and a.bulan='$bulangaji' and a.nopek='$nopegpt'");
+                                        if(!empty($data_koreksigajipt)){
+                                            foreach($data_koreksigajipt as $data_koreksigpt)
                                             {
-                                                if($data_koreksig->kortam <> ""){
-                                                    $kortam = $data_koreksig->kortam;
+                                                if($data_koreksigpt->kortam <> ""){
+                                                    $kortampt = $data_koreksigpt->kortampt;
                                                 }else {
-                                                    $kortam = '0';
+                                                    $kortampt = '0';
                                                 }
                                             }
                                         }else {
-                                            $kortam = '0';
+                                            $kortampt = '0';
                                         }
 
-                                    $totkenapajak = ((($nilaikenapajak1 + $niljstaccident + $niljstlife)*12) + $fasilitas + $kortam + $insentif);
+                                    $totkenapajakpt = ((($nilaikenapajak1pt + $niljstaccidentpt + $niljstlifept)*12) + $fasilitaspt + $kortampt + $insentifpt);
                                     
                                     // 4.HITUNG BIAYA JABATAN
-                                    $biayajabatan2 = ((5/100) * $totkenapajak);
-                                    if($biayajabatan2 > 6000000){
-                                        $biayajabatan = 6000000;  
+                                    $biayajabatan2pt = ((5/100) * $totkenapajakpt);
+                                    if($biayajabatan2pt > 6000000){
+                                        $biayajabatanpt = 6000000;  
                                     }else{
-                                        $biayajabatan = $biayajabatan2;
+                                        $biayajabatanpt = $biayajabatan2pt;
                                     }
 
-                                    $neto1tahun =  $totkenapajak - $biayajabatan;
+                                    $neto1tahunpt =  $totkenapajakpt - $biayajabatanpt;
 
-                                    $data_ptkp = DB::select("select a.kodekeluarga,b.nilai from sdm_master_pegawai a,pay_tbl_ptkp b where a.kodekeluarga=b.kdkel and a.nopeg='$nopeg'");
-                                        if(!empty($data_ptkp)){
-                                            foreach($data_ptkp as $data_p)
+                                    $data_ptkppt = DB::select("select a.kodekeluarga,b.nilai from sdm_master_pegawai a,pay_tbl_ptkp b where a.kodekeluarga=b.kdkel and a.nopeg='$nopegpt'");
+                                        if(!empty($data_ptkppt)){
+                                            foreach($data_ptkppt as $data_ppt)
                                             {
-                                                if($data_p->nilai <> ""){
-                                                    $nilaiptkp1 = $data_p->nilai;
+                                                if($data_ppt->nilai <> ""){
+                                                    $nilaiptkp1pt = $data_ppt->nilai;
                                                 }else {
-                                                    $nilaiptkp1 = '0';
+                                                    $nilaiptkp1pt = '0';
                                                 }
                                             }
                                         }else {
-                                            $nilaiptkp1 = '0';
+                                            $nilaiptkp1pt = '0';
                                         }
 
-                                    $nilaikenapajaka = $neto1tahun - $nilaiptkp1;
+                                    $nilaikenapajakapt = $neto1tahunpt - $nilaiptkp1pt;
 
-                                    $nilai2 = 0;
-                                    $nilai1 = 0;
-                                    $tunjangan = 0;
-                                    $pajakbulan=1;
-                                    $nilkenapajak = $nilaikenapajaka;
-                                    $sisapokok = $nilkenapajak;
+                                    $nilai2pt = 0;
+                                    $nilai1pt = 0;
+                                    $tunjanganpt = 0;
+                                    $pajakbulanpt=1;
+                                    $nilkenapajakpt = $nilaikenapajakapt;
+                                    $sisapokokpt = $nilkenapajakpt;
                                     $data_sdmprogresif = DB::select("select * from sdm_tbl_progressif order by awal asc");
-                                    foreach($data_sdmprogresif as $data_prog)
+                                    foreach($data_sdmprogresif as $data_progpt)
                                     {
-                                        $awal = $data_prog->awal;
-                                        $akhir = $data_prog->akhir;
-                                        $persen = $data_prog->prosen;
-                                        $prosen = $persen/100;
-                                        $range = $akhir - $awal;
-                                        if($sisapokok > 0){
-                                            $sisapokok1 = $sisapokok;
-                                            if($sisapokok1 > 0 and $sisapokok1 < $range){
-                                                $pph21r = $sisapokok1 * $prosen;
-                                            }elseif($sisapokok1 > 0 and $sisapokok1 >= $range ){
-                                                $pph21r = $range * $prosen;
+                                        $awalpt = $data_progpt->awal;
+                                        $akhirpt = $data_progpt->akhir;
+                                        $persenpt = $data_progpt->prosen;
+                                        $prosenpt = $persenpt/100;
+                                        $rangept = $akhirpt - $awalpt;
+                                        if($sisapokokpt > 0){
+                                            $sisapokok1pt = $sisapokokpt;
+                                            if($sisapokok1pt > 0 and $sisapokok1pt < $rangept){
+                                                $pph21rpt = $sisapokok1pt * $prosenpt;
+                                            }elseif($sisapokok1pt > 0 and $sisapokok1pt >= $rangept ){
+                                                $pph21rpt = $rangept * $prosenpt;
                                             }else{
-                                                $pph21r = 0;
+                                                $pph21rpt = 0;
                                             }
                                         }else {
-                                            $pph21r = 0;
+                                            $pph21rpt = 0;
                                         }
-                                        $sisapokok = $sisapokok1 - $range;
-                                        $pph21ok =  $pph21r;
-                                        $pajakbulan = ($pph21ok/12);
-                                        $nilaikenapajak=($nilkenapajak/1000)*1000;
+                                        $sisapokokpt = $sisapokok1pt - $rangept;
+                                        $pph21okpt =  $pph21rpt;
+                                        $pajakbulanpt = pajak($nilaikenapajakapt);
+                                        $nilaikenapajakpt=($nilkenapajakpt/1000)*1000;
 
-                                        $selisih=$nilai2-$nilai1;
-                                        $nilai1=$nilaikenapajak;
-                                        $nilaikenapajak=(($nilaikenapajak+$pph21ok)/1000)*1000;
-                                        $nilai2=($nilaikenapajak/1000)*1000;
-                                        $nilaikenapajak=(($nilaikenapajak-$selisih)/1000)*1000;
+                                        $selisihpt=$nilai2pt-$nilai1pt;
+                                        $nilai1pt=$nilaikenapajakpt;
+                                        $nilaikenapajakpt=(($nilaikenapajakpt+$pph21okpt)/1000)*1000;
+                                        $nilai2pt=($nilaikenapajakpt/1000)*1000;
+                                        $nilaikenapajakpt=(($nilaikenapajakpt-$selisihpt)/1000)*1000;
                                     }
-                                        $tunjangan=$pajakbulan;
+                                        $tunjanganpt=$pajakbulanpt;
 
 
-                                    $data_stungaji = DB::select("select nilai from pay_master_upah where tahun='$tahungaji' and bulan='$bulangaji' and nopek='$nopeg' and aard='27'");
-                                        if(!empty($data_stungaji)){
-                                            foreach($data_stungaji as $data_st)
+                                    $data_stungajipt = DB::select("select nilai from pay_master_upah where tahun='$tahungaji' and bulan='$bulangaji' and nopek='$nopegpt' and aard='27'");
+                                        if(!empty($data_stungajipt)){
+                                            foreach($data_stungajipt as $data_stpt)
                                             {
-                                                if($data_st->nilai <> ""){
-                                                    $pajakgaji = $data_st->nilai;
+                                                if($data_stpt->nilai <> ""){
+                                                    $pajakgajipt = $data_stpt->nilai;
                                                 }else {
-                                                    $pajakgaji = '0';
+                                                    $pajakgajipt = '0';
                                                 }
                                             }
                                         }else {
-                                            $pajakgaji = '0';
+                                            $pajakgajipt = '0';
                                         }
-                                    $pajakakhir = ($pajakbulan - $pajakgaji)* 12;
+                                    $pajakakhirpt = ($pajakbulanpt - $pajakgajipt)* 12;
 
-                                    $data_potongan = DB::select("select nilai as nilai from pay_potongan_insentif where tahun='$data_tahun' and bulan='$$data_bulan' and nopek='$nopeg'");
-                                        if(!empty($data_potongan)){
-                                            foreach($data_potongan as $data_pot)
+                                    $data_potonganpt = DB::select("select nilai as nilai from pay_potongan_insentif where tahun='$data_tahun' and bulan='$$data_bulan' and nopek='$nopegpt'");
+                                        if(!empty($data_potonganpt)){
+                                            foreach($data_potonganpt as $data_potpt)
                                             {
-                                                if($data_pot->nilai <> ""){
-                                                    $potonganinsentif = $data_pot->nilai;
+                                                if($data_potpt->nilai <> ""){
+                                                    $potonganinsentifpt = $data_potpt->nilai;
                                                 }else {
-                                                    $potonganinsentif = '0';
+                                                    $potonganinsentifpt = '0';
                                                 }
                                             }
                                         }else {
-                                            $potonganinsentif = '0';
+                                            $potonganinsentifpt = '0';
                                         }
                                         // inspotpajak
                                         PayMasterInsentif::insert([
                                             'tahun' => $data_tahun,
                                             'bulan' => $data_bulan,
-                                            'nopek' => $nopeg,
+                                            'nopek' => $nopegpt,
                                             'aard' => 26,
-                                            'nilai' => $pajakakhir * -1,
+                                            'nilai' => $pajakakhirpt * -1,
                                             'tahunins' => $tahuns,
                                             'status' => 'C',
                                             'userid' => $request->userid,
@@ -279,9 +279,9 @@ class ProsesInsentifController extends Controller
                                         PayMasterInsentif::insert([
                                             'tahun' => $data_tahun,
                                             'bulan' => $data_bulan,
-                                            'nopek' => $nopeg,
+                                            'nopek' => $nopegpt,
                                             'aard' => 27,
-                                            'nilai' => $pajakakhir,
+                                            'nilai' => $pajakakhirpt,
                                             'tahunins' => $tahuns,
                                             'status' => 'C',
                                             'userid' => $request->userid,
@@ -290,9 +290,9 @@ class ProsesInsentifController extends Controller
                                         PayMasterInsentif::insert([
                                             'tahun' => $data_tahun,
                                             'bulan' => $data_bulan,
-                                            'nopek' => $nopeg,
+                                            'nopek' => $nopegpt,
                                             'aard' => 24,
-                                            'nilai' => $potonganinsentif,
+                                            'nilai' => $potonganinsentifpt,
                                             'tahunins' => $tahuns,
                                             'status' => 'C',
                                             'userid' => $request->userid,
@@ -301,17 +301,17 @@ class ProsesInsentifController extends Controller
                                         PayMasterInsentif::insert([
                                             'tahun' => $data_tahun,
                                             'bulan' => $data_bulan,
-                                            'nopek' => $nopeg,
+                                            'nopek' => $nopegpt,
                                             'aard' => 19,
-                                            'nilai' => $insentif,
+                                            'nilai' => $insentifpt,
                                             'tahunins' => $tahuns,
                                             'status' => 'C',
-                                            'pajakgaji' => $pajakgaji*12,
-                                            'pajakins' => $pajakakhir,
-                                            'ut' => $upahtetap,
-                                            'pengali' => $pengali,
+                                            'pajakgaji' => $pajakgajipt*12,
+                                            'pajakins' => $pajakakhirpt,
+                                            'ut' => $upahtetappt,
+                                            'pengali' => $pengalipt,
                                             'keterangan' => $keterangan,
-                                            'potongan' => $potonganinsentif,
+                                            'potongan' => $potonganinsentifpt,
                                             'userid' => $request->userid,
                                             ]);
                                     }
@@ -319,143 +319,143 @@ class ProsesInsentifController extends Controller
 
                                     // pekerjakontrakins()
                                     // 1.CARI PEGAWAI YANG STATUS PEKERJA Kontrak
-                                    $data_caripegawaip = DB::select("select nopeg,kodekeluarga from sdm_master_pegawai where status='K' order by nopeg asc");
-                                    foreach($data_caripegawaip as $data_cari)
+                                    $data_caripegawaipk = DB::select("select nopeg,kodekeluarga from sdm_master_pegawai where status='K' order by nopeg asc");
+                                    foreach($data_caripegawaipk as $data_carikt)
                                     {                                
-                                        $nopeg = $data_cari->nopeg;
-                                        $kodekel = $data_cari->kodekeluarga;
+                                        $nopeg = $data_carikt->nopeg;
+                                        $kodekel = $data_carikt->kodekeluarga;
 
                                         // 1. UPAHALLIN
-                                        $data_upah = DB::select("select nilai from sdm_allin where nopek='$nopeg'");
-                                        if(!empty($data_upah)){
-                                            foreach($data_upah as $data_up)
+                                        $data_upahkt = DB::select("select nilai from sdm_allin where nopek='$nopeg'");
+                                        if(!empty($data_upahkt)){
+                                            foreach($data_upahkt as $data_upkt)
                                             {
-                                                if($data_up->nilai <> ""){
-                                                    $upahallin = $data_up->nilai;
+                                                if($data_upkt->nilai <> ""){
+                                                    $upahallinkt = $data_upkt->nilai;
                                                 }else{
-                                                    $upahallin = '0';
+                                                    $upahallinkt = '0';
                                                 }
                                             }
                                         }else{
-                                            $upahallin= '0';
+                                            $upahallinkt= '0';
                                         }
                                         
-                                        $insentif = $upahallin * $upah;
+                                        $insentifkt = $upahallinkt * $upah;
 
-                                        $data_kenapajak = DB::select("select sum(a.nilai) as nilai1 from pay_master_upah a,pay_tbl_aard b where a.tahun='$tahungaji' and a.bulan='$bulangaji' and a.nopek='$nopeg' and a.aard=b.kode and b.kenapajak='Y'");
-                                        if(!empty($data_kenapajak)){
-                                            foreach($data_kenapajak as $data_kena)
+                                        $data_kenapajakkt = DB::select("select sum(a.nilai) as nilai1 from pay_master_upah a,pay_tbl_aard b where a.tahun='$tahungaji' and a.bulan='$bulangaji' and a.nopek='$nopeg' and a.aard=b.kode and b.kenapajak='Y'");
+                                        if(!empty($data_kenapajakkt)){
+                                            foreach($data_kenapajakkt as $data_kenakt)
                                             {
-                                                if($data_kena->nilai1 <> ""){
-                                                    $nilaikenapajak1  = $data_kena->nilai1;
+                                                if($data_kenakt->nilai1 <> ""){
+                                                    $nilaikenapajak1kt  = $data_kenakt->nilai1;
                                                 }else{
-                                                    $nilaikenapajak1  = '0';
+                                                    $nilaikenapajak1kt  = '0';
                                                 }
                                             }
                                         }else{
-                                            $nilaikenapajak1 = '0';
+                                            $nilaikenapajak1kt = '0';
                                         }
 
-                                        $data_korgaji = DB::select("select sum(a.nilai) as kortam from pay_koreksigaji a where a.tahun='tahungaji' and a.bulan='$bulangaji' and a.nopek='$nopeg'");
-                                        foreach($data_korgaji as $data_kor)
+                                        $data_korgajikt = DB::select("select sum(a.nilai) as kortam from pay_koreksigaji a where a.tahun='tahungaji' and a.bulan='$bulangaji' and a.nopek='$nopeg'");
+                                        foreach($data_korgajikt as $data_korkt)
                                         {
-                                            $kortam2 = $data_kor->kortam;
+                                            $kortam2kt = $data_korkt->kortam;
                                         }
 
-                                        $totkenapajak = (($nilaikenapajak1 * 12) + $kortam2 + $insentif);
-                                        $biayajabatan2 = ((5/100) * $totkenapajak);
-                                        if($biayajabatan2 > 6000000){
-                                            $biayajabatan = 6000000;  
+                                        $totkenapajakkt = (($nilaikenapajak1kt * 12) + $kortam2kt + $insentifkt);
+                                        $biayajabatan2kt = ((5/100) * $totkenapajakkt);
+                                        if($biayajabatan2kt > 6000000){
+                                            $biayajabatankt = 6000000;  
                                         }else{
-                                            $biayajabatan = $biayajabatan2;
+                                            $biayajabatankt = $biayajabatan2kt;
                                         }
 
-                                        $neto1tahun =  $totkenapajak - $biayajabatan;
+                                        $neto1tahunkt =  $totkenapajakkt - $biayajabatankt;
 
-                                        $data_ptkp = DB::select("select a.kodekeluarga,b.nilai from sdm_master_pegawai a,pay_tbl_ptkp b where a.kodekeluarga=b.kdkel and a.nopeg='$nopeg'");
-                                        if(!empty($data_ptkp)){
-                                            foreach($data_ptkp as $data_pt)
+                                        $data_ptkpkt = DB::select("select a.kodekeluarga,b.nilai from sdm_master_pegawai a,pay_tbl_ptkp b where a.kodekeluarga=b.kdkel and a.nopeg='$nopeg'");
+                                        if(!empty($data_ptkpkt)){
+                                            foreach($data_ptkpkt as $data_ptkt)
                                             {
-                                                if($data_pt->nilai <> ""){
-                                                    $nilaiptkp1  = $data_pt->nilai;
+                                                if($data_ptkt->nilai <> ""){
+                                                    $nilaiptkp1kt  = $data_ptkt->nilai;
                                                 }else{
-                                                    $nilaiptkp1  = '0';
+                                                    $nilaiptkp1kt  = '0';
                                                 }
                                             }
                                         }else{
-                                            $nilaiptkp1 = '0';
+                                            $nilaiptkp1kt = '0';
                                         }
 
-                                        $nilaikenapajaka = $neto1tahun - $nilaiptkp1;
+                                        $nilaikenapajakakt = $neto1tahunkt - $nilaiptkp1kt;
 
 
-                                        $nilai2 = 0;
-                                        $nilai1 = 0;
-                                        $tunjangan = 0;
-                                        $pajakbulan=1;
-                                        $nilkenapajak = $nilaikenapajaka;
-                                        $sisapokok = $nilkenapajak;
+                                        $nilai2kt = 0;
+                                        $nilai1kt = 0;
+                                        $tunjangankt = 0;
+                                        $pajakbulankt=1;
+                                        $nilkenapajakkt = $nilaikenapajakakt;
+                                        $sisapokokkt = $nilkenapajakkt;
                                         $data_sdmprogresif = DB::select("select * from sdm_tbl_progressif order by awal asc");
-                                        foreach($data_sdmprogresif as $data_prog)
+                                        foreach($data_sdmprogresif as $data_progkt)
                                         {
-                                            $awal = $data_prog->awal;
-                                            $akhir = $data_prog->akhir;
-                                            $persen = $data_prog->prosen;
-                                            $prosen = $persen/100;
-                                            $range = $akhir - $awal;
-                                            if($sisapokok > 0){
-                                                $sisapokok1 = $sisapokok;
-                                                if($sisapokok1 > 0 and $sisapokok1 < $range){
-                                                    $pph21r = $sisapokok1 * $prosen;
-                                                }elseif($sisapokok1 > 0 and $sisapokok1 >= $range ){
-                                                    $pph21r = $range * $prosen;
+                                            $awalkt = $data_progkt->awal;
+                                            $akhirkt = $data_progkt->akhir;
+                                            $persenkt = $data_progkt->prosen;
+                                            $prosenkt = $persenkt/100;
+                                            $rangekt = $akhirkt - $awalkt;
+                                            if($sisapokokkt > 0){
+                                                $sisapokok1kt = $sisapokokkt;
+                                                if($sisapokok1kt > 0 and $sisapokok1kt < $rangekt){
+                                                    $pph21rkt = $sisapokok1kt * $prosenkt;
+                                                }elseif($sisapokok1kt > 0 and $sisapokok1kt >= $rangekt ){
+                                                    $pph21rkt = $rangekt * $prosenkt;
                                                 }else{
-                                                    $pph21r = 0;
+                                                    $pph21rkt = 0;
                                                 }
                                             }else {
-                                                $pph21r = 0;
+                                                $pph21rkt = 0;
                                             }
-                                                $sisapokok = $sisapokok1 - $range;
-                                                $pph21ok =  $pph21r;
-                                                $pajakbulan = ($pph21ok/12);
-                                                $nilaikenapajak=($nilkenapajak/1000)*1000;
+                                                $sisapokokkt = $sisapokok1kt - $rangekt;
+                                                $pph21okkt =  $pph21rkt;
+                                                $pajakbulankt = pajak($nilaikenapajakakt);
+                                                $nilaikenapajakkt=($nilkenapajakkt/1000)*1000;
 
-                                                $selisih=$nilai2-$nilai1;
-                                                $nilai1=$nilaikenapajak;
-                                                $nilaikenapajak=(($nilaikenapajak+$pph21ok)/1000)*1000;
-                                                $nilai2=($nilaikenapajak/1000)*1000;
-                                                $nilaikenapajak=(($nilaikenapajak-$selisih)/1000)*1000;
+                                                $selisihkt=$nilai2kt-$nilai1kt;
+                                                $nilai1kt=$nilaikenapajakkt;
+                                                $nilaikenapajakkt=(($nilaikenapajakkt+$pph21okkt)/1000)*1000;
+                                                $nilai2kt=($nilaikenapajakkt/1000)*1000;
+                                                $nilaikenapajakkt=(($nilaikenapajakkt-$selisihkt)/1000)*1000;
                                             }
-                                                $tunjangan=$pajakbulan;
+                                                $tunjangankt=$pajakbulankt;
 
-                                                $data_tunjgaji = DB::select("select nilai from pay_master_upah where tahun='$tahungaji' and bulan='$bulangaji' and nopek='$nopeg' and aard='27'");
-                                                if(!empty($data_tunjgaji)){
-                                                    foreach($data_tunjgaji as $data_tunj)
+                                                $data_tunjgajikt = DB::select("select nilai from pay_master_upah where tahun='$tahungaji' and bulan='$bulangaji' and nopek='$nopeg' and aard='27'");
+                                                if(!empty($data_tunjgajikt)){
+                                                    foreach($data_tunjgajikt as $data_tunjkt)
                                                     {
-                                                        if($data_tunj->nilai <> ""){
-                                                            $pajakgaji  = $data_tunj->nilai;
+                                                        if($data_tunjkt->nilai <> ""){
+                                                            $pajakgajikt  = $data_tunjkt->nilai;
                                                         }else{
-                                                            $pajakgaji  = '0';
+                                                            $pajakgajikt  = '0';
                                                         }
                                                     }
                                                 }else{
-                                                    $pajakgaji = '0';
+                                                    $pajakgajikt = '0';
                                                 }
 
-                                                $pajakakhir = ($pajakbulan - $pajakgaji)* 12;
+                                                $pajakakhirkt = ($pajakbulankt - $pajakgajikt)* 12;
 
-                                                $data_potongan = DB::select("select nilai as nilai from pay_potongan_insentif where tahun='$data_tahun' and bulan='$data_bulan' and nopek='$nopeg'");
-                                                if(!empty($data_potongan)){
-                                                    foreach($data_potongan as $data_pot)
+                                                $data_potongankt = DB::select("select nilai as nilai from pay_potongan_insentif where tahun='$data_tahun' and bulan='$data_bulan' and nopek='$nopeg'");
+                                                if(!empty($data_potongankt)){
+                                                    foreach($data_potongankt as $data_potkt)
                                                     {
-                                                        if($data_pot->nilai <> ""){
-                                                            $potonganinsentif  = $data_pot->nilai;
+                                                        if($data_potkt->nilai <> ""){
+                                                            $potonganinsentifkt  = $data_potkt->nilai;
                                                         }else{
-                                                            $potonganinsentif  = '0';
+                                                            $potonganinsentifkt  = '0';
                                                         }
                                                     }
                                                 }else{
-                                                    $potonganinsentif = '0';
+                                                    $potonganinsentifkt = '0';
                                                 }
 
                                                 // inspotpajak
@@ -464,7 +464,7 @@ class ProsesInsentifController extends Controller
                                             'bulan' => $data_bulan,
                                             'nopek' => $nopeg,
                                             'aard' => 26,
-                                            'nilai' => $pajakakhir * -1,
+                                            'nilai' => $pajakakhirkt * -1,
                                             'tahunins' => $tahuns,
                                             'status' => 'K',
                                             'userid' => $request->userid,
@@ -475,7 +475,7 @@ class ProsesInsentifController extends Controller
                                             'bulan' => $data_bulan,
                                             'nopek' => $nopeg,
                                             'aard' => 27,
-                                            'nilai' => $pajakakhir,
+                                            'nilai' => $pajakakhirkt,
                                             'tahunins' => $tahuns,
                                             'status' => 'K',
                                             'userid' => $request->userid,
@@ -486,7 +486,7 @@ class ProsesInsentifController extends Controller
                                             'bulan' => $data_bulan,
                                             'nopek' => $nopeg,
                                             'aard' => 19,
-                                            'nilai' => $potonganinsentif,
+                                            'nilai' => $potonganinsentifkt,
                                             'tahunins' => $tahuns,
                                             'status' => 'K',
                                             'userid' => $request->userid,
@@ -497,15 +497,15 @@ class ProsesInsentifController extends Controller
                                             'bulan' => $data_bulan,
                                             'nopek' => $nopeg,
                                             'aard' => 24,
-                                            'nilai' => $insentif,
+                                            'nilai' => $insentifkt,
                                             'tahunins' => $tahuns,
                                             'status' => 'K',
-                                            'pajakgaji' => $pajakgaji*12,
-                                            'pajakins' => $pajakakhir,
-                                            'ut' => $upahallin,
+                                            'pajakgaji' => $pajakgajikt*12,
+                                            'pajakins' => $pajakakhirkt,
+                                            'ut' => $upahallinkt,
                                             'pengali' => $upah,
                                             'keterangan' => $keterangan,
-                                            'potongan' => $potonganinsentif,
+                                            'potongan' => $potonganinsentifkt,
                                             'userid' => $request->userid,
                                             ]);
 
@@ -515,390 +515,390 @@ class ProsesInsentifController extends Controller
                             
                         }elseif($request->prosesupah == 'C'){
                                     // PekerjaTetapIns()
-                                    // 1.CARI PEGAWAI YANG STATUS PEKERJA TETAP
-                                    $data_caripegawai = DB::select("select nopeg,kodekeluarga from sdm_master_pegawai where status='C' order by nopeg asc");
-                                    foreach($data_caripegawai as $data_cari)
-                                    {                                
-                                        $nopeg = $data_cari->nopeg;
-                                        $kodekel = $data_cari->kodekeluarga;
-                                    
-                                    $data_upahtetap = DB::select("select a.ut from sdm_ut a where a.nopeg='$nopeg' and a.mulai=(select max(mulai) from sdm_ut where nopeg='$nopeg')");
-                                    if(!empty($data_upahtetap)){
-                                        foreach($data_upahtetap as $data_upah)
-                                        {
-                                            if($data_upah->ut <> ""){
-                                                $upahtetap = $data_upah->ut;
-                                            }else {
-                                                $upahtetap = '0';
-                                            }
-                                        }
-                                    }else {
-                                        $upahtetap = '0';
-                                    }
-                                    $pengali = $upah;
-                                    $insentif = $upahtetap * $upah;
-                                    
-                                    // 2.Cari nilai Jamsostek
-                                    $data_carijamsostek = DB::select("select curramount from pay_master_bebanprshn where tahun='$tahungaji' and bulan='$bulangaji' and nopek='$nopeg' and aard='10'");
-                                        if(!empty($data_carijamsostek)){
-                                            foreach($data_carijamsostek as $data_carijam)
-                                            {
-                                                if($data_carijam->curramount <> ""){
-                                                    $niljstaccident = $data_carijam->curramount;
-                                                }else {
-                                                    $niljstaccident = '0';
-                                                }
-                                            }
-                                        }else {
-                                            $niljstaccident = '0';
-                                        }
-
-                                    $data_jslife = DB::select("select curramount from pay_master_bebanprshn where tahun='$tahungaji' and bulan='$bulangaji' and nopek='$nopeg' and aard='12'");
-                                        if(!empty($data_jslife)){
-                                            foreach($data_jslife as $data_carilife)
-                                            {
-                                                if($data_carilife->curramount <> ""){
-                                                    $niljstlife = $data_carilife->curramount;
-                                                }else {
-                                                    $niljstlife = '0';
-                                                }
-                                            }
-                                        }else {
-                                            $niljstlife = '0';
-                                        }
-
-                                    $data_fasilitas = DB::select("select nilai from pay_master_upah where tahun='$tahungaji' and bulan='$bulangaji' and nopek='$nopeg' and aard='06'");
-                                        if(!empty($data_fasilitas)){
-                                            foreach($data_fasilitas as $data_fasil)
-                                            {
-                                                if($data_fasil->nilai <> ""){
-                                                    $fasilitas = $data_fasil->nilai;
-                                                }else {
-                                                    $fasilitas = '0';
-                                                }
-                                            }
-                                        }else {
-                                            $fasilitas = '0';
-                                        }
-
-                                    // 3.Cari nilai kena pajak upah bulan sebelumnya
-                                    $data_kenapajak = DB::select("select sum(a.nilai) as nilai1 from pay_master_upah a,pay_tbl_aard b where a.tahun='$tahungaji' and a.bulan='$bulangaji' and a.nopek='$nopeg' and a.aard=b.kode and b.kenapajak='Y'");
-                                        if(!empty($data_kenapajak)){
-                                            foreach($data_kenapajak as $data_kenap)
-                                            {
-                                                if($data_kenap->nilai1 <> ""){
-                                                    $nilaikenapajak1 = $data_kenap->nilai1;
-                                                }else {
-                                                    $nilaikenapajak1 = '0';
-                                                }
-                                            }
-                                        }else {
-                                            $nilaikenapajak1 = '0';
-                                        }
-
-                                    $data_koreksigaji = DB::select("select sum(a.nilai) as kortam from pay_koreksigaji a where a.tahun='$tahungaji' and a.bulan='$bulangaji' and a.nopek='$nopeg'");
-                                        if(!empty($data_koreksigaji)){
-                                            foreach($data_koreksigaji as $data_koreksig)
-                                            {
-                                                if($data_koreksig->kortam <> ""){
-                                                    $kortam = $data_koreksig->kortam;
-                                                }else {
-                                                    $kortam = '0';
-                                                }
-                                            }
-                                        }else {
-                                            $kortam = '0';
-                                        }
-
-                                    $totkenapajak = ((($nilaikenapajak1 + $niljstaccident + $niljstlife)*12) + $fasilitas + $kortam + $insentif);
-                                    
-                                    // 4.HITUNG BIAYA JABATAN
-                                    $biayajabatan2 = ((5/100) * $totkenapajak);
-                                    if($biayajabatan2 > 6000000){
-                                        $biayajabatan = 6000000;  
-                                    }else{
-                                        $biayajabatan = $biayajabatan2;
-                                    }
-
-                                    $neto1tahun =  $totkenapajak - $biayajabatan;
-
-                                    $data_ptkp = DB::select("select a.kodekeluarga,b.nilai from sdm_master_pegawai a,pay_tbl_ptkp b where a.kodekeluarga=b.kdkel and a.nopeg='$nopeg'");
-                                        if(!empty($data_ptkp)){
-                                            foreach($data_ptkp as $data_p)
-                                            {
-                                                if($data_p->nilai <> ""){
-                                                    $nilaiptkp1 = $data_p->nilai;
-                                                }else {
-                                                    $nilaiptkp1 = '0';
-                                                }
-                                            }
-                                        }else {
-                                            $nilaiptkp1 = '0';
-                                        }
-
-                                    $nilaikenapajaka = $neto1tahun - $nilaiptkp1;
-
-                                    $nilai2 = 0;
-                                    $nilai1 = 0;
-                                    $tunjangan = 0;
-                                    $pajakbulan=1;
-                                    $nilkenapajak = $nilaikenapajaka;
-                                    $sisapokok = $nilkenapajak;
-                                    $data_sdmprogresif = DB::select("select * from sdm_tbl_progressif order by awal asc");
-                                    foreach($data_sdmprogresif as $data_prog)
-                                    {
-                                        $awal = $data_prog->awal;
-                                        $akhir = $data_prog->akhir;
-                                        $persen = $data_prog->prosen;
-                                        $prosen = $persen/100;
-                                        $range = $akhir - $awal;
-                                        if($sisapokok > 0){
-                                            $sisapokok1 = $sisapokok;
-                                            if($sisapokok1 > 0 and $sisapokok1 < $range){
-                                                $pph21r = $sisapokok1 * $prosen;
-                                            }elseif($sisapokok1 > 0 and $sisapokok1 >= $range ){
-                                                $pph21r = $range * $prosen;
-                                            }else{
-                                                $pph21r = 0;
-                                            }
-                                        }else {
-                                            $pph21r = 0;
-                                        }
-                                        $sisapokok = $sisapokok1 - $range;
-                                        $pph21ok =  $pph21r;
-                                        $pajakbulan = ($pph21ok/12);
-                                        $nilaikenapajak=($nilkenapajak/1000)*1000;
-
-                                        $selisih=$nilai2-$nilai1;
-                                        $nilai1=$nilaikenapajak;
-                                        $nilaikenapajak=(($nilaikenapajak+$pph21ok)/1000)*1000;
-                                        $nilai2=($nilaikenapajak/1000)*1000;
-                                        $nilaikenapajak=(($nilaikenapajak-$selisih)/1000)*1000;
-                                    }
-                                        $tunjangan=$pajakbulan;
-
-
-                                    $data_stungaji = DB::select("select nilai from pay_master_upah where tahun='$tahungaji' and bulan='$bulangaji' and nopek='$nopeg' and aard='27'");
-                                        if(!empty($data_stungaji)){
-                                            foreach($data_stungaji as $data_st)
-                                            {
-                                                if($data_st->nilai <> ""){
-                                                    $pajakgaji = $data_st->nilai;
-                                                }else {
-                                                    $pajakgaji = '0';
-                                                }
-                                            }
-                                        }else {
-                                            $pajakgaji = '0';
-                                        }
-                                    $pajakakhir = ($pajakbulan - $pajakgaji)* 12;
-
-                                    $data_potongan = DB::select("select nilai as nilai from pay_potongan_insentif where tahun='$data_tahun' and bulan='$$data_bulan' and nopek='$nopeg'");
-                                        if(!empty($data_potongan)){
-                                            foreach($data_potongan as $data_pot)
-                                            {
-                                                if($data_pot->nilai <> ""){
-                                                    $potonganinsentif = $data_pot->nilai;
-                                                }else {
-                                                    $potonganinsentif = '0';
-                                                }
-                                            }
-                                        }else {
-                                            $potonganinsentif = '0';
-                                        }
-                                        // inspotpajak
-                                        PayMasterInsentif::insert([
-                                            'tahun' => $data_tahun,
-                                            'bulan' => $data_bulan,
-                                            'nopek' => $nopeg,
-                                            'aard' => 26,
-                                            'nilai' => $pajakakhir * -1,
-                                            'tahunins' => $tahuns,
-                                            'status' => 'C',
-                                            'userid' => $request->userid,
-                                            ]);
-                                        // instunjpajak
-                                        PayMasterInsentif::insert([
-                                            'tahun' => $data_tahun,
-                                            'bulan' => $data_bulan,
-                                            'nopek' => $nopeg,
-                                            'aard' => 27,
-                                            'nilai' => $pajakakhir,
-                                            'tahunins' => $tahuns,
-                                            'status' => 'C',
-                                            'userid' => $request->userid,
-                                            ]);
-                                        // inspotongan
-                                        PayMasterInsentif::insert([
-                                            'tahun' => $data_tahun,
-                                            'bulan' => $data_bulan,
-                                            'nopek' => $nopeg,
-                                            'aard' => 24,
-                                            'nilai' => $potonganinsentif,
-                                            'tahunins' => $tahuns,
-                                            'status' => 'C',
-                                            'userid' => $request->userid,
-                                            ]);
-                                        // instunjangan
-                                        PayMasterInsentif::insert([
-                                            'tahun' => $data_tahun,
-                                            'bulan' => $data_bulan,
-                                            'nopek' => $nopeg,
-                                            'aard' => 19,
-                                            'nilai' => $insentif,
-                                            'tahunins' => $tahuns,
-                                            'status' => 'C',
-                                            'pajakgaji' => $pajakgaji*12,
-                                            'pajakins' => $pajakakhir,
-                                            'ut' => $upahtetap,
-                                            'pengali' => $pengali,
-                                            'keterangan' => $keterangan,
-                                            'potongan' => $potonganinsentif,
-                                            'userid' => $request->userid,
-                                            ]);
-                                    }
+                                     // 1.CARI PEGAWAI YANG STATUS PEKERJA TETAP
+                                     $data_caripegawaic = DB::select("select nopeg,kodekeluarga from sdm_master_pegawai where status='C' order by nopeg asc");
+                                     foreach($data_caripegawaic as $data_caript)
+                                     {                                
+                                         $nopegpt = $data_caript->nopeg;
+                                         $kodekel = $data_caript->kodekeluarga;
+                                     
+                                     $data_upahtetappt = DB::select("select a.ut from sdm_ut a where a.nopeg='$nopegpt' and a.mulai=(select max(mulai) from sdm_ut where nopeg='$nopegpt')");
+                                     if(!empty($data_upahtetappt)){
+                                         foreach($data_upahtetappt as $data_upahpt)
+                                         {
+                                             if($data_upahpt->ut <> ""){
+                                                 $upahtetappt = $data_upahpt->ut;
+                                             }else {
+                                                 $upahtetappt = '0';
+                                             }
+                                         }
+                                     }else {
+                                         $upahtetappt = '0';
+                                     }
+                                     $pengalipt = $upah;
+                                     $insentifpt = $upahtetappt * $upah;
+                                     
+                                     // 2.Cari nilai Jamsostek
+                                     $data_carijamsostekpt = DB::select("select curramount from pay_master_bebanprshn where tahun='$tahungaji' and bulan='$bulangaji' and nopek='$nopegpt' and aard='10'");
+                                         if(!empty($data_carijamsostekpt)){
+                                             foreach($data_carijamsostekpt as $data_carijampt)
+                                             {
+                                                 if($data_carijampt->curramount <> ""){
+                                                     $niljstaccidentpt = $data_carijampt->curramount;
+                                                 }else {
+                                                     $niljstaccidentpt = '0';
+                                                 }
+                                             }
+                                         }else {
+                                             $niljstaccidentpt = '0';
+                                         }
+ 
+                                     $data_jslifept = DB::select("select curramount from pay_master_bebanprshn where tahun='$tahungaji' and bulan='$bulangaji' and nopek='$nopegpt' and aard='12'");
+                                         if(!empty($data_jslifept)){
+                                             foreach($data_jslifept as $data_carilifept)
+                                             {
+                                                 if($data_carilifept->curramount <> ""){
+                                                     $niljstlifept = $data_carilifept->curramount;
+                                                 }else {
+                                                     $niljstlifept = '0';
+                                                 }
+                                             }
+                                         }else {
+                                             $niljstlifept = '0';
+                                         }
+ 
+                                     $data_fasilitaspt = DB::select("select nilai from pay_master_upah where tahun='$tahungaji' and bulan='$bulangaji' and nopek='$nopegpt' and aard='06'");
+                                         if(!empty($data_fasilitaspt)){
+                                             foreach($data_fasilitaspt as $data_fasilpt)
+                                             {
+                                                 if($data_fasilpt->nilai <> ""){
+                                                     $fasilitaspt = $data_fasilpt->nilai;
+                                                 }else {
+                                                     $fasilitaspt = '0';
+                                                 }
+                                             }
+                                         }else {
+                                             $fasilitaspt = '0';
+                                         }
+ 
+                                     // 3.Cari nilai kena pajak upah bulan sebelumnya
+                                     $data_kenapajakpt = DB::select("select sum(a.nilai) as nilai1 from pay_master_upah a,pay_tbl_aard b where a.tahun='$tahungaji' and a.bulan='$bulangaji' and a.nopek='$nopegpt' and a.aard=b.kode and b.kenapajak='Y'");
+                                         if(!empty($data_kenapajakpt)){
+                                             foreach($data_kenapajakpt as $data_kenappt)
+                                             {
+                                                 if($data_kenappt->nilai1 <> ""){
+                                                     $nilaikenapajak1pt = $data_kenappt->nilai1;
+                                                 }else {
+                                                     $nilaikenapajak1pt = '0';
+                                                 }
+                                             }
+                                         }else {
+                                             $nilaikenapajak1pt = '0';
+                                         }
+ 
+                                     $data_koreksigajipt = DB::select("select sum(a.nilai) as kortam from pay_koreksigaji a where a.tahun='$tahungaji' and a.bulan='$bulangaji' and a.nopek='$nopegpt'");
+                                         if(!empty($data_koreksigajipt)){
+                                             foreach($data_koreksigajipt as $data_koreksigpt)
+                                             {
+                                                 if($data_koreksigpt->kortam <> ""){
+                                                     $kortampt = $data_koreksigpt->kortampt;
+                                                 }else {
+                                                     $kortampt = '0';
+                                                 }
+                                             }
+                                         }else {
+                                             $kortampt = '0';
+                                         }
+ 
+                                     $totkenapajakpt = ((($nilaikenapajak1pt + $niljstaccidentpt + $niljstlifept)*12) + $fasilitaspt + $kortampt + $insentifpt);
+                                     
+                                     // 4.HITUNG BIAYA JABATAN
+                                     $biayajabatan2pt = ((5/100) * $totkenapajakpt);
+                                     if($biayajabatan2pt > 6000000){
+                                         $biayajabatanpt = 6000000;  
+                                     }else{
+                                         $biayajabatanpt = $biayajabatan2pt;
+                                     }
+ 
+                                     $neto1tahunpt =  $totkenapajakpt - $biayajabatanpt;
+ 
+                                     $data_ptkppt = DB::select("select a.kodekeluarga,b.nilai from sdm_master_pegawai a,pay_tbl_ptkp b where a.kodekeluarga=b.kdkel and a.nopeg='$nopegpt'");
+                                         if(!empty($data_ptkppt)){
+                                             foreach($data_ptkppt as $data_ppt)
+                                             {
+                                                 if($data_ppt->nilai <> ""){
+                                                     $nilaiptkp1pt = $data_ppt->nilai;
+                                                 }else {
+                                                     $nilaiptkp1pt = '0';
+                                                 }
+                                             }
+                                         }else {
+                                             $nilaiptkp1pt = '0';
+                                         }
+ 
+                                     $nilaikenapajakapt = $neto1tahunpt - $nilaiptkp1pt;
+ 
+                                     $nilai2pt = 0;
+                                     $nilai1pt = 0;
+                                     $tunjanganpt = 0;
+                                     $pajakbulanpt=1;
+                                     $nilkenapajakpt = $nilaikenapajakapt;
+                                     $sisapokokpt = $nilkenapajakpt;
+                                     $data_sdmprogresif = DB::select("select * from sdm_tbl_progressif order by awal asc");
+                                     foreach($data_sdmprogresif as $data_progpt)
+                                     {
+                                         $awalpt = $data_progpt->awal;
+                                         $akhirpt = $data_progpt->akhir;
+                                         $persenpt = $data_progpt->prosen;
+                                         $prosenpt = $persenpt/100;
+                                         $rangept = $akhirpt - $awalpt;
+                                         if($sisapokokpt > 0){
+                                             $sisapokok1pt = $sisapokokpt;
+                                             if($sisapokok1pt > 0 and $sisapokok1pt < $rangept){
+                                                 $pph21rpt = $sisapokok1pt * $prosenpt;
+                                             }elseif($sisapokok1pt > 0 and $sisapokok1pt >= $rangept ){
+                                                 $pph21rpt = $rangept * $prosenpt;
+                                             }else{
+                                                 $pph21rpt = 0;
+                                             }
+                                         }else {
+                                             $pph21rpt = 0;
+                                         }
+                                         $sisapokokpt = $sisapokok1pt - $rangept;
+                                         $pph21okpt =  $pph21rpt;
+                                         $pajakbulanpt = pajak($nilaikenapajakapt);
+                                         $nilaikenapajakpt=($nilkenapajakpt/1000)*1000;
+ 
+                                         $selisihpt=$nilai2pt-$nilai1pt;
+                                         $nilai1pt=$nilaikenapajakpt;
+                                         $nilaikenapajakpt=(($nilaikenapajakpt+$pph21okpt)/1000)*1000;
+                                         $nilai2pt=($nilaikenapajakpt/1000)*1000;
+                                         $nilaikenapajakpt=(($nilaikenapajakpt-$selisihpt)/1000)*1000;
+                                     }
+                                         $tunjanganpt=$pajakbulanpt;
+ 
+ 
+                                     $data_stungajipt = DB::select("select nilai from pay_master_upah where tahun='$tahungaji' and bulan='$bulangaji' and nopek='$nopegpt' and aard='27'");
+                                         if(!empty($data_stungajipt)){
+                                             foreach($data_stungajipt as $data_stpt)
+                                             {
+                                                 if($data_stpt->nilai <> ""){
+                                                     $pajakgajipt = $data_stpt->nilai;
+                                                 }else {
+                                                     $pajakgajipt = '0';
+                                                 }
+                                             }
+                                         }else {
+                                             $pajakgajipt = '0';
+                                         }
+                                     $pajakakhirpt = ($pajakbulanpt - $pajakgajipt)* 12;
+ 
+                                     $data_potonganpt = DB::select("select nilai as nilai from pay_potongan_insentif where tahun='$data_tahun' and bulan='$$data_bulan' and nopek='$nopegpt'");
+                                         if(!empty($data_potonganpt)){
+                                             foreach($data_potonganpt as $data_potpt)
+                                             {
+                                                 if($data_potpt->nilai <> ""){
+                                                     $potonganinsentifpt = $data_potpt->nilai;
+                                                 }else {
+                                                     $potonganinsentifpt = '0';
+                                                 }
+                                             }
+                                         }else {
+                                             $potonganinsentifpt = '0';
+                                         }
+                                         // inspotpajak
+                                         PayMasterInsentif::insert([
+                                             'tahun' => $data_tahun,
+                                             'bulan' => $data_bulan,
+                                             'nopek' => $nopegpt,
+                                             'aard' => 26,
+                                             'nilai' => $pajakakhirpt * -1,
+                                             'tahunins' => $tahuns,
+                                             'status' => 'C',
+                                             'userid' => $request->userid,
+                                             ]);
+                                         // instunjpajak
+                                         PayMasterInsentif::insert([
+                                             'tahun' => $data_tahun,
+                                             'bulan' => $data_bulan,
+                                             'nopek' => $nopegpt,
+                                             'aard' => 27,
+                                             'nilai' => $pajakakhirpt,
+                                             'tahunins' => $tahuns,
+                                             'status' => 'C',
+                                             'userid' => $request->userid,
+                                             ]);
+                                         // inspotongan
+                                         PayMasterInsentif::insert([
+                                             'tahun' => $data_tahun,
+                                             'bulan' => $data_bulan,
+                                             'nopek' => $nopegpt,
+                                             'aard' => 24,
+                                             'nilai' => $potonganinsentifpt,
+                                             'tahunins' => $tahuns,
+                                             'status' => 'C',
+                                             'userid' => $request->userid,
+                                             ]);
+                                         // instunjangan
+                                         PayMasterInsentif::insert([
+                                             'tahun' => $data_tahun,
+                                             'bulan' => $data_bulan,
+                                             'nopek' => $nopegpt,
+                                             'aard' => 19,
+                                             'nilai' => $insentifpt,
+                                             'tahunins' => $tahuns,
+                                             'status' => 'C',
+                                             'pajakgaji' => $pajakgajipt*12,
+                                             'pajakins' => $pajakakhirpt,
+                                             'ut' => $upahtetappt,
+                                             'pengali' => $pengalipt,
+                                             'keterangan' => $keterangan,
+                                             'potongan' => $potonganinsentifpt,
+                                             'userid' => $request->userid,
+                                             ]);
+                                     }
                             
                         }else {
 
                                     // pekerjakontrakins()
                                     // 1.CARI PEGAWAI YANG STATUS PEKERJA Kontrak
-                                    $data_caripegawai = DB::select("select nopeg,kodekeluarga from sdm_master_pegawai where status='K' order by nopeg asc");
-                                    foreach($data_caripegawai as $data_cari)
+                                    $data_caripegawaipk = DB::select("select nopeg,kodekeluarga from sdm_master_pegawai where status='K' order by nopeg asc");
+                                    foreach($data_caripegawaipk as $data_carikt)
                                     {                                
-                                        $nopeg = $data_cari->nopeg;
-                                        $kodekel = $data_cari->kodekeluarga;
+                                        $nopeg = $data_carikt->nopeg;
+                                        $kodekel = $data_carikt->kodekeluarga;
 
                                         // 1. UPAHALLIN
-                                        $data_upah = DB::select("select nilai from sdm_allin where nopek='$nopeg'");
-                                        if(!empty($data_upah)){
-                                            foreach($data_upah as $data_up)
+                                        $data_upahkt = DB::select("select nilai from sdm_allin where nopek='$nopeg'");
+                                        if(!empty($data_upahkt)){
+                                            foreach($data_upahkt as $data_upkt)
                                             {
-                                                if($data_up->nilai <> ""){
-                                                    $upahallin = $data_up->nilai;
+                                                if($data_upkt->nilai <> ""){
+                                                    $upahallinkt = $data_upkt->nilai;
                                                 }else{
-                                                    $upahallin = '0';
+                                                    $upahallinkt = '0';
                                                 }
                                             }
                                         }else{
-                                            $upahallin= '0';
+                                            $upahallinkt= '0';
                                         }
                                         
-                                        $insentif = $upahallin * $upah;
+                                        $insentifkt = $upahallinkt * $upah;
 
-                                        $data_kenapajak = DB::select("select sum(a.nilai) as nilai1 from pay_master_upah a,pay_tbl_aard b where a.tahun='$tahungaji' and a.bulan='$bulangaji' and a.nopek='$nopeg' and a.aard=b.kode and b.kenapajak='Y'");
-                                        if(!empty($data_kenapajak)){
-                                            foreach($data_kenapajak as $data_kena)
+                                        $data_kenapajakkt = DB::select("select sum(a.nilai) as nilai1 from pay_master_upah a,pay_tbl_aard b where a.tahun='$tahungaji' and a.bulan='$bulangaji' and a.nopek='$nopeg' and a.aard=b.kode and b.kenapajak='Y'");
+                                        if(!empty($data_kenapajakkt)){
+                                            foreach($data_kenapajakkt as $data_kenakt)
                                             {
-                                                if($data_kena->nilai1 <> ""){
-                                                    $nilaikenapajak1  = $data_kena->nilai1;
+                                                if($data_kenakt->nilai1 <> ""){
+                                                    $nilaikenapajak1kt  = $data_kenakt->nilai1;
                                                 }else{
-                                                    $nilaikenapajak1  = '0';
+                                                    $nilaikenapajak1kt  = '0';
                                                 }
                                             }
                                         }else{
-                                            $nilaikenapajak1 = '0';
+                                            $nilaikenapajak1kt = '0';
                                         }
 
-                                        $data_korgaji = DB::select("select sum(a.nilai) as kortam from pay_koreksigaji a where a.tahun='tahungaji' and a.bulan='$bulangaji' and a.nopek='$nopeg'");
-                                        foreach($data_korgaji as $data_kor)
+                                        $data_korgajikt = DB::select("select sum(a.nilai) as kortam from pay_koreksigaji a where a.tahun='tahungaji' and a.bulan='$bulangaji' and a.nopek='$nopeg'");
+                                        foreach($data_korgajikt as $data_korkt)
                                         {
-                                            $kortam2 = $data_kor->kortam;
+                                            $kortam2kt = $data_korkt->kortam;
                                         }
 
-                                        $totkenapajak = (($nilaikenapajak1 * 12) + $kortam2 + $insentif);
-                                        $biayajabatan2 = ((5/100) * $totkenapajak);
-                                        if($biayajabatan2 > 6000000){
-                                            $biayajabatan = 6000000;  
+                                        $totkenapajakkt = (($nilaikenapajak1kt * 12) + $kortam2kt + $insentifkt);
+                                        $biayajabatan2kt = ((5/100) * $totkenapajakkt);
+                                        if($biayajabatan2kt > 6000000){
+                                            $biayajabatankt = 6000000;  
                                         }else{
-                                            $biayajabatan = $biayajabatan2;
+                                            $biayajabatankt = $biayajabatan2kt;
                                         }
 
-                                        $neto1tahun =  $totkenapajak - $biayajabatan;
+                                        $neto1tahunkt =  $totkenapajakkt - $biayajabatankt;
 
-                                        $data_ptkp = DB::select("select a.kodekeluarga,b.nilai from sdm_master_pegawai a,pay_tbl_ptkp b where a.kodekeluarga=b.kdkel and a.nopeg='$nopeg'");
-                                        if(!empty($data_ptkp)){
-                                            foreach($data_ptkp as $data_pt)
+                                        $data_ptkpkt = DB::select("select a.kodekeluarga,b.nilai from sdm_master_pegawai a,pay_tbl_ptkp b where a.kodekeluarga=b.kdkel and a.nopeg='$nopeg'");
+                                        if(!empty($data_ptkpkt)){
+                                            foreach($data_ptkpkt as $data_ptkt)
                                             {
-                                                if($data_pt->nilai <> ""){
-                                                    $nilaiptkp1  = $data_pt->nilai;
+                                                if($data_ptkt->nilai <> ""){
+                                                    $nilaiptkp1kt  = $data_ptkt->nilai;
                                                 }else{
-                                                    $nilaiptkp1  = '0';
+                                                    $nilaiptkp1kt  = '0';
                                                 }
                                             }
                                         }else{
-                                            $nilaiptkp1 = '0';
+                                            $nilaiptkp1kt = '0';
                                         }
 
-                                        $nilaikenapajaka = $neto1tahun - $nilaiptkp1;
+                                        $nilaikenapajakakt = $neto1tahunkt - $nilaiptkp1kt;
 
 
-                                        $nilai2 = 0;
-                                        $nilai1 = 0;
-                                        $tunjangan = 0;
-                                        $pajakbulan=1;
-                                        $nilkenapajak = $nilaikenapajaka;
-                                        $sisapokok = $nilkenapajak;
+                                        $nilai2kt = 0;
+                                        $nilai1kt = 0;
+                                        $tunjangankt = 0;
+                                        $pajakbulankt=1;
+                                        $nilkenapajakkt = $nilaikenapajakakt;
+                                        $sisapokokkt = $nilkenapajakkt;
                                         $data_sdmprogresif = DB::select("select * from sdm_tbl_progressif order by awal asc");
-                                        foreach($data_sdmprogresif as $data_prog)
+                                        foreach($data_sdmprogresif as $data_progkt)
                                         {
-                                            $awal = $data_prog->awal;
-                                            $akhir = $data_prog->akhir;
-                                            $persen = $data_prog->prosen;
-                                            $prosen = $persen/100;
-                                            $range = $akhir - $awal;
-                                            if($sisapokok > 0){
-                                                $sisapokok1 = $sisapokok;
-                                                if($sisapokok1 > 0 and $sisapokok1 < $range){
-                                                    $pph21r = $sisapokok1 * $prosen;
-                                                }elseif($sisapokok1 > 0 and $sisapokok1 >= $range ){
-                                                    $pph21r = $range * $prosen;
+                                            $awalkt = $data_progkt->awal;
+                                            $akhirkt = $data_progkt->akhir;
+                                            $persenkt = $data_progkt->prosen;
+                                            $prosenkt = $persenkt/100;
+                                            $rangekt = $akhirkt - $awalkt;
+                                            if($sisapokokkt > 0){
+                                                $sisapokok1kt = $sisapokokkt;
+                                                if($sisapokok1kt > 0 and $sisapokok1kt < $rangekt){
+                                                    $pph21rkt = $sisapokok1kt * $prosenkt;
+                                                }elseif($sisapokok1kt > 0 and $sisapokok1kt >= $rangekt ){
+                                                    $pph21rkt = $rangekt * $prosenkt;
                                                 }else{
-                                                    $pph21r = 0;
+                                                    $pph21rkt = 0;
                                                 }
                                             }else {
-                                                $pph21r = 0;
+                                                $pph21rkt = 0;
                                             }
-                                                $sisapokok = $sisapokok1 - $range;
-                                                $pph21ok =  $pph21r;
-                                                $pajakbulan = ($pph21ok/12);
-                                                $nilaikenapajak=($nilkenapajak/1000)*1000;
+                                                $sisapokokkt = $sisapokok1kt - $rangekt;
+                                                $pph21okkt =  $pph21rkt;
+                                                $pajakbulankt = pajak($nilaikenapajakakt);
+                                                $nilaikenapajakkt=($nilkenapajakkt/1000)*1000;
 
-                                                $selisih=$nilai2-$nilai1;
-                                                $nilai1=$nilaikenapajak;
-                                                $nilaikenapajak=(($nilaikenapajak+$pph21ok)/1000)*1000;
-                                                $nilai2=($nilaikenapajak/1000)*1000;
-                                                $nilaikenapajak=(($nilaikenapajak-$selisih)/1000)*1000;
+                                                $selisihkt=$nilai2kt-$nilai1kt;
+                                                $nilai1kt=$nilaikenapajakkt;
+                                                $nilaikenapajakkt=(($nilaikenapajakkt+$pph21okkt)/1000)*1000;
+                                                $nilai2kt=($nilaikenapajakkt/1000)*1000;
+                                                $nilaikenapajakkt=(($nilaikenapajakkt-$selisihkt)/1000)*1000;
                                             }
-                                                $tunjangan=$pajakbulan;
+                                                $tunjangankt=$pajakbulankt;
 
-                                                $data_tunjgaji = DB::select("select nilai from pay_master_upah where tahun='$tahungaji' and bulan='$bulangaji' and nopek='$nopeg' and aard='27'");
-                                                if(!empty($data_tunjgaji)){
-                                                    foreach($data_tunjgaji as $data_tunj)
+                                                $data_tunjgajikt = DB::select("select nilai from pay_master_upah where tahun='$tahungaji' and bulan='$bulangaji' and nopek='$nopeg' and aard='27'");
+                                                if(!empty($data_tunjgajikt)){
+                                                    foreach($data_tunjgajikt as $data_tunjkt)
                                                     {
-                                                        if($data_tunj->nilai <> ""){
-                                                            $pajakgaji  = $data_tunj->nilai;
+                                                        if($data_tunjkt->nilai <> ""){
+                                                            $pajakgajikt  = $data_tunjkt->nilai;
                                                         }else{
-                                                            $pajakgaji  = '0';
+                                                            $pajakgajikt  = '0';
                                                         }
                                                     }
                                                 }else{
-                                                    $pajakgaji = '0';
+                                                    $pajakgajikt = '0';
                                                 }
 
-                                                $pajakakhir = ($pajakbulan - $pajakgaji)* 12;
+                                                $pajakakhirkt = ($pajakbulankt - $pajakgajikt)* 12;
 
-                                                $data_potongan = DB::select("select nilai as nilai from pay_potongan_insentif where tahun='$data_tahun' and bulan='$data_bulan' and nopek='$nopeg'");
-                                                if(!empty($data_potongan)){
-                                                    foreach($data_potongan as $data_pot)
+                                                $data_potongankt = DB::select("select nilai as nilai from pay_potongan_insentif where tahun='$data_tahun' and bulan='$data_bulan' and nopek='$nopeg'");
+                                                if(!empty($data_potongankt)){
+                                                    foreach($data_potongankt as $data_potkt)
                                                     {
-                                                        if($data_pot->nilai <> ""){
-                                                            $potonganinsentif  = $data_pot->nilai;
+                                                        if($data_potkt->nilai <> ""){
+                                                            $potonganinsentifkt  = $data_potkt->nilai;
                                                         }else{
-                                                            $potonganinsentif  = '0';
+                                                            $potonganinsentifkt  = '0';
                                                         }
                                                     }
                                                 }else{
-                                                    $potonganinsentif = '0';
+                                                    $potonganinsentifkt = '0';
                                                 }
 
                                                 // inspotpajak
@@ -907,7 +907,7 @@ class ProsesInsentifController extends Controller
                                             'bulan' => $data_bulan,
                                             'nopek' => $nopeg,
                                             'aard' => 26,
-                                            'nilai' => $pajakakhir * -1,
+                                            'nilai' => $pajakakhirkt * -1,
                                             'tahunins' => $tahuns,
                                             'status' => 'K',
                                             'userid' => $request->userid,
@@ -918,7 +918,7 @@ class ProsesInsentifController extends Controller
                                             'bulan' => $data_bulan,
                                             'nopek' => $nopeg,
                                             'aard' => 27,
-                                            'nilai' => $pajakakhir,
+                                            'nilai' => $pajakakhirkt,
                                             'tahunins' => $tahuns,
                                             'status' => 'K',
                                             'userid' => $request->userid,
@@ -929,7 +929,7 @@ class ProsesInsentifController extends Controller
                                             'bulan' => $data_bulan,
                                             'nopek' => $nopeg,
                                             'aard' => 19,
-                                            'nilai' => $potonganinsentif,
+                                            'nilai' => $potonganinsentifkt,
                                             'tahunins' => $tahuns,
                                             'status' => 'K',
                                             'userid' => $request->userid,
@@ -940,20 +940,21 @@ class ProsesInsentifController extends Controller
                                             'bulan' => $data_bulan,
                                             'nopek' => $nopeg,
                                             'aard' => 24,
-                                            'nilai' => $insentif,
+                                            'nilai' => $insentifkt,
                                             'tahunins' => $tahuns,
                                             'status' => 'K',
-                                            'pajakgaji' => $pajakgaji*12,
-                                            'pajakins' => $pajakakhir,
-                                            'ut' => $upahallin,
+                                            'pajakgaji' => $pajakgajikt*12,
+                                            'pajakins' => $pajakakhirkt,
+                                            'ut' => $upahallinkt,
                                             'pengali' => $upah,
                                             'keterangan' => $keterangan,
-                                            'potongan' => $potonganinsentif,
+                                            'potongan' => $potonganinsentifkt,
                                             'userid' => $request->userid,
                                             ]);
 
 
                                     }
+                                    
                             
                         }
                         StatBayarInsentif::insert([
@@ -981,10 +982,12 @@ class ProsesInsentifController extends Controller
                             if(!empty($data_Cekbatal)){
                                     if($request->prosesupah == 'A'){
                                         PayMasterInsentif::where('tahun', $data_tahun)->where('bulan',$data_bulan)->delete();
+                                        StatBayarInsentif::where('tahun', $data_tahun)->where('bulan',$data_bulan)->delete();
+                                    }elseif($request->prosesupah == 'C'){
+                                        PayMasterInsentif::where('tahun', $data_tahun)->where('bulan',$data_bulan)->where('status',$prosesupah)->delete();
                                     }else{
                                         PayMasterInsentif::where('tahun', $data_tahun)->where('bulan',$data_bulan)->where('status',$prosesupah)->delete();
                                     }
-                                    StatBayarInsentif::where('tahun', $data_tahun)->where('bulan',$data_bulan)->delete();
                                     Alert::success("Proses pembatalan proses Insentif selesai", 'Berhasil')->persistent(true);
                                     return redirect()->route('proses_insentif.index');
                             }else {

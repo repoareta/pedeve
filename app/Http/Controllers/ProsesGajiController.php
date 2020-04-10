@@ -71,5029 +71,4675 @@ class ProsesGajiController extends Controller
                 Alert::error("Bulan $data_bulan dan tahun $data_tahun yang dimasukan sudah pernah di proses", 'Error')->persistent(true);
                 return redirect()->route('proses_gaji.index')->with(['proses' => 'proses']);
             }else{
-                if($request->prosesupah == 'A'){
-                        // PekerjaTetap()
-                        $data_pegawai = SdmMasterPegawai::where('status','C')->orderBy('nopeg', 'asc')->get();
-                        foreach($data_pegawai as $data)
+                    if($request->prosesupah == 'A'){
+                            // PekerjaTetap()
+                            $data_pegawaic = SdmMasterPegawai::where('status','C')->orderBy('nopeg', 'asc')->get();
+                            foreach($data_pegawaic as $datapt)
+                            {
+                                TblPajak::insert([
+                                    'tahun' => $data_tahun,
+                                    'bulan' => $data_bulan,
+                                    'nopeg' => $datapt->nopeg,
+                                    'status' => $datapt->kodekeluarga,        
+                                    ]); 
+
+                                // 1.CARI UPAH TETAP AARD 01
+                                $data_sdmutpt = DB::select("select a.ut from sdm_ut a where a.nopeg='$datapt->nopeg' and a.mulai=(select max(mulai) from sdm_ut where nopeg='$datapt->nopeg')");
+                                if(!empty($data_sdmutpt)){
+                                        foreach($data_sdmutpt as $data_sdmpt)
+                                        {
+                                            if($data_sdmpt->ut <> ""){
+                                                $upahtetappt = $data_sdmpt->ut;
+                                            }else {
+                                                $upahtetappt = '0';
+                                            }
+                                        }
+                                }else{
+                                    $upahtetappt = '0';
+                                }
+                                PayMasterUpah::insert([
+                                        'tahun' => $data_tahun,
+                                        'bulan' => $data_bulan,
+                                        'nopek' => $datapt->nopeg,
+                                        'aard' => '01',        
+                                        'jmlcc' => '0',        
+                                        'ccl' => '0',        
+                                        'nilai' => $upahtetappt,        
+                                        'userid' => $request->userid,        
+                                        ]);
+                                
+                                TblPajak::where('tahun', $data_tahun)
+                                    ->where('bulan',$data_bulan)
+                                    ->where('nopeg',$datapt->nopeg)
+                                    ->update([
+                                        'upah' => $upahtetappt,
+                                    ]);
+
+                                // 2.TUNJANGAN JABATAN AARD 03
+                                $data_sdmjabatanpt = DB::select("select a.nopeg,a.kdbag,a.kdjab,b.goljob,b.tunjangan from sdm_jabatan a,sdm_tbl_kdjab b where a.nopeg='$datapt->nopeg' and a.kdbag=b.kdbag and a.kdjab=b.kdjab and a.mulai=(select max(mulai) from sdm_jabatan where nopeg='$datapt->nopeg')");
+                                if(!empty($data_sdmjabatanpt)){
+                                        foreach($data_sdmjabatanpt as $data_sdmjabpt)
+                                        {
+                                            if($data_sdmjabpt->tunjangan <> ""){
+                                                $tunjabatanpt = $data_sdmjabpt->tunjangan;
+                                            }else{
+                                                $tunjabatanpt = '0';
+                                            }
+                                        }
+                                }else{
+                                    $tunjabatanpt = '0';
+                                }
+                                PayMasterUpah::insert([
+                                        'tahun' => $data_tahun,
+                                        'bulan' => $data_bulan,
+                                        'nopek' => $datapt->nopeg,
+                                        'aard' => '03',        
+                                        'jmlcc' => '0',        
+                                        'ccl' => '0',        
+                                        'nilai' => $tunjabatanpt,        
+                                        'userid' => $request->userid,        
+                                        ]); 
+
+                                TblPajak::where('tahun', $data_tahun)
+                                    ->where('bulan',$data_bulan)
+                                    ->where('nopeg',$datapt->nopeg)
+                                    ->update([
+                                        'tunjjabat' => $tunjabatanpt,
+                                    ]);
+
+                                // 3.TUNJANGAN BIAYA HIDUP AARD AARD = 04
+                                $data_sdmtunjanganpt = DB::select("select a.golgaji, b.nilai from sdm_golgaji a,pay_tbl_tunjangan b where a.nopeg='$datapt->nopeg' and a.golgaji=b.golongan and a.tanggal=(select max(tanggal) from sdm_golgaji where nopeg ='$datapt->nopeg')");
+                                if(!empty($data_sdmtunjanganpt)){
+                                        foreach($data_sdmtunjanganpt as $data_sdmpt)
+                                        {
+                                            if($data_sdmpt->nilai <> ""){
+                                            $tunjabatanhiduppt = $data_sdmpt->nilai;
+                                            }else{
+                                                $tunjabatanhiduppt = '0';
+                                            }
+                                        }
+                                }else{
+                                    $tunjabatanhiduppt = '0';
+                                }
+                                PayMasterUpah::insert([
+                                        'tahun' => $data_tahun,
+                                        'bulan' => $data_bulan,
+                                        'nopek' => $datapt->nopeg,
+                                        'aard' => '04',        
+                                        'jmlcc' => '0',        
+                                        'ccl' => '0',        
+                                        'nilai' => $tunjabatanhiduppt,        
+                                        'userid' => $request->userid,        
+                                        ]); 
+
+                                TblPajak::where('tahun', $data_tahun)
+                                    ->where('bulan',$data_bulan)
+                                    ->where('nopeg',$datapt->nopeg)
+                                    ->update([
+                                        'tunjdaerah' => $tunjabatanhiduppt,
+                                    ]);
+
+                                // 4.FASILITAS CUTI AARD 06
+                                $data_sdmfcutipt = SdmMasterPegawai::where('nopeg',$datapt->nopeg)->get();
+                                    foreach($data_sdmfcutipt as $data_sdmpt)
+                                    {   
+                                        $tahunpt = date('Y', strtotime($data_sdmpt->fasilitas));
+                                        $bulanpt = ltrim(date('m', strtotime($data_sdmpt->fasilitas)),'0');
+                                        $sisatahunpt = $data_tahun - $tahunpt;
+                                        $sisabulanpt = $data_bulan - $bulanpt;
+                                    }
+                                    if($sisabulanpt == '11' and $sisatahunpt == '0'){
+                                        $uangcutipt = $upahtetappt + $tunjabatanpt + $tunjabatanhiduppt;
+                                        $fasilitaspt = 1.5 * $uangcutipt;
+                                    }elseif($sisabulanpt == '11' and $sisatahunpt > '0'){
+                                        $uangcutipt = $upahtetappt + $tunjabatanpt + $tunjabatanhiduppt;
+                                        $fasilitaspt = 1.5 * $uangcutipt;
+                                    }elseif($sisabulanpt == '-1' and $sisatahunpt > '0'){
+                                        $uangcutipt = $upahtetappt + $tunjabatanpt + $tunjabatanhiduppt;
+                                        $fasilitaspt = 1.5 * $uangcutipt;
+                                    }else{
+                                        $fasilitaspt = '0';
+                                    }
+                                PayMasterUpah::insert([
+                                        'tahun' => $data_tahun,
+                                        'bulan' => $data_bulan,
+                                        'nopek' => $datapt->nopeg,
+                                        'aard' => '06',        
+                                        'jmlcc' => '0',        
+                                        'ccl' => '0',        
+                                        'nilai' => $fasilitaspt,        
+                                        'userid' => $request->userid,        
+                                        ]); 
+
+                                TblPajak::where('tahun', $data_tahun)
+                                    ->where('bulan',$data_bulan)
+                                    ->where('nopeg',$datapt->nopeg)
+                                    ->update([
+                                        'gapok' => $fasilitaspt,
+                                    ]);
+
+                                // 5.CARI NILAI LEMBUR AARD 05
+                                $data_lemburpt = DB::select("select Sum(makanpg+makansg+makanml+transport+lembur) as totlembur from pay_lembur where nopek='$datapt->nopeg' And bulan = '$data_bulan' AND tahun='$data_tahun'");                            
+                                if(!empty($data_lemburpt)){
+                                        foreach($data_lemburpt as $data_sdmpt)
+                                        {
+                                            if($data_sdmpt->totlembur <> ""){
+                                                $totallemburpt = $data_sdmpt->totlembur;
+                                            }else{
+                                                $totallemburpt = '0';
+                                            }
+                                        }
+                                }else{
+                                    $totallemburpt = '0';
+                                }
+                                PayMasterUpah::insert([
+                                        'tahun' => $data_tahun,
+                                        'bulan' => $data_bulan,
+                                        'nopek' => $datapt->nopeg,
+                                        'aard' => '05',        
+                                        'jmlcc' => '0',        
+                                        'ccl' => '0',        
+                                        'nilai' => $totallemburpt,        
+                                        'userid' => $request->userid,        
+                                        ]); 
+
+                                TblPajak::where('tahun', $data_tahun)
+                                    ->where('bulan',$data_bulan)
+                                    ->where('nopeg',$datapt->nopeg)
+                                    ->update([
+                                        'lembur' => $totallemburpt,
+                                    ]);
+
+                                // 6.CARI NILAI SISA BULAN LALU AARD 07
+                                $data_sisanilaipt = DB::select("select nopek,aard,jmlcc,ccl,round(nilai) as nilai from pay_koreksi where bulan='$data_bulans' and tahun='$data_tahun' and nopek='$datapt->nopeg' and aard='07'");
+                                if(!empty($data_sisanilaipt)){
+                                        foreach($data_sisanilaipt as $data_sdmpt)
+                                        {
+                                            if($data_sdmpt->nilai <> ""){
+                                                $fassisapt = $data_sdmpt->nilai;
+                                            }else{
+                                                $fassisapt = '0';
+                                            }
+                                        }
+                                }else{
+                                    $fassisapt = '0';
+                                }
+                                PayMasterUpah::insert([
+                                        'tahun' => $data_tahun,
+                                        'bulan' => $data_bulan,
+                                        'nopek' => $datapt->nopeg,
+                                        'aard' => '07',        
+                                        'jmlcc' => '0',        
+                                        'ccl' => '0',        
+                                        'nilai' => $fassisapt,        
+                                        'userid' => $request->userid,        
+                                        ]); 
+
+                                //7.CARI NILAI PERSENTASE DARI TABEL PAY_TABLE_JAMSOSTEK
+                                PayGapokBulanan::insert([
+                                            'tahun' => $data_tahun,
+                                            'bulan' => $data_bulan,
+                                            'nopek' => $datapt->nopeg,
+                                            'jumlah' => $upahtetappt,
+                                            ]); 
+                                $data_jamsostekpt = PayTblJamsostek::all();
+                                foreach($data_jamsostekpt as $data_jampt)
+                                {
+                                    $niljspribadipt = ($data_jampt->pribadi/100) * $upahtetappt;
+                                    $niljstaccidentpt = ($data_jampt->accident/100) * $upahtetappt;
+                                    $niljspensiunpt = ($data_jampt->pensiun/100) * $upahtetappt;
+                                    $niljslifept = ($data_jampt->life/100) * $upahtetappt;
+                                }
+                                PayMasterUpah::insert([
+                                        'tahun' => $data_tahun,
+                                        'bulan' => $data_bulan,
+                                        'nopek' => $datapt->nopeg,
+                                        'aard' => '09',        
+                                        'jmlcc' => '0',        
+                                        'ccl' => '0',        
+                                        'nilai' => $niljspribadipt * -1,        
+                                        'userid' => $request->userid,        
+                                        ]); 
+
+                                PayMasterBebanprshn::insert([
+                                        'tahun' => $data_tahun,
+                                        'bulan' => $data_bulan,
+                                        'nopek' => $datapt->nopeg,
+                                        'aard' => '10',        
+                                        'lastamount' => '0',        
+                                        'curramount' => $niljstaccidentpt,       
+                                        'userid' => $request->userid,        
+                                        ]);
+                                PayMasterBebanprshn::insert([
+                                        'tahun' => $data_tahun,
+                                        'bulan' => $data_bulan,
+                                        'nopek' => $datapt->nopeg,
+                                        'aard' => '11',        
+                                        'lastamount' => '0',        
+                                        'curramount' => $niljspensiunpt,       
+                                        'userid' => $request->userid,        
+                                        ]);
+
+                                PayMasterBebanprshn::insert([
+                                    'tahun' => $data_tahun,
+                                    'bulan' => $data_bulan,
+                                    'nopek' => $datapt->nopeg,
+                                    'aard' => '12',        
+                                    'lastamount' => '0',        
+                                    'curramount' => $niljslifept,       
+                                    'userid' => $request->userid,        
+                                    ]);
+                                
+                                //9.HITUNG IURAN DANA PENSIUN BNI SIMPONI 46
+                                $data_danapensiunpt = PayDanaPensiun::all();
+                                foreach($data_danapensiunpt as $data_danapt)
+                                {
+                                    $nildapenbnipt = ($data_danapt->perusahaan3/100) * $upahtetappt;
+                                }
+                                PayMasterBebanprshn::insert([
+                                    'tahun' => $data_tahun,
+                                    'bulan' => $data_bulan,
+                                    'nopek' => $datapt->nopeg,
+                                    'aard' => '46',        
+                                    'lastamount' => '0',        
+                                    'curramount' => $nildapenbnipt,       
+                                    'userid' => $request->userid,        
+                                    ]);
+
+                                // 10.HITUNG TABUNGAN AJTM AARD 16
+                                $data_tabunganpt = PayTabunga::all();
+                                foreach($data_tabunganpt as $data_tabpt)
+                                {
+                                    $iuranwajibpt = ($data_tabpt->tabungan/100) * $upahtetappt;
+                                }
+                                PayMasterBebanprshn::insert([
+                                    'tahun' => $data_tahun,
+                                    'bulan' => $data_bulan,
+                                    'nopek' => $datapt->nopeg,
+                                    'aard' => '16',        
+                                    'lastamount' => '0',        
+                                    'curramount' => $iuranwajibpt,       
+                                    'userid' => $request->userid,        
+                                    ]);
+
+                                // 11.CARI NILAI POTONGAN PINJAMAN AARD 19 
+                                $data_potonganpt = DB::select("select * from pay_potongan where bulan='$data_bulan' and tahun='$data_tahun' and nopek='$datapt->nopeg' and aard='19'");
+                                if(!empty($data_potonganpt)){
+                                    foreach($data_potonganpt as $data_potongpt)
+                                    {
+                                        $jmlccpotongpinjampt = $data_potongpt->jmlcc;
+                                        $cclpotongpinjampt = $data_potongpt->ccl;
+                                        if($data_potongpt->nilai < 0){
+                                            $nilaipotonganpinjampt = ($data_potongpt->nilai * -1);
+                                        }else{
+                                        $nilaipotonganpinjampt = $data_potongpt->nilai;
+                                        }
+                                    }
+                                }else{
+                                    $nilaipotonganpinjampt = '0';
+                                    $jmlccpotongpinjampt = '0';
+                                    $cclpotongpinjampt = '0';
+                                }
+                                PayMasterUpah::insert([
+                                            'tahun' => $data_tahun,
+                                            'bulan' => $data_bulan,
+                                            'nopek' => $datapt->nopeg,
+                                            'aard' => '19',        
+                                            'jmlcc' => $jmlccpotongpinjampt,        
+                                            'ccl' => $cclpotongpinjampt,        
+                                            'nilai' => $nilaipotonganpinjampt * -1,        
+                                            'userid' => $request->userid,        
+                                            ]); 
+                                
+                                // 12.HITUNG TOTAL GAJI YANG DI DAPAT 
+                                $totalgajipt = DB::select("select sum(nilai) as gajiasli,(sum(nilai)-round(sum(nilai),-3)) as pembulatan1,round(sum(nilai),-3) as hasil,(1000+(sum(nilai)-round(sum(nilai),-3))) as pembulatan2  from pay_master_upah where bulan='$data_bulan' and tahun='$data_tahun' and nopek='$datapt->nopeg'");
+                                if(!empty($totalgajipt)){
+                                    foreach($totalgajipt as $totalpt)
+                                    {
+                                        if($totalpt->pembulatan1 < 0){
+                                            $sisagajipt = $totalpt->pembulatan2;
+                                        }else{
+                                            $sisagajipt = $totalpt->pembulatan1;
+                                        }
+                                    }
+                                }else{
+                                    $sisagajipt = '0';
+                                }
+                                PayMasterUpah::insert([
+                                            'tahun' => $data_tahun,
+                                            'bulan' => $data_bulan,
+                                            'nopek' => $datapt->nopeg,
+                                            'aard' => '23',        
+                                            'jmlcc' => '0',        
+                                            'ccl' => '0',        
+                                            'nilai' => $sisagajipt * -1,        
+                                            'userid' => $request->userid,        
+                                            ]); 
+
+                            
+                                $bulan2pt = $data_bulan + 1;
+                                if($bulan2pt > 12){
+                                    $data_bulan2pt = 1;
+                                    $data_tahun2pt = $data_tahun + 1;
+                                }else{
+                                    $data_bulan2pt =$bulan2pt;
+                                    $data_tahun2pt = $data_tahun;
+                                }
+                                // 15.SIMPAN NILAI PEMBULATAN KE TABEL KOREKSI AARD 17 SISA BULAN LALU
+                                PayKoreksi::insert([
+                                                'tahun' => $data_tahun2pt,
+                                                'bulan' => $data_bulan2pt,
+                                                'nopek' => $datapt->nopeg,
+                                                'aard' => '07',        
+                                                'jmlcc' => '0',        
+                                                'ccl' => '0',        
+                                                'nilai' => $sisagajipt,        
+                                                'userid' => $request->userid,        
+                                                ]); 
+
+                                // 16.HITUNG PAJAK PPH21 CARI NILAI YANG KENA PAJAK (BRUTO)
+                                $kenapajakpt = DB::select("select sum(a.nilai) as nilai1 from pay_master_upah a,pay_tbl_aard b where a.tahun='$data_tahun' and a.bulan='$data_bulan' and a.nopek='$datapt->nopeg' and a.aard=b.kode and b.kenapajak='Y'");
+                                foreach($kenapajakpt as $kenappt)
+                                {
+                                    $nilaikenapajakpt = $kenappt->nilai1;
+                                }
+                                $koreksigajipt = DB::select("select sum(a.nilai) as kortam from pay_koreksigaji a where a.tahun='$data_tahun' and a.bulan='$data_bulan' and a.nopek='$datapt->nopeg'");
+                                foreach($koreksigajipt as $koreksigpt)
+                                {
+                                    $kortampt = $koreksigpt->kortam * -1;
+                                }
+
+                                $totalkenapajakpt = ($nilaikenapajakpt + $niljstaccidentpt + $niljslifept + $fasilitaspt+ $kortampt)*12;
+
+                                // 17.CARI NILAI PENGURANG
+                                    $biayajabatanspt = ((5/100)*$totalkenapajakpt);
+                                    if($biayajabatanspt > 6000000){
+                                        $biayajabatanpt = 6000000;
+                                    }else{
+                                        $biayajabatanpt = $biayajabatanspt;
+                                    }
+                                    
+                                    $neto1tahunpt = $totalkenapajakpt - $biayajabatanpt;
+                                
+                                    TblPajak::where('tahun', $data_tahun)
+                                            ->where('bulan',$data_bulan)
+                                            ->where('nopeg',$datapt->nopeg)
+                                            ->update([
+                                                'bjabatan' => $biayajabatanpt,
+                                            ]);
+
+                                // 18.CARI NILAI TIDAK KENA PAJAK
+                                $data_ptkp = DB::select("select a.kodekeluarga,b.nilai from sdm_master_pegawai a,pay_tbl_ptkp b where a.kodekeluarga=b.kdkel and a.nopeg='$datapt->nopeg'");
+                                
+                                if(!empty($data_ptkppt)){
+                                    foreach($data_ptkppt as $data_ppt)
+                                    {
+                                        $nilaiptkp1pt = $data_ppt->nilai;
+                                    }
+                                }else{
+                                        $nilaiptkp1pt = '0';
+                                }
+
+                                //    19.PENGHASILAN KENA PAJAK SETAHUN
+                                $nilaikenapajakapt = $neto1tahunpt - $nilaiptkp1pt;
+                                TblPajak::where('tahun', $data_tahun)
+                                                ->where('bulan',$data_bulan)
+                                                ->where('nopeg',$datapt->nopeg)
+                                                ->update([
+                                                    'ptkp' => $nilaiptkp1pt,
+                                                    'pkp' => $nilaikenapajakapt,
+                                                ]);
+
+                                // 20.HITUNG PAJAK PENGHASILAN TERUTANG PAJAK SETAHUN                      
+                            
+                                $pajakbulanpt = pajak($nilaikenapajakapt);
+                                PayMasterUpah::insert([
+                                            'tahun' => $data_tahun,
+                                            'bulan' => $data_bulan,
+                                            'nopek' => $datapt->nopeg,
+                                            'aard' => '26',        
+                                            'jmlcc' => '0',        
+                                            'ccl' => '0',        
+                                            'nilai' => $pajakbulanpt * -1,        
+                                            'userid' => $request->userid,        
+                                            ]); 
+                                PayMasterUpah::insert([
+                                            'tahun' => $data_tahun,
+                                            'bulan' => $data_bulan,
+                                            'nopek' => $datapt->nopeg,
+                                            'aard' => '27',        
+                                            'jmlcc' => '0',        
+                                            'ccl' => '0',        
+                                            'nilai' => $pajakbulanpt,        
+                                            'userid' => $request->userid,        
+                                            ]); 
+                                TblPajak::where('tahun', $data_tahun)
+                                                ->where('bulan',$data_bulan)
+                                                ->where('nopeg',$datapt->nopeg)
+                                                ->update([
+                                                    'pajak_setor' => $pajakbulanpt,
+                                                ]);
+                            
+                            }
+
+                            // PekerjaKontrak()
+                        $data_pegawai_kontrakkt = SdmMasterPegawai::where('status','K')->orderBy('nopeg', 'asc')->get();
+                        foreach($data_pegawai_kontrakkt as $datakt)
                         {
                             TblPajak::insert([
-                                'tahun' => $data_tahun,
-                                'bulan' => $data_bulan,
-                                'nopeg' => $data->nopeg,
-                                'status' => $data->kodekeluarga,        
-                                ]); 
+                                    'tahun' => $data_tahun,
+                                    'bulan' => $data_bulan,
+                                    'nopeg' => $datakt->nopeg,
+                                    'status' => $datakt->kodekeluarga,        
+                                    ]);
+                            
+                            // 1.CARI NILAI UPAH ALL IN AARD 02
 
-                            // 1.CARI UPAH TETAP AARD 01
-                            $data_sdmut = DB::select("select a.ut from sdm_ut a where a.nopeg='$data->nopeg' and a.mulai=(select max(mulai) from sdm_ut where nopeg='$data->nopeg')");
-                            if(!empty($data_sdmut)){
-                                    foreach($data_sdmut as $data_sdm)
+                        $data_sdmallinkt = DB::select("select nilai from sdm_allin where nopek='$datakt->nopeg'");
+                        if(!empty($data_sdmallinkt)){
+                            foreach($data_sdmallinkt as $data_sdmkt)
                                     {
-                                        if($data_sdm->ut <> ""){
-                                            $upahtetap = $data_sdm->ut;
+                                        if($data_sdmkt->nilai <> ""){
+                                            $upahallinkt = $data_sdmkt->nilai;
                                         }else {
-                                            $upahtetap = '0';
+                                            $upahallinkt ='0';
+                                        }
+                                    }
+                            }else {
+                                $upahallinkt ='0';
+                            } 
+                        
+                            PayMasterUpah::insert([
+                                        'tahun' => $data_tahun,
+                                        'bulan' => $data_bulan,
+                                        'nopek' => $datakt->nopeg,
+                                        'aard' => '02',        
+                                        'jmlcc' => '0',        
+                                        'ccl' => '0',        
+                                        'nilai' => $upahallinkt,        
+                                        'userid' => $request->userid,        
+                                        ]);
+                                
+                            TblPajak::where('tahun', $data_tahun)
+                                    ->where('bulan',$data_bulan)
+                                    ->where('nopeg',$datakt->nopeg)
+                                    ->update([
+                                        'upah' => $upahallinkt,
+                                    ]);
+
+                            // 2.CARI TUNJANGAN JABATAN JIKA ADA
+                            $data_sdmjabatankt =DB::select("select a.nopeg,a.kdbag,a.kdjab,b.goljob,b.tunjangan from sdm_jabatan a,sdm_tbl_kdjab b where a.nopeg='$datakt->nopeg' and a.kdbag=b.kdbag and a.kdjab=b.kdjab and a.mulai=(select max(mulai) from sdm_jabatan where nopeg='$datakt->nopeg')");
+                            if(!empty($data_sdmjabatankt)){
+                                foreach($data_sdmjabatankt as $data_sdmjabkt)
+                                {
+                                    if($data_sdmjabkt->tunjangan <> ""){
+                                        $tunjabatankt = $data_sdmjabkt->tunjangan;
+                                    }else{
+                                        $tunjabatankt = '0';
+                                    }
+                                }
+                            }else{
+                                $tunjabatankt = '0';
+                            }
+                                PayMasterUpah::insert([
+                                        'tahun' => $data_tahun,
+                                        'bulan' => $data_bulan,
+                                        'nopek' => $datakt->nopeg,
+                                        'aard' => '03',        
+                                        'jmlcc' => '0',        
+                                        'ccl' => '0',        
+                                        'nilai' => $tunjabatankt,        
+                                        'userid' => $request->userid,        
+                                        ]); 
+
+                                TblPajak::where('tahun', $data_tahun)
+                                    ->where('bulan',$data_bulan)
+                                    ->where('nopeg',$datakt->nopeg)
+                                    ->update([
+                                        'tunjjabat' => $tunjabatankt,
+                                    ]);
+
+
+                            // 3.TUNJANGAN DAERAH
+                            $data_tunjangandaerahkt = DB::select("select a.golgaji, b.nilai from sdm_golgaji a,pay_tbl_tunjangan b where a.nopeg='$datakt->nopeg' and a.golgaji=b.golongan and a.tanggal=(select max(tanggal) from sdm_golgaji where nopeg ='$datakt->nopeg')");
+                            if(!empty($data_tunjangandaerahkt)){
+                                    foreach($data_tunjangandaerahkt as $data_sdmdaerahkt)
+                                    {
+                                        if($data_sdmdaerahkt->nilai <> ""){
+                                            $tunjangandaerahkt = $data_sdmdaerahkt->nilai;
+                                        }else{
+                                            $tunjangandaerahkt = '0';
                                         }
                                     }
                             }else{
-                                $upahtetap = '0';
+                                $tunjangandaerahkt = '0';
                             }
                             PayMasterUpah::insert([
                                     'tahun' => $data_tahun,
                                     'bulan' => $data_bulan,
-                                    'nopek' => $data->nopeg,
-                                    'aard' => '01',        
-                                    'jmlcc' => '0',        
-                                    'ccl' => '0',        
-                                    'nilai' => $upahtetap,        
-                                    'userid' => $request->userid,        
-                                    ]);
-                            
-                            TblPajak::where('tahun', $data_tahun)
-                                ->where('bulan',$data_bulan)
-                                ->where('nopeg',$data->nopeg)
-                                ->update([
-                                    'upah' => $upahtetap,
-                                ]);
-
-                            // 2.TUNJANGAN JABATAN AARD 03
-                            $data_sdmjabatan = DB::select("select a.nopeg,a.kdbag,a.kdjab,b.goljob,b.tunjangan from sdm_jabatan a,sdm_tbl_kdjab b where a.nopeg='$data->nopeg' and a.kdbag=b.kdbag and a.kdjab=b.kdjab and a.mulai=(select max(mulai) from sdm_jabatan where nopeg='$data->nopeg')");
-                            if(!empty($data_sdmjabatan)){
-                                    foreach($data_sdmjabatan as $data_sdmjab)
-                                    {
-                                        $tunjabatan = $data_sdmjab->tunjangan;
-                                    }
-                            }else{
-                                $tunjabatan = '0';
-                            }
-                            PayMasterUpah::insert([
-                                    'tahun' => $data_tahun,
-                                    'bulan' => $data_bulan,
-                                    'nopek' => $data->nopeg,
-                                    'aard' => '03',        
-                                    'jmlcc' => '0',        
-                                    'ccl' => '0',        
-                                    'nilai' => $tunjabatan,        
-                                    'userid' => $request->userid,        
-                                    ]); 
-
-                            TblPajak::where('tahun', $data_tahun)
-                                ->where('bulan',$data_bulan)
-                                ->where('nopeg',$data->nopeg)
-                                ->update([
-                                    'tunjjabat' => $tunjabatan,
-                                ]);
-
-                            // 3.TUNJANGAN BIAYA HIDUP AARD AARD = 04
-                            $data_sdmtunjangan = DB::select("select a.golgaji, b.nilai from sdm_golgaji a,pay_tbl_tunjangan b where a.nopeg='$data->nopeg' and a.golgaji=b.golongan and a.tanggal=(select max(tanggal) from sdm_golgaji where nopeg ='$data->nopeg')");
-                            if(!empty($data_sdmtunjangan)){
-                                    foreach($data_sdmtunjangan as $data_sdm)
-                                    {
-                                        $tunjabatanhidup = $data_sdm->nilai;
-                                    }
-                            }else{
-                                $tunjabatanhidup = '0';
-                            }
-                            PayMasterUpah::insert([
-                                    'tahun' => $data_tahun,
-                                    'bulan' => $data_bulan,
-                                    'nopek' => $data->nopeg,
+                                    'nopek' => $datakt->nopeg,
                                     'aard' => '04',        
                                     'jmlcc' => '0',        
                                     'ccl' => '0',        
-                                    'nilai' => $tunjabatanhidup,        
+                                    'nilai' => $tunjangandaerahkt,        
                                     'userid' => $request->userid,        
                                     ]); 
 
                             TblPajak::where('tahun', $data_tahun)
                                 ->where('bulan',$data_bulan)
-                                ->where('nopeg',$data->nopeg)
+                                ->where('nopeg',$datapt->nopeg)
                                 ->update([
-                                    'tunjdaerah' => $tunjabatanhidup,
+                                    'tunjdaerah' => $tunjangandaerahkt,
                                 ]);
 
-                            // 4.FASILITAS CUTI AARD 06
-                            $data_sdmfcuti = SdmMasterPegawai::where('nopeg',$data->nopeg)->get();
-                                foreach($data_sdmfcuti as $data_sdm)
-                                {   
-                                    $tahun = date('Y', strtotime($data_sdm->fasilitas));
-                                    $bulan = ltrim(date('m', strtotime($data_sdm->fasilitas)),'0');
-                                    $sisatahun = $data_tahun - $tahun;
-                                    $sisabulan = $data_bulan - $bulan;
+                            // 4.Gapok Kontrak
+                            $data_gapokkt = DB::select("select gapok from sdm_gapok where nopeg = '$datakt->nopeg' and mulai=(select max(mulai) from sdm_gapok where nopeg='$datakt->nopeg')");
+                            if(!empty($data_gapokkt)){
+                                foreach($data_gapokkt as $data_gapkt)
+                                {
+                                    if($datakt->nopeg == 'K00011'){
+                                        $gapokkt = '0';
+                                    }else{
+                                        $gapokkt = $data_gapkt->gapok;
+                                    }
                                 }
-                                if($sisabulan == '11' and $sisatahun == '0'){
-                                    $uangcuti = $upahtetap + $tunjabatan + $tunjabatanhidup;
-                                    $fasilitas = 1.5 * $uangcuti;
-                                }elseif($sisabulan == '11' and $sisatahun > '0'){
-                                    $uangcuti = $upahtetap + $tunjabatan + $tunjabatanhidup;
-                                    $fasilitas = 1.5 * $uangcuti;
-                                }elseif($sisabulan == '-1' and $sisatahun > '0'){
-                                    $uangcuti = $upahtetap + $tunjabatan + $tunjabatanhidup;
-                                    $fasilitas = 1.5 * $uangcuti;
-                                }else{
-                                    $fasilitas = '0';
+                            }else {
+                                $gapokkt = '0';
+                            }
+
+                            PayGapokBulanan::insert([
+                                            'tahun' => $data_tahun,
+                                            'bulan' => $data_bulan,
+                                            'nopek' => $datakt->nopeg,
+                                            'jumlah' => $upahallinkt,
+                                            ]); 
+
+                            // 5.CARI NILAI PERSENTASE DARI TABEL PAY_TABLE_JAMSOSTEK
+                            $data_jamsostekkt = PayTblJamsostek::all();
+                                foreach($data_jamsostekkt as $data_jamkt)
+                                {
+                                    $niljspribadikt = ($data_jamkt->pribadi/100) * $upahallinkt;
+                                    $niljstaccidentkt = ($data_jamkt->accident/100) * $upahallinkt;
+                                    $niljspensiunkt = ($data_jamkt->pensiun/100) * $upahallinkt;
+                                    $niljslifekt = ($data_jamkt->life/100) * $upahallinkt;
                                 }
+                                PayMasterUpah::insert([
+                                        'tahun' => $data_tahun,
+                                        'bulan' => $data_bulan,
+                                        'nopek' => $datakt->nopeg,
+                                        'aard' => '09',        
+                                        'jmlcc' => '0',        
+                                        'ccl' => '0',        
+                                        'nilai' => $niljspribadikt * -1,        
+                                        'userid' => $request->userid,        
+                                        ]); 
+
+                                PayMasterBebanprshn::insert([
+                                        'tahun' => $data_tahun,
+                                        'bulan' => $data_bulan,
+                                        'nopek' => $datakt->nopeg,
+                                        'aard' => '10',        
+                                        'lastamount' => '0',        
+                                        'curramount' => $niljstaccidentkt,       
+                                        'userid' => $request->userid,        
+                                        ]);
+                                PayMasterBebanprshn::insert([
+                                        'tahun' => $data_tahun,
+                                        'bulan' => $data_bulan,
+                                        'nopek' => $datakt->nopeg,
+                                        'aard' => '11',        
+                                        'lastamount' => '0',        
+                                        'curramount' => $niljspensiunkt,       
+                                        'userid' => $request->userid,        
+                                        ]);
+
+                                PayMasterBebanprshn::insert([
+                                    'tahun' => $data_tahun,
+                                    'bulan' => $data_bulan,
+                                    'nopek' => $datakt->nopeg,
+                                    'aard' => '12',        
+                                    'lastamount' => '0',        
+                                    'curramount' => $niljslifekt,       
+                                    'userid' => $request->userid,        
+                                    ]);
+
+                                // 6.FASILITAS CUTI AARD 06
+                                $data_cutikt = DB::select("select a.fasilitas,a.fasilitas  from sdm_master_pegawai a where a.nopeg='$datakt->nopeg'");
+                                if(!empty($data_cutikt)){
+                                foreach($data_cutikt as $data_cutkt)
+                                {
+                                    $tahunkt = date('Y', strtotime($data_cutkt->fasilitas));
+                                    $bulankt = ltrim(date('m', strtotime($data_cutkt->fasilitas)),'0');
+                                    $sisatahunkt = $data_tahun - $tahunkt;
+                                    $sisabulankt = $data_bulan - $bulankt;
+                                    if($sisabulankt == '11' and $sisatahunkt == '0'){
+                                        $uangcutikt = $upahallinkt + $tunjabatankt + $tunjangandaerahkt;
+                                        $fasilitaskt = 1.5 * $uangcutikt;
+                                    }elseif($sisabulankt == '11' and $sisatahunkt > '0'){
+                                        $uangcutikt = $upahallinkt + $tunjabatankt + $tunjangandaerahkt;
+                                        $fasilitaskt = 1.5 * $uangcutikt;
+                                    }elseif($sisabulankt == '-1' and $sisatahunkt > '0'){
+                                        $uangcutikt = $upahallinkt + $tunjabatankt + $tunjangandaerahkt;
+                                        $fasilitaskt = 1.5 * $uangcutikt;
+                                    }else{
+                                        $fasilitaskt = '0';
+                                    }
+                                }
+                            }else {
+                                $fasilitaskt = '0';
+                            }
                             PayMasterUpah::insert([
                                     'tahun' => $data_tahun,
                                     'bulan' => $data_bulan,
-                                    'nopek' => $data->nopeg,
+                                    'nopek' => $datakt->nopeg,
                                     'aard' => '06',        
                                     'jmlcc' => '0',        
                                     'ccl' => '0',        
-                                    'nilai' => $fasilitas,        
+                                    'nilai' => $fasilitaskt,        
                                     'userid' => $request->userid,        
                                     ]); 
 
                             TblPajak::where('tahun', $data_tahun)
                                 ->where('bulan',$data_bulan)
-                                ->where('nopeg',$data->nopeg)
+                                ->where('nopeg',$datakt->nopeg)
                                 ->update([
-                                    'gapok' => $fasilitas,
+                                    'gapok' => $fasilitaskt,
                                 ]);
 
-                            // 5.CARI NILAI LEMBUR AARD 05
-                            $data_lembur = DB::select("select Sum(makanpg+makansg+makanml+transport+lembur) as totlembur from pay_lembur where nopek='$data->nopeg' And bulan = '$data_bulan' AND tahun='$data_tahun'");                            
-                            if(!empty($data_lembur)){
-                                    foreach($data_lembur as $data_sdm)
+                            // 7.CARI NILAI LEMBUR AARD 05
+                            $data_lemburkt = DB::select("select sum(makanpg+makansg+makanml+transport+lembur) as totlembur from pay_lembur where nopek='$datakt->nopeg' and bulan='$data_bulan' and tahun='$data_tahun'");                            
+                            if(!empty($data_lemburkt)){
+                                    foreach($data_lemburkt as $data_sdmkt)
                                     {
-                                        if($data_sdm->totlembur <> ""){
-                                            $totallembur = $data_sdm->totlembur;
+                                        if($data_sdmkt->totlembur <> ""){
+                                            $totallemburkt = $data_sdmkt->totlembur;
                                         }else{
-                                            $totallembur = '0';
+                                            $totallemburkt = '0';
                                         }
                                     }
                             }else{
-                                $totallembur = '0';
+                                $totallemburkt = '0';
                             }
                             PayMasterUpah::insert([
                                     'tahun' => $data_tahun,
                                     'bulan' => $data_bulan,
-                                    'nopek' => $data->nopeg,
+                                    'nopek' => $datakt->nopeg,
                                     'aard' => '05',        
                                     'jmlcc' => '0',        
                                     'ccl' => '0',        
-                                    'nilai' => $totallembur,        
+                                    'nilai' => $totallemburkt,        
                                     'userid' => $request->userid,        
                                     ]); 
 
                             TblPajak::where('tahun', $data_tahun)
                                 ->where('bulan',$data_bulan)
-                                ->where('nopeg',$data->nopeg)
+                                ->where('nopeg',$datakt->nopeg)
                                 ->update([
-                                    'lembur' => $totallembur,
+                                    'lembur' => $totallemburkt,
                                 ]);
 
-                            // 6.CARI NILAI SISA BULAN LALU AARD 07
-                            $data_sisanilai = DB::select("select nopek,aard,jmlcc,ccl,round(nilai) as nilai from pay_koreksi where bulan='$data_bulans' and tahun='$data_tahun' and nopek='$data->nopeg' and aard='07'");
-                            if(!empty($data_sisanilai)){
-                                    foreach($data_sisanilai as $data_sdm)
-                                    {
-                                        if($data_sdm->nilai <> ""){
-                                            $fassisa = $data_sdm->nilai;
-                                        }else{
-                                            $fassisa = '0';
-                                        }
+                            // 8.CARI SISA BULAN LALU AARD 07
+                            $data_sisanilaikt = DB::select("select nopek,aard,jmlcc,ccl,nilai from pay_koreksi where bulan='$data_bulans' and tahun='$data_tahun' and nopek='$datakt->nopeg' and aard='07'");
+                            if(!empty($data_sisanilaikt)){
+                                foreach($data_sisanilaikt as $data_sdmkt)
+                                {
+                                    if($data_sdmkt->nilai <> ""){
+                                        $fassisakt = $data_sdmkt->nilai;
+                                    }else {
+                                        $fassisakt = '0';
                                     }
+                                }
                             }else{
-                                $fassisa = '0';
+                                $fassisakt = '0';
                             }
                             PayMasterUpah::insert([
                                     'tahun' => $data_tahun,
                                     'bulan' => $data_bulan,
-                                    'nopek' => $data->nopeg,
+                                    'nopek' => $datakt->nopeg,
                                     'aard' => '07',        
                                     'jmlcc' => '0',        
                                     'ccl' => '0',        
-                                    'nilai' => $fassisa,        
+                                    'nilai' => $fassisakt,        
                                     'userid' => $request->userid,        
                                     ]); 
-
-                            //7.CARI NILAI PERSENTASE DARI TABEL PAY_TABLE_JAMSOSTEK
-                            PayGapokBulanan::insert([
-                                        'tahun' => $data_tahun,
-                                        'bulan' => $data_bulan,
-                                        'nopek' => $data->nopeg,
-                                        'jumlah' => $upahtetap,
-                                        ]); 
-                            $data_jamsostek = PayTblJamsostek::all();
-                            foreach($data_jamsostek as $data_jam)
-                            {
-                                $niljspribadi = ($data_jam->pribadi/100) * $upahtetap;
-                                $niljstaccident = ($data_jam->accident/100) * $upahtetap;
-                                $niljspensiun = ($data_jam->pensiun/100) * $upahtetap;
-                                $niljslife = ($data_jam->life/100) * $upahtetap;
-                            }
-                            PayMasterUpah::insert([
-                                    'tahun' => $data_tahun,
-                                    'bulan' => $data_bulan,
-                                    'nopek' => $data->nopeg,
-                                    'aard' => '09',        
-                                    'jmlcc' => '0',        
-                                    'ccl' => '0',        
-                                    'nilai' => $niljspribadi * -1,        
-                                    'userid' => $request->userid,        
-                                    ]); 
-
-                            PayMasterBebanprshn::insert([
-                                    'tahun' => $data_tahun,
-                                    'bulan' => $data_bulan,
-                                    'nopek' => $data->nopeg,
-                                    'aard' => '10',        
-                                    'lastamount' => '0',        
-                                    'curramount' => $niljstaccident,       
-                                    'userid' => $request->userid,        
-                                    ]);
-                            PayMasterBebanprshn::insert([
-                                    'tahun' => $data_tahun,
-                                    'bulan' => $data_bulan,
-                                    'nopek' => $data->nopeg,
-                                    'aard' => '11',        
-                                    'lastamount' => '0',        
-                                    'curramount' => $niljspensiun,       
-                                    'userid' => $request->userid,        
-                                    ]);
-
-                            PayMasterBebanprshn::insert([
-                                'tahun' => $data_tahun,
-                                'bulan' => $data_bulan,
-                                'nopek' => $data->nopeg,
-                                'aard' => '12',        
-                                'lastamount' => '0',        
-                                'curramount' => $niljslife,       
-                                'userid' => $request->userid,        
-                                ]);
-                            
-                            //9.HITUNG IURAN DANA PENSIUN BNI SIMPONI 46
-                            $data_danapensiun = PayDanaPensiun::all();
-                            foreach($data_danapensiun as $data_dana)
-                            {
-                                $nildapenbni = ($data_dana->perusahaan3/100) * $upahtetap;
-                            }
-                            PayMasterBebanprshn::insert([
-                                'tahun' => $data_tahun,
-                                'bulan' => $data_bulan,
-                                'nopek' => $data->nopeg,
-                                'aard' => '46',        
-                                'lastamount' => '0',        
-                                'curramount' => $nildapenbni,       
-                                'userid' => $request->userid,        
-                                ]);
-
-                            // 10.HITUNG TABUNGAN AJTM AARD 16
-                            $data_tabungan = PayTabunga::all();
-                            foreach($data_tabungan as $data_tab)
-                            {
-                                $iuranwajib = ($data_tab->tabungan/100) * $upahtetap;
-                            }
-                            PayMasterBebanprshn::insert([
-                                'tahun' => $data_tahun,
-                                'bulan' => $data_bulan,
-                                'nopek' => $data->nopeg,
-                                'aard' => '16',        
-                                'lastamount' => '0',        
-                                'curramount' => $iuranwajib,       
-                                'userid' => $request->userid,        
-                                ]);
-
-                            // 11.CARI NILAI POTONGAN PINJAMAN AARD 19 
-                            $data_potongan = DB::select("select * from pay_potongan where bulan='$data_bulan' and tahun='$data_tahun' and nopek='$data->nopeg' and aard='19'");
-                            if(!empty($data_potongan)){
-                                foreach($data_potongan as $data_potong)
+                            // 9. POTONG KOPERASI
+                            $data_potongankt = DB::select("select * from pay_potongan where bulan='$data_bulan' and tahun='$data_tahun' and nopek='$datakt->nopeg' and aard='28'");
+                            if(!empty($data_potongankt)){
+                                foreach($data_potongankt as $data_potongkt)
                                 {
-                                    $jmlccpotongpinjam = $data_potong->jmlcc;
-                                    $cclpotongpinjam = $data_potong->ccl;
-                                    if($data_potong->nilai < 0){
-                                        $nilaipotonganpinjam = ($data_potong->nilai * -1);
+                                    $jmlccpotongpinjamkt = $data_potongkt->jmlcc;
+                                    $cclpotongpinjamkt = $data_potongkt->ccl;
+                                    if($data_potongkt->nilai < 0){
+                                        $nilaipotonganpinjamkt = $data_potongkt->nilai;
                                     }else{
-                                    $nilaipotonganpinjam = $data_potong->nilai;
+                                        $nilaipotonganpinjamkt = ($data_potongkt->nilai * -1);
                                     }
                                 }
                             }else{
-                                $nilaipotonganpinjam = '0';
-                                $jmlccpotongpinjam = '0';
-                                $cclpotongpinjam = '0';
-                            }
+                                $nilaipotonganpinjamkt = '0';
+                                $jmlccpotongpinjamkt = '0';
+                                $cclpotongpinjamkt = '0';
+                            }    
+
                             PayMasterUpah::insert([
-                                        'tahun' => $data_tahun,
-                                        'bulan' => $data_bulan,
-                                        'nopek' => $data->nopeg,
-                                        'aard' => '19',        
-                                        'jmlcc' => $jmlccpotongpinjam,        
-                                        'ccl' => $cclpotongpinjam,        
-                                        'nilai' => $nilaipotonganpinjam * -1,        
-                                        'userid' => $request->userid,        
-                                        ]); 
-                            
-                            // 12.HITUNG TOTAL GAJI YANG DI DAPAT 
-                            $totalgaji = DB::select("select sum(nilai) as gajiasli,(sum(nilai)-round(sum(nilai),-3)) as pembulatan1,round(sum(nilai),-3) as hasil,(1000+(sum(nilai)-round(sum(nilai),-3))) as pembulatan2  from pay_master_upah where bulan='$data_bulan' and tahun='$data_tahun' and nopek='$data->nopeg'");
-                            if(!empty($totalgaji)){
-                                foreach($totalgaji as $total)
+                                            'tahun' => $data_tahun,
+                                            'bulan' => $data_bulan,
+                                            'nopek' => $datakt->nopeg,
+                                            'aard' => '28',        
+                                            'jmlcc' => $jmlccpotongpinjamkt,        
+                                            'ccl' => $cclpotongpinjamkt,        
+                                            'nilai' => $nilaipotonganpinjamkt,        
+                                            'userid' => $request->userid,        
+                                            ]);
+                            // 10. HITUNG TOTAL GAJI YANG DI DAPAT 
+                            $totalgajikt = DB::select("select sum(nilai) as gajiasli,(sum(nilai)-round(sum(nilai),-3)) as pembulatan1,round(sum(nilai),-3) as hasil,(1000+(sum(nilai)-round(sum(nilai),-3))) as pembulatan2  from pay_master_upah where bulan='$data_bulan' and tahun='$data_tahun' and nopek='$datakt->nopeg'");
+                            if(!empty($totalgajikt)){
+                                foreach($totalgajikt as $totalkt)
                                 {
-                                    if($total->pembulatan1 < 0){
-                                        $sisagaji = $total->pembulatan2;
+                                    if($totalkt->pembulatan1 < 0){
+                                        $sisagajikt = $totalkt->pembulatan2;
                                     }else{
-                                        $sisagaji = $total->pembulatan1;
+                                        $sisagajikt = $totalkt->pembulatan1;
                                     }
                                 }
                             }else{
-                                $sisagaji = '0';
+                                $sisagajikt = '0';
                             }
                             PayMasterUpah::insert([
                                         'tahun' => $data_tahun,
                                         'bulan' => $data_bulan,
-                                        'nopek' => $data->nopeg,
+                                        'nopek' => $datakt->nopeg,
                                         'aard' => '23',        
                                         'jmlcc' => '0',        
                                         'ccl' => '0',        
-                                        'nilai' => $sisagaji * -1,        
+                                        'nilai' => $sisagajikt * -1,        
                                         'userid' => $request->userid,        
                                         ]); 
 
                         
-                            $bulan2 = $data_bulan + 1;
-                            if($bulan2 > 12){
-                                $data_bulan2 = 1;
-                                $data_tahun2 = $data_tahun + 1;
+                            $bulan2kt = $data_bulan + 1;
+                            if($bulan2kt >12){
+                                $data_bulan2kt = 1;
+                                $data_tahun2kt = $data_tahun + 1;
                             }else{
-                                $data_bulan2 =$bulan2;
-                                $data_tahun2 = $data_tahun;
+                                $data_bulan2kt =$bulan2kt;
+                                $data_tahun2kt = $data_tahun;
                             }
-                            // 15.SIMPAN NILAI PEMBULATAN KE TABEL KOREKSI AARD 17 SISA BULAN LALU
                             PayKoreksi::insert([
-                                            'tahun' => $data_tahun2,
-                                            'bulan' => $data_bulan2,
-                                            'nopek' => $data->nopeg,
+                                                'tahun' => $data_tahun2kt,
+                                                'bulan' => $data_bulan2kt,
+                                                'nopek' => $datakt->nopeg,
+                                                'aard' => '07',        
+                                                'jmlcc' => '0',        
+                                                'ccl' => '0',        
+                                                'nilai' => $sisagajikt,        
+                                                'userid' => $request->userid,        
+                                                ]); 
+
+                            // 11.HITUNG PAJAK PPH21 CARI NILAI YANG KENA PAJAK (BRUTO)
+                            $kenapajakkt = DB::select("select sum(a.nilai) as nilai1 from pay_master_upah a,pay_tbl_aard b where a.tahun='$data_tahun' and a.bulan='$data_bulan' and a.nopek='$datakt->nopeg' and a.aard=b.kode and b.kenapajak='Y'");
+                            foreach($kenapajakkt as $kenapkt)
+                            {
+                                if($kenapkt->nilai1 <> ""){
+                                    $nilaikenapajakkt = $kenapkt->nilai1;
+                                }else{
+                                    $nilaikenapajakkt = '0';
+                                }
+                            }
+                            $koreksigajikt = DB::select("select sum(a.nilai) as kortam from pay_koreksigaji a where a.tahun='$data_tahun' and a.bulan='$data_bulan' and a.nopek='$datakt->nopeg'");
+                            foreach($koreksigajikt as $koreksigkt)
+                            {
+                                $kortamkt = $koreksigkt->kortam * -1;
+                            }
+                            $totalkenapajakkt = (($nilaikenapajakkt + $kortamkt) * 12);
+                            $biayajabatanskt = ((5/100)*$totalkenapajakkt);
+                                    if($biayajabatanskt > 6000000){
+                                        $biayajabatankt = 6000000;
+                                    }else{
+                                        $biayajabatankt = $biayajabatanskt;
+                                    }
+                                    $neto1tahunkt = $totalkenapajakkt - $biayajabatankt;
+                            TblPajak::where('tahun', $data_tahun)
+                                            ->where('bulan',$data_bulan)
+                                            ->where('nopeg',$datakt->nopeg)
+                                            ->update([
+                                                'bjabatan' => $biayajabatankt,
+                                            ]);
+                        // 12.CARI NILAI TIDAK KENA PAJAK
+                        $data_ptkpkt = DB::select("select a.kodekeluarga,b.nilai from sdm_master_pegawai a,pay_tbl_ptkp b where a.kodekeluarga=b.kdkel and a.nopeg='$datakt->nopeg'");
+                                
+                        if(!empty($data_ptkpkt)){
+                            foreach($data_ptkpkt as $data_pkt)
+                            {
+                                if($data_pkt->nilai <> ""){
+                                    $nilaiptkp1kt = $data_pkt->nilai;
+                                }else {
+                                    $nilaiptkp1kt = '0';
+                                }
+                            }
+                        }else{
+                                $nilaiptkp1kt = '0';
+                        }
+
+                        // 13.PENGHASILAN KENA PAJAK SETAHUN
+                        $nilaikenapajakakt = $neto1tahunkt - $nilaiptkp1kt;
+                        TblPajak::where('tahun', $data_tahun)
+                                        ->where('bulan',$data_bulan)
+                                        ->where('nopeg',$datakt->nopeg)
+                                        ->update([
+                                            'ptkp' => $nilaiptkp1kt,
+                                            'pkp' => $nilaikenapajakakt,
+                                        ]);
+
+                        // 14.HITUNG PAJAK PENGHASILAN TERUTANG PAJAK SETAHUN                      
+                    
+                            $pajakbulankt = pajak($nilaikenapajakakt);
+                        
+                        PayMasterUpah::insert([
+                                    'tahun' => $data_tahun,
+                                    'bulan' => $data_bulan,
+                                    'nopek' => $datakt->nopeg,
+                                    'aard' => '26',        
+                                    'jmlcc' => '0',        
+                                    'ccl' => '0',        
+                                    'nilai' => $pajakbulankt * -1,        
+                                    'userid' => $request->userid,        
+                                    ]); 
+                        PayMasterUpah::insert([
+                                    'tahun' => $data_tahun,
+                                    'bulan' => $data_bulan,
+                                    'nopek' => $datakt->nopeg,
+                                    'aard' => '27',        
+                                    'jmlcc' => '0',        
+                                    'ccl' => '0',        
+                                    'nilai' => $pajakbulankt,        
+                                    'userid' => $request->userid,        
+                                    ]); 
+                        TblPajak::where('tahun', $data_tahun)
+                                        ->where('bulan',$data_bulan)
+                                        ->where('nopeg',$datakt->nopeg)
+                                        ->update([
+                                            'pajak_setor' => $pajakbulankt,
+                                        ]);
+                        
+                        }
+
+                        // PekerjaBantu()
+                        $data_pegawai_kontrakpb = SdmMasterPegawai::where('status','B')->orderBy('nopeg', 'asc')->get();
+                        foreach($data_pegawai_kontrakpb as $datapb)
+                        {
+                            TblPajak::insert([
+                                    'tahun' => $data_tahun,
+                                    'bulan' => $data_bulan,
+                                    'nopeg' => $datapb->nopeg,
+                                    'status' => $datapb->kodekeluarga,        
+                                    ]);
+                            
+                            // 1.CARI NILAI UPAH ALL IN AARD 02
+
+                        $data_sdmallinpb = DB::select("select nilai from sdm_allin where nopek='$datapb->nopeg'");
+                        if(!empty($data_sdmallinpb)){
+                            foreach($data_sdmallinpb as $data_sdmpb)
+                                    {
+                                        if($data_sdmpb->nilai <> ""){
+                                            $upahallinpb = $data_sdmpb->nilai;
+                                        }else {
+                                            $upahallinpb ='0';
+                                        }
+                                    }
+                            }else {
+                                $upahallinpb ='0';
+                            } 
+
+                            PayMasterUpah::insert([
+                                        'tahun' => $data_tahun,
+                                        'bulan' => $data_bulan,
+                                        'nopek' => $datapb->nopeg,
+                                        'aard' => '02',        
+                                        'jmlcc' => '0',        
+                                        'ccl' => '0',        
+                                        'nilai' => $upahallinpb,        
+                                        'userid' => $request->userid,        
+                                        ]);
+                                
+                            TblPajak::where('tahun', $data_tahun)
+                                    ->where('bulan',$data_bulan)
+                                    ->where('nopeg',$datapb->nopeg)
+                                    ->update([
+                                        'upah' => $upahallinpb,
+                                    ]);
+
+                                //2.CARI UPAH TETAP AARD 01
+                                $data_sdmutpb = DB::select("select a.ut from sdm_ut a where a.nopeg='$datapb->nopeg' and a.mulai=(select max(mulai) from sdm_ut where nopeg='$datapb->nopeg')");
+                                if(!empty($data_sdmutpb)){
+                                        foreach($data_sdmutpb as $data_sdmpb)
+                                        {   if($data_sdmpb->ut <> ""){
+                                            $upahtetappb = $data_sdmpb->ut;
+                                            }else {
+                                                $upahtetappb = '0';
+                                            }
+                                        }
+                                }else{
+                                    $upahtetappb = '0';
+                                }
+                                PayMasterUpah::insert([
+                                        'tahun' => $data_tahun,
+                                        'bulan' => $data_bulan,
+                                        'nopek' => $datapb->nopeg,
+                                        'aard' => '01',        
+                                        'jmlcc' => '0',        
+                                        'ccl' => '0',        
+                                        'nilai' => $upahtetappb,        
+                                        'userid' => $request->userid,        
+                                        ]);
+                                
+                                TblPajak::where('tahun', $data_tahun)
+                                    ->where('bulan',$data_bulan)
+                                    ->where('nopeg',$datapb->nopeg)
+                                    ->update([
+                                        'upah' => $upahtetappb,
+                                    ]);
+
+
+                                $data_sdmutpb = DB::select("select a.ut from sdm_ut a where a.nopeg='$datapb->nopeg' and a.mulai=(select max(mulai) from sdm_ut where nopeg='$datapb->nopeg')");
+                                if(!empty($data_sdmutpb)){
+                                        foreach($data_sdmutpb as $data_sdmpb)
+                                        {
+                                            if($data_sdmpb->ut <> ""){
+                                                $upahdaerahpb = $data_sdmpb->ut;
+                                            }else {
+                                                $upahdaerahpb = '0';
+                                            }
+                                        }
+                                }else{
+                                    $upahdaerahpb = '0';
+                                }
+
+                                UtBantu::insert([
+                                        'tahun' => $data_tahun,
+                                        'bulan' => $data_bulan,
+                                        'nopek' => $datapb->nopeg,    
+                                        'nilai' => $upahdaerahpb,        
+                                        ]);
+
+                                //4.UPAH TETAP PENSIUN
+                                $data_pensiunpb = DB::select("select a.ut from sdm_ut_pensiun a where a.nopeg='$datapb->nopeg' and a.mulai=(select max(mulai) from sdm_ut_pensiun where nopeg='$datapb->nopeg')");
+                                if(!empty($data_pensiunpb)){
+                                    foreach($data_pensiunpb as $data_penpb)
+                                    {
+                                        if($data_penpb->ut <> ""){
+                                            $upahtetappensiunpb = $data_penpb->ut;
+                                        }else{
+                                            $upahtetappensiunpb = '0';
+                                        }
+                                    }
+                                }else {
+                                    $upahtetappensiunpb = '0';
+                                }
+
+                                // 5.FASILITAS CUTI AARD 06
+                                $data_cutipb = DB::select("select a.fasilitas,a.fasilitas  from sdm_master_pegawai a where a.nopeg='$datapb->nopeg'");
+                                if(!empty($data_cutipb)){
+                                foreach($data_cutipb as $data_cutpb)
+                                {
+                                    $tahunpb = date('Y', strtotime($data_cutpb->fasilitas));
+                                    $bulanpb = ltrim(date('m', strtotime($data_cutpb->fasilitas)),'0');
+                                    $sisatahunpb = $data_tahun - $tahunpb;
+                                    $sisabulanpb = $data_bulan - $bulanpb;
+                                    if($sisabulanpb == '11' and $sisatahunpb == '0'){
+                                        $fasilitaspb = '0';
+                                        //   $uangcutipb = $upahallin + $tunjabatan + $tunjangandaerah;
+                                        //   $fasilitaspb = 1.5 * $uangcutipb;
+                                    }elseif($sisabulanpb == '11' and $sisatahunpb > '0'){
+                                        $fasilitaspb = '0';
+                                        // $uangcutipb = $upahallin + $tunjabatan + $tunjangandaerah;
+                                        // $fasilitaspb = 1.5 * $uangcutipb;
+                                    }elseif($sisabulanpb == '-1' and $sisatahunpb > '0'){
+                                        $fasilitaspb = '0';
+                                        // $uangcutipb = $upahallin + $tunjabatan + $tunjangandaerah;
+                                        // $fasilitaspb = 1.5 * $uangcutipb;
+                                    }else{
+                                        $fasilitaspb = '0';
+                                    }
+                                }
+                            }else {
+                                $fasilitaspb = '0';
+                            }
+
+                            PayMasterUpah::insert([
+                                    'tahun' => $data_tahun,
+                                    'bulan' => $data_bulan,
+                                    'nopek' => $datapb->nopeg,
+                                    'aard' => '06',        
+                                    'jmlcc' => '0',        
+                                    'ccl' => '0',        
+                                    'nilai' => $fasilitaspb,        
+                                    'userid' => $request->userid,        
+                                    ]); 
+
+                            TblPajak::where('tahun', $data_tahun)
+                                ->where('bulan',$data_bulan)
+                                ->where('nopeg',$datapb->nopeg)
+                                ->update([
+                                    'gapok' => $fasilitaspb,
+                                ]);
+
+                            // 6.CARI NILAI LEMBUR AARD 05
+                            $data_lemburpb = DB::select("select sum(makanpg+makansg+makanml+transport+lembur) as totlembur from pay_lembur where nopek='$datapb->nopeg' and bulan='$data_bulan' and tahun='$data_tahun'");                            
+                            if(!empty($data_lemburpb)){
+                                    foreach($data_lemburpb as $data_sdmpb)
+                                    {
+                                        if($data_sdmpb->totlembur <> ""){
+                                            $totallemburpb = $data_sdmpb->totlembur;
+                                        }else{
+                                            $totallemburpb = '0';
+                                        }
+                                    }
+                            }else{
+                                $totallemburpb = '0';
+                            }
+                            PayMasterUpah::insert([
+                                    'tahun' => $data_tahun,
+                                    'bulan' => $data_bulan,
+                                    'nopek' => $datapb->nopeg,
+                                    'aard' => '05',        
+                                    'jmlcc' => '0',        
+                                    'ccl' => '0',        
+                                    'nilai' => $totallemburpb,        
+                                    'userid' => $request->userid,        
+                                    ]); 
+
+                            // 7.CARI SISA BULAN LALU AARD 07
+                            $data_sisanilaipb = DB::select("select nopek,aard,jmlcc,ccl,nilai from pay_koreksi where bulan='$data_bulans' and tahun='$data_tahun' and nopek='$datapb->nopeg' and aard='07'");
+                            if(!empty($data_sisanilaipb)){
+                                foreach($data_sisanilaipb as $data_sdmpb)
+                                {
+                                    if($data_sdmpb->nilai <> ""){
+                                        $fassisapb = $data_sdmpb->nilai;
+                                    }else {
+                                        $fassisapb = '0';
+                                    }
+                                }
+                            }else{
+                                $fassisapb = '0';
+                            }
+                            PayMasterUpah::insert([
+                                    'tahun' => $data_tahun,
+                                    'bulan' => $data_bulan,
+                                    'nopek' => $datapb->nopeg,
+                                    'aard' => '07',        
+                                    'jmlcc' => '0',        
+                                    'ccl' => '0',        
+                                    'nilai' => $fassisapb,        
+                                    'userid' => $request->userid,        
+                                    ]); 
+
+                            // 8.CARI NILAI KOREKSI JAMSOSTEK PEKERJA 29
+                            $data_koreksijamsostekpb = DB::select("select sum(nilai) as nilai from pay_koreksi where bulan='$data_bulan' and tahun='$data_tahun' and nopek='$datapb->nopeg' and aard='29'");
+                            if(!empty($data_koreksijamsostekpb)){
+                                foreach($data_koreksijamsostekpb as $data_korekpb)
+                                {
+                                    if($data_korekpb->nilai <> ""){
+                                        $iujampekpb = $data_korekpb->nilai;
+                                    }else {
+                                        $iujampekpb = '0';
+                                    }
+                                }
+                            }else {
+                                $iujampekpb = '0';
+                            }
+                            PayMasterUpah::insert([
+                                        'tahun' => $data_tahun,
+                                        'bulan' => $data_bulan,
+                                        'nopek' => $datapb->nopeg,
+                                        'aard' => '29',        
+                                        'jmlcc' => '0',        
+                                        'ccl' => '0',        
+                                        'nilai' => $iujampekpb,        
+                                        'userid' => $request->userid,        
+                                        ]); 
+                                
+                                // 9.HITUNG IURAN JAMSOSTEK PRIBADI DAN PERUSAHAAN
+                                $data_iuranjamsostekpb = DB::select("select gapok from sdm_gapok where nopeg = '$datapb->nopeg' and mulai=(select max(mulai) from sdm_gapok where nopeg='$datapb->nopeg')");
+                                if(!empty($data_iuranjamsostekpb)){
+                                    foreach($data_iuranjamsostekpb as $data_iuranpb)
+                                    {
+                                        if($data_iuranpb->gapok <> ""){
+                                            $gapokpb = $data_iuranpb->gapok;
+                                        }else {
+                                            $gapokpb = '0';
+                                        }
+                                    }
+                                }else {
+                                    $gapokpb = '0';
+                                }
+                                PayGapokBulanan::insert([
+                                            'tahun' => $data_tahun,
+                                            'bulan' => $data_bulan,
+                                            'nopek' => $datapb->nopeg,
+                                            'jumlah' => $gapokpb,
+                                            ]); 
+
+                                // 10.CARI NILAI PERSENTASE DARI TABEL PAY_TABLE_JAMSOSTEK
+                                $data_persentasejmpb = DB::select("select pribadi,accident,pensiun,life,manulife from pay_tbl_jamsostek");
+                                if(!empty($data_persentasejmpb)){
+                                    foreach($data_persentasejmpb as $data_perpb)
+                                    {
+                                        $jsmanualifepb = ($data_perpb->life/100);
+                                        if($datapb->nopeg <> '709685'){
+                                            $niljspribadipb = ($data_perpb->pribadi/100) * $gapokpb;
+                                            $niljstaccidentpb = ($data_perpb->accident/100) * $gapokpb;
+                                            $niljspensiunpb = ($data_perpb->pensiun/100) * $gapokpb;
+                                            $niljslifepb = ($data_perpb->life/100) * $gapokpb;
+                                        }else{
+                                            $niljspribadipb = '0';
+                                            $niljstaccidentpb = '0';
+                                            $niljspensiunpb = '0';
+                                            $niljslifepb = '0';
+                                        }
+                                    }
+                                    $niljsmanualifepb = $jsmanualifepb * $upahtetappb;
+                                }
+                                PayMasterUpah::insert([
+                                        'tahun' => $data_tahun,
+                                        'bulan' => $data_bulan,
+                                        'nopek' => $datapb->nopeg,
+                                        'aard' => '09',        
+                                        'jmlcc' => '0',        
+                                        'ccl' => '0',        
+                                        'nilai' => $niljspribadipb * -1,        
+                                        'userid' => $request->userid,        
+                                        ]); 
+
+                                PayMasterBebanprshn::insert([
+                                        'tahun' => $data_tahun,
+                                        'bulan' => $data_bulan,
+                                        'nopek' => $datapb->nopeg,
+                                        'aard' => '10',        
+                                        'lastamount' => '0',        
+                                        'curramount' => $niljstaccidentpb,       
+                                        'userid' => $request->userid,        
+                                        ]);
+                                PayMasterBebanprshn::insert([
+                                        'tahun' => $data_tahun,
+                                        'bulan' => $data_bulan,
+                                        'nopek' => $datapb->nopeg,
+                                        'aard' => '11',        
+                                        'lastamount' => '0',        
+                                        'curramount' => $niljspensiunpb,       
+                                        'userid' => $request->userid,        
+                                        ]);
+
+                                PayMasterBebanprshn::insert([
+                                    'tahun' => $data_tahun,
+                                    'bulan' => $data_bulan,
+                                    'nopek' => $datapb->nopeg,
+                                    'aard' => '12',        
+                                    'lastamount' => '0',        
+                                    'curramount' => $niljslifepb,       
+                                    'userid' => $request->userid,        
+                                    ]);
+                                PayMasterBebanprshn::insert([
+                                    'tahun' => $data_tahun,
+                                    'bulan' => $data_bulan,
+                                    'nopek' => $datapb->nopeg,
+                                    'aard' => '13',        
+                                    'lastamount' => '0',        
+                                    'curramount' => $niljsmanualifepb,       
+                                    'userid' => $request->userid,        
+                                    ]);
+
+                                // 11.HITUNG IURAN DANA PENSIUN BEBAN PEKERJA DAN PERUSAHAAN
+                                $data_iurandanapensiunpb = DB::select("select pribadi,perusahaan,perusahaan3 from pay_tbl_danapensiun");
+                                foreach($data_iurandanapensiunpb as $data_iuranpb)
+                                {
+                                    $dapenpribadipb = $data_iuranpb->pribadi;
+                                    $dapenperusahaanpb = $data_iuranpb->perusahaan;
+                                    $dapenperusahaan3pb = $data_iuranpb->perusahaan3;
+                                }
+                                if($datapb->nopeg <> '709685'){
+                                    // HITUNG IURAN DANA PENSIUN PEKERJA/PRIBADI 
+                                    $nildapenpribadipb = ($dapenpribadipb/100) * $upahtetappensiunpb;
+                                    // HITUNG IURAN DANA PENSIUN BEBAN PERUSAHAAN
+                                    $nildapenperusahaanpb = ($dapenperusahaanpb/100) * $upahtetappensiunpb;
+                                    if($datapb->nopeg == '709669'){
+                                        $nildapenbnipb = ($dapenperusahaan3pb/100) * $upahtetappb;
+                                        PayMasterBebanprshn::insert([
+                                            'tahun' => $data_tahun,
+                                            'bulan' => $data_bulan,
+                                            'nopek' => $datapb->nopeg,
+                                            'aard' => '46',        
+                                            'lastamount' => '0',        
+                                            'curramount' => $nildapenbnipb,       
+                                            'userid' => $request->userid,        
+                                            ]);
+                                    }elseif($datapb->nopeg == '694287'){
+                                        $bazmapb = (2.5/100)*($upahallinpb - ($nildapenpribadipb+$niljspribadipb));
+                                        PayMasterUpah::insert([
+                                                'tahun' => $data_tahun,
+                                                'bulan' => $data_bulan,
+                                                'nopek' => $datapb->nopeg,
+                                                'aard' => '36',        
+                                                'jmlcc' => '0',        
+                                                'ccl' => '0',        
+                                                'nilai' => $bazmapb * -1,        
+                                                'userid' => $request->userid,        
+                                                ]); 
+                                    }else{
+                                        PayMasterUpah::insert([
+                                                'tahun' => $data_tahun,
+                                                'bulan' => $data_bulan,
+                                                'nopek' => $datapb->nopeg,
+                                                'aard' => '36',        
+                                                'jmlcc' => '0',        
+                                                'ccl' => '0',        
+                                                'nilai' => '0',        
+                                                'userid' => $request->userid,        
+                                                ]); 
+                                    }
+                                }else{
+                                    $nildapenpribadipb = '0';
+                                    $nildapenperusahaanpb = '0';
+                                }
+
+                                PayMasterUpah::insert([
+                                        'tahun' => $data_tahun,
+                                        'bulan' => $data_bulan,
+                                        'nopek' => $datapb->nopeg,
+                                        'aard' => '14',        
+                                        'jmlcc' => '0',        
+                                        'ccl' => '0',        
+                                        'nilai' => $nildapenpribadipb * -1,        
+                                        'userid' => $request->userid,        
+                                        ]); 
+                                PayMasterUpah::insert([
+                                        'tahun' => $data_tahun,
+                                        'bulan' => $data_bulan,
+                                        'nopek' => $datapb->nopeg,
+                                        'aard' => '15',        
+                                        'jmlcc' => '0',        
+                                        'ccl' => '0',        
+                                        'nilai' => $nildapenperusahaanpb,        
+                                        'userid' => $request->userid,        
+                                        ]); 
+                                TblPajak::where('tahun', $data_tahun)
+                                    ->where('bulan',$data_bulan)
+                                    ->where('nopeg',$datapb->nopeg)
+                                    ->update([
+                                        'dapen_pek' => $nildapenpribadipb,
+                                    ]);
+
+                                // 11.HITUNG TABUNGAN AARD 16
+                                $data_tabunganpb = DB::select("select perusahaan from pay_tbl_tabungan");
+                                if(!empty($data_tabunganpb)){
+                                    foreach($data_tabunganpb as $data_tabpb)
+                                    {
+                                        if($datapb->nopeg <> '709685'){
+                                            $iuranwajibpb = ($data_tabpb->perusahaan/100) * $upahtetappb;
+                                        }else{
+                                            $iuranwajibpb = '0';
+                                        }
+                                    }
+                                }else {
+                                    $iuranwajibpb = '0';
+                                }
+                                PayMasterBebanprshn::insert([
+                                            'tahun' => $data_tahun,
+                                            'bulan' => $data_bulan,
+                                            'nopek' => $datapb->nopeg,
+                                            'aard' => '16',        
+                                            'lastamount' => '0',        
+                                            'curramount' => $iuranwajibpb,       
+                                            'userid' => $request->userid,        
+                                            ]);
+
+                                // 12.CARI NILAI POTONGAN PKPP AARD 17 DAN HUTANG PKPP AARD 20
+                                $data_nilaipotonganpb = DB::select("select id_pinjaman,jml_pinjaman as jumlah,tenor as lamanya,round(angsuran,0) as angsuran from pay_mtrpkpp where nopek='$datapb->nopeg' and cair ='Y' and lunas<>'Y'");
+                                if(!empty($data_nilaipotonganpb)){
+                                    foreach($data_nilaipotonganpb as $data_nilaipb)
+                                    {
+                                        $idpinjamanpb = $data_nilaipb->id_pinjaman;
+                                        $totalpinjamanpb = $data_nilaipb->jumlah;
+                                        $lamapinjamapb = $data_nilaipb->lamanya;
+                                        $jumlahangsuranpb = $data_nila->angsuran * -1;
+                                    }
+                                    $data_potonganpkpp2pb = DB::select("select round(sum(pokok)) as totalpokok,count(*) as cclke from pay_skdpkpp where nopek='$datapb->nopeg' and tahun <= '$data_tahun' and bulan <= '$data_bulans' and id_pinjaman='$idpinjaman'");
+                                    foreach($data_potonganpkpp2pb as $data_potongpb)
+                                    {
+                                        $totalpokokpb = $data_potongpb->totalpokok;
+                                        $cclkepb = $data_potongpb->cclke;
+                                        $sisacicilanpb = $totalpinjamanpb - $totalpokokpb;
+                                    }
+                                    if($cclkepb == '0'){
+                                        $jumlahangsuranpb = '0';
+                                    }
+                                PayMasterHutang::insert([
+                                            'tahun' => $data_tahun,
+                                            'bulan' => $data_bulan,
+                                            'nopek' => $datapb->nopeg,
+                                            'aard' => '20',        
+                                            'lastamount' => '0',        
+                                            'curramount' => $sisacicilanpb,       
+                                            'userid' => $request->userid,        
+                                            ]);
+                                PayMasterUpah::insert([
+                                        'tahun' => $data_tahun,
+                                        'bulan' => $data_bulan,
+                                        'nopek' => $datapb->nopeg,
+                                        'aard' => '17',        
+                                        'jmlcc' => $lamapinjamapb,        
+                                        'ccl' => $cclkepb,        
+                                        'nilai' => $jumlahangsuranpb,        
+                                        'userid' => $request->userid,        
+                                        ]); 
+                                }else {
+                                    $lamapinjamapb = '0';
+                                    $cclkepb = '0';
+                                    $jumlahangsuranpb = '0';
+                                PayMasterUpah::insert([
+                                        'tahun' => $data_tahun,
+                                        'bulan' => $data_bulan,
+                                        'nopek' => $datapb->nopeg,
+                                        'aard' => '17',        
+                                        'jmlcc' => $lamapinjamapb,        
+                                        'ccl' => $cclkepb,        
+                                        'nilai' => $jumlahangsuranpb,        
+                                        'userid' => $request->userid,        
+                                        ]);
+                                }
+
+                                // 13.CARI NILAI POTONGAN PANJAR PESANGON AARD 18 DAN HUTANG PPRP AARD 21
+                                $data_nilaipotonganpanjarpb = DB::select("select nopek,aard,jmlcc,ccl,nilai from pay_potongan where bulan='$data_bulan' and tahun='$data_tahun' and nopek='$datapb->nopeg' and aard='18'");
+                                if(!empty($data_nilaipotonganpanjarpb)){
+                                    foreach($data_nilaipotonganpanjarpb as $data_nilaipb)
+                                    {
+                                        $jmlccpotongpprppb = $data_nilaipb->jmlcc;
+                                        $cclpotongpprppb = $data_nilaipb->ccl;
+                                        if($data_nilaipb->bilai < 0){
+                                            $nilaipotongpprppb = $data_nilaipb->nilai * -1;
+                                        }else{
+                                            $nilaipotongpprppb = $data_nilaipb->nilai;
+                                        }
+                                    }
+                                    $data_carihutangpprppb = DB::select("select tahun,bulan,aard,lastamount,curramount from pay_master_hutang where (tahun||bulan)=(select max(tahun||bulan) from pay_master_hutang where nopek='$datapb->nopeg' and aard='21') and nopek='$datapb->nopeg' and aard='21'");
+                                    foreach($data_carihutangpprppb as $data_caripb)
+                                    {
+                                        $tahunhutangpprppb = $data_caripb->tahun;
+                                        $bulanhutangpprppb = $data_caripb->bulan;
+                                        $aardhutangpprppb = $data_caripb->aard;
+                                        $lasthutangpprppb = $data_caripb->lastamount;
+                                        $currhutangpprppb = $data_caripb->curramount;
+                                        $lasthutangpprp1pb = $currhutangpprppb;
+                                        $currhutangpprp1pb = ($currhutangpprppb - $nilaipotongpprppb);
+                                    }
+                                PayMasterHutang::insert([
+                                            'tahun' => $data_tahun,
+                                            'bulan' => $data_bulan,
+                                            'nopek' => $datapb->nopeg,
+                                            'aard' => '21',        
+                                            'lastamount' => $lasthutangpprp1pb,        
+                                            'curramount' => $currhutangpprp1pb,       
+                                            'userid' => $request->userid,        
+                                            ]);
+                                PayMasterUpah::insert([
+                                        'tahun' => $data_tahun,
+                                        'bulan' => $data_bulan,
+                                        'nopek' => $datapb->nopeg,
+                                        'aard' => '18',        
+                                        'jmlcc' => $jmlccpotongpprppb,        
+                                        'ccl' => $cclpotongpprppb,        
+                                        'nilai' => $jumlahangsuranpb,        
+                                        'userid' => $request->userid,        
+                                        ]); 
+                                }else {
+                                    $jmlccpotongpprppb = '0';
+                                    $cclpotongpprppb = '0';
+                                    $jumlahangsuranpb = '0';
+                                PayMasterUpah::insert([
+                                        'tahun' => $data_tahun,
+                                        'bulan' => $data_bulan,
+                                        'nopek' => $datapb->nopeg,
+                                        'aard' => '18',        
+                                        'jmlcc' => $jmlccpotongpprppb,        
+                                        'ccl' => $cclpotongpprppb,        
+                                        'nilai' => $jumlahangsuranpb,        
+                                        'userid' => $request->userid,        
+                                        ]);
+                                }
+
+                                // 14.POTONGAN KOPERASI AARD 28
+                                $data_potongankoperasipb = DB::select("select nopek,aard,jmlcc,ccl,nilai from pay_potongan where bulan='$data_bulan' and tahun='$data_tahun' and nopek='$datapb->nopeg' and aard='28'");
+                                if(!empty($data_potongankoperasipb)){
+                                    foreach($data_potongankoperasipb as $data_potongankoppb)
+                                    {
+                                        $jmlccpotongkoperasipb = $data_potongankoppb->jmlcc;
+                                        $cclpotongkoperasipb = $data_potongankoppb->ccl;
+                                        if($data_potongankoppb->nilai < 0){
+                                            $nilaipotongkoperasipb = $data_potongankoppb->nilai;
+                                        }else{
+                                            $nilaipotongkoperasipb = $data_potongankoppb->nilai * -1;
+                                        }
+                                    }
+                                PayMasterUpah::insert([
+                                        'tahun' => $data_tahun,
+                                        'bulan' => $data_bulan,
+                                        'nopek' => $datapb->nopeg,
+                                        'aard' => '28',        
+                                        'jmlcc' => $jmlccpotongkoperasipb,        
+                                        'ccl' => $cclpotongkoperasipb,        
+                                        'nilai' => $nilaipotongkoperasipb,        
+                                        'userid' => $request->userid,        
+                                        ]);
+                                }else {
+                                    $jmlccpotongkoperasipb = '0';
+                                    $cclpotongkoperasipb = '0';
+                                    $nilaipotongkoperasipb = '0';
+                                PayMasterUpah::insert([
+                                        'tahun' => $data_tahun,
+                                        'bulan' => $data_bulan,
+                                        'nopek' => $datapb->nopeg,
+                                        'aard' => '28',        
+                                        'jmlcc' => $jmlccpotongkoperasipb,        
+                                        'ccl' => $cclpotongkoperasipb,        
+                                        'nilai' => $nilaipotongkoperasipb,        
+                                        'userid' => $request->userid,        
+                                        ]);
+                                }
+
+                                // 15.POTONGAN SUKA DUKA AARD 44
+                                $data_potongansukadukapb = DB::select("select nopek,aard,jmlcc,ccl,nilai from pay_potongan where bulan='$data_bulan' and tahun='$data_tahun' and nopek='$datapb->nopeg' and aard='44'");
+                                if(!empty($data_potongansukadukapb)){
+                                    foreach($data_potongansukadukapb as $data_potongansukapb)
+                                    {
+                                        $jmlccpotongsukadukapb = $data_potongansukapb->jmlcc;
+                                        $cclpotongsukadukapb = $data_potongansukapb->ccl;
+                                        if($data_potongansukapb->nilai < 0){
+                                            $nilaipotongsukadukapb = $data_potongansukapb->nilai;
+                                        }else {
+                                            $nilaipotongsukadukapb = $data_potongansukapb->nilai * -1;
+                                        }
+                                PayMasterUpah::insert([
+                                        'tahun' => $data_tahun,
+                                        'bulan' => $data_bulan,
+                                        'nopek' => $datapb->nopeg,
+                                        'aard' => '44',        
+                                        'jmlcc' => $jmlccpotongsukadukapb,        
+                                        'ccl' => $cclpotongsukadukapb,        
+                                        'nilai' => $nilaipotongsukadukapb,        
+                                        'userid' => $request->userid,        
+                                        ]);
+                                    }
+                                }else {
+                                    $jmlccpotongsukadukapb = '0';
+                                    $cclpotongsukadukapb = '0';
+                                    $nilaipotongsukadukapb = '0';
+                                PayMasterUpah::insert([
+                                        'tahun' => $data_tahun,
+                                        'bulan' => $data_bulan,
+                                        'nopek' => $datapb->nopeg,
+                                        'aard' => '44',        
+                                        'jmlcc' => $jmlccpotongsukadukapb,        
+                                        'ccl' => $cclpotongsukadukapb,        
+                                        'nilai' => $nilaipotongsukadukapb,        
+                                        'userid' => $request->userid,        
+                                        ]);
+                                }
+
+                                // 16.HITUNG TOTAL GAJI YANG DI DAPAT
+                                $data_hitungtotalgajipb = DB::select("select sum(nilai) as gajiasli,(sum(nilai)-round(sum(nilai),-3)) as pembulatan1,round(sum(nilai),-3) as hasil,(1000+(sum(nilai)-round(sum(nilai),-3))) as pembulatan2  from pay_master_upah where bulan='$data_bulan' and tahun='$data_tahun' and nopek='$datapb->nopeg'");
+                                if(!empty($data_hitungtotalgajipb)){
+                                    foreach($data_hitungtotalgajipb as $data_hitungtotalpb)
+                                    {
+                                        if($data_hitungtotalpb->pembulatan1 < 0){
+                                            $sisagajipb = $data_hitungtotalpb->pembulatan2;
+                                        }else {
+                                            $sisagajipb = $data_hitungtotalpb->pembulatan1;
+                                        }
+                                    }
+                                PayMasterUpah::insert([
+                                        'tahun' => $data_tahun,
+                                        'bulan' => $data_bulan,
+                                        'nopek' => $datapb->nopeg,
+                                        'aard' => '23',        
+                                        'jmlcc' => '0',        
+                                        'ccl' => '0',        
+                                        'nilai' => $sisagajipb * -1,        
+                                        'userid' => $request->userid,        
+                                        ]);
+                                }
+
+                                $bulan2pb = $data_bulan + 1;
+                                if($bulan2pb > 12){
+                                    $data_bulan2pb = 1;
+                                    $data_tahun2pb = $data_tahun + 1;
+                                }else{
+                                    $data_bulan2pb =$bulan2pb;
+                                    $data_tahun2pb = $data_tahun;
+                                }
+                                PayKoreksi::insert([
+                                                'tahun' => $data_tahun2pb,
+                                                'bulan' => $data_bulan2pb,
+                                                'nopek' => $datapb->nopeg,
+                                                'aard' => '07',        
+                                                'jmlcc' => '0',        
+                                                'ccl' => '0',        
+                                                'nilai' => $sisagajipb,        
+                                                'userid' => $request->userid,        
+                                                ]); 
+
+                                // 17.CARI NILAI YANG KENA PAJAK (BRUTO)
+                                $data_kenapajakpb = DB::select("select sum(a.nilai) as nilai1 from pay_master_upah a,pay_tbl_aard b where a.tahun='$data_tahun' and a.bulan='$data_bulan' and a.nopek='$datapb->nopeg' and a.aard=b.kode and b.kenapajak='Y'");
+                                if(!empty($data_kenapajakpb)){
+                                    foreach($data_kenapajakpb as $data_kenapb)
+                                    {
+                                        $nilaikenapajak1pb = $data_kenapb->nilai1;
+                                    }
+                                }else {
+                                    $nilaikenapajak1pb = '0';
+                                }
+                                $totkenapajakpb = (($nilaikenapajak1pb + $fasilitaspb)*12);
+
+                                // 18. CARI NILAI PENGURANG HITUNG BIAYA JABATAN
+                                $biayajabatan2pb = ((5/100) * $totkenapajakpb);
+                                if($biayajabatan2pb > 6000000){
+                                    $biayajabatanpb = 6000000;  
+                                }else{
+                                    $biayajabatanpb = $biayajabatan2pb;
+                                }                              
+                                
+                                $neto1tahunpb =  $totkenapajakpb - $biayajabatanpb;
+                                TblPajak::where('tahun', $data_tahun)
+                                            ->where('bulan',$data_bulan)
+                                            ->where('nopeg',$datapb->nopeg)
+                                            ->update([
+                                                'bjabatan' => $biayajabatanpb,
+                                            ]);
+
+                                // 19.CARI NILAI TIDAK KENA PAJAK
+                                $data_carinilairdkkenapajakpb = DB::select("select a.kodekeluarga,b.nilai from sdm_master_pegawai a,pay_tbl_ptkp b where a.kodekeluarga=b.kdkel and a.nopeg='$datapb->nopeg'");
+                                if(!empty($data_carinilairdkkenapajakpb)){
+                                    foreach($data_carinilairdkkenapajakpb as $data_carinilaipb)
+                                    {
+                                        $nilaiptkp1pb = $data_carinilaipb->nilai;
+                                    }
+                                }else {
+                                        $nilaiptkp1pb = '0';
+                                }
+
+                                // 20.PENGHASILAN KENA PAJAK SETAHUN	
+                                $nilaikenapajakapb = $neto1tahunpb - $nilaiptkp1pb;
+                                TblPajak::where('tahun', $data_tahun)
+                                                ->where('bulan',$data_bulan)
+                                                ->where('nopeg',$datapb->nopeg)
+                                                ->update([
+                                                    'ptkp' => $nilaiptkp1pb,
+                                                    'pkp' => $nilaikenapajakapb,
+                                                ]);
+
+                                // 20.HITUNG PAJAK PENGHASILAN TERUTANG
+                                
+                                $pajakbulanpb = pajak($nilaikenapajakapb);
+                                PayMasterUpah::insert([
+                                            'tahun' => $data_tahun,
+                                            'bulan' => $data_bulan,
+                                            'nopek' => $datapb->nopeg,
+                                            'aard' => '26',        
+                                            'jmlcc' => '0',        
+                                            'ccl' => '0',        
+                                            'nilai' => $pajakbulanpb * -1,        
+                                            'userid' => $request->userid,        
+                                            ]); 
+                                PayMasterUpah::insert([
+                                            'tahun' => $data_tahun,
+                                            'bulan' => $data_bulan,
+                                            'nopek' => $datapb->nopeg,
+                                            'aard' => '27',        
+                                            'jmlcc' => '0',        
+                                            'ccl' => '0',        
+                                            'nilai' => $pajakbulanpb,        
+                                            'userid' => $request->userid,        
+                                            ]); 
+                                TblPajak::where('tahun', $data_tahun)
+                                                ->where('bulan',$data_bulan)
+                                                ->where('nopeg',$datapb->nopeg)
+                                                ->update([
+                                                    'pajak_setor' => $pajakbulanpb,
+                                                ]); 
+                        }
+
+
+                            // Pengurus()
+                            $data_pegawai_kontraku = SdmMasterPegawai::where('status','U')->orderBy('nopeg', 'asc')->get();
+                            foreach($data_pegawai_kontraku as $dataps)
+                            {
+                                TblPajak::insert([
+                                        'tahun' => $data_tahun,
+                                        'bulan' => $data_bulan,
+                                        'nopeg' => $dataps->nopeg,
+                                        'status' => $dataps->kodekeluarga,        
+                                        ]);
+
+                                // 1.CARI NILAI UPAH ALL IN AARD 02
+                                $data_sdmallinps = DB::select("select nilai from sdm_allin where nopek='$dataps->nopeg'");
+                                if(!empty($data_sdmallinps)){
+                                    foreach($data_sdmallinps as $data_sdmps)
+                                            {
+                                                if($data_sdmps->nilai <> ""){
+                                                    $upahallinps = $data_sdmps->nilai;
+                                                }else {
+                                                    $upahallinps ='0';
+                                                }
+                                            }
+                                    }else {
+                                        $upahallinps ='0';
+                                    } 
+                                
+                                    PayMasterUpah::insert([
+                                                'tahun' => $data_tahun,
+                                                'bulan' => $data_bulan,
+                                                'nopek' => $dataps->nopeg,
+                                                'aard' => '02',        
+                                                'jmlcc' => '0',        
+                                                'ccl' => '0',        
+                                                'nilai' => $upahallinps,        
+                                                'userid' => $request->userid,        
+                                                ]);
+                                        
+                                    TblPajak::where('tahun', $data_tahun)
+                                            ->where('bulan',$data_bulan)
+                                            ->where('nopeg',$dataps->nopeg)
+                                            ->update([
+                                                'upah' => $upahallinps,
+                                            ]);
+
+                                    // 2.CARI NILAI SISA BULAN LALU AARD 07
+                                    $data_sisanilaips = DB::select("select nopek,aard,jmlcc,ccl,round(nilai) as nilai from pay_koreksi where bulan='$data_bulans' and tahun='$data_tahun' and nopek='$dataps->nopeg' and aard='07'");
+                                    if(!empty($data_sisanilaips)){
+                                            foreach($data_sisanilaips as $data_sdps)
+                                            {
+                                                if($data_sdps->nilai <> ""){
+                                                    $fassisaps = $data_sdps->nilai;
+                                                }else{
+                                                    $fassisaps = '0';
+                                                }
+                                            }
+                                    }else{
+                                        $fassisaps = '0';
+                                    }
+                                    PayMasterUpah::insert([
+                                            'tahun' => $data_tahun,
+                                            'bulan' => $data_bulan,
+                                            'nopek' => $dataps->nopeg,
                                             'aard' => '07',        
                                             'jmlcc' => '0',        
                                             'ccl' => '0',        
-                                            'nilai' => $sisagaji,        
+                                            'nilai' => $fassisaps,        
                                             'userid' => $request->userid,        
                                             ]); 
 
-                            // 16.HITUNG PAJAK PPH21 CARI NILAI YANG KENA PAJAK (BRUTO)
-                            $kenapajak = DB::select("select sum(a.nilai) as nilai1 from pay_master_upah a,pay_tbl_aard b where a.tahun='$data_tahun' and a.bulan='$data_bulan' and a.nopek='$data->nopeg' and a.aard=b.kode and b.kenapajak='Y'");
-                            foreach($kenapajak as $kenap)
-                            {
-                                $nilaikenapajak = $kenap->nilai1;
-                            }
-                            $koreksigaji = DB::select("select sum(a.nilai) as kortam from pay_koreksigaji a where a.tahun='$data_tahun' and a.bulan='$data_bulan' and a.nopek='$data->nopeg'");
-                            foreach($koreksigaji as $koreksig)
-                            {
-                                $kortam = $koreksig->kortam * -1;
-                            }
+                                    // 3.CARI NILAI KOREKSI LAIN AARD 08
+                                    $data_carinilaikoreksips = DB::select("select sum(nilai) as nilai from pay_koreksi where bulan='$data_bulan' and tahun='$data_tahun' and nopek='$dataps->nopeg' and aard='08'");
+                                    if(!empty($data_carinilaikoreksips)){
+                                        foreach($data_carinilaikoreksips as $data_carinilaips)
+                                        {
+                                            if($data_carinilaips->nilai <> ""){
+                                                $faslainps = $data_carinilaips->nilai;
+                                            }else{
+                                                $faslainps = '0';
+                                            }
+                                        }
+                                    }else {
+                                        $faslainps = '0';
+                                    }
 
-                            $totalkenapajak = ($nilaikenapajak + $niljstaccident + $niljslife + $fasilitas+ $kortam)*12;
+                                    PayMasterUpah::insert([
+                                            'tahun' => $data_tahun,
+                                            'bulan' => $data_bulan,
+                                            'nopek' => $dataps->nopeg,
+                                            'aard' => '08',        
+                                            'jmlcc' => '0',        
+                                            'ccl' => '0',        
+                                            'nilai' => $faslainps,        
+                                            'userid' => $request->userid,        
+                                            ]); 
 
-                            // 17.CARI NILAI PENGURANG
-                                $biayajabatans = ((5/100)*$totalkenapajak);
-                                if($biayajabatans > 6000000){
-                                    $biayajabatan = 6000000;
-                                }else{
-                                    $biayajabatan = $biayajabatans;
-                                }
+                                    // 4.HITUNG TOTAL GAJI YANG DI DAPAT 
+                                    $totalgajips = DB::select("select sum(nilai) as gajiasli,(sum(nilai)-round(sum(nilai),-3)) as pembulatan1,round(sum(nilai),-3) as hasil,(1000+(sum(nilai)-round(sum(nilai),-3))) as pembulatan2  from pay_master_upah where bulan='$data_bulan' and tahun='$data_tahun' and nopek='$dataps->nopeg'");
+                                    if(!empty($totalgajips)){
+                                        foreach($totalgajips as $totalps)
+                                        {
+                                            if($totalps->pembulatan1 < 0){
+                                                $sisagajips = $totalps->pembulatan2;
+                                            }else{
+                                                $sisagajips = $totalps->pembulatan1;
+                                            }
+                                        }
+                                    }else{
+                                        $sisagajips = '0';
+                                    }
+                                    PayMasterUpah::insert([
+                                                'tahun' => $data_tahun,
+                                                'bulan' => $data_bulan,
+                                                'nopek' => $dataps->nopeg,
+                                                'aard' => '23',        
+                                                'jmlcc' => '0',        
+                                                'ccl' => '0',        
+                                                'nilai' => $sisagajips * -1,        
+                                                'userid' => $request->userid,        
+                                                ]); 
+
                                 
-                                $neto1tahun = $totalkenapajak - $biayajabatan;
-                            
-                                TblPajak::where('tahun', $data_tahun)
-                                        ->where('bulan',$data_bulan)
-                                        ->where('nopeg',$data->nopeg)
-                                        ->update([
-                                            'bjabatan' => $biayajabatan,
-                                        ]);
+                                    $bulan2ps = $data_bulan + 1;
+                                    if($bulan2ps >12){
+                                        $data_bulan2ps = 1;
+                                        $data_tahun2ps = $data_tahun + 1;
+                                    }else{
+                                        $data_bulan2ps =$bulan2ps;
+                                        $data_tahun2ps = $data_tahun;
+                                    }
+                                    PayKoreksi::insert([
+                                                        'tahun' => $data_tahun2ps,
+                                                        'bulan' => $data_bulan2ps,
+                                                        'nopek' => $dataps->nopeg,
+                                                        'aard' => '07',        
+                                                        'jmlcc' => '0',        
+                                                        'ccl' => '0',        
+                                                        'nilai' => $sisagajips,        
+                                                        'userid' => $request->userid,        
+                                                        ]); 
 
-                            // 18.CARI NILAI TIDAK KENA PAJAK
-                            $data_ptkp = DB::select("select a.kodekeluarga,b.nilai from sdm_master_pegawai a,pay_tbl_ptkp b where a.kodekeluarga=b.kdkel and a.nopeg='$data->nopeg'");
-                            
-                            if(!empty($data_ptkp)){
-                                foreach($data_ptkp as $data_p)
-                                {
-                                    $nilaiptkp1 = $data_p->nilai;
-                                }
-                            }else{
-                                    $nilaiptkp1 = '0';
-                            }
-
-                            //    19.PENGHASILAN KENA PAJAK SETAHUN
-                            $nilaikenapajaka = $neto1tahun - $nilaiptkp1;
-                            TblPajak::where('tahun', $data_tahun)
+                                    // 5.HITUNG PAJAK PPH21 CARI NILAI YANG KENA PAJAK (BRUTO)
+                                    $kenapajakps = DB::select("select sum(a.nilai) as nilai1 from pay_master_upah a,pay_tbl_aard b where a.tahun='$data_tahun' and a.bulan='$data_bulan' and a.nopek='$dataps->nopeg' and a.aard=b.kode and b.kenapajak='Y'");
+                                    foreach($kenapajakps as $kenapps)
+                                    {
+                                        if($kenapps->nilai1 <> ""){
+                                            $nilaikenapajak1ps = $kenapps->nilai1;
+                                        }else{
+                                            $nilaikenapajak1ps = '0';
+                                        }
+                                    }
+                                    $nilaikenapajakaps = $nilaikenapajak1ps;
+                                    TblPajak::where('tahun', $data_tahun)
                                             ->where('bulan',$data_bulan)
-                                            ->where('nopeg',$data->nopeg)
+                                            ->where('nopeg',$dataps->nopeg)
                                             ->update([
-                                                'ptkp' => $nilaiptkp1,
-                                                'pkp' => $nilaikenapajaka,
+                                                'pkp' => $nilaikenapajakaps,
                                             ]);
 
-                            // 20.HITUNG PAJAK PENGHASILAN TERUTANG PAJAK SETAHUN                      
-                            $nilai2 = 0;
-                            $nilai1 = 0;
-                            $tunjangan = 0;
-                            $pajakbulan=1;
-                            $nilaikenapajak = $nilaikenapajaka;
-                            $sisapokok = $nilaikenapajak;
-                            $data_sdmprogresif = DB::select("select * from sdm_tbl_progressif order by awal asc");
-                            // SdmTblProgressif::orderBy('awal','asc');
-                            // $pph21ok = 0;
-                            foreach($data_sdmprogresif as $data_prog)
-                            {
-                                $awal = $data_prog->awal;
-                                $akhir = $data_prog->akhir;
-                                $persen = $data_prog->prosen;
-                                $prosen = $persen/100;
-                                $range = $akhir - $awal;
-                                if($sisapokok > 0){
-                                    $sisapokok1 = $sisapokok;
-                                    if($sisapokok1 > 0 and $sisapokok1 < $range){
-                                        $pph21r = $sisapokok1 * $prosen;
-                                    }elseif($sisapokok1 > 0 and $sisapokok1 >= $range ){
-                                        $pph21r = $range * $prosen;
+                                    if($dataps->nopeg == "kom9" or $dataps->nopeg == "kom4"){
+                                        $tunjpajakps = (15/100) * $nilaikenapajakaps;
+                                        $potpajakps = ((30/100)*($nilaikenapajakaps + $tunjpajakps));
+                                    }elseif($dataps->nopeg == "komut1"){
+                                        $tunjpajakps = (15/100) * $nilaikenapajakaps;
+                                        $potpajakps = (30/100) * ($nilaikenapajakaps + $tunjpajakps);
+                                    }elseif($dataps->nopeg == "kom5"){
+                                        $tunjpajakps = (5/100) * $nilaikenapajakaps;
+                                        $potpajakps = (15/100) * ($nilaikenapajakaps + $tunjpajakps);
                                     }else{
-                                        $pph21r = 0;
+                                        $tunjpajakps = (5/100) * $nilaikenapajakaps;
+                                        $potpajakps = (30/100) * ($nilaikenapajakaps + $tunjpajakps);
                                     }
-                                }else {
-                                    $pph21r = 0;
-                                }
-                                $pph21ok =  $pph21r;
-                                $pajakbulan = ($pph21ok/12);
+                                    PayMasterUpah::insert([
+                                                'tahun' => $data_tahun,
+                                                'bulan' => $data_bulan,
+                                                'nopek' => $dataps->nopeg,
+                                                'aard' => '27',        
+                                                'jmlcc' => '0',        
+                                                'ccl' => '0',        
+                                                'nilai' => $tunjpajakps,        
+                                                'userid' => $request->userid,        
+                                                ]);
+                                    PayMasterUpah::insert([
+                                                'tahun' => $data_tahun,
+                                                'bulan' => $data_bulan,
+                                                'nopek' => $dataps->nopeg,
+                                                'aard' => '26',        
+                                                'jmlcc' => '0',        
+                                                'ccl' => '0',        
+                                                'nilai' => $potpajakps,        
+                                                'userid' => $request->userid,        
+                                                ]);
+                                
+
+                                    $data_caripajak1ps = DB::select("select round(nilai,-2) as pajaknya from pay_master_upah where tahun='$data_tahun' and bulan='$data_bulan' and nopek='$dataps->nopeg' and aard='27'");
+                                    foreach($data_caripajak1ps as $data_pajak1ps)
+                                    {
+                                        $tunjpaps = $data_pajak1ps->pajaknya;
+                                    }
+                                    
+                                    $data_caripajak2ps = DB::select("select round(nilai,-2) as pajaknya from pay_master_upah where tahun='$data_tahun' and bulan='$data_bulan' and nopek='$dataps->nopeg' and aard='26'");
+                                    foreach($data_caripajak2ps as $data_pajak2ps)
+                                    {
+                                        $potpaps = $data_pajak2ps->pajaknya;
+                                    }
+
+                                    PayMasterUpah::where('tahun', $data_tahun)
+                                            ->where('bulan',$data_bulan)
+                                            ->where('nopek',$dataps->nopeg)
+                                            ->where('aard','27')
+                                            ->update([
+                                                'nilai' => $tunjpaps,
+                                            ]);
+                                    PayMasterUpah::where('tahun', $data_tahun)
+                                            ->where('bulan',$data_bulan)
+                                            ->where('nopek',$dataps->nopeg)
+                                            ->where('aard','26')
+                                            ->update([
+                                                'nilai' => $potpaps * -1,
+                                            ]);
+                                    TblPajak::where('tahun', $data_tahun)
+                                            ->where('bulan',$data_bulan)
+                                            ->where('nopeg',$dataps->nopeg)
+                                            ->update([
+                                                'pajak_setor' => $tunjpaps,
+                                            ]);
+                            }
+                            
+
+                            // Komite()
+                        $data_pegawai_kontrako = SdmMasterPegawai::where('status','O')->orderBy('nopeg', 'asc')->get();
+                        foreach($data_pegawai_kontrako as $datakm)
+                        {
+                            TblPajak::insert([
+                                    'tahun' => $data_tahun,
+                                    'bulan' => $data_bulan,
+                                    'nopeg' => $datakm->nopeg,
+                                    'status' => $datakm->kodekeluarga,        
+                                    ]);
+
+                            // 1.CARI NILAI UPAH ALL IN AARD 02
+                            $data_sdmallinkm = DB::select("select nilai from sdm_allin where nopek='$datakm->nopeg'");
+                            if(!empty($data_sdmallinkm)){
+                            foreach($data_sdmallinkm as $data_sdmkm)
+                                    {
+                                        if($data_sdmkm->nilai <> ""){
+                                            $upahallinkm = $data_sdmkm->nilai;
+                                        }else {
+                                            $upahallinkm ='0';
+                                        }
+                                    }
+                            }else {
+                                $upahallinkm ='0';
                             } 
                             PayMasterUpah::insert([
                                         'tahun' => $data_tahun,
                                         'bulan' => $data_bulan,
-                                        'nopek' => $data->nopeg,
-                                        'aard' => '26',        
+                                        'nopek' => $datakm->nopeg,
+                                        'aard' => '02',        
                                         'jmlcc' => '0',        
                                         'ccl' => '0',        
-                                        'nilai' => $pajakbulan * -1,        
+                                        'nilai' => $upahallinkm,        
                                         'userid' => $request->userid,        
-                                        ]); 
+                                        ]);
+                                
+                            TblPajak::where('tahun', $data_tahun)
+                                    ->where('bulan',$data_bulan)
+                                    ->where('nopeg',$datakm->nopeg)
+                                    ->update([
+                                        'upah' => $upahallinkm,
+                                    ]);
+
+                            // 2.HITUNG TOTAL GAJI YANG DI DAPAT 
+                            $totalgajikm = DB::select("select sum(nilai) as gajiasli,(sum(nilai)-round(sum(nilai),-3)) as pembulatan1,round(sum(nilai),-3) as hasil,(1000+(sum(nilai)-round(sum(nilai),-3))) as pembulatan2  from pay_master_upah where bulan='$data_bulan' and tahun='$data_tahun' and nopek='$datakm->nopeg'");
+                            if(!empty($totalgajikm)){
+                                foreach($totalgajikm as $totalkm)
+                                {
+                                    if($totalkm->pembulatan1 < 0){
+                                        $sisagajikm = $totalkm->pembulatan2;
+                                    }else{
+                                        $sisagajikm = $totalkm->pembulatan1;
+                                    }
+                                }
+                            }else{
+                                $sisagajikm = '0';
+                            }
                             PayMasterUpah::insert([
                                         'tahun' => $data_tahun,
                                         'bulan' => $data_bulan,
-                                        'nopek' => $data->nopeg,
-                                        'aard' => '27',        
+                                        'nopek' => $datakm->nopeg,
+                                        'aard' => '23',        
                                         'jmlcc' => '0',        
                                         'ccl' => '0',        
-                                        'nilai' => $pajakbulan,        
+                                        'nilai' => $sisagajikm * -1,        
                                         'userid' => $request->userid,        
                                         ]); 
-                            TblPajak::where('tahun', $data_tahun)
-                                            ->where('bulan',$data_bulan)
-                                            ->where('nopeg',$data->nopeg)
-                                            ->update([
-                                                'pajak_setor' => $pajakbulan,
-                                            ]);
+
                         
-                        }
-
-                        // PekerjaKontrak()
-                    $data_pegawai_kontrak = SdmMasterPegawai::where('status','K')->orderBy('nopeg', 'asc')->get();
-                    foreach($data_pegawai_kontrak as $data)
-                    {
-                        TblPajak::insert([
-                                'tahun' => $data_tahun,
-                                'bulan' => $data_bulan,
-                                'nopeg' => $data->nopeg,
-                                'status' => $data->kodekeluarga,        
-                                ]);
-                        
-                        // 1.CARI NILAI UPAH ALL IN AARD 02
-
-                       $data_sdmallin = DB::select("select nilai from sdm_allin where nopek='$data->nopeg'");
-                       if(!empty($data_sdmallin)){
-                           foreach($data_sdmallin as $data_sdm)
-                                {
-                                    if($data_sdm->nilai <> ""){
-                                        $upahallin = $data_sdm->nilai;
-                                    }else {
-                                        $upahallin ='0';
-                                    }
-                                }
-                        }else {
-                            $upahallin ='0';
-                        } 
-                      
-                        PayMasterUpah::insert([
-                                    'tahun' => $data_tahun,
-                                    'bulan' => $data_bulan,
-                                    'nopek' => $data->nopeg,
-                                    'aard' => '02',        
-                                    'jmlcc' => '0',        
-                                    'ccl' => '0',        
-                                    'nilai' => $upahallin,        
-                                    'userid' => $request->userid,        
-                                    ]);
-                            
-                        TblPajak::where('tahun', $data_tahun)
-                                ->where('bulan',$data_bulan)
-                                ->where('nopeg',$data->nopeg)
-                                ->update([
-                                    'upah' => $upahallin,
-                                ]);
-
-                        // 2.CARI TUNJANGAN JABATAN JIKA ADA
-                        $data_sdmjabatan =DB::select("select a.nopeg,a.kdbag,a.kdjab,b.goljob,b.tunjangan from sdm_jabatan a,sdm_tbl_kdjab b where a.nopeg='$data->nopeg' and a.kdbag=b.kdbag and a.kdjab=b.kdjab and a.mulai=(select max(mulai) from sdm_jabatan where nopeg='$data->nopeg')");
-                        if(!empty($data_sdmjabatan)){
-                            foreach($data_sdmjabatan as $data_sdmjab)
-                            {
-                                if($data_sdmjab->tunjangan <> ""){
-                                    $tunjabatan = $data_sdmjab->tunjangan;
-                                }else{
-                                    $tunjabatan = '0';
-                                }
-                            }
-                        }else{
-                            $tunjabatan = '0';
-                        }
-                            PayMasterUpah::insert([
-                                    'tahun' => $data_tahun,
-                                    'bulan' => $data_bulan,
-                                    'nopek' => $data->nopeg,
-                                    'aard' => '03',        
-                                    'jmlcc' => '0',        
-                                    'ccl' => '0',        
-                                    'nilai' => $tunjabatan,        
-                                    'userid' => $request->userid,        
-                                    ]); 
-
-                            TblPajak::where('tahun', $data_tahun)
-                                ->where('bulan',$data_bulan)
-                                ->where('nopeg',$data->nopeg)
-                                ->update([
-                                    'tunjjabat' => $tunjabatan,
-                                ]);
-
-
-                        // 3.TUNJANGAN DAERAH
-                        $data_tunjangandaerah = DB::select("select a.golgaji, b.nilai from sdm_golgaji a,pay_tbl_tunjangan b where a.nopeg='$data->nopeg' and a.golgaji=b.golongan and a.tanggal=(select max(tanggal) from sdm_golgaji where nopeg ='$data->nopeg')");
-                        if(!empty($data_tunjangandaerah)){
-                                foreach($data_tunjangandaerah as $data_sdmdaerah)
-                                {
-                                    if($data_sdmdaerah->nilai <> ""){
-                                        $tunjangandaerah = $data_sdmdaerah->nilai;
-                                    }else{
-                                        $tunjangandaerah = '0';
-                                    }
-                                }
-                        }else{
-                            $tunjangandaerah = '0';
-                        }
-                        PayMasterUpah::insert([
-                                'tahun' => $data_tahun,
-                                'bulan' => $data_bulan,
-                                'nopek' => $data->nopeg,
-                                'aard' => '04',        
-                                'jmlcc' => '0',        
-                                'ccl' => '0',        
-                                'nilai' => $tunjangandaerah,        
-                                'userid' => $request->userid,        
-                                ]); 
-
-                        TblPajak::where('tahun', $data_tahun)
-                            ->where('bulan',$data_bulan)
-                            ->where('nopeg',$data->nopeg)
-                            ->update([
-                                'tunjdaerah' => $tunjangandaerah,
-                            ]);
-
-                        // 4.Gapok Kontrak
-                        $data_gapok = DB::select("select gapok from sdm_gapok where nopeg = '$data->nopeg' and mulai=(select max(mulai) from sdm_gapok where nopeg='$data->nopeg')");
-                        if(!empty($data_gapok)){
-                            foreach($data_gapok as $data_gap)
-                            {
-                                if($data->nopeg == 'K00011'){
-                                    $gapok = '0';
-                                }else{
-                                    $gapok = $data_gap->gapok;
-                                }
-                            }
-                        }else {
-                            $gapok = '0';
-                        }
-
-                        PayGapokBulanan::insert([
-                                        'tahun' => $data_tahun,
-                                        'bulan' => $data_bulan,
-                                        'nopek' => $data->nopeg,
-                                        'jumlah' => $upahallin,
-                                        ]); 
-
-                        // 5.CARI NILAI PERSENTASE DARI TABEL PAY_TABLE_JAMSOSTEK
-                        $data_jamsostek = PayTblJamsostek::all();
-                            foreach($data_jamsostek as $data_jam)
-                            {
-                                $niljspribadi = ($data_jam->pribadi/100) * $upahallin;
-                                $niljstaccident = ($data_jam->accident/100) * $upahallin;
-                                $niljspensiun = ($data_jam->pensiun/100) * $upahallin;
-                                $niljslife = ($data_jam->life/100) * $upahallin;
-                            }
-                            PayMasterUpah::insert([
-                                    'tahun' => $data_tahun,
-                                    'bulan' => $data_bulan,
-                                    'nopek' => $data->nopeg,
-                                    'aard' => '09',        
-                                    'jmlcc' => '0',        
-                                    'ccl' => '0',        
-                                    'nilai' => $niljspribadi * -1,        
-                                    'userid' => $request->userid,        
-                                    ]); 
-
-                            PayMasterBebanprshn::insert([
-                                    'tahun' => $data_tahun,
-                                    'bulan' => $data_bulan,
-                                    'nopek' => $data->nopeg,
-                                    'aard' => '10',        
-                                    'lastamount' => '0',        
-                                    'curramount' => $niljstaccident,       
-                                    'userid' => $request->userid,        
-                                    ]);
-                            PayMasterBebanprshn::insert([
-                                    'tahun' => $data_tahun,
-                                    'bulan' => $data_bulan,
-                                    'nopek' => $data->nopeg,
-                                    'aard' => '11',        
-                                    'lastamount' => '0',        
-                                    'curramount' => $niljspensiun,       
-                                    'userid' => $request->userid,        
-                                    ]);
-
-                            PayMasterBebanprshn::insert([
-                                'tahun' => $data_tahun,
-                                'bulan' => $data_bulan,
-                                'nopek' => $data->nopeg,
-                                'aard' => '12',        
-                                'lastamount' => '0',        
-                                'curramount' => $niljslife,       
-                                'userid' => $request->userid,        
-                                ]);
-
-                            // 6.FASILITAS CUTI AARD 06
-                            $data_cuti = DB::select("select a.fasilitas,a.fasilitas  from sdm_master_pegawai a where a.nopeg='$data->nopeg'");
-                            if(!empty($data_cuti)){
-                              foreach($data_cuti as $data_cut)
-                              {
-                                $tahun = date('Y', strtotime($data_cut->fasilitas));
-                                $bulan = ltrim(date('m', strtotime($data_cut->fasilitas)),'0');
-                                $sisatahun = $data_tahun - $tahun;
-                                $sisabulan = $data_bulan - $bulan;
-                                  if($sisabulan == '11' and $sisatahun == '0'){
-                                      $uangcuti = $upahallin + $tunjabatan + $tunjangandaerah;
-                                      $fasilitas = 1.5 * $uangcuti;
-                                  }elseif($sisabulan == '11' and $sisatahun > '0'){
-                                    $uangcuti = $upahallin + $tunjabatan + $tunjangandaerah;
-                                    $fasilitas = 1.5 * $uangcuti;
-                                  }elseif($sisabulan == '-1' and $sisatahun > '0'){
-                                    $uangcuti = $upahallin + $tunjabatan + $tunjangandaerah;
-                                    $fasilitas = 1.5 * $uangcuti;
-                                  }else{
-                                      $fasilitas = '0';
-                                  }
-                              }
-                          }else {
-                              $fasilitas = '0';
-                          }
-                        PayMasterUpah::insert([
-                                'tahun' => $data_tahun,
-                                'bulan' => $data_bulan,
-                                'nopek' => $data->nopeg,
-                                'aard' => '06',        
-                                'jmlcc' => '0',        
-                                'ccl' => '0',        
-                                'nilai' => $fasilitas,        
-                                'userid' => $request->userid,        
-                                ]); 
-
-                        TblPajak::where('tahun', $data_tahun)
-                            ->where('bulan',$data_bulan)
-                            ->where('nopeg',$data->nopeg)
-                            ->update([
-                                'gapok' => $fasilitas,
-                            ]);
-
-                        // 7.CARI NILAI LEMBUR AARD 05
-                        $data_lembur = DB::select("select sum(makanpg+makansg+makanml+transport+lembur) as totlembur from pay_lembur where nopek='$data->nopeg' and bulan='$data_bulan' and tahun='$data_tahun'");                            
-                        if(!empty($data_lembur)){
-                                foreach($data_lembur as $data_sdm)
-                                {
-                                    if($data_sdm->totlembur <> ""){
-                                        $totallembur = $data_sdm->totlembur;
-                                    }else{
-                                        $totallembur = '0';
-                                    }
-                                }
-                        }else{
-                            $totallembur = '0';
-                        }
-                        PayMasterUpah::insert([
-                                'tahun' => $data_tahun,
-                                'bulan' => $data_bulan,
-                                'nopek' => $data->nopeg,
-                                'aard' => '05',        
-                                'jmlcc' => '0',        
-                                'ccl' => '0',        
-                                'nilai' => $totallembur,        
-                                'userid' => $request->userid,        
-                                ]); 
-
-                        TblPajak::where('tahun', $data_tahun)
-                            ->where('bulan',$data_bulan)
-                            ->where('nopeg',$data->nopeg)
-                            ->update([
-                                'lembur' => $totallembur,
-                            ]);
-
-                        // 8.CARI SISA BULAN LALU AARD 07
-                        $data_sisanilai = DB::select("select nopek,aard,jmlcc,ccl,nilai from pay_koreksi where bulan='$data_bulans' and tahun='$data_tahun' and nopek='$data->nopeg' and aard='07'");
-                        if(!empty($data_sisanilai)){
-                            foreach($data_sisanilai as $data_sdm)
-                            {
-                                if($data_sdm->nilai <> ""){
-                                    $fassisa = $data_sdm->nilai;
-                                }else {
-                                    $fassisa = '0';
-                                }
-                            }
-                        }else{
-                            $fassisa = '0';
-                        }
-                        PayMasterUpah::insert([
-                                'tahun' => $data_tahun,
-                                'bulan' => $data_bulan,
-                                'nopek' => $data->nopeg,
-                                'aard' => '07',        
-                                'jmlcc' => '0',        
-                                'ccl' => '0',        
-                                'nilai' => $fassisa,        
-                                'userid' => $request->userid,        
-                                ]); 
-                        // 9. POTONG KOPERASI
-                        $data_potongan = DB::select("select * from pay_potongan where bulan='$data_bulan' and tahun='$data_tahun' and nopek='$data->nopeg' and aard='28'");
-                        if(!empty($data_potongan)){
-                            foreach($data_potongan as $data_potong)
-                            {
-                                $jmlccpotongpinjam = $data_potong->jmlcc;
-                                $cclpotongpinjam = $data_potong->ccl;
-                                if($data_potong->nilai < 0){
-                                    $nilaipotonganpinjam = $data_potong->nilai;
-                                }else{
-                                    $nilaipotonganpinjam = ($data_potong->nilai * -1);
-                                }
-                            }
-                        }else{
-                            $nilaipotonganpinjam = '0';
-                            $jmlccpotongpinjam = '0';
-                            $cclpotongpinjam = '0';
-                        }    
-
-                         PayMasterUpah::insert([
-                                        'tahun' => $data_tahun,
-                                        'bulan' => $data_bulan,
-                                        'nopek' => $data->nopeg,
-                                        'aard' => '28',        
-                                        'jmlcc' => $jmlccpotongpinjam,        
-                                        'ccl' => $cclpotongpinjam,        
-                                        'nilai' => $nilaipotonganpinjam,        
-                                        'userid' => $request->userid,        
-                                        ]);
-                        // 10. HITUNG TOTAL GAJI YANG DI DAPAT 
-                        $totalgaji = DB::select("select sum(nilai) as gajiasli,(sum(nilai)-round(sum(nilai),-3)) as pembulatan1,round(sum(nilai),-3) as hasil,(1000+(sum(nilai)-round(sum(nilai),-3))) as pembulatan2  from pay_master_upah where bulan='$data_bulan' and tahun='$data_tahun' and nopek='$data->nopeg'");
-                        if(!empty($totalgaji)){
-                            foreach($totalgaji as $total)
-                            {
-                                if($total->pembulatan1 < 0){
-                                    $sisagaji = $total->pembulatan2;
-                                }else{
-                                    $sisagaji = $total->pembulatan1;
-                                }
-                            }
-                        }else{
-                            $sisagaji = '0';
-                        }
-                        PayMasterUpah::insert([
-                                    'tahun' => $data_tahun,
-                                    'bulan' => $data_bulan,
-                                    'nopek' => $data->nopeg,
-                                    'aard' => '23',        
-                                    'jmlcc' => '0',        
-                                    'ccl' => '0',        
-                                    'nilai' => $sisagaji * -1,        
-                                    'userid' => $request->userid,        
-                                    ]); 
-
-                    
-                        $bulan2 = $data_bulan + 1;
-                        if($bulan2 >12){
-                            $data_bulan2 = 1;
-                            $data_tahun2 = $data_tahun + 1;
-                        }else{
-                            $data_bulan2 =$bulan2;
-                            $data_tahun2 = $data_tahun;
-                        }
-                        PayKoreksi::insert([
-                                            'tahun' => $data_tahun2,
-                                            'bulan' => $data_bulan2,
-                                            'nopek' => $data->nopeg,
-                                            'aard' => '07',        
-                                            'jmlcc' => '0',        
-                                            'ccl' => '0',        
-                                            'nilai' => $sisagaji,        
-                                            'userid' => $request->userid,        
-                                            ]); 
-
-                        // 11.HITUNG PAJAK PPH21 CARI NILAI YANG KENA PAJAK (BRUTO)
-                        $kenapajak = DB::select("select sum(a.nilai) as nilai1 from pay_master_upah a,pay_tbl_aard b where a.tahun='$data_tahun' and a.bulan='$data_bulan' and a.nopek='$data->nopeg' and a.aard=b.kode and b.kenapajak='Y'");
-                        foreach($kenapajak as $kenap)
-                        {
-                            if($kenap->nilai1 <> ""){
-                                $nilaikenapajak = $kenap->nilai1;
+                            $bulan2km = $data_bulan + 1;
+                            if($bulan2km >12){
+                                $data_bulan2km = 1;
+                                $data_tahun2km = $data_tahun + 1;
                             }else{
-                                $nilaikenapajak = '0';
-                            }
-                        }
-                        $koreksigaji = DB::select("select sum(a.nilai) as kortam from pay_koreksigaji a where a.tahun='$data_tahun' and a.bulan='$data_bulan' and a.nopek='$data->nopeg'");
-                        foreach($koreksigaji as $koreksig)
-                        {
-                            $kortam = $koreksig->kortam * -1;
-                        }
-                        $
-                        $totalkenapajak = (($nilaikenapajak + $kortam) * 12);
-                        $biayajabatans = ((5/100)*$totalkenapajak);
-                                if($biayajabatans > 6000000){
-                                    $biayajabatan = 6000000;
-                                }else{
-                                    $biayajabatan = $biayajabatans;
-                                }
-                                $neto1tahun = $totalkenapajak - $biayajabatan;
-                        TblPajak::where('tahun', $data_tahun)
-                                        ->where('bulan',$data_bulan)
-                                        ->where('nopeg',$data->nopeg)
-                                        ->update([
-                                            'bjabatan' => $biayajabatan,
-                                        ]);
-                    // 12.CARI NILAI TIDAK KENA PAJAK
-                    $data_ptkp = DB::select("select a.kodekeluarga,b.nilai from sdm_master_pegawai a,pay_tbl_ptkp b where a.kodekeluarga=b.kdkel and a.nopeg='$data->nopeg'");
-                            
-                    if(!empty($data_ptkp)){
-                        foreach($data_ptkp as $data_p)
-                        {
-                            if($data_p->nilai <> ""){
-                                $nilaiptkp1 = $data_p->nilai;
-                            }else {
-                                $nilaiptkp1 = '0';
-                            }
-                        }
-                    }else{
-                            $nilaiptkp1 = '0';
-                    }
-
-                    // 13.PENGHASILAN KENA PAJAK SETAHUN
-                    $nilaikenapajaka = $neto1tahun - $nilaiptkp1;
-                    TblPajak::where('tahun', $data_tahun)
-                                    ->where('bulan',$data_bulan)
-                                    ->where('nopeg',$data->nopeg)
-                                    ->update([
-                                        'ptkp' => $nilaiptkp1,
-                                        'pkp' => $nilaikenapajaka,
-                                    ]);
-
-                    // 14.HITUNG PAJAK PENGHASILAN TERUTANG PAJAK SETAHUN                      
-                    $nilai2 = 0;
-                    $nilai1 = 0;
-                    $tunjangan = 0;
-                    $pajakbulan=1;
-                    $nilaikenapajak = $nilaikenapajaka;
-                    $sisapokok = $nilaikenapajak;
-                    $data_sdmprogresif = DB::select("select * from sdm_tbl_progressif order by awal asc");
-                    // SdmTblProgressif::orderBy('awal','asc');
-                    // $pph21ok = 0;
-                    foreach($data_sdmprogresif as $data_prog)
-                    {
-                        $awal = $data_prog->awal;
-                        $akhir = $data_prog->akhir;
-                        $persen = $data_prog->prosen;
-                        $prosen = $persen/100;
-                        $range = $akhir - $awal;
-                        if($sisapokok > 0){
-                            $sisapokok1 = $sisapokok;
-                            if($sisapokok1 > 0 and $sisapokok1 < $range){
-                                $pph21r = $sisapokok1 * $prosen;
-                            }elseif($sisapokok1 > 0 and $sisapokok1 >= $range ){
-                                $pph21r = $range * $prosen;
-                            }else{
-                                $pph21r = 0;
-                            }
-                        }else {
-                            $pph21r = 0;
-                        }
-                        $pph21ok =  $pph21r;
-                        $pajakbulan = ($pph21ok/12);
-                    } 
-                    PayMasterUpah::insert([
-                                'tahun' => $data_tahun,
-                                'bulan' => $data_bulan,
-                                'nopek' => $data->nopeg,
-                                'aard' => '26',        
-                                'jmlcc' => '0',        
-                                'ccl' => '0',        
-                                'nilai' => $pajakbulan * -1,        
-                                'userid' => $request->userid,        
-                                ]); 
-                    PayMasterUpah::insert([
-                                'tahun' => $data_tahun,
-                                'bulan' => $data_bulan,
-                                'nopek' => $data->nopeg,
-                                'aard' => '27',        
-                                'jmlcc' => '0',        
-                                'ccl' => '0',        
-                                'nilai' => $pajakbulan,        
-                                'userid' => $request->userid,        
-                                ]); 
-                    TblPajak::where('tahun', $data_tahun)
-                                    ->where('bulan',$data_bulan)
-                                    ->where('nopeg',$data->nopeg)
-                                    ->update([
-                                        'pajak_setor' => $pajakbulan,
-                                    ]);
-                    
-                    }
-
-                    // PekerjaBantu()
-                    $data_pegawai_kontrak = SdmMasterPegawai::where('status','B')->orderBy('nopeg', 'asc')->get();
-                    foreach($data_pegawai_kontrak as $data)
-                    {
-                        TblPajak::insert([
-                                'tahun' => $data_tahun,
-                                'bulan' => $data_bulan,
-                                'nopeg' => $data->nopeg,
-                                'status' => $data->kodekeluarga,        
-                                ]);
-                        
-                        // 1.CARI NILAI UPAH ALL IN AARD 02
-
-                       $data_sdmallin = DB::select("select nilai from sdm_allin where nopek='$data->nopeg'");
-                       if(!empty($data_sdmallin)){
-                           foreach($data_sdmallin as $data_sdm)
-                                {
-                                    if($data_sdm->nilai <> ""){
-                                        $upahallin = $data_sdm->nilai;
-                                    }else {
-                                        $upahallin ='0';
-                                    }
-                                }
-                        }else {
-                            $upahallin ='0';
-                        } 
-
-                        PayMasterUpah::insert([
-                                    'tahun' => $data_tahun,
-                                    'bulan' => $data_bulan,
-                                    'nopek' => $data->nopeg,
-                                    'aard' => '02',        
-                                    'jmlcc' => '0',        
-                                    'ccl' => '0',        
-                                    'nilai' => $upahallin,        
-                                    'userid' => $request->userid,        
-                                    ]);
-                            
-                        TblPajak::where('tahun', $data_tahun)
-                                ->where('bulan',$data_bulan)
-                                ->where('nopeg',$data->nopeg)
-                                ->update([
-                                    'upah' => $upahallin,
-                                ]);
-
-                            //2.CARI UPAH TETAP AARD 01
-                            $data_sdmut = DB::select("select a.ut from sdm_ut a where a.nopeg='$data->nopeg' and a.mulai=(select max(mulai) from sdm_ut where nopeg='$data->nopeg')");
-                            if(!empty($data_sdmut)){
-                                    foreach($data_sdmut as $data_sdm)
-                                    {   if($data_sdm->ut <> ""){
-                                        $upahtetap = $data_sdm->ut;
-                                        }else {
-                                            $upahtetap = '0';
-                                        }
-                                    }
-                            }else{
-                                $upahtetap = '0';
-                            }
-                            PayMasterUpah::insert([
-                                    'tahun' => $data_tahun,
-                                    'bulan' => $data_bulan,
-                                    'nopek' => $data->nopeg,
-                                    'aard' => '01',        
-                                    'jmlcc' => '0',        
-                                    'ccl' => '0',        
-                                    'nilai' => $upahtetap,        
-                                    'userid' => $request->userid,        
-                                    ]);
-                            
-                            TblPajak::where('tahun', $data_tahun)
-                                ->where('bulan',$data_bulan)
-                                ->where('nopeg',$data->nopeg)
-                                ->update([
-                                    'upah' => $upahtetap,
-                                ]);
-
-                             // 2.CARI UPAH TETAP AARD 01
-                            $data_sdmut = DB::select("select a.ut from sdm_ut a where a.nopeg='$data->nopeg' and a.mulai=(select max(mulai) from sdm_ut where nopeg='$data->nopeg')");
-                            if(!empty($data_sdmut)){
-                                    foreach($data_sdmut as $data_sdm)
-                                    {
-                                        if($data_sdm->ut <> ""){
-                                            $upahtetap = $data_sdm->ut;
-                                        }else {
-                                            $upahtetap = '0';
-                                        }
-                                    }
-                            }else{
-                                $upahtetap = '0';
-                            }
-                            PayMasterUpah::insert([
-                                    'tahun' => $data_tahun,
-                                    'bulan' => $data_bulan,
-                                    'nopek' => $data->nopeg,
-                                    'aard' => '01',        
-                                    'jmlcc' => '0',        
-                                    'ccl' => '0',        
-                                    'nilai' => $upahtetap,        
-                                    'userid' => $request->userid,        
-                                    ]);
-                            
-                            TblPajak::where('tahun', $data_tahun)
-                                ->where('bulan',$data_bulan)
-                                ->where('nopeg',$data->nopeg)
-                                ->update([
-                                    'upah' => $upahtetap,
-                                ]);
-
-                            // 3.CARI UPAH TETAP AARD 01
-                            $data_sdmut = DB::select("select a.ut from sdm_ut a where a.nopeg='$data->nopeg' and a.mulai=(select max(mulai) from sdm_ut where nopeg='$data->nopeg')");
-                            if(!empty($data_sdmut)){
-                                    foreach($data_sdmut as $data_sdm)
-                                    {
-                                        if($data_sdm->ut <> ""){
-                                            $upahtetap = $data_sdm->ut;
-                                        }else {
-                                            $upahtetap = '0';
-                                        }
-                                    }
-                            }else{
-                                $upahtetap = '0';
-                            }
-                            PayMasterUpah::insert([
-                                    'tahun' => $data_tahun,
-                                    'bulan' => $data_bulan,
-                                    'nopek' => $data->nopeg,
-                                    'aard' => '01',        
-                                    'jmlcc' => '0',        
-                                    'ccl' => '0',        
-                                    'nilai' => $upahtetap,        
-                                    'userid' => $request->userid,        
-                                    ]);
-                            
-                            TblPajak::where('tahun', $data_tahun)
-                                ->where('bulan',$data_bulan)
-                                ->where('nopeg',$data->nopeg)
-                                ->update([
-                                    'upah' => $upahtetap,
-                                ]);
-
-                            $data_sdmut = DB::select("select a.ut from sdm_ut a where a.nopeg='$data->nopeg' and a.mulai=(select max(mulai) from sdm_ut where nopeg='$data->nopeg')");
-                            if(!empty($data_sdmut)){
-                                    foreach($data_sdmut as $data_sdm)
-                                    {
-                                        if($data_sdm->ut <> ""){
-                                            $upahtetap = $data_sdm->ut;
-                                        }else {
-                                            $upahtetap = '0';
-                                        }
-                                    }
-                            }else{
-                                $upahtetap = '0';
-                            }
-
-                            UtBantu::insert([
-                                    'tahun' => $data_tahun,
-                                    'bulan' => $data_bulan,
-                                    'nopek' => $data->nopeg,    
-                                    'nilai' => $upahtetap,        
-                                    ]);
-
-                            //4.UPAH TETAP PENSIUN
-                            $data_pensiun = DB::select("select a.ut from sdm_ut_pensiun a where a.nopeg='$data->nopeg' and a.mulai=(select max(mulai) from sdm_ut_pensiun where nopeg='$data->nopeg')");
-                            if(!empty($data_pensiun)){
-                                foreach($data_pensiun as $data_pen)
-                                {
-                                    if($data->ut <> ""){
-                                        $upahtetappensiun = $data_pen->ut;
-                                    }else{
-                                        $upahtetappensiun = '0';
-                                    }
-                                }
-                            }else {
-                                $upahtetappensiun = '0';
-                            }
-
-                            // 5.FASILITAS CUTI AARD 06
-                            $data_cuti = DB::select("select a.fasilitas,a.fasilitas  from sdm_master_pegawai a where a.nopeg='$data->nopeg'");
-                            if(!empty($data_cuti)){
-                              foreach($data_cuti as $data_cut)
-                              {
-                                $tahun = date('Y', strtotime($data_cut->fasilitas));
-                                $bulan = ltrim(date('m', strtotime($data_cut->fasilitas)),'0');
-                                $sisatahun = $data_tahun - $tahun;
-                                $sisabulan = $data_bulan - $bulan;
-                                  if($sisabulan == '11' and $sisatahun == '0'){
-                                    $fasilitas = '0';
-                                    //   $uangcuti = $upahallin + $tunjabatan + $tunjangandaerah;
-                                    //   $fasilitas = 1.5 * $uangcuti;
-                                  }elseif($sisabulan == '11' and $sisatahun > '0'){
-                                    $fasilitas = '0';
-                                    // $uangcuti = $upahallin + $tunjabatan + $tunjangandaerah;
-                                    // $fasilitas = 1.5 * $uangcuti;
-                                  }elseif($sisabulan == '-1' and $sisatahun > '0'){
-                                    $fasilitas = '0';
-                                    // $uangcuti = $upahallin + $tunjabatan + $tunjangandaerah;
-                                    // $fasilitas = 1.5 * $uangcuti;
-                                  }else{
-                                      $fasilitas = '0';
-                                  }
-                              }
-                          }else {
-                              $fasilitas = '0';
-                          }
-
-                        PayMasterUpah::insert([
-                                'tahun' => $data_tahun,
-                                'bulan' => $data_bulan,
-                                'nopek' => $data->nopeg,
-                                'aard' => '06',        
-                                'jmlcc' => '0',        
-                                'ccl' => '0',        
-                                'nilai' => $fasilitas,        
-                                'userid' => $request->userid,        
-                                ]); 
-
-                        TblPajak::where('tahun', $data_tahun)
-                            ->where('bulan',$data_bulan)
-                            ->where('nopeg',$data->nopeg)
-                            ->update([
-                                'gapok' => $fasilitas,
-                            ]);
-
-                        // 6.CARI NILAI LEMBUR AARD 05
-                        $data_lembur = DB::select("select sum(makanpg+makansg+makanml+transport+lembur) as totlembur from pay_lembur where nopek='$data->nopeg' and bulan='$data_bulan' and tahun='$data_tahun'");                            
-                        if(!empty($data_lembur)){
-                                foreach($data_lembur as $data_sdm)
-                                {
-                                    if($data_sdm->totlembur <> ""){
-                                        $totallembur = $data_sdm->totlembur;
-                                    }else{
-                                        $totallembur = '0';
-                                    }
-                                }
-                        }else{
-                            $totallembur = '0';
-                        }
-                        PayMasterUpah::insert([
-                                'tahun' => $data_tahun,
-                                'bulan' => $data_bulan,
-                                'nopek' => $data->nopeg,
-                                'aard' => '05',        
-                                'jmlcc' => '0',        
-                                'ccl' => '0',        
-                                'nilai' => $totallembur,        
-                                'userid' => $request->userid,        
-                                ]); 
-
-                        // 7.CARI SISA BULAN LALU AARD 07
-                        $data_sisanilai = DB::select("select nopek,aard,jmlcc,ccl,nilai from pay_koreksi where bulan='$data_bulans' and tahun='$data_tahun' and nopek='$data->nopeg' and aard='07'");
-                        if(!empty($data_sisanilai)){
-                            foreach($data_sisanilai as $data_sdm)
-                            {
-                                if($data_sdm->nilai <> ""){
-                                    $fassisa = $data_sdm->nilai;
-                                }else {
-                                    $fassisa = '0';
-                                }
-                            }
-                        }else{
-                            $fassisa = '0';
-                        }
-                        PayMasterUpah::insert([
-                                'tahun' => $data_tahun,
-                                'bulan' => $data_bulan,
-                                'nopek' => $data->nopeg,
-                                'aard' => '07',        
-                                'jmlcc' => '0',        
-                                'ccl' => '0',        
-                                'nilai' => $fassisa,        
-                                'userid' => $request->userid,        
-                                ]); 
-
-                        // 8.CARI NILAI KOREKSI JAMSOSTEK PEKERJA 29
-                        $data_koreksijamsostek = DB::select("select sum(nilai) as nilai from pay_koreksi where bulan='$data_bulan' and tahun='$data_tahun' and nopek='$data->nopeg' and aard='29'");
-                        if(!empty($data_koreksijamsostek)){
-                            foreach($data_koreksijamsostek as $data_korek)
-                            {
-                                if($data_korek->nilai <> ""){
-                                    $iujampek = $data_korek->nilai;
-                                }else {
-                                    $iujampek = '0';
-                                }
-                            }
-                        }else {
-                            $iujampek = '0';
-                        }
-                        PayMasterUpah::insert([
-                                    'tahun' => $data_tahun,
-                                    'bulan' => $data_bulan,
-                                    'nopek' => $data->nopeg,
-                                    'aard' => '29',        
-                                    'jmlcc' => '0',        
-                                    'ccl' => '0',        
-                                    'nilai' => $iujampek,        
-                                    'userid' => $request->userid,        
-                                    ]); 
-                            
-                            // 9.HITUNG IURAN JAMSOSTEK PRIBADI DAN PERUSAHAAN
-                            $data_iuranjamsostek = DB::select("select gapok from sdm_gapok where nopeg = '$data->nopeg' and mulai=(select max(mulai) from sdm_gapok where nopeg='$data->nopeg')");
-                            if(!empty($data_iuranjamsostek)){
-                                foreach($data_iuranjamsostek as $data_iuran)
-                                {
-                                    if($data_iuran->gapok <> ""){
-                                        $gapok = $data_iuran->gapok;
-                                    }else {
-                                        $gapok = '0';
-                                    }
-                                }
-                            }else {
-                                $gapok = '0';
-                            }
-                            PayGapokBulanan::insert([
-                                        'tahun' => $data_tahun,
-                                        'bulan' => $data_bulan,
-                                        'nopek' => $data->nopeg,
-                                        'jumlah' => $gapok,
-                                        ]); 
-
-                            // 10.CARI NILAI PERSENTASE DARI TABEL PAY_TABLE_JAMSOSTEK
-                            $data_persentasejm = DB::select("select pribadi,accident,pensiun,life,manulife from pay_tbl_jamsostek");
-                            if(!empty($data_persentasejm)){
-                                foreach($data_persentasejm as $data_per)
-                                {
-                                    $jsmanualife = ($data_per->life/100);
-                                    if($data->nopeg <> '709685'){
-                                        $niljspribadi = ($data_per->pribadi/100) * $gapok;
-                                        $niljstaccident = ($data_per->accident/100) * $gapok;
-                                        $niljspensiun = ($data_per->pensiun/100) * $gapok;
-                                        $niljslife = ($data_per->life/100) * $gapok;
-                                    }else{
-                                        $niljspribadi = '0';
-                                        $niljstaccident = '0';
-                                        $niljspensiun = '0';
-                                        $niljslife = '0';
-                                    }
-                                }
-                                $niljsmanualife = $jsmanualife * $upahtetap;
-                            }
-                            PayMasterUpah::insert([
-                                    'tahun' => $data_tahun,
-                                    'bulan' => $data_bulan,
-                                    'nopek' => $data->nopeg,
-                                    'aard' => '09',        
-                                    'jmlcc' => '0',        
-                                    'ccl' => '0',        
-                                    'nilai' => $niljspribadi * -1,        
-                                    'userid' => $request->userid,        
-                                    ]); 
-
-                            PayMasterBebanprshn::insert([
-                                    'tahun' => $data_tahun,
-                                    'bulan' => $data_bulan,
-                                    'nopek' => $data->nopeg,
-                                    'aard' => '10',        
-                                    'lastamount' => '0',        
-                                    'curramount' => $niljstaccident,       
-                                    'userid' => $request->userid,        
-                                    ]);
-                            PayMasterBebanprshn::insert([
-                                    'tahun' => $data_tahun,
-                                    'bulan' => $data_bulan,
-                                    'nopek' => $data->nopeg,
-                                    'aard' => '11',        
-                                    'lastamount' => '0',        
-                                    'curramount' => $niljspensiun,       
-                                    'userid' => $request->userid,        
-                                    ]);
-
-                            PayMasterBebanprshn::insert([
-                                'tahun' => $data_tahun,
-                                'bulan' => $data_bulan,
-                                'nopek' => $data->nopeg,
-                                'aard' => '12',        
-                                'lastamount' => '0',        
-                                'curramount' => $niljslife,       
-                                'userid' => $request->userid,        
-                                ]);
-                            PayMasterBebanprshn::insert([
-                                'tahun' => $data_tahun,
-                                'bulan' => $data_bulan,
-                                'nopek' => $data->nopeg,
-                                'aard' => '13',        
-                                'lastamount' => '0',        
-                                'curramount' => $niljsmanualife,       
-                                'userid' => $request->userid,        
-                                ]);
-
-                            // 11.HITUNG IURAN DANA PENSIUN BEBAN PEKERJA DAN PERUSAHAAN
-                            $data_iurandanapensiun = DB::select("select pribadi,perusahaan,perusahaan3 from pay_tbl_danapensiun");
-                            foreach($data_iurandanapensiun as $data_iuran)
-                            {
-                                $dapenpribadi = $data_iuran->pribadi;
-                                $dapenperusahaan = $data_iuran->perusahaan;
-                                $dapenperusahaan3 = $data_iuran->perusahaan3;
-                            }
-                            if($data->nopeg <> '709685'){
-                                // HITUNG IURAN DANA PENSIUN PEKERJA/PRIBADI 
-                                $nildapenpribadi = ($dapenpribadi/100) * $upahtetappensiun;
-                                // HITUNG IURAN DANA PENSIUN BEBAN PERUSAHAAN
-                                $nildapenperusahaan = ($dapenperusahaan/100) * $upahtetappensiun;
-                                if($data->nopeg == '709669'){
-                                    $nildapenbni = ($dapenperusahaan3/100) * $upahtetap;
-                                    PayMasterBebanprshn::insert([
-                                        'tahun' => $data_tahun,
-                                        'bulan' => $data_bulan,
-                                        'nopek' => $data->nopeg,
-                                        'aard' => '46',        
-                                        'lastamount' => '0',        
-                                        'curramount' => $nildapenbni,       
-                                        'userid' => $request->userid,        
-                                        ]);
-                                }elseif($data->nopeg == '694287'){
-                                    $bazma = (2.5/100)*($upahallin - ($nildapenpribadi+$niljspribadi));
-                                    PayMasterUpah::insert([
-                                            'tahun' => $data_tahun,
-                                            'bulan' => $data_bulan,
-                                            'nopek' => $data->nopeg,
-                                            'aard' => '36',        
-                                            'jmlcc' => '0',        
-                                            'ccl' => '0',        
-                                            'nilai' => $bazma * -1,        
-                                            'userid' => $request->userid,        
-                                            ]); 
-                                }else{
-                                    PayMasterUpah::insert([
-                                            'tahun' => $data_tahun,
-                                            'bulan' => $data_bulan,
-                                            'nopek' => $data->nopeg,
-                                            'aard' => '36',        
-                                            'jmlcc' => '0',        
-                                            'ccl' => '0',        
-                                            'nilai' => '0',        
-                                            'userid' => $request->userid,        
-                                            ]); 
-                                }
-                            }else{
-                                $nildapenpribadi = '0';
-                                $nildapenperusahaan = '0';
-                            }
-
-                            PayMasterUpah::insert([
-                                    'tahun' => $data_tahun,
-                                    'bulan' => $data_bulan,
-                                    'nopek' => $data->nopeg,
-                                    'aard' => '14',        
-                                    'jmlcc' => '0',        
-                                    'ccl' => '0',        
-                                    'nilai' => $nildapenpribadi * -1,        
-                                    'userid' => $request->userid,        
-                                    ]); 
-                            PayMasterUpah::insert([
-                                    'tahun' => $data_tahun,
-                                    'bulan' => $data_bulan,
-                                    'nopek' => $data->nopeg,
-                                    'aard' => '15',        
-                                    'jmlcc' => '0',        
-                                    'ccl' => '0',        
-                                    'nilai' => $nildapenperusahaan,        
-                                    'userid' => $request->userid,        
-                                    ]); 
-                            TblPajak::where('tahun', $data_tahun)
-                                ->where('bulan',$data_bulan)
-                                ->where('nopeg',$data->nopeg)
-                                ->update([
-                                    'dapen_pek' => $nildapenpribadi,
-                                ]);
-
-                            // 11.HITUNG TABUNGAN AARD 16
-                            $data_tabungan = DB::select("select perusahaan from pay_tbl_tabungan");
-                            if(!empty($data_tabungan)){
-                                foreach($data_tabungan as $data_tab)
-                                {
-                                    if($data->nopeg <> '709685'){
-                                        $iuranwajib = ($data_tab->perusahaan/100) * $upahtetap;
-                                    }else{
-                                        $iuranwajib = '0';
-                                    }
-                                }
-                            }else {
-                                $iuranwajib = '0';
-                            }
-                            PayMasterBebanprshn::insert([
-                                        'tahun' => $data_tahun,
-                                        'bulan' => $data_bulan,
-                                        'nopek' => $data->nopeg,
-                                        'aard' => '16',        
-                                        'lastamount' => '0',        
-                                        'curramount' => $iuranwajib,       
-                                        'userid' => $request->userid,        
-                                        ]);
-
-                            // 12.CARI NILAI POTONGAN PKPP AARD 17 DAN HUTANG PKPP AARD 20
-                            $data_nilaipotongan = DB::select("select id_pinjaman,jml_pinjaman as jumlah,tenor as lamanya,round(angsuran,0) as angsuran from pay_mtrpkpp where nopek='$data->nopeg' and cair ='Y' and lunas<>'Y'");
-                            if(!empty($data_nilaipotongan)){
-                                foreach($data_nilaipotongan as $data_nilai)
-                                {
-                                    $idpinjaman = $data_nilai->id_pinjaman;
-                                    $totalpinjaman = $data_nilai->jumlah;
-                                    $lamapinjama = $data_nilai->lamanya;
-                                    $jumlahangsuran = $data_nila->angsuran * -1;
-                                }
-                                $data_potonganpkpp2 = DB::select("select round(sum(pokok)) as totalpokok,count(*) as cclke from pay_skdpkpp where nopek='$data->nopeg' and tahun <= '$data_tahun' and bulan <= '$data_bulans' and id_pinjaman='$idpinjaman'");
-                                foreach($data_potonganpkpp2 as $data_potong)
-                                {
-                                    $totalpokok = $data_potong->totalpokok;
-                                    $cclke = $data_potong->cclke;
-                                    $sisacicilan = $totalpinjaman - $totalpokok;
-                                }
-                                if($cclke == '0'){
-                                    $jumlahangsuran = '0';
-                                }
-                            PayMasterHutang::insert([
-                                        'tahun' => $data_tahun,
-                                        'bulan' => $data_bulan,
-                                        'nopek' => $data->nopeg,
-                                        'aard' => '20',        
-                                        'lastamount' => '0',        
-                                        'curramount' => $sisacicilan,       
-                                        'userid' => $request->userid,        
-                                        ]);
-                            PayMasterUpah::insert([
-                                    'tahun' => $data_tahun,
-                                    'bulan' => $data_bulan,
-                                    'nopek' => $data->nopeg,
-                                    'aard' => '17',        
-                                    'jmlcc' => $lamapinjama,        
-                                    'ccl' => $cclke,        
-                                    'nilai' => $jumlahangsuran,        
-                                    'userid' => $request->userid,        
-                                    ]); 
-                            }else {
-                                $lamapinjama = '0';
-                                $cclke = '0';
-                                $jumlahangsuran = '0';
-                            PayMasterUpah::insert([
-                                    'tahun' => $data_tahun,
-                                    'bulan' => $data_bulan,
-                                    'nopek' => $data->nopeg,
-                                    'aard' => '17',        
-                                    'jmlcc' => $lamapinjama,        
-                                    'ccl' => $cclke,        
-                                    'nilai' => $jumlahangsuran,        
-                                    'userid' => $request->userid,        
-                                    ]);
-                            }
-
-                            // 13.CARI NILAI POTONGAN PANJAR PESANGON AARD 18 DAN HUTANG PPRP AARD 21
-                            $data_nilaipotonganpanjar = DB::select("select nopek,aard,jmlcc,ccl,nilai from pay_potongan where bulan='$data_bulan' and tahun='$data_tahun' and nopek='$data->nopeg' and aard='18'");
-                            if(!empty($data_nilaipotonganpanjar)){
-                                foreach($data_nilaipotonganpanjar as $data_nilai)
-                                {
-                                    $jmlccpotongpprp = $data_nilai->jmlcc;
-                                    $cclpotongpprp = $data_nilai->ccl;
-                                    if($data_nilai->bilai < 0){
-                                        $nilaipotongpprp = $data_nilai->nilai * -1;
-                                    }else{
-                                        $nilaipotongpprp = $data_nila->nilai;
-                                    }
-                                }
-                                $data_carihutangpprp = DB::select("select tahun,bulan,aard,lastamount,curramount from pay_master_hutang where (tahun||bulan)=(select max(tahun||bulan) from pay_master_hutang where nopek='$data->nopeg' and aard='21') and nopek='$data->nopeg' and aard='21'");
-                                foreach($data_carihutangpprp as $data_cari)
-                                {
-                                    $tahunhutangpprp = $data_cari->tahun;
-                                    $bulanhutangpprp = $data_cari->bulan;
-                                    $aardhutangpprp = $data_cari->aard;
-                                    $lasthutangpprp = $data_cari->lastamount;
-                                    $currhutangpprp = $data_cari->curramount;
-                                    $lasthutangpprp1 = $currhutangpprp;
-                                    $currhutangpprp1 = ($currhutangpprp - $nilaipotongpprp);
-                                }
-                            PayMasterHutang::insert([
-                                        'tahun' => $data_tahun,
-                                        'bulan' => $data_bulan,
-                                        'nopek' => $data->nopeg,
-                                        'aard' => '21',        
-                                        'lastamount' => $lasthutangpprp1,        
-                                        'curramount' => $currhutangpprp1,       
-                                        'userid' => $request->userid,        
-                                        ]);
-                            PayMasterUpah::insert([
-                                    'tahun' => $data_tahun,
-                                    'bulan' => $data_bulan,
-                                    'nopek' => $data->nopeg,
-                                    'aard' => '18',        
-                                    'jmlcc' => $jmlccpotongpprp,        
-                                    'ccl' => $cclpotongpprp,        
-                                    'nilai' => $jumlahangsuran,        
-                                    'userid' => $request->userid,        
-                                    ]); 
-                            }else {
-                                $jmlccpotongpprp = '0';
-                                $cclpotongpprp = '0';
-                                $jumlahangsuran = '0';
-                            PayMasterUpah::insert([
-                                    'tahun' => $data_tahun,
-                                    'bulan' => $data_bulan,
-                                    'nopek' => $data->nopeg,
-                                    'aard' => '18',        
-                                    'jmlcc' => $jmlccpotongpprp,        
-                                    'ccl' => $cclpotongpprp,        
-                                    'nilai' => $jumlahangsuran,        
-                                    'userid' => $request->userid,        
-                                    ]);
-                            }
-
-                            // 14.POTONGAN KOPERASI AARD 28
-                            $data_potongankoperasi = DB::select("select nopek,aard,jmlcc,ccl,nilai from pay_potongan where bulan='$data_bulan' and tahun='$data_tahun' and nopek='$data->nopeg' and aard='28'");
-                            if(!empty($data_potongankoperasi)){
-                                foreach($data_potongankoperasi as $data_potongankop)
-                                {
-                                    $jmlccpotongkoperasi = $data_potongankop->jmlcc;
-                                    $cclpotongkoperasi = $data_potongankop->ccl;
-                                    if($data_potongankop->nilai < 0){
-                                        $nilaipotongkoperasi = $data_potongankop->nilai;
-                                    }else{
-                                        $nilaipotongkoperasi = $data_potongankop->nilai * -1;
-                                    }
-                                }
-                            PayMasterUpah::insert([
-                                    'tahun' => $data_tahun,
-                                    'bulan' => $data_bulan,
-                                    'nopek' => $data->nopeg,
-                                    'aard' => '28',        
-                                    'jmlcc' => $jmlccpotongkoperasi,        
-                                    'ccl' => $cclpotongkoperasi,        
-                                    'nilai' => $nilaipotongkoperasi,        
-                                    'userid' => $request->userid,        
-                                    ]);
-                            }else {
-                                $jmlccpotongkoperasi = '0';
-                                $cclpotongkoperasi = '0';
-                                $nilaipotongkoperasi = '0';
-                            PayMasterUpah::insert([
-                                    'tahun' => $data_tahun,
-                                    'bulan' => $data_bulan,
-                                    'nopek' => $data->nopeg,
-                                    'aard' => '28',        
-                                    'jmlcc' => $jmlccpotongkoperasi,        
-                                    'ccl' => $cclpotongkoperasi,        
-                                    'nilai' => $nilaipotongkoperasi,        
-                                    'userid' => $request->userid,        
-                                    ]);
-                            }
-
-                            // 15.POTONGAN SUKA DUKA AARD 44
-                            $data_potongansukaduka = DB::select("select nopek,aard,jmlcc,ccl,nilai from pay_potongan where bulan='$data_bulan' and tahun='$data_tahun' and nopek='$data->nopeg' and aard='44'");
-                            if(!empty($data_potongansukaduka)){
-                                foreach($data_potongansukaduka as $data_potongansuka)
-                                {
-                                    $jmlccpotongsukaduka = $data_potongansuka->jmlcc;
-                                    $cclpotongsukaduka = $data_potongansuka->ccl;
-                                    if($data_potongansuka->nilai < 0){
-                                        $nilaipotongsukaduka = $data_potongansuka->nilai;
-                                    }else {
-                                        $nilaipotongsukaduka = $data_potongansuka->nilai * -1;
-                                    }
-                            PayMasterUpah::insert([
-                                    'tahun' => $data_tahun,
-                                    'bulan' => $data_bulan,
-                                    'nopek' => $data->nopeg,
-                                    'aard' => '44',        
-                                    'jmlcc' => $jmlccpotongsukaduka,        
-                                    'ccl' => $cclpotongsukaduka,        
-                                    'nilai' => $nilaipotongsukaduka,        
-                                    'userid' => $request->userid,        
-                                    ]);
-                                }
-                            }else {
-                                $jmlccpotongsukaduka = '0';
-                                $cclpotongsukaduka = '0';
-                                $nilaipotongsukaduka = '0';
-                            PayMasterUpah::insert([
-                                    'tahun' => $data_tahun,
-                                    'bulan' => $data_bulan,
-                                    'nopek' => $data->nopeg,
-                                    'aard' => '44',        
-                                    'jmlcc' => $jmlccpotongsukaduka,        
-                                    'ccl' => $cclpotongsukaduka,        
-                                    'nilai' => $nilaipotongsukaduka,        
-                                    'userid' => $request->userid,        
-                                    ]);
-                            }
-
-                            // 16.HITUNG TOTAL GAJI YANG DI DAPAT
-                            $data_hitungtotalgaji = DB::select("select sum(nilai) as gajiasli,(sum(nilai)-round(sum(nilai),-3)) as pembulatan1,round(sum(nilai),-3) as hasil,(1000+(sum(nilai)-round(sum(nilai),-3))) as pembulatan2  from pay_master_upah where bulan='$data_bulan' and tahun='$data_tahun' and nopek='$data->nopeg'");
-                            if(!empty($data_hitungtotalgaji)){
-                                foreach($data_hitungtotalgaji as $data_hitungtotal)
-                                {
-                                    if($data_hitungtotal->pembulatan1 < 0){
-                                        $sisagaji = $data_hitungtotal->pembulatan2;
-                                    }else {
-                                        $sisagaji = $data_hitungtotal->pembulatan1;
-                                    }
-                                }
-                            PayMasterUpah::insert([
-                                    'tahun' => $data_tahun,
-                                    'bulan' => $data_bulan,
-                                    'nopek' => $data->nopeg,
-                                    'aard' => '23',        
-                                    'jmlcc' => '0',        
-                                    'ccl' => '0',        
-                                    'nilai' => $sisagaji * -1,        
-                                    'userid' => $request->userid,        
-                                    ]);
-                            }
-
-                            $bulan2 = $data_bulan + 1;
-                            if($bulan2 > 12){
-                                $data_bulan2 = 1;
-                                $data_tahun2 = $data_tahun + 1;
-                            }else{
-                                $data_bulan2 =$bulan2;
-                                $data_tahun2 = $data_tahun;
+                                $data_bulan2km =$bulan2km;
+                                $data_tahun2km = $data_tahun;
                             }
                             PayKoreksi::insert([
-                                            'tahun' => $data_tahun2,
-                                            'bulan' => $data_bulan2,
-                                            'nopek' => $data->nopeg,
-                                            'aard' => '07',        
-                                            'jmlcc' => '0',        
-                                            'ccl' => '0',        
-                                            'nilai' => $sisagaji,        
-                                            'userid' => $request->userid,        
-                                            ]); 
+                                                'tahun' => $data_tahun2km,
+                                                'bulan' => $data_bulan2km,
+                                                'nopek' => $datakm->nopeg,
+                                                'aard' => '07',        
+                                                'jmlcc' => '0',        
+                                                'ccl' => '0',        
+                                                'nilai' => $sisagajikm,        
+                                                'userid' => $request->userid,        
+                                                ]); 
 
-                            // 17.CARI NILAI YANG KENA PAJAK (BRUTO)
-                            $data_kenapajak = DB::select("select sum(a.nilai) as nilai1 from pay_master_upah a,pay_tbl_aard b where a.tahun='$data_tahun' and a.bulan='$data_bulan' and a.nopek='$data->nopeg' and a.aard=b.kode and b.kenapajak='Y'");
-                            if(!empty($data_kenapajak)){
-                                foreach($data_kenapajak as $data_kena)
-                                {
-                                    $nilaikenapajak1 = $data_kena->nilai1;
+                            // 3.HITUNG PAJAK PPH21 CARI NILAI YANG KENA PAJAK (BRUTO)
+                            $kenapajakkm = DB::select("select sum(a.nilai) as nilai1 from pay_master_upah a,pay_tbl_aard b where a.tahun='$data_tahun' and a.bulan='$data_bulan' and a.nopek='$datakm->nopeg' and a.aard=b.kode and b.kenapajak='Y'");
+                            foreach($kenapajakkm as $kenapkm)
+                            {
+                                if($kenapkm->nilai1 <> ""){
+                                    $nilaikenapajakkm = $kenapkm->nilai1;
+                                }else{
+                                    $nilaikenapajakkm = '0';
                                 }
-                            }else {
-                                $nilaikenapajak1 = '0';
                             }
-                            $totkenapajak = (($nilaikenapajak1 + $fasilitas)*12);
-
-                            // 18. CARI NILAI PENGURANG HITUNG BIAYA JABATAN
-                            $biayajabatan2 = ((5/100) * $totkenapajak);
-                            if($biayajabatan2 > 6000000){
-                                $biayajabatan = 6000000;  
-                            }else{
-                                $biayajabatan = $biayajabatan2;
-                            }                              
-                            
-                            $neto1tahun =  $totkenapajak - $biayajabatan;
-                             TblPajak::where('tahun', $data_tahun)
-                                        ->where('bulan',$data_bulan)
-                                        ->where('nopeg',$data->nopeg)
-                                        ->update([
-                                            'bjabatan' => $biayajabatan,
-                                        ]);
-
-                            // 19.CARI NILAI TIDAK KENA PAJAK
-                            $data_carinilairdkkenapajak = DB::select("select a.kodekeluarga,b.nilai from sdm_master_pegawai a,pay_tbl_ptkp b where a.kodekeluarga=b.kdkel and a.nopeg='$data->nopeg'");
-                            if(!empty($data_carinilairdkkenapajak)){
-                                foreach($data_carinilairdkkenapajak as $data_carinilai)
-                                {
-                                    $nilaiptkp1 = $data_carinilai->nilai;
-                                }
-                            }else {
-                                    $nilaiptkp1 = '0';
-                            }
-
-                            // 20.PENGHASILAN KENA PAJAK SETAHUN	
-                            $nilaikenapajaka = $neto1tahun - $nilaiptkp1;
+                            $nilaikenapajakkma = $nilaikenapajakkm;
                             TblPajak::where('tahun', $data_tahun)
                                             ->where('bulan',$data_bulan)
-                                            ->where('nopeg',$data->nopeg)
+                                            ->where('nopeg',$datakm->nopeg)
                                             ->update([
-                                                'ptkp' => $nilaiptkp1,
-                                                'pkp' => $nilaikenapajaka,
+                                                'pkp' => $nilaikenapajakakm,
                                             ]);
 
-                            // 20.HITUNG PAJAK PENGHASILAN TERUTANG
-                            $nilai2 = 0;
-                            $nilai1 = 0;
-                            $tunjangan = 0;
-                            $pajakbulan=1;
-                            $nilaikenapajak = $nilaikenapajaka;
-                            $sisapokok = $nilaikenapajak;
-                            $data_sdmprogresif = DB::select("select * from sdm_tbl_progressif order by awal asc");
-                            // SdmTblProgressif::orderBy('awal','asc');
-                            // $pph21ok = 0;
-                            foreach($data_sdmprogresif as $data_prog)
-                            {
-                                $awal = $data_prog->awal;
-                                $akhir = $data_prog->akhir;
-                                $persen = $data_prog->prosen;
-                                $prosen = $persen/100;
-                                $range = $akhir - $awal;
-                                if($sisapokok > 0){
-                                    $sisapokok1 = $sisapokok;
-                                    if($sisapokok1 > 0 and $sisapokok1 < $range){
-                                        $pph21r = $sisapokok1 * $prosen;
-                                    }elseif($sisapokok1 > 0 and $sisapokok1 >= $range ){
-                                        $pph21r = $range * $prosen;
-                                    }else{
-                                        $pph21r = 0;
-                                    }
-                                }else {
-                                    $pph21r = 0;
-                                }
-                                $pph21ok =  $pph21r;
-                                $pajakbulan = ($pph21ok/12);
-                            }
+                            $tunjpajakkm = ((5/100) * $nilaikenapajakakm);
+                            $potpajakkm = ((30/100) * ($nilaikenapajakakm + $tunjpajakkm));
                             PayMasterUpah::insert([
                                         'tahun' => $data_tahun,
                                         'bulan' => $data_bulan,
-                                        'nopek' => $data->nopeg,
-                                        'aard' => '26',        
-                                        'jmlcc' => '0',        
-                                        'ccl' => '0',        
-                                        'nilai' => $pajakbulan * -1,        
-                                        'userid' => $request->userid,        
-                                        ]); 
-                            PayMasterUpah::insert([
-                                        'tahun' => $data_tahun,
-                                        'bulan' => $data_bulan,
-                                        'nopek' => $data->nopeg,
+                                        'nopek' => $datakm->nopeg,
                                         'aard' => '27',        
                                         'jmlcc' => '0',        
                                         'ccl' => '0',        
-                                        'nilai' => $pajakbulan,        
+                                        'nilai' => $tunjpajakkm,        
                                         'userid' => $request->userid,        
                                         ]); 
-                            TblPajak::where('tahun', $data_tahun)
+                            PayMasterUpah::insert([
+                                        'tahun' => $data_tahun,
+                                        'bulan' => $data_bulan,
+                                        'nopek' => $datakm->nopeg,
+                                        'aard' => '26',        
+                                        'jmlcc' => '0',        
+                                        'ccl' => '0',        
+                                        'nilai' => $potpajakkm,        
+                                        'userid' => $request->userid,        
+                                        ]); 
+                            $data_caripajak1km = DB::select("select round(nilai,-2) as pajaknya from pay_master_upah where tahun='$data_tahun' and bulan='$data_bulan' and nopek='$datakm->nopeg' and aard='27'");
+                                    foreach($data_caripajak1km as $data_pajak1km)
+                                    {
+                                        $tunjpakm = $data_pajak1km->pajaknya;
+                                    }
+                                    
+                            $data_caripajak2km = DB::select("select round(nilai,-2) as pajaknya from pay_master_upah where tahun='$data_tahun' and bulan='$data_bulan' and nopek='$datakm->nopeg' and aard='26'");
+                                    foreach($data_caripajak2km as $data_pajak2km)
+                                    {
+                                        $potpakm = $data_pajak2km->pajaknya;
+                                    }
+
+                                    PayMasterUpah::where('tahun', $data_tahun)
                                             ->where('bulan',$data_bulan)
-                                            ->where('nopeg',$data->nopeg)
+                                            ->where('nopek',$datakm->nopeg)
+                                            ->where('aard','27')
                                             ->update([
-                                                'pajak_setor' => $pajakbulan,
+                                                'nilai' => $tunjpakm,
+                                            ]);
+                                    PayMasterUpah::where('tahun', $data_tahun)
+                                            ->where('bulan',$data_bulan)
+                                            ->where('nopek',$datakm->nopeg)
+                                            ->where('aard','26')
+                                            ->update([
+                                                'nilai' => $potpakm * -1,
+                                            ]);
+                                    TblPajak::where('tahun', $data_tahun)
+                                            ->where('bulan',$data_bulan)
+                                            ->where('nopeg',$datakm->nopeg)
+                                            ->update([
+                                                'pajak_setor' => $tunjpakm,
+                                            ]);
+
+                        }
+
+                            // PekerjaBaru()
+                            $data_pegawai_kontrakn = SdmMasterPegawai::where('status','N')->orderBy('nopeg', 'asc')->get();
+                            foreach($data_pegawai_kontrakn as $datapj)
+                            {
+                                $status1pj = $datapj->status;
+                                $kodekelpj = $datapj->kodekeluarga;
+                                $tglaktifpj = date("j",strtotime($datapj->tglaktifdns));
+                                // 1.CARI NILAI UPAH ALL IN AARD 02
+                                $data_sdmallinpj = DB::select("select nilai from sdm_allin where nopek='$datapj->nopeg'");
+                                if(!empty($data_sdmallinpj)){
+                                    foreach($data_sdmallinpj as $data_sdmpj)
+                                            {
+                                                if($data_sdmpj->nilai <> ""){
+                                                    $upahmentahpj = $data_sdmpj->nilai;
+                                                    $upahallinpj = ((30 - $tglaktifpj)/30) * $upahmentahpj;
+                                                }else {
+                                                    $upahallinpj ='0';
+                                                }
+                                            }
+                                    }else {
+                                        $upahallinpj ='0';
+                                    } 
+                                PayMasterUpah::insert([
+                                        'tahun' => $data_tahun,
+                                        'bulan' => $data_bulan,
+                                        'nopek' => $datapj->nopeg,
+                                        'aard' => '02',        
+                                        'jmlcc' => '0',        
+                                        'ccl' => '0',        
+                                        'nilai' => $upahallinpj,        
+                                        'userid' => $request->userid,        
+                                        ]);
+
+                                // 2.CARI TUNJANGAN JABATAN JIKA ADA
+                                $data_tunjanganjabatanpj = DB::select("select a.nopeg,a.kdbag,a.kdjab,b.goljob,b.tunjangan from sdm_jabatan a,sdm_tbl_kdjab b where a.nopeg='$datapj->nopeg' and a.kdbag=b.kdbag and a.kdjab=b.kdjab and a.mulai=(select max(mulai) from sdm_jabatan where nopeg='$datapj->nopeg')");
+                                if(!empty($data_tunjanganjabatanpj)){
+                                    foreach($data_tunjanganjabatanpj as $data_tunjangpj)
+                                    {
+                                        if($data_tunjangpj->tunjangan <> ""){
+                                            if($data_tunjangpj->goljob <= '03'){
+                                                $tunjangpj = $data_tunjangpj->tunjangan;
+                                                $tunjjabatanpj = ((30 - $tglaktifpj)/30) * $tunjangpj;
+                                            }else {
+                                                $tunjjabatanpj = '0';
+                                            }
+                                        }else {
+                                            $tunjjabatanpj = '0';
+                                        }
+                                    }
+                                }else{
+                                    $tunjjabatanpj = '0';
+                                }
+                                PayMasterUpah::insert([
+                                        'tahun' => $data_tahun,
+                                        'bulan' => $data_bulan,
+                                        'nopek' => $datapj->nopeg,
+                                        'aard' => '03',        
+                                        'jmlcc' => '0',        
+                                        'ccl' => '0',        
+                                        'nilai' => $tunjjabatanpj,        
+                                        'userid' => $request->userid,        
+                                        ]);
+
+                                // 3.CARI NILAI LEMBUR AARD 05
+                                $data_carinilailemburpj = DB::select("select sum(makanpg+makansg+makanml+transport+lembur) as totlembur from pay_lembur where nopek='$datapj->nopeg' and bulan='$data_bulan' and tahun='$data_tahun'");
+                                if(!empty($data_carinilailemburpj)){
+                                    foreach($data_carinilailemburpj as $data_carilemburpj)
+                                    {
+                                        if($data_carilemburpj->totlembur <> ""){
+                                            $totallemburpj = $data_carilemburpj->totlembur;
+                                        }else {
+                                            $totallemburpj = '0';
+                                        }
+                                    }
+                                }else {
+                                    $totallemburpj = '0';
+                                }
+                                PayMasterUpah::insert([
+                                        'tahun' => $data_tahun,
+                                        'bulan' => $data_bulan,
+                                        'nopek' => $datapj->nopeg,
+                                        'aard' => '05',        
+                                        'jmlcc' => '0',        
+                                        'ccl' => '0',        
+                                        'nilai' => $totallemburpj,        
+                                        'userid' => $request->userid,        
+                                        ]);
+
+                                // 4.CARI NILAI SISA BULAN LALU AARD 07
+                                $data_sisanilaipj = DB::select("select nopek,aard,jmlcc,ccl,round(nilai) as nilai from pay_koreksi where bulan='$data_bulans' and tahun='$data_tahun' and nopek='$datapj->nopeg' and aard='07'");
+                                if(!empty($data_sisanilaipj)){
+                                        foreach($data_sisanilaipj as $data_sdmpj)
+                                        {
+                                            if($data_sdmpj->nilai <> ""){
+                                                $fassisapj = $data_sdmpj->nilai;
+                                            }else{
+                                                $fassisapj = '0';
+                                            }
+                                        }
+                                }else{
+                                    $fassisapj = '0';
+                                }
+                                PayMasterUpah::insert([
+                                        'tahun' => $data_tahun,
+                                        'bulan' => $data_bulan,
+                                        'nopek' => $datapj->nopeg,
+                                        'aard' => '07',        
+                                        'jmlcc' => '0',        
+                                        'ccl' => '0',        
+                                        'nilai' => $fassisapj,        
+                                        'userid' => $request->userid,        
+                                        ]); 
+
+                                // 5.CARI NILAI KOREKSI LAIN AARD 08
+                                $data_carinilaikoreksipj = DB::select("select sum(nilai) as nilai from pay_koreksi where bulan='$data_bulan' and tahun='$data_tahun' and nopek='$datapj->nopeg' and aard='08'");
+                                    if(!empty($data_carinilaikoreksipj)){
+                                        foreach($data_carinilaikoreksipj as $data_carinilaipj)
+                                        {
+                                            if($data_carinilaipj->nilai <> ""){
+                                                $faslainpj = $data_carinilaipj->nilai;
+                                            }else{
+                                                $faslainpj = '0';
+                                            }
+                                        }
+                                    }else {
+                                        $faslainpj = '0';
+                                    }
+
+                                    PayMasterUpah::insert([
+                                            'tahun' => $data_tahun,
+                                            'bulan' => $data_bulan,
+                                            'nopek' => $datapj->nopeg,
+                                            'aard' => '08',        
+                                            'jmlcc' => '0',        
+                                            'ccl' => '0',        
+                                            'nilai' => $faslainpj,        
+                                            'userid' => $request->userid,        
                                             ]); 
-                    }
 
+                                // 6.CARI NILAI POTONGAN LAIN AARD 19 DAN HUTANG LAIN AARD 22
+                                $data_nilaipotonganaard19pj = DB::select("select nopek,aard,jmlcc,ccl,nilai from pay_potongan where bulan='$data_bulan' and tahun='$data_tahun' and nopek='$datapj->nopeg' and aard='19'");
+                                if(!empty($data_nilaipotonganaard19pj)){
+                                    foreach($data_nilaipotonganaard19pj as $data_nilaiaardpj)
+                                    {
+                                        $jmlccpotonglainpj = $data_nilaiaardpj->jmlcc;
+                                        $cclpotonglainpj = $data_nilaiaardpj->ccl;
+                                        if($data_nilaiaardpj->nilai < 0){
+                                            $nilaipotonglainpj = $data_nilaiaardpj->nilai;
+                                        }else {
+                                            $nilaipotonglainpj = $data_nilaiaardpj->nilai * -1;
+                                        }
+                                        $data_carihutanglainpj = DB::select("select tahun,bulan,aard,lastamount,curramount from pay_master_hutang where (tahun||bulan)=(select max(tahun||bulan) from pay_master_hutang where nopek='$datapj->nopeg' and aard='22') and nopek='$datapj->nopeg' and aard='22'");
+                                        foreach($data_carihutanglainpj as $data_carpj)
+                                        {
+                                            $tahunhutanglainpj = $data_carpj->tahun;
+                                            $bulanhutanglainpj = $data_carpj->bulan;
+                                            $aardhutanglainpj =   $data_carpj->aard;
+                                            $lasthutanglainpj = $data_carpj->lastamount;
+                                            $currhutanglainpj = $data_carpj->curramount;
+                                            
+                                            $lasthutanglain1pj = $currhutanglainpj; 
+                                            $currhutanglain1pj = ($currhutanglainpj + $nilaipotonglainpj);
+                                            PayMasterHutang::insert([
+                                                        'tahun' => $data_tahun,
+                                                        'bulan' => $data_bulan,
+                                                        'nopek' => $datapj->nopeg,
+                                                        'aard' => '22',        
+                                                        'lastamount' => $lasthutanglain1pj,        
+                                                        'curramount' => $currhutanglain1pj,       
+                                                        'userid' => $request->userid,        
+                                                        ]);
+                                            PayMasterUpah::insert([
+                                                    'tahun' => $data_tahun,
+                                                    'bulan' => $data_bulan,
+                                                    'nopek' => $datapj->nopeg,
+                                                    'aard' => '19',        
+                                                    'jmlcc' => $jmlccpotonglainpj,        
+                                                    'ccl' => $cclpotonglainpj,        
+                                                    'nilai' => $nilaipotonglainpj,        
+                                                    'userid' => $request->userid,        
+                                                    ]); 
+                                        }
+                                    }
+                                }else {
+                                    $jmlccpotonglainpj = '0';
+                                    $cclpotonglainpj = '0';
+                                    $nilaipotonglainpj = '0';
+                                    PayMasterUpah::insert([
+                                                    'tahun' => $data_tahun,
+                                                    'bulan' => $data_bulan,
+                                                    'nopek' => $datapj->nopeg,
+                                                    'aard' => '19',        
+                                                    'jmlcc' => $jmlccpotonglainpj,        
+                                                    'ccl' => $cclpotonglainpj,        
+                                                    'nilai' => $nilaipotonglainpj,        
+                                                    'userid' => $request->userid,        
+                                                    ]); 
+                                }
 
-                        // Pengurus()
-                        $data_pegawai_kontrak = SdmMasterPegawai::where('status','U')->orderBy('nopeg', 'asc')->get();
-                        foreach($data_pegawai_kontrak as $data)
+                                // 7.HITUNG TOTAL GAJI YANG DI DAPAT 
+                                $totalgajipj = DB::select("select sum(nilai) as gajiasli,(sum(nilai)-round(sum(nilai),-3)) as pembulatan1,round(sum(nilai),-3) as hasil,(1000+(sum(nilai)-round(sum(nilai),-3))) as pembulatan2  from pay_master_upah where bulan='$data_bulan' and tahun='$data_tahun' and nopek='$datapj->nopeg'");
+                                    if(!empty($totalgajipj)){
+                                        foreach($totalgajipj as $totalpj)
+                                        {
+                                            if($totalpj->pembulatan1 < 0){
+                                                $sisagajipj = $totalpj->pembulatan2;
+                                            }else{
+                                                $sisagajipj = $totalpj->pembulatan1;
+                                            }
+                                        }
+                                    }else{
+                                        $sisagajipj = '0';
+                                    }
+                                    PayMasterUpah::insert([
+                                                'tahun' => $data_tahun,
+                                                'bulan' => $data_bulan,
+                                                'nopek' => $datapj->nopeg,
+                                                'aard' => '23',        
+                                                'jmlcc' => '0',        
+                                                'ccl' => '0',        
+                                                'nilai' => $sisagajipj * -1,        
+                                                'userid' => $request->userid,        
+                                                ]); 
+
+                                
+                                    $bulan2pj = $data_bulan + 1;
+                                    if($bulan2pj >12){
+                                        $data_bulan2pj = 1;
+                                        $data_tahun2pj = $data_tahun + 1;
+                                    }else{
+                                        $data_bulan2pj =$bulan2pj;
+                                        $data_tahun2pj = $data_tahun;
+                                    }
+                                    PayKoreksi::insert([
+                                                        'tahun' => $data_tahun2pj,
+                                                        'bulan' => $data_bulan2pj,
+                                                        'nopek' => $datapj->nopeg,
+                                                        'aard' => '07',        
+                                                        'jmlcc' => '0',        
+                                                        'ccl' => '0',        
+                                                        'nilai' => $sisagajipj,        
+                                                        'userid' => $request->userid,        
+                                                        ]); 
+
+                                    // 8.HITUNG PAJAK PPH21 CARI NILAI YANG KENA PAJAK (BRUTO)
+                                    $kenapajakpj = DB::select("select sum(a.nilai) as nilai1 from pay_master_upah a,pay_tbl_aard b where a.tahun='$data_tahun' and a.bulan='$data_bulan' and a.nopek='$datapj->nopeg' and a.aard=b.kode and b.kenapajak='Y'");
+                                    foreach($kenapajakpj as $kenappj)
+                                    {
+                                        if($kenappj->nilai1 <> ""){
+                                            $nilaikenapajak1pj = $kenappj->nilai1;
+                                        }else{
+                                            $nilaikenapajak1pj = '0';
+                                        }
+                                    }
+                                    $totkenapajakpj = $nilaikenapajak1pj * 12;
+                                    
+                                    // 9.CARI NILAI TIDAK KENA PAJAK
+                                    $datatdkkenapajakpj = DB::select("select a.kodekeluarga,b.nilai from sdm_master_pegawai a,pay_tbl_ptkp b where a.kodekeluarga=b.kdkel and a.nopeg='$datapj->nopeg'");
+                                    foreach($datatdkkenapajakpj as $tdkkenappj)
+                                    {
+                                        if($tdkkenappj->nilai1 <> ""){
+                                            $nilaiptkp1pj = $tdkkenappj->nilai1;
+                                        }else{
+                                            $nilaiptkp1pj = '0';
+                                        }
+                                    }
+                                    // 9.PENGHASILAN KENA PAJAK SETAHUN	
+                                    $nilaikenapajakpj = $totkenapajakpj - $nilaiptkp1pj;
+                                    
+                                    $pajakbulanpj = pajak($nilaikenapajakpj);
+                                    PayMasterUpah::insert([
+                                                'tahun' => $data_tahun,
+                                                'bulan' => $data_bulan,
+                                                'nopek' => $datapj->nopeg,
+                                                'aard' => '26',        
+                                                'jmlcc' => '0',        
+                                                'ccl' => '0',        
+                                                'nilai' => $pajakbulanpj * -1,        
+                                                'userid' => $request->userid,        
+                                                ]); 
+                                    PayMasterUpah::insert([
+                                                'tahun' => $data_tahun,
+                                                'bulan' => $data_bulan,
+                                                'nopek' => $datapj->nopeg,
+                                                'aard' => '27',        
+                                                'jmlcc' => '0',        
+                                                'ccl' => '0',        
+                                                'nilai' => $pajakbulanpj,        
+                                                'userid' => $request->userid,        
+                                                ]);                         
+                            }                     
+                    
+                    
+                    }elseif($request->prosesupah == 'C'){
+
+                            // PekerjaTetap()
+                            // PekerjaTetap()
+                            $data_pegawaic = SdmMasterPegawai::where('status','C')->orderBy('nopeg', 'asc')->get();
+                            foreach($data_pegawaic as $datapt)
+                            {
+                                TblPajak::insert([
+                                    'tahun' => $data_tahun,
+                                    'bulan' => $data_bulan,
+                                    'nopeg' => $datapt->nopeg,
+                                    'status' => $datapt->kodekeluarga,        
+                                    ]); 
+
+                                // 1.CARI UPAH TETAP AARD 01
+                                $data_sdmutpt = DB::select("select a.ut from sdm_ut a where a.nopeg='$datapt->nopeg' and a.mulai=(select max(mulai) from sdm_ut where nopeg='$datapt->nopeg')");
+                                if(!empty($data_sdmutpt)){
+                                        foreach($data_sdmutpt as $data_sdmpt)
+                                        {
+                                            if($data_sdmpt->ut <> ""){
+                                                $upahtetappt = $data_sdmpt->ut;
+                                            }else {
+                                                $upahtetappt = '0';
+                                            }
+                                        }
+                                }else{
+                                    $upahtetappt = '0';
+                                }
+                                PayMasterUpah::insert([
+                                        'tahun' => $data_tahun,
+                                        'bulan' => $data_bulan,
+                                        'nopek' => $datapt->nopeg,
+                                        'aard' => '01',        
+                                        'jmlcc' => '0',        
+                                        'ccl' => '0',        
+                                        'nilai' => $upahtetappt,        
+                                        'userid' => $request->userid,        
+                                        ]);
+                                
+                                TblPajak::where('tahun', $data_tahun)
+                                    ->where('bulan',$data_bulan)
+                                    ->where('nopeg',$datapt->nopeg)
+                                    ->update([
+                                        'upah' => $upahtetappt,
+                                    ]);
+
+                                // 2.TUNJANGAN JABATAN AARD 03
+                                $data_sdmjabatanpt = DB::select("select a.nopeg,a.kdbag,a.kdjab,b.goljob,b.tunjangan from sdm_jabatan a,sdm_tbl_kdjab b where a.nopeg='$datapt->nopeg' and a.kdbag=b.kdbag and a.kdjab=b.kdjab and a.mulai=(select max(mulai) from sdm_jabatan where nopeg='$datapt->nopeg')");
+                                if(!empty($data_sdmjabatanpt)){
+                                        foreach($data_sdmjabatanpt as $data_sdmjabpt)
+                                        {
+                                            if($data_sdmjabpt->tunjangan <> ""){
+                                                $tunjabatanpt = $data_sdmjabpt->tunjangan;
+                                            }else{
+                                                $tunjabatanpt = '0';
+                                            }
+                                        }
+                                }else{
+                                    $tunjabatanpt = '0';
+                                }
+                                PayMasterUpah::insert([
+                                        'tahun' => $data_tahun,
+                                        'bulan' => $data_bulan,
+                                        'nopek' => $datapt->nopeg,
+                                        'aard' => '03',        
+                                        'jmlcc' => '0',        
+                                        'ccl' => '0',        
+                                        'nilai' => $tunjabatanpt,        
+                                        'userid' => $request->userid,        
+                                        ]); 
+
+                                TblPajak::where('tahun', $data_tahun)
+                                    ->where('bulan',$data_bulan)
+                                    ->where('nopeg',$datapt->nopeg)
+                                    ->update([
+                                        'tunjjabat' => $tunjabatanpt,
+                                    ]);
+
+                                // 3.TUNJANGAN BIAYA HIDUP AARD AARD = 04
+                                $data_sdmtunjanganpt = DB::select("select a.golgaji, b.nilai from sdm_golgaji a,pay_tbl_tunjangan b where a.nopeg='$datapt->nopeg' and a.golgaji=b.golongan and a.tanggal=(select max(tanggal) from sdm_golgaji where nopeg ='$datapt->nopeg')");
+                                if(!empty($data_sdmtunjanganpt)){
+                                        foreach($data_sdmtunjanganpt as $data_sdmpt)
+                                        {
+                                            if($data_sdmpt->nilai <> ""){
+                                            $tunjabatanhiduppt = $data_sdmpt->nilai;
+                                            }else{
+                                                $tunjabatanhiduppt = '0';
+                                            }
+                                        }
+                                }else{
+                                    $tunjabatanhiduppt = '0';
+                                }
+                                PayMasterUpah::insert([
+                                        'tahun' => $data_tahun,
+                                        'bulan' => $data_bulan,
+                                        'nopek' => $datapt->nopeg,
+                                        'aard' => '04',        
+                                        'jmlcc' => '0',        
+                                        'ccl' => '0',        
+                                        'nilai' => $tunjabatanhiduppt,        
+                                        'userid' => $request->userid,        
+                                        ]); 
+
+                                TblPajak::where('tahun', $data_tahun)
+                                    ->where('bulan',$data_bulan)
+                                    ->where('nopeg',$datapt->nopeg)
+                                    ->update([
+                                        'tunjdaerah' => $tunjabatanhiduppt,
+                                    ]);
+
+                                // 4.FASILITAS CUTI AARD 06
+                                $data_sdmfcutipt = SdmMasterPegawai::where('nopeg',$datapt->nopeg)->get();
+                                    foreach($data_sdmfcutipt as $data_sdmpt)
+                                    {   
+                                        $tahunpt = date('Y', strtotime($data_sdmpt->fasilitas));
+                                        $bulanpt = ltrim(date('m', strtotime($data_sdmpt->fasilitas)),'0');
+                                        $sisatahunpt = $data_tahun - $tahunpt;
+                                        $sisabulanpt = $data_bulan - $bulanpt;
+                                    }
+                                    if($sisabulanpt == '11' and $sisatahunpt == '0'){
+                                        $uangcutipt = $upahtetappt + $tunjabatanpt + $tunjabatanhiduppt;
+                                        $fasilitaspt = 1.5 * $uangcutipt;
+                                    }elseif($sisabulanpt == '11' and $sisatahunpt > '0'){
+                                        $uangcutipt = $upahtetappt + $tunjabatanpt + $tunjabatanhiduppt;
+                                        $fasilitaspt = 1.5 * $uangcutipt;
+                                    }elseif($sisabulanpt == '-1' and $sisatahunpt > '0'){
+                                        $uangcutipt = $upahtetappt + $tunjabatanpt + $tunjabatanhiduppt;
+                                        $fasilitaspt = 1.5 * $uangcutipt;
+                                    }else{
+                                        $fasilitaspt = '0';
+                                    }
+                                PayMasterUpah::insert([
+                                        'tahun' => $data_tahun,
+                                        'bulan' => $data_bulan,
+                                        'nopek' => $datapt->nopeg,
+                                        'aard' => '06',        
+                                        'jmlcc' => '0',        
+                                        'ccl' => '0',        
+                                        'nilai' => $fasilitaspt,        
+                                        'userid' => $request->userid,        
+                                        ]); 
+
+                                TblPajak::where('tahun', $data_tahun)
+                                    ->where('bulan',$data_bulan)
+                                    ->where('nopeg',$datapt->nopeg)
+                                    ->update([
+                                        'gapok' => $fasilitaspt,
+                                    ]);
+
+                                // 5.CARI NILAI LEMBUR AARD 05
+                                $data_lemburpt = DB::select("select Sum(makanpg+makansg+makanml+transport+lembur) as totlembur from pay_lembur where nopek='$datapt->nopeg' And bulan = '$data_bulan' AND tahun='$data_tahun'");                            
+                                if(!empty($data_lemburpt)){
+                                        foreach($data_lemburpt as $data_sdmpt)
+                                        {
+                                            if($data_sdmpt->totlembur <> ""){
+                                                $totallemburpt = $data_sdmpt->totlembur;
+                                            }else{
+                                                $totallemburpt = '0';
+                                            }
+                                        }
+                                }else{
+                                    $totallemburpt = '0';
+                                }
+                                PayMasterUpah::insert([
+                                        'tahun' => $data_tahun,
+                                        'bulan' => $data_bulan,
+                                        'nopek' => $datapt->nopeg,
+                                        'aard' => '05',        
+                                        'jmlcc' => '0',        
+                                        'ccl' => '0',        
+                                        'nilai' => $totallemburpt,        
+                                        'userid' => $request->userid,        
+                                        ]); 
+
+                                TblPajak::where('tahun', $data_tahun)
+                                    ->where('bulan',$data_bulan)
+                                    ->where('nopeg',$datapt->nopeg)
+                                    ->update([
+                                        'lembur' => $totallemburpt,
+                                    ]);
+
+                                // 6.CARI NILAI SISA BULAN LALU AARD 07
+                                $data_sisanilaipt = DB::select("select nopek,aard,jmlcc,ccl,round(nilai) as nilai from pay_koreksi where bulan='$data_bulans' and tahun='$data_tahun' and nopek='$datapt->nopeg' and aard='07'");
+                                if(!empty($data_sisanilaipt)){
+                                        foreach($data_sisanilaipt as $data_sdmpt)
+                                        {
+                                            if($data_sdmpt->nilai <> ""){
+                                                $fassisapt = $data_sdmpt->nilai;
+                                            }else{
+                                                $fassisapt = '0';
+                                            }
+                                        }
+                                }else{
+                                    $fassisapt = '0';
+                                }
+                                PayMasterUpah::insert([
+                                        'tahun' => $data_tahun,
+                                        'bulan' => $data_bulan,
+                                        'nopek' => $datapt->nopeg,
+                                        'aard' => '07',        
+                                        'jmlcc' => '0',        
+                                        'ccl' => '0',        
+                                        'nilai' => $fassisapt,        
+                                        'userid' => $request->userid,        
+                                        ]); 
+
+                                //7.CARI NILAI PERSENTASE DARI TABEL PAY_TABLE_JAMSOSTEK
+                                PayGapokBulanan::insert([
+                                            'tahun' => $data_tahun,
+                                            'bulan' => $data_bulan,
+                                            'nopek' => $datapt->nopeg,
+                                            'jumlah' => $upahtetappt,
+                                            ]); 
+                                $data_jamsostekpt = PayTblJamsostek::all();
+                                foreach($data_jamsostekpt as $data_jampt)
+                                {
+                                    $niljspribadipt = ($data_jampt->pribadi/100) * $upahtetappt;
+                                    $niljstaccidentpt = ($data_jampt->accident/100) * $upahtetappt;
+                                    $niljspensiunpt = ($data_jampt->pensiun/100) * $upahtetappt;
+                                    $niljslifept = ($data_jampt->life/100) * $upahtetappt;
+                                }
+                                PayMasterUpah::insert([
+                                        'tahun' => $data_tahun,
+                                        'bulan' => $data_bulan,
+                                        'nopek' => $datapt->nopeg,
+                                        'aard' => '09',        
+                                        'jmlcc' => '0',        
+                                        'ccl' => '0',        
+                                        'nilai' => $niljspribadipt * -1,        
+                                        'userid' => $request->userid,        
+                                        ]); 
+
+                                PayMasterBebanprshn::insert([
+                                        'tahun' => $data_tahun,
+                                        'bulan' => $data_bulan,
+                                        'nopek' => $datapt->nopeg,
+                                        'aard' => '10',        
+                                        'lastamount' => '0',        
+                                        'curramount' => $niljstaccidentpt,       
+                                        'userid' => $request->userid,        
+                                        ]);
+                                PayMasterBebanprshn::insert([
+                                        'tahun' => $data_tahun,
+                                        'bulan' => $data_bulan,
+                                        'nopek' => $datapt->nopeg,
+                                        'aard' => '11',        
+                                        'lastamount' => '0',        
+                                        'curramount' => $niljspensiunpt,       
+                                        'userid' => $request->userid,        
+                                        ]);
+
+                                PayMasterBebanprshn::insert([
+                                    'tahun' => $data_tahun,
+                                    'bulan' => $data_bulan,
+                                    'nopek' => $datapt->nopeg,
+                                    'aard' => '12',        
+                                    'lastamount' => '0',        
+                                    'curramount' => $niljslifept,       
+                                    'userid' => $request->userid,        
+                                    ]);
+                                
+                                //9.HITUNG IURAN DANA PENSIUN BNI SIMPONI 46
+                                $data_danapensiunpt = PayDanaPensiun::all();
+                                foreach($data_danapensiunpt as $data_danapt)
+                                {
+                                    $nildapenbnipt = ($data_danapt->perusahaan3/100) * $upahtetappt;
+                                }
+                                PayMasterBebanprshn::insert([
+                                    'tahun' => $data_tahun,
+                                    'bulan' => $data_bulan,
+                                    'nopek' => $datapt->nopeg,
+                                    'aard' => '46',        
+                                    'lastamount' => '0',        
+                                    'curramount' => $nildapenbnipt,       
+                                    'userid' => $request->userid,        
+                                    ]);
+
+                                // 10.HITUNG TABUNGAN AJTM AARD 16
+                                $data_tabunganpt = PayTabunga::all();
+                                foreach($data_tabunganpt as $data_tabpt)
+                                {
+                                    $iuranwajibpt = ($data_tabpt->tabungan/100) * $upahtetappt;
+                                }
+                                PayMasterBebanprshn::insert([
+                                    'tahun' => $data_tahun,
+                                    'bulan' => $data_bulan,
+                                    'nopek' => $datapt->nopeg,
+                                    'aard' => '16',        
+                                    'lastamount' => '0',        
+                                    'curramount' => $iuranwajibpt,       
+                                    'userid' => $request->userid,        
+                                    ]);
+
+                                // 11.CARI NILAI POTONGAN PINJAMAN AARD 19 
+                                $data_potonganpt = DB::select("select * from pay_potongan where bulan='$data_bulan' and tahun='$data_tahun' and nopek='$datapt->nopeg' and aard='19'");
+                                if(!empty($data_potonganpt)){
+                                    foreach($data_potonganpt as $data_potongpt)
+                                    {
+                                        $jmlccpotongpinjampt = $data_potongpt->jmlcc;
+                                        $cclpotongpinjampt = $data_potongpt->ccl;
+                                        if($data_potongpt->nilai < 0){
+                                            $nilaipotonganpinjampt = ($data_potongpt->nilai * -1);
+                                        }else{
+                                        $nilaipotonganpinjampt = $data_potongpt->nilai;
+                                        }
+                                    }
+                                }else{
+                                    $nilaipotonganpinjampt = '0';
+                                    $jmlccpotongpinjampt = '0';
+                                    $cclpotongpinjampt = '0';
+                                }
+                                PayMasterUpah::insert([
+                                            'tahun' => $data_tahun,
+                                            'bulan' => $data_bulan,
+                                            'nopek' => $datapt->nopeg,
+                                            'aard' => '19',        
+                                            'jmlcc' => $jmlccpotongpinjampt,        
+                                            'ccl' => $cclpotongpinjampt,        
+                                            'nilai' => $nilaipotonganpinjampt * -1,        
+                                            'userid' => $request->userid,        
+                                            ]); 
+                                
+                                // 12.HITUNG TOTAL GAJI YANG DI DAPAT 
+                                $totalgajipt = DB::select("select sum(nilai) as gajiasli,(sum(nilai)-round(sum(nilai),-3)) as pembulatan1,round(sum(nilai),-3) as hasil,(1000+(sum(nilai)-round(sum(nilai),-3))) as pembulatan2  from pay_master_upah where bulan='$data_bulan' and tahun='$data_tahun' and nopek='$datapt->nopeg'");
+                                if(!empty($totalgajipt)){
+                                    foreach($totalgajipt as $totalpt)
+                                    {
+                                        if($totalpt->pembulatan1 < 0){
+                                            $sisagajipt = $totalpt->pembulatan2;
+                                        }else{
+                                            $sisagajipt = $totalpt->pembulatan1;
+                                        }
+                                    }
+                                }else{
+                                    $sisagajipt = '0';
+                                }
+                                PayMasterUpah::insert([
+                                            'tahun' => $data_tahun,
+                                            'bulan' => $data_bulan,
+                                            'nopek' => $datapt->nopeg,
+                                            'aard' => '23',        
+                                            'jmlcc' => '0',        
+                                            'ccl' => '0',        
+                                            'nilai' => $sisagajipt * -1,        
+                                            'userid' => $request->userid,        
+                                            ]); 
+
+                            
+                                $bulan2pt = $data_bulan + 1;
+                                if($bulan2pt > 12){
+                                    $data_bulan2pt = 1;
+                                    $data_tahun2pt = $data_tahun + 1;
+                                }else{
+                                    $data_bulan2pt =$bulan2pt;
+                                    $data_tahun2pt = $data_tahun;
+                                }
+                                // 15.SIMPAN NILAI PEMBULATAN KE TABEL KOREKSI AARD 17 SISA BULAN LALU
+                                PayKoreksi::insert([
+                                                'tahun' => $data_tahun2pt,
+                                                'bulan' => $data_bulan2pt,
+                                                'nopek' => $datapt->nopeg,
+                                                'aard' => '07',        
+                                                'jmlcc' => '0',        
+                                                'ccl' => '0',        
+                                                'nilai' => $sisagajipt,        
+                                                'userid' => $request->userid,        
+                                                ]); 
+
+                                // 16.HITUNG PAJAK PPH21 CARI NILAI YANG KENA PAJAK (BRUTO)
+                                $kenapajakpt = DB::select("select sum(a.nilai) as nilai1 from pay_master_upah a,pay_tbl_aard b where a.tahun='$data_tahun' and a.bulan='$data_bulan' and a.nopek='$datapt->nopeg' and a.aard=b.kode and b.kenapajak='Y'");
+                                foreach($kenapajakpt as $kenappt)
+                                {
+                                    $nilaikenapajakpt = $kenappt->nilai1;
+                                }
+                                $koreksigajipt = DB::select("select sum(a.nilai) as kortam from pay_koreksigaji a where a.tahun='$data_tahun' and a.bulan='$data_bulan' and a.nopek='$datapt->nopeg'");
+                                foreach($koreksigajipt as $koreksigpt)
+                                {
+                                    $kortampt = $koreksigpt->kortam * -1;
+                                }
+
+                                $totalkenapajakpt = ($nilaikenapajakpt + $niljstaccidentpt + $niljslifept + $fasilitaspt+ $kortampt)*12;
+
+                                // 17.CARI NILAI PENGURANG
+                                    $biayajabatanspt = ((5/100)*$totalkenapajakpt);
+                                    if($biayajabatanspt > 6000000){
+                                        $biayajabatanpt = 6000000;
+                                    }else{
+                                        $biayajabatanpt = $biayajabatanspt;
+                                    }
+                                    
+                                    $neto1tahunpt = $totalkenapajakpt - $biayajabatanpt;
+                                
+                                    TblPajak::where('tahun', $data_tahun)
+                                            ->where('bulan',$data_bulan)
+                                            ->where('nopeg',$datapt->nopeg)
+                                            ->update([
+                                                'bjabatan' => $biayajabatanpt,
+                                            ]);
+
+                                // 18.CARI NILAI TIDAK KENA PAJAK
+                                $data_ptkp = DB::select("select a.kodekeluarga,b.nilai from sdm_master_pegawai a,pay_tbl_ptkp b where a.kodekeluarga=b.kdkel and a.nopeg='$datapt->nopeg'");
+                                
+                                if(!empty($data_ptkppt)){
+                                    foreach($data_ptkppt as $data_ppt)
+                                    {
+                                        $nilaiptkp1pt = $data_ppt->nilai;
+                                    }
+                                }else{
+                                        $nilaiptkp1pt = '0';
+                                }
+
+                                //    19.PENGHASILAN KENA PAJAK SETAHUN
+                                $nilaikenapajakapt = $neto1tahunpt - $nilaiptkp1pt;
+                                TblPajak::where('tahun', $data_tahun)
+                                                ->where('bulan',$data_bulan)
+                                                ->where('nopeg',$datapt->nopeg)
+                                                ->update([
+                                                    'ptkp' => $nilaiptkp1pt,
+                                                    'pkp' => $nilaikenapajakapt,
+                                                ]);
+
+                                // 20.HITUNG PAJAK PENGHASILAN TERUTANG PAJAK SETAHUN                      
+                            
+                                $pajakbulanpt = pajak($nilaikenapajakapt);
+                                PayMasterUpah::insert([
+                                            'tahun' => $data_tahun,
+                                            'bulan' => $data_bulan,
+                                            'nopek' => $datapt->nopeg,
+                                            'aard' => '26',        
+                                            'jmlcc' => '0',        
+                                            'ccl' => '0',        
+                                            'nilai' => $pajakbulanpt * -1,        
+                                            'userid' => $request->userid,        
+                                            ]); 
+                                PayMasterUpah::insert([
+                                            'tahun' => $data_tahun,
+                                            'bulan' => $data_bulan,
+                                            'nopek' => $datapt->nopeg,
+                                            'aard' => '27',        
+                                            'jmlcc' => '0',        
+                                            'ccl' => '0',        
+                                            'nilai' => $pajakbulanpt,        
+                                            'userid' => $request->userid,        
+                                            ]); 
+                                TblPajak::where('tahun', $data_tahun)
+                                                ->where('bulan',$data_bulan)
+                                                ->where('nopeg',$datapt->nopeg)
+                                                ->update([
+                                                    'pajak_setor' => $pajakbulanpt,
+                                                ]);
+                            
+                            }
+
+                            
+
+                            
+                    }elseif($request->prosesupah == 'K'){
+
+                        // PekerjaKontrak()
+                        $data_pegawai_kontrakkt = SdmMasterPegawai::where('status','K')->orderBy('nopeg', 'asc')->get();
+                        foreach($data_pegawai_kontrakkt as $datakt)
                         {
                             TblPajak::insert([
                                     'tahun' => $data_tahun,
                                     'bulan' => $data_bulan,
-                                    'nopeg' => $data->nopeg,
-                                    'status' => $data->kodekeluarga,        
+                                    'nopeg' => $datakt->nopeg,
+                                    'status' => $datakt->kodekeluarga,        
+                                    ]);
+                            
+                            // 1.CARI NILAI UPAH ALL IN AARD 02
+
+                        $data_sdmallinkt = DB::select("select nilai from sdm_allin where nopek='$datakt->nopeg'");
+                        if(!empty($data_sdmallinkt)){
+                            foreach($data_sdmallinkt as $data_sdmkt)
+                                    {
+                                        if($data_sdmkt->nilai <> ""){
+                                            $upahallinkt = $data_sdmkt->nilai;
+                                        }else {
+                                            $upahallinkt ='0';
+                                        }
+                                    }
+                            }else {
+                                $upahallinkt ='0';
+                            } 
+                        
+                            PayMasterUpah::insert([
+                                        'tahun' => $data_tahun,
+                                        'bulan' => $data_bulan,
+                                        'nopek' => $datakt->nopeg,
+                                        'aard' => '02',        
+                                        'jmlcc' => '0',        
+                                        'ccl' => '0',        
+                                        'nilai' => $upahallinkt,        
+                                        'userid' => $request->userid,        
+                                        ]);
+                                
+                            TblPajak::where('tahun', $data_tahun)
+                                    ->where('bulan',$data_bulan)
+                                    ->where('nopeg',$datakt->nopeg)
+                                    ->update([
+                                        'upah' => $upahallinkt,
                                     ]);
 
-                             // 1.CARI NILAI UPAH ALL IN AARD 02
-                            $data_sdmallin = DB::select("select nilai from sdm_allin where nopek='$data->nopeg'");
-                            if(!empty($data_sdmallin)){
-                                foreach($data_sdmallin as $data_sdm)
-                                        {
-                                            if($data_sdm->nilai <> ""){
-                                                $upahallin = $data_sdm->nilai;
-                                            }else {
-                                                $upahallin ='0';
-                                            }
-                                        }
-                                }else {
-                                    $upahallin ='0';
-                                } 
-                            
-                                PayMasterUpah::insert([
-                                            'tahun' => $data_tahun,
-                                            'bulan' => $data_bulan,
-                                            'nopek' => $data->nopeg,
-                                            'aard' => '02',        
-                                            'jmlcc' => '0',        
-                                            'ccl' => '0',        
-                                            'nilai' => $upahallin,        
-                                            'userid' => $request->userid,        
-                                            ]);
-                                    
-                                TblPajak::where('tahun', $data_tahun)
-                                        ->where('bulan',$data_bulan)
-                                        ->where('nopeg',$data->nopeg)
-                                        ->update([
-                                            'upah' => $upahallin,
-                                        ]);
-
-                                // 2.CARI NILAI SISA BULAN LALU AARD 07
-                                $data_sisanilai = DB::select("select nopek,aard,jmlcc,ccl,round(nilai) as nilai from pay_koreksi where bulan='$data_bulans' and tahun='$data_tahun' and nopek='$data->nopeg' and aard='07'");
-                                if(!empty($data_sisanilai)){
-                                        foreach($data_sisanilai as $data_sdm)
-                                        {
-                                            if($data_sdm->nilai <> ""){
-                                                $fassisa = $data_sdm->nilai;
-                                            }else{
-                                                $fassisa = '0';
-                                            }
-                                        }
-                                }else{
-                                    $fassisa = '0';
-                                }
-                                PayMasterUpah::insert([
-                                        'tahun' => $data_tahun,
-                                        'bulan' => $data_bulan,
-                                        'nopek' => $data->nopeg,
-                                        'aard' => '07',        
-                                        'jmlcc' => '0',        
-                                        'ccl' => '0',        
-                                        'nilai' => $fassisa,        
-                                        'userid' => $request->userid,        
-                                        ]); 
-
-                                // 3.CARI NILAI KOREKSI LAIN AARD 08
-                                $data_carinilaikoreksi = DB::select("select sum(nilai) as nilai from pay_koreksi where bulan='$data_bulan' and tahun='$data_tahun' and nopek='$data->nopeg' and aard='08'");
-                                if(!empty($data_carinilaikoreksi)){
-                                    foreach($data_carinilaikoreksi as $data_carinilai)
-                                    {
-                                        if($data_carinilai->nilai <> ""){
-                                            $faslain = $data_carinilai->nilai;
-                                        }else{
-                                            $faslain = '0';
-                                        }
-                                    }
-                                }else {
-                                    $faslain = '0';
-                                }
-
-                                PayMasterUpah::insert([
-                                        'tahun' => $data_tahun,
-                                        'bulan' => $data_bulan,
-                                        'nopek' => $data->nopeg,
-                                        'aard' => '08',        
-                                        'jmlcc' => '0',        
-                                        'ccl' => '0',        
-                                        'nilai' => $faslain,        
-                                        'userid' => $request->userid,        
-                                        ]); 
-
-                                // 4.HITUNG TOTAL GAJI YANG DI DAPAT 
-                                $totalgaji = DB::select("select sum(nilai) as gajiasli,(sum(nilai)-round(sum(nilai),-3)) as pembulatan1,round(sum(nilai),-3) as hasil,(1000+(sum(nilai)-round(sum(nilai),-3))) as pembulatan2  from pay_master_upah where bulan='$data_bulan' and tahun='$data_tahun' and nopek='$data->nopeg'");
-                                if(!empty($totalgaji)){
-                                    foreach($totalgaji as $total)
-                                    {
-                                        if($total->pembulatan1 < 0){
-                                            $sisagaji = $total->pembulatan2;
-                                        }else{
-                                            $sisagaji = $total->pembulatan1;
-                                        }
-                                    }
-                                }else{
-                                    $sisagaji = '0';
-                                }
-                                PayMasterUpah::insert([
-                                            'tahun' => $data_tahun,
-                                            'bulan' => $data_bulan,
-                                            'nopek' => $data->nopeg,
-                                            'aard' => '23',        
-                                            'jmlcc' => '0',        
-                                            'ccl' => '0',        
-                                            'nilai' => $sisagaji * -1,        
-                                            'userid' => $request->userid,        
-                                            ]); 
-
-                            
-                                $bulan2 = $data_bulan + 1;
-                                if($bulan2 >12){
-                                    $data_bulan2 = 1;
-                                    $data_tahun2 = $data_tahun + 1;
-                                }else{
-                                    $data_bulan2 =$bulan2;
-                                    $data_tahun2 = $data_tahun;
-                                }
-                                PayKoreksi::insert([
-                                                    'tahun' => $data_tahun2,
-                                                    'bulan' => $data_bulan2,
-                                                    'nopek' => $data->nopeg,
-                                                    'aard' => '07',        
-                                                    'jmlcc' => '0',        
-                                                    'ccl' => '0',        
-                                                    'nilai' => $sisagaji,        
-                                                    'userid' => $request->userid,        
-                                                    ]); 
-
-                                // 5.HITUNG PAJAK PPH21 CARI NILAI YANG KENA PAJAK (BRUTO)
-                                $kenapajak = DB::select("select sum(a.nilai) as nilai1 from pay_master_upah a,pay_tbl_aard b where a.tahun='$data_tahun' and a.bulan='$data_bulan' and a.nopek='$data->nopeg' and a.aard=b.kode and b.kenapajak='Y'");
-                                foreach($kenapajak as $kenap)
+                            // 2.CARI TUNJANGAN JABATAN JIKA ADA
+                            $data_sdmjabatankt =DB::select("select a.nopeg,a.kdbag,a.kdjab,b.goljob,b.tunjangan from sdm_jabatan a,sdm_tbl_kdjab b where a.nopeg='$datakt->nopeg' and a.kdbag=b.kdbag and a.kdjab=b.kdjab and a.mulai=(select max(mulai) from sdm_jabatan where nopeg='$datakt->nopeg')");
+                            if(!empty($data_sdmjabatankt)){
+                                foreach($data_sdmjabatankt as $data_sdmjabkt)
                                 {
-                                    if($kenap->nilai1 <> ""){
-                                        $nilaikenapajak1 = $kenap->nilai1;
+                                    if($data_sdmjabkt->tunjangan <> ""){
+                                        $tunjabatankt = $data_sdmjabkt->tunjangan;
                                     }else{
-                                        $nilaikenapajak1 = '0';
+                                        $tunjabatankt = '0';
                                     }
                                 }
-                                $nilaikenapajaka = $nilaikenapajak1;
+                            }else{
+                                $tunjabatankt = '0';
+                            }
+                                PayMasterUpah::insert([
+                                        'tahun' => $data_tahun,
+                                        'bulan' => $data_bulan,
+                                        'nopek' => $datakt->nopeg,
+                                        'aard' => '03',        
+                                        'jmlcc' => '0',        
+                                        'ccl' => '0',        
+                                        'nilai' => $tunjabatankt,        
+                                        'userid' => $request->userid,        
+                                        ]); 
+
                                 TblPajak::where('tahun', $data_tahun)
-                                        ->where('bulan',$data_bulan)
-                                        ->where('nopeg',$data->nopeg)
-                                        ->update([
-                                            'pkp' => $nilaikenapajaka,
-                                        ]);
+                                    ->where('bulan',$data_bulan)
+                                    ->where('nopeg',$datakt->nopeg)
+                                    ->update([
+                                        'tunjjabat' => $tunjabatankt,
+                                    ]);
 
-                                if($data->nopeg == "kom9" or $data->nopeg == "kom4"){
-                                    $tunjpajak = (15/100) * $nilaikenapajaka;
-                                    $potpajak = ((30/100)*($nilaikenapajaka + $tunjpajak));
-                                }elseif($data->nopeg == "komut1"){
-                                    $tunjpajak = (15/100) * $nilaikenapajaka;
-                                    $potpajak = (30/100) * ($nilaikenapajaka + $tunjpajak);
-                                }elseif($data->nopeg == "kom5"){
-                                    $tunjpajak = (5/100) * $nilaikenapajaka;
-                                    $potpajak = (15/100) * ($nilaikenapajaka + $tunjpajak);
-                                }else{
-                                    $tunjpajak = (5/100) * $nilaikenapajaka;
-                                    $potpajak = (30/100) * ($nilaikenapajaka + $tunjpajak);
-                                }
-                                PayMasterUpah::insert([
-                                            'tahun' => $data_tahun,
-                                            'bulan' => $data_bulan,
-                                            'nopek' => $data->nopeg,
-                                            'aard' => '27',        
-                                            'jmlcc' => '0',        
-                                            'ccl' => '0',        
-                                            'nilai' => $tunjpajak,        
-                                            'userid' => $request->userid,        
-                                            ]);
-                                PayMasterUpah::insert([
-                                            'tahun' => $data_tahun,
-                                            'bulan' => $data_bulan,
-                                            'nopek' => $data->nopeg,
-                                            'aard' => '26',        
-                                            'jmlcc' => '0',        
-                                            'ccl' => '0',        
-                                            'nilai' => $potpajak,        
-                                            'userid' => $request->userid,        
-                                            ]);
-                               
 
-                                $data_caripajak1 = DB::select("select round(nilai,-2) as pajaknya from pay_master_upah where tahun='$data_tahun' and bulan='$data_bulan' and nopek='$data->nopeg' and aard='27'");
-                                foreach($data_caripajak1 as $data_pajak1)
-                                {
-                                    $tunjpa = $data_pajak1->pajaknya;
-                                }
-                                
-                                $data_caripajak2 = DB::select("select round(nilai,-2) as pajaknya from pay_master_upah where tahun='$data_tahun' and bulan='$data_bulan' and nopek='$data->nopeg' and aard='26'");
-                                foreach($data_caripajak2 as $data_pajak2)
-                                {
-                                    $potpa = $data_pajak2->pajaknya;
-                                }
-
-                                PayMasterUpah::where('tahun', $data_tahun)
-                                        ->where('bulan',$data_bulan)
-                                        ->where('nopek',$data->nopeg)
-                                        ->where('aard','27')
-                                        ->update([
-                                            'nilai' => $tunjpa,
-                                        ]);
-                                PayMasterUpah::where('tahun', $data_tahun)
-                                        ->where('bulan',$data_bulan)
-                                        ->where('nopek',$data->nopeg)
-                                        ->where('aard','26')
-                                        ->update([
-                                            'nilai' => $potpa * -1,
-                                        ]);
-                                 TblPajak::where('tahun', $data_tahun)
-                                        ->where('bulan',$data_bulan)
-                                        ->where('nopeg',$data->nopeg)
-                                        ->update([
-                                            'pajak_setor' => $tunjpa,
-                                        ]);
-                        }
-                        
-
-                        // Komite()
-                        $data_pegawai_kontrak = SdmMasterPegawai::where('status','O')->orderBy('nopeg', 'asc')->get();
-                    foreach($data_pegawai_kontrak as $data)
-                    {
-                        TblPajak::insert([
-                                'tahun' => $data_tahun,
-                                'bulan' => $data_bulan,
-                                'nopeg' => $data->nopeg,
-                                'status' => $data->kodekeluarga,        
-                                ]);
-
-                        // 1.CARI NILAI UPAH ALL IN AARD 02
-                        $data_sdmallin = DB::select("select nilai from sdm_allin where nopek='$data->nopeg'");
-                        if(!empty($data_sdmallin)){
-                           foreach($data_sdmallin as $data_sdm)
-                                {
-                                    if($data_sdm->nilai <> ""){
-                                        $upahallin = $data_sdm->nilai;
-                                    }else {
-                                        $upahallin ='0';
+                            // 3.TUNJANGAN DAERAH
+                            $data_tunjangandaerahkt = DB::select("select a.golgaji, b.nilai from sdm_golgaji a,pay_tbl_tunjangan b where a.nopeg='$datakt->nopeg' and a.golgaji=b.golongan and a.tanggal=(select max(tanggal) from sdm_golgaji where nopeg ='$datakt->nopeg')");
+                            if(!empty($data_tunjangandaerahkt)){
+                                    foreach($data_tunjangandaerahkt as $data_sdmdaerahkt)
+                                    {
+                                        if($data_sdmdaerahkt->nilai <> ""){
+                                            $tunjangandaerahkt = $data_sdmdaerahkt->nilai;
+                                        }else{
+                                            $tunjangandaerahkt = '0';
+                                        }
                                     }
-                                }
-                        }else {
-                            $upahallin ='0';
-                        } 
-                        PayMasterUpah::insert([
+                            }else{
+                                $tunjangandaerahkt = '0';
+                            }
+                            PayMasterUpah::insert([
                                     'tahun' => $data_tahun,
                                     'bulan' => $data_bulan,
-                                    'nopek' => $data->nopeg,
-                                    'aard' => '02',        
+                                    'nopek' => $datakt->nopeg,
+                                    'aard' => '04',        
                                     'jmlcc' => '0',        
                                     'ccl' => '0',        
-                                    'nilai' => $upahallin,        
+                                    'nilai' => $tunjangandaerahkt,        
                                     'userid' => $request->userid,        
-                                    ]);
-                            
-                        TblPajak::where('tahun', $data_tahun)
+                                    ]); 
+
+                            TblPajak::where('tahun', $data_tahun)
                                 ->where('bulan',$data_bulan)
-                                ->where('nopeg',$data->nopeg)
+                                ->where('nopeg',$datakt->nopeg)
                                 ->update([
-                                    'upah' => $upahallin,
+                                    'tunjdaerah' => $tunjangandaerahkt,
                                 ]);
 
-                        // 2.HITUNG TOTAL GAJI YANG DI DAPAT 
-                        $totalgaji = DB::select("select sum(nilai) as gajiasli,(sum(nilai)-round(sum(nilai),-3)) as pembulatan1,round(sum(nilai),-3) as hasil,(1000+(sum(nilai)-round(sum(nilai),-3))) as pembulatan2  from pay_master_upah where bulan='$data_bulan' and tahun='$data_tahun' and nopek='$data->nopeg'");
-                        if(!empty($totalgaji)){
-                            foreach($totalgaji as $total)
+                            // 4.Gapok Kontrak
+                            $data_gapokkt = DB::select("select gapok from sdm_gapok where nopeg = '$datakt->nopeg' and mulai=(select max(mulai) from sdm_gapok where nopeg='$datakt->nopeg')");
+                            if(!empty($data_gapokkt)){
+                                foreach($data_gapokkt as $data_gapkt)
+                                {
+                                    if($datakt->nopeg == 'K00011'){
+                                        $gapokkt = '0';
+                                    }else{
+                                        $gapokkt = $data_gapkt->gapok;
+                                    }
+                                }
+                            }else {
+                                $gapokkt = '0';
+                            }
+
+                            PayGapokBulanan::insert([
+                                            'tahun' => $data_tahun,
+                                            'bulan' => $data_bulan,
+                                            'nopek' => $datakt->nopeg,
+                                            'jumlah' => $upahallinkt,
+                                            ]); 
+
+                            // 5.CARI NILAI PERSENTASE DARI TABEL PAY_TABLE_JAMSOSTEK
+                            $data_jamsostekkt = PayTblJamsostek::all();
+                                foreach($data_jamsostekkt as $data_jamkt)
+                                {
+                                    $niljspribadikt = ($data_jamkt->pribadi/100) * $upahallinkt;
+                                    $niljstaccidentkt = ($data_jamkt->accident/100) * $upahallinkt;
+                                    $niljspensiunkt = ($data_jamkt->pensiun/100) * $upahallinkt;
+                                    $niljslifekt = ($data_jamkt->life/100) * $upahallinkt;
+                                }
+                                PayMasterUpah::insert([
+                                        'tahun' => $data_tahun,
+                                        'bulan' => $data_bulan,
+                                        'nopek' => $datakt->nopeg,
+                                        'aard' => '09',        
+                                        'jmlcc' => '0',        
+                                        'ccl' => '0',        
+                                        'nilai' => $niljspribadikt * -1,        
+                                        'userid' => $request->userid,        
+                                        ]); 
+
+                                PayMasterBebanprshn::insert([
+                                        'tahun' => $data_tahun,
+                                        'bulan' => $data_bulan,
+                                        'nopek' => $datakt->nopeg,
+                                        'aard' => '10',        
+                                        'lastamount' => '0',        
+                                        'curramount' => $niljstaccidentkt,       
+                                        'userid' => $request->userid,        
+                                        ]);
+                                PayMasterBebanprshn::insert([
+                                        'tahun' => $data_tahun,
+                                        'bulan' => $data_bulan,
+                                        'nopek' => $datakt->nopeg,
+                                        'aard' => '11',        
+                                        'lastamount' => '0',        
+                                        'curramount' => $niljspensiunkt,       
+                                        'userid' => $request->userid,        
+                                        ]);
+
+                                PayMasterBebanprshn::insert([
+                                    'tahun' => $data_tahun,
+                                    'bulan' => $data_bulan,
+                                    'nopek' => $datakt->nopeg,
+                                    'aard' => '12',        
+                                    'lastamount' => '0',        
+                                    'curramount' => $niljslifekt,       
+                                    'userid' => $request->userid,        
+                                    ]);
+
+                                // 6.FASILITAS CUTI AARD 06
+                                $data_cutikt = DB::select("select a.fasilitas,a.fasilitas  from sdm_master_pegawai a where a.nopeg='$datakt->nopeg'");
+                                if(!empty($data_cutikt)){
+                                foreach($data_cutikt as $data_cutkt)
+                                {
+                                    $tahunkt = date('Y', strtotime($data_cutkt->fasilitas));
+                                    $bulankt = ltrim(date('m', strtotime($data_cutkt->fasilitas)),'0');
+                                    $sisatahunkt = $data_tahun - $tahunkt;
+                                    $sisabulankt = $data_bulan - $bulankt;
+                                    if($sisabulankt == '11' and $sisatahunkt == '0'){
+                                        $uangcutikt = $upahallinkt + $tunjabatankt + $tunjangandaerahkt;
+                                        $fasilitaskt = 1.5 * $uangcutikt;
+                                    }elseif($sisabulankt == '11' and $sisatahunkt > '0'){
+                                        $uangcutikt = $upahallinkt + $tunjabatankt + $tunjangandaerahkt;
+                                        $fasilitaskt = 1.5 * $uangcutikt;
+                                    }elseif($sisabulankt == '-1' and $sisatahunkt > '0'){
+                                        $uangcutikt = $upahallinkt + $tunjabatankt + $tunjangandaerahkt;
+                                        $fasilitaskt = 1.5 * $uangcutikt;
+                                    }else{
+                                        $fasilitaskt = '0';
+                                    }
+                                }
+                            }else {
+                                $fasilitaskt = '0';
+                            }
+                            PayMasterUpah::insert([
+                                    'tahun' => $data_tahun,
+                                    'bulan' => $data_bulan,
+                                    'nopek' => $datakt->nopeg,
+                                    'aard' => '06',        
+                                    'jmlcc' => '0',        
+                                    'ccl' => '0',        
+                                    'nilai' => $fasilitaskt,        
+                                    'userid' => $request->userid,        
+                                    ]); 
+
+                            TblPajak::where('tahun', $data_tahun)
+                                ->where('bulan',$data_bulan)
+                                ->where('nopeg',$datakt->nopeg)
+                                ->update([
+                                    'gapok' => $fasilitaskt,
+                                ]);
+
+                            // 7.CARI NILAI LEMBUR AARD 05
+                            $data_lemburkt = DB::select("select sum(makanpg+makansg+makanml+transport+lembur) as totlembur from pay_lembur where nopek='$datakt->nopeg' and bulan='$data_bulan' and tahun='$data_tahun'");                            
+                            if(!empty($data_lemburkt)){
+                                    foreach($data_lemburkt as $data_sdmkt)
+                                    {
+                                        if($data_sdmkt->totlembur <> ""){
+                                            $totallemburkt = $data_sdmkt->totlembur;
+                                        }else{
+                                            $totallemburkt = '0';
+                                        }
+                                    }
+                            }else{
+                                $totallemburkt = '0';
+                            }
+                            PayMasterUpah::insert([
+                                    'tahun' => $data_tahun,
+                                    'bulan' => $data_bulan,
+                                    'nopek' => $datakt->nopeg,
+                                    'aard' => '05',        
+                                    'jmlcc' => '0',        
+                                    'ccl' => '0',        
+                                    'nilai' => $totallemburkt,        
+                                    'userid' => $request->userid,        
+                                    ]); 
+
+                            TblPajak::where('tahun', $data_tahun)
+                                ->where('bulan',$data_bulan)
+                                ->where('nopeg',$datakt->nopeg)
+                                ->update([
+                                    'lembur' => $totallemburkt,
+                                ]);
+
+                            // 8.CARI SISA BULAN LALU AARD 07
+                            $data_sisanilaikt = DB::select("select nopek,aard,jmlcc,ccl,nilai from pay_koreksi where bulan='$data_bulans' and tahun='$data_tahun' and nopek='$datakt->nopeg' and aard='07'");
+                            if(!empty($data_sisanilaikt)){
+                                foreach($data_sisanilaikt as $data_sdmkt)
+                                {
+                                    if($data_sdmkt->nilai <> ""){
+                                        $fassisakt = $data_sdmkt->nilai;
+                                    }else {
+                                        $fassisakt = '0';
+                                    }
+                                }
+                            }else{
+                                $fassisakt = '0';
+                            }
+                            PayMasterUpah::insert([
+                                    'tahun' => $data_tahun,
+                                    'bulan' => $data_bulan,
+                                    'nopek' => $datakt->nopeg,
+                                    'aard' => '07',        
+                                    'jmlcc' => '0',        
+                                    'ccl' => '0',        
+                                    'nilai' => $fassisakt,        
+                                    'userid' => $request->userid,        
+                                    ]); 
+                            // 9. POTONG KOPERASI
+                            $data_potongankt = DB::select("select * from pay_potongan where bulan='$data_bulan' and tahun='$data_tahun' and nopek='$datakt->nopeg' and aard='28'");
+                            if(!empty($data_potongankt)){
+                                foreach($data_potongankt as $data_potongkt)
+                                {
+                                    $jmlccpotongpinjamkt = $data_potongkt->jmlcc;
+                                    $cclpotongpinjamkt = $data_potongkt->ccl;
+                                    if($data_potongkt->nilai < 0){
+                                        $nilaipotonganpinjamkt = $data_potongkt->nilai;
+                                    }else{
+                                        $nilaipotonganpinjamkt = ($data_potongkt->nilai * -1);
+                                    }
+                                }
+                            }else{
+                                $nilaipotonganpinjamkt = '0';
+                                $jmlccpotongpinjamkt = '0';
+                                $cclpotongpinjamkt = '0';
+                            }    
+
+                            PayMasterUpah::insert([
+                                            'tahun' => $data_tahun,
+                                            'bulan' => $data_bulan,
+                                            'nopek' => $datakt->nopeg,
+                                            'aard' => '28',        
+                                            'jmlcc' => $jmlccpotongpinjamkt,        
+                                            'ccl' => $cclpotongpinjamkt,        
+                                            'nilai' => $nilaipotonganpinjamkt,        
+                                            'userid' => $request->userid,        
+                                            ]);
+                            // 10. HITUNG TOTAL GAJI YANG DI DAPAT 
+                            $totalgajikt = DB::select("select sum(nilai) as gajiasli,(sum(nilai)-round(sum(nilai),-3)) as pembulatan1,round(sum(nilai),-3) as hasil,(1000+(sum(nilai)-round(sum(nilai),-3))) as pembulatan2  from pay_master_upah where bulan='$data_bulan' and tahun='$data_tahun' and nopek='$datakt->nopeg'");
+                            if(!empty($totalgajikt)){
+                                foreach($totalgajikt as $totalkt)
+                                {
+                                    if($totalkt->pembulatan1 < 0){
+                                        $sisagajikt = $totalkt->pembulatan2;
+                                    }else{
+                                        $sisagajikt = $totalkt->pembulatan1;
+                                    }
+                                }
+                            }else{
+                                $sisagajikt = '0';
+                            }
+                            PayMasterUpah::insert([
+                                        'tahun' => $data_tahun,
+                                        'bulan' => $data_bulan,
+                                        'nopek' => $datakt->nopeg,
+                                        'aard' => '23',        
+                                        'jmlcc' => '0',        
+                                        'ccl' => '0',        
+                                        'nilai' => $sisagajikt * -1,        
+                                        'userid' => $request->userid,        
+                                        ]); 
+
+                        
+                            $bulan2kt = $data_bulan + 1;
+                            if($bulan2kt >12){
+                                $data_bulan2kt = 1;
+                                $data_tahun2kt = $data_tahun + 1;
+                            }else{
+                                $data_bulan2kt =$bulan2kt;
+                                $data_tahun2kt = $data_tahun;
+                            }
+                            PayKoreksi::insert([
+                                                'tahun' => $data_tahun2kt,
+                                                'bulan' => $data_bulan2kt,
+                                                'nopek' => $datakt->nopeg,
+                                                'aard' => '07',        
+                                                'jmlcc' => '0',        
+                                                'ccl' => '0',        
+                                                'nilai' => $sisagajikt,        
+                                                'userid' => $request->userid,        
+                                                ]); 
+
+                            // 11.HITUNG PAJAK PPH21 CARI NILAI YANG KENA PAJAK (BRUTO)
+                            $kenapajakkt = DB::select("select sum(a.nilai) as nilai1 from pay_master_upah a,pay_tbl_aard b where a.tahun='$data_tahun' and a.bulan='$data_bulan' and a.nopek='$datakt->nopeg' and a.aard=b.kode and b.kenapajak='Y'");
+                            foreach($kenapajakkt as $kenapkt)
                             {
-                                if($total->pembulatan1 < 0){
-                                    $sisagaji = $total->pembulatan2;
+                                if($kenapkt->nilai1 <> ""){
+                                    $nilaikenapajakkt = $kenapkt->nilai1;
                                 }else{
-                                    $sisagaji = $total->pembulatan1;
+                                    $nilaikenapajakkt = '0';
+                                }
+                            }
+                            $koreksigajikt = DB::select("select sum(a.nilai) as kortam from pay_koreksigaji a where a.tahun='$data_tahun' and a.bulan='$data_bulan' and a.nopek='$datakt->nopeg'");
+                            foreach($koreksigajikt as $koreksigkt)
+                            {
+                                $kortamkt = $koreksigkt->kortam * -1;
+                            }
+                            $totalkenapajakkt = (($nilaikenapajakkt + $kortamkt) * 12);
+                            $biayajabatanskt = ((5/100)*$totalkenapajakkt);
+                                    if($biayajabatanskt > 6000000){
+                                        $biayajabatankt = 6000000;
+                                    }else{
+                                        $biayajabatankt = $biayajabatanskt;
+                                    }
+                                    $neto1tahunkt = $totalkenapajakkt - $biayajabatankt;
+                            TblPajak::where('tahun', $data_tahun)
+                                            ->where('bulan',$data_bulan)
+                                            ->where('nopeg',$datakt->nopeg)
+                                            ->update([
+                                                'bjabatan' => $biayajabatankt,
+                                            ]);
+                        // 12.CARI NILAI TIDAK KENA PAJAK
+                        $data_ptkpkt = DB::select("select a.kodekeluarga,b.nilai from sdm_master_pegawai a,pay_tbl_ptkp b where a.kodekeluarga=b.kdkel and a.nopeg='$datakt->nopeg'");
+                                
+                        if(!empty($data_ptkpkt)){
+                            foreach($data_ptkpkt as $data_pkt)
+                            {
+                                if($data_pkt->nilai <> ""){
+                                    $nilaiptkp1kt = $data_pkt->nilai;
+                                }else {
+                                    $nilaiptkp1kt = '0';
                                 }
                             }
                         }else{
-                            $sisagaji = '0';
+                                $nilaiptkp1kt = '0';
                         }
-                        PayMasterUpah::insert([
-                                    'tahun' => $data_tahun,
-                                    'bulan' => $data_bulan,
-                                    'nopek' => $data->nopeg,
-                                    'aard' => '23',        
-                                    'jmlcc' => '0',        
-                                    'ccl' => '0',        
-                                    'nilai' => $sisagaji * -1,        
-                                    'userid' => $request->userid,        
-                                    ]); 
 
-                    
-                        $bulan2 = $data_bulan + 1;
-                        if($bulan2 >12){
-                            $data_bulan2 = 1;
-                            $data_tahun2 = $data_tahun + 1;
-                        }else{
-                            $data_bulan2 =$bulan2;
-                            $data_tahun2 = $data_tahun;
-                        }
-                        PayKoreksi::insert([
-                                            'tahun' => $data_tahun2,
-                                            'bulan' => $data_bulan2,
-                                            'nopek' => $data->nopeg,
-                                            'aard' => '07',        
-                                            'jmlcc' => '0',        
-                                            'ccl' => '0',        
-                                            'nilai' => $sisagaji,        
-                                            'userid' => $request->userid,        
-                                            ]); 
-
-                         // 3.HITUNG PAJAK PPH21 CARI NILAI YANG KENA PAJAK (BRUTO)
-                         $kenapajak = DB::select("select sum(a.nilai) as nilai1 from pay_master_upah a,pay_tbl_aard b where a.tahun='$data_tahun' and a.bulan='$data_bulan' and a.nopek='$data->nopeg' and a.aard=b.kode and b.kenapajak='Y'");
-                         foreach($kenapajak as $kenap)
-                         {
-                             if($kenap->nilai1 <> ""){
-                                 $nilaikenapajak = $kenap->nilai1;
-                             }else{
-                                 $nilaikenapajak = '0';
-                             }
-                         }
-                        $nilaikenapajaka = $nilaikenapajak;
+                        // 13.PENGHASILAN KENA PAJAK SETAHUN
+                        $nilaikenapajakakt = $neto1tahunkt - $nilaiptkp1kt;
                         TblPajak::where('tahun', $data_tahun)
                                         ->where('bulan',$data_bulan)
-                                        ->where('nopeg',$data->nopeg)
+                                        ->where('nopeg',$datakt->nopeg)
                                         ->update([
-                                            'pkp' => $nilaikenapajaka,
+                                            'ptkp' => $nilaiptkp1kt,
+                                            'pkp' => $nilaikenapajakakt,
                                         ]);
 
-                        $tunjpajak = ((5/100) * $nilaikenapajaka);
-                        $potpajak = ((30/100) * ($nilaikenapajaka + $tunjpajak));
+                        // 14.HITUNG PAJAK PENGHASILAN TERUTANG PAJAK SETAHUN                      
+                    
+                            $pajakbulankt = pajak($nilaikenapajakakt);
+                        
                         PayMasterUpah::insert([
                                     'tahun' => $data_tahun,
                                     'bulan' => $data_bulan,
-                                    'nopek' => $data->nopeg,
-                                    'aard' => '27',        
-                                    'jmlcc' => '0',        
-                                    'ccl' => '0',        
-                                    'nilai' => $tunjpajak,        
-                                    'userid' => $request->userid,        
-                                    ]); 
-                        PayMasterUpah::insert([
-                                    'tahun' => $data_tahun,
-                                    'bulan' => $data_bulan,
-                                    'nopek' => $data->nopeg,
+                                    'nopek' => $datakt->nopeg,
                                     'aard' => '26',        
                                     'jmlcc' => '0',        
                                     'ccl' => '0',        
-                                    'nilai' => $potpajak,        
+                                    'nilai' => $pajakbulankt * -1,        
                                     'userid' => $request->userid,        
                                     ]); 
-                        $data_caripajak1 = DB::select("select round(nilai,-2) as pajaknya from pay_master_upah where tahun='$data_tahun' and bulan='$data_bulan' and nopek='$data->nopeg' and aard='27'");
-                                foreach($data_caripajak1 as $data_pajak1)
-                                {
-                                    $tunjpa = $data_pajak1->pajaknya;
-                                }
-                                
-                        $data_caripajak2 = DB::select("select round(nilai,-2) as pajaknya from pay_master_upah where tahun='$data_tahun' and bulan='$data_bulan' and nopek='$data->nopeg' and aard='26'");
-                                foreach($data_caripajak2 as $data_pajak2)
-                                {
-                                    $potpa = $data_pajak2->pajaknya;
-                                }
-
-                                PayMasterUpah::where('tahun', $data_tahun)
+                        PayMasterUpah::insert([
+                                    'tahun' => $data_tahun,
+                                    'bulan' => $data_bulan,
+                                    'nopek' => $datakt->nopeg,
+                                    'aard' => '27',        
+                                    'jmlcc' => '0',        
+                                    'ccl' => '0',        
+                                    'nilai' => $pajakbulankt,        
+                                    'userid' => $request->userid,        
+                                    ]); 
+                        TblPajak::where('tahun', $data_tahun)
                                         ->where('bulan',$data_bulan)
-                                        ->where('nopek',$data->nopeg)
-                                        ->where('aard','27')
+                                        ->where('nopeg',$datakt->nopeg)
                                         ->update([
-                                            'nilai' => $tunjpa,
+                                            'pajak_setor' => $pajakbulankt,
                                         ]);
-                                PayMasterUpah::where('tahun', $data_tahun)
-                                        ->where('bulan',$data_bulan)
-                                        ->where('nopek',$data->nopeg)
-                                        ->where('aard','26')
-                                        ->update([
-                                            'nilai' => $potpa * -1,
-                                        ]);
-                                 TblPajak::where('tahun', $data_tahun)
-                                        ->where('bulan',$data_bulan)
-                                        ->where('nopeg',$data->nopeg)
-                                        ->update([
-                                            'pajak_setor' => $tunjpa,
-                                        ]);
+                        
+                        }
 
-                    }
 
-                        // PekerjaBaru()
-                        $data_pegawai_kontrak = SdmMasterPegawai::where('status','N')->orderBy('nopeg', 'asc')->get();
-                        foreach($data_pegawai_kontrak as $data)
+                    }elseif($request->prosesupah == 'B'){
+                        
+                        // PekerjaBantu()
+                        $data_pegawai_kontrakpb = SdmMasterPegawai::where('status','B')->orderBy('nopeg', 'asc')->get();
+                        foreach($data_pegawai_kontrakpb as $datapb)
                         {
-                            $status1 = $data->status;
-                            $kodekel = $data->kodekeluarga;
-                            $tglaktif = date("j",strtotime($data->tglaktifdns));
-                             // 1.CARI NILAI UPAH ALL IN AARD 02
-                            $data_sdmallin = DB::select("select nilai from sdm_allin where nopek='$data->nopeg'");
-                            if(!empty($data_sdmallin)){
-                                foreach($data_sdmallin as $data_sdm)
-                                        {
-                                            if($data_sdm->nilai <> ""){
-                                                $upahmentah = $data_sdm->nilai;
-                                                $upahallin = ((30 - $tglaktif)/30) * $upahmentah;
+                            TblPajak::insert([
+                                    'tahun' => $data_tahun,
+                                    'bulan' => $data_bulan,
+                                    'nopeg' => $datapb->nopeg,
+                                    'status' => $datapb->kodekeluarga,        
+                                    ]);
+                            
+                            // 1.CARI NILAI UPAH ALL IN AARD 02
+
+                        $data_sdmallinpb = DB::select("select nilai from sdm_allin where nopek='$datapb->nopeg'");
+                        if(!empty($data_sdmallinpb)){
+                            foreach($data_sdmallinpb as $data_sdmpb)
+                                    {
+                                        if($data_sdmpb->nilai <> ""){
+                                            $upahallinpb = $data_sdmpb->nilai;
+                                        }else {
+                                            $upahallinpb ='0';
+                                        }
+                                    }
+                            }else {
+                                $upahallinpb ='0';
+                            } 
+
+                            PayMasterUpah::insert([
+                                        'tahun' => $data_tahun,
+                                        'bulan' => $data_bulan,
+                                        'nopek' => $datapb->nopeg,
+                                        'aard' => '02',        
+                                        'jmlcc' => '0',        
+                                        'ccl' => '0',        
+                                        'nilai' => $upahallinpb,        
+                                        'userid' => $request->userid,        
+                                        ]);
+                                
+                            TblPajak::where('tahun', $data_tahun)
+                                    ->where('bulan',$data_bulan)
+                                    ->where('nopeg',$datapb->nopeg)
+                                    ->update([
+                                        'upah' => $upahallinpb,
+                                    ]);
+
+                                //2.CARI UPAH TETAP AARD 01
+                                $data_sdmutpb = DB::select("select a.ut from sdm_ut a where a.nopeg='$datapb->nopeg' and a.mulai=(select max(mulai) from sdm_ut where nopeg='$datapb->nopeg')");
+                                if(!empty($data_sdmutpb)){
+                                        foreach($data_sdmutpb as $data_sdmpb)
+                                        {   if($data_sdmpb->ut <> ""){
+                                            $upahtetappb = $data_sdmpb->ut;
                                             }else {
-                                                $upahallin ='0';
+                                                $upahtetappb = '0';
+                                            }
+                                        }
+                                }else{
+                                    $upahtetappb = '0';
+                                }
+                                PayMasterUpah::insert([
+                                        'tahun' => $data_tahun,
+                                        'bulan' => $data_bulan,
+                                        'nopek' => $datapb->nopeg,
+                                        'aard' => '01',        
+                                        'jmlcc' => '0',        
+                                        'ccl' => '0',        
+                                        'nilai' => $upahtetappb,        
+                                        'userid' => $request->userid,        
+                                        ]);
+                                
+                                TblPajak::where('tahun', $data_tahun)
+                                    ->where('bulan',$data_bulan)
+                                    ->where('nopeg',$datapb->nopeg)
+                                    ->update([
+                                        'upah' => $upahtetappb,
+                                    ]);
+
+
+                                $data_sdmutpb = DB::select("select a.ut from sdm_ut a where a.nopeg='$datapb->nopeg' and a.mulai=(select max(mulai) from sdm_ut where nopeg='$datapb->nopeg')");
+                                if(!empty($data_sdmutpb)){
+                                        foreach($data_sdmutpb as $data_sdmpb)
+                                        {
+                                            if($data_sdmpb->ut <> ""){
+                                                $upahdaerahpb = $data_sdmpb->ut;
+                                            }else {
+                                                $upahdaerahpb = '0';
+                                            }
+                                        }
+                                }else{
+                                    $upahdaerahpb = '0';
+                                }
+
+                                UtBantu::insert([
+                                        'tahun' => $data_tahun,
+                                        'bulan' => $data_bulan,
+                                        'nopek' => $datapb->nopeg,    
+                                        'nilai' => $upahdaerahpb,        
+                                        ]);
+
+                                //4.UPAH TETAP PENSIUN
+                                $data_pensiunpb = DB::select("select a.ut from sdm_ut_pensiun a where a.nopeg='$datapb->nopeg' and a.mulai=(select max(mulai) from sdm_ut_pensiun where nopeg='$datapb->nopeg')");
+                                if(!empty($data_pensiunpb)){
+                                    foreach($data_pensiunpb as $data_penpb)
+                                    {
+                                        if($data_penpb->ut <> ""){
+                                            $upahtetappensiunpb = $data_penpb->ut;
+                                        }else{
+                                            $upahtetappensiunpb = '0';
+                                        }
+                                    }
+                                }else {
+                                    $upahtetappensiunpb = '0';
+                                }
+
+                                // 5.FASILITAS CUTI AARD 06
+                                $data_cutipb = DB::select("select a.fasilitas,a.fasilitas  from sdm_master_pegawai a where a.nopeg='$datapb->nopeg'");
+                                if(!empty($data_cutipb)){
+                                foreach($data_cutipb as $data_cutpb)
+                                {
+                                    $tahunpb = date('Y', strtotime($data_cutpb->fasilitas));
+                                    $bulanpb = ltrim(date('m', strtotime($data_cutpb->fasilitas)),'0');
+                                    $sisatahunpb = $data_tahun - $tahunpb;
+                                    $sisabulanpb = $data_bulan - $bulanpb;
+                                    if($sisabulanpb == '11' and $sisatahunpb == '0'){
+                                        $fasilitaspb = '0';
+                                        //   $uangcutipb = $upahallin + $tunjabatan + $tunjangandaerah;
+                                        //   $fasilitaspb = 1.5 * $uangcutipb;
+                                    }elseif($sisabulanpb == '11' and $sisatahunpb > '0'){
+                                        $fasilitaspb = '0';
+                                        // $uangcutipb = $upahallin + $tunjabatan + $tunjangandaerah;
+                                        // $fasilitaspb = 1.5 * $uangcutipb;
+                                    }elseif($sisabulanpb == '-1' and $sisatahunpb > '0'){
+                                        $fasilitaspb = '0';
+                                        // $uangcutipb = $upahallin + $tunjabatan + $tunjangandaerah;
+                                        // $fasilitaspb = 1.5 * $uangcutipb;
+                                    }else{
+                                        $fasilitaspb = '0';
+                                    }
+                                }
+                            }else {
+                                $fasilitaspb = '0';
+                            }
+
+                            PayMasterUpah::insert([
+                                    'tahun' => $data_tahun,
+                                    'bulan' => $data_bulan,
+                                    'nopek' => $datapb->nopeg,
+                                    'aard' => '06',        
+                                    'jmlcc' => '0',        
+                                    'ccl' => '0',        
+                                    'nilai' => $fasilitaspb,        
+                                    'userid' => $request->userid,        
+                                    ]); 
+
+                            TblPajak::where('tahun', $data_tahun)
+                                ->where('bulan',$data_bulan)
+                                ->where('nopeg',$datapb->nopeg)
+                                ->update([
+                                    'gapok' => $fasilitaspb,
+                                ]);
+
+                            // 6.CARI NILAI LEMBUR AARD 05
+                            $data_lemburpb = DB::select("select sum(makanpg+makansg+makanml+transport+lembur) as totlembur from pay_lembur where nopek='$datapb->nopeg' and bulan='$data_bulan' and tahun='$data_tahun'");                            
+                            if(!empty($data_lemburpb)){
+                                    foreach($data_lemburpb as $data_sdmpb)
+                                    {
+                                        if($data_sdmpb->totlembur <> ""){
+                                            $totallemburpb = $data_sdmpb->totlembur;
+                                        }else{
+                                            $totallemburpb = '0';
+                                        }
+                                    }
+                            }else{
+                                $totallemburpb = '0';
+                            }
+                            PayMasterUpah::insert([
+                                    'tahun' => $data_tahun,
+                                    'bulan' => $data_bulan,
+                                    'nopek' => $datapb->nopeg,
+                                    'aard' => '05',        
+                                    'jmlcc' => '0',        
+                                    'ccl' => '0',        
+                                    'nilai' => $totallemburpb,        
+                                    'userid' => $request->userid,        
+                                    ]); 
+
+                            // 7.CARI SISA BULAN LALU AARD 07
+                            $data_sisanilaipb = DB::select("select nopek,aard,jmlcc,ccl,nilai from pay_koreksi where bulan='$data_bulans' and tahun='$data_tahun' and nopek='$datapb->nopeg' and aard='07'");
+                            if(!empty($data_sisanilaipb)){
+                                foreach($data_sisanilaipb as $data_sdmpb)
+                                {
+                                    if($data_sdmpb->nilai <> ""){
+                                        $fassisapb = $data_sdmpb->nilai;
+                                    }else {
+                                        $fassisapb = '0';
+                                    }
+                                }
+                            }else{
+                                $fassisapb = '0';
+                            }
+                            PayMasterUpah::insert([
+                                    'tahun' => $data_tahun,
+                                    'bulan' => $data_bulan,
+                                    'nopek' => $datapb->nopeg,
+                                    'aard' => '07',        
+                                    'jmlcc' => '0',        
+                                    'ccl' => '0',        
+                                    'nilai' => $fassisapb,        
+                                    'userid' => $request->userid,        
+                                    ]); 
+
+                            // 8.CARI NILAI KOREKSI JAMSOSTEK PEKERJA 29
+                            $data_koreksijamsostekpb = DB::select("select sum(nilai) as nilai from pay_koreksi where bulan='$data_bulan' and tahun='$data_tahun' and nopek='$datapb->nopeg' and aard='29'");
+                            if(!empty($data_koreksijamsostekpb)){
+                                foreach($data_koreksijamsostekpb as $data_korekpb)
+                                {
+                                    if($data_korekpb->nilai <> ""){
+                                        $iujampekpb = $data_korekpb->nilai;
+                                    }else {
+                                        $iujampekpb = '0';
+                                    }
+                                }
+                            }else {
+                                $iujampekpb = '0';
+                            }
+                            PayMasterUpah::insert([
+                                        'tahun' => $data_tahun,
+                                        'bulan' => $data_bulan,
+                                        'nopek' => $datapb->nopeg,
+                                        'aard' => '29',        
+                                        'jmlcc' => '0',        
+                                        'ccl' => '0',        
+                                        'nilai' => $iujampekpb,        
+                                        'userid' => $request->userid,        
+                                        ]); 
+                                
+                                // 9.HITUNG IURAN JAMSOSTEK PRIBADI DAN PERUSAHAAN
+                                $data_iuranjamsostekpb = DB::select("select gapok from sdm_gapok where nopeg = '$datapb->nopeg' and mulai=(select max(mulai) from sdm_gapok where nopeg='$datapb->nopeg')");
+                                if(!empty($data_iuranjamsostekpb)){
+                                    foreach($data_iuranjamsostekpb as $data_iuranpb)
+                                    {
+                                        if($data_iuranpb->gapok <> ""){
+                                            $gapokpb = $data_iuranpb->gapok;
+                                        }else {
+                                            $gapokpb = '0';
+                                        }
+                                    }
+                                }else {
+                                    $gapokpb = '0';
+                                }
+                                PayGapokBulanan::insert([
+                                            'tahun' => $data_tahun,
+                                            'bulan' => $data_bulan,
+                                            'nopek' => $datapb->nopeg,
+                                            'jumlah' => $gapokpb,
+                                            ]); 
+
+                                // 10.CARI NILAI PERSENTASE DARI TABEL PAY_TABLE_JAMSOSTEK
+                                $data_persentasejmpb = DB::select("select pribadi,accident,pensiun,life,manulife from pay_tbl_jamsostek");
+                                if(!empty($data_persentasejmpb)){
+                                    foreach($data_persentasejmpb as $data_perpb)
+                                    {
+                                        $jsmanualifepb = ($data_perpb->life/100);
+                                        if($datapb->nopeg <> '709685'){
+                                            $niljspribadipb = ($data_perpb->pribadi/100) * $gapokpb;
+                                            $niljstaccidentpb = ($data_perpb->accident/100) * $gapokpb;
+                                            $niljspensiunpb = ($data_perpb->pensiun/100) * $gapokpb;
+                                            $niljslifepb = ($data_perpb->life/100) * $gapokpb;
+                                        }else{
+                                            $niljspribadipb = '0';
+                                            $niljstaccidentpb = '0';
+                                            $niljspensiunpb = '0';
+                                            $niljslifepb = '0';
+                                        }
+                                    }
+                                    $niljsmanualifepb = $jsmanualifepb * $upahtetappb;
+                                }
+                                PayMasterUpah::insert([
+                                        'tahun' => $data_tahun,
+                                        'bulan' => $data_bulan,
+                                        'nopek' => $datapb->nopeg,
+                                        'aard' => '09',        
+                                        'jmlcc' => '0',        
+                                        'ccl' => '0',        
+                                        'nilai' => $niljspribadipb * -1,        
+                                        'userid' => $request->userid,        
+                                        ]); 
+
+                                PayMasterBebanprshn::insert([
+                                        'tahun' => $data_tahun,
+                                        'bulan' => $data_bulan,
+                                        'nopek' => $datapb->nopeg,
+                                        'aard' => '10',        
+                                        'lastamount' => '0',        
+                                        'curramount' => $niljstaccidentpb,       
+                                        'userid' => $request->userid,        
+                                        ]);
+                                PayMasterBebanprshn::insert([
+                                        'tahun' => $data_tahun,
+                                        'bulan' => $data_bulan,
+                                        'nopek' => $datapb->nopeg,
+                                        'aard' => '11',        
+                                        'lastamount' => '0',        
+                                        'curramount' => $niljspensiunpb,       
+                                        'userid' => $request->userid,        
+                                        ]);
+
+                                PayMasterBebanprshn::insert([
+                                    'tahun' => $data_tahun,
+                                    'bulan' => $data_bulan,
+                                    'nopek' => $datapb->nopeg,
+                                    'aard' => '12',        
+                                    'lastamount' => '0',        
+                                    'curramount' => $niljslifepb,       
+                                    'userid' => $request->userid,        
+                                    ]);
+                                PayMasterBebanprshn::insert([
+                                    'tahun' => $data_tahun,
+                                    'bulan' => $data_bulan,
+                                    'nopek' => $datapb->nopeg,
+                                    'aard' => '13',        
+                                    'lastamount' => '0',        
+                                    'curramount' => $niljsmanualifepb,       
+                                    'userid' => $request->userid,        
+                                    ]);
+
+                                // 11.HITUNG IURAN DANA PENSIUN BEBAN PEKERJA DAN PERUSAHAAN
+                                $data_iurandanapensiunpb = DB::select("select pribadi,perusahaan,perusahaan3 from pay_tbl_danapensiun");
+                                foreach($data_iurandanapensiunpb as $data_iuranpb)
+                                {
+                                    $dapenpribadipb = $data_iuranpb->pribadi;
+                                    $dapenperusahaanpb = $data_iuranpb->perusahaan;
+                                    $dapenperusahaan3pb = $data_iuranpb->perusahaan3;
+                                }
+                                if($datapb->nopeg <> '709685'){
+                                    // HITUNG IURAN DANA PENSIUN PEKERJA/PRIBADI 
+                                    $nildapenpribadipb = ($dapenpribadipb/100) * $upahtetappensiunpb;
+                                    // HITUNG IURAN DANA PENSIUN BEBAN PERUSAHAAN
+                                    $nildapenperusahaanpb = ($dapenperusahaanpb/100) * $upahtetappensiunpb;
+                                    if($datapb->nopeg == '709669'){
+                                        $nildapenbnipb = ($dapenperusahaan3pb/100) * $upahtetappb;
+                                        PayMasterBebanprshn::insert([
+                                            'tahun' => $data_tahun,
+                                            'bulan' => $data_bulan,
+                                            'nopek' => $datapb->nopeg,
+                                            'aard' => '46',        
+                                            'lastamount' => '0',        
+                                            'curramount' => $nildapenbnipb,       
+                                            'userid' => $request->userid,        
+                                            ]);
+                                    }elseif($datapb->nopeg == '694287'){
+                                        $bazmapb = (2.5/100)*($upahallinpb - ($nildapenpribadipb+$niljspribadipb));
+                                        PayMasterUpah::insert([
+                                                'tahun' => $data_tahun,
+                                                'bulan' => $data_bulan,
+                                                'nopek' => $datapb->nopeg,
+                                                'aard' => '36',        
+                                                'jmlcc' => '0',        
+                                                'ccl' => '0',        
+                                                'nilai' => $bazmapb * -1,        
+                                                'userid' => $request->userid,        
+                                                ]); 
+                                    }else{
+                                        PayMasterUpah::insert([
+                                                'tahun' => $data_tahun,
+                                                'bulan' => $data_bulan,
+                                                'nopek' => $datapb->nopeg,
+                                                'aard' => '36',        
+                                                'jmlcc' => '0',        
+                                                'ccl' => '0',        
+                                                'nilai' => '0',        
+                                                'userid' => $request->userid,        
+                                                ]); 
+                                    }
+                                }else{
+                                    $nildapenpribadipb = '0';
+                                    $nildapenperusahaanpb = '0';
+                                }
+
+                                PayMasterUpah::insert([
+                                        'tahun' => $data_tahun,
+                                        'bulan' => $data_bulan,
+                                        'nopek' => $datapb->nopeg,
+                                        'aard' => '14',        
+                                        'jmlcc' => '0',        
+                                        'ccl' => '0',        
+                                        'nilai' => $nildapenpribadipb * -1,        
+                                        'userid' => $request->userid,        
+                                        ]); 
+                                PayMasterUpah::insert([
+                                        'tahun' => $data_tahun,
+                                        'bulan' => $data_bulan,
+                                        'nopek' => $datapb->nopeg,
+                                        'aard' => '15',        
+                                        'jmlcc' => '0',        
+                                        'ccl' => '0',        
+                                        'nilai' => $nildapenperusahaanpb,        
+                                        'userid' => $request->userid,        
+                                        ]); 
+                                TblPajak::where('tahun', $data_tahun)
+                                    ->where('bulan',$data_bulan)
+                                    ->where('nopeg',$datapb->nopeg)
+                                    ->update([
+                                        'dapen_pek' => $nildapenpribadipb,
+                                    ]);
+
+                                // 11.HITUNG TABUNGAN AARD 16
+                                $data_tabunganpb = DB::select("select perusahaan from pay_tbl_tabungan");
+                                if(!empty($data_tabunganpb)){
+                                    foreach($data_tabunganpb as $data_tabpb)
+                                    {
+                                        if($datapb->nopeg <> '709685'){
+                                            $iuranwajibpb = ($data_tabpb->perusahaan/100) * $upahtetappb;
+                                        }else{
+                                            $iuranwajibpb = '0';
+                                        }
+                                    }
+                                }else {
+                                    $iuranwajibpb = '0';
+                                }
+                                PayMasterBebanprshn::insert([
+                                            'tahun' => $data_tahun,
+                                            'bulan' => $data_bulan,
+                                            'nopek' => $datapb->nopeg,
+                                            'aard' => '16',        
+                                            'lastamount' => '0',        
+                                            'curramount' => $iuranwajibpb,       
+                                            'userid' => $request->userid,        
+                                            ]);
+
+                                // 12.CARI NILAI POTONGAN PKPP AARD 17 DAN HUTANG PKPP AARD 20
+                                $data_nilaipotonganpb = DB::select("select id_pinjaman,jml_pinjaman as jumlah,tenor as lamanya,round(angsuran,0) as angsuran from pay_mtrpkpp where nopek='$datapb->nopeg' and cair ='Y' and lunas<>'Y'");
+                                if(!empty($data_nilaipotonganpb)){
+                                    foreach($data_nilaipotonganpb as $data_nilaipb)
+                                    {
+                                        $idpinjamanpb = $data_nilaipb->id_pinjaman;
+                                        $totalpinjamanpb = $data_nilaipb->jumlah;
+                                        $lamapinjamapb = $data_nilaipb->lamanya;
+                                        $jumlahangsuranpb = $data_nila->angsuran * -1;
+                                    }
+                                    $data_potonganpkpp2pb = DB::select("select round(sum(pokok)) as totalpokok,count(*) as cclke from pay_skdpkpp where nopek='$datapb->nopeg' and tahun <= '$data_tahun' and bulan <= '$data_bulans' and id_pinjaman='$idpinjaman'");
+                                    foreach($data_potonganpkpp2pb as $data_potongpb)
+                                    {
+                                        $totalpokokpb = $data_potongpb->totalpokok;
+                                        $cclkepb = $data_potongpb->cclke;
+                                        $sisacicilanpb = $totalpinjamanpb - $totalpokokpb;
+                                    }
+                                    if($cclkepb == '0'){
+                                        $jumlahangsuranpb = '0';
+                                    }
+                                PayMasterHutang::insert([
+                                            'tahun' => $data_tahun,
+                                            'bulan' => $data_bulan,
+                                            'nopek' => $datapb->nopeg,
+                                            'aard' => '20',        
+                                            'lastamount' => '0',        
+                                            'curramount' => $sisacicilanpb,       
+                                            'userid' => $request->userid,        
+                                            ]);
+                                PayMasterUpah::insert([
+                                        'tahun' => $data_tahun,
+                                        'bulan' => $data_bulan,
+                                        'nopek' => $datapb->nopeg,
+                                        'aard' => '17',        
+                                        'jmlcc' => $lamapinjamapb,        
+                                        'ccl' => $cclkepb,        
+                                        'nilai' => $jumlahangsuranpb,        
+                                        'userid' => $request->userid,        
+                                        ]); 
+                                }else {
+                                    $lamapinjamapb = '0';
+                                    $cclkepb = '0';
+                                    $jumlahangsuranpb = '0';
+                                PayMasterUpah::insert([
+                                        'tahun' => $data_tahun,
+                                        'bulan' => $data_bulan,
+                                        'nopek' => $datapb->nopeg,
+                                        'aard' => '17',        
+                                        'jmlcc' => $lamapinjamapb,        
+                                        'ccl' => $cclkepb,        
+                                        'nilai' => $jumlahangsuranpb,        
+                                        'userid' => $request->userid,        
+                                        ]);
+                                }
+
+                                // 13.CARI NILAI POTONGAN PANJAR PESANGON AARD 18 DAN HUTANG PPRP AARD 21
+                                $data_nilaipotonganpanjarpb = DB::select("select nopek,aard,jmlcc,ccl,nilai from pay_potongan where bulan='$data_bulan' and tahun='$data_tahun' and nopek='$datapb->nopeg' and aard='18'");
+                                if(!empty($data_nilaipotonganpanjarpb)){
+                                    foreach($data_nilaipotonganpanjarpb as $data_nilaipb)
+                                    {
+                                        $jmlccpotongpprppb = $data_nilaipb->jmlcc;
+                                        $cclpotongpprppb = $data_nilaipb->ccl;
+                                        if($data_nilaipb->bilai < 0){
+                                            $nilaipotongpprppb = $data_nilaipb->nilai * -1;
+                                        }else{
+                                            $nilaipotongpprppb = $data_nilaipb->nilai;
+                                        }
+                                    }
+                                    $data_carihutangpprppb = DB::select("select tahun,bulan,aard,lastamount,curramount from pay_master_hutang where (tahun||bulan)=(select max(tahun||bulan) from pay_master_hutang where nopek='$datapb->nopeg' and aard='21') and nopek='$datapb->nopeg' and aard='21'");
+                                    foreach($data_carihutangpprppb as $data_caripb)
+                                    {
+                                        $tahunhutangpprppb = $data_caripb->tahun;
+                                        $bulanhutangpprppb = $data_caripb->bulan;
+                                        $aardhutangpprppb = $data_caripb->aard;
+                                        $lasthutangpprppb = $data_caripb->lastamount;
+                                        $currhutangpprppb = $data_caripb->curramount;
+                                        $lasthutangpprp1pb = $currhutangpprppb;
+                                        $currhutangpprp1pb = ($currhutangpprppb - $nilaipotongpprppb);
+                                    }
+                                PayMasterHutang::insert([
+                                            'tahun' => $data_tahun,
+                                            'bulan' => $data_bulan,
+                                            'nopek' => $datapb->nopeg,
+                                            'aard' => '21',        
+                                            'lastamount' => $lasthutangpprp1pb,        
+                                            'curramount' => $currhutangpprp1pb,       
+                                            'userid' => $request->userid,        
+                                            ]);
+                                PayMasterUpah::insert([
+                                        'tahun' => $data_tahun,
+                                        'bulan' => $data_bulan,
+                                        'nopek' => $datapb->nopeg,
+                                        'aard' => '18',        
+                                        'jmlcc' => $jmlccpotongpprppb,        
+                                        'ccl' => $cclpotongpprppb,        
+                                        'nilai' => $jumlahangsuranpb,        
+                                        'userid' => $request->userid,        
+                                        ]); 
+                                }else {
+                                    $jmlccpotongpprppb = '0';
+                                    $cclpotongpprppb = '0';
+                                    $jumlahangsuranpb = '0';
+                                PayMasterUpah::insert([
+                                        'tahun' => $data_tahun,
+                                        'bulan' => $data_bulan,
+                                        'nopek' => $datapb->nopeg,
+                                        'aard' => '18',        
+                                        'jmlcc' => $jmlccpotongpprppb,        
+                                        'ccl' => $cclpotongpprppb,        
+                                        'nilai' => $jumlahangsuranpb,        
+                                        'userid' => $request->userid,        
+                                        ]);
+                                }
+
+                                // 14.POTONGAN KOPERASI AARD 28
+                                $data_potongankoperasipb = DB::select("select nopek,aard,jmlcc,ccl,nilai from pay_potongan where bulan='$data_bulan' and tahun='$data_tahun' and nopek='$datapb->nopeg' and aard='28'");
+                                if(!empty($data_potongankoperasipb)){
+                                    foreach($data_potongankoperasipb as $data_potongankoppb)
+                                    {
+                                        $jmlccpotongkoperasipb = $data_potongankoppb->jmlcc;
+                                        $cclpotongkoperasipb = $data_potongankoppb->ccl;
+                                        if($data_potongankoppb->nilai < 0){
+                                            $nilaipotongkoperasipb = $data_potongankoppb->nilai;
+                                        }else{
+                                            $nilaipotongkoperasipb = $data_potongankoppb->nilai * -1;
+                                        }
+                                    }
+                                PayMasterUpah::insert([
+                                        'tahun' => $data_tahun,
+                                        'bulan' => $data_bulan,
+                                        'nopek' => $datapb->nopeg,
+                                        'aard' => '28',        
+                                        'jmlcc' => $jmlccpotongkoperasipb,        
+                                        'ccl' => $cclpotongkoperasipb,        
+                                        'nilai' => $nilaipotongkoperasipb,        
+                                        'userid' => $request->userid,        
+                                        ]);
+                                }else {
+                                    $jmlccpotongkoperasipb = '0';
+                                    $cclpotongkoperasipb = '0';
+                                    $nilaipotongkoperasipb = '0';
+                                PayMasterUpah::insert([
+                                        'tahun' => $data_tahun,
+                                        'bulan' => $data_bulan,
+                                        'nopek' => $datapb->nopeg,
+                                        'aard' => '28',        
+                                        'jmlcc' => $jmlccpotongkoperasipb,        
+                                        'ccl' => $cclpotongkoperasipb,        
+                                        'nilai' => $nilaipotongkoperasipb,        
+                                        'userid' => $request->userid,        
+                                        ]);
+                                }
+
+                                // 15.POTONGAN SUKA DUKA AARD 44
+                                $data_potongansukadukapb = DB::select("select nopek,aard,jmlcc,ccl,nilai from pay_potongan where bulan='$data_bulan' and tahun='$data_tahun' and nopek='$datapb->nopeg' and aard='44'");
+                                if(!empty($data_potongansukadukapb)){
+                                    foreach($data_potongansukadukapb as $data_potongansukapb)
+                                    {
+                                        $jmlccpotongsukadukapb = $data_potongansukapb->jmlcc;
+                                        $cclpotongsukadukapb = $data_potongansukapb->ccl;
+                                        if($data_potongansukapb->nilai < 0){
+                                            $nilaipotongsukadukapb = $data_potongansukapb->nilai;
+                                        }else {
+                                            $nilaipotongsukadukapb = $data_potongansukapb->nilai * -1;
+                                        }
+                                PayMasterUpah::insert([
+                                        'tahun' => $data_tahun,
+                                        'bulan' => $data_bulan,
+                                        'nopek' => $datapb->nopeg,
+                                        'aard' => '44',        
+                                        'jmlcc' => $jmlccpotongsukadukapb,        
+                                        'ccl' => $cclpotongsukadukapb,        
+                                        'nilai' => $nilaipotongsukadukapb,        
+                                        'userid' => $request->userid,        
+                                        ]);
+                                    }
+                                }else {
+                                    $jmlccpotongsukadukapb = '0';
+                                    $cclpotongsukadukapb = '0';
+                                    $nilaipotongsukadukapb = '0';
+                                PayMasterUpah::insert([
+                                        'tahun' => $data_tahun,
+                                        'bulan' => $data_bulan,
+                                        'nopek' => $datapb->nopeg,
+                                        'aard' => '44',        
+                                        'jmlcc' => $jmlccpotongsukadukapb,        
+                                        'ccl' => $cclpotongsukadukapb,        
+                                        'nilai' => $nilaipotongsukadukapb,        
+                                        'userid' => $request->userid,        
+                                        ]);
+                                }
+
+                                // 16.HITUNG TOTAL GAJI YANG DI DAPAT
+                                $data_hitungtotalgajipb = DB::select("select sum(nilai) as gajiasli,(sum(nilai)-round(sum(nilai),-3)) as pembulatan1,round(sum(nilai),-3) as hasil,(1000+(sum(nilai)-round(sum(nilai),-3))) as pembulatan2  from pay_master_upah where bulan='$data_bulan' and tahun='$data_tahun' and nopek='$datapb->nopeg'");
+                                if(!empty($data_hitungtotalgajipb)){
+                                    foreach($data_hitungtotalgajipb as $data_hitungtotalpb)
+                                    {
+                                        if($data_hitungtotalpb->pembulatan1 < 0){
+                                            $sisagajipb = $data_hitungtotalpb->pembulatan2;
+                                        }else {
+                                            $sisagajipb = $data_hitungtotalpb->pembulatan1;
+                                        }
+                                    }
+                                PayMasterUpah::insert([
+                                        'tahun' => $data_tahun,
+                                        'bulan' => $data_bulan,
+                                        'nopek' => $datapb->nopeg,
+                                        'aard' => '23',        
+                                        'jmlcc' => '0',        
+                                        'ccl' => '0',        
+                                        'nilai' => $sisagajipb * -1,        
+                                        'userid' => $request->userid,        
+                                        ]);
+                                }
+
+                                $bulan2pb = $data_bulan + 1;
+                                if($bulan2pb > 12){
+                                    $data_bulan2pb = 1;
+                                    $data_tahun2pb = $data_tahun + 1;
+                                }else{
+                                    $data_bulan2pb =$bulan2pb;
+                                    $data_tahun2pb = $data_tahun;
+                                }
+                                PayKoreksi::insert([
+                                                'tahun' => $data_tahun2pb,
+                                                'bulan' => $data_bulan2pb,
+                                                'nopek' => $datapb->nopeg,
+                                                'aard' => '07',        
+                                                'jmlcc' => '0',        
+                                                'ccl' => '0',        
+                                                'nilai' => $sisagajipb,        
+                                                'userid' => $request->userid,        
+                                                ]); 
+
+                                // 17.CARI NILAI YANG KENA PAJAK (BRUTO)
+                                $data_kenapajakpb = DB::select("select sum(a.nilai) as nilai1 from pay_master_upah a,pay_tbl_aard b where a.tahun='$data_tahun' and a.bulan='$data_bulan' and a.nopek='$datapb->nopeg' and a.aard=b.kode and b.kenapajak='Y'");
+                                if(!empty($data_kenapajakpb)){
+                                    foreach($data_kenapajakpb as $data_kenapb)
+                                    {
+                                        $nilaikenapajak1pb = $data_kenapb->nilai1;
+                                    }
+                                }else {
+                                    $nilaikenapajak1pb = '0';
+                                }
+                                $totkenapajakpb = (($nilaikenapajak1pb + $fasilitaspb)*12);
+
+                                // 18. CARI NILAI PENGURANG HITUNG BIAYA JABATAN
+                                $biayajabatan2pb = ((5/100) * $totkenapajakpb);
+                                if($biayajabatan2pb > 6000000){
+                                    $biayajabatanpb = 6000000;  
+                                }else{
+                                    $biayajabatanpb = $biayajabatan2pb;
+                                }                              
+                                
+                                $neto1tahunpb =  $totkenapajakpb - $biayajabatanpb;
+                                TblPajak::where('tahun', $data_tahun)
+                                            ->where('bulan',$data_bulan)
+                                            ->where('nopeg',$datapb->nopeg)
+                                            ->update([
+                                                'bjabatan' => $biayajabatanpb,
+                                            ]);
+
+                                // 19.CARI NILAI TIDAK KENA PAJAK
+                                $data_carinilairdkkenapajakpb = DB::select("select a.kodekeluarga,b.nilai from sdm_master_pegawai a,pay_tbl_ptkp b where a.kodekeluarga=b.kdkel and a.nopeg='$datapb->nopeg'");
+                                if(!empty($data_carinilairdkkenapajakpb)){
+                                    foreach($data_carinilairdkkenapajakpb as $data_carinilaipb)
+                                    {
+                                        $nilaiptkp1pb = $data_carinilaipb->nilai;
+                                    }
+                                }else {
+                                        $nilaiptkp1pb = '0';
+                                }
+
+                                // 20.PENGHASILAN KENA PAJAK SETAHUN	
+                                $nilaikenapajakapb = $neto1tahunpb - $nilaiptkp1pb;
+                                TblPajak::where('tahun', $data_tahun)
+                                                ->where('bulan',$data_bulan)
+                                                ->where('nopeg',$datapb->nopeg)
+                                                ->update([
+                                                    'ptkp' => $nilaiptkp1pb,
+                                                    'pkp' => $nilaikenapajakapb,
+                                                ]);
+
+                                // 20.HITUNG PAJAK PENGHASILAN TERUTANG
+                                
+                                $pajakbulanpb = pajak($nilaikenapajakapb);
+                                PayMasterUpah::insert([
+                                            'tahun' => $data_tahun,
+                                            'bulan' => $data_bulan,
+                                            'nopek' => $datapb->nopeg,
+                                            'aard' => '26',        
+                                            'jmlcc' => '0',        
+                                            'ccl' => '0',        
+                                            'nilai' => $pajakbulanpb * -1,        
+                                            'userid' => $request->userid,        
+                                            ]); 
+                                PayMasterUpah::insert([
+                                            'tahun' => $data_tahun,
+                                            'bulan' => $data_bulan,
+                                            'nopek' => $datapb->nopeg,
+                                            'aard' => '27',        
+                                            'jmlcc' => '0',        
+                                            'ccl' => '0',        
+                                            'nilai' => $pajakbulanpb,        
+                                            'userid' => $request->userid,        
+                                            ]); 
+                                TblPajak::where('tahun', $data_tahun)
+                                                ->where('bulan',$data_bulan)
+                                                ->where('nopeg',$datapb->nopeg)
+                                                ->update([
+                                                    'pajak_setor' => $pajakbulanpb,
+                                                ]); 
+                        }
+                        
+
+
+                    }elseif($request->prosesupah == 'N'){
+                        
+                        // PekerjaBaru()
+                        $data_pegawai_kontrakn = SdmMasterPegawai::where('status','N')->orderBy('nopeg', 'asc')->get();
+                        foreach($data_pegawai_kontrakn as $datapj)
+                        {
+                            $status1pj = $datapj->status;
+                            $kodekelpj = $datapj->kodekeluarga;
+                            $tglaktifpj = date("j",strtotime($datapj->tglaktifdns));
+                            // 1.CARI NILAI UPAH ALL IN AARD 02
+                            $data_sdmallinpj = DB::select("select nilai from sdm_allin where nopek='$datapj->nopeg'");
+                            if(!empty($data_sdmallinpj)){
+                                foreach($data_sdmallinpj as $data_sdmpj)
+                                        {
+                                            if($data_sdmpj->nilai <> ""){
+                                                $upahmentahpj = $data_sdmpj->nilai;
+                                                $upahallinpj = ((30 - $tglaktifpj)/30) * $upahmentahpj;
+                                            }else {
+                                                $upahallinpj ='0';
                                             }
                                         }
                                 }else {
-                                    $upahallin ='0';
+                                    $upahallinpj ='0';
                                 } 
                             PayMasterUpah::insert([
                                     'tahun' => $data_tahun,
                                     'bulan' => $data_bulan,
-                                    'nopek' => $data->nopeg,
+                                    'nopek' => $datapj->nopeg,
                                     'aard' => '02',        
                                     'jmlcc' => '0',        
                                     'ccl' => '0',        
-                                    'nilai' => $upahallin,        
+                                    'nilai' => $upahallinpj,        
                                     'userid' => $request->userid,        
                                     ]);
 
                             // 2.CARI TUNJANGAN JABATAN JIKA ADA
-                            $data_tunjanganjabatan = DB::select("select a.nopeg,a.kdbag,a.kdjab,b.goljob,b.tunjangan from sdm_jabatan a,sdm_tbl_kdjab b where a.nopeg='$data->nopeg' and a.kdbag=b.kdbag and a.kdjab=b.kdjab and a.mulai=(select max(mulai) from sdm_jabatan where nopeg='$data->nopeg')");
-                            if(!empty($data_tunjanganjabatan)){
-                                foreach($data_tunjanganjabatan as $data_tunjang)
+                            $data_tunjanganjabatanpj = DB::select("select a.nopeg,a.kdbag,a.kdjab,b.goljob,b.tunjangan from sdm_jabatan a,sdm_tbl_kdjab b where a.nopeg='$datapj->nopeg' and a.kdbag=b.kdbag and a.kdjab=b.kdjab and a.mulai=(select max(mulai) from sdm_jabatan where nopeg='$datapj->nopeg')");
+                            if(!empty($data_tunjanganjabatanpj)){
+                                foreach($data_tunjanganjabatanpj as $data_tunjangpj)
                                 {
-                                    if($data_tunjang->tunjangan <> ""){
-                                        if($data_tunjang->goljob <= '03'){
-                                            $tunjang = $data_tunjang->tunjangan;
-			                                $tunjjabatan = ((30 - $tglaktif)/30) * $tunjang;
+                                    if($data_tunjangpj->tunjangan <> ""){
+                                        if($data_tunjangpj->goljob <= '03'){
+                                            $tunjangpj = $data_tunjangpj->tunjangan;
+                                            $tunjjabatanpj = ((30 - $tglaktifpj)/30) * $tunjangpj;
                                         }else {
-                                            $tunjjabatan = '0';
+                                            $tunjjabatanpj = '0';
                                         }
                                     }else {
-                                        $tunjjabatan = '0';
+                                        $tunjjabatanpj = '0';
                                     }
                                 }
                             }else{
-                                $tunjjabatan = '0';
+                                $tunjjabatanpj = '0';
                             }
                             PayMasterUpah::insert([
                                     'tahun' => $data_tahun,
                                     'bulan' => $data_bulan,
-                                    'nopek' => $data->nopeg,
+                                    'nopek' => $datapj->nopeg,
                                     'aard' => '03',        
                                     'jmlcc' => '0',        
                                     'ccl' => '0',        
-                                    'nilai' => $tunjjabatan,        
+                                    'nilai' => $tunjjabatanpj,        
                                     'userid' => $request->userid,        
                                     ]);
 
                             // 3.CARI NILAI LEMBUR AARD 05
-                            $data_carinilailembur = DB::select("select sum(makanpg+makansg+makanml+transport+lembur) as totlembur from pay_lembur where nopek='$data->nopeg' and bulan='$data_bulan' and tahun='$data_tahun'");
-                            if(!empty($data_carinilailembur)){
-                                foreach($data_carinilailembur as $data_carilembur)
+                            $data_carinilailemburpj = DB::select("select sum(makanpg+makansg+makanml+transport+lembur) as totlembur from pay_lembur where nopek='$datapj->nopeg' and bulan='$data_bulan' and tahun='$data_tahun'");
+                            if(!empty($data_carinilailemburpj)){
+                                foreach($data_carinilailemburpj as $data_carilemburpj)
                                 {
-                                    if($data_carilembur->totlembur <> ""){
-                                        $totallembur = $data_carilembur->totlembur;
+                                    if($data_carilemburpj->totlembur <> ""){
+                                        $totallemburpj = $data_carilemburpj->totlembur;
                                     }else {
-                                        $totallembur = '0';
+                                        $totallemburpj = '0';
                                     }
                                 }
                             }else {
-                                $totallembur = '0';
+                                $totallemburpj = '0';
                             }
                             PayMasterUpah::insert([
                                     'tahun' => $data_tahun,
                                     'bulan' => $data_bulan,
-                                    'nopek' => $data->nopeg,
+                                    'nopek' => $datapj->nopeg,
                                     'aard' => '05',        
                                     'jmlcc' => '0',        
                                     'ccl' => '0',        
-                                    'nilai' => $totallembur,        
+                                    'nilai' => $totallemburpj,        
                                     'userid' => $request->userid,        
                                     ]);
 
                             // 4.CARI NILAI SISA BULAN LALU AARD 07
-                            $data_sisanilai = DB::select("select nopek,aard,jmlcc,ccl,round(nilai) as nilai from pay_koreksi where bulan='$data_bulans' and tahun='$data_tahun' and nopek='$data->nopeg' and aard='07'");
-                            if(!empty($data_sisanilai)){
-                                    foreach($data_sisanilai as $data_sdm)
+                            $data_sisanilaipj = DB::select("select nopek,aard,jmlcc,ccl,round(nilai) as nilai from pay_koreksi where bulan='$data_bulans' and tahun='$data_tahun' and nopek='$datapj->nopeg' and aard='07'");
+                            if(!empty($data_sisanilaipj)){
+                                    foreach($data_sisanilaipj as $data_sdmpj)
                                     {
-                                        if($data_sdm->nilai <> ""){
-                                            $fassisa = $data_sdm->nilai;
+                                        if($data_sdmpj->nilai <> ""){
+                                            $fassisapj = $data_sdmpj->nilai;
                                         }else{
-                                            $fassisa = '0';
+                                            $fassisapj = '0';
                                         }
                                     }
                             }else{
-                                $fassisa = '0';
+                                $fassisapj = '0';
                             }
                             PayMasterUpah::insert([
                                     'tahun' => $data_tahun,
                                     'bulan' => $data_bulan,
-                                    'nopek' => $data->nopeg,
+                                    'nopek' => $datapj->nopeg,
                                     'aard' => '07',        
                                     'jmlcc' => '0',        
                                     'ccl' => '0',        
-                                    'nilai' => $fassisa,        
+                                    'nilai' => $fassisapj,        
                                     'userid' => $request->userid,        
                                     ]); 
 
                             // 5.CARI NILAI KOREKSI LAIN AARD 08
-                            $data_carinilaikoreksi = DB::select("select sum(nilai) as nilai from pay_koreksi where bulan='$data_bulan' and tahun='$data_tahun' and nopek='$data->nopeg' and aard='08'");
-                                if(!empty($data_carinilaikoreksi)){
-                                    foreach($data_carinilaikoreksi as $data_carinilai)
+                            $data_carinilaikoreksipj = DB::select("select sum(nilai) as nilai from pay_koreksi where bulan='$data_bulan' and tahun='$data_tahun' and nopek='$datapj->nopeg' and aard='08'");
+                                if(!empty($data_carinilaikoreksipj)){
+                                    foreach($data_carinilaikoreksipj as $data_carinilaipj)
                                     {
-                                        if($data_carinilai->nilai <> ""){
-                                            $faslain = $data_carinilai->nilai;
+                                        if($data_carinilaipj->nilai <> ""){
+                                            $faslainpj = $data_carinilaipj->nilai;
                                         }else{
-                                            $faslain = '0';
+                                            $faslainpj = '0';
                                         }
                                     }
                                 }else {
-                                    $faslain = '0';
+                                    $faslainpj = '0';
                                 }
 
                                 PayMasterUpah::insert([
                                         'tahun' => $data_tahun,
                                         'bulan' => $data_bulan,
-                                        'nopek' => $data->nopeg,
+                                        'nopek' => $datapj->nopeg,
                                         'aard' => '08',        
                                         'jmlcc' => '0',        
                                         'ccl' => '0',        
-                                        'nilai' => $faslain,        
+                                        'nilai' => $faslainpj,        
                                         'userid' => $request->userid,        
                                         ]); 
 
                             // 6.CARI NILAI POTONGAN LAIN AARD 19 DAN HUTANG LAIN AARD 22
-                            $data_nilaipotonganaard19 = DB::select("select nopek,aard,jmlcc,ccl,nilai from pay_potongan where bulan='$data_bulan' and tahun='$data_tahun' and nopek='$data->nopeg' and aard='19'");
-                            if(!empty($data_nilaipotonganaard19)){
-                                foreach($data_nilaipotonganaard19 as $data_nilaiaard)
+                            $data_nilaipotonganaard19pj = DB::select("select nopek,aard,jmlcc,ccl,nilai from pay_potongan where bulan='$data_bulan' and tahun='$data_tahun' and nopek='$datapj->nopeg' and aard='19'");
+                            if(!empty($data_nilaipotonganaard19pj)){
+                                foreach($data_nilaipotonganaard19pj as $data_nilaiaardpj)
                                 {
-                                    $jmlccpotonglain = $data_nilaiaard->jmlcc;
-		                            $cclpotonglain = $data_nilaiaard->ccl;
-                                    if($data_nilaiaard->nilai < 0){
-                                        $nilaipotonglain = $data_nilaiaard->nilai;
+                                    $jmlccpotonglainpj = $data_nilaiaardpj->jmlcc;
+                                    $cclpotonglainpj = $data_nilaiaardpj->ccl;
+                                    if($data_nilaiaardpj->nilai < 0){
+                                        $nilaipotonglainpj = $data_nilaiaardpj->nilai;
                                     }else {
-                                        $nilaipotonglain = $data_nilaiaard->nilai * -1;
+                                        $nilaipotonglainpj = $data_nilaiaardpj->nilai * -1;
                                     }
-                                    $data_carihutanglain = DB::select("select tahun,bulan,aard,lastamount,curramount from pay_master_hutang where (tahun||bulan)=(select max(tahun||bulan) from pay_master_hutang where nopek='$data->nopeg' and aard='22') and nopek='$data->nopeg' and aard='22'");
-                                    foreach($data_carihutanglain as $data_car)
+                                    $data_carihutanglainpj = DB::select("select tahun,bulan,aard,lastamount,curramount from pay_master_hutang where (tahun||bulan)=(select max(tahun||bulan) from pay_master_hutang where nopek='$datapj->nopeg' and aard='22') and nopek='$datapj->nopeg' and aard='22'");
+                                    foreach($data_carihutanglainpj as $data_carpj)
                                     {
-                                        $tahunhutanglain = $data_car->tahun;
-                                        $bulanhutanglain = $data_car->bulan;
-                                        $aardhutanglain =   $data_car->aard;
-                                        $lasthutanglain = $data_car->lastamount;
-                                        $currhutanglain = $data_car->curramount;
+                                        $tahunhutanglainpj = $data_carpj->tahun;
+                                        $bulanhutanglainpj = $data_carpj->bulan;
+                                        $aardhutanglainpj =   $data_carpj->aard;
+                                        $lasthutanglainpj = $data_carpj->lastamount;
+                                        $currhutanglainpj = $data_carpj->curramount;
                                         
-                                        $lasthutanglain1 = $currhutanglain; 
-                                        $currhutanglain1 = ($currhutanglain + $nilaipotonglain);
-                                         PayMasterHutang::insert([
+                                        $lasthutanglain1pj = $currhutanglainpj; 
+                                        $currhutanglain1pj = ($currhutanglainpj + $nilaipotonglainpj);
+                                        PayMasterHutang::insert([
                                                     'tahun' => $data_tahun,
                                                     'bulan' => $data_bulan,
-                                                    'nopek' => $data->nopeg,
+                                                    'nopek' => $datapj->nopeg,
                                                     'aard' => '22',        
-                                                    'lastamount' => $lasthutanglain1,        
-                                                    'curramount' => $currhutanglain1,       
+                                                    'lastamount' => $lasthutanglain1pj,        
+                                                    'curramount' => $currhutanglain1pj,       
                                                     'userid' => $request->userid,        
                                                     ]);
                                         PayMasterUpah::insert([
                                                 'tahun' => $data_tahun,
                                                 'bulan' => $data_bulan,
-                                                'nopek' => $data->nopeg,
+                                                'nopek' => $datapj->nopeg,
                                                 'aard' => '19',        
-                                                'jmlcc' => $jmlccpotonglain,        
-                                                'ccl' => $cclpotonglain,        
-                                                'nilai' => $nilaipotonglain,        
+                                                'jmlcc' => $jmlccpotonglainpj,        
+                                                'ccl' => $cclpotonglainpj,        
+                                                'nilai' => $nilaipotonglainpj,        
                                                 'userid' => $request->userid,        
                                                 ]); 
                                     }
                                 }
                             }else {
-                                $jmlccpotonglain = '0';
-                                $cclpotonglain = '0';
-                                $nilaipotonglain = '0';
+                                $jmlccpotonglainpj = '0';
+                                $cclpotonglainpj = '0';
+                                $nilaipotonglainpj = '0';
                                 PayMasterUpah::insert([
                                                 'tahun' => $data_tahun,
                                                 'bulan' => $data_bulan,
-                                                'nopek' => $data->nopeg,
+                                                'nopek' => $datapj->nopeg,
                                                 'aard' => '19',        
-                                                'jmlcc' => $jmlccpotonglain,        
-                                                'ccl' => $cclpotonglain,        
-                                                'nilai' => $nilaipotonglain,        
+                                                'jmlcc' => $jmlccpotonglainpj,        
+                                                'ccl' => $cclpotonglainpj,        
+                                                'nilai' => $nilaipotonglainpj,        
                                                 'userid' => $request->userid,        
                                                 ]); 
                             }
 
                             // 7.HITUNG TOTAL GAJI YANG DI DAPAT 
-                            $totalgaji = DB::select("select sum(nilai) as gajiasli,(sum(nilai)-round(sum(nilai),-3)) as pembulatan1,round(sum(nilai),-3) as hasil,(1000+(sum(nilai)-round(sum(nilai),-3))) as pembulatan2  from pay_master_upah where bulan='$data_bulan' and tahun='$data_tahun' and nopek='$data->nopeg'");
-                                if(!empty($totalgaji)){
-                                    foreach($totalgaji as $total)
+                            $totalgajipj = DB::select("select sum(nilai) as gajiasli,(sum(nilai)-round(sum(nilai),-3)) as pembulatan1,round(sum(nilai),-3) as hasil,(1000+(sum(nilai)-round(sum(nilai),-3))) as pembulatan2  from pay_master_upah where bulan='$data_bulan' and tahun='$data_tahun' and nopek='$datapj->nopeg'");
+                                if(!empty($totalgajipj)){
+                                    foreach($totalgajipj as $totalpj)
                                     {
-                                        if($total->pembulatan1 < 0){
-                                            $sisagaji = $total->pembulatan2;
+                                        if($totalpj->pembulatan1 < 0){
+                                            $sisagajipj = $totalpj->pembulatan2;
                                         }else{
-                                            $sisagaji = $total->pembulatan1;
+                                            $sisagajipj = $totalpj->pembulatan1;
                                         }
                                     }
                                 }else{
-                                    $sisagaji = '0';
+                                    $sisagajipj = '0';
                                 }
                                 PayMasterUpah::insert([
                                             'tahun' => $data_tahun,
                                             'bulan' => $data_bulan,
-                                            'nopek' => $data->nopeg,
+                                            'nopek' => $datapj->nopeg,
                                             'aard' => '23',        
                                             'jmlcc' => '0',        
                                             'ccl' => '0',        
-                                            'nilai' => $sisagaji * -1,        
+                                            'nilai' => $sisagajipj * -1,        
                                             'userid' => $request->userid,        
                                             ]); 
 
                             
-                                $bulan2 = $data_bulan + 1;
-                                if($bulan2 >12){
-                                    $data_bulan2 = 1;
-                                    $data_tahun2 = $data_tahun + 1;
+                                $bulan2pj = $data_bulan + 1;
+                                if($bulan2pj >12){
+                                    $data_bulan2pj = 1;
+                                    $data_tahun2pj = $data_tahun + 1;
                                 }else{
-                                    $data_bulan2 =$bulan2;
-                                    $data_tahun2 = $data_tahun;
+                                    $data_bulan2pj =$bulan2pj;
+                                    $data_tahun2pj = $data_tahun;
                                 }
                                 PayKoreksi::insert([
-                                                    'tahun' => $data_tahun2,
-                                                    'bulan' => $data_bulan2,
-                                                    'nopek' => $data->nopeg,
+                                                    'tahun' => $data_tahun2pj,
+                                                    'bulan' => $data_bulan2pj,
+                                                    'nopek' => $datapj->nopeg,
                                                     'aard' => '07',        
                                                     'jmlcc' => '0',        
                                                     'ccl' => '0',        
-                                                    'nilai' => $sisagaji,        
+                                                    'nilai' => $sisagajipj,        
                                                     'userid' => $request->userid,        
                                                     ]); 
 
                                 // 8.HITUNG PAJAK PPH21 CARI NILAI YANG KENA PAJAK (BRUTO)
-                                $kenapajak = DB::select("select sum(a.nilai) as nilai1 from pay_master_upah a,pay_tbl_aard b where a.tahun='$data_tahun' and a.bulan='$data_bulan' and a.nopek='$data->nopeg' and a.aard=b.kode and b.kenapajak='Y'");
-                                foreach($kenapajak as $kenap)
+                                $kenapajakpj = DB::select("select sum(a.nilai) as nilai1 from pay_master_upah a,pay_tbl_aard b where a.tahun='$data_tahun' and a.bulan='$data_bulan' and a.nopek='$datapj->nopeg' and a.aard=b.kode and b.kenapajak='Y'");
+                                foreach($kenapajakpj as $kenappj)
                                 {
-                                    if($kenap->nilai1 <> ""){
-                                        $nilaikenapajak1 = $kenap->nilai1;
+                                    if($kenappj->nilai1 <> ""){
+                                        $nilaikenapajak1pj = $kenappj->nilai1;
                                     }else{
-                                        $nilaikenapajak1 = '0';
+                                        $nilaikenapajak1pj = '0';
                                     }
                                 }
-                                $totkenapajak = $nilaikenapajak1 * 12;
+                                $totkenapajakpj = $nilaikenapajak1pj * 12;
                                 
                                 // 9.CARI NILAI TIDAK KENA PAJAK
-                                $datatdkkenapajak = DB::select("select a.kodekeluarga,b.nilai from sdm_master_pegawai a,pay_tbl_ptkp b where a.kodekeluarga=b.kdkel and a.nopeg='$data->nopeg'");
-                                foreach($datatdkkenapajak as $tdkkenap)
+                                $datatdkkenapajakpj = DB::select("select a.kodekeluarga,b.nilai from sdm_master_pegawai a,pay_tbl_ptkp b where a.kodekeluarga=b.kdkel and a.nopeg='$datapj->nopeg'");
+                                foreach($datatdkkenapajakpj as $tdkkenappj)
                                 {
-                                    if($tdkkenap->nilai1 <> ""){
-                                        $nilaiptkp1 = $tdkkenap->nilai1;
+                                    if($tdkkenappj->nilai1 <> ""){
+                                        $nilaiptkp1pj = $tdkkenappj->nilai1;
                                     }else{
-                                        $nilaiptkp1 = '0';
+                                        $nilaiptkp1pj = '0';
                                     }
                                 }
                                 // 9.PENGHASILAN KENA PAJAK SETAHUN	
-                                $nilaikenapajak = $totkenapajak - $nilaiptkp1;
-                                $sisapokok = $nilaikenapajak;
-                                if($sisapokok > 0){
-                                    $sisapokok1 = $sisapokok;
-                                    if($sisapokok1 > 0 and $sisapokok1 < $range){
-                                        $pph21r = $sisapokok1 * $prosen;
-                                    }elseif($sisapokok1 > 0 and $sisapokok1 >= $range ){
-                                        $pph21r = $range * $prosen;
-                                    }else{
-                                        $pph21r = 0;
-                                    }
-                                }else {
-                                    $pph21r = 0;
-                                }
-                                $pph21ok =  $pph21r;
-                                $pajakbulan = ($pph21ok/12);
+                                $nilaikenapajakpj = $totkenapajakpj - $nilaiptkp1pj;
+                                
+                                $pajakbulanpj = pajak($nilaikenapajakpj);
                                 PayMasterUpah::insert([
                                             'tahun' => $data_tahun,
                                             'bulan' => $data_bulan,
-                                            'nopek' => $data->nopeg,
+                                            'nopek' => $datapj->nopeg,
                                             'aard' => '26',        
                                             'jmlcc' => '0',        
                                             'ccl' => '0',        
-                                            'nilai' => $pajakbulan * -1,        
+                                            'nilai' => $pajakbulanpj * -1,        
                                             'userid' => $request->userid,        
                                             ]); 
                                 PayMasterUpah::insert([
                                             'tahun' => $data_tahun,
                                             'bulan' => $data_bulan,
-                                            'nopek' => $data->nopeg,
+                                            'nopek' => $datapj->nopeg,
                                             'aard' => '27',        
                                             'jmlcc' => '0',        
                                             'ccl' => '0',        
-                                            'nilai' => $pajakbulan,        
+                                            'nilai' => $pajakbulanpj,        
                                             'userid' => $request->userid,        
                                             ]);                         
                         } 
                         
-                        StatusBayarGaji::insert([
-                            'tahun' => $data_tahun,
-                            'bulan' => $data_bulan,
-                            'statpbd' => 'N',      
-                            ]); 
-                        Alert::success('Data Upah Berhasil Diproses', 'Berhasil')->persistent(true);
-                        return redirect()->route('proses_gaji.index');
-                
-                
-                
-                }elseif($request->prosesupah == 'C'){
 
-                        // PekerjaTetap()
-
-                        $data_pegawai = SdmMasterPegawai::where('status','C')->orderBy('nopeg', 'asc')->get();
-                        foreach($data_pegawai as $data)
+                    }elseif($request->prosesupah == 'U'){
+                        
+                        
+                        // Pengurus()
+                        $data_pegawai_kontraku = SdmMasterPegawai::where('status','U')->orderBy('nopeg', 'asc')->get();
+                        foreach($data_pegawai_kontraku as $dataps)
                         {
                             TblPajak::insert([
-                                'tahun' => $data_tahun,
-                                'bulan' => $data_bulan,
-                                'nopeg' => $data->nopeg,
-                                'status' => $data->kodekeluarga,        
-                                ]); 
-
-                            // 1.CARI UPAH TETAP AARD 01
-                            $data_sdmut = DB::select("select a.ut from sdm_ut a where a.nopeg='$data->nopeg' and a.mulai=(select max(mulai) from sdm_ut where nopeg='$data->nopeg')");
-                            if(!empty($data_sdmut)){
-                                    foreach($data_sdmut as $data_sdm)
-                                    {
-                                        if($data_sdm->ut <> ""){
-                                            $upahtetap = $data_sdm->ut;
-                                        }else {
-                                            $upahtetap = '0';
-                                        }
-                                    }
-                            }else{
-                                $upahtetap = '0';
-                            }
-                            PayMasterUpah::insert([
                                     'tahun' => $data_tahun,
                                     'bulan' => $data_bulan,
-                                    'nopek' => $data->nopeg,
-                                    'aard' => '01',        
-                                    'jmlcc' => '0',        
-                                    'ccl' => '0',        
-                                    'nilai' => $upahtetap,        
-                                    'userid' => $request->userid,        
-                                    ]);
-                            
-                            TblPajak::where('tahun', $data_tahun)
-                                ->where('bulan',$data_bulan)
-                                ->where('nopeg',$data->nopeg)
-                                ->update([
-                                    'upah' => $upahtetap,
-                                ]);
-
-                            // 2.TUNJANGAN JABATAN AARD 03
-                            $data_sdmjabatan = DB::select("select a.nopeg,a.kdbag,a.kdjab,b.goljob,b.tunjangan from sdm_jabatan a,sdm_tbl_kdjab b where a.nopeg='$data->nopeg' and a.kdbag=b.kdbag and a.kdjab=b.kdjab and a.mulai=(select max(mulai) from sdm_jabatan where nopeg='$data->nopeg')");
-                            if(!empty($data_sdmjabatan)){
-                                    foreach($data_sdmjabatan as $data_sdmjab)
-                                    {
-                                        $tunjabatan = $data_sdmjab->tunjangan;
-                                    }
-                            }else{
-                                $tunjabatan = '0';
-                            }
-                            PayMasterUpah::insert([
-                                    'tahun' => $data_tahun,
-                                    'bulan' => $data_bulan,
-                                    'nopek' => $data->nopeg,
-                                    'aard' => '03',        
-                                    'jmlcc' => '0',        
-                                    'ccl' => '0',        
-                                    'nilai' => $tunjabatan,        
-                                    'userid' => $request->userid,        
-                                    ]); 
-
-                            TblPajak::where('tahun', $data_tahun)
-                                ->where('bulan',$data_bulan)
-                                ->where('nopeg',$data->nopeg)
-                                ->update([
-                                    'tunjjabat' => $tunjabatan,
-                                ]);
-
-                            // 3.TUNJANGAN BIAYA HIDUP AARD AARD = 04
-                            $data_sdmtunjangan = DB::select("select a.golgaji, b.nilai from sdm_golgaji a,pay_tbl_tunjangan b where a.nopeg='$data->nopeg' and a.golgaji=b.golongan and a.tanggal=(select max(tanggal) from sdm_golgaji where nopeg ='$data->nopeg')");
-                            if(!empty($data_sdmtunjangan)){
-                                    foreach($data_sdmtunjangan as $data_sdm)
-                                    {
-                                        $tunjabatanhidup = $data_sdm->nilai;
-                                    }
-                            }else{
-                                $tunjabatanhidup = '0';
-                            }
-                            PayMasterUpah::insert([
-                                    'tahun' => $data_tahun,
-                                    'bulan' => $data_bulan,
-                                    'nopek' => $data->nopeg,
-                                    'aard' => '04',        
-                                    'jmlcc' => '0',        
-                                    'ccl' => '0',        
-                                    'nilai' => $tunjabatanhidup,        
-                                    'userid' => $request->userid,        
-                                    ]); 
-
-                            TblPajak::where('tahun', $data_tahun)
-                                ->where('bulan',$data_bulan)
-                                ->where('nopeg',$data->nopeg)
-                                ->update([
-                                    'tunjdaerah' => $tunjabatanhidup,
-                                ]);
-
-                            // 4.FASILITAS CUTI AARD 06
-                            $data_sdmfcuti = SdmMasterPegawai::where('nopeg',$data->nopeg)->get();
-                                foreach($data_sdmfcuti as $data_sdm)
-                                {   
-                                    $tahun = date('Y', strtotime($data_sdm->fasilitas));
-                                    $bulan = ltrim(date('m', strtotime($data_sdm->fasilitas)),'0');
-                                    $sisatahun = $data_tahun - $tahun;
-                                    $sisabulan = $data_bulan - $bulan;
-                                }
-                                if($sisabulan == '11' and $sisatahun == '0'){
-                                    $uangcuti = $upahtetap + $tunjabatan + $tunjabatanhidup;
-                                    $fasilitas = 1.5 * $uangcuti;
-                                }elseif($sisabulan == '11' and $sisatahun > '0'){
-                                    $uangcuti = $upahtetap + $tunjabatan + $tunjabatanhidup;
-                                    $fasilitas = 1.5 * $uangcuti;
-                                }elseif($sisabulan == '-1' and $sisatahun > '0'){
-                                    $uangcuti = $upahtetap + $tunjabatan + $tunjabatanhidup;
-                                    $fasilitas = 1.5 * $uangcuti;
-                                }else{
-                                    $fasilitas = '0';
-                                }
-                            PayMasterUpah::insert([
-                                    'tahun' => $data_tahun,
-                                    'bulan' => $data_bulan,
-                                    'nopek' => $data->nopeg,
-                                    'aard' => '06',        
-                                    'jmlcc' => '0',        
-                                    'ccl' => '0',        
-                                    'nilai' => $fasilitas,        
-                                    'userid' => $request->userid,        
-                                    ]); 
-
-                            TblPajak::where('tahun', $data_tahun)
-                                ->where('bulan',$data_bulan)
-                                ->where('nopeg',$data->nopeg)
-                                ->update([
-                                    'gapok' => $fasilitas,
-                                ]);
-
-                            // 5.CARI NILAI LEMBUR AARD 05
-                            $data_lembur = DB::select("select Sum(makanpg+makansg+makanml+transport+lembur) as totlembur from pay_lembur where nopek='$data->nopeg' And bulan = '$data_bulan' AND tahun='$data_tahun'");                            
-                            if(!empty($data_lembur)){
-                                    foreach($data_lembur as $data_sdm)
-                                    {
-                                        if($data_sdm->totlembur <> ""){
-                                            $totallembur = $data_sdm->totlembur;
-                                        }else{
-                                            $totallembur = '0';
-                                        }
-                                    }
-                            }else{
-                                $totallembur = '0';
-                            }
-                            PayMasterUpah::insert([
-                                    'tahun' => $data_tahun,
-                                    'bulan' => $data_bulan,
-                                    'nopek' => $data->nopeg,
-                                    'aard' => '05',        
-                                    'jmlcc' => '0',        
-                                    'ccl' => '0',        
-                                    'nilai' => $totallembur,        
-                                    'userid' => $request->userid,        
-                                    ]); 
-
-                            TblPajak::where('tahun', $data_tahun)
-                                ->where('bulan',$data_bulan)
-                                ->where('nopeg',$data->nopeg)
-                                ->update([
-                                    'lembur' => $totallembur,
-                                ]);
-
-                            // 6.CARI NILAI SISA BULAN LALU AARD 07
-                            $data_sisanilai = DB::select("select nopek,aard,jmlcc,ccl,round(nilai) as nilai from pay_koreksi where bulan='$data_bulans' and tahun='$data_tahun' and nopek='$data->nopeg' and aard='07'");
-                            if(!empty($data_sisanilai)){
-                                    foreach($data_sisanilai as $data_sdm)
-                                    {
-                                        if($data_sdm->nilai <> ""){
-                                            $fassisa = $data_sdm->nilai;
-                                        }else{
-                                            $fassisa = '0';
-                                        }
-                                    }
-                            }else{
-                                $fassisa = '0';
-                            }
-                            PayMasterUpah::insert([
-                                    'tahun' => $data_tahun,
-                                    'bulan' => $data_bulan,
-                                    'nopek' => $data->nopeg,
-                                    'aard' => '07',        
-                                    'jmlcc' => '0',        
-                                    'ccl' => '0',        
-                                    'nilai' => $fassisa,        
-                                    'userid' => $request->userid,        
-                                    ]); 
-
-                            //7.CARI NILAI PERSENTASE DARI TABEL PAY_TABLE_JAMSOSTEK
-                            PayGapokBulanan::insert([
-                                        'tahun' => $data_tahun,
-                                        'bulan' => $data_bulan,
-                                        'nopek' => $data->nopeg,
-                                        'jumlah' => $upahtetap,
-                                        ]); 
-                            $data_jamsostek = PayTblJamsostek::all();
-                            foreach($data_jamsostek as $data_jam)
-                            {
-                                $niljspribadi = ($data_jam->pribadi/100) * $upahtetap;
-                                $niljstaccident = ($data_jam->accident/100) * $upahtetap;
-                                $niljspensiun = ($data_jam->pensiun/100) * $upahtetap;
-                                $niljslife = ($data_jam->life/100) * $upahtetap;
-                            }
-                            PayMasterUpah::insert([
-                                    'tahun' => $data_tahun,
-                                    'bulan' => $data_bulan,
-                                    'nopek' => $data->nopeg,
-                                    'aard' => '09',        
-                                    'jmlcc' => '0',        
-                                    'ccl' => '0',        
-                                    'nilai' => $niljspribadi * -1,        
-                                    'userid' => $request->userid,        
-                                    ]); 
-
-                            PayMasterBebanprshn::insert([
-                                    'tahun' => $data_tahun,
-                                    'bulan' => $data_bulan,
-                                    'nopek' => $data->nopeg,
-                                    'aard' => '10',        
-                                    'lastamount' => '0',        
-                                    'curramount' => $niljstaccident,       
-                                    'userid' => $request->userid,        
-                                    ]);
-                            PayMasterBebanprshn::insert([
-                                    'tahun' => $data_tahun,
-                                    'bulan' => $data_bulan,
-                                    'nopek' => $data->nopeg,
-                                    'aard' => '11',        
-                                    'lastamount' => '0',        
-                                    'curramount' => $niljspensiun,       
-                                    'userid' => $request->userid,        
+                                    'nopeg' => $dataps->nopeg,
+                                    'status' => $dataps->kodekeluarga,        
                                     ]);
 
-                            PayMasterBebanprshn::insert([
-                                'tahun' => $data_tahun,
-                                'bulan' => $data_bulan,
-                                'nopek' => $data->nopeg,
-                                'aard' => '12',        
-                                'lastamount' => '0',        
-                                'curramount' => $niljslife,       
-                                'userid' => $request->userid,        
-                                ]);
+                            // 1.CARI NILAI UPAH ALL IN AARD 02
+                            $data_sdmallinps = DB::select("select nilai from sdm_allin where nopek='$dataps->nopeg'");
+                            if(!empty($data_sdmallinps)){
+                                foreach($data_sdmallinps as $data_sdmps)
+                                        {
+                                            if($data_sdmps->nilai <> ""){
+                                                $upahallinps = $data_sdmps->nilai;
+                                            }else {
+                                                $upahallinps ='0';
+                                            }
+                                        }
+                                }else {
+                                    $upahallinps ='0';
+                                } 
                             
-                            //9.HITUNG IURAN DANA PENSIUN BNI SIMPONI 46
-                            $data_danapensiun = PayDanaPensiun::all();
-                            foreach($data_danapensiun as $data_dana)
-                            {
-                                $nildapenbni = ($data_dana->perusahaan3/100) * $upahtetap;
-                            }
-                            PayMasterBebanprshn::insert([
-                                'tahun' => $data_tahun,
-                                'bulan' => $data_bulan,
-                                'nopek' => $data->nopeg,
-                                'aard' => '46',        
-                                'lastamount' => '0',        
-                                'curramount' => $nildapenbni,       
-                                'userid' => $request->userid,        
-                                ]);
-
-                            // 10.HITUNG TABUNGAN AJTM AARD 16
-                            $data_tabungan = PayTabunga::all();
-                            foreach($data_tabungan as $data_tab)
-                            {
-                                $iuranwajib = ($data_tab->tabungan/100) * $upahtetap;
-                            }
-                            PayMasterBebanprshn::insert([
-                                'tahun' => $data_tahun,
-                                'bulan' => $data_bulan,
-                                'nopek' => $data->nopeg,
-                                'aard' => '16',        
-                                'lastamount' => '0',        
-                                'curramount' => $iuranwajib,       
-                                'userid' => $request->userid,        
-                                ]);
-
-                            // 11.CARI NILAI POTONGAN PINJAMAN AARD 19 
-                            $data_potongan = DB::select("select * from pay_potongan where bulan='$data_bulan' and tahun='$data_tahun' and nopek='$data->nopeg' and aard='19'");
-                            if(!empty($data_potongan)){
-                                foreach($data_potongan as $data_potong)
-                                {
-                                    $jmlccpotongpinjam = $data_potong->jmlcc;
-                                    $cclpotongpinjam = $data_potong->ccl;
-                                    if($data_potong->nilai < 0){
-                                        $nilaipotonganpinjam = ($data_potong->nilai * -1);
-                                    }else{
-                                    $nilaipotonganpinjam = $data_potong->nilai;
-                                    }
-                                }
-                            }else{
-                                $nilaipotonganpinjam = '0';
-                                $jmlccpotongpinjam = '0';
-                                $cclpotongpinjam = '0';
-                            }
-                            PayMasterUpah::insert([
-                                        'tahun' => $data_tahun,
-                                        'bulan' => $data_bulan,
-                                        'nopek' => $data->nopeg,
-                                        'aard' => '19',        
-                                        'jmlcc' => $jmlccpotongpinjam,        
-                                        'ccl' => $cclpotongpinjam,        
-                                        'nilai' => $nilaipotonganpinjam * -1,        
-                                        'userid' => $request->userid,        
-                                        ]); 
-                            
-                            // 12.HITUNG TOTAL GAJI YANG DI DAPAT 
-                            $totalgaji = DB::select("select sum(nilai) as gajiasli,(sum(nilai)-round(sum(nilai),-3)) as pembulatan1,round(sum(nilai),-3) as hasil,(1000+(sum(nilai)-round(sum(nilai),-3))) as pembulatan2  from pay_master_upah where bulan='$data_bulan' and tahun='$data_tahun' and nopek='$data->nopeg'");
-                            if(!empty($totalgaji)){
-                                foreach($totalgaji as $total)
-                                {
-                                    if($total->pembulatan1 < 0){
-                                        $sisagaji = $total->pembulatan2;
-                                    }else{
-                                        $sisagaji = $total->pembulatan1;
-                                    }
-                                }
-                            }else{
-                                $sisagaji = '0';
-                            }
-                            PayMasterUpah::insert([
-                                        'tahun' => $data_tahun,
-                                        'bulan' => $data_bulan,
-                                        'nopek' => $data->nopeg,
-                                        'aard' => '23',        
-                                        'jmlcc' => '0',        
-                                        'ccl' => '0',        
-                                        'nilai' => $sisagaji * -1,        
-                                        'userid' => $request->userid,        
-                                        ]); 
-
-                        
-                            $bulan2 = $data_bulan + 1;
-                            if($bulan2 > 12){
-                                $data_bulan2 = 1;
-                                $data_tahun2 = $data_tahun + 1;
-                            }else{
-                                $data_bulan2 =$bulan2;
-                                $data_tahun2 = $data_tahun;
-                            }
-                            // 15.SIMPAN NILAI PEMBULATAN KE TABEL KOREKSI AARD 17 SISA BULAN LALU
-                            PayKoreksi::insert([
-                                            'tahun' => $data_tahun2,
-                                            'bulan' => $data_bulan2,
-                                            'nopek' => $data->nopeg,
-                                            'aard' => '07',        
+                                PayMasterUpah::insert([
+                                            'tahun' => $data_tahun,
+                                            'bulan' => $data_bulan,
+                                            'nopek' => $dataps->nopeg,
+                                            'aard' => '02',        
                                             'jmlcc' => '0',        
                                             'ccl' => '0',        
-                                            'nilai' => $sisagaji,        
+                                            'nilai' => $upahallinps,        
                                             'userid' => $request->userid,        
-                                            ]); 
-
-                            // 16.HITUNG PAJAK PPH21 CARI NILAI YANG KENA PAJAK (BRUTO)
-                            $kenapajak = DB::select("select sum(a.nilai) as nilai1 from pay_master_upah a,pay_tbl_aard b where a.tahun='$data_tahun' and a.bulan='$data_bulan' and a.nopek='$data->nopeg' and a.aard=b.kode and b.kenapajak='Y'");
-                            foreach($kenapajak as $kenap)
-                            {
-                                $nilaikenapajak = $kenap->nilai1;
-                            }
-                            $koreksigaji = DB::select("select sum(a.nilai) as kortam from pay_koreksigaji a where a.tahun='$data_tahun' and a.bulan='$data_bulan' and a.nopek='$data->nopeg'");
-                            foreach($koreksigaji as $koreksig)
-                            {
-                                $kortam = $koreksig->kortam * -1;
-                            }
-
-                            $totalkenapajak = ($nilaikenapajak + $niljstaccident + $niljslife + $fasilitas+ $kortam)*12;
-
-                            // 17.CARI NILAI PENGURANG
-                                $biayajabatans = ((5/100)*$totalkenapajak);
-                                if($biayajabatans > 6000000){
-                                    $biayajabatan = 6000000;
-                                }else{
-                                    $biayajabatan = $biayajabatans;
-                                }
-                                
-                                $neto1tahun = $totalkenapajak - $biayajabatan;
-                            
+                                            ]);
+                                    
                                 TblPajak::where('tahun', $data_tahun)
                                         ->where('bulan',$data_bulan)
-                                        ->where('nopeg',$data->nopeg)
+                                        ->where('nopeg',$dataps->nopeg)
                                         ->update([
-                                            'bjabatan' => $biayajabatan,
+                                            'upah' => $upahallinps,
                                         ]);
 
-                            // 18.CARI NILAI TIDAK KENA PAJAK
-                            $data_ptkp = DB::select("select a.kodekeluarga,b.nilai from sdm_master_pegawai a,pay_tbl_ptkp b where a.kodekeluarga=b.kdkel and a.nopeg='$data->nopeg'");
-                            
-                            if(!empty($data_ptkp)){
-                                foreach($data_ptkp as $data_p)
-                                {
-                                    $nilaiptkp1 = $data_p->nilai;
+                                // 2.CARI NILAI SISA BULAN LALU AARD 07
+                                $data_sisanilaips = DB::select("select nopek,aard,jmlcc,ccl,round(nilai) as nilai from pay_koreksi where bulan='$data_bulans' and tahun='$data_tahun' and nopek='$dataps->nopeg' and aard='07'");
+                                if(!empty($data_sisanilaips)){
+                                        foreach($data_sisanilaips as $data_sdps)
+                                        {
+                                            if($data_sdps->nilai <> ""){
+                                                $fassisaps = $data_sdps->nilai;
+                                            }else{
+                                                $fassisaps = '0';
+                                            }
+                                        }
+                                }else{
+                                    $fassisaps = '0';
                                 }
-                            }else{
-                                    $nilaiptkp1 = '0';
-                            }
-
-                            //    19.PENGHASILAN KENA PAJAK SETAHUN
-                            $nilaikenapajaka = $neto1tahun - $nilaiptkp1;
-                            TblPajak::where('tahun', $data_tahun)
-                                            ->where('bulan',$data_bulan)
-                                            ->where('nopeg',$data->nopeg)
-                                            ->update([
-                                                'ptkp' => $nilaiptkp1,
-                                                'pkp' => $nilaikenapajaka,
-                                            ]);
-
-                            // 20.HITUNG PAJAK PENGHASILAN TERUTANG PAJAK SETAHUN                      
-                            $nilai2 = 0;
-                            $nilai1 = 0;
-                            $tunjangan = 0;
-                            $pajakbulan=1;
-                            $nilaikenapajak = $nilaikenapajaka;
-                            $sisapokok = $nilaikenapajak;
-                            $data_sdmprogresif = DB::select("select * from sdm_tbl_progressif order by awal asc");
-                            // SdmTblProgressif::orderBy('awal','asc');
-                            // $pph21ok = 0;
-                            foreach($data_sdmprogresif as $data_prog)
-                            {
-                                $awal = $data_prog->awal;
-                                $akhir = $data_prog->akhir;
-                                $persen = $data_prog->prosen;
-                                $prosen = $persen/100;
-                                $range = $akhir - $awal;
-                                if($sisapokok > 0){
-                                    $sisapokok1 = $sisapokok;
-                                    if($sisapokok1 > 0 and $sisapokok1 < $range){
-                                        $pph21r = $sisapokok1 * $prosen;
-                                    }elseif($sisapokok1 > 0 and $sisapokok1 >= $range ){
-                                        $pph21r = $range * $prosen;
-                                    }else{
-                                        $pph21r = 0;
-                                    }
-                                }else {
-                                    $pph21r = 0;
-                                }
-                                $pph21ok =  $pph21r;
-                                $pajakbulan = ($pph21ok/12);
-                            } 
-                            PayMasterUpah::insert([
+                                PayMasterUpah::insert([
                                         'tahun' => $data_tahun,
                                         'bulan' => $data_bulan,
-                                        'nopek' => $data->nopeg,
-                                        'aard' => '26',        
+                                        'nopek' => $dataps->nopeg,
+                                        'aard' => '07',        
                                         'jmlcc' => '0',        
                                         'ccl' => '0',        
-                                        'nilai' => $pajakbulan * -1,        
+                                        'nilai' => $fassisaps,        
                                         'userid' => $request->userid,        
                                         ]); 
-                            PayMasterUpah::insert([
+
+                                // 3.CARI NILAI KOREKSI LAIN AARD 08
+                                $data_carinilaikoreksips = DB::select("select sum(nilai) as nilai from pay_koreksi where bulan='$data_bulan' and tahun='$data_tahun' and nopek='$dataps->nopeg' and aard='08'");
+                                if(!empty($data_carinilaikoreksips)){
+                                    foreach($data_carinilaikoreksips as $data_carinilaips)
+                                    {
+                                        if($data_carinilaips->nilai <> ""){
+                                            $faslainps = $data_carinilaips->nilai;
+                                        }else{
+                                            $faslainps = '0';
+                                        }
+                                    }
+                                }else {
+                                    $faslainps = '0';
+                                }
+
+                                PayMasterUpah::insert([
                                         'tahun' => $data_tahun,
                                         'bulan' => $data_bulan,
-                                        'nopek' => $data->nopeg,
-                                        'aard' => '27',        
+                                        'nopek' => $dataps->nopeg,
+                                        'aard' => '08',        
                                         'jmlcc' => '0',        
                                         'ccl' => '0',        
-                                        'nilai' => $pajakbulan,        
+                                        'nilai' => $faslainps,        
                                         'userid' => $request->userid,        
                                         ]); 
-                            TblPajak::where('tahun', $data_tahun)
-                                            ->where('bulan',$data_bulan)
-                                            ->where('nopeg',$data->nopeg)
-                                            ->update([
-                                                'pajak_setor' => $pajakbulan,
-                                            ]);
-                        
-                        }
-                        StatusBayarGaji::insert([
-                            'tahun' => $data_tahun,
-                            'bulan' => $data_bulan,
-                            'statpbd' => 'N',      
-                            ]); 
 
-                        Alert::success('Data Upah Berhasil Diproses', 'Berhasil')->persistent(true);
-                        return redirect()->route('proses_gaji.index');
-
-                }elseif($request->prosesupah == 'K'){
-
-                    // PekerjaKontrak()
-
-
-                    $data_pegawai_kontrak = SdmMasterPegawai::where('status','K')->orderBy('nopeg', 'asc')->get();
-                    foreach($data_pegawai_kontrak as $data)
-                    {
-                        TblPajak::insert([
-                                'tahun' => $data_tahun,
-                                'bulan' => $data_bulan,
-                                'nopeg' => $data->nopeg,
-                                'status' => $data->kodekeluarga,        
-                                ]);
-                        
-                        // 1.CARI NILAI UPAH ALL IN AARD 02
-
-                       $data_sdmallin = DB::select("select nilai from sdm_allin where nopek='$data->nopeg'");
-                       if(!empty($data_sdmallin)){
-                           foreach($data_sdmallin as $data_sdm)
-                                {
-                                    if($data_sdm->nilai <> ""){
-                                        $upahallin = $data_sdm->nilai;
-                                    }else {
-                                        $upahallin ='0';
+                                // 4.HITUNG TOTAL GAJI YANG DI DAPAT 
+                                $totalgajips = DB::select("select sum(nilai) as gajiasli,(sum(nilai)-round(sum(nilai),-3)) as pembulatan1,round(sum(nilai),-3) as hasil,(1000+(sum(nilai)-round(sum(nilai),-3))) as pembulatan2  from pay_master_upah where bulan='$data_bulan' and tahun='$data_tahun' and nopek='$dataps->nopeg'");
+                                if(!empty($totalgajips)){
+                                    foreach($totalgajips as $totalps)
+                                    {
+                                        if($totalps->pembulatan1 < 0){
+                                            $sisagajips = $totalps->pembulatan2;
+                                        }else{
+                                            $sisagajips = $totalps->pembulatan1;
+                                        }
                                     }
-                                }
-                        }else {
-                            $upahallin ='0';
-                        } 
-                      
-                        PayMasterUpah::insert([
-                                    'tahun' => $data_tahun,
-                                    'bulan' => $data_bulan,
-                                    'nopek' => $data->nopeg,
-                                    'aard' => '02',        
-                                    'jmlcc' => '0',        
-                                    'ccl' => '0',        
-                                    'nilai' => $upahallin,        
-                                    'userid' => $request->userid,        
-                                    ]);
-                            
-                        TblPajak::where('tahun', $data_tahun)
-                                ->where('bulan',$data_bulan)
-                                ->where('nopeg',$data->nopeg)
-                                ->update([
-                                    'upah' => $upahallin,
-                                ]);
-
-                        // 2.CARI TUNJANGAN JABATAN JIKA ADA
-                        $data_sdmjabatan =DB::select("select a.nopeg,a.kdbag,a.kdjab,b.goljob,b.tunjangan from sdm_jabatan a,sdm_tbl_kdjab b where a.nopeg='$data->nopeg' and a.kdbag=b.kdbag and a.kdjab=b.kdjab and a.mulai=(select max(mulai) from sdm_jabatan where nopeg='$data->nopeg')");
-                        if(!empty($data_sdmjabatan)){
-                            foreach($data_sdmjabatan as $data_sdmjab)
-                            {
-                                if($data_sdmjab->tunjangan <> ""){
-                                    $tunjabatan = $data_sdmjab->tunjangan;
                                 }else{
-                                    $tunjabatan = '0';
+                                    $sisagajips = '0';
                                 }
-                            }
-                        }else{
-                            $tunjabatan = '0';
-                        }
-                            PayMasterUpah::insert([
-                                    'tahun' => $data_tahun,
-                                    'bulan' => $data_bulan,
-                                    'nopek' => $data->nopeg,
-                                    'aard' => '03',        
-                                    'jmlcc' => '0',        
-                                    'ccl' => '0',        
-                                    'nilai' => $tunjabatan,        
-                                    'userid' => $request->userid,        
-                                    ]); 
-
-                            TblPajak::where('tahun', $data_tahun)
-                                ->where('bulan',$data_bulan)
-                                ->where('nopeg',$data->nopeg)
-                                ->update([
-                                    'tunjjabat' => $tunjabatan,
-                                ]);
-
-
-                        // 3.TUNJANGAN DAERAH
-                        $data_tunjangandaerah = DB::select("select a.golgaji, b.nilai from sdm_golgaji a,pay_tbl_tunjangan b where a.nopeg='$data->nopeg' and a.golgaji=b.golongan and a.tanggal=(select max(tanggal) from sdm_golgaji where nopeg ='$data->nopeg')");
-                        if(!empty($data_tunjangandaerah)){
-                                foreach($data_tunjangandaerah as $data_sdmdaerah)
-                                {
-                                    if($data_sdmdaerah->nilai <> ""){
-                                        $tunjangandaerah = $data_sdmdaerah->nilai;
-                                    }else{
-                                        $tunjangandaerah = '0';
-                                    }
-                                }
-                        }else{
-                            $tunjangandaerah = '0';
-                        }
-                        PayMasterUpah::insert([
-                                'tahun' => $data_tahun,
-                                'bulan' => $data_bulan,
-                                'nopek' => $data->nopeg,
-                                'aard' => '04',        
-                                'jmlcc' => '0',        
-                                'ccl' => '0',        
-                                'nilai' => $tunjangandaerah,        
-                                'userid' => $request->userid,        
-                                ]); 
-
-                        TblPajak::where('tahun', $data_tahun)
-                            ->where('bulan',$data_bulan)
-                            ->where('nopeg',$data->nopeg)
-                            ->update([
-                                'tunjdaerah' => $tunjangandaerah,
-                            ]);
-
-                        // 4.Gapok Kontrak
-                        $data_gapok = DB::select("select gapok from sdm_gapok where nopeg = '$data->nopeg' and mulai=(select max(mulai) from sdm_gapok where nopeg='$data->nopeg')");
-                        if(!empty($data_gapok)){
-                            foreach($data_gapok as $data_gap)
-                            {
-                                if($data->nopeg == 'K00011'){
-                                    $gapok = '0';
-                                }else{
-                                    $gapok = $data_gap->gapok;
-                                }
-                            }
-                        }else {
-                            $gapok = '0';
-                        }
-
-                        PayGapokBulanan::insert([
-                                        'tahun' => $data_tahun,
-                                        'bulan' => $data_bulan,
-                                        'nopek' => $data->nopeg,
-                                        'jumlah' => $upahallin,
-                                        ]); 
-
-                        // 5.CARI NILAI PERSENTASE DARI TABEL PAY_TABLE_JAMSOSTEK
-                        $data_jamsostek = PayTblJamsostek::all();
-                            foreach($data_jamsostek as $data_jam)
-                            {
-                                $niljspribadi = ($data_jam->pribadi/100) * $upahallin;
-                                $niljstaccident = ($data_jam->accident/100) * $upahallin;
-                                $niljspensiun = ($data_jam->pensiun/100) * $upahallin;
-                                $niljslife = ($data_jam->life/100) * $upahallin;
-                            }
-                            PayMasterUpah::insert([
-                                    'tahun' => $data_tahun,
-                                    'bulan' => $data_bulan,
-                                    'nopek' => $data->nopeg,
-                                    'aard' => '09',        
-                                    'jmlcc' => '0',        
-                                    'ccl' => '0',        
-                                    'nilai' => $niljspribadi * -1,        
-                                    'userid' => $request->userid,        
-                                    ]); 
-
-                            PayMasterBebanprshn::insert([
-                                    'tahun' => $data_tahun,
-                                    'bulan' => $data_bulan,
-                                    'nopek' => $data->nopeg,
-                                    'aard' => '10',        
-                                    'lastamount' => '0',        
-                                    'curramount' => $niljstaccident,       
-                                    'userid' => $request->userid,        
-                                    ]);
-                            PayMasterBebanprshn::insert([
-                                    'tahun' => $data_tahun,
-                                    'bulan' => $data_bulan,
-                                    'nopek' => $data->nopeg,
-                                    'aard' => '11',        
-                                    'lastamount' => '0',        
-                                    'curramount' => $niljspensiun,       
-                                    'userid' => $request->userid,        
-                                    ]);
-
-                            PayMasterBebanprshn::insert([
-                                'tahun' => $data_tahun,
-                                'bulan' => $data_bulan,
-                                'nopek' => $data->nopeg,
-                                'aard' => '12',        
-                                'lastamount' => '0',        
-                                'curramount' => $niljslife,       
-                                'userid' => $request->userid,        
-                                ]);
-
-                            // 6.FASILITAS CUTI AARD 06
-                            $data_cuti = DB::select("select a.fasilitas,a.fasilitas  from sdm_master_pegawai a where a.nopeg='$data->nopeg'");
-                            if(!empty($data_cuti)){
-                              foreach($data_cuti as $data_cut)
-                              {
-                                $tahun = date('Y', strtotime($data_cut->fasilitas));
-                                $bulan = ltrim(date('m', strtotime($data_cut->fasilitas)),'0');
-                                $sisatahun = $data_tahun - $tahun;
-                                $sisabulan = $data_bulan - $bulan;
-                                  if($sisabulan == '11' and $sisatahun == '0'){
-                                      $uangcuti = $upahallin + $tunjabatan + $tunjangandaerah;
-                                      $fasilitas = 1.5 * $uangcuti;
-                                  }elseif($sisabulan == '11' and $sisatahun > '0'){
-                                    $uangcuti = $upahallin + $tunjabatan + $tunjangandaerah;
-                                    $fasilitas = 1.5 * $uangcuti;
-                                  }elseif($sisabulan == '-1' and $sisatahun > '0'){
-                                    $uangcuti = $upahallin + $tunjabatan + $tunjangandaerah;
-                                    $fasilitas = 1.5 * $uangcuti;
-                                  }else{
-                                      $fasilitas = '0';
-                                  }
-                              }
-                          }else {
-                              $fasilitas = '0';
-                          }
-                        PayMasterUpah::insert([
-                                'tahun' => $data_tahun,
-                                'bulan' => $data_bulan,
-                                'nopek' => $data->nopeg,
-                                'aard' => '06',        
-                                'jmlcc' => '0',        
-                                'ccl' => '0',        
-                                'nilai' => $fasilitas,        
-                                'userid' => $request->userid,        
-                                ]); 
-
-                        TblPajak::where('tahun', $data_tahun)
-                            ->where('bulan',$data_bulan)
-                            ->where('nopeg',$data->nopeg)
-                            ->update([
-                                'gapok' => $fasilitas,
-                            ]);
-
-                        // 7.CARI NILAI LEMBUR AARD 05
-                        $data_lembur = DB::select("select sum(makanpg+makansg+makanml+transport+lembur) as totlembur from pay_lembur where nopek='$data->nopeg' and bulan='$data_bulan' and tahun='$data_tahun'");                            
-                        if(!empty($data_lembur)){
-                                foreach($data_lembur as $data_sdm)
-                                {
-                                    if($data_sdm->totlembur <> ""){
-                                        $totallembur = $data_sdm->totlembur;
-                                    }else{
-                                        $totallembur = '0';
-                                    }
-                                }
-                        }else{
-                            $totallembur = '0';
-                        }
-                        PayMasterUpah::insert([
-                                'tahun' => $data_tahun,
-                                'bulan' => $data_bulan,
-                                'nopek' => $data->nopeg,
-                                'aard' => '05',        
-                                'jmlcc' => '0',        
-                                'ccl' => '0',        
-                                'nilai' => $totallembur,        
-                                'userid' => $request->userid,        
-                                ]); 
-
-                        TblPajak::where('tahun', $data_tahun)
-                            ->where('bulan',$data_bulan)
-                            ->where('nopeg',$data->nopeg)
-                            ->update([
-                                'lembur' => $totallembur,
-                            ]);
-
-                        // 8.CARI SISA BULAN LALU AARD 07
-                        $data_sisanilai = DB::select("select nopek,aard,jmlcc,ccl,nilai from pay_koreksi where bulan='$data_bulans' and tahun='$data_tahun' and nopek='$data->nopeg' and aard='07'");
-                        if(!empty($data_sisanilai)){
-                            foreach($data_sisanilai as $data_sdm)
-                            {
-                                if($data_sdm->nilai <> ""){
-                                    $fassisa = $data_sdm->nilai;
-                                }else {
-                                    $fassisa = '0';
-                                }
-                            }
-                        }else{
-                            $fassisa = '0';
-                        }
-                        PayMasterUpah::insert([
-                                'tahun' => $data_tahun,
-                                'bulan' => $data_bulan,
-                                'nopek' => $data->nopeg,
-                                'aard' => '07',        
-                                'jmlcc' => '0',        
-                                'ccl' => '0',        
-                                'nilai' => $fassisa,        
-                                'userid' => $request->userid,        
-                                ]); 
-                        // 9. POTONG KOPERASI
-                        $data_potongan = DB::select("select * from pay_potongan where bulan='$data_bulan' and tahun='$data_tahun' and nopek='$data->nopeg' and aard='28'");
-                        if(!empty($data_potongan)){
-                            foreach($data_potongan as $data_potong)
-                            {
-                                $jmlccpotongpinjam = $data_potong->jmlcc;
-                                $cclpotongpinjam = $data_potong->ccl;
-                                if($data_potong->nilai < 0){
-                                    $nilaipotonganpinjam = $data_potong->nilai;
-                                }else{
-                                    $nilaipotonganpinjam = ($data_potong->nilai * -1);
-                                }
-                            }
-                        }else{
-                            $nilaipotonganpinjam = '0';
-                            $jmlccpotongpinjam = '0';
-                            $cclpotongpinjam = '0';
-                        }    
-
-                         PayMasterUpah::insert([
-                                        'tahun' => $data_tahun,
-                                        'bulan' => $data_bulan,
-                                        'nopek' => $data->nopeg,
-                                        'aard' => '28',        
-                                        'jmlcc' => $jmlccpotongpinjam,        
-                                        'ccl' => $cclpotongpinjam,        
-                                        'nilai' => $nilaipotonganpinjam,        
-                                        'userid' => $request->userid,        
-                                        ]);
-                        // 10. HITUNG TOTAL GAJI YANG DI DAPAT 
-                        $totalgaji = DB::select("select sum(nilai) as gajiasli,(sum(nilai)-round(sum(nilai),-3)) as pembulatan1,round(sum(nilai),-3) as hasil,(1000+(sum(nilai)-round(sum(nilai),-3))) as pembulatan2  from pay_master_upah where bulan='$data_bulan' and tahun='$data_tahun' and nopek='$data->nopeg'");
-                        if(!empty($totalgaji)){
-                            foreach($totalgaji as $total)
-                            {
-                                if($total->pembulatan1 < 0){
-                                    $sisagaji = $total->pembulatan2;
-                                }else{
-                                    $sisagaji = $total->pembulatan1;
-                                }
-                            }
-                        }else{
-                            $sisagaji = '0';
-                        }
-                        PayMasterUpah::insert([
-                                    'tahun' => $data_tahun,
-                                    'bulan' => $data_bulan,
-                                    'nopek' => $data->nopeg,
-                                    'aard' => '23',        
-                                    'jmlcc' => '0',        
-                                    'ccl' => '0',        
-                                    'nilai' => $sisagaji * -1,        
-                                    'userid' => $request->userid,        
-                                    ]); 
-
-                    
-                        $bulan2 = $data_bulan + 1;
-                        if($bulan2 >12){
-                            $data_bulan2 = 1;
-                            $data_tahun2 = $data_tahun + 1;
-                        }else{
-                            $data_bulan2 =$bulan2;
-                            $data_tahun2 = $data_tahun;
-                        }
-                        PayKoreksi::insert([
-                                            'tahun' => $data_tahun2,
-                                            'bulan' => $data_bulan2,
-                                            'nopek' => $data->nopeg,
-                                            'aard' => '07',        
+                                PayMasterUpah::insert([
+                                            'tahun' => $data_tahun,
+                                            'bulan' => $data_bulan,
+                                            'nopek' => $dataps->nopeg,
+                                            'aard' => '23',        
                                             'jmlcc' => '0',        
                                             'ccl' => '0',        
-                                            'nilai' => $sisagaji,        
+                                            'nilai' => $sisagajips * -1,        
                                             'userid' => $request->userid,        
                                             ]); 
 
-                        // 11.HITUNG PAJAK PPH21 CARI NILAI YANG KENA PAJAK (BRUTO)
-                        $kenapajak = DB::select("select sum(a.nilai) as nilai1 from pay_master_upah a,pay_tbl_aard b where a.tahun='$data_tahun' and a.bulan='$data_bulan' and a.nopek='$data->nopeg' and a.aard=b.kode and b.kenapajak='Y'");
-                        foreach($kenapajak as $kenap)
-                        {
-                            if($kenap->nilai1 <> ""){
-                                $nilaikenapajak = $kenap->nilai1;
-                            }else{
-                                $nilaikenapajak = '0';
-                            }
-                        }
-                        $koreksigaji = DB::select("select sum(a.nilai) as kortam from pay_koreksigaji a where a.tahun='$data_tahun' and a.bulan='$data_bulan' and a.nopek='$data->nopeg'");
-                        foreach($koreksigaji as $koreksig)
-                        {
-                            $kortam = $koreksig->kortam * -1;
-                        }
-                        $
-                        $totalkenapajak = (($nilaikenapajak + $kortam) * 12);
-                        $biayajabatans = ((5/100)*$totalkenapajak);
-                                if($biayajabatans > 6000000){
-                                    $biayajabatan = 6000000;
-                                }else{
-                                    $biayajabatan = $biayajabatans;
-                                }
-                                $neto1tahun = $totalkenapajak - $biayajabatan;
-                        TblPajak::where('tahun', $data_tahun)
-                                        ->where('bulan',$data_bulan)
-                                        ->where('nopeg',$data->nopeg)
-                                        ->update([
-                                            'bjabatan' => $biayajabatan,
-                                        ]);
-                    // 12.CARI NILAI TIDAK KENA PAJAK
-                    $data_ptkp = DB::select("select a.kodekeluarga,b.nilai from sdm_master_pegawai a,pay_tbl_ptkp b where a.kodekeluarga=b.kdkel and a.nopeg='$data->nopeg'");
                             
-                    if(!empty($data_ptkp)){
-                        foreach($data_ptkp as $data_p)
-                        {
-                            if($data_p->nilai <> ""){
-                                $nilaiptkp1 = $data_p->nilai;
-                            }else {
-                                $nilaiptkp1 = '0';
-                            }
+                                $bulan2ps = $data_bulan + 1;
+                                if($bulan2ps >12){
+                                    $data_bulan2ps = 1;
+                                    $data_tahun2ps = $data_tahun + 1;
+                                }else{
+                                    $data_bulan2ps =$bulan2ps;
+                                    $data_tahun2ps = $data_tahun;
+                                }
+                                PayKoreksi::insert([
+                                                    'tahun' => $data_tahun2ps,
+                                                    'bulan' => $data_bulan2ps,
+                                                    'nopek' => $dataps->nopeg,
+                                                    'aard' => '07',        
+                                                    'jmlcc' => '0',        
+                                                    'ccl' => '0',        
+                                                    'nilai' => $sisagajips,        
+                                                    'userid' => $request->userid,        
+                                                    ]); 
+
+                                // 5.HITUNG PAJAK PPH21 CARI NILAI YANG KENA PAJAK (BRUTO)
+                                $kenapajakps = DB::select("select sum(a.nilai) as nilai1 from pay_master_upah a,pay_tbl_aard b where a.tahun='$data_tahun' and a.bulan='$data_bulan' and a.nopek='$dataps->nopeg' and a.aard=b.kode and b.kenapajak='Y'");
+                                foreach($kenapajakps as $kenapps)
+                                {
+                                    if($kenapps->nilai1 <> ""){
+                                        $nilaikenapajak1ps = $kenapps->nilai1;
+                                    }else{
+                                        $nilaikenapajak1ps = '0';
+                                    }
+                                }
+                                $nilaikenapajakaps = $nilaikenapajak1ps;
+                                TblPajak::where('tahun', $data_tahun)
+                                        ->where('bulan',$data_bulan)
+                                        ->where('nopeg',$dataps->nopeg)
+                                        ->update([
+                                            'pkp' => $nilaikenapajakaps,
+                                        ]);
+
+                                if($dataps->nopeg == "kom9" or $dataps->nopeg == "kom4"){
+                                    $tunjpajakps = (15/100) * $nilaikenapajakaps;
+                                    $potpajakps = ((30/100)*($nilaikenapajakaps + $tunjpajakps));
+                                }elseif($dataps->nopeg == "komut1"){
+                                    $tunjpajakps = (15/100) * $nilaikenapajakaps;
+                                    $potpajakps = (30/100) * ($nilaikenapajakaps + $tunjpajakps);
+                                }elseif($dataps->nopeg == "kom5"){
+                                    $tunjpajakps = (5/100) * $nilaikenapajakaps;
+                                    $potpajakps = (15/100) * ($nilaikenapajakaps + $tunjpajakps);
+                                }else{
+                                    $tunjpajakps = (5/100) * $nilaikenapajakaps;
+                                    $potpajakps = (30/100) * ($nilaikenapajakaps + $tunjpajakps);
+                                }
+                                PayMasterUpah::insert([
+                                            'tahun' => $data_tahun,
+                                            'bulan' => $data_bulan,
+                                            'nopek' => $dataps->nopeg,
+                                            'aard' => '27',        
+                                            'jmlcc' => '0',        
+                                            'ccl' => '0',        
+                                            'nilai' => $tunjpajakps,        
+                                            'userid' => $request->userid,        
+                                            ]);
+                                PayMasterUpah::insert([
+                                            'tahun' => $data_tahun,
+                                            'bulan' => $data_bulan,
+                                            'nopek' => $dataps->nopeg,
+                                            'aard' => '26',        
+                                            'jmlcc' => '0',        
+                                            'ccl' => '0',        
+                                            'nilai' => $potpajakps,        
+                                            'userid' => $request->userid,        
+                                            ]);
+                            
+
+                                $data_caripajak1ps = DB::select("select round(nilai,-2) as pajaknya from pay_master_upah where tahun='$data_tahun' and bulan='$data_bulan' and nopek='$dataps->nopeg' and aard='27'");
+                                foreach($data_caripajak1ps as $data_pajak1ps)
+                                {
+                                    $tunjpaps = $data_pajak1ps->pajaknya;
+                                }
+                                
+                                $data_caripajak2ps = DB::select("select round(nilai,-2) as pajaknya from pay_master_upah where tahun='$data_tahun' and bulan='$data_bulan' and nopek='$dataps->nopeg' and aard='26'");
+                                foreach($data_caripajak2ps as $data_pajak2ps)
+                                {
+                                    $potpaps = $data_pajak2ps->pajaknya;
+                                }
+
+                                PayMasterUpah::where('tahun', $data_tahun)
+                                        ->where('bulan',$data_bulan)
+                                        ->where('nopek',$dataps->nopeg)
+                                        ->where('aard','27')
+                                        ->update([
+                                            'nilai' => $tunjpaps,
+                                        ]);
+                                PayMasterUpah::where('tahun', $data_tahun)
+                                        ->where('bulan',$data_bulan)
+                                        ->where('nopek',$dataps->nopeg)
+                                        ->where('aard','26')
+                                        ->update([
+                                            'nilai' => $potpaps * -1,
+                                        ]);
+                                TblPajak::where('tahun', $data_tahun)
+                                        ->where('bulan',$data_bulan)
+                                        ->where('nopeg',$dataps->nopeg)
+                                        ->update([
+                                            'pajak_setor' => $tunjpaps,
+                                        ]);
                         }
+                    
+                        
+
                     }else{
-                            $nilaiptkp1 = '0';
-                    }
 
-                    // 13.PENGHASILAN KENA PAJAK SETAHUN
-                    $nilaikenapajaka = $neto1tahun - $nilaiptkp1;
-                    TblPajak::where('tahun', $data_tahun)
-                                    ->where('bulan',$data_bulan)
-                                    ->where('nopeg',$data->nopeg)
-                                    ->update([
-                                        'ptkp' => $nilaiptkp1,
-                                        'pkp' => $nilaikenapajaka,
-                                    ]);
-
-                    // 14.HITUNG PAJAK PENGHASILAN TERUTANG PAJAK SETAHUN                      
-                    $nilai2 = 0;
-                    $nilai1 = 0;
-                    $tunjangan = 0;
-                    $pajakbulan=1;
-                    $nilaikenapajak = $nilaikenapajaka;
-                    $sisapokok = $nilaikenapajak;
-                    $data_sdmprogresif = DB::select("select * from sdm_tbl_progressif order by awal asc");
-                    // SdmTblProgressif::orderBy('awal','asc');
-                    // $pph21ok = 0;
-                    foreach($data_sdmprogresif as $data_prog)
-                    {
-                        $awal = $data_prog->awal;
-                        $akhir = $data_prog->akhir;
-                        $persen = $data_prog->prosen;
-                        $prosen = $persen/100;
-                        $range = $akhir - $awal;
-                        if($sisapokok > 0){
-                            $sisapokok1 = $sisapokok;
-                            if($sisapokok1 > 0 and $sisapokok1 < $range){
-                                $pph21r = $sisapokok1 * $prosen;
-                            }elseif($sisapokok1 > 0 and $sisapokok1 >= $range ){
-                                $pph21r = $range * $prosen;
-                            }else{
-                                $pph21r = 0;
-                            }
-                        }else {
-                            $pph21r = 0;
-                        }
-                        $pph21ok =  $pph21r;
-                        $pajakbulan = ($pph21ok/12);
-                    } 
-                    PayMasterUpah::insert([
-                                'tahun' => $data_tahun,
-                                'bulan' => $data_bulan,
-                                'nopek' => $data->nopeg,
-                                'aard' => '26',        
-                                'jmlcc' => '0',        
-                                'ccl' => '0',        
-                                'nilai' => $pajakbulan * -1,        
-                                'userid' => $request->userid,        
-                                ]); 
-                    PayMasterUpah::insert([
-                                'tahun' => $data_tahun,
-                                'bulan' => $data_bulan,
-                                'nopek' => $data->nopeg,
-                                'aard' => '27',        
-                                'jmlcc' => '0',        
-                                'ccl' => '0',        
-                                'nilai' => $pajakbulan,        
-                                'userid' => $request->userid,        
-                                ]); 
-                    TblPajak::where('tahun', $data_tahun)
-                                    ->where('bulan',$data_bulan)
-                                    ->where('nopeg',$data->nopeg)
-                                    ->update([
-                                        'pajak_setor' => $pajakbulan,
-                                    ]);
-                    
-                    }
-                    StatusBayarGaji::insert([
-                        'tahun' => $data_tahun,
-                        'bulan' => $data_bulan,
-                        'statpbd' => 'N',      
-                        ]); 
-                        Alert::success('Data Upah Berhasil Diproses', 'Berhasil')->persistent(true);
-                        return redirect()->route('proses_gaji.index');
-
-                }elseif($request->prosesupah == 'B'){
-                    
-                    // PekerjaBantu()
-                    $data_pegawai_kontrak = SdmMasterPegawai::where('status','B')->orderBy('nopeg', 'asc')->get();
-                    foreach($data_pegawai_kontrak as $data)
-                    {
-                        TblPajak::insert([
-                                'tahun' => $data_tahun,
-                                'bulan' => $data_bulan,
-                                'nopeg' => $data->nopeg,
-                                'status' => $data->kodekeluarga,        
-                                ]);
                         
-                        // 1.CARI NILAI UPAH ALL IN AARD 02
-
-                       $data_sdmallin = DB::select("select nilai from sdm_allin where nopek='$data->nopeg'");
-                       if(!empty($data_sdmallin)){
-                           foreach($data_sdmallin as $data_sdm)
-                                {
-                                    if($data_sdm->nilai <> ""){
-                                        $upahallin = $data_sdm->nilai;
-                                    }else {
-                                        $upahallin ='0';
-                                    }
-                                }
-                        }else {
-                            $upahallin ='0';
-                        } 
-
-                        PayMasterUpah::insert([
+                        // Komite()
+                        $data_pegawai_kontrako = SdmMasterPegawai::where('status','O')->orderBy('nopeg', 'asc')->get();
+                        foreach($data_pegawai_kontrako as $datakm)
+                        {
+                            TblPajak::insert([
                                     'tahun' => $data_tahun,
                                     'bulan' => $data_bulan,
-                                    'nopek' => $data->nopeg,
-                                    'aard' => '02',        
-                                    'jmlcc' => '0',        
-                                    'ccl' => '0',        
-                                    'nilai' => $upahallin,        
-                                    'userid' => $request->userid,        
+                                    'nopeg' => $datakm->nopeg,
+                                    'status' => $datakm->kodekeluarga,        
                                     ]);
-                            
-                        TblPajak::where('tahun', $data_tahun)
-                                ->where('bulan',$data_bulan)
-                                ->where('nopeg',$data->nopeg)
-                                ->update([
-                                    'upah' => $upahallin,
-                                ]);
 
-                            //2.CARI UPAH TETAP AARD 01
-                            $data_sdmut = DB::select("select a.ut from sdm_ut a where a.nopeg='$data->nopeg' and a.mulai=(select max(mulai) from sdm_ut where nopeg='$data->nopeg')");
-                            if(!empty($data_sdmut)){
-                                    foreach($data_sdmut as $data_sdm)
+                            // 1.CARI NILAI UPAH ALL IN AARD 02
+                            $data_sdmallinkm = DB::select("select nilai from sdm_allin where nopek='$datakm->nopeg'");
+                            if(!empty($data_sdmallinkm)){
+                            foreach($data_sdmallinkm as $data_sdmkm)
                                     {
-                                        if($data_sdm->ut <> ""){
-                                            $upahtetap = $data_sdm->ut;
+                                        if($data_sdmkm->nilai <> ""){
+                                            $upahallinkm = $data_sdmkm->nilai;
                                         }else {
-                                            $upahtetap = '0';
-                                        }
-                                    }
-                            }else{
-                                $upahtetap = '0';
-                            }
-                            PayMasterUpah::insert([
-                                    'tahun' => $data_tahun,
-                                    'bulan' => $data_bulan,
-                                    'nopek' => $data->nopeg,
-                                    'aard' => '01',        
-                                    'jmlcc' => '0',        
-                                    'ccl' => '0',        
-                                    'nilai' => $upahtetap,        
-                                    'userid' => $request->userid,        
-                                    ]);
-                            
-                            TblPajak::where('tahun', $data_tahun)
-                                ->where('bulan',$data_bulan)
-                                ->where('nopeg',$data->nopeg)
-                                ->update([
-                                    'upah' => $upahtetap,
-                                ]);
-
-                             // 2.CARI UPAH TETAP AARD 01
-                            $data_sdmut = DB::select("select a.ut from sdm_ut a where a.nopeg='$data->nopeg' and a.mulai=(select max(mulai) from sdm_ut where nopeg='$data->nopeg')");
-                            if(!empty($data_sdmut)){
-                                    foreach($data_sdmut as $data_sdm)
-                                    {
-                                        if($data_sdm->ut <> ""){
-                                            $upahtetap = $data_sdm->ut;
-                                        }else {
-                                            $upahtetap = '0';
-                                        }
-                                    }
-                            }else{
-                                $upahtetap = '0';
-                            }
-                            PayMasterUpah::insert([
-                                    'tahun' => $data_tahun,
-                                    'bulan' => $data_bulan,
-                                    'nopek' => $data->nopeg,
-                                    'aard' => '01',        
-                                    'jmlcc' => '0',        
-                                    'ccl' => '0',        
-                                    'nilai' => $upahtetap,        
-                                    'userid' => $request->userid,        
-                                    ]);
-                            
-                            TblPajak::where('tahun', $data_tahun)
-                                ->where('bulan',$data_bulan)
-                                ->where('nopeg',$data->nopeg)
-                                ->update([
-                                    'upah' => $upahtetap,
-                                ]);
-
-                            // 3.CARI UPAH TETAP AARD 01
-                            $data_sdmut = DB::select("select a.ut from sdm_ut a where a.nopeg='$data->nopeg' and a.mulai=(select max(mulai) from sdm_ut where nopeg='$data->nopeg')");
-                            if(!empty($data_sdmut)){
-                                    foreach($data_sdmut as $data_sdm)
-                                    {
-                                        if($data_sdm->ut <> ""){
-                                            $upahtetap = $data_sdm->ut;
-                                        }else {
-                                            $upahtetap = '0';
-                                        }
-                                    }
-                            }else{
-                                $upahtetap = '0';
-                            }
-                            PayMasterUpah::insert([
-                                    'tahun' => $data_tahun,
-                                    'bulan' => $data_bulan,
-                                    'nopek' => $data->nopeg,
-                                    'aard' => '01',        
-                                    'jmlcc' => '0',        
-                                    'ccl' => '0',        
-                                    'nilai' => $upahtetap,        
-                                    'userid' => $request->userid,        
-                                    ]);
-                            
-                            TblPajak::where('tahun', $data_tahun)
-                                ->where('bulan',$data_bulan)
-                                ->where('nopeg',$data->nopeg)
-                                ->update([
-                                    'upah' => $upahtetap,
-                                ]);
-
-                            $data_sdmut = DB::select("select a.ut from sdm_ut a where a.nopeg='$data->nopeg' and a.mulai=(select max(mulai) from sdm_ut where nopeg='$data->nopeg')");
-                            if(!empty($data_sdmut)){
-                                    foreach($data_sdmut as $data_sdm)
-                                    {
-                                        if($data_sdm->ut <> ""){
-                                            $upahtetap = $data_sdm->ut;
-                                        }else {
-                                            $upahtetap = '0';
-                                        }
-                                    }
-                            }else{
-                                $upahtetap = '0';
-                            }
-
-                            UtBantu::insert([
-                                    'tahun' => $data_tahun,
-                                    'bulan' => $data_bulan,
-                                    'nopek' => $data->nopeg,    
-                                    'nilai' => $upahtetap,        
-                                    ]);
-
-                            //4.UPAH TETAP PENSIUN
-                            $data_pensiun = DB::select("select a.ut from sdm_ut_pensiun a where a.nopeg='$data->nopeg' and a.mulai=(select max(mulai) from sdm_ut_pensiun where nopeg='$data->nopeg')");
-                            if(!empty($data_pensiun)){
-                                foreach($data_pensiun as $data_pen)
-                                {
-                                    if($data->ut <> ""){
-                                        $upahtetappensiun = $data_pen->ut;
-                                    }else{
-                                        $upahtetappensiun = '0';
-                                    }
-                                }
-                            }else {
-                                $upahtetappensiun = '0';
-                            }
-
-                            // 5.FASILITAS CUTI AARD 06
-                            $data_cuti = DB::select("select a.fasilitas,a.fasilitas  from sdm_master_pegawai a where a.nopeg='$data->nopeg'");
-                            if(!empty($data_cuti)){
-                              foreach($data_cuti as $data_cut)
-                              {
-                                $tahun = date('Y', strtotime($data_cut->fasilitas));
-                                $bulan = ltrim(date('m', strtotime($data_cut->fasilitas)),'0');
-                                $sisatahun = $data_tahun - $tahun;
-                                $sisabulan = $data_bulan - $bulan;
-                                  if($sisabulan == '11' and $sisatahun == '0'){
-                                    $fasilitas = '0';
-                                    //   $uangcuti = $upahallin + $tunjabatan + $tunjangandaerah;
-                                    //   $fasilitas = 1.5 * $uangcuti;
-                                  }elseif($sisabulan == '11' and $sisatahun > '0'){
-                                    $fasilitas = '0';
-                                    // $uangcuti = $upahallin + $tunjabatan + $tunjangandaerah;
-                                    // $fasilitas = 1.5 * $uangcuti;
-                                  }elseif($sisabulan == '-1' and $sisatahun > '0'){
-                                    $fasilitas = '0';
-                                    // $uangcuti = $upahallin + $tunjabatan + $tunjangandaerah;
-                                    // $fasilitas = 1.5 * $uangcuti;
-                                  }else{
-                                      $fasilitas = '0';
-                                  }
-                              }
-                          }else {
-                              $fasilitas = '0';
-                          }
-
-                        PayMasterUpah::insert([
-                                'tahun' => $data_tahun,
-                                'bulan' => $data_bulan,
-                                'nopek' => $data->nopeg,
-                                'aard' => '06',        
-                                'jmlcc' => '0',        
-                                'ccl' => '0',        
-                                'nilai' => $fasilitas,        
-                                'userid' => $request->userid,        
-                                ]); 
-
-                        TblPajak::where('tahun', $data_tahun)
-                            ->where('bulan',$data_bulan)
-                            ->where('nopeg',$data->nopeg)
-                            ->update([
-                                'gapok' => $fasilitas,
-                            ]);
-
-                        // 6.CARI NILAI LEMBUR AARD 05
-                        $data_lembur = DB::select("select sum(makanpg+makansg+makanml+transport+lembur) as totlembur from pay_lembur where nopek='$data->nopeg' and bulan='$data_bulan' and tahun='$data_tahun'");                            
-                        if(!empty($data_lembur)){
-                                foreach($data_lembur as $data_sdm)
-                                {
-                                    if($data_sdm->totlembur <> ""){
-                                        $totallembur = $data_sdm->totlembur;
-                                    }else{
-                                        $totallembur = '0';
-                                    }
-                                }
-                        }else{
-                            $totallembur = '0';
-                        }
-                        PayMasterUpah::insert([
-                                'tahun' => $data_tahun,
-                                'bulan' => $data_bulan,
-                                'nopek' => $data->nopeg,
-                                'aard' => '05',        
-                                'jmlcc' => '0',        
-                                'ccl' => '0',        
-                                'nilai' => $totallembur,        
-                                'userid' => $request->userid,        
-                                ]); 
-
-                        // 7.CARI SISA BULAN LALU AARD 07
-                        $data_sisanilai = DB::select("select nopek,aard,jmlcc,ccl,nilai from pay_koreksi where bulan='$data_bulans' and tahun='$data_tahun' and nopek='$data->nopeg' and aard='07'");
-                        if(!empty($data_sisanilai)){
-                            foreach($data_sisanilai as $data_sdm)
-                            {
-                                if($data_sdm->nilai <> ""){
-                                    $fassisa = $data_sdm->nilai;
-                                }else {
-                                    $fassisa = '0';
-                                }
-                            }
-                        }else{
-                            $fassisa = '0';
-                        }
-                        PayMasterUpah::insert([
-                                'tahun' => $data_tahun,
-                                'bulan' => $data_bulan,
-                                'nopek' => $data->nopeg,
-                                'aard' => '07',        
-                                'jmlcc' => '0',        
-                                'ccl' => '0',        
-                                'nilai' => $fassisa,        
-                                'userid' => $request->userid,        
-                                ]); 
-
-                        // 8.CARI NILAI KOREKSI JAMSOSTEK PEKERJA 29
-                        $data_koreksijamsostek = DB::select("select sum(nilai) as nilai from pay_koreksi where bulan='$data_bulan' and tahun='$data_tahun' and nopek='$data->nopeg' and aard='29'");
-                        if(!empty($data_koreksijamsostek)){
-                            foreach($data_koreksijamsostek as $data_korek)
-                            {
-                                if($data_korek->nilai <> ""){
-                                    $iujampek = $data_korek->nilai;
-                                }else {
-                                    $iujampek = '0';
-                                }
-                            }
-                        }else {
-                            $iujampek = '0';
-                        }
-                        PayMasterUpah::insert([
-                                    'tahun' => $data_tahun,
-                                    'bulan' => $data_bulan,
-                                    'nopek' => $data->nopeg,
-                                    'aard' => '29',        
-                                    'jmlcc' => '0',        
-                                    'ccl' => '0',        
-                                    'nilai' => $iujampek,        
-                                    'userid' => $request->userid,        
-                                    ]); 
-                            
-                            // 9.HITUNG IURAN JAMSOSTEK PRIBADI DAN PERUSAHAAN
-                            $data_iuranjamsostek = DB::select("select gapok from sdm_gapok where nopeg = '$data->nopeg' and mulai=(select max(mulai) from sdm_gapok where nopeg='$data->nopeg')");
-                            if(!empty($data_iuranjamsostek)){
-                                foreach($data_iuranjamsostek as $data_iuran)
-                                {
-                                    if($data_iuran->gapok <> ""){
-                                        $gapok = $data_iuran->gapok;
-                                    }else {
-                                        $gapok = '0';
-                                    }
-                                }
-                            }else {
-                                $gapok = '0';
-                            }
-                            PayGapokBulanan::insert([
-                                        'tahun' => $data_tahun,
-                                        'bulan' => $data_bulan,
-                                        'nopek' => $data->nopeg,
-                                        'jumlah' => $gapok,
-                                        ]); 
-
-                            // 10.CARI NILAI PERSENTASE DARI TABEL PAY_TABLE_JAMSOSTEK
-                            $data_persentasejm = DB::select("select pribadi,accident,pensiun,life,manulife from pay_tbl_jamsostek");
-                            if(!empty($data_persentasejm)){
-                                foreach($data_persentasejm as $data_per)
-                                {
-                                    $jsmanualife = ($data_per->life/100);
-                                    if($data->nopeg <> '709685'){
-                                        $niljspribadi = ($data_per->pribadi/100) * $gapok;
-                                        $niljstaccident = ($data_per->accident/100) * $gapok;
-                                        $niljspensiun = ($data_per->pensiun/100) * $gapok;
-                                        $niljslife = ($data_per->life/100) * $gapok;
-                                    }else{
-                                        $niljspribadi = '0';
-                                        $niljstaccident = '0';
-                                        $niljspensiun = '0';
-                                        $niljslife = '0';
-                                    }
-                                }
-                                $niljsmanualife = $jsmanualife * $upahtetap;
-                            }
-                            PayMasterUpah::insert([
-                                    'tahun' => $data_tahun,
-                                    'bulan' => $data_bulan,
-                                    'nopek' => $data->nopeg,
-                                    'aard' => '09',        
-                                    'jmlcc' => '0',        
-                                    'ccl' => '0',        
-                                    'nilai' => $niljspribadi * -1,        
-                                    'userid' => $request->userid,        
-                                    ]); 
-
-                            PayMasterBebanprshn::insert([
-                                    'tahun' => $data_tahun,
-                                    'bulan' => $data_bulan,
-                                    'nopek' => $data->nopeg,
-                                    'aard' => '10',        
-                                    'lastamount' => '0',        
-                                    'curramount' => $niljstaccident,       
-                                    'userid' => $request->userid,        
-                                    ]);
-                            PayMasterBebanprshn::insert([
-                                    'tahun' => $data_tahun,
-                                    'bulan' => $data_bulan,
-                                    'nopek' => $data->nopeg,
-                                    'aard' => '11',        
-                                    'lastamount' => '0',        
-                                    'curramount' => $niljspensiun,       
-                                    'userid' => $request->userid,        
-                                    ]);
-
-                            PayMasterBebanprshn::insert([
-                                'tahun' => $data_tahun,
-                                'bulan' => $data_bulan,
-                                'nopek' => $data->nopeg,
-                                'aard' => '12',        
-                                'lastamount' => '0',        
-                                'curramount' => $niljslife,       
-                                'userid' => $request->userid,        
-                                ]);
-                            PayMasterBebanprshn::insert([
-                                'tahun' => $data_tahun,
-                                'bulan' => $data_bulan,
-                                'nopek' => $data->nopeg,
-                                'aard' => '13',        
-                                'lastamount' => '0',        
-                                'curramount' => $niljsmanualife,       
-                                'userid' => $request->userid,        
-                                ]);
-
-                            // 11.HITUNG IURAN DANA PENSIUN BEBAN PEKERJA DAN PERUSAHAAN
-                            $data_iurandanapensiun = DB::select("select pribadi,perusahaan,perusahaan3 from pay_tbl_danapensiun");
-                            foreach($data_iurandanapensiun as $data_iuran)
-                            {
-                                $dapenpribadi = $data_iuran->pribadi;
-                                $dapenperusahaan = $data_iuran->perusahaan;
-                                $dapenperusahaan3 = $data_iuran->perusahaan3;
-                            }
-                            if($data->nopeg <> '709685'){
-                                // HITUNG IURAN DANA PENSIUN PEKERJA/PRIBADI 
-                                $nildapenpribadi = ($dapenpribadi/100) * $upahtetappensiun;
-                                // HITUNG IURAN DANA PENSIUN BEBAN PERUSAHAAN
-                                $nildapenperusahaan = ($dapenperusahaan/100) * $upahtetappensiun;
-                                if($data->nopeg == '709669'){
-                                    $nildapenbni = ($dapenperusahaan3/100) * $upahtetap;
-                                    PayMasterBebanprshn::insert([
-                                        'tahun' => $data_tahun,
-                                        'bulan' => $data_bulan,
-                                        'nopek' => $data->nopeg,
-                                        'aard' => '46',        
-                                        'lastamount' => '0',        
-                                        'curramount' => $nildapenbni,       
-                                        'userid' => $request->userid,        
-                                        ]);
-                                }elseif($data->nopeg == '694287'){
-                                    $bazma = (2.5/100)*($upahallin - ($nildapenpribadi+$niljspribadi));
-                                    PayMasterUpah::insert([
-                                            'tahun' => $data_tahun,
-                                            'bulan' => $data_bulan,
-                                            'nopek' => $data->nopeg,
-                                            'aard' => '36',        
-                                            'jmlcc' => '0',        
-                                            'ccl' => '0',        
-                                            'nilai' => $bazma * -1,        
-                                            'userid' => $request->userid,        
-                                            ]); 
-                                }else{
-                                    PayMasterUpah::insert([
-                                            'tahun' => $data_tahun,
-                                            'bulan' => $data_bulan,
-                                            'nopek' => $data->nopeg,
-                                            'aard' => '36',        
-                                            'jmlcc' => '0',        
-                                            'ccl' => '0',        
-                                            'nilai' => '0',        
-                                            'userid' => $request->userid,        
-                                            ]); 
-                                }
-                            }else{
-                                $nildapenpribadi = '0';
-                                $nildapenperusahaan = '0';
-                            }
-
-                            PayMasterUpah::insert([
-                                    'tahun' => $data_tahun,
-                                    'bulan' => $data_bulan,
-                                    'nopek' => $data->nopeg,
-                                    'aard' => '14',        
-                                    'jmlcc' => '0',        
-                                    'ccl' => '0',        
-                                    'nilai' => $nildapenpribadi * -1,        
-                                    'userid' => $request->userid,        
-                                    ]); 
-                            PayMasterUpah::insert([
-                                    'tahun' => $data_tahun,
-                                    'bulan' => $data_bulan,
-                                    'nopek' => $data->nopeg,
-                                    'aard' => '15',        
-                                    'jmlcc' => '0',        
-                                    'ccl' => '0',        
-                                    'nilai' => $nildapenperusahaan,        
-                                    'userid' => $request->userid,        
-                                    ]); 
-                            TblPajak::where('tahun', $data_tahun)
-                                ->where('bulan',$data_bulan)
-                                ->where('nopeg',$data->nopeg)
-                                ->update([
-                                    'dapen_pek' => $nildapenpribadi,
-                                ]);
-
-                            // 11.HITUNG TABUNGAN AARD 16
-                            $data_tabungan = DB::select("select perusahaan from pay_tbl_tabungan");
-                            if(!empty($data_tabungan)){
-                                foreach($data_tabungan as $data_tab)
-                                {
-                                    if($data->nopeg <> '709685'){
-                                        $iuranwajib = ($data_tab->perusahaan/100) * $upahtetap;
-                                    }else{
-                                        $iuranwajib = '0';
-                                    }
-                                }
-                            }else {
-                                $iuranwajib = '0';
-                            }
-                            PayMasterBebanprshn::insert([
-                                        'tahun' => $data_tahun,
-                                        'bulan' => $data_bulan,
-                                        'nopek' => $data->nopeg,
-                                        'aard' => '16',        
-                                        'lastamount' => '0',        
-                                        'curramount' => $iuranwajib,       
-                                        'userid' => $request->userid,        
-                                        ]);
-
-                            // 12.CARI NILAI POTONGAN PKPP AARD 17 DAN HUTANG PKPP AARD 20
-                            $data_nilaipotongan = DB::select("select id_pinjaman,jml_pinjaman as jumlah,tenor as lamanya,round(angsuran,0) as angsuran from pay_mtrpkpp where nopek='$data->nopeg' and cair ='Y' and lunas<>'Y'");
-                            if(!empty($data_nilaipotongan)){
-                                foreach($data_nilaipotongan as $data_nilai)
-                                {
-                                    $idpinjaman = $data_nilai->id_pinjaman;
-                                    $totalpinjaman = $data_nilai->jumlah;
-                                    $lamapinjama = $data_nilai->lamanya;
-                                    $jumlahangsuran = $data_nila->angsuran * -1;
-                                }
-                                $data_potonganpkpp2 = DB::select("select round(sum(pokok)) as totalpokok,count(*) as cclke from pay_skdpkpp where nopek='$data->nopeg' and tahun <= '$data_tahun' and bulan <= '$data_bulans' and id_pinjaman='$idpinjaman'");
-                                foreach($data_potonganpkpp2 as $data_potong)
-                                {
-                                    $totalpokok = $data_potong->totalpokok;
-                                    $cclke = $data_potong->cclke;
-                                    $sisacicilan = $totalpinjaman - $totalpokok;
-                                }
-                                if($cclke == '0'){
-                                    $jumlahangsuran = '0';
-                                }
-                            PayMasterHutang::insert([
-                                        'tahun' => $data_tahun,
-                                        'bulan' => $data_bulan,
-                                        'nopek' => $data->nopeg,
-                                        'aard' => '20',        
-                                        'lastamount' => '0',        
-                                        'curramount' => $sisacicilan,       
-                                        'userid' => $request->userid,        
-                                        ]);
-                            PayMasterUpah::insert([
-                                    'tahun' => $data_tahun,
-                                    'bulan' => $data_bulan,
-                                    'nopek' => $data->nopeg,
-                                    'aard' => '17',        
-                                    'jmlcc' => $lamapinjama,        
-                                    'ccl' => $cclke,        
-                                    'nilai' => $jumlahangsuran,        
-                                    'userid' => $request->userid,        
-                                    ]); 
-                            }else {
-                                $lamapinjama = '0';
-                                $cclke = '0';
-                                $jumlahangsuran = '0';
-                            PayMasterUpah::insert([
-                                    'tahun' => $data_tahun,
-                                    'bulan' => $data_bulan,
-                                    'nopek' => $data->nopeg,
-                                    'aard' => '17',        
-                                    'jmlcc' => $lamapinjama,        
-                                    'ccl' => $cclke,        
-                                    'nilai' => $jumlahangsuran,        
-                                    'userid' => $request->userid,        
-                                    ]);
-                            }
-
-                            // 13.CARI NILAI POTONGAN PANJAR PESANGON AARD 18 DAN HUTANG PPRP AARD 21
-                            $data_nilaipotonganpanjar = DB::select("select nopek,aard,jmlcc,ccl,nilai from pay_potongan where bulan='$data_bulan' and tahun='$data_tahun' and nopek='$data->nopeg' and aard='18'");
-                            if(!empty($data_nilaipotonganpanjar)){
-                                foreach($data_nilaipotonganpanjar as $data_nilai)
-                                {
-                                    $jmlccpotongpprp = $data_nilai->jmlcc;
-                                    $cclpotongpprp = $data_nilai->ccl;
-                                    if($data_nilai->bilai < 0){
-                                        $nilaipotongpprp = $data_nilai->nilai * -1;
-                                    }else{
-                                        $nilaipotongpprp = $data_nila->nilai;
-                                    }
-                                }
-                                $data_carihutangpprp = DB::select("select tahun,bulan,aard,lastamount,curramount from pay_master_hutang where (tahun||bulan)=(select max(tahun||bulan) from pay_master_hutang where nopek='$data->nopeg' and aard='21') and nopek='$data->nopeg' and aard='21'");
-                                foreach($data_carihutangpprp as $data_cari)
-                                {
-                                    $tahunhutangpprp = $data_cari->tahun;
-                                    $bulanhutangpprp = $data_cari->bulan;
-                                    $aardhutangpprp = $data_cari->aard;
-                                    $lasthutangpprp = $data_cari->lastamount;
-                                    $currhutangpprp = $data_cari->curramount;
-                                    $lasthutangpprp1 = $currhutangpprp;
-                                    $currhutangpprp1 = ($currhutangpprp - $nilaipotongpprp);
-                                }
-                            PayMasterHutang::insert([
-                                        'tahun' => $data_tahun,
-                                        'bulan' => $data_bulan,
-                                        'nopek' => $data->nopeg,
-                                        'aard' => '21',        
-                                        'lastamount' => $lasthutangpprp1,        
-                                        'curramount' => $currhutangpprp1,       
-                                        'userid' => $request->userid,        
-                                        ]);
-                            PayMasterUpah::insert([
-                                    'tahun' => $data_tahun,
-                                    'bulan' => $data_bulan,
-                                    'nopek' => $data->nopeg,
-                                    'aard' => '18',        
-                                    'jmlcc' => $jmlccpotongpprp,        
-                                    'ccl' => $cclpotongpprp,        
-                                    'nilai' => $jumlahangsuran,        
-                                    'userid' => $request->userid,        
-                                    ]); 
-                            }else {
-                                $jmlccpotongpprp = '0';
-                                $cclpotongpprp = '0';
-                                $jumlahangsuran = '0';
-                            PayMasterUpah::insert([
-                                    'tahun' => $data_tahun,
-                                    'bulan' => $data_bulan,
-                                    'nopek' => $data->nopeg,
-                                    'aard' => '18',        
-                                    'jmlcc' => $jmlccpotongpprp,        
-                                    'ccl' => $cclpotongpprp,        
-                                    'nilai' => $jumlahangsuran,        
-                                    'userid' => $request->userid,        
-                                    ]);
-                            }
-
-                            // 14.POTONGAN KOPERASI AARD 28
-                            $data_potongankoperasi = DB::select("select nopek,aard,jmlcc,ccl,nilai from pay_potongan where bulan='$data_bulan' and tahun='$data_tahun' and nopek='$data->nopeg' and aard='28'");
-                            if(!empty($data_potongankoperasi)){
-                                foreach($data_potongankoperasi as $data_potongankop)
-                                {
-                                    $jmlccpotongkoperasi = $data_potongankop->jmlcc;
-                                    $cclpotongkoperasi = $data_potongankop->ccl;
-                                    if($data_potongankop->nilai < 0){
-                                        $nilaipotongkoperasi = $data_potongankop->nilai;
-                                    }else{
-                                        $nilaipotongkoperasi = $data_potongankop->nilai * -1;
-                                    }
-                                }
-                            PayMasterUpah::insert([
-                                    'tahun' => $data_tahun,
-                                    'bulan' => $data_bulan,
-                                    'nopek' => $data->nopeg,
-                                    'aard' => '28',        
-                                    'jmlcc' => $jmlccpotongkoperasi,        
-                                    'ccl' => $cclpotongkoperasi,        
-                                    'nilai' => $nilaipotongkoperasi,        
-                                    'userid' => $request->userid,        
-                                    ]);
-                            }else {
-                                $jmlccpotongkoperasi = '0';
-                                $cclpotongkoperasi = '0';
-                                $nilaipotongkoperasi = '0';
-                            PayMasterUpah::insert([
-                                    'tahun' => $data_tahun,
-                                    'bulan' => $data_bulan,
-                                    'nopek' => $data->nopeg,
-                                    'aard' => '28',        
-                                    'jmlcc' => $jmlccpotongkoperasi,        
-                                    'ccl' => $cclpotongkoperasi,        
-                                    'nilai' => $nilaipotongkoperasi,        
-                                    'userid' => $request->userid,        
-                                    ]);
-                            }
-
-                            // 15.POTONGAN SUKA DUKA AARD 44
-                            $data_potongansukaduka = DB::select("select nopek,aard,jmlcc,ccl,nilai from pay_potongan where bulan='$data_bulan' and tahun='$data_tahun' and nopek='$data->nopeg' and aard='44'");
-                            if(!empty($data_potongansukaduka)){
-                                foreach($data_potongansukaduka as $data_potongansuka)
-                                {
-                                    $jmlccpotongsukaduka = $data_potongansuka->jmlcc;
-                                    $cclpotongsukaduka = $data_potongansuka->ccl;
-                                    if($data_potongansuka->nilai < 0){
-                                        $nilaipotongsukaduka = $data_potongansuka->nilai;
-                                    }else {
-                                        $nilaipotongsukaduka = $data_potongansuka->nilai * -1;
-                                    }
-                            PayMasterUpah::insert([
-                                    'tahun' => $data_tahun,
-                                    'bulan' => $data_bulan,
-                                    'nopek' => $data->nopeg,
-                                    'aard' => '44',        
-                                    'jmlcc' => $jmlccpotongsukaduka,        
-                                    'ccl' => $cclpotongsukaduka,        
-                                    'nilai' => $nilaipotongsukaduka,        
-                                    'userid' => $request->userid,        
-                                    ]);
-                                }
-                            }else {
-                                $jmlccpotongsukaduka = '0';
-                                $cclpotongsukaduka = '0';
-                                $nilaipotongsukaduka = '0';
-                            PayMasterUpah::insert([
-                                    'tahun' => $data_tahun,
-                                    'bulan' => $data_bulan,
-                                    'nopek' => $data->nopeg,
-                                    'aard' => '44',        
-                                    'jmlcc' => $jmlccpotongsukaduka,        
-                                    'ccl' => $cclpotongsukaduka,        
-                                    'nilai' => $nilaipotongsukaduka,        
-                                    'userid' => $request->userid,        
-                                    ]);
-                            }
-
-                            // 16.HITUNG TOTAL GAJI YANG DI DAPAT
-                            $data_hitungtotalgaji = DB::select("select sum(nilai) as gajiasli,(sum(nilai)-round(sum(nilai),-3)) as pembulatan1,round(sum(nilai),-3) as hasil,(1000+(sum(nilai)-round(sum(nilai),-3))) as pembulatan2  from pay_master_upah where bulan='$data_bulan' and tahun='$data_tahun' and nopek='$data->nopeg'");
-                            if(!empty($data_hitungtotalgaji)){
-                                foreach($data_hitungtotalgaji as $data_hitungtotal)
-                                {
-                                    if($data_hitungtotal->pembulatan1 < 0){
-                                        $sisagaji = $data_hitungtotal->pembulatan2;
-                                    }else {
-                                        $sisagaji = $data_hitungtotal->pembulatan1;
-                                    }
-                                }
-                            PayMasterUpah::insert([
-                                    'tahun' => $data_tahun,
-                                    'bulan' => $data_bulan,
-                                    'nopek' => $data->nopeg,
-                                    'aard' => '23',        
-                                    'jmlcc' => '0',        
-                                    'ccl' => '0',        
-                                    'nilai' => $sisagaji * -1,        
-                                    'userid' => $request->userid,        
-                                    ]);
-                            }
-
-                            $bulan2 = $data_bulan + 1;
-                            if($bulan2 > 12){
-                                $data_bulan2 = 1;
-                                $data_tahun2 = $data_tahun + 1;
-                            }else{
-                                $data_bulan2 =$bulan2;
-                                $data_tahun2 = $data_tahun;
-                            }
-                            PayKoreksi::insert([
-                                            'tahun' => $data_tahun2,
-                                            'bulan' => $data_bulan2,
-                                            'nopek' => $data->nopeg,
-                                            'aard' => '07',        
-                                            'jmlcc' => '0',        
-                                            'ccl' => '0',        
-                                            'nilai' => $sisagaji,        
-                                            'userid' => $request->userid,        
-                                            ]); 
-
-                            // 17.CARI NILAI YANG KENA PAJAK (BRUTO)
-                            $data_kenapajak = DB::select("select sum(a.nilai) as nilai1 from pay_master_upah a,pay_tbl_aard b where a.tahun='$data_tahun' and a.bulan='$data_bulan' and a.nopek='$data->nopeg' and a.aard=b.kode and b.kenapajak='Y'");
-                            if(!empty($data_kenapajak)){
-                                foreach($data_kenapajak as $data_kena)
-                                {
-                                    $nilaikenapajak1 = $data_kena->nilai1;
-                                }
-                            }else {
-                                $nilaikenapajak1 = '0';
-                            }
-                            $totkenapajak = (($nilaikenapajak1 + $fasilitas)*12);
-
-                            // 18. CARI NILAI PENGURANG HITUNG BIAYA JABATAN
-                            $biayajabatan2 = ((5/100) * $totkenapajak);
-                            if($biayajabatan2 > 6000000){
-                                $biayajabatan = 6000000;  
-                            }else{
-                                $biayajabatan = $biayajabatan2;
-                            }                              
-                            
-                            $neto1tahun =  $totkenapajak - $biayajabatan;
-                             TblPajak::where('tahun', $data_tahun)
-                                        ->where('bulan',$data_bulan)
-                                        ->where('nopeg',$data->nopeg)
-                                        ->update([
-                                            'bjabatan' => $biayajabatan,
-                                        ]);
-
-                            // 19.CARI NILAI TIDAK KENA PAJAK
-                            $data_carinilairdkkenapajak = DB::select("select a.kodekeluarga,b.nilai from sdm_master_pegawai a,pay_tbl_ptkp b where a.kodekeluarga=b.kdkel and a.nopeg='$data->nopeg'");
-                            if(!empty($data_carinilairdkkenapajak)){
-                                foreach($data_carinilairdkkenapajak as $data_carinilai)
-                                {
-                                    $nilaiptkp1 = $data_carinilai->nilai;
-                                }
-                            }else {
-                                    $nilaiptkp1 = '0';
-                            }
-
-                            // 20.PENGHASILAN KENA PAJAK SETAHUN	
-                            $nilaikenapajaka = $neto1tahun - $nilaiptkp1;
-                            TblPajak::where('tahun', $data_tahun)
-                                            ->where('bulan',$data_bulan)
-                                            ->where('nopeg',$data->nopeg)
-                                            ->update([
-                                                'ptkp' => $nilaiptkp1,
-                                                'pkp' => $nilaikenapajaka,
-                                            ]);
-
-                            // 20.HITUNG PAJAK PENGHASILAN TERUTANG
-                            $nilai2 = 0;
-                            $nilai1 = 0;
-                            $tunjangan = 0;
-                            $pajakbulan=1;
-                            $nilaikenapajak = $nilaikenapajaka;
-                            $sisapokok = $nilaikenapajak;
-                            $data_sdmprogresif = DB::select("select * from sdm_tbl_progressif order by awal asc");
-                            // SdmTblProgressif::orderBy('awal','asc');
-                            // $pph21ok = 0;
-                            foreach($data_sdmprogresif as $data_prog)
-                            {
-                                $awal = $data_prog->awal;
-                                $akhir = $data_prog->akhir;
-                                $persen = $data_prog->prosen;
-                                $prosen = $persen/100;
-                                $range = $akhir - $awal;
-                                if($sisapokok > 0){
-                                    $sisapokok1 = $sisapokok;
-                                    if($sisapokok1 > 0 and $sisapokok1 < $range){
-                                        $pph21r = $sisapokok1 * $prosen;
-                                    }elseif($sisapokok1 > 0 and $sisapokok1 >= $range ){
-                                        $pph21r = $range * $prosen;
-                                    }else{
-                                        $pph21r = 0;
-                                    }
-                                }else {
-                                    $pph21r = 0;
-                                }
-                                $pph21ok =  $pph21r;
-                                $pajakbulan = ($pph21ok/12);
-                            }
-                            PayMasterUpah::insert([
-                                        'tahun' => $data_tahun,
-                                        'bulan' => $data_bulan,
-                                        'nopek' => $data->nopeg,
-                                        'aard' => '26',        
-                                        'jmlcc' => '0',        
-                                        'ccl' => '0',        
-                                        'nilai' => $pajakbulan * -1,        
-                                        'userid' => $request->userid,        
-                                        ]); 
-                            PayMasterUpah::insert([
-                                        'tahun' => $data_tahun,
-                                        'bulan' => $data_bulan,
-                                        'nopek' => $data->nopeg,
-                                        'aard' => '27',        
-                                        'jmlcc' => '0',        
-                                        'ccl' => '0',        
-                                        'nilai' => $pajakbulan,        
-                                        'userid' => $request->userid,        
-                                        ]); 
-                            TblPajak::where('tahun', $data_tahun)
-                                            ->where('bulan',$data_bulan)
-                                            ->where('nopeg',$data->nopeg)
-                                            ->update([
-                                                'pajak_setor' => $pajakbulan,
-                                            ]); 
-                    }
-                    StatusBayarGaji::insert([
-                        'tahun' => $data_tahun,
-                        'bulan' => $data_bulan,
-                        'statpbd' => 'N',      
-                        ]); 
-                        Alert::success('Data Upah Berhasil Diproses', 'Berhasil')->persistent(true);
-                        return redirect()->route('proses_gaji.index');
-
-
-                }elseif($request->prosesupah == 'N'){
-                    
-                    // PekerjaBaru()
-                    $data_pegawai_kontrak = SdmMasterPegawai::where('status','N')->orderBy('nopeg', 'asc')->get();
-                    foreach($data_pegawai_kontrak as $data)
-                    {
-                        $status1 = $data->status;
-                        $kodekel = $data->kodekeluarga;
-                        $tglaktif = date("j",strtotime($data->tglaktifdns));
-                         // 1.CARI NILAI UPAH ALL IN AARD 02
-                        $data_sdmallin = DB::select("select nilai from sdm_allin where nopek='$data->nopeg'");
-                        if(!empty($data_sdmallin)){
-                            foreach($data_sdmallin as $data_sdm)
-                                    {
-                                        if($data_sdm->nilai <> ""){
-                                            $upahmentah = $data_sdm->nilai;
-                                            $upahallin = ((30 - $tglaktif)/30) * $upahmentah;
-                                        }else {
-                                            $upahallin ='0';
+                                            $upahallinkm ='0';
                                         }
                                     }
                             }else {
-                                $upahallin ='0';
+                                $upahallinkm ='0';
                             } 
-                        PayMasterUpah::insert([
-                                'tahun' => $data_tahun,
-                                'bulan' => $data_bulan,
-                                'nopek' => $data->nopeg,
-                                'aard' => '02',        
-                                'jmlcc' => '0',        
-                                'ccl' => '0',        
-                                'nilai' => $upahallin,        
-                                'userid' => $request->userid,        
-                                ]);
-
-                        // 2.CARI TUNJANGAN JABATAN JIKA ADA
-                        $data_tunjanganjabatan = DB::select("select a.nopeg,a.kdbag,a.kdjab,b.goljob,b.tunjangan from sdm_jabatan a,sdm_tbl_kdjab b where a.nopeg='$data->nopeg' and a.kdbag=b.kdbag and a.kdjab=b.kdjab and a.mulai=(select max(mulai) from sdm_jabatan where nopeg='$data->nopeg')");
-                        if(!empty($data_tunjanganjabatan)){
-                            foreach($data_tunjanganjabatan as $data_tunjang)
-                            {
-                                if($data_tunjang->tunjangan <> ""){
-                                    if($data_tunjang->goljob <= '03'){
-                                        $tunjang = $data_tunjang->tunjangan;
-                                        $tunjjabatan = ((30 - $tglaktif)/30) * $tunjang;
-                                    }else {
-                                        $tunjjabatan = '0';
-                                    }
-                                }else {
-                                    $tunjjabatan = '0';
-                                }
-                            }
-                        }else{
-                            $tunjjabatan = '0';
-                        }
-                        PayMasterUpah::insert([
-                                'tahun' => $data_tahun,
-                                'bulan' => $data_bulan,
-                                'nopek' => $data->nopeg,
-                                'aard' => '03',        
-                                'jmlcc' => '0',        
-                                'ccl' => '0',        
-                                'nilai' => $tunjjabatan,        
-                                'userid' => $request->userid,        
-                                ]);
-
-                        // 3.CARI NILAI LEMBUR AARD 05
-                        $data_carinilailembur = DB::select("select sum(makanpg+makansg+makanml+transport+lembur) as totlembur from pay_lembur where nopek='$data->nopeg' and bulan='$data_bulan' and tahun='$data_tahun'");
-                        if(!empty($data_carinilailembur)){
-                            foreach($data_carinilailembur as $data_carilembur)
-                            {
-                                if($data_carilembur->totlembur <> ""){
-                                    $totallembur = $data_carilembur->totlembur;
-                                }else {
-                                    $totallembur = '0';
-                                }
-                            }
-                        }else {
-                            $totallembur = '0';
-                        }
-                        PayMasterUpah::insert([
-                                'tahun' => $data_tahun,
-                                'bulan' => $data_bulan,
-                                'nopek' => $data->nopeg,
-                                'aard' => '05',        
-                                'jmlcc' => '0',        
-                                'ccl' => '0',        
-                                'nilai' => $totallembur,        
-                                'userid' => $request->userid,        
-                                ]);
-
-                        // 4.CARI NILAI SISA BULAN LALU AARD 07
-                        $data_sisanilai = DB::select("select nopek,aard,jmlcc,ccl,round(nilai) as nilai from pay_koreksi where bulan='$data_bulans' and tahun='$data_tahun' and nopek='$data->nopeg' and aard='07'");
-                        if(!empty($data_sisanilai)){
-                                foreach($data_sisanilai as $data_sdm)
-                                {
-                                    if($data_sdm->nilai <> ""){
-                                        $fassisa = $data_sdm->nilai;
-                                    }else{
-                                        $fassisa = '0';
-                                    }
-                                }
-                        }else{
-                            $fassisa = '0';
-                        }
-                        PayMasterUpah::insert([
-                                'tahun' => $data_tahun,
-                                'bulan' => $data_bulan,
-                                'nopek' => $data->nopeg,
-                                'aard' => '07',        
-                                'jmlcc' => '0',        
-                                'ccl' => '0',        
-                                'nilai' => $fassisa,        
-                                'userid' => $request->userid,        
-                                ]); 
-
-                        // 5.CARI NILAI KOREKSI LAIN AARD 08
-                        $data_carinilaikoreksi = DB::select("select sum(nilai) as nilai from pay_koreksi where bulan='$data_bulan' and tahun='$data_tahun' and nopek='$data->nopeg' and aard='08'");
-                            if(!empty($data_carinilaikoreksi)){
-                                foreach($data_carinilaikoreksi as $data_carinilai)
-                                {
-                                    if($data_carinilai->nilai <> ""){
-                                        $faslain = $data_carinilai->nilai;
-                                    }else{
-                                        $faslain = '0';
-                                    }
-                                }
-                            }else {
-                                $faslain = '0';
-                            }
-
-                            PayMasterUpah::insert([
-                                    'tahun' => $data_tahun,
-                                    'bulan' => $data_bulan,
-                                    'nopek' => $data->nopeg,
-                                    'aard' => '08',        
-                                    'jmlcc' => '0',        
-                                    'ccl' => '0',        
-                                    'nilai' => $faslain,        
-                                    'userid' => $request->userid,        
-                                    ]); 
-
-                        // 6.CARI NILAI POTONGAN LAIN AARD 19 DAN HUTANG LAIN AARD 22
-                        $data_nilaipotonganaard19 = DB::select("select nopek,aard,jmlcc,ccl,nilai from pay_potongan where bulan='$data_bulan' and tahun='$data_tahun' and nopek='$data->nopeg' and aard='19'");
-                        if(!empty($data_nilaipotonganaard19)){
-                            foreach($data_nilaipotonganaard19 as $data_nilaiaard)
-                            {
-                                $jmlccpotonglain = $data_nilaiaard->jmlcc;
-                                $cclpotonglain = $data_nilaiaard->ccl;
-                                if($data_nilaiaard->nilai < 0){
-                                    $nilaipotonglain = $data_nilaiaard->nilai;
-                                }else {
-                                    $nilaipotonglain = $data_nilaiaard->nilai * -1;
-                                }
-                                $data_carihutanglain = DB::select("select tahun,bulan,aard,lastamount,curramount from pay_master_hutang where (tahun||bulan)=(select max(tahun||bulan) from pay_master_hutang where nopek='$data->nopeg' and aard='22') and nopek='$data->nopeg' and aard='22'");
-                                foreach($data_carihutanglain as $data_car)
-                                {
-                                    $tahunhutanglain = $data_car->tahun;
-                                    $bulanhutanglain = $data_car->bulan;
-                                    $aardhutanglain =   $data_car->aard;
-                                    $lasthutanglain = $data_car->lastamount;
-                                    $currhutanglain = $data_car->curramount;
-                                    
-                                    $lasthutanglain1 = $currhutanglain; 
-                                    $currhutanglain1 = ($currhutanglain + $nilaipotonglain);
-                                     PayMasterHutang::insert([
-                                                'tahun' => $data_tahun,
-                                                'bulan' => $data_bulan,
-                                                'nopek' => $data->nopeg,
-                                                'aard' => '22',        
-                                                'lastamount' => $lasthutanglain1,        
-                                                'curramount' => $currhutanglain1,       
-                                                'userid' => $request->userid,        
-                                                ]);
-                                    PayMasterUpah::insert([
-                                            'tahun' => $data_tahun,
-                                            'bulan' => $data_bulan,
-                                            'nopek' => $data->nopeg,
-                                            'aard' => '19',        
-                                            'jmlcc' => $jmlccpotonglain,        
-                                            'ccl' => $cclpotonglain,        
-                                            'nilai' => $nilaipotonglain,        
-                                            'userid' => $request->userid,        
-                                            ]); 
-                                }
-                            }
-                        }else {
-                            $jmlccpotonglain = '0';
-                            $cclpotonglain = '0';
-                            $nilaipotonglain = '0';
-                            PayMasterUpah::insert([
-                                            'tahun' => $data_tahun,
-                                            'bulan' => $data_bulan,
-                                            'nopek' => $data->nopeg,
-                                            'aard' => '19',        
-                                            'jmlcc' => $jmlccpotonglain,        
-                                            'ccl' => $cclpotonglain,        
-                                            'nilai' => $nilaipotonglain,        
-                                            'userid' => $request->userid,        
-                                            ]); 
-                        }
-
-                        // 7.HITUNG TOTAL GAJI YANG DI DAPAT 
-                        $totalgaji = DB::select("select sum(nilai) as gajiasli,(sum(nilai)-round(sum(nilai),-3)) as pembulatan1,round(sum(nilai),-3) as hasil,(1000+(sum(nilai)-round(sum(nilai),-3))) as pembulatan2  from pay_master_upah where bulan='$data_bulan' and tahun='$data_tahun' and nopek='$data->nopeg'");
-                            if(!empty($totalgaji)){
-                                foreach($totalgaji as $total)
-                                {
-                                    if($total->pembulatan1 < 0){
-                                        $sisagaji = $total->pembulatan2;
-                                    }else{
-                                        $sisagaji = $total->pembulatan1;
-                                    }
-                                }
-                            }else{
-                                $sisagaji = '0';
-                            }
                             PayMasterUpah::insert([
                                         'tahun' => $data_tahun,
                                         'bulan' => $data_bulan,
-                                        'nopek' => $data->nopeg,
-                                        'aard' => '23',        
-                                        'jmlcc' => '0',        
-                                        'ccl' => '0',        
-                                        'nilai' => $sisagaji * -1,        
-                                        'userid' => $request->userid,        
-                                        ]); 
-
-                        
-                            $bulan2 = $data_bulan + 1;
-                            if($bulan2 >12){
-                                $data_bulan2 = 1;
-                                $data_tahun2 = $data_tahun + 1;
-                            }else{
-                                $data_bulan2 =$bulan2;
-                                $data_tahun2 = $data_tahun;
-                            }
-                            PayKoreksi::insert([
-                                                'tahun' => $data_tahun2,
-                                                'bulan' => $data_bulan2,
-                                                'nopek' => $data->nopeg,
-                                                'aard' => '07',        
-                                                'jmlcc' => '0',        
-                                                'ccl' => '0',        
-                                                'nilai' => $sisagaji,        
-                                                'userid' => $request->userid,        
-                                                ]); 
-
-                            // 8.HITUNG PAJAK PPH21 CARI NILAI YANG KENA PAJAK (BRUTO)
-                            $kenapajak = DB::select("select sum(a.nilai) as nilai1 from pay_master_upah a,pay_tbl_aard b where a.tahun='$data_tahun' and a.bulan='$data_bulan' and a.nopek='$data->nopeg' and a.aard=b.kode and b.kenapajak='Y'");
-                            foreach($kenapajak as $kenap)
-                            {
-                                if($kenap->nilai1 <> ""){
-                                    $nilaikenapajak1 = $kenap->nilai1;
-                                }else{
-                                    $nilaikenapajak1 = '0';
-                                }
-                            }
-                            $totkenapajak = $nilaikenapajak1 * 12;
-                            
-                            // 9.CARI NILAI TIDAK KENA PAJAK
-                            $datatdkkenapajak = DB::select("select a.kodekeluarga,b.nilai from sdm_master_pegawai a,pay_tbl_ptkp b where a.kodekeluarga=b.kdkel and a.nopeg='$data->nopeg'");
-                            foreach($datatdkkenapajak as $tdkkenap)
-                            {
-                                if($tdkkenap->nilai1 <> ""){
-                                    $nilaiptkp1 = $tdkkenap->nilai1;
-                                }else{
-                                    $nilaiptkp1 = '0';
-                                }
-                            }
-                            // 9.PENGHASILAN KENA PAJAK SETAHUN	
-                            $nilaikenapajak = $totkenapajak - $nilaiptkp1;
-                            $sisapokok = $nilaikenapajak;
-                            if($sisapokok > 0){
-                                $sisapokok1 = $sisapokok;
-                                if($sisapokok1 > 0 and $sisapokok1 < $range){
-                                    $pph21r = $sisapokok1 * $prosen;
-                                }elseif($sisapokok1 > 0 and $sisapokok1 >= $range ){
-                                    $pph21r = $range * $prosen;
-                                }else{
-                                    $pph21r = 0;
-                                }
-                            }else {
-                                $pph21r = 0;
-                            }
-                            $pph21ok =  $pph21r;
-                            $pajakbulan = ($pph21ok/12);
-                            PayMasterUpah::insert([
-                                        'tahun' => $data_tahun,
-                                        'bulan' => $data_bulan,
-                                        'nopek' => $data->nopeg,
-                                        'aard' => '26',        
-                                        'jmlcc' => '0',        
-                                        'ccl' => '0',        
-                                        'nilai' => $pajakbulan * -1,        
-                                        'userid' => $request->userid,        
-                                        ]); 
-                            PayMasterUpah::insert([
-                                        'tahun' => $data_tahun,
-                                        'bulan' => $data_bulan,
-                                        'nopek' => $data->nopeg,
-                                        'aard' => '27',        
-                                        'jmlcc' => '0',        
-                                        'ccl' => '0',        
-                                        'nilai' => $pajakbulan,        
-                                        'userid' => $request->userid,        
-                                        ]);                         
-                    }
-
-                    StatusBayarGaji::insert([
-                        'tahun' => $data_tahun,
-                        'bulan' => $data_bulan,
-                        'statpbd' => 'N',      
-                        ]); 
-                        Alert::success('Data Upah Berhasil Diproses', 'Berhasil')->persistent(true);
-                        return redirect()->route('proses_gaji.index');
-
-
-                }elseif($request->prosesupah == 'U'){
-                    
-                    
-                    // Pengurus()
-                    $data_pegawai_kontrak = SdmMasterPegawai::where('status','U')->orderBy('nopeg', 'asc')->get();
-                    foreach($data_pegawai_kontrak as $data)
-                    {
-                        TblPajak::insert([
-                                'tahun' => $data_tahun,
-                                'bulan' => $data_bulan,
-                                'nopeg' => $data->nopeg,
-                                'status' => $data->kodekeluarga,        
-                                ]);
-
-                         // 1.CARI NILAI UPAH ALL IN AARD 02
-                        $data_sdmallin = DB::select("select nilai from sdm_allin where nopek='$data->nopeg'");
-                        if(!empty($data_sdmallin)){
-                            foreach($data_sdmallin as $data_sdm)
-                                    {
-                                        if($data_sdm->nilai <> ""){
-                                            $upahallin = $data_sdm->nilai;
-                                        }else {
-                                            $upahallin ='0';
-                                        }
-                                    }
-                            }else {
-                                $upahallin ='0';
-                            } 
-                        
-                            PayMasterUpah::insert([
-                                        'tahun' => $data_tahun,
-                                        'bulan' => $data_bulan,
-                                        'nopek' => $data->nopeg,
+                                        'nopek' => $datakm->nopeg,
                                         'aard' => '02',        
                                         'jmlcc' => '0',        
                                         'ccl' => '0',        
-                                        'nilai' => $upahallin,        
+                                        'nilai' => $upahallinkm,        
                                         'userid' => $request->userid,        
                                         ]);
                                 
                             TblPajak::where('tahun', $data_tahun)
                                     ->where('bulan',$data_bulan)
-                                    ->where('nopeg',$data->nopeg)
+                                    ->where('nopeg',$datakm->nopeg)
                                     ->update([
-                                        'upah' => $upahallin,
+                                        'upah' => $upahallinkm,
                                     ]);
 
-                            // 2.CARI NILAI SISA BULAN LALU AARD 07
-                            $data_sisanilai = DB::select("select nopek,aard,jmlcc,ccl,round(nilai) as nilai from pay_koreksi where bulan='$data_bulans' and tahun='$data_tahun' and nopek='$data->nopeg' and aard='07'");
-                            if(!empty($data_sisanilai)){
-                                    foreach($data_sisanilai as $data_sdm)
-                                    {
-                                        if($data_sdm->nilai <> ""){
-                                            $fassisa = $data_sdm->nilai;
-                                        }else{
-                                            $fassisa = '0';
-                                        }
-                                    }
-                            }else{
-                                $fassisa = '0';
-                            }
-                            PayMasterUpah::insert([
-                                    'tahun' => $data_tahun,
-                                    'bulan' => $data_bulan,
-                                    'nopek' => $data->nopeg,
-                                    'aard' => '07',        
-                                    'jmlcc' => '0',        
-                                    'ccl' => '0',        
-                                    'nilai' => $fassisa,        
-                                    'userid' => $request->userid,        
-                                    ]); 
-
-                            // 3.CARI NILAI KOREKSI LAIN AARD 08
-                            $data_carinilaikoreksi = DB::select("select sum(nilai) as nilai from pay_koreksi where bulan='$data_bulan' and tahun='$data_tahun' and nopek='$data->nopeg' and aard='08'");
-                            if(!empty($data_carinilaikoreksi)){
-                                foreach($data_carinilaikoreksi as $data_carinilai)
+                            // 2.HITUNG TOTAL GAJI YANG DI DAPAT 
+                            $totalgajikm = DB::select("select sum(nilai) as gajiasli,(sum(nilai)-round(sum(nilai),-3)) as pembulatan1,round(sum(nilai),-3) as hasil,(1000+(sum(nilai)-round(sum(nilai),-3))) as pembulatan2  from pay_master_upah where bulan='$data_bulan' and tahun='$data_tahun' and nopek='$datakm->nopeg'");
+                            if(!empty($totalgajikm)){
+                                foreach($totalgajikm as $totalkm)
                                 {
-                                    if($data_carinilai->nilai <> ""){
-                                        $faslain = $data_carinilai->nilai;
+                                    if($totalkm->pembulatan1 < 0){
+                                        $sisagajikm = $totalkm->pembulatan2;
                                     }else{
-                                        $faslain = '0';
-                                    }
-                                }
-                            }else {
-                                $faslain = '0';
-                            }
-
-                            PayMasterUpah::insert([
-                                    'tahun' => $data_tahun,
-                                    'bulan' => $data_bulan,
-                                    'nopek' => $data->nopeg,
-                                    'aard' => '08',        
-                                    'jmlcc' => '0',        
-                                    'ccl' => '0',        
-                                    'nilai' => $faslain,        
-                                    'userid' => $request->userid,        
-                                    ]); 
-
-                            // 4.HITUNG TOTAL GAJI YANG DI DAPAT 
-                            $totalgaji = DB::select("select sum(nilai) as gajiasli,(sum(nilai)-round(sum(nilai),-3)) as pembulatan1,round(sum(nilai),-3) as hasil,(1000+(sum(nilai)-round(sum(nilai),-3))) as pembulatan2  from pay_master_upah where bulan='$data_bulan' and tahun='$data_tahun' and nopek='$data->nopeg'");
-                            if(!empty($totalgaji)){
-                                foreach($totalgaji as $total)
-                                {
-                                    if($total->pembulatan1 < 0){
-                                        $sisagaji = $total->pembulatan2;
-                                    }else{
-                                        $sisagaji = $total->pembulatan1;
+                                        $sisagajikm = $totalkm->pembulatan1;
                                     }
                                 }
                             }else{
-                                $sisagaji = '0';
+                                $sisagajikm = '0';
                             }
                             PayMasterUpah::insert([
                                         'tahun' => $data_tahun,
                                         'bulan' => $data_bulan,
-                                        'nopek' => $data->nopeg,
+                                        'nopek' => $datakm->nopeg,
                                         'aard' => '23',        
                                         'jmlcc' => '0',        
                                         'ccl' => '0',        
-                                        'nilai' => $sisagaji * -1,        
+                                        'nilai' => $sisagajikm * -1,        
                                         'userid' => $request->userid,        
                                         ]); 
 
                         
-                            $bulan2 = $data_bulan + 1;
-                            if($bulan2 >12){
-                                $data_bulan2 = 1;
-                                $data_tahun2 = $data_tahun + 1;
+                            $bulan2km = $data_bulan + 1;
+                            if($bulan2km >12){
+                                $data_bulan2km = 1;
+                                $data_tahun2km = $data_tahun + 1;
                             }else{
-                                $data_bulan2 =$bulan2;
-                                $data_tahun2 = $data_tahun;
+                                $data_bulan2km =$bulan2km;
+                                $data_tahun2km = $data_tahun;
                             }
                             PayKoreksi::insert([
-                                                'tahun' => $data_tahun2,
-                                                'bulan' => $data_bulan2,
-                                                'nopek' => $data->nopeg,
+                                                'tahun' => $data_tahun2km,
+                                                'bulan' => $data_bulan2km,
+                                                'nopek' => $datakm->nopeg,
                                                 'aard' => '07',        
                                                 'jmlcc' => '0',        
                                                 'ccl' => '0',        
-                                                'nilai' => $sisagaji,        
+                                                'nilai' => $sisagajikm,        
                                                 'userid' => $request->userid,        
                                                 ]); 
 
-                            // 5.HITUNG PAJAK PPH21 CARI NILAI YANG KENA PAJAK (BRUTO)
-                            $kenapajak = DB::select("select sum(a.nilai) as nilai1 from pay_master_upah a,pay_tbl_aard b where a.tahun='$data_tahun' and a.bulan='$data_bulan' and a.nopek='$data->nopeg' and a.aard=b.kode and b.kenapajak='Y'");
-                            foreach($kenapajak as $kenap)
+                            // 3.HITUNG PAJAK PPH21 CARI NILAI YANG KENA PAJAK (BRUTO)
+                            $kenapajakkm = DB::select("select sum(a.nilai) as nilai1 from pay_master_upah a,pay_tbl_aard b where a.tahun='$data_tahun' and a.bulan='$data_bulan' and a.nopek='$datakm->nopeg' and a.aard=b.kode and b.kenapajak='Y'");
+                            foreach($kenapajakkm as $kenapkm)
                             {
-                                if($kenap->nilai1 <> ""){
-                                    $nilaikenapajak1 = $kenap->nilai1;
+                                if($kenapkm->nilai1 <> ""){
+                                    $nilaikenapajakkm = $kenapkm->nilai1;
                                 }else{
-                                    $nilaikenapajak1 = '0';
+                                    $nilaikenapajakkm = '0';
                                 }
                             }
-                            $nilaikenapajaka = $nilaikenapajak1;
+                            $nilaikenapajakkma = $nilaikenapajakkm;
                             TblPajak::where('tahun', $data_tahun)
-                                    ->where('bulan',$data_bulan)
-                                    ->where('nopeg',$data->nopeg)
-                                    ->update([
-                                        'pkp' => $nilaikenapajaka,
-                                    ]);
+                                            ->where('bulan',$data_bulan)
+                                            ->where('nopeg',$datakm->nopeg)
+                                            ->update([
+                                                'pkp' => $nilaikenapajakakm,
+                                            ]);
 
-                            if($data->nopeg == "kom9" or $data->nopeg == "kom4"){
-                                $tunjpajak = (15/100) * $nilaikenapajaka;
-                                $potpajak = ((30/100)*($nilaikenapajaka + $tunjpajak));
-                            }elseif($data->nopeg == "komut1"){
-                                $tunjpajak = (15/100) * $nilaikenapajaka;
-                                $potpajak = (30/100) * ($nilaikenapajaka + $tunjpajak);
-                            }elseif($data->nopeg == "kom5"){
-                                $tunjpajak = (5/100) * $nilaikenapajaka;
-                                $potpajak = (15/100) * ($nilaikenapajaka + $tunjpajak);
-                            }else{
-                                $tunjpajak = (5/100) * $nilaikenapajaka;
-                                $potpajak = (30/100) * ($nilaikenapajaka + $tunjpajak);
-                            }
+                            $tunjpajakkm = ((5/100) * $nilaikenapajakakm);
+                            $potpajakkm = ((30/100) * ($nilaikenapajakakm + $tunjpajakkm));
                             PayMasterUpah::insert([
                                         'tahun' => $data_tahun,
                                         'bulan' => $data_bulan,
-                                        'nopek' => $data->nopeg,
+                                        'nopek' => $datakm->nopeg,
                                         'aard' => '27',        
                                         'jmlcc' => '0',        
                                         'ccl' => '0',        
-                                        'nilai' => $tunjpajak,        
+                                        'nilai' => $tunjpajakkm,        
                                         'userid' => $request->userid,        
-                                        ]);
+                                        ]); 
                             PayMasterUpah::insert([
                                         'tahun' => $data_tahun,
                                         'bulan' => $data_bulan,
-                                        'nopek' => $data->nopeg,
+                                        'nopek' => $datakm->nopeg,
                                         'aard' => '26',        
                                         'jmlcc' => '0',        
                                         'ccl' => '0',        
-                                        'nilai' => $potpajak,        
+                                        'nilai' => $potpajakkm,        
                                         'userid' => $request->userid,        
-                                        ]);
-                           
+                                        ]); 
+                            $data_caripajak1km = DB::select("select round(nilai,-2) as pajaknya from pay_master_upah where tahun='$data_tahun' and bulan='$data_bulan' and nopek='$datakm->nopeg' and aard='27'");
+                                    foreach($data_caripajak1km as $data_pajak1km)
+                                    {
+                                        $tunjpakm = $data_pajak1km->pajaknya;
+                                    }
+                                    
+                            $data_caripajak2km = DB::select("select round(nilai,-2) as pajaknya from pay_master_upah where tahun='$data_tahun' and bulan='$data_bulan' and nopek='$datakm->nopeg' and aard='26'");
+                                    foreach($data_caripajak2km as $data_pajak2km)
+                                    {
+                                        $potpakm = $data_pajak2km->pajaknya;
+                                    }
 
-                            $data_caripajak1 = DB::select("select round(nilai,-2) as pajaknya from pay_master_upah where tahun='$data_tahun' and bulan='$data_bulan' and nopek='$data->nopeg' and aard='27'");
-                            foreach($data_caripajak1 as $data_pajak1)
-                            {
-                                $tunjpa = $data_pajak1->pajaknya;
-                            }
-                            
-                            $data_caripajak2 = DB::select("select round(nilai,-2) as pajaknya from pay_master_upah where tahun='$data_tahun' and bulan='$data_bulan' and nopek='$data->nopeg' and aard='26'");
-                            foreach($data_caripajak2 as $data_pajak2)
-                            {
-                                $potpa = $data_pajak2->pajaknya;
-                            }
+                                    PayMasterUpah::where('tahun', $data_tahun)
+                                            ->where('bulan',$data_bulan)
+                                            ->where('nopek',$datakm->nopeg)
+                                            ->where('aard','27')
+                                            ->update([
+                                                'nilai' => $tunjpakm,
+                                            ]);
+                                    PayMasterUpah::where('tahun', $data_tahun)
+                                            ->where('bulan',$data_bulan)
+                                            ->where('nopek',$datakm->nopeg)
+                                            ->where('aard','26')
+                                            ->update([
+                                                'nilai' => $potpakm * -1,
+                                            ]);
+                                    TblPajak::where('tahun', $data_tahun)
+                                            ->where('bulan',$data_bulan)
+                                            ->where('nopeg',$datakm->nopeg)
+                                            ->update([
+                                                'pajak_setor' => $tunjpakm,
+                                            ]);
 
-                            PayMasterUpah::where('tahun', $data_tahun)
-                                    ->where('bulan',$data_bulan)
-                                    ->where('nopek',$data->nopeg)
-                                    ->where('aard','27')
-                                    ->update([
-                                        'nilai' => $tunjpa,
-                                    ]);
-                            PayMasterUpah::where('tahun', $data_tahun)
-                                    ->where('bulan',$data_bulan)
-                                    ->where('nopek',$data->nopeg)
-                                    ->where('aard','26')
-                                    ->update([
-                                        'nilai' => $potpa * -1,
-                                    ]);
-                             TblPajak::where('tahun', $data_tahun)
-                                    ->where('bulan',$data_bulan)
-                                    ->where('nopeg',$data->nopeg)
-                                    ->update([
-                                        'pajak_setor' => $tunjpa,
-                                    ]);
-                    }
-
-                    StatusBayarGaji::insert([
-                        'tahun' => $data_tahun,
-                        'bulan' => $data_bulan,
-                        'statpbd' => 'N',      
-                        ]); 
-                        Alert::success('Data Upah Berhasil Diproses', 'Berhasil')->persistent(true);
-                        return redirect()->route('proses_gaji.index');
-                    
-
-                }else{
-
-                    
-                     // Komite()
-                     $data_pegawai_kontrak = SdmMasterPegawai::where('status','O')->orderBy('nopeg', 'asc')->get();
-                     foreach($data_pegawai_kontrak as $data)
-                     {
-                         TblPajak::insert([
-                                 'tahun' => $data_tahun,
-                                 'bulan' => $data_bulan,
-                                 'nopeg' => $data->nopeg,
-                                 'status' => $data->kodekeluarga,        
-                                 ]);
- 
-                         // 1.CARI NILAI UPAH ALL IN AARD 02
-                         $data_sdmallin = DB::select("select nilai from sdm_allin where nopek='$data->nopeg'");
-                         if(!empty($data_sdmallin)){
-                            foreach($data_sdmallin as $data_sdm)
-                                 {
-                                     if($data_sdm->nilai <> ""){
-                                         $upahallin = $data_sdm->nilai;
-                                     }else {
-                                         $upahallin ='0';
-                                     }
-                                 }
-                         }else {
-                             $upahallin ='0';
-                         } 
-                         PayMasterUpah::insert([
-                                     'tahun' => $data_tahun,
-                                     'bulan' => $data_bulan,
-                                     'nopek' => $data->nopeg,
-                                     'aard' => '02',        
-                                     'jmlcc' => '0',        
-                                     'ccl' => '0',        
-                                     'nilai' => $upahallin,        
-                                     'userid' => $request->userid,        
-                                     ]);
-                             
-                         TblPajak::where('tahun', $data_tahun)
-                                 ->where('bulan',$data_bulan)
-                                 ->where('nopeg',$data->nopeg)
-                                 ->update([
-                                     'upah' => $upahallin,
-                                 ]);
- 
-                         // 2.HITUNG TOTAL GAJI YANG DI DAPAT 
-                         $totalgaji = DB::select("select sum(nilai) as gajiasli,(sum(nilai)-round(sum(nilai),-3)) as pembulatan1,round(sum(nilai),-3) as hasil,(1000+(sum(nilai)-round(sum(nilai),-3))) as pembulatan2  from pay_master_upah where bulan='$data_bulan' and tahun='$data_tahun' and nopek='$data->nopeg'");
-                         if(!empty($totalgaji)){
-                             foreach($totalgaji as $total)
-                             {
-                                 if($total->pembulatan1 < 0){
-                                     $sisagaji = $total->pembulatan2;
-                                 }else{
-                                     $sisagaji = $total->pembulatan1;
-                                 }
-                             }
-                         }else{
-                             $sisagaji = '0';
-                         }
-                         PayMasterUpah::insert([
-                                     'tahun' => $data_tahun,
-                                     'bulan' => $data_bulan,
-                                     'nopek' => $data->nopeg,
-                                     'aard' => '23',        
-                                     'jmlcc' => '0',        
-                                     'ccl' => '0',        
-                                     'nilai' => $sisagaji * -1,        
-                                     'userid' => $request->userid,        
-                                     ]); 
- 
-                     
-                         $bulan2 = $data_bulan + 1;
-                         if($bulan2 >12){
-                             $data_bulan2 = 1;
-                             $data_tahun2 = $data_tahun + 1;
-                         }else{
-                             $data_bulan2 =$bulan2;
-                             $data_tahun2 = $data_tahun;
-                         }
-                         PayKoreksi::insert([
-                                             'tahun' => $data_tahun2,
-                                             'bulan' => $data_bulan2,
-                                             'nopek' => $data->nopeg,
-                                             'aard' => '07',        
-                                             'jmlcc' => '0',        
-                                             'ccl' => '0',        
-                                             'nilai' => $sisagaji,        
-                                             'userid' => $request->userid,        
-                                             ]); 
- 
-                          // 3.HITUNG PAJAK PPH21 CARI NILAI YANG KENA PAJAK (BRUTO)
-                          $kenapajak = DB::select("select sum(a.nilai) as nilai1 from pay_master_upah a,pay_tbl_aard b where a.tahun='$data_tahun' and a.bulan='$data_bulan' and a.nopek='$data->nopeg' and a.aard=b.kode and b.kenapajak='Y'");
-                          foreach($kenapajak as $kenap)
-                          {
-                              if($kenap->nilai1 <> ""){
-                                  $nilaikenapajak = $kenap->nilai1;
-                              }else{
-                                  $nilaikenapajak = '0';
-                              }
-                          }
-                         $nilaikenapajaka = $nilaikenapajak;
-                         TblPajak::where('tahun', $data_tahun)
-                                         ->where('bulan',$data_bulan)
-                                         ->where('nopeg',$data->nopeg)
-                                         ->update([
-                                             'pkp' => $nilaikenapajaka,
-                                         ]);
- 
-                         $tunjpajak = ((5/100) * $nilaikenapajaka);
-                         $potpajak = ((30/100) * ($nilaikenapajaka + $tunjpajak));
-                         PayMasterUpah::insert([
-                                     'tahun' => $data_tahun,
-                                     'bulan' => $data_bulan,
-                                     'nopek' => $data->nopeg,
-                                     'aard' => '27',        
-                                     'jmlcc' => '0',        
-                                     'ccl' => '0',        
-                                     'nilai' => $tunjpajak,        
-                                     'userid' => $request->userid,        
-                                     ]); 
-                         PayMasterUpah::insert([
-                                     'tahun' => $data_tahun,
-                                     'bulan' => $data_bulan,
-                                     'nopek' => $data->nopeg,
-                                     'aard' => '26',        
-                                     'jmlcc' => '0',        
-                                     'ccl' => '0',        
-                                     'nilai' => $potpajak,        
-                                     'userid' => $request->userid,        
-                                     ]); 
-                         $data_caripajak1 = DB::select("select round(nilai,-2) as pajaknya from pay_master_upah where tahun='$data_tahun' and bulan='$data_bulan' and nopek='$data->nopeg' and aard='27'");
-                                 foreach($data_caripajak1 as $data_pajak1)
-                                 {
-                                     $tunjpa = $data_pajak1->pajaknya;
-                                 }
-                                 
-                         $data_caripajak2 = DB::select("select round(nilai,-2) as pajaknya from pay_master_upah where tahun='$data_tahun' and bulan='$data_bulan' and nopek='$data->nopeg' and aard='26'");
-                                 foreach($data_caripajak2 as $data_pajak2)
-                                 {
-                                     $potpa = $data_pajak2->pajaknya;
-                                 }
- 
-                                 PayMasterUpah::where('tahun', $data_tahun)
-                                         ->where('bulan',$data_bulan)
-                                         ->where('nopek',$data->nopeg)
-                                         ->where('aard','27')
-                                         ->update([
-                                             'nilai' => $tunjpa,
-                                         ]);
-                                 PayMasterUpah::where('tahun', $data_tahun)
-                                         ->where('bulan',$data_bulan)
-                                         ->where('nopek',$data->nopeg)
-                                         ->where('aard','26')
-                                         ->update([
-                                             'nilai' => $potpa * -1,
-                                         ]);
-                                  TblPajak::where('tahun', $data_tahun)
-                                         ->where('bulan',$data_bulan)
-                                         ->where('nopeg',$data->nopeg)
-                                         ->update([
-                                             'pajak_setor' => $tunjpa,
-                                         ]);
- 
                         }
-                        StatusBayarGaji::insert([
-                            'tahun' => $data_tahun,
-                            'bulan' => $data_bulan,
-                            'statpbd' => 'N',      
-                            ]); 
-                        Alert::success('Data Upah Berhasil Diproses', 'Berhasil')->persistent(true);
-                        return redirect()->route('proses_gaji.index');
-                }//end proses
+                    }//end proses
+                            StatusBayarGaji::insert([
+                                'tahun' => $data_tahun,
+                                'bulan' => $data_bulan,
+                                'statpbd' => 'N',      
+                                ]); 
+                            Alert::success('Data Upah Berhasil Diproses', 'Berhasil')->persistent(true);
+                            return redirect()->route('proses_gaji.index');
             }
 
         }else{

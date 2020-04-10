@@ -144,16 +144,19 @@
                 ); // isi nama semua route pinjaman pekerjaan
                 $proses_gaji = array(
                     'proses_gaji.index',
+                    'proses_gaji.store',
                     'proses_gaji.create',
                     'proses_gaji.edit'
                 ); // isi nama semua route proses gajian sdm
                 $proses_thr = array(
                     'proses_thr.index',
+                    'proses_thr.store',
                     'proses_thr.create',
                     'proses_thr.edit'
                 ); // isi nama semua route proses thr sdm
                 $proses_insentif = array(
                     'proses_insentif.index',
+                    'proses_insentif.store',
                     'proses_insentif.create',
                     'proses_insentif.edit'
                 ); // isi nama semua route proses insentif sdm
@@ -454,7 +457,7 @@
                                 </span>
                             </a>
                         </li>
-                        <li class="kt-menu__item  kt-menu__item--submenu kt-menu__item{{ set_active_submenu($proses_gaji_sdm) }}" aria-haspopup="true" data-ktmenu-submenu-toggle="hover">
+                        <li class="kt-menu__item kt-menu__item--submenu {{  set_active($proses_gaji_sdm) }}" aria-haspopup="true" data-ktmenu-submenu-toggle="hover">
                             <a href="javascript:;" class="kt-menu__link kt-menu__toggle">
                                 <i class="kt-menu__link-bullet kt-menu__link-bullet--dot">
                                     <span></span>
