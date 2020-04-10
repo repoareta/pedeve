@@ -210,10 +210,10 @@ Route::group(['middleware'=> ['auth','checkRole:1']], function () {
        
         //honor komite
         Route::get('honor_komite', 'HonorKomiteController@index')->name('honor_komite.index');
-        Route::get('honor_komite/index_json', 'HonorKomiteController@indexJson')->name('honor_komite.index.json');
+        Route::post('honor_komite/search', 'HonorKomiteController@searchIndex')->name('honor_komite.search.index');
         Route::get('honor_komite/create', 'HonorKomiteController@create')->name('honor_komite.create');
         Route::post('honor_komite/store', 'HonorKomiteController@store')->name('honor_komite.store');
-        Route::get('honor_komite/edit/{bulan}/{tahun}/{arrd}/{nopek}', 'HonorKomiteController@edit')->name('honor_komite.edit');
+        Route::get('honor_komite/edit/{bulan}/{tahun}/{nopek}', 'HonorKomiteController@edit')->name('honor_komite.edit');
         Route::post('honor_komite/update', 'HonorKomiteController@update')->name('honor_komite.update');
         Route::delete('honor_komite/delete', 'HonorKomiteController@delete')->name('honor_komite.delete');
         

@@ -20,53 +20,45 @@ class HonorKomiteController extends Controller
      */
     public function index()
     {
-        return view('honor_komite.index');
+        $data_tahunbulan = DB::select("select max(thnbln) as bulan_buku from timetrans where status='1' and length(thnbln)='6'");
+        foreach($data_tahunbulan as $data_bul)
+        {
+            $bulan_buku = $data_bul->bulan_buku;
+        }
+        $tahun = substr($bulan_buku,0,-2);
+        $data_list = DB::select("select a.tahun, a.bulan, a.nopek, a.aard, a.jmlcc, a.ccl, a.nilai, a.userid,a.pajak, b.nama as nama_nopek from pay_honorarium a join sdm_master_pegawai b on a.nopek=b.nopeg where a.tahun ='$tahun' order by a.tahun,a.bulan,a.nopek");
+        $data_pegawai = DB::select("select nopeg,nama,status,nama from sdm_master_pegawai where status <>'P' order by nopeg");	
+        return view('honor_komite.index',compact('data_list','data_pegawai'));
     }
 
-    public function indexJson()
+    public function searchIndex(Request $request)
     {
-        $koreksi_gaji_list = DB::table('pay_honorarium as a')
-                        ->join('sdm_master_pegawai as b', 'a.nopek', '=', 'b.nopeg')
-                        ->select('a.*', 'b.nama')
-                        ->orderBy('a.tahun', 'desc')->get();
-        
-        return datatables()->of($koreksi_gaji_list)
-        ->addColumn('action', function ($row) {
-                return '<label  class="kt-radio kt-radio--bold kt-radio--brand"><input type="radio" class="btn-radio" tahun="'.$row->tahun.'" bulan="'.$row->bulan.'" nopek="'.$row->nopek.'" aard="'.$row->aard.'" nama="'.$row->nama.'" name="btn-radio"><span></span></label>';
-        })
-        ->addColumn('nama', function ($row) {
-            return "$row->nopek - $row->nama";
-        })
-        ->addColumn('nilai', function ($row) {
-            return currency_idr($row->nilai);
-        })
-        ->addColumn('pajak', function ($row) {
-            return currency_idr($row->pajak);
-        })
-        ->addColumn('tahun', function ($row) {
-            return $row->tahun;
-        })
-        
-        ->addColumn('bulan', function ($row) {
-            $array_bln	 = array (
-                1 =>   'Januari',
-                'Februari',
-                'Maret',
-                'April',
-                'Mei',
-                'Juni',
-                'Juli',
-                'Agustus',
-                'September',
-                'Oktober',
-                'November',
-                'Desember'
-              );
-            $bulan= strtoupper($array_bln[$row->bulan]);
-            return $bulan;
-        })
-        ->rawColumns(['action'])
-            ->make(true);
+        $data_tahunbulan = DB::select("select max(thnbln) as bulan_buku from timetrans where status='1' and length(thnbln)='6'");
+        foreach($data_tahunbulan as $data_bul)
+        {
+            $bulan_buku = $data_bul->bulan_buku;
+        }
+        $tahuns = substr($bulan_buku,0,-2);
+        $bulan = $request->bulan;
+        $tahun = $request->tahun;
+        $nopek = $request->nopek;
+        if($nopek == null ){
+            if($bulan == null and $tahun == null){
+                $data_list = DB::select("select a.tahun, a.bulan, a.nopek, a.aard, a.jmlcc, a.ccl, a.nilai, a.userid,a.pajak, b.nama as nama_nopek from pay_honorarium a join sdm_master_pegawai b on a.nopek=b.nopeg where a.tahun ='$tahuns' order by a.tahun,a.bulan,a.nopek");	
+            }elseif($bulan == null and $tahun <> null){
+                $data_list = DB::select("select a.tahun, a.bulan, a.nopek, a.aard, a.jmlcc, a.ccl, a.nilai, a.userid,a.pajak, b.nama as nama_nopek from pay_honorarium a join sdm_master_pegawai b on a.nopek=b.nopeg where a.tahun ='$tahun' order by a.tahun,a.bulan,a.nopek");	
+            }else{
+                $data_list = DB::select("select a.tahun, a.bulan, a.nopek, a.aard, a.jmlcc, a.ccl, a.nilai, a.userid,a.pajak, b.nama as nama_nopek from pay_honorarium a join sdm_master_pegawai b on a.nopek=b.nopeg where a.bulan='$bulan' and a.tahun='$tahun' order by a.tahun,a.bulan,a.nopek");
+            }
+        }else{
+            if($bulan == null and $tahun = null){
+                $data_list = DB::select("select a.tahun, a.bulan, a.nopek, a.aard, a.jmlcc, a.ccl, a.nilai, a.userid,a.pajak, b.nama as nama_nopek from pay_honorarium a join sdm_master_pegawai b on a.nopek=b.nopeg where a.nopek='$nopek' order by a.tahun,a.bulan,a.nopek");	
+            }else{
+                $data_list = DB::select("select a.tahun, a.bulan, a.nopek, a.aard, a.jmlcc, a.ccl, a.nilai, a.userid,a.pajak, b.nama as nama_nopek from pay_honorarium a join sdm_master_pegawai b on a.nopek=b.nopeg where a.bulan='$bulan' and a.tahun='$tahun' and a.nopek='$nopek' order by a.tahun,a.bulan,a.nopek");
+            }
+        }
+        $data_pegawai = DB::select("select nopeg,nama,status,nama from sdm_master_pegawai where status <>'P' order by nopeg");	
+        return view('honor_komite.index',compact('data_list','data_pegawai'));
     }
 
     /**
@@ -88,8 +80,16 @@ class HonorKomiteController extends Controller
      */
     public function store(Request $request)
     {
-        $data_tahun = substr($request->bulantahun,3);
-        $data_bulan = ltrim(substr($request->bulantahun,0,-5), '0');
+        $data_cek = DB::select("select * from pay_honorarium   where nopek='$request->nopek' and bulan='$request->bulan' and tahun='$request->tahun'" ); 			
+        if(!empty($data_cek)){
+            $data=0;
+            return response()->json($data);
+        }else {
+        $nilai = $request->nilai;
+        $pajak = (35/65) * $nilai;
+        $data_tahun = $request->tahun;
+        $data_bulan = $request->bulan;
+        $nopek = $request->nopek;
         PayHonor::insert([
             'tahun' => $data_tahun,
             'bulan' => $data_bulan,
@@ -97,13 +97,24 @@ class HonorKomiteController extends Controller
             'aard' => 30,
             'jmlcc' => 0,
             'ccl' => 0,
-            'nilai' => $request->nilai,
+            'nilai' => $nilai,
             'userid' => $request->userid,
-            'pajak' => $request->pajak,
-            
-            // Save Panjar Header
+            'pajak' => $pajak,
             ]);
-            return response()->json();
+
+        $data_pajak = DB::select("select round(pajak,-2) as pajaknya from pay_honorarium where tahun='$data_tahun' and bulan='$data_bulan' and nopek='$nopek'");
+        foreach($data_pajak as $data_p)
+        {
+            PayHonor::where('tahun', $request->tahun)
+            ->where('bulan',$request->bulan)
+            ->where('nopek',$request->nopek)
+            ->update([
+                'pajak' => $data_p->pajaknya,
+            ]);
+        }
+            $data = 1;
+            return response()->json($data);
+        }
     }
 
     /**
@@ -123,13 +134,9 @@ class HonorKomiteController extends Controller
      * @param  int  $id
      * @return \Illuminate\Http\Response
      */
-    public function edit($bulan,$tahun,$aard,$nopek)
+    public function edit($bulan,$tahun,$nopek)
     {
-        $data_list = PayHonor::where('tahun', $tahun)
-            ->where('bulan',$bulan)
-            ->where('nopek',$nopek)
-            ->where('aard',$aard)
-            ->get();
+        $data_list = DB::select("select a.tahun, a.bulan, a.nopek, a.aard, a.jmlcc, a.ccl, a.nilai, a.userid,a.pajak, b.nama as nama_nopek from pay_honorarium a join sdm_master_pegawai b on a.nopek=b.nopeg where nopek='$nopek' and bulan='$bulan' and tahun='$tahun' order by a.tahun,a.bulan,a.nopek");
         $data_pegawai = SdmMasterPegawai::all();
         return view('honor_komite.edit',compact('data_list','data_pegawai'));
     }
@@ -144,23 +151,37 @@ class HonorKomiteController extends Controller
      */
     public function update(Request $request)
     {
-        $data_tahun = substr($request->bulantahun,-4);
-        $data_bulan = ltrim(substr($request->bulantahun,0,-5), '0');
+        $data_tahun = $request->tahun;
+        $data_bulan = $request->bulan;
+        $nilai = $request->nilai;
+        $nopek = $request->nopek;
+        $pajak = (35/65) * $nilai;
 
+        PayHonor::where('tahun', $request->tahun)
+        ->where('bulan',$request->bulan)
+        ->where('nopek',$request->nopek)
+        ->update([
+            'tahun' => $data_tahun,
+            'bulan' => $data_bulan,
+            'nopek' => $request->nopek,
+            'jmlcc' => 0,
+            'ccl' => 0,
+            'nilai' => $nilai,
+            'userid' => $request->userid,
+            'pajak' => $pajak,
+        ]);
+
+        $data_pajak = DB::select("select round(pajak,-2) as pajaknya from pay_honorarium where tahun='$data_tahun' and bulan='$data_bulan' and nopek='$nopek'");
+        foreach($data_pajak as $data_p)
+        {
             PayHonor::where('tahun', $request->tahun)
             ->where('bulan',$request->bulan)
-            ->where('nopek',$request->nopeks)
+            ->where('nopek',$request->nopek)
             ->update([
-                'tahun' => $data_tahun,
-                'bulan' => $data_bulan,
-                'nopek' => $request->nopek,
-                'jmlcc' => 0,
-                'ccl' => 0,
-                'nilai' => $request->nilai,
-                'userid' => $request->userid,
-                'pajak' => $request->pajak,
+                'pajak' => $data_p->pajaknya,
             ]);
-            return response()->json();
+        }
+        return response()->json();
     }
    
 

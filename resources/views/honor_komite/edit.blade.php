@@ -55,24 +55,39 @@
 						</div>
 						@foreach($data_list as $row)
 						<div class="form-group row">
-							<label for="nopek-input" class="col-2 col-form-label">Bulan/Tahun<span style="color:red;">*</span></label>
-							<div class="col-10">
-								<input class="form-control" type="hidden" name="userid" value="{{Auth::user()->userid}}">
-								<input class="form-control" type="text" name="bulantahun" value="<?php echo $row->bulan?>/{{$row->tahun}}" id="tgldebet" size="7" maxlength="7" required  autocomplete='off'>
-								<input type="hidden" value="{{$row->bulan}}" name="bulan">
-								<input type="hidden" value="{{$row->tahun}}" name="tahun">
-							</div>
+						<label for="spd-input" class="col-2 col-form-label">Bulan/Tahun<span style="color:red;">*</span></label>
+						<div class="col-4">
+							<?php 
+							$array_bln	 = array (
+										1 =>   'Januari',
+										'Februari',
+										'Maret',
+										'April',
+										'Mei',
+										'Juni',
+										'Juli',
+										'Agustus',
+										'September',
+										'Oktober',
+										'November',
+										'Desember'
+									);
+									$bulan= strtoupper($array_bln[$row->bulan]);
+							?>
+						<input class="form-control" type="text" value="{{$bulan}}"readonly style="background-color:#DCDCDC; cursor:not-allowed">
+						<input class="form-control" type="hidden" value="{{$row->bulan}}" name="bulan">
+								
+						</div>
+								<div class="col-2" >
+									<input class="form-control" type="text" value="{{$row->tahun}}" name="tahun" readonly style="background-color:#DCDCDC; cursor:not-allowed">
+									<input class="form-control" type="hidden" value="{{Auth::user()->userid}}"  name="userid" autocomplete='off'>
+								</div>
 						</div>
 						<div class="form-group row">
 							<label for="" class="col-2 col-form-label">Pegawai<span style="color:red;">*</span></label>
-							<div class="col-10">
-								<select name="nopek" id="nopek" class="form-control selectpicker" data-live-search="true" required autocomplete='off'>
-									<option value="">- Pilih -</option>
-									@foreach($data_pegawai as $data)
-									<option value="{{$data->nopeg}}" <?php if($data->nopeg  == $row->nopek ) echo 'selected' ; ?>>{{$data->nopeg}} - {{$data->nama}}</option>
-									@endforeach
-								</select>
-								<input type="hidden" value="{{$row->nopek}}" name="nopeks">
+							<div class="col-8">
+								<input class="form-control" type="text" value="{{$row->nopek}} - {{$row->nama_nopek}}"  readonly style="background-color:#DCDCDC; cursor:not-allowed">
+								<input class="form-control" type="hidden" value="{{$row->nopek}}" name="nopek" >
 							</div>
 						</div>
 						<div class="form-group row">
@@ -83,10 +98,14 @@
 							</div>
 						</div>
 						@endforeach
-						<div style="float:right;">
-							<div class="kt-form__actions">
-								<a  href="{{route('honor_komite.index')}}" class="btn btn-warning"><i class="fa fa-reply" aria-hidden="true"></i>Cancel</a>
-								<button type="submit" class="btn btn-brand"><i class="fa fa-check" aria-hidden="true"></i>Save</button>
+						<div class="kt-form__actions">
+							<div class="row">
+								<div class="col"></div>
+								<div class="col"></div>
+								<div class="col-10">
+									<a  href="{{route('honor_komite.index')}}" class="btn btn-warning"><i class="fa fa-reply" aria-hidden="true"></i>Cancel</a>
+									<button type="submit" class="btn btn-brand"><i class="fa fa-check" aria-hidden="true"></i>Save</button>
+								</div>
 							</div>
 						</div>
 					</div>

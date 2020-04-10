@@ -115,6 +115,7 @@
                 ); // isi nama semua route potongan otomatis gajian
                 $honor_komite = array(
                     'honor_komite.index',
+                    'honor_komite.search.index',
                     'honor_komite.create',
                     'honor_komite.edit'
                 ); // isi nama semua route honor komite

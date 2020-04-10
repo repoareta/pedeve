@@ -100,7 +100,7 @@ class PotonganManualController extends Controller
             'userid' => $request->userid,            
             ]);
             $data = 1;
-                    return response()->json($data);
+            return response()->json($data);
         }
     }
 
