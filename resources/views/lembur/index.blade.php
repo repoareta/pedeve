@@ -103,12 +103,12 @@
 					echo date_format($tgl, 'd F Y') ?>
 					</td>
 					<td>{{$data->nopek}}-{{$data->nama_nopek}}</td>
-					<td><?php echo number_format($data->makanpg, 2, ',', '.') ?></td>
-					<td><?php echo number_format($data->makansg, 2, ',', '.') ?></td>
-					<td><?php echo number_format($data->makanml, 2, ',', '.') ?></td>
-					<td><?php echo number_format($data->transport, 2, ',', '.') ?></td>
-					<td><?php echo number_format($data->lembur, 2, ',', '.') ?></td>
-					<td><?php echo number_format($data->total, 2, ',', '.') ?></td>
+					<td>Rp. <?php echo number_format($data->makanpg, 2, '.', ',') ?></td>
+					<td>Rp. <?php echo number_format($data->makansg, 2, '.', ',') ?></td>
+					<td>Rp. <?php echo number_format($data->makanml, 2, '.', ',') ?></td>
+					<td>Rp. <?php echo number_format($data->transport, 2, '.', ',') ?></td>
+					<td>Rp. <?php echo number_format($data->lembur, 2, '.', ',') ?></td>
+					<td>Rp. <?php echo number_format($data->total, 2, '.', ',') ?></td>
 				</tr>
 			@endforeach
 			</tbody>

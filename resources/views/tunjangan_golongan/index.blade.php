@@ -31,27 +31,27 @@
 			<h3 class="kt-portlet__head-title">
 				Tabel Tunjangan Per Golongan
 			</h3>			
-		</div>
-		<div class="kt-portlet__head-toolbar">
-			<div class="kt-portlet__head-wrapper">
-				<div class="kt-portlet__head-actions">
-					<a href="{{ route('tunjangan_golongan.create') }}">
-						<span style="font-size: 2em;" class="kt-font-success" data-toggle="kt-tooltip" data-placement="top" title="Tambah Data">
-							<i class="fas fa-plus-circle"></i>
+			<div class="kt-portlet__head-toolbar">
+				<div class="kt-portlet__head-wrapper">
+					<div class="kt-portlet__head-actions">
+						<a href="{{ route('tunjangan_golongan.create') }}">
+							<span style="font-size: 2em;" class="kt-font-success" data-toggle="kt-tooltip" data-placement="top" title="Tambah Data">
+								<i class="fas fa-plus-circle"></i>
+							</span>
+						</a>
+		
+						<span style="font-size: 2em;" class="kt-font-warning pointer-link" id="editRow" data-toggle="kt-tooltip" data-placement="top" title="Ubah Data">
+							<i class="fas fa-edit"></i>
 						</span>
-					</a>
-	
-					<span style="font-size: 2em;" class="kt-font-warning pointer-link" id="editRow" data-toggle="kt-tooltip" data-placement="top" title="Ubah Data">
-						<i class="fas fa-edit"></i>
-					</span>
-	
-					<span style="font-size: 2em;" class="kt-font-danger pointer-link" id="deleteRow" data-toggle="kt-tooltip" data-placement="top" title="Hapus Data">
-						<i class="fas fa-times-circle"></i>
-					</span>
+		
+						<span style="font-size: 2em;" class="kt-font-danger pointer-link" id="deleteRow" data-toggle="kt-tooltip" data-placement="top" title="Hapus Data">
+							<i class="fas fa-times-circle"></i>
+						</span>
 
-					<span style="font-size: 2em;" class="kt-font-info pointer-link" id="exportRow" data-toggle="kt-tooltip" data-placement="top" title="Cetak Data">
-						<i class="fas fa-print"></i>
-					</span>
+						<!-- <span style="font-size: 2em;" class="kt-font-info pointer-link" id="exportRow" data-toggle="kt-tooltip" data-placement="top" title="Cetak Data">
+							<i class="fas fa-print"></i>
+						</span> -->
+					</div>
 				</div>
 			</div>
 		</div>

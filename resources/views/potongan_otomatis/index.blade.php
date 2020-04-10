@@ -139,9 +139,9 @@
 				<td>{{$data->aardpot}} - {{$data->nama_aardpot}}</td>
 				<td align="center"><?php echo number_format($data->jmlcc, 0, '', '') ?></td>
 				<td align="center"><?php echo number_format($data->ccl, 0, '', '') ?></td>
-				<td align="center"><?php echo number_format($data->nilai, 2, ',', '.') ?></td>
-				<td align="center"><?php echo number_format($data->akhir, 2, ',', '.') ?></td>
-				<td align="center"><?php echo number_format($data->totalhut, 2, ',', '.') ?></td>
+				<td>Rp. <?php echo number_format($data->nilai, 2, '.', ',') ?></td>
+				<td>Rp. <?php echo number_format($data->akhir, 2, '.', ',') ?></td>
+				<td>Rp. <?php echo number_format($data->totalhut, 2, '.', ',') ?></td>
 				
 			</tr>
 			@endforeach

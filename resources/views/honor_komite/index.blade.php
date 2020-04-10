@@ -127,8 +127,8 @@
 					<?php echo $bulan ?>
 					</td>
 					<td>{{$data->nopek}}-{{$data->nama_nopek}}</td>
-					<td><?php echo number_format($data->nilai, 2, '.', ',') ?></td>
-					<td><?php echo number_format($data->pajak, 2, '.', ',') ?></td>
+					<td>Rp. <?php echo number_format($data->nilai, 2, '.', ',') ?></td>
+					<td>Rp. <?php echo number_format($data->pajak, 2, '.', ',') ?></td>
 				</tr>
 			@endforeach
 			</tbody>

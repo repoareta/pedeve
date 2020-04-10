@@ -146,7 +146,7 @@
 				}else{
 					Swal.fire({
 						type  : 'error',
-						title : 'Data Potongan Manual Yang Diinput Sudah Ada.',
+						title : 'Data Honor Komite Yang Diinput Sudah Ada.',
 						text  : 'Failed',
 					});
 				}

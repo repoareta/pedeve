@@ -63,11 +63,18 @@ class TunjanganGolonganController extends Controller
     }
     public function store(Request $request)
     {
+        $data_cek = DB::select("select * from pay_tbl_tunjangan   where golongan='$request->golongan'" ); 			
+        if(!empty($data_cek)){
+            $data=0;
+            return response()->json($data);
+        }else {
         PayTunjangan::insert([
             'golongan' => $request->golongan,
             'nilai' => $request->nilai,
             ]);
-            return response()->json();
+            $data = 1;
+            return response()->json($data);
+        }
     }
 
     /**
