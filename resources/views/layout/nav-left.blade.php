@@ -188,7 +188,7 @@
                 ); // isi nama semua route absensi implementasi GCG
 
                 //menu sdm & Payroll
-                $sdmpayroll = array_merge(
+                $sdm_payroll = array_merge(
                     $master_data,
                     $master_pekerja,
                     $potongan_koreksi_gaji,
@@ -354,7 +354,7 @@
                 </div>
             </li>
 
-            <li class="kt-menu__item  kt-menu__item--submenu {{ set_active($sdmpayroll) }}" aria-haspopup="true" data-ktmenu-submenu-toggle="hover">
+            <li class="kt-menu__item  kt-menu__item--submenu {{ set_active($sdm_payroll) }}" aria-haspopup="true" data-ktmenu-submenu-toggle="hover">
                 <a href="javascript:;" class="kt-menu__link kt-menu__toggle">
                     <span class="kt-menu__link-icon">
                         <i class="fa fa-book-reader"></i>
@@ -372,8 +372,8 @@
                                 </span>
                             </span>
                         </li>
-                        <li class="kt-menu__item kt-menu__item{{ set_active_submenu($tabel_data_master) }}" aria-haspopup="true">
-                            <a href="{{ route('tabel_data_master.index') }}" class="kt-menu__link ">
+                        <li class="kt-menu__item kt-menu__item{{ set_active_submenu($master_data) }}" aria-haspopup="true">
+                            <a href="javascript:;" class="kt-menu__link kt-menu__toggle">
                                 <i class="kt-menu__link-bullet kt-menu__link-bullet--dot">
                                     <span></span>
                                 </i>
@@ -382,7 +382,7 @@
                             </a>
                             <div class="kt-menu__submenu "><span class="kt-menu__arrow"></span>
                                 <ul class="kt-menu__subnav">
-                                    <li class="kt-menu__item kt-menu__item{{ set_active_submenu($report_umum) }}" aria-haspopup="true">
+                                    <li class="kt-menu__item kt-menu__item{{ set_active_submenu($rekap_spd) }}" aria-haspopup="true">
                                         <a href="{{ route('perjalanan_dinas.rekap') }}" class="kt-menu__link ">
                                             <i class="kt-menu__link-bullet kt-menu__link-bullet--line">
                                                 <span></span>
@@ -391,7 +391,7 @@
                                         </a>
                                     </li>
                                     <li class="kt-menu__item " aria-haspopup="true">
-                                        <a href="{{route('uang_muka_kerja.rekap')}}" class="kt-menu__link ">
+                                        <a href="{{route('perjalanan_dinas.rekap')}}" class="kt-menu__link ">
                                             <i class="kt-menu__link-bullet kt-menu__link-bullet--line">
                                                 <span></span>
                                             </i>
@@ -399,7 +399,7 @@
                                         </a>
                                     </li>
                                     <li class="kt-menu__item " aria-haspopup="true">
-                                        <a href="{{route('permintaan_bayar.rekap')}}" class="kt-menu__link ">
+                                        <a href="{{route('perjalanan_dinas.rekap')}}" class="kt-menu__link ">
                                             <i class="kt-menu__link-bullet kt-menu__link-bullet--line">
                                                 <span></span>
                                             </i>
@@ -407,7 +407,7 @@
                                         </a>
                                     </li>
                                     <li class="kt-menu__item " aria-haspopup="true">
-                                        <a href="{{route('permintaan_bayar.rekap')}}" class="kt-menu__link ">
+                                        <a href="{{route('perjalanan_dinas.rekap')}}" class="kt-menu__link ">
                                             <i class="kt-menu__link-bullet kt-menu__link-bullet--line">
                                                 <span></span>
                                             </i>
@@ -415,11 +415,11 @@
                                         </a>
                                     </li>
                                     <li class="kt-menu__item " aria-haspopup="true">
-                                        <a href="{{route('permintaan_bayar.rekap')}}" class="kt-menu__link ">
+                                        <a href="{{route('perjalanan_dinas.rekap')}}" class="kt-menu__link ">
                                             <i class="kt-menu__link-bullet kt-menu__link-bullet--line">
                                                 <span></span>
                                             </i>
-                                            <span class="kt-menu__link-text">Kode Aard</span>
+                                            <span class="kt-menu__link-text">Kode Agama</span>
                                         </a>
                                     </li>
                                 </ul>
