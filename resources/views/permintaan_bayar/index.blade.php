@@ -97,7 +97,7 @@
 					<td>{{$data->kepada}}</td>
 					<td>{{$data->keterangan}}</td>
 					<td>{{$data->lampiran}}</td>
-					<td>Rp. <?php echo number_format($data->nilai, 2, ',', '.') ?></td>
+					<td>Rp. <?php echo number_format($data->nilai, 2, '.', ',') ?></td>
 					<td>
 						<?php if($data->app_pbd == 'Y'){
 							echo '<p align="center"><span style="font-size: 2em;" class="kt-font-success pointer-link" data-toggle="kt-tooltip" data-placement="top" title="Data Sudah di proses perbendaharaan"><i class="fas fa-check-circle" ></i></span></p>';

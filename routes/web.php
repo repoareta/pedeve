@@ -183,7 +183,7 @@ Route::group(['middleware'=> ['auth','checkRole:1']], function () {
         
         //potongan koreksi gaji
         Route::get('potongan_koreksi_gaji', 'PotonganKoreksiGajiController@index')->name('potongan_koreksi_gaji.index');
-        Route::get('potongan_koreksi_gaji/index_json', 'PotonganKoreksiGajiController@indexJson')->name('potongan_koreksi_gaji.index.json');
+        Route::post('potongan_koreksi_gaji/search', 'PotonganKoreksiGajiController@searchIndex')->name('potongan_koreksi_gaji.search.index');
         Route::get('potongan_koreksi_gaji/create', 'PotonganKoreksiGajiController@create')->name('potongan_koreksi_gaji.create');
         Route::post('potongan_koreksi_gaji/store', 'PotonganKoreksiGajiController@store')->name('potongan_koreksi_gaji.store');
         Route::get('potongan_koreksi_gaji/edit/{bulan}/{tahun}/{arrd}/{nopek}', 'PotonganKoreksiGajiController@edit')->name('potongan_koreksi_gaji.edit');
@@ -192,7 +192,7 @@ Route::group(['middleware'=> ['auth','checkRole:1']], function () {
         
         //potongan manual
         Route::get('potongan_manual', 'PotonganManualController@index')->name('potongan_manual.index');
-        Route::get('potongan_manual/index_json', 'PotonganManualController@indexJson')->name('potongan_manual.index.json');
+        Route::post('potongan_manual/search', 'PotonganManualController@searchIndex')->name('potongan_manual.search.index');
         Route::get('potongan_manual/create', 'PotonganManualController@create')->name('potongan_manual.create');
         Route::post('potongan_manual/store', 'PotonganManualController@store')->name('potongan_manual.store');
         Route::get('potongan_manual/edit/{bulan}/{tahun}/{arrd}/{nopek}', 'PotonganManualController@edit')->name('potongan_manual.edit');
@@ -201,7 +201,7 @@ Route::group(['middleware'=> ['auth','checkRole:1']], function () {
         
         //potongan otomatis
         Route::get('potongan_otomatis', 'PotonganOtomatisController@index')->name('potongan_otomatis.index');
-        Route::get('potongan_otomatis/index_json', 'PotonganOtomatisController@indexJson')->name('potongan_otomatis.index.json');
+        Route::post('potongan_otomatis/search', 'PotonganOtomatisController@searchIndex')->name('potongan_otomatis.search.index');
         Route::get('potongan_otomatis/create', 'PotonganOtomatisController@create')->name('potongan_otomatis.create');
         Route::post('potongan_otomatis/store', 'PotonganOtomatisController@store')->name('potongan_otomatis.store');
         Route::get('potongan_otomatis/edit/{bulan}/{tahun}/{arrd}/{nopek}', 'PotonganOtomatisController@edit')->name('potongan_otomatis.edit');
@@ -210,17 +210,22 @@ Route::group(['middleware'=> ['auth','checkRole:1']], function () {
        
         //honor komite
         Route::get('honor_komite', 'HonorKomiteController@index')->name('honor_komite.index');
-        Route::get('honor_komite/index_json', 'HonorKomiteController@indexJson')->name('honor_komite.index.json');
+        Route::post('honor_komite/search', 'HonorKomiteController@searchIndex')->name('honor_komite.search.index');
         Route::get('honor_komite/create', 'HonorKomiteController@create')->name('honor_komite.create');
         Route::post('honor_komite/store', 'HonorKomiteController@store')->name('honor_komite.store');
-        Route::get('honor_komite/edit/{bulan}/{tahun}/{arrd}/{nopek}', 'HonorKomiteController@edit')->name('honor_komite.edit');
+        Route::get('honor_komite/edit/{bulan}/{tahun}/{nopek}', 'HonorKomiteController@edit')->name('honor_komite.edit');
         Route::post('honor_komite/update', 'HonorKomiteController@update')->name('honor_komite.update');
         Route::delete('honor_komite/delete', 'HonorKomiteController@delete')->name('honor_komite.delete');
         
         // Lembur
         Route::get('lembur', 'LemburController@index')->name('lembur.index');
+        Route::post('lembur/search', 'LemburController@searchIndex')->name('lembur.search.index');
         Route::get('lembur/create', 'LemburController@create')->name('lembur.create');
-        Route::get('lembur/edit', 'LemburController@edit')->name('lembur.edit');
+        Route::post('lembur/store', 'LemburController@store')->name('lembur.store');
+        Route::get('lembur/edit/{id}/{nopek}', 'LemburController@edit')->name('lembur.edit');
+        Route::post('lembur/update', 'LemburController@update')->name('lembur.update');
+        Route::delete('lembur/delete', 'LemburController@delete')->name('lembur.delete');
+
         //pinjaman pekerja
         Route::get('pinjaman_pekerja', 'PinjamanPekerjaController@index')->name('pinjaman_pekerja.index');
         Route::get('pinjaman_pekerja/create', 'PinjamanPekerjaController@create')->name('pinjaman_pekerja.create');
@@ -231,7 +236,7 @@ Route::group(['middleware'=> ['auth','checkRole:1']], function () {
         Route::get('proses_gaji/edit', 'ProsesGajiController@edit')->name('proses_gaji.edit');
         //proses thr
         Route::get('proses_thr', 'ProsesThrController@index')->name('proses_thr.index');
-        Route::get('proses_thr/create', 'ProsesThrController@create')->name('proses_thr.create');
+        Route::post('proses_thr/store', 'ProsesThrController@store')->name('proses_thr.store');
         Route::get('proses_thr/edit', 'ProsesThrController@edit')->name('proses_thr.edit');
         //proses insentif
         Route::get('proses_insentif', 'ProsesInsentifController@index')->name('proses_insentif.index');

@@ -27,6 +27,7 @@
 
                 $umk = array(
                     'uang_muka_kerja.index',
+                    'uang_muka_kerja.search.index',
                     'uang_muka_kerja.create',
                     'uang_muka_kerja.detail',
                     'uang_muka_kerja.edit',
@@ -42,6 +43,7 @@
                 
                 $permintaan_bayar = array(
                     'permintaan_bayar.index',
+                    'permintaan_bayar.search.index',
                     'permintaan_bayar.create',
                     'permintaan_bayar.detail',
                     'permintaan_bayar.edit',
@@ -101,21 +103,25 @@
                 ); // isi nama semua route master pekerja
                 $potongan_manual = array(
                     'potongan_manual.index',
+                    'potongan_manual.search.index',
                     'potongan_manual.create',
                     'potongan_manual.edit'
                 ); // isi nama semua route potongan manual gajian
                 $potongan_otomatis = array(
                     'potongan_otomatis.index',
+                    'potongan_otomatis.search.index',
                     'potongan_otomatis.create',
                     'potongan_otomatis.edit'
                 ); // isi nama semua route potongan otomatis gajian
                 $honor_komite = array(
                     'honor_komite.index',
+                    'honor_komite.search.index',
                     'honor_komite.create',
                     'honor_komite.edit'
                 ); // isi nama semua route honor komite
                 $koreksi_gaji = array(
                     'potongan_koreksi_gaji.index',
+                    'potongan_koreksi_gaji.search.index',
                     'potongan_koreksi_gaji.create',
                     'potongan_koreksi_gaji.edit'
                 ); // isi nama semua route potongan manual
@@ -127,6 +133,7 @@
                 ); //isi nama submenu
                 $lembur = array(
                     'lembur.index',
+                    'lembur.search.index',
                     'lembur.create',
                     'lembur.edit'
                 ); // isi nama semua route Lembur
@@ -137,16 +144,19 @@
                 ); // isi nama semua route pinjaman pekerjaan
                 $proses_gaji = array(
                     'proses_gaji.index',
+                    'proses_gaji.store',
                     'proses_gaji.create',
                     'proses_gaji.edit'
                 ); // isi nama semua route proses gajian sdm
                 $proses_thr = array(
                     'proses_thr.index',
+                    'proses_thr.store',
                     'proses_thr.create',
                     'proses_thr.edit'
                 ); // isi nama semua route proses thr sdm
                 $proses_insentif = array(
                     'proses_insentif.index',
+                    'proses_insentif.store',
                     'proses_insentif.create',
                     'proses_insentif.edit'
                 ); // isi nama semua route proses insentif sdm
@@ -447,7 +457,7 @@
                                 </span>
                             </a>
                         </li>
-                        <li class="kt-menu__item  kt-menu__item--submenu kt-menu__item{{ set_active_submenu($proses_gaji_sdm) }}" aria-haspopup="true" data-ktmenu-submenu-toggle="hover">
+                        <li class="kt-menu__item kt-menu__item--submenu {{  set_active($proses_gaji_sdm) }}" aria-haspopup="true" data-ktmenu-submenu-toggle="hover">
                             <a href="javascript:;" class="kt-menu__link kt-menu__toggle">
                                 <i class="kt-menu__link-bullet kt-menu__link-bullet--dot">
                                     <span></span>

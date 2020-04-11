@@ -68,21 +68,21 @@
 					</div>
 				</div>
 				<div class="form-group row">
-					<label for="nopek-input" class="col-2 col-form-label">Tahun Insentif<span style="color:red;">*</span></label>
+					<label for="nopek-input" class="col-2 col-form-label">Tahun Insentif</label>
 					<div class="col-6">
-						<input class="form-control" type="text" name="tahun" value=""  size="4" maxlength="4" required oninvalid="this.setCustomValidity('Tahun Insentif Harus Diisi..')" oninput="setCustomValidity('')"  autocomplete='off' onkeypress="return hanyaAngka(event)">
+						<input class="form-control" type="text" name="tahun" value=""  size="4" maxlength="4"  autocomplete='off' onkeypress="return hanyaAngka(event)">
 					</div>
 				</div>
 				<div class="form-group row">
-					<label for="nopek-input" class="col-2 col-form-label">Upah Tetap/All In<span style="color:red;">*</span></label>
+					<label for="nopek-input" class="col-2 col-form-label">Upah Tetap/All In</label>
 					<div class="col-6">
-						<input class="form-control" type="text" name="upah" value=""  size="4" maxlength="4" required oninvalid="this.setCustomValidity('Upah Tetap/All In Harus Diisi..')" oninput="setCustomValidity('')"  autocomplete='off' onkeypress="return hanyaAngka(event)">
+						<input class="form-control" type="text" name="upah" value=""  size="4" maxlength="4"   autocomplete='off' onkeypress="return hanyaAngka(event)">
 					</div>
 				</div>
 				<div class="form-group row">
-					<label for="nopek-input" class="col-2 col-form-label">Keterangan<span style="color:red;">*</span></label>
+					<label for="nopek-input" class="col-2 col-form-label">Keterangan</label>
 					<div class="col-6">
-						<input class="form-control" type="text" name="keterangan" value=""  size="30" maxlength="30" required oninvalid="this.setCustomValidity('Keterangan Harus Diisi..')" oninput="setCustomValidity('')"  autocomplete='off' >
+						<input class="form-control" type="text" name="keterangan" value=""  size="30" maxlength="30"   autocomplete='off' >
 					</div>
 				</div>
 

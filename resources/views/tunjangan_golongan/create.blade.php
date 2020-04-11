@@ -100,14 +100,22 @@
 				},
 				success : function(data){
 				console.log(data);
-				Swal.fire({
-					type  : 'success',
-					title : 'Data Berhasil Ditambah',
-					text  : 'Berhasil',
-					timer : 2000
-				}).then(function() {
-						window.location.replace("{{ route('tunjangan_golongan.index')}}");;
+				if(data == 1){
+					Swal.fire({
+						type  : 'success',
+						title : 'Data Berhasil Ditambah',
+						text  : 'Berhasil',
+						timer : 2000
+					}).then(function() {
+							window.location.replace("{{ route('tunjangan_golongan.index')}}");;
+						});
+				}else{
+					Swal.fire({
+						type  : 'error',
+						title : 'Data Tunjangan Pergolongan Yang Diinput Sudah Ada.',
+						text  : 'Failed',
 					});
+				}
 				}, 
 				error : function(){
 					alert("Terjadi kesalahan, coba lagi nanti");
