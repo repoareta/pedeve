@@ -32,7 +32,7 @@
 					<i class="kt-font-brand flaticon2-plus-1"></i>
 				</span>
 				<h3 class="kt-portlet__head-title">
-					Tambah Panjar Dinas
+					Ubah Panjar Dinas
 				</h3>			
 			</div>
 			<div class="kt-portlet__head-toolbar">
@@ -40,22 +40,22 @@
 				</div>
 			</div>
 		</div>
-		<form class="kt-form kt-form--label-right" action="{{ route('perjalanan_dinas.update', ['no_panjar' => Request::segment(4)]) }}" method="POST">
-			@csrf
-			<div class="kt-portlet__body">
-				<div class="form-group form-group-last">
-					<div class="alert alert-secondary" role="alert">
-						<div class="alert-text">
-							<h5 class="kt-portlet__head-title">
-								Header Panjar Dinas
-							</h5>	
-						</div>
+		<div class="kt-portlet__body">
+			<div class="form-group form-group-last">
+				<div class="alert alert-secondary" role="alert">
+					<div class="alert-text">
+						<h5 class="kt-portlet__head-title">
+							Header Panjar Dinas
+						</h5>	
 					</div>
 				</div>
+			</div>
+			<form class="kt-form kt-form--label-right" id="formPanjarDinas" action="{{ route('perjalanan_dinas.update', ['no_panjar' => Request::segment(4)]) }}" method="POST">
+				@csrf
 				<div class="form-group row">
 					<label for="spd-input" class="col-2 col-form-label">No. SPD</label>
 					<div class="col-5">
-						<input class="form-control" type="text" name="no_spd" value="{{ $panjar_header->no_panjar }}" id="spd">
+						<input class="form-control" type="text" name="no_spd" value="{{ $panjar_header->no_panjar }}" id="no_spd">
 					</div>
 
 					<label for="spd-input" class="col-2 col-form-label">Tanggal Panjar</label>
@@ -74,6 +74,7 @@
 							@endif>{{ $pegawai->nopeg.' - '.$pegawai->nama }}</option>
 							@endforeach
 						</select>
+						<div id="nopek-nya"></div>
 					</div>
 				</div>
 				<div class="form-group row">
@@ -87,17 +88,18 @@
 								@endif>{{ $jabatan->keterangan }}</option>
 							@endforeach
 						</select>
+						<div id="jabatan-nya"></div>
 					</div>
 
 					<label for="example-email-input" class="col-2 col-form-label">Golongan</label>
 					<div class="col-3">
-						<input class="form-control" type="text" name="golongan" value="{{ $panjar_header->gol }}" id="golongan">
+						<input class="form-control" type="text" name="golongan" id="golongan" value="{{ $panjar_header->gol }}">
 					</div>
 				</div>
 				<div class="form-group row">
 					<label for="id-pekerja;-input" class="col-2 col-form-label">KTP/Passport</label>
 					<div class="col-10">
-						<input class="form-control" type="text" name="ktp" value="{{ $panjar_header->ktp }}" id="ktp">
+						<input class="form-control" type="text" name="ktp" id="ktp" value="{{ $panjar_header->ktp }}">
 					</div>
 				</div>
 				<div class="form-group row">
@@ -110,18 +112,19 @@
 							<option value="SIJ" @if($panjar_header->jenis_dinas == 'SIJ') selected @endif>SIJ</option>
 							<option value="CUTI" @if($panjar_header->jenis_dinas == 'CUTI') selected @endif>CUTI</option>
 						</select>
+						<div id="jenis_dinas-nya"></div>
 					</div>
 				</div>
 				<div class="form-group row">
 					<label for="dari-input" class="col-2 col-form-label">Dari/Asal</label>
 					<div class="col-10">
-						<input class="form-control" type="text" name="dari" value="{{ $panjar_header->dari }}" id="dari">
+						<input class="form-control" type="text" name="dari" id="dari" value="{{ $panjar_header->dari }}">
 					</div>
 				</div>
 				<div class="form-group row">
 					<label for="tujuan-input" class="col-2 col-form-label">Tujuan</label>
 					<div class="col-10">
-						<input class="form-control" type="text" name="tujuan" value="{{ $panjar_header->tujuan }}" id="tujuan">
+						<input class="form-control" type="text" name="tujuan" id="tujuan" value="{{ $panjar_header->tujuan }}">
 					</div>
 				</div>
 				<div class="form-group row">
@@ -134,40 +137,41 @@
 							</div>
 							<input type="text" class="form-control" name="sampai" value="{{ date('Y-m-d', strtotime($panjar_header->sampai)) }}" autocomplete="off" />
 						</div>
-						<span class="form-text text-muted">Linked pickers for date range selection</span>
+						<span class="form-text text-muted">Pilih rentang waktu mulai dan sampai</span>
 					</div>
 				</div>
 
 				<div class="form-group row">
-					<label for="example-week-input" class="col-2 col-form-label">Kendaraan</label>
+					<label for="kendaraan" class="col-2 col-form-label">Kendaraan</label>
 					<div class="col-10">
-						<input class="form-control" type="text" name="kendaraan" value="{{ $panjar_header->kendaraan }}" id="kendaraan">
+						<input class="form-control" type="text" name="kendaraan" id="kendaraan" value="{{ $panjar_header->kendaraan }}">
 					</div>
 				</div>
 
 				<div class="form-group row">
-					<label for="example-week-input" class="col-2 col-form-label">Biaya</label>
+					<label for="biaya" class="col-2 col-form-label">Biaya</label>
 					<div class="col-10">
-						<select class="form-control" name="biaya" id="biaya">
+						<select class="form-control kt-select2" name="biaya" id="biaya">
 							<option value="">- Pilih Biaya -</option>
 							<option value="P" @if($panjar_header->ditanggung_oleh == 'P') selected @endif>Ditanggung Perusahaan</option>
 							<option value="K" @if($panjar_header->ditanggung_oleh == 'K') selected @endif>Ditanggung Pribadi</option>
 							<option value="U" @if($panjar_header->ditanggung_oleh == 'U') selected @endif>Ditanggung PPU</option>
 						</select>
+						<div id="biaya-nya"></div>
 					</div>
 				</div>
 
 				<div class="form-group row">
-					<label for="example-month-input" class="col-2 col-form-label">Keterangan</label>
+					<label for="keterangan" class="col-2 col-form-label">Keterangan</label>
 					<div class="col-10">
 						<textarea class="form-control" name="keterangan" id="keterangan">{{ $panjar_header->keterangan }}</textarea>
 					</div>
 				</div>
 
 				<div class="form-group row">
-					<label for="example-week-input" class="col-2 col-form-label">Jumlah</label>
+					<label for="jumlah" class="col-2 col-form-label">Jumlah</label>
 					<div class="col-10">
-						<input class="form-control" type="number" name="jumlah" value="{{ $panjar_header->jum_panjar }}" id="jumlah">
+						<input class="form-control" type="number" name="jumlah" id="jumlah" value="{{ $panjar_header->jum_panjar }}">
 					</div>
 				</div>
 
@@ -180,62 +184,58 @@
 						</div>
 					</div>
 				</div>
+			</form>
+		</div>
+		{{-- END BODY --}}
 
-			</div>
-			{{-- END BODY --}}
-				
-			<div class="kt-portlet__head kt-portlet__head">
-				<div class="kt-portlet__head-label">
-					<span class="kt-portlet__head-icon">
-						<i class="kt-font-brand flaticon2-line-chart"></i>
+		<div class="kt-portlet__head kt-portlet__head">
+			<div class="kt-portlet__head-label">
+				<span class="kt-portlet__head-icon">
+					<i class="kt-font-brand flaticon2-line-chart"></i>
+				</span>
+				<h3 class="kt-portlet__head-title">
+					Detail Panjar Dinas
+				</h3>
+
+				<div class="kt-portlet__head-actions" style="font-size: 2rem;">
+					<a href="#" id="openDetail">
+						<span class="kt-font-success" data-toggle="kt-tooltip" data-placement="top" title="Tambah Data">
+							<i class="fas fa-plus-circle"></i>
+						</span>
+					</a>
+	
+					<span class="kt-font-warning pointer-link" id="editRow" data-toggle="kt-tooltip" data-placement="top" title="Ubah Data">
+						<i class="fas fa-edit"></i>
 					</span>
-					<h3 class="kt-portlet__head-title">
-						Detail Panjar Dinas
-					</h3>			
-				</div>
-				<div class="kt-portlet__head-toolbar">
-					<div class="kt-portlet__head-wrapper">
-						<div class="kt-portlet__head-actions">
-							<a href="#" data-toggle="modal" data-target="#kt_modal_4">
-								<span style="font-size: 2em;" class="kt-font-success">
-									<i class="fas fa-plus-circle"></i>
-								</span>
-							</a>
-			
-							<a href="#" id="editRow">
-								<span style="font-size: 2em;" class="kt-font-warning">
-									<i class="fas fa-edit"></i>
-								</span>
-							</a>
-			
-							<a href="#" id="deleteRow">
-								<span style="font-size: 2em;" class="kt-font-danger">
-									<i class="fas fa-times-circle"></i>
-								</span>
-							</a>
-						</div>
-					</div>
+	
+					<span class="kt-font-danger pointer-link" id="deleteRow" data-toggle="kt-tooltip" data-placement="top" title="Hapus Data">
+						<i class="fas fa-times-circle"></i>
+					</span>
+				</div>		
+			</div>
+			<div class="kt-portlet__head-toolbar">
+				<div class="kt-portlet__head-wrapper">
 				</div>
 			</div>
-			<div class="kt-portlet__body">
-				<table class="table table-striped table-bordered table-hover table-checkable" id="kt_table">
-					<thead class="thead-light">
-						<tr>
-							<th></th>
-							<th>No</th>
-							<th>Nopek</th>
-							<th>Nama</th>
-							<th>Gol</th>
-							<th>Jabatan</th>
-							<th>Keterangan</th>
-						</tr>
-					</thead>
-					<tbody>
-					</tbody>
-				</table>
-			</div>
-		</form>
-	</div>
+		</div>
+		<div class="kt-portlet__body">
+			<table class="table table-striped table-bordered table-hover table-checkable" id="kt_table">
+				<thead class="thead-light">
+					<tr>
+						<th></th>
+						<th>No</th>
+						<th>Nopek</th>
+						<th>Nama</th>
+						<th>Gol</th>
+						<th>Jabatan</th>
+						<th>Keterangan</th>
+					</tr>
+				</thead>
+				<tbody>
+				</tbody>
+			</table>
+		</div>
+	</div>	
 </div>
 
 <!--begin::Modal-->
@@ -247,15 +247,12 @@
 				<button type="button" class="close" data-dismiss="modal" aria-label="Close">
 				</button>
 			</div>
-			<form class="kt-form kt-form--label-right">
+			<form class="kt-form kt-form--label-right" action="" method="POST" id="formPanjarDinasDetail">
 				<div class="modal-body">
 					<div class="form-group row">
 						<label for="spd-input" class="col-2 col-form-label">No. Urut</label>
 						<div class="col-10">
-							@php
-								$no = $panjar_detail_count ? $panjar_detail_count + 1 : 1;
-							@endphp
-							<input class="form-control" type="text" name="no_urut" value="{{ $no }}" id="no_urut">
+							<input class="form-control" type="number" name="no_urut" id="no_urut">
 						</div>
 					</div>
 
@@ -269,24 +266,26 @@
 					<div class="form-group row">
 						<label for="spd-input" class="col-2 col-form-label">Nopek</label>
 						<div class="col-10">
-							<select class="form-control kt-select2" id="nopek_detail" name="nopek_detail">
+							<select class="form-control kt-select2" id="nopek_detail" name="nopek_detail" style="width: 100% !important;">
 								<option value="">- Pilih Nopek -</option>
 								@foreach ($pegawai_list as $pegawai)
 									<option value="{{ $pegawai->nopeg.'-'.$pegawai->nama }}">{{ $pegawai->nopeg.' - '.$pegawai->nama }}</option>
 								@endforeach
 							</select>
+							<div id="nopek_detail-nya"></div>
 						</div>
 					</div>
 
 					<div class="form-group row">
 						<label for="spd-input" class="col-2 col-form-label">Jabatan</label>
 						<div class="col-10">
-							<select class="form-control kt-select2" name="jabatan_detail" id="jabatan_detail">
+							<select class="form-control kt-select2" name="jabatan_detail" id="jabatan_detail" style="width: 100% !important;">
 								<option value="">- Pilih Jabatan -</option>
 								@foreach ($jabatan_list as $jabatan)
 									<option value="{{ $jabatan->keterangan }}">{{ $jabatan->keterangan }}</option>
 								@endforeach
 							</select>
+							<div id="jabatan_detail-nya"></div>
 						</div>
 					</div>
 
@@ -299,7 +298,7 @@
 				</div>
 				<div class="modal-footer">
 					<button type="button" class="btn btn-warning" data-dismiss="modal"><i class="fa fa-reply" aria-hidden="true"></i> Batal</button>
-					<button type="button" id="saveDetail" class="btn btn-primary"><i class="fa fa-check" aria-hidden="true"></i> Simpan</button>
+					<button type="submit" class="btn btn-primary"><i class="fa fa-check" aria-hidden="true"></i> Simpan</button>
 				</div>
 			</form>
 		</div>
@@ -310,135 +309,158 @@
 @endsection
 
 @section('scripts')
+{!! JsValidator::formRequest('App\Http\Requests\PerjalananDinasUpdate', '#formPanjarDinas') !!}
+{!! JsValidator::formRequest('App\Http\Requests\PerjalananDinasDetailStore', '#formPanjarDinasDetail') !!}
+{!! JsValidator::formRequest('App\Http\Requests\PerjalananDinasDetailUpdate', '#formPanjarDinasDetail') !!}
+
 <script type="text/javascript">
+
+	function refreshTable() {
+		var table = $('#kt_table').DataTable();
+		table.clear();
+		table.ajax.url("{{ route('perjalanan_dinas.index.json.detail', ['no_panjar' => str_replace('/', '-', $panjar_header->no_panjar)]) }}").load(function() {
+			// Callback loads updated row count into a DOM element
+			// (a Bootstrap badge on a menu item in this case):
+			var rowCount = table.rows().count();
+			$('#no_urut').val(rowCount + 1);
+		});
+	}
+
 	$(document).ready(function () {
+
+		$('.kt-select2').select2().on('change', function() {
+			$(this).valid();
+		});
+
 		var t = $('#kt_table').DataTable({
 			scrollX   : true,
 			processing: true,
 			serverSide: true,
-			language: {
-				processing: '<i class="fa fa-spinner fa-spin fa-2x fa-fw"></i> <br> Loading...'
-			},
 			ajax: "{{ route('perjalanan_dinas.index.json.detail', ['no_panjar' => str_replace('/', '-', $panjar_header->no_panjar)]) }}",
 			columns: [
-				{data: 'action', name: 'aksi', orderable: false, searchable: false},
+				{data: 'action', name: 'aksi', orderable: false, searchable: false, class:'radio-button'},
 				{data: 'no', name: 'no'},
 				{data: 'nopek', name: 'nopek'},
 				{data: 'nama', name: 'nama'},
-				{data: 'golongan', name: 'status'},
+				{data: 'golongan', name: 'golongan'},
 				{data: 'jabatan', name: 'jabatan'},
 				{data: 'keterangan', name: 'keterangan'}
 			],
-			order: [[ 1, "asc" ]],
-			initComplete: function() {
-				$('#no_urut').val(this.api().data().length + 1);
+			order: [[ 0, "asc" ], [ 1, "asc" ]]
+		});
+
+	
+		$('#openDetail').click(function(e) {
+			e.preventDefault();
+			refreshTable();
+			$('#kt_modal_4').modal('show');
+			$('#title_modal').data('state', 'add');
+		});
+
+		// range picker
+		$('#date_range_picker').datepicker({
+			todayHighlight: true,
+			// autoclose: true,
+			// language : 'id',
+			format   : 'yyyy-mm-dd'
+		});
+
+		// minimum setup
+		$('#tanggal').datepicker({
+			todayHighlight: true,
+			orientation: "bottom left",
+			autoclose: true,
+			// language : 'id',
+			format   : 'yyyy-mm-dd'
+		});
+
+		$("#formPanjarDinas").on('submit', function(){
+			if ($('#nopek-error').length){
+				$("#nopek-error").insertAfter("#nopek-nya");
+			}
+
+			if ($('#jabatan-error').length){
+				$("#jabatan-error").insertAfter("#jabatan-nya");
+			}
+
+			if ($('#jenis_dinas-error').length){
+				$("#jenis_dinas-error").insertAfter("#jenis_dinas-nya");
+			}
+
+			if ($('#biaya-error').length){
+				$("#biaya-error").insertAfter("#biaya-nya");
+			}
+
+			if ($('#sampai-error').length){
+				$("#sampai-error").addClass("float-right");
 			}
 		});
 
-		// Class definition
-		var KTBootstrapDatepicker = function () {
-
-			var arrows;
-			if (KTUtil.isRTL()) {
-				arrows = {
-					leftArrow: '<i class="la la-angle-right"></i>',
-					rightArrow: '<i class="la la-angle-left"></i>'
-				}
-			} else {
-				arrows = {
-					leftArrow: '<i class="la la-angle-left"></i>',
-					rightArrow: '<i class="la la-angle-right"></i>'
-				}
+		$("#formPanjarDinasDetail").on('submit', function(){
+			if ($('#nopek_detail-error').length){
+				$("#nopek_detail-error").insertAfter("#nopek_detail-nya");
 			}
 
-			// Private functions
-			var demos = function () {
-
-				// range picker
-				$('#date_range_picker').datepicker({
-					rtl: KTUtil.isRTL(),
-					todayHighlight: true,
-					templates: arrows,
-					// autoclose: true,
-					// language : 'id',
-					format   : 'yyyy-mm-dd'
-				});
-
-				// minimum setup
-				$('#tanggal').datepicker({
-					rtl: KTUtil.isRTL(),
-					todayHighlight: true,
-					orientation: "bottom left",
-					templates: arrows,
-					autoclose: true,
-					// language : 'id',
-					format   : 'yyyy-mm-dd'
-				});
-			};
-
-			return {
-				// public functions
-				init: function() {
-					demos(); 
-				}
-			};
-		}();
-
-		KTBootstrapDatepicker.init();
-
-		$('#saveDetail').click(function(e) {
-			var no = $('#no_urut').val();
-			var keterangan = $('#keterangan_detail').val();
-			var nopek = $('#nopek_detail').val().split('-')[0];
-			var nama = $('#nopek_detail').val().split('-')[1];
-			var jabatan = $('#jabatan_detail').val();
-			var golongan = $('#golongan_detail').val();
-
-			var state = $('#title_modal').data('state');
-
-			var url, session;
-
-			if(state == 'add'){
-				url = "{{ route('perjalanan_dinas.store.detail') }}";
-				session = false;
-			} else {
-				url = "{{ route('perjalanan_dinas.update.detail') }}";
-				session = false;
+			if ($('#jabatan_detail-error').length){
+				$("#jabatan_detail-error").insertAfter("#jabatan_detail-nya");
 			}
 
-			$.ajax({
-				url: url,
-				type: "POST",
-				data: {
-					no: no,
-					no_panjar: "{{ $panjar_header->no_panjar }}",
-					keterangan: keterangan,
-					nopek: nopek,
-					nama: nama,
-					jabatan: jabatan,				
-					golongan: golongan,
-					session: session,
-					_token:"{{ csrf_token() }}"
-				},
-				success: function(dataResult){
-					swal({
-						title: "Tambah Detail Panjar",
-						text: "Success",
-						type: "success"
-					})
-					// close modal
-					$('#kt_modal_4').modal('toggle');
-					// clear form
-					$('#kt_modal_4').on('hidden.bs.modal', function () {
-						$(this).find('form').trigger('reset');
-					})
-					// append to datatable
-					t.ajax.reload();
-				},
-				error: function () {
-					alert("Terjadi kesalahan, coba lagi nanti");
+			if($(this).valid()) {
+				// do your ajax stuff here
+				var no = $('#no_urut').val();
+				var keterangan = $('#keterangan_detail').val();
+				var nopek = $('#nopek_detail').val().split('-')[0];
+				var nama = $('#nopek_detail').val().split('-')[1];
+				var jabatan = $('#jabatan_detail').val();
+				var golongan = $('#golongan_detail').val();
+
+				var state = $('#title_modal').data('state');
+
+				var url, session, swal_title;
+
+				if(state == 'add'){
+					url = "{{ route('perjalanan_dinas.store.detail') }}";
+					session = false;
+					swal_title = "Tambah Detail Panjar";
+				} else {
+					url = "{{ route('perjalanan_dinas.update.detail') }}";
+					session = false;
+					swal_title = "Update Detail Panjar";
 				}
-			});
+
+				$.ajax({
+					url: url,
+					type: "POST",
+					data: {
+						no: no,
+						no_panjar: "{{ $panjar_header->no_panjar }}",
+						keterangan: keterangan,
+						nopek: nopek,
+						nama: nama,
+						jabatan: jabatan,				
+						golongan: golongan,
+						session: session,
+						_token:"{{ csrf_token() }}"		
+					},
+					success: function(dataResult){
+						swalSuccessInit(swal_title);
+						// close modal
+						$('#kt_modal_4').modal('toggle');
+						// clear form
+						$('#kt_modal_4').on('hidden.bs.modal', function () {
+							$(this).find('form').trigger('reset');
+							$('#nopek_detail').val('').trigger('change');
+							$('#jabatan_detail').val('').trigger('change');
+						});
+						// append to datatable
+						t.ajax.reload();
+					},
+					error: function () {
+						alert("Terjadi kesalahan, coba lagi nanti");
+					}
+				});
+			}
+			return false;
 		});
 
 		$('#deleteRow').click(function(e) {
@@ -447,15 +469,25 @@
 				$("input[type=radio]:checked").each(function() {
 					var no_nopek = $(this).val();
 					// delete stuff
-					swal({
-						title: "Data yang akan di hapus?",
-						text: "Nopek : " + no_nopek,
-						icon: "warning",
-						buttons: true,
-						dangerMode: true,
+					const swalWithBootstrapButtons = Swal.mixin({
+					customClass: {
+						confirmButton: 'btn btn-primary',
+						cancelButton: 'btn btn-danger'
+					},
+						buttonsStyling: false
 					})
-					.then((willDelete) => {
-						if (willDelete) {
+
+					swalWithBootstrapButtons.fire({
+						title: "Data yang akan dihapus?",
+						text: "Nopek : " + no_nopek,
+						type: 'warning',
+						showCancelButton: true,
+						reverseButtons: true,
+						confirmButtonText: 'Ya, hapus',
+						cancelButtonText: 'Batalkan'
+					})
+					.then((result) => {
+						if (result.value) {
 							$.ajax({
 								url: "{{ route('perjalanan_dinas.delete.detail') }}",
 								type: 'DELETE',
@@ -467,10 +499,11 @@
 									"_token": "{{ csrf_token() }}",
 								},
 								success: function () {
-									swal({
-											title: "Delete",
-											text: "Success",
-											type: "success"
+									Swal.fire({
+										type : 'success',
+										title: 'Hapus detail Panjar',
+										text : 'Berhasil',
+										timer: 2000
 									}).then(function() {
 										t.ajax.reload();
 									});
@@ -483,10 +516,7 @@
 					});
 				});
 			} else {
-				swal({
-					title: "Tandai baris yang akan dihapus!",
-					type: "success"
-				}) ; 
+				swalAlertInit('hapus');
 			}
 		});
 
@@ -495,12 +525,14 @@
 
 			if($('input[type=radio]').is(':checked')) { 
 				$("input[type=radio]:checked").each(function() {
-					// get value from row
-					var no_nopek = $(this).val();
+					// get value from row					
+					var no_urut = $(this).val().split('-')[0];
+					var no_nopek = $(this).val().split('-')[1];
 					$.ajax({
 						url: "{{ route('perjalanan_dinas.show.json.detail') }}",
 						type: 'GET',
 						data: {
+							"no_urut": no_urut,
 							"no_nopek": no_nopek,
 							"no_panjar": "{{ $panjar_header->no_panjar }}",
 							"session": false,
@@ -511,8 +543,8 @@
 							// append value
 							$('#no_urut').val(response.no);
 							$('#keterangan_detail').val(response.keterangan);
-							$('#nopek_detail').val(response.nopek + '-' + response.nama);
-							$('#jabatan_detail').val(response.jabatan);
+							$('#nopek_detail').val(response.nopek + '-' + response.nama).trigger('change');
+							$('#jabatan_detail').val(response.jabatan).trigger('change');
 							$('#golongan_detail').val(response.status);
 							// title
 							$('#title_modal').text('Ubah Detail Panjar Dinas');
@@ -527,10 +559,7 @@
 					
 				});
 			} else {
-				swal({
-					title: "Tandai baris yang akan diubah",
-					type: "success"
-				}) ; 
+				swalAlertInit('ubah');
 			}
 		});
 

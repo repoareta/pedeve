@@ -18,15 +18,7 @@ class AuthController extends Controller
             if(Auth::attempt($Request->only('usernm','userpw'))){
             	if(Auth::user()->userlv == '1'){
                 	return redirect()->route('perjalanan_dinas.index');
-            	}elseif(Auth::user()->userlv == '2'){
-                	return redirect()->route('isi_route pada Authcontroller');
-            	}elseif(Auth::user()->userlv == '3'){
-                	return redirect()->route('isi_route pada Authcontroller');
-            	}elseif(Auth::user()->userlv == '4'){
-                	return redirect()->route('isi_route pada Authcontroller');
-            	}elseif(Auth::user()->userlv == '5'){
-                	return redirect()->route('isi_route pada Authcontroller');
-                }else {
+            	}else{
                     return redirect('/login')->with('notif','*Tidak Terdaftar Sebagai User.');
                 }
             }else{

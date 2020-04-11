@@ -55,101 +55,121 @@
 						</div>
 					
 						<div class="form-group row">
-							<label for="spd-input" class="col-2 col-form-label">No. Permintaan</label>
+							<label for="spd-input" class="col-2 col-form-label">No. Permintaan<span style="color:red;">*</span></label>
 							<div class="col-5">
 							<?php $data_no_bayar = str_replace('/', '-', $permintaan_header_count); ?>
 								<input  class="form-control" type="hidden" value="{{$data_no_bayar}}" id="noumk"  size="25" maxlength="25" readonly>
-								<input class="form-control" type="text" name="nobayar" value="{{ $permintaan_header_count }}" id="nobayar">
+								<input style="background-color:#DCDCDC; cursor:not-allowed" class="form-control" type="text" name="nobayar" value="{{ $permintaan_header_count }}" id="nobayar" readonly>
 							</div>
 
-							<label for="spd-input" class="col-2 col-form-label">Tanggal</label>
+							<label for="spd-input" class="col-1 col-form-label"></span></label>
+							<label for="spd-input" class="col-1 col-form-label">Tanggal<span style="color:red;">*</span></label>
 							<div class="col-3">
 								<input class="form-control" type="text" name="tanggal" id="tanggal" value="{{ date('Y-m-d') }}">
 							</div>
 						</div>
 						<div class="form-group row">
-							<label for="nopek-input" class="col-2 col-form-label">Terlampir</label>
+							<label for="nopek-input" class="col-2 col-form-label">Terlampir<span style="color:red;">*</span></label>
 							<div class="col-10">
-								<input class="form-control" type="text" name="lampiran" value=""  id="lampiran"  required>
+								<textarea class="form-control" type="text" name="lampiran" value=""  id="lampiran"  required oninvalid="this.setCustomValidity('Terlampir Harus Diisi..')" oninput="setCustomValidity('')"></textarea>
 							</div>
 						</div>
 						<div class="form-group row">
-							<label for="id-pekerja;-input" class="col-2 col-form-label">Keterangan</label>
+							<label for="id-pekerja;-input" class="col-2 col-form-label">Keterangan<span style="color:red;">*</span></label>
 							<div class="col-10">
-								<input class="form-control" type="text" value=""  id="keterangan" name="keterangan" size="50" maxlength="200" required>
+								<textarea class="form-control" type="text" value=""  id="keterangan" name="keterangan" size="50" maxlength="200" required oninvalid="this.setCustomValidity('Keterangan Harus Diisi..')" oninput="setCustomValidity('')"></textarea>
 							</div>
 						</div>
 						<div class="form-group row">
-							<label for="jenis-dinas-input" class="col-2 col-form-label">Dibayar Kepada</label>
+							<label for="" class="col-2 col-form-label">Dibayar Kepada<span style="color:red;">*</span></label>
 							<div class="col-10">
-								<input class="form-control" type="text" value="" name="dibayar" id="dibayar" size="50" maxlength="200">
-								<input name="rekyes" type="checkbox" id="rekyes" value="1" <% if rekyes="1" then response.Write("checked") %>></td>
+								<select name="dibayar" id="dibayar" class="form-control selectpicker" data-live-search="true" required>
+									<option value="">- Pilih -</option>
+									@foreach ($vendor as $row)
+									<option value="{{ $row->nama }}">{{ $row->nama }}</option>
+									@endforeach
+								</select>
+								<input name="rekyes" type="hidden" id="rekyes" value="1"></td>
 							</div>
 						</div>
 						<div class="form-group row">
-							<label for="dari-input" class="col-2 col-form-label">Debet Dari</label>
+							<label for="" class="col-2 col-form-label">Rekening Bank<span style="color:red;">*</span></label>
 							<div class="col-10">
-								<select name="debetdari" id="select-debetdari" class="form-control selectpicker" data-live-search="true">
+								<input style=" width: 17px;height: 26px;margin-left:50px;" name="rekyes" type="checkbox"  id="rekyes" value="1"></td>
+							</div>
+						</div>
+						<div class="form-group row">
+							<label for="dari-input" class="col-2 col-form-label">Debet Dari<span style="color:red;">*</span></label>
+							<div class="col-10">
+								<select name="debetdari" id="select-debetdari" class="form-control selectpicker" data-live-search="true" required>
 									<option value="">- Pilih -</option>
 									@foreach ($debit_nota as $row)
 									<option value="{{ $row->kode }}">{{ $row->kode.' - '.$row->keterangan }}</option>
 									@endforeach
 								</select>
+								
 							</div>
 						</div>
 						<div class="form-group row">
-							<label class="col-2 col-form-label">No. Debet</label>
+							<label class="col-2 col-form-label">No. Debet<span style="color:red;">*</span></label>
 							<div class="col-5">
-								<input class="form-control" type="text" name="nodebet" id="nodebet" value="" size="15" maxlength="15" required>
+								<input class="form-control" type="text" name="nodebet" id="nodebet" value="" size="15" maxlength="15" required oninvalid="this.setCustomValidity('No. Debet Harus Diisi..')" oninput="setCustomValidity('')" autocomplete='off'>
 							</div>
-							<label class="col-2 col-form-label">Tgl Debet</label>
+							<label for="spd-input" class="col-1 col-form-label"></span></label>
+							<label class="col-1.5 col-form-label">Tgl Debet<span style="color:red;">*</span></label>
 							<div class="col-3" >
-								<input class="form-control" type="text" name="tgldebet" value="" data-date-format="dd/MM/yyyy" id="tgldebet" size="15" maxlength="15" required>
+								<input class="form-control" type="text" name="tgldebet" value="" data-date-format="dd/MM/yyyy" id="tgldebet" size="15" maxlength="15" required autocomplete='off'>
 							</div>
 						</div>
 						<div class="form-group row">
 							<label for="spd-input"  class="col-2 col-form-label">No. Kas</label>
 							<div class="col-5">
-								<input  class="form-control" name="nokas" type="text" value="" id="nokas" size="10" maxlength="25">
+								<input style="background-color:#DCDCDC; cursor:not-allowed" readonly  class="form-control" name="nokas" type="text" value="" id="nokas" size="10" maxlength="25" autocomplete='off'>
 							</div>
-							<label for="spd-input"  class="col-2 col-form-label">Bulan Buku</label>
+							<label for="spd-input" class="col-1 col-form-label"></span></label>
+							<label for="spd-input"  class="col-1.5 col-form-label">Bulan Buku<span style="color:red;">*</span></label>
 							<div class="col-3" >
-								<input class="form-control" type="text" value="{{ date('Ym') }}"  id="bulanbuku" name="bulanbuku" size="6" maxlength="6" required>
+								<input style="background-color:#DCDCDC; cursor:not-allowed" readonly class="form-control" type="text" value="{{$bulan_buku}}"   name="bulanbuku" size="6" maxlength="6"  >
 							</div>
 						</div>
 						<div class="form-group row">
 							<label for="spd-input" class="col-2 col-form-label">CI</label>
 							<div class="col-5">
-								<input class="form-control" type="text" name="ci" value="" id="ci" size="1" maxlength="1">
+									<input id="ci"   style=" width: 17px;height: 26px;margin-left:50px;" value="1" type="radio"  name="ci" onclick="displayResult(1)"  checked />  <label style="font-size:12px; margin-left:10px;">IDR</label>
+									<input  id="ci" style=" width: 17px;height: 26px;margin-left:50px;" value="2" type="radio"    name="ci"  onclick="displayResult(2)" /><label style="font-size:12px; margin-left:10px;"> USD</label>
 							</div>
-
-							<label for="spd-input" class="col-2 col-form-label">Kurs</label>
+							<label for="spd-input" class="col-1 col-form-label"></span></label>
+							<label for="spd-input" class="col-1 col-form-label">Kurs<span style="color:red;display:none" id="simbol-kurs">*</span></label>
 							<div class="col-3">
-								<input class="form-control" type="text" name="kurs" id="kurs" value="" size="10" maxlength="10">
+								<input class="form-control" type="text" value="1" name="kurs" id="kurs" size="10" maxlength="10" autocomplete='off' onkeypress="return hanyaAngka(event)" >
 							</div>
 						</div>
 						<div class="form-group row">
-							<label for="mulai-input" class="col-2 col-form-label">Periode</label>
+							<label for="mulai-input" class="col-2 col-form-label">Periode <span style="color:red;">*</span></label>
 							<div class="col-10">
 								<div class="input-daterange input-group" id="date_range_picker">
-									<input type="text" class="form-control" name="mulai" />
+									<input type="text" class="form-control" name="mulai" required autocomplete='off'/>
 									<div class="input-group-append">
 										<span class="input-group-text">s/d</span>
 									</div>
-									<input type="text" class="form-control" name="sampai" />
+									<input type="text" class="form-control" name="sampai" required autocomplete='off' />
 								</div>
 							</div>
 						</div>
 						<div class="form-group row">
 							<label class="col-2 col-form-label">Total Nilai</label>
 							<div class="col-4">
-								<input  class="form-control" name="totalnilai" type="text" value="" id="totalnilai"  readonly>
+								<input style="background-color:#DCDCDC; cursor:not-allowed" class="form-control" type="text" value="Rp. 0" readonly>
+								<input style="background-color:#DCDCDC; cursor:not-allowed" class="form-control" name="totalnilai" type="hidden" value="" id="totalnilai"  readonly>
 							</div>
 						</div>
-						<div style="float:right;">
-							<div class="kt-form__actions">
-								<a  href="{{route('permintaan_bayar.index')}}" class="btn btn-warning"><i class="fa fa-reply" aria-hidden="true"></i>Cancel</a>
-								<button type="submit" class="btn btn-brand"><i class="fa fa-check" aria-hidden="true"></i>Save</button>
+						<div class="kt-form__actions">
+							<div class="row">
+								<div class="col-2"></div>
+								<div class="col-10">
+									<a  href="{{route('permintaan_bayar.index')}}" class="btn btn-warning"><i class="fa fa-reply" aria-hidden="true"></i>Cancel</a>
+									<button type="submit" class="btn btn-brand"><i class="fa fa-check" aria-hidden="true"></i>Save</button>
+								</div>
 							</div>
 						</div>
 					</div>
@@ -166,27 +186,27 @@
 						<h3 class="kt-portlet__head-title">
 							Detail Permintaan Bayar
 						</h3>			
-					</div>
-					<div class="kt-portlet__head-toolbar">
-						<div class="kt-portlet__head-wrapper">
-							<div class="kt-portlet__head-actions">
-								<a href="#" data-toggle="modal" data-target="#kt_modal_4">
-									<span style="font-size: 2em;" class="kt-font-success">
-										<i class="fas fa-plus-circle"></i>
-									</span>
-								</a>
-				
-								<a href="#" href="#" data-toggle="modal" data-target="#kt_modal_4" >
-									<span style="font-size: 2em;" class="kt-font-warning">
-										<i class="fas fa-edit"></i>
-									</span>
-								</a>
-				
-								<a href="#" href="#" data-toggle="modal" data-target="#kt_modal_4">
-									<span style="font-size: 2em;" class="kt-font-danger">
-										<i class="fas fa-times-circle"></i>
-									</span>
-								</a>
+						<div class="kt-portlet__head-toolbar">
+							<div class="kt-portlet__head-wrapper">
+								<div class="kt-portlet__head-actions">
+									<a href="#" style="cursor:not-allowed" data-toggle="modal" data-target="#kt_modal_4">
+										<span style="font-size: 2em;" class="kt-font-success">
+											<i class="fas fa-plus-circle"></i>
+										</span>
+									</a>
+					
+									<a href="#" style="cursor:not-allowed" data-toggle="modal" data-target="#kt_modal_4" >
+										<span style="font-size: 2em;" class="kt-font-warning">
+											<i class="fas fa-edit"></i>
+										</span>
+									</a>
+					
+									<a href="#" style="cursor:not-allowed" data-toggle="modal" data-target="#kt_modal_4">
+										<span style="font-size: 2em;" class="kt-font-danger">
+											<i class="fas fa-times-circle"></i>
+										</span>
+									</a>
+								</div>
 							</div>
 						</div>
 					</div>
@@ -224,6 +244,8 @@
 		$('#tabel-detail-permintaan').DataTable();
 
 
+		
+
 
 		$('#form-create-permintaan-bayar').submit(function(){
         	var no_umk = $("#noumk").val();
@@ -237,11 +259,12 @@
 				},
 				success : function(data){
 				console.log(data);
-					swal({
-						title: "Data Berhasil Ditambahkan!",
-						text: "Success!",
-						type: "success"
-					}).then(function() {
+				Swal.fire({
+					type  : 'success',
+					title : 'Data Berhasil Ditambah',
+					text  : 'Berhasil',
+					timer : 2000
+				}).then(function() {
 						window.location.replace("{{ route('permintaan_bayar.edit', ['no' => $data_no_bayar] ) }}");;
 					});
 				}, 
@@ -322,6 +345,27 @@ return {
 
 KTBootstrapDatepicker.init();
 });
+
+		function displayResult(ci){ 
+			if(ci == 1)
+			{
+				$('#kurs').val(1);
+				$('#simbol-kurs').hide();
+				$( "#kurs" ).prop( "required", false );
+
+			}else{
+				$('#kurs').val("");
+				$('#simbol-kurs').show();
+				$( "#kurs" ).prop( "required", true );
+			}
+		}
+		function hanyaAngka(evt) {
+		  var charCode = (evt.which) ? evt.which : event.keyCode
+		   if (charCode > 31 && (charCode < 48 || charCode > 57))
+ 
+		    return false;
+		  return true;
+		}
 </script>
 
 @endsection

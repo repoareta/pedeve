@@ -17,7 +17,7 @@
 				<a href="" class="kt-subheader__breadcrumbs-link">
 					Permintaan Bayar </a>
 				<span class="kt-subheader__breadcrumbs-separator"></span>
-				<span class="kt-subheader__breadcrumbs-link kt-subheader__breadcrumbs-link--active">Tambah</span>
+				<span class="kt-subheader__breadcrumbs-link kt-subheader__breadcrumbs-link--active">Edit</span>
 			</div>
 		</div>
 	</div>
@@ -32,7 +32,7 @@
 					<i class="kt-font-brand flaticon2-plus-1"></i>
 				</span>
 				<h3 class="kt-portlet__head-title">
-					Tambah Permintaan Bayar
+					Menu Permintaan Bayar
 				</h3>			
 			</div>
 			<div class="kt-portlet__head-toolbar">
@@ -55,88 +55,98 @@
 						</div>
                         @foreach($data_bayars as $data_bayar)
 						<div class="form-group row">
-							<label for="spd-input" class="col-2 col-form-label">No. Permintaan</label>
+							<label for="spd-input" class="col-2 col-form-label">No. Permintaan<span style="color:red;">*</span></label>
 							<div class="col-5">
-								<input class="form-control" type="text" name="nobayar" value="{{$data_bayar->no_bayar}}" id="nobayar">
+								<input style="background-color:#DCDCDC; cursor:not-allowed" class="form-control" type="text" name="nobayar" value="{{$data_bayar->no_bayar}}" id="nobayar">
 							</div>
 
-							<label for="spd-input" class="col-2 col-form-label">Tanggal</label>
+							<label for="spd-input" class="col-2 col-form-label">Tanggal<span style="color:red;">*</span></label>
 							<div class="col-3">
-								<input class="form-control" type="text" name="tanggal" id="tanggal" value="<?php echo date("d/m/Y", strtotime($data_bayar->tgl_bayar)) ?>">
+								<input class="form-control" type="text" name="tanggal" id="tanggal" value="<?php echo date("Y-m-d", strtotime($data_bayar->tgl_bayar)) ?>">
 							</div>
 						</div>
 						<div class="form-group row">
-							<label for="nopek-input" class="col-2 col-form-label">Terlampir</label>
+							<label for="nopek-input" class="col-2 col-form-label">Terlampir<span style="color:red;">*</span></label>
 							<div class="col-10">
-								<input class="form-control" type="text" name="lampiran" value="{{$data_bayar->lampiran}}"  id="lampiran"  required>
+								<textarea class="form-control" type="text" name="lampiran" value=""  id="lampiran"  required>{{$data_bayar->lampiran}}</textarea>
 							</div>
 						</div>
 						<div class="form-group row">
-							<label for="id-pekerja;-input" class="col-2 col-form-label">Keterangan</label>
+							<label for="id-pekerja;-input" class="col-2 col-form-label">Keterangan<span style="color:red;">*</span></label>
 							<div class="col-10">
-								<input class="form-control" type="text" value="{{$data_bayar->keterangan}}"  name="keterangan" size="50" maxlength="200" required>
+								<textarea class="form-control" type="text" value=""  name="keterangan" size="50" maxlength="200" required>{{$data_bayar->keterangan}}</textarea>
 							</div>
 						</div>
 						<div class="form-group row">
-							<label for="jenis-dinas-input" class="col-2 col-form-label">Dibayar Kepada</label>
+							<label for="jenis-dinas-input" class="col-2 col-form-label">Dibayar Kepada<span style="color:red;">*</span></label>
 							<div class="col-10">
-								<input class="form-control" type="text" value="{{$data_bayar->kepada}}" name="dibayar" id="dibayar" size="50" maxlength="200">
+								<select name="dibayar" id="dibayar" class="form-control selectpicker" data-live-search="true" required>
+									<option value="">- Pilih -</option>
+									@foreach ($vendor as $row)
+									<option value="{{ $row->nama }}" <?php if($row->nama  == $data_bayar->kepada ) echo 'selected' ; ?>>{{ $row->nama }}</option>
+									@endforeach
+								</select>
 							</div>
 						</div>
-                        @endforeach
-                        @foreach($data_bayars as $data_bayar)
 						<div class="form-group row">
-							<label for="dari-input" class="col-2 col-form-label">Debet Dari</label>
+							<label for="" class="col-2 col-form-label">Rekening Bank<span style="color:red;">*</span></label>
 							<div class="col-10">
-								<select name="debetdari" id="select-debetdari" class="form-control selectpicker" data-live-search="true">
-                                    <option value="">- Pilih Nopek -</option>
+								<input style=" width: 17px;height: 26px;margin-left:50px;" name="rekyes" type="checkbox"  id="rekyes" value="{{$data_bayar->rekyes}}" <?php if ($data_bayar->rekyes == '1' )  echo 'checked' ; ?>></td>
+							</div>
+						</div>
+						<div class="form-group row">
+							<label for="dari-input" class="col-2 col-form-label">Debet Dari<span style="color:red;">*</span></label>
+							<div class="col-10">
+								<select name="debetdari" id="select-debetdari" class="form-control selectpicker" data-live-search="true" required>
+                                    <option value="">- Pilih -</option>
 									@foreach ($debit_nota as $row)
-									<option value="{{ $row->kode }}">{{ $row->kode.' - '.$row->keterangan }}</option>
+									<option value="{{ $row->kode }}" <?php if($row->kode == $data_bayar->debet_dari ) echo 'selected' ; ?>>{{ $row->kode.' - '.$row->keterangan }}</option>
 									@endforeach
 									
 								</select>
 							</div>
 						</div>
 						<div class="form-group row">
-							<label class="col-2 col-form-label">No. Debet</label>
+							<label class="col-2 col-form-label">No. Debet<span style="color:red;">*</span></label>
 							<div class="col-5">
-								<input class="form-control" type="text" name="nodebet" id="nodebet" value="{{$data_bayar->debet_no}}" size="15" maxlength="15" required>
+								<input class="form-control" type="text" name="nodebet" id="nodebet" value="{{$data_bayar->debet_no}}" size="15" maxlength="15" required oninvalid="this.setCustomValidity('No. Debet Harus Diisi..')" oninput="setCustomValidity('')" autocomplete='off'>
 							</div>
-							<label class="col-2 col-form-label">Tgl Debet</label>
+							<label class="col-2 col-form-label">Tgl Debet<span style="color:red;">*</span></label>
 							<div class="col-3" >
-								<input class="form-control" type="text" name="tgldebet" value="<?php echo date("d/m/Y", strtotime($data_bayar->debet_tgl)) ?>" data-date-format="dd/MM/yyyy" id="tgldebet" size="15" maxlength="15" required>
+								<input class="form-control" type="text" name="tgldebet" value="<?php echo date("Y-m-d", strtotime($data_bayar->debet_tgl)) ?>" id="tgldebet" size="15" maxlength="15" required>
 							</div>
 						</div>
 						<div class="form-group row">
 							<label for="spd-input"  class="col-2 col-form-label">No. Kas</label>
 							<div class="col-5">
-								<input  class="form-control" name="nokas" type="text" value="{{$data_bayar->no_kas}}" id="nokas" size="10" maxlength="25">
+								<input style="background-color:#DCDCDC; cursor:not-allowed" readonly  class="form-control" name="nokas" type="text" value="{{$data_bayar->no_kas}}" id="nokas" size="10" maxlength="25">
 							</div>
-							<label for="spd-input"  class="col-2 col-form-label">Bulan Buku</label>
+							<label for="spd-input"  class="col-2 col-form-label">Bulan Buku<span style="color:red;">*</span></label>
 							<div class="col-3" >
-								<input class="form-control" type="text" value="{{$data_bayar->bulan_buku}}" data-date-format="yyyymm" id="bulanbuku" name="bulanbuku" size="6" maxlength="6" required>
+								<input class="form-control" type="text" value="{{$data_bayar->bulan_buku}}"  name="bulanbuku" size="6" maxlength="6" style="background-color:#DCDCDC; cursor:not-allowed" readonly>
 							</div>
 						</div>
 						<div class="form-group row">
-							<label for="spd-input" class="col-2 col-form-label">CI</label>
+							<label for="spd-input" class="col-2 col-form-label">CI<span style="color:red;">*</span></label>
 							<div class="col-5">
-								<input class="form-control" type="text" name="ci" value="{{$data_bayar->ci}}" id="ci" size="1" maxlength="1">
+								<input id="ci"   style=" width: 26px;height: 17px;margin-left:50px;" value="1" <?php if ($data_bayar->ci == '1' )  echo 'checked' ; ?> type="radio"  name="ci" onclick="displayResult(1)"  checked />  <label style="font-size:14px; margin-left:10px;">IDR</label>
+								<input  id="ci" style=" width: 26px;height: 17px;margin-left:50px;" value="2" <?php if ($data_bayar->ci == '2' )  echo 'checked' ; ?> type="radio"    name="ci"  onclick="displayResult(2)" /><label style="font-size:14px; margin-left:10px;"> USD</label>
 							</div>
 
-							<label for="spd-input" class="col-2 col-form-label">Kurs</label>
+							<label for="spd-input" class="col-2 col-form-label">Kurs<span style="color:red;">*</span></label>
 							<div class="col-3">
-								<input class="form-control" type="text" name="kurs" id="kurs" value="{{$data_bayar->rate}}" size="10" maxlength="10">
+								<input class="form-control" type="text" name="kurs" id="kurs" value="<?php echo number_format($data_bayar->rate, 0, ',', '.'); ?>" size="10" maxlength="10" onkeypress="return hanyaAngka(event)" >
 							</div>
 						</div>
 						<div class="form-group row">
-							<label for="mulai-input" class="col-2 col-form-label">Periode</label>
+							<label for="mulai-input" class="col-2 col-form-label">Periode<span style="color:red;">*</span></label>
 							<div class="col-10">
 								<div class="input-daterange input-group" id="date_range_picker">
-									<input type="text" class="form-control" name="mulai" value="<?php echo date("d/m/Y", strtotime($data_bayar->mulai)) ?>" />
+									<input type="text" class="form-control" name="mulai" value="<?php echo date("Y-m-d", strtotime($data_bayar->mulai)) ?>" />
 									<div class="input-group-append">
 										<span class="input-group-text">s/d</span>
 									</div>
-									<input type="text" class="form-control" name="sampai"  value="<?php echo date("d/m/Y", strtotime($data_bayar->sampai)) ?>"/>
+									<input type="text" class="form-control" name="sampai"  value="<?php echo date("Y-m-d", strtotime($data_bayar->sampai)) ?>"/>
 								</div>
 							</div>
 						</div>
@@ -144,13 +154,16 @@
 						<div class="form-group row">
 							<label class="col-2 col-form-label">Total Nilai</label>
 							<div class="col-4">
-								<input  class="form-control" name="totalnilai" type="text" id="totalnilai" value="Rp. <?php echo number_format($count, 0, ',', '.'); ?>"  readonly>
+								<input style="background-color:#DCDCDC; cursor:not-allowed"  class="form-control" name="totalnilai" type="text" id="totalnilai" value="Rp. <?php echo number_format($count, 0, ',', '.'); ?>"  readonly>
 							</div>
 						</div>
-						<div style="float:right;">
-							<div class="kt-form__actions">
-								<a  href="{{route('permintaan_bayar.index')}}" class="btn btn-warning"><i class="fa fa-reply" aria-hidden="true"></i>Cancel</a>
-								<button type="submit" class="btn btn-brand"><i class="fa fa-reply" aria-hidden="true"></i>Save</button>
+						<div class="kt-form__actions">
+							<div class="row">
+								<div class="col-2"></div>
+								<div class="col-10">
+									<a  href="{{route('permintaan_bayar.index')}}" class="btn btn-warning"><i class="fa fa-reply" aria-hidden="true"></i>Cancel</a>
+									<button type="submit" class="btn btn-brand"><i class="fa fa-reply" aria-hidden="true"></i>Save</button>
+								</div>
 							</div>
 						</div>
 					</div>
@@ -168,27 +181,27 @@
 						<h3 class="kt-portlet__head-title">
 							Detail Permintaan Bayar
 						</h3>			
-					</div>
-					<div class="kt-portlet__head-toolbar">
-						<div class="kt-portlet__head-wrapper">
-							<div class="kt-portlet__head-actions">
-								<a href="#" data-toggle="modal" data-target="#kt_modal_4">
-									<span style="font-size: 2em;" class="kt-font-success">
-										<i class="fas fa-plus-circle"></i>
-									</span>
-								</a>
-				
-								<a href="#" id="editRow">
-									<span style="font-size: 2em;" class="kt-font-warning">
-										<i class="fas fa-edit"></i>
-									</span>
-								</a>
-				
-								<a href="#" id="deleteRow">
-									<span style="font-size: 2em;" class="kt-font-danger">
-										<i class="fas fa-times-circle"></i>
-									</span>
-								</a>
+						<div class="kt-portlet__head-toolbar">
+							<div class="kt-portlet__head-wrapper">
+								<div class="kt-portlet__head-actions">
+									<a href="#" data-toggle="modal" data-target="#kt_modal_4">
+										<span style="font-size: 2em;" class="kt-font-success">
+											<i class="fas fa-plus-circle"></i>
+										</span>
+									</a>
+					
+									<a href="#" id="editRow">
+										<span style="font-size: 2em;" class="kt-font-warning">
+											<i class="fas fa-edit"></i>
+										</span>
+									</a>
+					
+									<a href="#" id="deleteRow">
+										<span style="font-size: 2em;" class="kt-font-danger">
+											<i class="fas fa-times-circle"></i>
+										</span>
+									</a>
+								</div>
 							</div>
 						</div>
 					</div>
@@ -255,15 +268,15 @@
 						<label for="example-text-input" class="col-2 col-form-label">No. Urut</label>
 						<label for="example-text-input" class=" col-form-label">:</label>
 						<div class="col-2">
-							<input  class="form-control" type="text" value="{{$no_bayar_details}}"  name="no" readonly>
+							<input style="background-color:#DCDCDC; cursor:not-allowed"  class="form-control" type="text" value="{{$no_bayar_details}}"  name="no" readonly>
 						</div>
 					</div>
 
 					<div class="form-group row">
-						<label for="example-text-input" class="col-2 col-form-label">Keterangan</label>
+						<label for="example-text-input" class="col-2 col-form-label">Keterangan<span style="color:red;">*</span></label>
 						<label for="example-text-input" class=" col-form-label">:</label>
 						<div class="col-8">
-							<input  class="form-control" type="text" value=""  name="keterangan">
+							<textarea  class="form-control" type="text" value=""  name="keterangan" required oninvalid="this.setCustomValidity('Keterangan Harus Diisi..')" oninput="setCustomValidity('')"></textarea>
 						</div>
 					</div>
 									
@@ -331,17 +344,22 @@
 									
 
 					<div class="form-group row">
-						<label for="example-text-input" class="col-2 col-form-label">Jumlah</label>
+						<label for="example-text-input" class="col-2 col-form-label">Jumlah<span style="color:red;">*</span></label>
 						<label for="example-text-input" class=" col-form-label">:</label>
 						<div class="col-4">
-							<input  class="form-control" type="text" value="" name="nilai" onkeypress="return hanyaAngka(event)" required>
+							<input  class="form-control" type="text" value="" name="nilai" onkeypress="return hanyaAngka(event)" required oninvalid="this.setCustomValidity('Jumlah Harus Diisi..')" oninput="setCustomValidity('')" autocomplete='off'>
 						</div>
 					</div>
 
 																					
-					<div style="float:right;">
-						<button type="reset"  class="btn btn-warning"  data-dismiss="modal"><i class="fa fa-reply" aria-hidden="true"></i>Cancel</button>
-						<button type="submit" class="btn btn-brand"><i class="fa fa-reply" aria-hidden="true"></i>Save</button>
+					<div class="kt-form__actions">
+						<div class="row">
+							<div class="col-2"></div>
+							<div class="col-10">
+								<button type="reset"  class="btn btn-warning"  data-dismiss="modal"><i class="fa fa-reply" aria-hidden="true"></i>Cancel</button>
+								<button type="submit" class="btn btn-brand"><i class="fa fa-reply" aria-hidden="true"></i>Save</button>
+							</div>
+						</div>
 					</div>
 				</form>
 			</div>
@@ -367,15 +385,15 @@
 						<label for="example-text-input" class="col-2 col-form-label">No. Urut</label>
 						<label for="example-text-input" class=" col-form-label">:</label>
 						<div class="col-2">
-							<input  class="form-control" type="text" value="{{$no_bayar_details}}" id="no" name="no" readonly>
+							<input style="background-color:#DCDCDC; cursor:not-allowed"  class="form-control" type="text" value="{{$no_bayar_details}}" id="no" name="no" readonly>
 						</div>
 					</div>
 
 					<div class="form-group row">
-						<label for="example-text-input" class="col-2 col-form-label">Keterangan</label>
+						<label for="example-text-input" class="col-2 col-form-label">Keterangan<span style="color:red;">*</span></label>
 						<label for="example-text-input" class=" col-form-label">:</label>
 						<div class="col-8">
-							<input  class="form-control" type="text" value="" id="keterangan" name="keterangan">
+							<textarea  class="form-control" type="text" value="" id="keterangan" name="keterangan"></textarea>
 						</div>
 					</div>
 									
@@ -404,7 +422,7 @@
 						<div id="div-bagian" class="col-3" style="display:none;">
 							<select name="bagian" id="select-bagian"  class="form-control selectpicker" data-live-search="true">
 									@foreach($data_bagian as $row)
-								<option value="{{$row->kode}}" <?php if( '<input value="$row->kode">' == '<input id="bagian">' ) echo 'selected' ; ?>>{{$row->kode}} - {{$row->nama}}</option>
+								<option value="{{$row->kode}}" >{{$row->kode}} - {{$row->nama}}</option>
 									@endforeach
 							</select>
 						</div>
@@ -414,7 +432,7 @@
 						<label for="example-text-input" class="col-2 col-form-label">Perintah Kerja</label>
 						<label for="example-text-input" class=" col-form-label">:</label>
 						<div class="col-4">
-							<input  class="form-control" type="text" value="000" id="pk" name="pk" size="6" maxlength="6">
+							<input  class="form-control" type="text" value="" id="pk" name="pk" size="6" maxlength="6">
 						</div>
 					</div>
 
@@ -450,17 +468,22 @@
 									
 
 					<div class="form-group row">
-						<label for="example-text-input" class="col-2 col-form-label">Jumlah</label>
+						<label for="example-text-input" class="col-2 col-form-label">Jumlah<span style="color:red;">*</span></label>
 						<label for="example-text-input" class=" col-form-label">:</label>
 						<div class="col-4">
-							<input  class="form-control" type="text" value="" id="nilai" name="nilai" onkeypress="return hanyaAngka(event)">
+							<input  class="form-control" type="text" value="" id="nilai" name="nilai" onkeypress="return hanyaAngka(event)" autocomplete='off'>
 						</div>
 					</div>
 
 																					
-					<div style="float:right;">
-						<button type="reset"  class="btn btn-warning"  data-dismiss="modal"><i class="fa fa-reply" aria-hidden="true"></i>Cancel</button>
-						<button type="submit" class="btn btn-brand"><i class="fa fa-reply" aria-hidden="true"></i>Save</button>
+					<div class="kt-form__actions">
+						<div class="row">
+							<div class="col-2"></div>
+							<div class="col-10">
+								<button type="reset"  class="btn btn-warning"  data-dismiss="modal"><i class="fa fa-reply" aria-hidden="true"></i>Cancel</button>
+								<button type="submit" class="btn btn-brand"><i class="fa fa-reply" aria-hidden="true"></i>Save</button>
+							</div>
+						</div>
 					</div>
 				</form>
 			</div>
@@ -490,11 +513,12 @@
 				},
 				success : function(data){
 				console.log(data);
-					swal({
-						title: "Data Berhasil Diedit!",
-						text: "Success!",
-						type: "success"
-					}).then(function() {
+				Swal.fire({
+					type  : 'success',
+					title : 'Data Permintaan Biaya Berhasil Disimpan',
+					text  : 'Berhasil',
+					timer : 2000
+				}).then(function() {
 						window.location.replace("{{ route('permintaan_bayar.index')}}");;
 					});
 				}, 
@@ -532,10 +556,12 @@ if (KTUtil.isRTL()) {
             'X-CSRF-Token': '{{ csrf_token() }}',
             },
 			success : function(data){
-                swal({
-                    text: "Data Detail Permintaan Biaya Berhasil Ditambahkan.",
-                    type: "success"
-                }).then(function() {
+                Swal.fire({
+					type  : 'success',
+					title : 'Data Detail Permintaan Biaya Berhasil Ditambah',
+					text  : 'Berhasil',
+					timer : 2000
+				}).then(function() {
                     location.reload();
                 });
 			}, 
@@ -557,10 +583,12 @@ if (KTUtil.isRTL()) {
             'X-CSRF-Token': '{{ csrf_token() }}',
             },
 			success : function(data){
-                swal({
-                    text: "Data Detail Permintaan Bayar Berhasil Diedit.",
-                    type: "success"
-                }).then(function() {
+                Swal.fire({
+					type  : 'success',
+					title : 'Data Detail Permintaan Biaya Berhasil Diubah',
+					text  : 'Berhasil',
+					timer : 2000
+				}).then(function() {
                     window.location.reload();
                 });
 			}, 
@@ -608,13 +636,10 @@ $(".btn-radio:checked").each(function() {
 	var datano = $(this).attr('data-no');
 	if(dataid == 1)  
 	{  
-		swal({
-				title: "Tandai baris yang akan diedit!",
-				type: "success"
-				}) ; 
+		swalAlertInit('ubah'); 
 	}  else { 
 		$.ajax({
-			url :"/umum/permintaan_bayar/editdetail/"+dataid+'/'+datano,
+			url :"{{('umum/permintaan_bayar/editdetail')}}"+ '/' +dataid+ '/' +datano,
 			type : 'get',
 			dataType:"json",
 			headers: {
@@ -652,24 +677,30 @@ $('#deleteRow').click(function(e) {
 			var dataid = $(this).attr('data-id');
 				if(dataid == 1)  
 				{  
-					swal({
-						title: "Tandai baris yang akan dihapus!",
-						type: "success"
-					}) ; 
+					swalAlertInit('hapus'); 
 				}  else { 
 				$("input[type=radio]:checked").each(function() {
                     var id = $(this).attr('nobayar');
                     var no = $(this).attr('data-no');
 					// delete stuff
-					swal({
-						title: "Data yang akan di hapus?",
-						text: "No. Permintaan : " + id+" Dan No Urut :"+no,
-						icon: "warning",
-						buttons: true,
-						dangerMode: true,
-					})
-					.then((willDelete) => {
-						if (willDelete) {
+					const swalWithBootstrapButtons = Swal.mixin({
+						customClass: {
+							confirmButton: 'btn btn-primary',
+							cancelButton: 'btn btn-danger'
+						},
+							buttonsStyling: false
+						})
+						swalWithBootstrapButtons.fire({
+							title: "Data yang akan dihapus?",
+							text: "No. Bayar : " + id+"dan NO urut :"+no,
+							type: 'warning',
+							showCancelButton: true,
+							reverseButtons: true,
+							confirmButtonText: 'Ya, hapus',
+							cancelButtonText: 'Batalkan'
+						})
+						.then((result) => {
+						if (result.value) {
 							$.ajax({
 								url: "{{ route('permintaan_bayar.delete.detail') }}",
 								type: 'DELETE',
@@ -680,10 +711,11 @@ $('#deleteRow').click(function(e) {
 									"_token": "{{ csrf_token() }}",
 								},
 								success: function () {
-									swal({
-											title: "Delete",
-											text: "Success",
-											type: "success"
+									Swal.fire({
+										type  : 'success',
+										title : 'Hapus Data Detail Permintaan Bayar',
+										text  : 'Berhasil',
+										timer : 2000
 									}).then(function() {
 										location.reload();
 									});
@@ -751,7 +783,21 @@ return {
 
 KTBootstrapDatepicker.init();
 
+
 });
+function displayResult(ci){ 
+			if(ci == 1)
+			{
+				$('#kurs').val(1);
+				$('#simbol-kurs').hide();
+				$( "#kurs" ).prop( "required", false );
+
+			}else{
+				$('#kurs').val("");
+				$('#simbol-kurs').show();
+				$( "#kurs" ).prop( "required", true );
+			}
+		}
         function hanyaAngka(evt) {
 		  var charCode = (evt.which) ? evt.which : event.keyCode
 		   if (charCode > 31 && (charCode < 48 || charCode > 57))

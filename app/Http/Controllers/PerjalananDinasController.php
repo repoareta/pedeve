@@ -10,10 +10,19 @@ use App\Models\PanjarDetail;
 use App\Models\SdmMasterPegawai;
 use App\Models\SdmTblKdjab;
 
+//load form request (for validation)
+use App\Http\Requests\PerjalananDinasStore;
+use App\Http\Requests\PerjalananDinasUpdate;
+
+//load export CSV
+use App\Exports\RekapSPD;
+
 // Load Plugin
 use Carbon\Carbon;
 use Session;
 use PDF;
+use Excel;
+use Alert;
 
 class PerjalananDinasController extends Controller
 {
@@ -34,7 +43,7 @@ class PerjalananDinasController extends Controller
      */
     public function indexJson()
     {
-        $panjar_list = PanjarHeader::all();
+        $panjar_list = PanjarHeader::orderBy('tgl_panjar', 'desc')->get();
 
         return datatables()->of($panjar_list)
             ->addColumn('mulai', function ($row) {
@@ -114,12 +123,15 @@ class PerjalananDinasController extends Controller
      * @param  \Illuminate\Http\Request  $request
      * @return \Illuminate\Http\Response
      */
-    public function store(Request $request)
+    public function store(PerjalananDinasStore $request)
     {
+        $pegawai = SdmMasterPegawai::find($request->nopek);
+        
         $panjar_header = new PanjarHeader;
         $panjar_header->no_panjar = $request->no_spd;
         $panjar_header->tgl_panjar = $request->tanggal;
         $panjar_header->nopek = $request->nopek;
+        $panjar_header->nama = $pegawai->nama;
         $panjar_header->jabatan = $request->jabatan;
         $panjar_header->gol = $request->golongan;
         $panjar_header->ktp = $request->ktp;
@@ -136,21 +148,24 @@ class PerjalananDinasController extends Controller
         $panjar_header->save();
 
         // Save Panjar Detail;
-        foreach (session('panjar_detail') as $panjar) {
-            $panjar_detail = new PanjarDetail;
-            $panjar_detail->no = $panjar['no'];
-            $panjar_detail->no_panjar = $request->no_spd;
-            $panjar_detail->nopek = $panjar['nopek'];
-            $panjar_detail->nama = $panjar['nama'];
-            $panjar_detail->jabatan = $panjar['jabatan'];
-            $panjar_detail->status = $panjar['golongan'];
-            $panjar_detail->keterangan = $panjar['keterangan'];
-
-            $panjar_detail->save();
+        if (session('panjar_detail')) {
+            foreach (session('panjar_detail') as $panjar) {
+                $panjar_detail = new PanjarDetail;
+                $panjar_detail->no = $panjar['no'];
+                $panjar_detail->no_panjar = $request->no_spd;
+                $panjar_detail->nopek = $panjar['nopek'];
+                $panjar_detail->nama = $panjar['nama'];
+                $panjar_detail->jabatan = $panjar['jabatan'];
+                $panjar_detail->status = $panjar['golongan'] = $panjar['status'];
+                $panjar_detail->keterangan = $panjar['keterangan'];
+    
+                $panjar_detail->save();
+            }
+    
+            session()->forget('panjar_detail');
         }
 
-        session()->forget('panjar_detail');
-
+        Alert::success('Simpan Panjar Dinas', 'Berhasil')->persistent(true)->autoClose(2000);
         return redirect()->route('perjalanan_dinas.index');
     }
 
@@ -188,11 +203,13 @@ class PerjalananDinasController extends Controller
 
     public function showJsonDetail(Request $request)
     {
-        $nopek = substr($request->no_nopek, strpos($request->no_nopek, "-") + 1);
+        // $nopek = substr($request->no_nopek, strpos($request->no_nopek, "-") + 1);
+        $nopek = $request->no_nopek;
+        $no = $request->no_urut;
 
         if ($request->session == 'true') {
             foreach (session('panjar_detail') as $key => $value) {
-                if ($value['nopek'] == $nopek) {
+                if ($value['nopek'] == $nopek and $value['no'] == $no) {
                     $data = session("panjar_detail.$key");
                 }
             }
@@ -240,14 +257,17 @@ class PerjalananDinasController extends Controller
      * @param  int  $id
      * @return \Illuminate\Http\Response
      */
-    public function update(Request $request, $no_panjar)
+    public function update(PerjalananDinasUpdate $request, $no_panjar)
     {
         $no_panjar = str_replace('-', '/', $no_panjar);
         $panjar_header = PanjarHeader::find($no_panjar);
 
+        $pegawai = SdmMasterPegawai::find($request->nopek);
+
         $panjar_header->no_panjar = $request->no_spd;
         $panjar_header->tgl_panjar = $request->tanggal;
         $panjar_header->nopek = $request->nopek;
+        $panjar_header->nama = $pegawai->nama;
         $panjar_header->jabatan = $request->jabatan;
         $panjar_header->gol = $request->golongan;
         $panjar_header->ktp = $request->ktp;
@@ -287,6 +307,7 @@ class PerjalananDinasController extends Controller
                     $panjar_detail->nama = $request->nama;
                     $panjar_detail->jabatan = $request->jabatan;
                     $panjar_detail->golongan = $request->golongan;
+                    $panjar_detail->status = $request->golongan;
                     $panjar_detail->keterangan = $request->keterangan;
 
                     // dd($panjar_detail);
@@ -375,7 +396,25 @@ class PerjalananDinasController extends Controller
         ->get();
         // dd($panjar_header_list);
 
-        $pdf = PDF::loadview('perjalanan_dinas.export', ['panjar_header_list' => $panjar_header_list]);
-        return $pdf->download('rekap_spd_'.date('Y-m-d H:i:s').'.pdf');
+
+        if ($request->submit != 'pdf') {
+            return Excel::download(new RekapSPD($panjar_header_list, $request->submit, $mulai, $sampai), 'rekap_spd_'.date('Y-m-d H:i:s').'.'.$request->submit);
+        }
+
+        // return default PDF
+        $pdf = PDF::loadview('perjalanan_dinas.export_pdf', compact('panjar_header_list', 'mulai', 'sampai'))
+        ->setPaper('a4', 'landscape')
+        ->setOptions(['isPhpEnabled' => true]);
+
+        return $pdf->stream('rekap_spd_'.date('Y-m-d H:i:s').'.pdf');
+    }
+
+    public function rowExport($no_panjar)
+    {
+        $no_panjar = str_replace('-', '/', $no_panjar);
+        $panjar_header = PanjarHeader::find($no_panjar);
+
+        $pdf = PDF::loadview('perjalanan_dinas.export_row', ['panjar_header' => $panjar_header]);
+        return $pdf->stream('rekap_spd_'.date('Y-m-d H:i:s').'.pdf');
     }
 }
