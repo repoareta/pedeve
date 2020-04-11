@@ -59,14 +59,22 @@ class ProsesInsentifController extends Controller
         if($request->radioupah == 'proses'){
             
                 if($prosesupah == 'A'){
-                    $data_CekGaji = DB::select("select * from pay_master_insentif where tahun='$data_tahun' and bulan='$data_bulan'");
+                    $data_Cekinsentif = DB::select("select * from pay_master_insentif where tahun='$data_tahun' and bulan='$data_bulan'");
                 }else{
-                    $data_CekGaji = DB::select("select * from pay_master_insentif where tahun='$data_tahun' and bulan='$data_bulan' and status='$prosesupah'");
+                    $data_Cekinsentif = DB::select("select * from pay_master_insentif where tahun='$data_tahun' and bulan='$data_bulan' and status='$prosesupah'");
+                }
+                if(!empty($data_Cekinsentif)){
+                    foreach($data_Cekinsentif as $data_cek)
+                    {
+                        $cek = 1;
+                    }
+                }else {
+                    $cek = 0;
                 }
                 
 
 
-                if(!empty($data_CekGaji)){ //di rubah !
+                if($cek == 1){ //di rubah !
                         Alert::error("Data Insentif bulan $data_bulan dan tahun $data_tahun sudah pernah di proses", 'Error')->persistent(true);
                         return redirect()->route('proses_insentif.index');
                 }else{
@@ -957,16 +965,28 @@ class ProsesInsentifController extends Controller
                                     
                             
                         }
-                        StatBayarInsentif::insert([
-                            'tahun' => $data_tahun,
-                            'bulan' => $data_bulan,
-                            'status' => 'N',      
-                            ]); 
+
+                        $cek_stat = DB::select("select * from stat_bayar_insentif where tahun='$data_tahun' and bulan='$data_bulan'");
+                        if(!empty($cek_stat)){
+                            StatBayarInsentif::where('tahun', $data_tahun)
+                                    ->where('bulan',$data_bulan)
+                                    ->update([
+                                        'status' => 'N',
+                                    ]);
+                        }else {
+                            StatBayarInsentif::insert([
+                                'tahun' => $data_tahun,
+                                'bulan' => $data_bulan,
+                                'status' => 'N',      
+                                ]); 
+                        }
+
+
                         Alert::success("Data Insentif bulan $data_bulan dan tahun $data_tahun berhasil di proses ", 'Berhasil')->persistent(true);
                         return redirect()->route('proses_insentif.index');
                 }
         }else {
-            
+        
             $data_cekstatusbayar = DB::select("select status from stat_bayar_insentif where tahun='$data_tahun' and bulan='$data_bulan'");
             if(!empty($data_cekstatusbayar)){
                     foreach($data_cekstatusbayar as $data_bayar)
@@ -975,11 +995,19 @@ class ProsesInsentifController extends Controller
                     }
                     if($data_cekbayar == 'N'){
                         if($prosesupah == 'A'){
-                            $data_Cekbatal = DB::select("select * from pay_master_insentif where tahun='$data_tahun' and bulan='$data_bulan'");
+                            $data_Cekinsentif = DB::select("select * from pay_master_insentif where tahun='$data_tahun' and bulan='$data_bulan'");
                         }else{
-                            $data_Cekbatal = DB::select("select * from pay_master_insentif where tahun='$data_tahun' and bulan='$data_bulan' and status='$prosesupah'");
+                            $data_Cekinsentif = DB::select("select * from pay_master_insentif where tahun='$data_tahun' and bulan='$data_bulan' and status='$prosesupah'");
                         }
-                            if(!empty($data_Cekbatal)){
+                        if(!empty($data_Cekinsentif)){
+                            foreach($data_Cekinsentif as $data_cek)
+                            {
+                                $cek = 1;
+                            }
+                        }else {
+                            $cek = 0;
+                        }
+                            if($cek == 1){
                                     if($request->prosesupah == 'A'){
                                         PayMasterInsentif::where('tahun', $data_tahun)->where('bulan',$data_bulan)->delete();
                                         StatBayarInsentif::where('tahun', $data_tahun)->where('bulan',$data_bulan)->delete();

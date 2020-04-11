@@ -59,13 +59,21 @@ class ProsesThrController extends Controller
         if($request->radioupah == 'proses'){
             
             if($prosesupah == 'A'){
-                $data_cekthr = DB::select("Select * from pay_master_thr where tahun='$tahun'");
+                $data_Cekthr = DB::select("select * from pay_master_thr where tahun='$tahun' and bulan='$bulan'");
             }else{
-                $data_cekthr = DB::select("select * from pay_master_thr where tahun='$tahun' and status='$prosesupah'");
+                $data_Cekthr = DB::select("select * from pay_master_thr where tahun='$tahun' and bulan='$bulan' and status='$prosesupah'");
+            }
+            if(!empty($data_Cekthr)){
+                foreach($data_Cekthr as $data_cek)
+                {
+                    $cek = 1;
+                }
+            }else {
+                $cek = 0;
             }
 
             // Cek THR
-            if(!empty($data_cekthr)){
+            if($cek == 1){
                 Alert::error("Data THR bulan $bulan dan tahun $tahun sudah pernah di proses", 'Error')->persistent(true);
                 return redirect()->route('proses_thr.index');
             }else {
@@ -1680,11 +1688,20 @@ class ProsesThrController extends Controller
                     }
 
                 }
-                StatBayarThr::insert([
-                    'tahun' => $tahun,
-                    'bulan' => $bulan,
-                    'status' => 'N',      
-                    ]); 
+                    $cek_stat = DB::select("select * from stat_bayar_thr where tahun='$tahun' and bulan='$bulan'");
+                        if(!empty($cek_stat)){
+                            StatBayarThr::where('tahun', $tahun)
+                                    ->where('bulan',$bulan)
+                                    ->update([
+                                        'status' => 'N',
+                                    ]);
+                        }else {
+                            StatBayarThr::insert([
+                                'tahun' => $tahun,
+                                'bulan' => $bulan,
+                                'status' => 'N',      
+                                ]); 
+                        }
                 Alert::success("Data THR bulan $bulan dan tahun $tahun berhasil di proses ", 'Berhasil')->persistent(true);
                 return redirect()->route('proses_thr.index');
                 
@@ -1704,7 +1721,15 @@ class ProsesThrController extends Controller
                         }else{
                             $data_Cekbatal = DB::select("select * from pay_master_thr where tahun='$tahun' and bulan='$bulan' and status='$prosesupah'");
                         }
-                            if(!empty($data_Cekbatal)){
+                        if(!empty($data_Cekbatal)){
+                            foreach($data_Cekbatal as $data_cek)
+                            {
+                                $cek = 1;
+                            }
+                        }else {
+                            $cek = 0;
+                        }
+                            if($cek == 1){
                                     if($prosesupah == 'A'){
                                         PayMasterThr::where('tahun', $tahun)->where('bulan',$bulan)->delete();
                                         StatBayarThr::where('tahun', $tahun)->where('bulan',$bulan)->delete();
