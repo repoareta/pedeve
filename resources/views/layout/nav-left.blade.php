@@ -28,9 +28,11 @@
                 $umk = array(
                     'uang_muka_kerja.index',
                     'uang_muka_kerja.search.index',
+                    'uang_muka_kerja.rekap',
                     'uang_muka_kerja.create',
                     'uang_muka_kerja.detail',
                     'uang_muka_kerja.edit',
+                    'uang_muka_kerja.approv',
                 ); // isi nama semua route UMK
 
                 $umk_pertanggungjawaban = array(
@@ -44,9 +46,11 @@
                 $permintaan_bayar = array(
                     'permintaan_bayar.index',
                     'permintaan_bayar.search.index',
+                    'permintaan_bayar.rekap',
                     'permintaan_bayar.create',
                     'permintaan_bayar.detail',
                     'permintaan_bayar.edit',
+                    'permintaan_bayar.approv'
                 ); // isi nama semua route permintaan_bayar
 
                 $anggaran = array(
