@@ -173,9 +173,21 @@ Route::group(['middleware'=> ['auth','checkRole:1']], function () {
     //MODUL SDM & Payroll
     Route::prefix('sdm')->group(function () {
         // Tabel data Master
-        Route::get('tabel_data_master', 'TabelDataMasterController@index')->name('tabel_data_master.index');
-        Route::get('tabel_data_master/create', 'TabelDataMasterController@create')->name('tabel_data_master.create');
-        Route::get('tabel_data_master/edit', 'TabelDataMasterController@edit')->name('tabel_data_master.edit');
+        // Provinsi START
+        Route::get('provinsi', 'ProvinsiController@index')->name('provinsi.index');
+        Route::get('provinsi/index_json', 'ProvinsiController@indexJson')->name('provinsi.index.json');
+        Route::get('provinsi/create', 'ProvinsiController@create')->name('provinsi.create');
+        Route::post('provinsi/store', 'ProvinsiController@store')->name('provinsi.store');
+        Route::get('provinsi/edit/{provinsi}', 'ProvinsiController@edit')->name('provinsi.edit');
+        Route::post('provinsi/update/{provinsi}', 'ProvinsiController@update')->name('provinsi.update');
+        Route::delete('provinsi/delete', 'ProvinsiController@delete')->name('provinsi.delete');
+        // Provinsi END
+
+        // Perguruan Tinggi
+        // Kode Jabatan
+        // Kode Bagian
+        // Agama
+
         // master pekerja
         Route::get('master_pekerja', 'MasterPekerjaController@index')->name('master_pekerja.index');
         Route::get('master_pekerja/create', 'MasterPekerjaController@create')->name('master_pekerja.create');
