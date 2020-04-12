@@ -91,7 +91,7 @@
                     $report_umum_menu
                 ); // array merge semua submenu
 
-                $tabel_data_master = array(
+                $master_data = array(
                     'tabel_data_master.index',
                     'tabel_data_master.create',
                     'tabel_data_master.edit'
@@ -188,8 +188,8 @@
                 ); // isi nama semua route absensi implementasi GCG
 
                 //menu sdm & Payroll
-                $sdmpayroll = array_merge(
-                    $tabel_data_master,
+                $sdm_payroll = array_merge(
+                    $master_data,
                     $master_pekerja,
                     $potongan_koreksi_gaji,
                     $lembur,
@@ -354,7 +354,7 @@
                 </div>
             </li>
 
-            <li class="kt-menu__item  kt-menu__item--submenu {{ set_active($sdmpayroll) }}" aria-haspopup="true" data-ktmenu-submenu-toggle="hover">
+            <li class="kt-menu__item  kt-menu__item--submenu {{ set_active($sdm_payroll) }}" aria-haspopup="true" data-ktmenu-submenu-toggle="hover">
                 <a href="javascript:;" class="kt-menu__link kt-menu__toggle">
                     <span class="kt-menu__link-icon">
                         <i class="fa fa-book-reader"></i>
@@ -372,15 +372,58 @@
                                 </span>
                             </span>
                         </li>
-                        <li class="kt-menu__item kt-menu__item{{ set_active_submenu($tabel_data_master) }}" aria-haspopup="true">
-                            <a href="{{ route('tabel_data_master.index') }}" class="kt-menu__link ">
+                        <li class="kt-menu__item kt-menu__item{{ set_active_submenu($master_data) }}" aria-haspopup="true">
+                            <a href="javascript:;" class="kt-menu__link kt-menu__toggle">
                                 <i class="kt-menu__link-bullet kt-menu__link-bullet--dot">
                                     <span></span>
                                 </i>
-                                <span class="kt-menu__link-text">
-                                    Tabel Data Master
-                                </span>
+                                <span class="kt-menu__link-text">Master Data</span>
+                                <i class="kt-menu__ver-arrow la la-angle-right"></i>
                             </a>
+                            <div class="kt-menu__submenu "><span class="kt-menu__arrow"></span>
+                                <ul class="kt-menu__subnav">
+                                    <li class="kt-menu__item kt-menu__item{{ set_active_submenu($rekap_spd) }}" aria-haspopup="true">
+                                        <a href="{{ route('perjalanan_dinas.rekap') }}" class="kt-menu__link ">
+                                            <i class="kt-menu__link-bullet kt-menu__link-bullet--line">
+                                                <span></span>
+                                            </i>
+                                            <span class="kt-menu__link-text">Provinsi</span>
+                                        </a>
+                                    </li>
+                                    <li class="kt-menu__item " aria-haspopup="true">
+                                        <a href="{{route('perjalanan_dinas.rekap')}}" class="kt-menu__link ">
+                                            <i class="kt-menu__link-bullet kt-menu__link-bullet--line">
+                                                <span></span>
+                                            </i>
+                                            <span class="kt-menu__link-text">Perguruan Tinggi</span>
+                                        </a>
+                                    </li>
+                                    <li class="kt-menu__item " aria-haspopup="true">
+                                        <a href="{{route('perjalanan_dinas.rekap')}}" class="kt-menu__link ">
+                                            <i class="kt-menu__link-bullet kt-menu__link-bullet--line">
+                                                <span></span>
+                                            </i>
+                                            <span class="kt-menu__link-text">Kode Bagian</span>
+                                        </a>
+                                    </li>
+                                    <li class="kt-menu__item " aria-haspopup="true">
+                                        <a href="{{route('perjalanan_dinas.rekap')}}" class="kt-menu__link ">
+                                            <i class="kt-menu__link-bullet kt-menu__link-bullet--line">
+                                                <span></span>
+                                            </i>
+                                            <span class="kt-menu__link-text">Kode Jabatan</span>
+                                        </a>
+                                    </li>
+                                    <li class="kt-menu__item " aria-haspopup="true">
+                                        <a href="{{route('perjalanan_dinas.rekap')}}" class="kt-menu__link ">
+                                            <i class="kt-menu__link-bullet kt-menu__link-bullet--line">
+                                                <span></span>
+                                            </i>
+                                            <span class="kt-menu__link-text">Kode Agama</span>
+                                        </a>
+                                    </li>
+                                </ul>
+                            </div>
                         </li>
                         <li class="kt-menu__item kt-menu__item{{ set_active_submenu($master_pekerja) }}" aria-haspopup="true">
                             <a href="{{ route('master_pekerja.index') }}" class="kt-menu__link ">
@@ -388,7 +431,7 @@
                                     <span></span>
                                 </i>
                                 <span class="kt-menu__link-text">
-                                    Master Pekerjaan
+                                    Master Pegawai
                                 </span>
                             </a>
                         </li>
