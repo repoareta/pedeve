@@ -339,96 +339,102 @@ class UangMukaKerjaController extends Controller
 
     public function rekapExportRange(Request $request)
     {
-        if($request->submit == 'pdf')
-        {
-            $mulai = date($request->mulai);
-            $sampai = date($request->sampai);
-            $pecahkan = explode('-', $request->mulai);
-            $array_bln	 = array (
-                1 =>   'Januari',
-                'Februari',
-                'Maret',
-                'April',
-                'Mei',
-                'Juni',
-                'Juli',
-                'Agustus',
-                'September',
-                'Oktober',
-                'November',
-                'Desember'
-              );
-              
-            $bulan= strtoupper($array_bln[ (int)$pecahkan[1] ]);
-            $tahun=$pecahkan[0];
-            $umk_header_list = Umk::whereBetween('tgl_panjar', [$mulai, $sampai])->where('app_pbd', 'Y')
-            ->get();
-            // dd($umk_header_list);
-            $list_acount =Umk::whereBetween('tgl_panjar', [$mulai, $sampai])
-            ->where('app_pbd', 'Y')->select('jumlah')->sum('jumlah');
-            $pdf = PDF::loadview('umk.exportrange',compact('umk_header_list','list_acount','bulan','tahun'))->setPaper('a4', 'landscape');
-            $pdf->output();
-            $dom_pdf = $pdf->getDomPDF();
-    
-            $canvas = $dom_pdf ->get_canvas();
-            $canvas->page_text(690, 100, "Page {PAGE_NUM} of {PAGE_COUNT}", null, 10, array(0, 0, 0));
-            // return $pdf->download('rekap_umk_'.date('Y-m-d H:i:s').'.pdf');
-            return $pdf->stream();
-        }elseif($request->submit == 'xlsx')
-        {
-            $mulai = date($request->mulai);
-            $sampai = date($request->sampai);
-            $pecahkan = explode('-', $request->mulai);
-            $array_bln	 = array (
-                1 =>   'Januari',
-                'Februari',
-                'Maret',
-                'April',
-                'Mei',
-                'Juni',
-                'Juli',
-                'Agustus',
-                'September',
-                'Oktober',
-                'November',
-                'Desember'
-              );
-              
-            $bulan= strtoupper($array_bln[ (int)$pecahkan[1] ]);
-            $tahun=$pecahkan[0];
-            $umk_header_list = Umk::whereBetween('tgl_panjar', [$mulai, $sampai])->where('app_pbd', 'Y')
-            ->get();
-            $list_acount =Umk::whereBetween('tgl_panjar', [$mulai, $sampai])
-            ->where('app_pbd', 'Y')->select('jumlah')->sum('jumlah');
-            $excel=new Spreadsheet;
-            return view('umk.exportexcel',compact('umk_header_list','list_acount','excel','bulan','tahun'));
-        }else{
-            $mulai = date($request->mulai);
-            $sampai = date($request->sampai);
-            $pecahkan = explode('-', $request->mulai);
-            $array_bln	 = array (
-                1 =>   'Januari',
-                'Februari',
-                'Maret',
-                'April',
-                'Mei',
-                'Juni',
-                'Juli',
-                'Agustus',
-                'September',
-                'Oktober',
-                'November',
-                'Desember'
-              );
-              
-            $bulan= strtoupper($array_bln[ (int)$pecahkan[1] ]);
-            $tahun=$pecahkan[0];
-            $umk_header_list = Umk::whereBetween('tgl_panjar', [$mulai, $sampai])->where('app_pbd', 'Y')
-            ->get();
-            $list_acount =Umk::whereBetween('tgl_panjar', [$mulai, $sampai])
-            ->where('app_pbd', 'Y')->select('jumlah')->sum('jumlah');
-            $excel=new Spreadsheet;
-            return view('umk.exportcsv',compact('umk_header_list','list_acount','excel','bulan','tahun'));
+        $data_cek = Umk::whereBetween('tgl_panjar', [$request->mulai, $request->sampai]) ->where('app_pbd', 'Y')->count();
+        if($data_cek == 0){
+            Alert::error('Tidak Ada Data Pada Tanggal Mulai: '.$request->mulai.' Sampai Tanggal: '.$request->sampai.'', 'Failed')->persistent(true);
+            return redirect()->route('permintaan_bayar.rekap.range');
+        }else {
+            if($request->submit == 'pdf')
+            {
+                $mulai = date($request->mulai);
+                $sampai = date($request->sampai);
+                $pecahkan = explode('-', $request->mulai);
+                $array_bln	 = array (
+                    1 =>   'Januari',
+                    'Februari',
+                    'Maret',
+                    'April',
+                    'Mei',
+                    'Juni',
+                    'Juli',
+                    'Agustus',
+                    'September',
+                    'Oktober',
+                    'November',
+                    'Desember'
+                );
+                
+                $bulan= strtoupper($array_bln[ (int)$pecahkan[1] ]);
+                $tahun=$pecahkan[0];
+                $umk_header_list = Umk::whereBetween('tgl_panjar', [$mulai, $sampai])->where('app_pbd', 'Y')
+                ->get();
+                // dd($umk_header_list);
+                $list_acount =Umk::whereBetween('tgl_panjar', [$mulai, $sampai])
+                ->where('app_pbd', 'Y')->select('jumlah')->sum('jumlah');
+                $pdf = PDF::loadview('umk.exportrange',compact('umk_header_list','list_acount','bulan','tahun'))->setPaper('a4', 'landscape');
+                $pdf->output();
+                $dom_pdf = $pdf->getDomPDF();
+        
+                $canvas = $dom_pdf ->get_canvas();
+                $canvas->page_text(690, 100, "Page {PAGE_NUM} of {PAGE_COUNT}", null, 10, array(0, 0, 0));
+                // return $pdf->download('rekap_umk_'.date('Y-m-d H:i:s').'.pdf');
+                return $pdf->stream();
+            }elseif($request->submit == 'xlsx')
+            {
+                $mulai = date($request->mulai);
+                $sampai = date($request->sampai);
+                $pecahkan = explode('-', $request->mulai);
+                $array_bln	 = array (
+                    1 =>   'Januari',
+                    'Februari',
+                    'Maret',
+                    'April',
+                    'Mei',
+                    'Juni',
+                    'Juli',
+                    'Agustus',
+                    'September',
+                    'Oktober',
+                    'November',
+                    'Desember'
+                );
+                
+                $bulan= strtoupper($array_bln[ (int)$pecahkan[1] ]);
+                $tahun=$pecahkan[0];
+                $umk_header_list = Umk::whereBetween('tgl_panjar', [$mulai, $sampai])->where('app_pbd', 'Y')
+                ->get();
+                $list_acount =Umk::whereBetween('tgl_panjar', [$mulai, $sampai])
+                ->where('app_pbd', 'Y')->select('jumlah')->sum('jumlah');
+                $excel=new Spreadsheet;
+                return view('umk.exportexcel',compact('umk_header_list','list_acount','excel','bulan','tahun'));
+            }else{
+                $mulai = date($request->mulai);
+                $sampai = date($request->sampai);
+                $pecahkan = explode('-', $request->mulai);
+                $array_bln	 = array (
+                    1 =>   'Januari',
+                    'Februari',
+                    'Maret',
+                    'April',
+                    'Mei',
+                    'Juni',
+                    'Juli',
+                    'Agustus',
+                    'September',
+                    'Oktober',
+                    'November',
+                    'Desember'
+                );
+                
+                $bulan= strtoupper($array_bln[ (int)$pecahkan[1] ]);
+                $tahun=$pecahkan[0];
+                $umk_header_list = Umk::whereBetween('tgl_panjar', [$mulai, $sampai])->where('app_pbd', 'Y')
+                ->get();
+                $list_acount =Umk::whereBetween('tgl_panjar', [$mulai, $sampai])
+                ->where('app_pbd', 'Y')->select('jumlah')->sum('jumlah');
+                $excel=new Spreadsheet;
+                return view('umk.exportcsv',compact('umk_header_list','list_acount','excel','bulan','tahun'));
+            }
         }
     }
 

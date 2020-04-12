@@ -133,6 +133,8 @@ class PermintaanBayarController extends Controller
             'rate' => $request->kurs,
             'mulai' => $request->mulai,
             'sampai' => $request->sampai,
+            'app_sdm' => 'N',
+            'app_pbd' => 'N',
             // Save Panjar Header
             ]);
             return response()->json();
@@ -366,112 +368,119 @@ class PermintaanBayarController extends Controller
     }
     public function rekapExportRange(Request $request)
     {
-        if($request->submit == 'pdf')
-        {
-            $mulai = date($request->mulai);
-            $sampai = date($request->sampai);
-            $pecahkan = explode('-', $request->mulai);
-            $array_bln	 = array (
-                1 =>   'Januari',
-                'Februari',
-                'Maret',
-                'April',
-                'Mei',
-                'Juni',
-                'Juli',
-                'Agustus',
-                'September',
-                'Oktober',
-                'November',
-                'Desember'
-              );
-              
-            $bulan= strtoupper($array_bln[ (int)$pecahkan[1] ]);
-            $tahun=$pecahkan[0];
-            $bayar_header_list = \DB::table('umu_bayar_header AS a')
-            ->select(\DB::raw('a.*, (SELECT sum(b.nilai)  FROM umu_bayar_detail as b WHERE b.no_bayar=a.no_bayar) AS nilai'))
-            ->whereBetween('tgl_bayar', [$mulai, $sampai])
-            ->where('app_pbd', 'Y')
-            ->get();
-            $bayar_header_list_total =PermintaanBayar::select(\DB::raw('SUM(umu_bayar_detail.nilai) as nilai'))
-            ->Join('umu_bayar_detail', 'umu_bayar_detail.no_bayar', '=', 'umu_bayar_header.no_bayar')
-            ->whereBetween('umu_bayar_header.tgl_bayar', [$mulai, $sampai])
-            ->where('app_pbd', 'Y')
-            ->get();
-            $pdf = PDF::loadview('permintaan_bayar.exportrange', compact('bayar_header_list_total','bayar_header_list','bulan','tahun'))->setPaper('a4', 'landscape');
-            $pdf->output();
-            $dom_pdf = $pdf->getDomPDF();
+        $data_cek = PermintaanBayar::whereBetween('tgl_bayar', [$request->mulai, $request->sampai]) ->where('app_pbd', 'Y')->count();
+        if($data_cek == 0){
+            Alert::error('Tidak Ada Data Pada Tanggal Mulai: '.$request->mulai.' Sampai Tanggal: '.$request->sampai.'', 'Failed')->persistent(true);
+            return redirect()->route('permintaan_bayar.rekap.range');
+        }else {
+            
+            if($request->submit == 'pdf')
+            {
+                $mulai = date($request->mulai);
+                $sampai = date($request->sampai);
+                $pecahkan = explode('-', $request->mulai);
+                $array_bln	 = array (
+                    1 =>   'Januari',
+                    'Februari',
+                    'Maret',
+                    'April',
+                    'Mei',
+                    'Juni',
+                    'Juli',
+                    'Agustus',
+                    'September',
+                    'Oktober',
+                    'November',
+                    'Desember'
+                );
+                
+                $bulan= strtoupper($array_bln[ (int)$pecahkan[1] ]);
+                $tahun=$pecahkan[0];
+                $bayar_header_list = \DB::table('umu_bayar_header AS a')
+                ->select(\DB::raw('a.*, (SELECT sum(b.nilai)  FROM umu_bayar_detail as b WHERE b.no_bayar=a.no_bayar) AS nilai'))
+                ->whereBetween('tgl_bayar', [$mulai, $sampai])
+                ->where('app_pbd', 'Y')
+                ->get();
+                $bayar_header_list_total =PermintaanBayar::select(\DB::raw('SUM(umu_bayar_detail.nilai) as nilai'))
+                ->Join('umu_bayar_detail', 'umu_bayar_detail.no_bayar', '=', 'umu_bayar_header.no_bayar')
+                ->whereBetween('umu_bayar_header.tgl_bayar', [$mulai, $sampai])
+                ->where('app_pbd', 'Y')
+                ->get();
+                $pdf = PDF::loadview('permintaan_bayar.exportrange', compact('bayar_header_list_total','bayar_header_list','bulan','tahun'))->setPaper('a4', 'landscape');
+                $pdf->output();
+                $dom_pdf = $pdf->getDomPDF();
 
-            $canvas = $dom_pdf ->get_canvas();
-            $canvas->page_text(700, 120, "Page {PAGE_NUM} of {PAGE_COUNT}", null, 10, array(0, 0, 0));
-            // return $pdf->download('rekap_permint_'.date('Y-m-d H:i:s').'.pdf');
-            return $pdf->stream();
-        }elseif($request->submit == 'xlsx') {
-            $mulai = date($request->mulai);
-            $sampai = date($request->sampai);
-            $pecahkan = explode('-', $request->mulai);
-            $array_bln	 = array (
-                1 =>   'Januari',
-                'Februari',
-                'Maret',
-                'April',
-                'Mei',
-                'Juni',
-                'Juli',
-                'Agustus',
-                'September',
-                'Oktober',
-                'November',
-                'Desember'
-              );
-              
-            $bulan= strtoupper($array_bln[ (int)$pecahkan[1] ]);
-            $tahun=$pecahkan[0];
-            $bayar_header_list = \DB::table('umu_bayar_header AS a')
-            ->select(\DB::raw('a.*, (SELECT sum(b.nilai)  FROM umu_bayar_detail as b WHERE b.no_bayar=a.no_bayar) AS nilai'))
-            ->whereBetween('tgl_bayar', [$mulai, $sampai])
-            ->where('app_pbd', 'Y')
-            ->get();
-            $bayar_header_list_total =PermintaanBayar::select(\DB::raw('SUM(umu_bayar_detail.nilai) as nilai'))
-            ->Join('umu_bayar_detail', 'umu_bayar_detail.no_bayar', '=', 'umu_bayar_header.no_bayar')
-            ->whereBetween('umu_bayar_header.tgl_bayar', [$mulai, $sampai])
-            ->where('app_pbd', 'Y')
-            ->get();
-            $excel=new Spreadsheet;
-            return view('permintaan_bayar.exportexcel', compact('bayar_header_list_total','bayar_header_list','bulan','tahun','excel'));
-        }else{
-            $mulai = date($request->mulai);
-            $sampai = date($request->sampai);
-            $pecahkan = explode('-', $request->mulai);
-            $array_bln	 = array (
-                1 =>   'Januari',
-                'Februari',
-                'Maret',
-                'April',
-                'Mei',
-                'Juni',
-                'Juli',
-                'Agustus',
-                'September',
-                'Oktober',
-                'November',
-                'Desember'
-              );
-              
-            $bulan= strtoupper($array_bln[ (int)$pecahkan[1] ]);
-            $tahun=$pecahkan[0];
-            $bayar_header_list = \DB::table('umu_bayar_header AS a')
-            ->select(\DB::raw('a.*, (SELECT sum(b.nilai)  FROM umu_bayar_detail as b WHERE b.no_bayar=a.no_bayar) AS nilai'))
-            ->whereBetween('tgl_bayar', [$mulai, $sampai])
-            ->where('app_pbd', 'Y')
-            ->get();
-            $bayar_header_list_total =PermintaanBayar::select(\DB::raw('SUM(umu_bayar_detail.nilai) as nilai'))
-            ->Join('umu_bayar_detail', 'umu_bayar_detail.no_bayar', '=', 'umu_bayar_header.no_bayar')
-            ->whereBetween('umu_bayar_header.tgl_bayar', [$mulai, $sampai])
-            ->where('app_pbd', 'Y')
-            ->get();
-            $excel=new Spreadsheet;
-            return view('permintaan_bayar.exportcsv', compact('bayar_header_list_total','bayar_header_list','bulan','tahun','excel'));
+                $canvas = $dom_pdf ->get_canvas();
+                $canvas->page_text(700, 120, "Page {PAGE_NUM} of {PAGE_COUNT}", null, 10, array(0, 0, 0));
+                // return $pdf->download('rekap_permint_'.date('Y-m-d H:i:s').'.pdf');
+                return $pdf->stream('my.pdf',array('Attachment'=>true));
+            }elseif($request->submit == 'xlsx') {
+                $mulai = date($request->mulai);
+                $sampai = date($request->sampai);
+                $pecahkan = explode('-', $request->mulai);
+                $array_bln	 = array (
+                    1 =>   'Januari',
+                    'Februari',
+                    'Maret',
+                    'April',
+                    'Mei',
+                    'Juni',
+                    'Juli',
+                    'Agustus',
+                    'September',
+                    'Oktober',
+                    'November',
+                    'Desember'
+                );
+                
+                $bulan= strtoupper($array_bln[ (int)$pecahkan[1] ]);
+                $tahun=$pecahkan[0];
+                $bayar_header_list = \DB::table('umu_bayar_header AS a')
+                ->select(\DB::raw('a.*, (SELECT sum(b.nilai)  FROM umu_bayar_detail as b WHERE b.no_bayar=a.no_bayar) AS nilai'))
+                ->whereBetween('tgl_bayar', [$mulai, $sampai])
+                ->where('app_pbd', 'Y')
+                ->get();
+                $bayar_header_list_total =PermintaanBayar::select(\DB::raw('SUM(umu_bayar_detail.nilai) as nilai'))
+                ->Join('umu_bayar_detail', 'umu_bayar_detail.no_bayar', '=', 'umu_bayar_header.no_bayar')
+                ->whereBetween('umu_bayar_header.tgl_bayar', [$mulai, $sampai])
+                ->where('app_pbd', 'Y')
+                ->get();
+                $excel=new Spreadsheet;
+                return view('permintaan_bayar.exportexcel', compact('bayar_header_list_total','bayar_header_list','bulan','tahun','excel'));
+            }else{
+                $mulai = date($request->mulai);
+                $sampai = date($request->sampai);
+                $pecahkan = explode('-', $request->mulai);
+                $array_bln	 = array (
+                    1 =>   'Januari',
+                    'Februari',
+                    'Maret',
+                    'April',
+                    'Mei',
+                    'Juni',
+                    'Juli',
+                    'Agustus',
+                    'September',
+                    'Oktober',
+                    'November',
+                    'Desember'
+                );
+                
+                $bulan= strtoupper($array_bln[ (int)$pecahkan[1] ]);
+                $tahun=$pecahkan[0];
+                $bayar_header_list = \DB::table('umu_bayar_header AS a')
+                ->select(\DB::raw('a.*, (SELECT sum(b.nilai)  FROM umu_bayar_detail as b WHERE b.no_bayar=a.no_bayar) AS nilai'))
+                ->whereBetween('tgl_bayar', [$mulai, $sampai])
+                ->where('app_pbd', 'Y')
+                ->get();
+                $bayar_header_list_total =PermintaanBayar::select(\DB::raw('SUM(umu_bayar_detail.nilai) as nilai'))
+                ->Join('umu_bayar_detail', 'umu_bayar_detail.no_bayar', '=', 'umu_bayar_header.no_bayar')
+                ->whereBetween('umu_bayar_header.tgl_bayar', [$mulai, $sampai])
+                ->where('app_pbd', 'Y')
+                ->get();
+                $excel=new Spreadsheet;
+                return view('permintaan_bayar.exportcsv', compact('bayar_header_list_total','bayar_header_list','bulan','tahun','excel'));
+            }
         }
     }
 }
