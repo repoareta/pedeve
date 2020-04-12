@@ -183,7 +183,15 @@ Route::group(['middleware'=> ['auth','checkRole:1']], function () {
         Route::delete('provinsi/delete', 'ProvinsiController@delete')->name('provinsi.delete');
         // Provinsi END
 
-        // Perguruan Tinggi
+        // Perguruan Tinggi START
+        Route::get('perguruan_tinggi', 'PerguruanTinggiController@index')->name('perguruan_tinggi.index');
+        Route::get('perguruan_tinggi/index_json', 'PerguruanTinggiController@indexJson')->name('perguruan_tinggi.index.json');
+        Route::get('perguruan_tinggi/create', 'PerguruanTinggiController@create')->name('perguruan_tinggi.create');
+        Route::post('perguruan_tinggi/store', 'PerguruanTinggiController@store')->name('perguruan_tinggi.store');
+        Route::get('perguruan_tinggi/edit/{perguruan_tinggi}', 'PerguruanTinggiController@edit')->name('perguruan_tinggi.edit');
+        Route::post('perguruan_tinggi/update/{perguruan_tinggi}', 'PerguruanTinggiController@update')->name('perguruan_tinggi.update');
+        Route::delete('perguruan_tinggi/delete', 'PerguruanTinggiController@delete')->name('perguruan_tinggi.delete');
+        // Perguruan Tinggi END
         // Kode Jabatan
         // Kode Bagian
         // Agama

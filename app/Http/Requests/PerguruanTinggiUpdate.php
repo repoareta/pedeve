@@ -4,7 +4,7 @@ namespace App\Http\Requests;
 
 use Illuminate\Foundation\Http\FormRequest;
 
-class ProvinsiUpdate extends FormRequest
+class PerguruanTinggiUpdate extends FormRequest
 {
     /**
      * Determine if the user is authorized to make this request.
@@ -24,8 +24,8 @@ class ProvinsiUpdate extends FormRequest
     public function rules()
     {
         return [
-            'kode' => "required|numeric|digits:2|unique:App\Models\Provinsi,kode,{$this->provinsi->kode},kode",
-            'nama' => "required|unique:App\Models\Provinsi,nama,{$this->provinsi->nama},nama",
+            'kode' => "required|numeric|digits:4|unique:App\Models\PerguruanTinggi,kode,{$this->perguruan_tinggi->kode},kode",
+            'nama' => "required|unique:App\Models\PerguruanTinggi,nama,{$this->perguruan_tinggi->nama},nama",
         ];
     }
 }
