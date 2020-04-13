@@ -192,8 +192,28 @@ Route::group(['middleware'=> ['auth','checkRole:1']], function () {
         Route::post('perguruan_tinggi/update/{perguruan_tinggi}', 'PerguruanTinggiController@update')->name('perguruan_tinggi.update');
         Route::delete('perguruan_tinggi/delete', 'PerguruanTinggiController@delete')->name('perguruan_tinggi.delete');
         // Perguruan Tinggi END
-        // Kode Jabatan
-        // Kode Bagian
+
+        // Kode Bagian START
+        Route::get('kode_bagian', 'KodeBagianController@index')->name('kode_bagian.index');
+        Route::get('kode_bagian/index_json', 'KodeBagianController@indexJson')->name('kode_bagian.index.json');
+        Route::get('kode_bagian/create', 'KodeBagianController@create')->name('kode_bagian.create');
+        Route::post('kode_bagian/store', 'KodeBagianController@store')->name('kode_bagian.store');
+        Route::get('kode_bagian/edit/{kode_bagian}', 'KodeBagianController@edit')->name('kode_bagian.edit');
+        Route::post('kode_bagian/update/{kode_bagian}', 'KodeBagianController@update')->name('kode_bagian.update');
+        Route::delete('kode_bagian/delete', 'KodeBagianController@delete')->name('kode_bagian.delete');
+        // Kode Bagian END
+
+        // Kode Jabatan START
+        Route::get('kode_jabatan', 'KodeJabatanController@index')->name('kode_jabatan.index');
+        Route::get('kode_jabatan/index_json', 'KodeJabatanController@indexJson')->name('kode_jabatan.index.json');
+        Route::get('kode_jabatan/create', 'KodeJabatanController@create')->name('kode_jabatan.create');
+        Route::post('kode_jabatan/store', 'KodeJabatanController@store')->name('kode_jabatan.store');
+        Route::get('kode_jabatan/edit/{kode_jabatan}', 'KodeJabatanController@edit')->name('kode_jabatan.edit');
+        Route::post('kode_jabatan/update/{kode_jabatan}', 'KodeJabatanController@update')->name('kode_jabatan.update');
+        Route::delete('kode_jabatan/delete', 'KodeJabatanController@delete')->name('kode_jabatan.delete');
+        // Kode Jabatan END
+
+        
         // Agama
 
         // master pekerja
