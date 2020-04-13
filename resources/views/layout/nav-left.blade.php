@@ -120,9 +120,9 @@
                 ); // isi nama semua route kode_jabatan
 
                 $agama = array(
-                    'perguruan_tinggi.index',
-                    'perguruan_tinggi.create',
-                    'perguruan_tinggi.edit',
+                    'agama.index',
+                    'agama.create',
+                    'agama.edit',
                 ); // isi nama semua route perguruan_tinggi
 
                 $master_data_menu = array_merge(
@@ -271,7 +271,7 @@
                             <div class="kt-menu__submenu "><span class="kt-menu__arrow"></span>
                                 <ul class="kt-menu__subnav">
                                     <li class="kt-menu__item kt-menu__item{{ set_active_submenu($perjalanan_dinas) }}" aria-haspopup="true">
-                                        <a href="{{ route('perjalanan_dinas.index') }}" class="kt-menu__link ">
+                                        <a href="{{ route('perjalanan_dinas.index') }}" class="kt-menu__link">
                                             <i class="kt-menu__link-bullet kt-menu__link-bullet--line">
                                                 <span></span>
                                             </i>
@@ -279,7 +279,7 @@
                                         </a>
                                     </li>
                                     <li class="kt-menu__item kt-menu__item{{ set_active_submenu($perjalanan_dinas_pertanggungjawaban) }}" aria-haspopup="true">
-                                        <a href="{{route('perjalanan_dinas.pertanggungjawaban.index')}}" class="kt-menu__link ">
+                                        <a href="{{route('perjalanan_dinas.pertanggungjawaban.index')}}" class="kt-menu__link">
                                             <i class="kt-menu__link-bullet kt-menu__link-bullet--line">
                                                 <span></span>
                                             </i>
@@ -301,7 +301,7 @@
                             <div class="kt-menu__submenu "><span class="kt-menu__arrow"></span>
                                 <ul class="kt-menu__subnav">
                                     <li class="kt-menu__item kt-menu__item{{ set_active_submenu($umk) }}" aria-haspopup="true">
-                                        <a href="{{ route('uang_muka_kerja.index') }}" class="kt-menu__link ">
+                                        <a href="{{ route('uang_muka_kerja.index') }}" class="kt-menu__link">
                                             <i class="kt-menu__link-bullet kt-menu__link-bullet--line">
                                                 <span></span>
                                             </i>
@@ -309,7 +309,7 @@
                                         </a>
                                     </li>
                                     <li class="kt-menu__item kt-menu__item{{ set_active_submenu($umk_pertanggungjawaban) }}" aria-haspopup="true">
-                                        <a href="{{route('uang_muka_kerja.pertanggungjawaban.index')}}" class="kt-menu__link ">
+                                        <a href="{{route('uang_muka_kerja.pertanggungjawaban.index')}}" class="kt-menu__link">
                                             <i class="kt-menu__link-bullet kt-menu__link-bullet--line">
                                                 <span></span>
                                             </i>
@@ -321,7 +321,7 @@
                         </li>
 
                         <li class="kt-menu__item  kt-menu__item{{ set_active_submenu($permintaan_bayar) }}" aria-haspopup="true">
-                            <a href="{{ route('permintaan_bayar.index') }}" class="kt-menu__link ">
+                            <a href="{{ route('permintaan_bayar.index') }}" class="kt-menu__link">
                                 <i class="kt-menu__link-bullet kt-menu__link-bullet--dot">
                                     <span></span>
                                 </i>
@@ -332,7 +332,7 @@
                         </li>
 
                         <li class="kt-menu__item  kt-menu__item{{ set_active_submenu($anggaran) }}" aria-haspopup="true">
-                            <a href="{{ route('anggaran.index') }}" class="kt-menu__link ">
+                            <a href="{{ route('anggaran.index') }}" class="kt-menu__link">
                                 <i class="kt-menu__link-bullet kt-menu__link-bullet--dot">
                                     <span></span>
                                 </i>
@@ -353,7 +353,7 @@
                             <div class="kt-menu__submenu "><span class="kt-menu__arrow"></span>
                                 <ul class="kt-menu__subnav">
                                     <li class="kt-menu__item kt-menu__item{{ set_active_submenu($rekap_spd) }}" aria-haspopup="true">
-                                        <a href="{{ route('perjalanan_dinas.rekap') }}" class="kt-menu__link ">
+                                        <a href="{{ route('perjalanan_dinas.rekap') }}" class="kt-menu__link">
                                             <i class="kt-menu__link-bullet kt-menu__link-bullet--line">
                                                 <span></span>
                                             </i>
@@ -361,7 +361,7 @@
                                         </a>
                                     </li>
                                     <li class="kt-menu__item kt-menu__item{{ set_active_submenu($rekap_umk) }}" aria-haspopup="true">
-                                        <a href="{{route('uang_muka_kerja.rekap.range')}}" class="kt-menu__link ">
+                                        <a href="{{route('uang_muka_kerja.rekap.range')}}" class="kt-menu__link">
                                             <i class="kt-menu__link-bullet kt-menu__link-bullet--line">
                                                 <span></span>
                                             </i>
@@ -369,7 +369,7 @@
                                         </a>
                                     </li>
                                     <li class="kt-menu__item kt-menu__item{{ set_active_submenu($rekap_permintaan_bayar) }}" aria-haspopup="true">
-                                        <a href="{{route('permintaan_bayar.rekap.range')}}" class="kt-menu__link ">
+                                        <a href="{{route('permintaan_bayar.rekap.range')}}" class="kt-menu__link">
                                             <i class="kt-menu__link-bullet kt-menu__link-bullet--line">
                                                 <span></span>
                                             </i>
@@ -380,7 +380,7 @@
                             </div>
                         </li>
                         <li class="kt-menu__item  kt-menu__item{{ set_active_submenu($vendor) }}" aria-haspopup="true">
-                            <a href="{{ route('vendor.index') }}" class="kt-menu__link ">
+                            <a href="{{ route('vendor.index') }}" class="kt-menu__link">
                                 <i class="kt-menu__link-bullet kt-menu__link-bullet--dot">
                                     <span></span>
                                 </i>
@@ -422,7 +422,7 @@
                             <div class="kt-menu__submenu "><span class="kt-menu__arrow"></span>
                                 <ul class="kt-menu__subnav">
                                     <li class="kt-menu__item kt-menu__item{{ set_active_submenu($provinsi) }}" aria-haspopup="true">
-                                        <a href="{{ route('provinsi.index') }}" class="kt-menu__link ">
+                                        <a href="{{ route('provinsi.index') }}" class="kt-menu__link">
                                             <i class="kt-menu__link-bullet kt-menu__link-bullet--line">
                                                 <span></span>
                                             </i>
@@ -430,7 +430,7 @@
                                         </a>
                                     </li>
                                     <li class="kt-menu__item kt-menu__item{{ set_active_submenu($perguruan_tinggi) }}" aria-haspopup="true">
-                                        <a href="{{route('perguruan_tinggi.index')}}" class="kt-menu__link ">
+                                        <a href="{{route('perguruan_tinggi.index')}}" class="kt-menu__link">
                                             <i class="kt-menu__link-bullet kt-menu__link-bullet--line">
                                                 <span></span>
                                             </i>
@@ -438,7 +438,7 @@
                                         </a>
                                     </li>
                                     <li class="kt-menu__item kt-menu__item{{ set_active_submenu($kode_bagian) }}" aria-haspopup="true">
-                                        <a href="{{route('kode_bagian.index')}}" class="kt-menu__link ">
+                                        <a href="{{route('kode_bagian.index')}}" class="kt-menu__link">
                                             <i class="kt-menu__link-bullet kt-menu__link-bullet--line">
                                                 <span></span>
                                             </i>
@@ -446,7 +446,7 @@
                                         </a>
                                     </li>
                                     <li class="kt-menu__item kt-menu__item{{ set_active_submenu($kode_jabatan) }}" aria-haspopup="true">
-                                        <a href="{{route('kode_jabatan.index')}}" class="kt-menu__link ">
+                                        <a href="{{route('kode_jabatan.index')}}" class="kt-menu__link">
                                             <i class="kt-menu__link-bullet kt-menu__link-bullet--line">
                                                 <span></span>
                                             </i>
@@ -454,7 +454,7 @@
                                         </a>
                                     </li>
                                     <li class="kt-menu__item kt-menu__item{{ set_active_submenu($agama) }}" aria-haspopup="true">
-                                        <a href="{{route('perjalanan_dinas.rekap')}}" class="kt-menu__link ">
+                                        <a href="{{route('agama.index')}}" class="kt-menu__link">
                                             <i class="kt-menu__link-bullet kt-menu__link-bullet--line">
                                                 <span></span>
                                             </i>
@@ -465,7 +465,7 @@
                             </div>
                         </li>
                         <li class="kt-menu__item kt-menu__item{{ set_active_submenu($master_pekerja) }}" aria-haspopup="true">
-                            <a href="{{ route('master_pekerja.index') }}" class="kt-menu__link ">
+                            <a href="{{ route('master_pekerja.index') }}" class="kt-menu__link">
                                 <i class="kt-menu__link-bullet kt-menu__link-bullet--dot">
                                     <span></span>
                                 </i>
@@ -485,7 +485,7 @@
                             <div class="kt-menu__submenu "><span class="kt-menu__arrow"></span>
                                 <ul class="kt-menu__subnav">
                                     <li class="kt-menu__item kt-menu__item{{ set_active_submenu($koreksi_gaji) }}" aria-haspopup="true">
-                                        <a href="{{ route('potongan_koreksi_gaji.index') }}" class="kt-menu__link ">
+                                        <a href="{{ route('potongan_koreksi_gaji.index') }}" class="kt-menu__link">
                                             <i class="kt-menu__link-bullet kt-menu__link-bullet--line">
                                                 <span></span>
                                             </i>
@@ -493,7 +493,7 @@
                                         </a>
                                     </li>
                                     <li class="kt-menu__item kt-menu__item{{ set_active_submenu($potongan_manual) }}" aria-haspopup="true">
-                                        <a href="{{route('potongan_manual.index')}}" class="kt-menu__link ">
+                                        <a href="{{route('potongan_manual.index')}}" class="kt-menu__link">
                                             <i class="kt-menu__link-bullet kt-menu__link-bullet--line">
                                                 <span></span>
                                             </i>
@@ -501,7 +501,7 @@
                                         </a>
                                     </li>
                                     <li class="kt-menu__item kt-menu__item{{ set_active_submenu($potongan_otomatis) }}" aria-haspopup="true">
-                                        <a href="{{route('potongan_otomatis.index')}}" class="kt-menu__link ">
+                                        <a href="{{route('potongan_otomatis.index')}}" class="kt-menu__link">
                                             <i class="kt-menu__link-bullet kt-menu__link-bullet--line">
                                                 <span></span>
                                             </i>
@@ -509,7 +509,7 @@
                                         </a>
                                     </li>
                                     <li class="kt-menu__item kt-menu__item{{ set_active_submenu($honor_komite) }}" aria-haspopup="true">
-                                        <a href="{{route('honor_komite.index')}}" class="kt-menu__link ">
+                                        <a href="{{route('honor_komite.index')}}" class="kt-menu__link">
                                             <i class="kt-menu__link-bullet kt-menu__link-bullet--line">
                                                 <span></span>
                                             </i>
@@ -520,7 +520,7 @@
                             </div>
                         </li>
                         <li class="kt-menu__item kt-menu__item{{ set_active_submenu($lembur) }}" aria-haspopup="true">
-                            <a href="{{ route('lembur.index') }}" class="kt-menu__link ">
+                            <a href="{{ route('lembur.index') }}" class="kt-menu__link">
                                 <i class="kt-menu__link-bullet kt-menu__link-bullet--dot">
                                     <span></span>
                                 </i>
@@ -530,7 +530,7 @@
                             </a>
                         </li>
                         <li class="kt-menu__item kt-menu__item{{ set_active_submenu($pinjaman_pekerja) }}" aria-haspopup="true">
-                            <a href="{{ route('pinjaman_pekerja.index') }}" class="kt-menu__link ">
+                            <a href="{{ route('pinjaman_pekerja.index') }}" class="kt-menu__link">
                                 <i class="kt-menu__link-bullet kt-menu__link-bullet--dot">
                                     <span></span>
                                 </i>
@@ -550,7 +550,7 @@
                             <div class="kt-menu__submenu "><span class="kt-menu__arrow"></span>
                                 <ul class="kt-menu__subnav">
                                     <li class="kt-menu__item kt-menu__item{{ set_active_submenu($proses_gaji) }}" aria-haspopup="true">
-                                        <a href="{{ route('proses_gaji.index') }}" class="kt-menu__link ">
+                                        <a href="{{ route('proses_gaji.index') }}" class="kt-menu__link">
                                             <i class="kt-menu__link-bullet kt-menu__link-bullet--line">
                                                 <span></span>
                                             </i>
@@ -558,7 +558,7 @@
                                         </a>
                                     </li>
                                     <li class="kt-menu__item kt-menu__item{{ set_active_submenu($proses_thr) }}" aria-haspopup="true">
-                                        <a href="{{route('proses_thr.index')}}" class="kt-menu__link ">
+                                        <a href="{{route('proses_thr.index')}}" class="kt-menu__link">
                                             <i class="kt-menu__link-bullet kt-menu__link-bullet--line">
                                                 <span></span>
                                             </i>
@@ -566,7 +566,7 @@
                                         </a>
                                     </li>
                                     <li class="kt-menu__item kt-menu__item{{ set_active_submenu($proses_insentif) }}" aria-haspopup="true">
-                                        <a href="{{route('proses_insentif.index')}}" class="kt-menu__link ">
+                                        <a href="{{route('proses_insentif.index')}}" class="kt-menu__link">
                                             <i class="kt-menu__link-bullet kt-menu__link-bullet--line">
                                                 <span></span>
                                             </i>
@@ -574,7 +574,7 @@
                                         </a>
                                     </li>
                                     <li class="kt-menu__item kt-menu__item{{ set_active_submenu($tunjangan_golongan) }}" aria-haspopup="true">
-                                        <a href="{{route('tunjangan_golongan.index')}}" class="kt-menu__link ">
+                                        <a href="{{route('tunjangan_golongan.index')}}" class="kt-menu__link">
                                             <i class="kt-menu__link-bullet kt-menu__link-bullet--line">
                                                 <span></span>
                                             </i>
@@ -585,7 +585,7 @@
                             </div>
                         </li>
                         <li class="kt-menu__item kt-menu__item{{ set_active_submenu($report_sdm_payroll) }}" aria-haspopup="true">
-                            <a href="{{ route('report_sdm_payroll.index') }}" class="kt-menu__link ">
+                            <a href="{{ route('report_sdm_payroll.index') }}" class="kt-menu__link">
                                 <i class="kt-menu__link-bullet kt-menu__link-bullet--dot">
                                     <span></span>
                                 </i>
@@ -595,7 +595,7 @@
                             </a>
                         </li>
                         <li class="kt-menu__item kt-menu__item{{ set_active_submenu($absensi_karyawan) }}" aria-haspopup="true">
-                            <a href="{{ route('absensi_karyawan.index') }}" class="kt-menu__link ">
+                            <a href="{{ route('absensi_karyawan.index') }}" class="kt-menu__link">
                                 <i class="kt-menu__link-bullet kt-menu__link-bullet--dot">
                                     <span></span>
                                 </i>
@@ -605,7 +605,7 @@
                             </a>
                         </li>
                         <li class="kt-menu__item kt-menu__item{{ set_active_submenu($implementasi_gcg) }}" aria-haspopup="true">
-                            <a href="{{ route('implementasi_gcg.index') }}" class="kt-menu__link ">
+                            <a href="{{ route('implementasi_gcg.index') }}" class="kt-menu__link">
                                 <i class="kt-menu__link-bullet kt-menu__link-bullet--dot">
                                     <span></span>
                                 </i>
@@ -637,7 +637,7 @@
                             </span>
                         </li>
                         <li class="kt-menu__item " aria-haspopup="true">
-                            <a href="{{ route('perjalanan_dinas.index') }}" class="kt-menu__link ">
+                            <a href="{{ route('perjalanan_dinas.index') }}" class="kt-menu__link">
                                 <i class="kt-menu__link-bullet kt-menu__link-bullet--dot">
                                     <span></span>
                                 </i>
@@ -647,7 +647,7 @@
                             </a>
                         </li>
                         <li class="kt-menu__item " aria-haspopup="true">
-                            <a href="{{ route('perjalanan_dinas.index') }}" class="kt-menu__link ">
+                            <a href="{{ route('perjalanan_dinas.index') }}" class="kt-menu__link">
                                 <i class="kt-menu__link-bullet kt-menu__link-bullet--dot">
                                     <span></span>
                                 </i>
@@ -667,7 +667,7 @@
                             <div class="kt-menu__submenu "><span class="kt-menu__arrow"></span>
                                 <ul class="kt-menu__subnav">
                                     <li class="kt-menu__item " aria-haspopup="true">
-                                        <a href="custom/apps/user/list-default.html" class="kt-menu__link ">
+                                        <a href="custom/apps/user/list-default.html" class="kt-menu__link">
                                             <i class="kt-menu__link-bullet kt-menu__link-bullet--line">
                                                 <span></span>
                                             </i>
@@ -675,7 +675,7 @@
                                         </a>
                                     </li>
                                     <li class="kt-menu__item " aria-haspopup="true">
-                                        <a href="custom/apps/user/list-default.html" class="kt-menu__link ">
+                                        <a href="custom/apps/user/list-default.html" class="kt-menu__link">
                                             <i class="kt-menu__link-bullet kt-menu__link-bullet--line">
                                                 <span></span>
                                             </i>
@@ -686,7 +686,7 @@
                             </div>
                         </li>
                         <li class="kt-menu__item " aria-haspopup="true">
-                            <a href="{{ route('perjalanan_dinas.index') }}" class="kt-menu__link ">
+                            <a href="{{ route('perjalanan_dinas.index') }}" class="kt-menu__link">
                                 <i class="kt-menu__link-bullet kt-menu__link-bullet--dot">
                                     <span></span>
                                 </i>
@@ -696,7 +696,7 @@
                             </a>
                         </li>
                         <li class="kt-menu__item " aria-haspopup="true">
-                            <a href="{{ route('perjalanan_dinas.index') }}" class="kt-menu__link ">
+                            <a href="{{ route('perjalanan_dinas.index') }}" class="kt-menu__link">
                                 <i class="kt-menu__link-bullet kt-menu__link-bullet--dot">
                                     <span></span>
                                 </i>
@@ -706,7 +706,7 @@
                             </a>
                         </li>
                         <li class="kt-menu__item " aria-haspopup="true">
-                            <a href="{{ route('perjalanan_dinas.index') }}" class="kt-menu__link ">
+                            <a href="{{ route('perjalanan_dinas.index') }}" class="kt-menu__link">
                                 <i class="kt-menu__link-bullet kt-menu__link-bullet--dot">
                                     <span></span>
                                 </i>
@@ -716,7 +716,7 @@
                             </a>
                         </li>
                         <li class="kt-menu__item " aria-haspopup="true">
-                            <a href="{{ route('perjalanan_dinas.index') }}" class="kt-menu__link ">
+                            <a href="{{ route('perjalanan_dinas.index') }}" class="kt-menu__link">
                                 <i class="kt-menu__link-bullet kt-menu__link-bullet--dot">
                                     <span></span>
                                 </i>
@@ -726,7 +726,7 @@
                             </a>
                         </li>
                         <li class="kt-menu__item " aria-haspopup="true">
-                            <a href="{{ route('perjalanan_dinas.index') }}" class="kt-menu__link ">
+                            <a href="{{ route('perjalanan_dinas.index') }}" class="kt-menu__link">
                                 <i class="kt-menu__link-bullet kt-menu__link-bullet--dot">
                                     <span></span>
                                 </i>
@@ -758,7 +758,7 @@
                             </span>
                         </li>
                         <li class="kt-menu__item " aria-haspopup="true">
-                            <a href="{{ route('perjalanan_dinas.index') }}" class="kt-menu__link ">
+                            <a href="{{ route('perjalanan_dinas.index') }}" class="kt-menu__link">
                                 <i class="kt-menu__link-bullet kt-menu__link-bullet--dot">
                                     <span></span>
                                 </i>
@@ -768,7 +768,7 @@
                             </a>
                         </li>
                         <li class="kt-menu__item " aria-haspopup="true">
-                            <a href="{{ route('perjalanan_dinas.index') }}" class="kt-menu__link ">
+                            <a href="{{ route('perjalanan_dinas.index') }}" class="kt-menu__link">
                                 <i class="kt-menu__link-bullet kt-menu__link-bullet--dot">
                                     <span></span>
                                 </i>
@@ -778,7 +778,7 @@
                             </a>
                         </li>
                         <li class="kt-menu__item " aria-haspopup="true">
-                            <a href="{{ route('perjalanan_dinas.index') }}" class="kt-menu__link ">
+                            <a href="{{ route('perjalanan_dinas.index') }}" class="kt-menu__link">
                                 <i class="kt-menu__link-bullet kt-menu__link-bullet--dot">
                                     <span></span>
                                 </i>
@@ -788,7 +788,7 @@
                             </a>
                         </li>
                         <li class="kt-menu__item " aria-haspopup="true">
-                            <a href="{{ route('perjalanan_dinas.index') }}" class="kt-menu__link ">
+                            <a href="{{ route('perjalanan_dinas.index') }}" class="kt-menu__link">
                                 <i class="kt-menu__link-bullet kt-menu__link-bullet--dot">
                                     <span></span>
                                 </i>
@@ -798,7 +798,7 @@
                             </a>
                         </li>
                         <li class="kt-menu__item " aria-haspopup="true">
-                            <a href="{{ route('perjalanan_dinas.index') }}" class="kt-menu__link ">
+                            <a href="{{ route('perjalanan_dinas.index') }}" class="kt-menu__link">
                                 <i class="kt-menu__link-bullet kt-menu__link-bullet--dot">
                                     <span></span>
                                 </i>
@@ -808,7 +808,7 @@
                             </a>
                         </li>
                         <li class="kt-menu__item " aria-haspopup="true">
-                            <a href="{{ route('perjalanan_dinas.index') }}" class="kt-menu__link ">
+                            <a href="{{ route('perjalanan_dinas.index') }}" class="kt-menu__link">
                                 <i class="kt-menu__link-bullet kt-menu__link-bullet--dot">
                                     <span></span>
                                 </i>
@@ -840,7 +840,7 @@
                             </span>
                         </li>
                         <li class="kt-menu__item " aria-haspopup="true">
-                            <a href="{{ route('perjalanan_dinas.index') }}" class="kt-menu__link ">
+                            <a href="{{ route('perjalanan_dinas.index') }}" class="kt-menu__link">
                                 <i class="kt-menu__link-bullet kt-menu__link-bullet--dot">
                                     <span></span>
                                 </i>
@@ -850,7 +850,7 @@
                             </a>
                         </li>
                         <li class="kt-menu__item " aria-haspopup="true">
-                            <a href="{{ route('perjalanan_dinas.index') }}" class="kt-menu__link ">
+                            <a href="{{ route('perjalanan_dinas.index') }}" class="kt-menu__link">
                                 <i class="kt-menu__link-bullet kt-menu__link-bullet--dot">
                                     <span></span>
                                 </i>
@@ -860,7 +860,7 @@
                             </a>
                         </li>
                         <li class="kt-menu__item " aria-haspopup="true">
-                            <a href="{{ route('perjalanan_dinas.index') }}" class="kt-menu__link ">
+                            <a href="{{ route('perjalanan_dinas.index') }}" class="kt-menu__link">
                                 <i class="kt-menu__link-bullet kt-menu__link-bullet--dot">
                                     <span></span>
                                 </i>
@@ -870,7 +870,7 @@
                             </a>
                         </li>
                         <li class="kt-menu__item " aria-haspopup="true">
-                            <a href="{{ route('perjalanan_dinas.index') }}" class="kt-menu__link ">
+                            <a href="{{ route('perjalanan_dinas.index') }}" class="kt-menu__link">
                                 <i class="kt-menu__link-bullet kt-menu__link-bullet--dot">
                                     <span></span>
                                 </i>
@@ -880,7 +880,7 @@
                             </a>
                         </li>
                         <li class="kt-menu__item " aria-haspopup="true">
-                            <a href="{{ route('perjalanan_dinas.index') }}" class="kt-menu__link ">
+                            <a href="{{ route('perjalanan_dinas.index') }}" class="kt-menu__link">
                                 <i class="kt-menu__link-bullet kt-menu__link-bullet--dot">
                                     <span></span>
                                 </i>
@@ -912,7 +912,7 @@
                             </span>
                         </li>
                         <li class="kt-menu__item " aria-haspopup="true">
-                            <a href="{{ route('perjalanan_dinas.index') }}" class="kt-menu__link ">
+                            <a href="{{ route('perjalanan_dinas.index') }}" class="kt-menu__link">
                                 <i class="kt-menu__link-bullet kt-menu__link-bullet--dot">
                                     <span></span>
                                 </i>
@@ -922,7 +922,7 @@
                             </a>
                         </li>
                         <li class="kt-menu__item " aria-haspopup="true">
-                            <a href="{{ route('perjalanan_dinas.index') }}" class="kt-menu__link ">
+                            <a href="{{ route('perjalanan_dinas.index') }}" class="kt-menu__link">
                                 <i class="kt-menu__link-bullet kt-menu__link-bullet--dot">
                                     <span></span>
                                 </i>

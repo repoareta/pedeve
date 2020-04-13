@@ -214,7 +214,15 @@ Route::group(['middleware'=> ['auth','checkRole:1']], function () {
         // Kode Jabatan END
 
         
-        // Agama
+        // Agama START
+        Route::get('agama', 'AgamaController@index')->name('agama.index');
+        Route::get('agama/index_json', 'AgamaController@indexJson')->name('agama.index.json');
+        Route::get('agama/create', 'AgamaController@create')->name('agama.create');
+        Route::post('agama/store', 'AgamaController@store')->name('agama.store');
+        Route::get('agama/edit/{agama}', 'AgamaController@edit')->name('agama.edit');
+        Route::post('agama/update/{agama}', 'AgamaController@update')->name('agama.update');
+        Route::delete('agama/delete', 'AgamaController@delete')->name('agama.delete');
+        // Agama END
 
         // master pekerja
         Route::get('master_pekerja', 'MasterPekerjaController@index')->name('master_pekerja.index');
