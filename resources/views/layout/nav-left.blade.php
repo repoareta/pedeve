@@ -108,16 +108,16 @@
                 ); // isi nama semua route perguruan_tinggi
 
                 $kode_bagian = array(
-                    'perguruan_tinggi.index',
-                    'perguruan_tinggi.create',
-                    'perguruan_tinggi.edit',
-                ); // isi nama semua route perguruan_tinggi
+                    'kode_bagian.index',
+                    'kode_bagian.create',
+                    'kode_bagian.edit',
+                ); // isi nama semua route kode_bagian
 
                 $kode_jabatan = array(
-                    'perguruan_tinggi.index',
-                    'perguruan_tinggi.create',
-                    'perguruan_tinggi.edit',
-                ); // isi nama semua route perguruan_tinggi
+                    'kode_jabatan.index',
+                    'kode_jabatan.create',
+                    'kode_jabatan.edit',
+                ); // isi nama semua route kode_jabatan
 
                 $agama = array(
                     'perguruan_tinggi.index',
@@ -453,7 +453,7 @@
                                         </a>
                                     </li>
                                     <li class="kt-menu__item kt-menu__item{{ set_active_submenu($kode_bagian) }}" aria-haspopup="true">
-                                        <a href="{{route('perjalanan_dinas.rekap')}}" class="kt-menu__link ">
+                                        <a href="{{route('kode_bagian.index')}}" class="kt-menu__link ">
                                             <i class="kt-menu__link-bullet kt-menu__link-bullet--line">
                                                 <span></span>
                                             </i>
@@ -461,7 +461,7 @@
                                         </a>
                                     </li>
                                     <li class="kt-menu__item kt-menu__item{{ set_active_submenu($kode_jabatan) }}" aria-haspopup="true">
-                                        <a href="{{route('perjalanan_dinas.rekap')}}" class="kt-menu__link ">
+                                        <a href="{{route('kode_jabatan.index')}}" class="kt-menu__link ">
                                             <i class="kt-menu__link-bullet kt-menu__link-bullet--line">
                                                 <span></span>
                                             </i>
