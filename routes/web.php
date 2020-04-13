@@ -271,6 +271,27 @@ Route::group(['middleware'=> ['auth','checkRole:1']], function () {
         Route::get('tunjangan_golongan/edit/{id}', 'TunjanganGolonganController@edit')->name('tunjangan_golongan.edit');
         Route::post('tunjangan_golongan/update', 'TunjanganGolonganController@update')->name('tunjangan_golongan.update');
         Route::delete('tunjangan_golongan/delete', 'TunjanganGolonganController@delete')->name('tunjangan_golongan.delete');
+        //jamsostek
+        Route::get('jamsostek', 'JamsostekController@index')->name('jamsostek.index');
+        Route::get('jamsostek/index_json', 'JamsostekController@indexJson')->name('jamsostek.index.json');
+        Route::get('jamsostek/create', 'JamsostekController@create')->name('jamsostek.create');
+        Route::post('jamsostek/cek_golongan/json', 'JamsostekController@cekGolonganJson')->name('jamsostek.golongan.json');
+        Route::post('jamsostek/store', 'JamsostekController@store')->name('jamsostek.store');
+        Route::get('jamsostek/edit/{id}', 'JamsostekController@edit')->name('jamsostek.edit');
+        Route::post('jamsostek/update', 'JamsostekController@update')->name('jamsostek.update');
+        Route::delete('jamsostek/delete', 'JamsostekController@delete')->name('jamsostek.delete');
+        //pensiun
+        Route::get('pensiun', 'PensiunController@index')->name('pensiun.index');
+        Route::get('pensiun/index_json', 'PensiunController@indexJson')->name('pensiun.index.json');
+        Route::get('pensiun/create', 'PensiunController@create')->name('pensiun.create');
+        Route::post('pensiun/cek_golongan/json', 'PensiunController@cekGolonganJson')->name('pensiun.golongan.json');
+        Route::post('pensiun/store', 'PensiunController@store')->name('pensiun.store');
+        Route::get('pensiun/edit/{id}', 'PensiunController@edit')->name('pensiun.edit');
+        Route::post('pensiun/update', 'PensiunController@update')->name('pensiun.update');
+        Route::delete('pensiun/delete', 'PensiunController@delete')->name('pensiun.delete');
+
+        
+
         //proses report sdm payroll
         Route::get('report_sdm_payroll', 'ReportSdmPayrollController@index')->name('report_sdm_payroll.index');
         Route::get('report_sdm_payroll/create', 'ReportSdmPayrollController@create')->name('report_sdm_payroll.create');
