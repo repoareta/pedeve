@@ -247,6 +247,14 @@ Route::group(['middleware'=> ['auth','checkRole:1']], function () {
         Route::get('potongan_otomatis/edit/{bulan}/{tahun}/{arrd}/{nopek}', 'PotonganOtomatisController@edit')->name('potongan_otomatis.edit');
         Route::post('potongan_otomatis/update', 'PotonganOtomatisController@update')->name('potongan_otomatis.update');
         Route::delete('potongan_otomatis/delete', 'PotonganOtomatisController@delete')->name('potongan_otomatis.delete');
+        //potongan insentif
+        Route::get('potongan_insentif', 'PotonganInsentifController@index')->name('potongan_insentif.index');
+        Route::post('potongan_insentif/search', 'PotonganInsentifController@searchIndex')->name('potongan_insentif.search.index');
+        Route::get('potongan_insentif/create', 'PotonganInsentifController@create')->name('potongan_insentif.create');
+        Route::post('potongan_insentif/store', 'PotonganInsentifController@store')->name('potongan_insentif.store');
+        Route::get('potongan_insentif/edit/{bulan}/{tahun}/{nopek}', 'PotonganInsentifController@edit')->name('potongan_insentif.edit');
+        Route::post('potongan_insentif/update', 'PotonganInsentifController@update')->name('potongan_insentif.update');
+        Route::delete('potongan_insentif/delete', 'PotonganInsentifController@delete')->name('potongan_insentif.delete');
        
         //honor komite
         Route::get('honor_komite', 'HonorKomiteController@index')->name('honor_komite.index');

@@ -150,6 +150,12 @@
                     'potongan_otomatis.create',
                     'potongan_otomatis.edit'
                 ); // isi nama semua route potongan otomatis gajian
+                $potongan_insentif = array(
+                    'potongan_insentif.index',
+                    'potongan_insentif.search.index',
+                    'potongan_insentif.create',
+                    'potongan_insentif.edit'
+                ); // isi nama semua route potongan insentif
                 $honor_komite = array(
                     'honor_komite.index',
                     'honor_komite.search.index',
@@ -166,6 +172,7 @@
                     $koreksi_gaji,
                     $honor_komite,
                     $potongan_manual,
+                    $potongan_insentif,
                     $potongan_otomatis
                 ); //isi nama submenu
                 $lembur = array(
@@ -521,6 +528,14 @@
                                                 <span></span>
                                             </i>
                                             <span class="kt-menu__link-text">Potongan Otomatis</span>
+                                        </a>
+                                    </li>
+                                    <li class="kt-menu__item kt-menu__item{{ set_active_submenu($potongan_insentif) }}" aria-haspopup="true">
+                                        <a href="{{route('potongan_insentif.index')}}" class="kt-menu__link ">
+                                            <i class="kt-menu__link-bullet kt-menu__link-bullet--line">
+                                                <span></span>
+                                            </i>
+                                            <span class="kt-menu__link-text">Potongan Insentif</span>
                                         </a>
                                     </li>
                                     <li class="kt-menu__item kt-menu__item{{ set_active_submenu($honor_komite) }}" aria-haspopup="true">
