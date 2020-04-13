@@ -95,11 +95,44 @@
                     $report_umum_menu
                 ); // array merge semua submenu
 
-                $master_data = array(
-                    'tabel_data_master.index',
-                    'tabel_data_master.create',
-                    'tabel_data_master.edit'
-                ); // isi nama semua route tabel data master
+                $provinsi = array(
+                    'provinsi.index',
+                    'provinsi.create',
+                    'provinsi.edit'
+                ); // isi nama semua route provinsi
+
+                $perguruan_tinggi = array(
+                    'perguruan_tinggi.index',
+                    'perguruan_tinggi.create',
+                    'perguruan_tinggi.edit',
+                ); // isi nama semua route perguruan_tinggi
+
+                $kode_bagian = array(
+                    'perguruan_tinggi.index',
+                    'perguruan_tinggi.create',
+                    'perguruan_tinggi.edit',
+                ); // isi nama semua route perguruan_tinggi
+
+                $kode_jabatan = array(
+                    'perguruan_tinggi.index',
+                    'perguruan_tinggi.create',
+                    'perguruan_tinggi.edit',
+                ); // isi nama semua route perguruan_tinggi
+
+                $agama = array(
+                    'perguruan_tinggi.index',
+                    'perguruan_tinggi.create',
+                    'perguruan_tinggi.edit',
+                ); // isi nama semua route perguruan_tinggi
+
+                $master_data_menu = array_merge(
+                    $provinsi, 
+                    $perguruan_tinggi, 
+                    $kode_bagian, 
+                    $kode_jabatan, 
+                    $agama
+                );
+
                 $master_pekerja = array(
                     'master_pekerja.index',
                     'master_pekerja.create',
@@ -193,7 +226,7 @@
 
                 //menu sdm & Payroll
                 $sdm_payroll = array_merge(
-                    $master_data,
+                    $master_data_menu,
                     $master_pekerja,
                     $potongan_koreksi_gaji,
                     $lembur,
@@ -297,6 +330,7 @@
                                 </span>
                             </a>
                         </li>
+
                         <li class="kt-menu__item  kt-menu__item{{ set_active_submenu($anggaran) }}" aria-haspopup="true">
                             <a href="{{ route('anggaran.index') }}" class="kt-menu__link ">
                                 <i class="kt-menu__link-bullet kt-menu__link-bullet--dot">
@@ -307,6 +341,7 @@
                                 </span>
                             </a>
                         </li>
+
                         <li class="kt-menu__item kt-menu__item--submenu {{ set_active($report_umum_menu) }}" aria-haspopup="true" data-ktmenu-submenu-toggle="hover">
                             <a href="javascript:;" class="kt-menu__link kt-menu__toggle">
                                 <i class="kt-menu__link-bullet kt-menu__link-bullet--dot">
@@ -376,7 +411,7 @@
                                 </span>
                             </span>
                         </li>
-                        <li class="kt-menu__item kt-menu__item{{ set_active_submenu($master_data) }}" aria-haspopup="true">
+                        <li class="kt-menu__item kt-menu__item--submenu {{ set_active($master_data_menu) }}" aria-haspopup="true" data-ktmenu-submenu-toggle="hover">
                             <a href="javascript:;" class="kt-menu__link kt-menu__toggle">
                                 <i class="kt-menu__link-bullet kt-menu__link-bullet--dot">
                                     <span></span>
@@ -386,23 +421,23 @@
                             </a>
                             <div class="kt-menu__submenu "><span class="kt-menu__arrow"></span>
                                 <ul class="kt-menu__subnav">
-                                    <li class="kt-menu__item kt-menu__item{{ set_active_submenu($rekap_spd) }}" aria-haspopup="true">
-                                        <a href="{{ route('perjalanan_dinas.rekap') }}" class="kt-menu__link ">
+                                    <li class="kt-menu__item kt-menu__item{{ set_active_submenu($provinsi) }}" aria-haspopup="true">
+                                        <a href="{{ route('provinsi.index') }}" class="kt-menu__link ">
                                             <i class="kt-menu__link-bullet kt-menu__link-bullet--line">
                                                 <span></span>
                                             </i>
                                             <span class="kt-menu__link-text">Provinsi</span>
                                         </a>
                                     </li>
-                                    <li class="kt-menu__item " aria-haspopup="true">
-                                        <a href="{{route('perjalanan_dinas.rekap')}}" class="kt-menu__link ">
+                                    <li class="kt-menu__item kt-menu__item{{ set_active_submenu($perguruan_tinggi) }}" aria-haspopup="true">
+                                        <a href="{{route('perguruan_tinggi.index')}}" class="kt-menu__link ">
                                             <i class="kt-menu__link-bullet kt-menu__link-bullet--line">
                                                 <span></span>
                                             </i>
                                             <span class="kt-menu__link-text">Perguruan Tinggi</span>
                                         </a>
                                     </li>
-                                    <li class="kt-menu__item " aria-haspopup="true">
+                                    <li class="kt-menu__item kt-menu__item{{ set_active_submenu($kode_bagian) }}" aria-haspopup="true">
                                         <a href="{{route('perjalanan_dinas.rekap')}}" class="kt-menu__link ">
                                             <i class="kt-menu__link-bullet kt-menu__link-bullet--line">
                                                 <span></span>
@@ -410,7 +445,7 @@
                                             <span class="kt-menu__link-text">Kode Bagian</span>
                                         </a>
                                     </li>
-                                    <li class="kt-menu__item " aria-haspopup="true">
+                                    <li class="kt-menu__item kt-menu__item{{ set_active_submenu($kode_jabatan) }}" aria-haspopup="true">
                                         <a href="{{route('perjalanan_dinas.rekap')}}" class="kt-menu__link ">
                                             <i class="kt-menu__link-bullet kt-menu__link-bullet--line">
                                                 <span></span>
@@ -418,12 +453,12 @@
                                             <span class="kt-menu__link-text">Kode Jabatan</span>
                                         </a>
                                     </li>
-                                    <li class="kt-menu__item " aria-haspopup="true">
+                                    <li class="kt-menu__item kt-menu__item{{ set_active_submenu($agama) }}" aria-haspopup="true">
                                         <a href="{{route('perjalanan_dinas.rekap')}}" class="kt-menu__link ">
                                             <i class="kt-menu__link-bullet kt-menu__link-bullet--line">
                                                 <span></span>
                                             </i>
-                                            <span class="kt-menu__link-text">Kode Agama</span>
+                                            <span class="kt-menu__link-text">Agama</span>
                                         </a>
                                     </li>
                                 </ul>

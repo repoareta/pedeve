@@ -173,9 +173,29 @@ Route::group(['middleware'=> ['auth','checkRole:1']], function () {
     //MODUL SDM & Payroll
     Route::prefix('sdm')->group(function () {
         // Tabel data Master
-        Route::get('tabel_data_master', 'TabelDataMasterController@index')->name('tabel_data_master.index');
-        Route::get('tabel_data_master/create', 'TabelDataMasterController@create')->name('tabel_data_master.create');
-        Route::get('tabel_data_master/edit', 'TabelDataMasterController@edit')->name('tabel_data_master.edit');
+        // Provinsi START
+        Route::get('provinsi', 'ProvinsiController@index')->name('provinsi.index');
+        Route::get('provinsi/index_json', 'ProvinsiController@indexJson')->name('provinsi.index.json');
+        Route::get('provinsi/create', 'ProvinsiController@create')->name('provinsi.create');
+        Route::post('provinsi/store', 'ProvinsiController@store')->name('provinsi.store');
+        Route::get('provinsi/edit/{provinsi}', 'ProvinsiController@edit')->name('provinsi.edit');
+        Route::post('provinsi/update/{provinsi}', 'ProvinsiController@update')->name('provinsi.update');
+        Route::delete('provinsi/delete', 'ProvinsiController@delete')->name('provinsi.delete');
+        // Provinsi END
+
+        // Perguruan Tinggi START
+        Route::get('perguruan_tinggi', 'PerguruanTinggiController@index')->name('perguruan_tinggi.index');
+        Route::get('perguruan_tinggi/index_json', 'PerguruanTinggiController@indexJson')->name('perguruan_tinggi.index.json');
+        Route::get('perguruan_tinggi/create', 'PerguruanTinggiController@create')->name('perguruan_tinggi.create');
+        Route::post('perguruan_tinggi/store', 'PerguruanTinggiController@store')->name('perguruan_tinggi.store');
+        Route::get('perguruan_tinggi/edit/{perguruan_tinggi}', 'PerguruanTinggiController@edit')->name('perguruan_tinggi.edit');
+        Route::post('perguruan_tinggi/update/{perguruan_tinggi}', 'PerguruanTinggiController@update')->name('perguruan_tinggi.update');
+        Route::delete('perguruan_tinggi/delete', 'PerguruanTinggiController@delete')->name('perguruan_tinggi.delete');
+        // Perguruan Tinggi END
+        // Kode Jabatan
+        // Kode Bagian
+        // Agama
+
         // master pekerja
         Route::get('master_pekerja', 'MasterPekerjaController@index')->name('master_pekerja.index');
         Route::get('master_pekerja/create', 'MasterPekerjaController@create')->name('master_pekerja.create');
