@@ -3,9 +3,12 @@
 namespace App\Models;
 
 use Illuminate\Database\Eloquent\Model;
+use App\Traits\CompositeKey;
 
 class KodeJabatan extends Model
 {
+    use CompositeKey;
+    
     protected $table = "sdm_tbl_kdjab";
     protected $primaryKey = ['kdbag', 'kdjab'];
     protected $keyType = 'string';

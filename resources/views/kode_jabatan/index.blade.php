@@ -101,10 +101,14 @@
 			e.preventDefault();
 			if($('input[type=radio]').is(':checked')) { 
 				$("input[type=radio]:checked").each(function() {
-					var id = $(this).val().split("/").join("-");
-					var url = '{{ route("perguruan_tinggi.edit", ":kode") }}';
+					var kode_bagian = $(this).val().split("-")[0];
+					var kode_jabatan = $(this).val().split("-")[1];
+					
+					var url = '{{ route("kode_jabatan.edit", [":kode_bagian", ":kode_jabatan"]) }}';
 					// go to page edit
-					window.location.href = url.replace(':kode',id);
+					window.location.href = url
+					.replace(':kode_bagian', kode_bagian)
+					.replace(':kode_jabatan', kode_jabatan);
 				});
 			} else {
 				swalAlertInit('ubah');
@@ -115,7 +119,8 @@
 			e.preventDefault();
 			if($('input[type=radio]').is(':checked')) { 
 				$("input[type=radio]:checked").each(function() {
-					var id = $(this).val();
+					var kode_bagian = $(this).val().split("-")[0];
+					var kode_jabatan = $(this).val().split("-")[1];
 					// delete stuff
 					const swalWithBootstrapButtons = Swal.mixin({
 					customClass: {
@@ -127,7 +132,7 @@
 
 					swalWithBootstrapButtons.fire({
 						title: "Data yang akan dihapus?",
-						text: "Kode Perguruan Tinggi : " + id,
+						text: "Kode Jabatan : " + kode_jabatan,
 						type: 'warning',
 						showCancelButton: true,
 						reverseButtons: true,
@@ -137,17 +142,18 @@
 					.then((result) => {
 						if (result.value) {
 							$.ajax({
-								url: "{{ route('perguruan_tinggi.delete') }}",
+								url: "{{ route('kode_jabatan.delete') }}",
 								type: 'DELETE',
 								dataType: 'json',
 								data: {
-									"id": id,
+									"kode_bagian": kode_bagian,
+									"kode_jabatan": kode_jabatan,
 									"_token": "{{ csrf_token() }}",
 								},
 								success: function () {
 									Swal.fire({
 										type  : 'success',
-										title : 'Hapus Kode Perguruan Tinggi: ' + id,
+										title : 'Hapus Kode Jabatan: ' + kode_jabatan,
 										text  : 'Berhasil',
 										timer : 2000
 									}).then(function() {

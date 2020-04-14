@@ -13,7 +13,7 @@ class KodeJabatanUpdate extends FormRequest
      */
     public function authorize()
     {
-        return false;
+        return true;
     }
 
     /**
@@ -24,7 +24,11 @@ class KodeJabatanUpdate extends FormRequest
     public function rules()
     {
         return [
-            //
+            'kode_bagian' => 'required',
+            'kode_jabatan' => 'required',
+            'nama' => 'required',
+            'golongan' => 'required',
+            'tunjangan' => 'required',
         ];
     }
 }
