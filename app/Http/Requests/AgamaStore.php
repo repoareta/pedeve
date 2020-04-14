@@ -24,7 +24,7 @@ class AgamaStore extends FormRequest
     public function rules()
     {
         return [
-            'kode' => 'required|alpha_num|size:5|unique:App\Models\Agama,kode',
+            'kode' => 'required|alpha_num|size:2|unique:App\Models\Agama,kode',
             'nama' => 'required|unique:App\Models\Agama,nama',
         ];
     }

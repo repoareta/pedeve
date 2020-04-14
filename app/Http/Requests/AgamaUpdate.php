@@ -24,7 +24,7 @@ class AgamaUpdate extends FormRequest
     public function rules()
     {
         return [
-            'kode' => "required|alpha_num|size:5|unique:App\Models\KodeBagian,kode,{$this->agama->kode},kode",
+            'kode' => "required|alpha_num|size:2|unique:App\Models\KodeBagian,kode,{$this->agama->kode},kode",
             'nama' => "required|unique:App\Models\KodeBagian,nama,{$this->agama->nama},nama",
         ];
     }

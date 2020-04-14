@@ -46,14 +46,14 @@
 				<form class="kt-form kt-form--label-right" id="formKodeBagian" action="{{ route('kode_bagian.update', ['kode_bagian' => $kode_bagian->kode]) }}" method="POST">
 					@csrf
 					<div class="form-group row">
-						<label for="kode" class="col-2 col-form-label">Kode Perguruan Tinggi</label>
+						<label for="kode" class="col-2 col-form-label">Kode Bagian</label>
 						<div class="col-10">
 							<input class="form-control" type="text" name="kode" id="kode" value="{{ $kode_bagian->kode }}">
 						</div>
 					</div>
 
 					<div class="form-group row">
-						<label for="nama" class="col-2 col-form-label">Nama Perguruan Tinggi</label>
+						<label for="nama" class="col-2 col-form-label">Nama Bagian</label>
 						<div class="col-10">
 							<input class="form-control" type="text" name="nama" id="nama" value="{{ $kode_bagian->nama }}">
 						</div>
