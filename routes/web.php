@@ -174,43 +174,59 @@ Route::group(['middleware'=> ['auth','checkRole:1']], function () {
     Route::prefix('sdm')->group(function () {
         // Tabel data Master
         // Provinsi START
-        Route::get('provinsi', 'ProvinsiController@index')->name('provinsi.index');
-        Route::get('provinsi/index_json', 'ProvinsiController@indexJson')->name('provinsi.index.json');
-        Route::get('provinsi/create', 'ProvinsiController@create')->name('provinsi.create');
-        Route::post('provinsi/store', 'ProvinsiController@store')->name('provinsi.store');
-        Route::get('provinsi/edit/{provinsi}', 'ProvinsiController@edit')->name('provinsi.edit');
-        Route::post('provinsi/update/{provinsi}', 'ProvinsiController@update')->name('provinsi.update');
-        Route::delete('provinsi/delete', 'ProvinsiController@delete')->name('provinsi.delete');
+        // Route assigned name "provinsi.index"...
+        Route::name('provinsi.')->group(function () {
+            Route::get('provinsi', 'ProvinsiController@index')->name('index');
+            Route::get('provinsi/index_json', 'ProvinsiController@indexJson')->name('index.json');
+            Route::get('provinsi/create', 'ProvinsiController@create')->name('create');
+            Route::post('provinsi/store', 'ProvinsiController@store')->name('store');
+            Route::get('provinsi/edit/{provinsi}', 'ProvinsiController@edit')->name('edit');
+            Route::post('provinsi/update/{provinsi}', 'ProvinsiController@update')->name('update');
+            Route::delete('provinsi/delete', 'ProvinsiController@delete')->name('delete');
+        });
+        
         // Provinsi END
 
         // Perguruan Tinggi START
-        Route::get('perguruan_tinggi', 'PerguruanTinggiController@index')->name('perguruan_tinggi.index');
-        Route::get('perguruan_tinggi/index_json', 'PerguruanTinggiController@indexJson')->name('perguruan_tinggi.index.json');
-        Route::get('perguruan_tinggi/create', 'PerguruanTinggiController@create')->name('perguruan_tinggi.create');
-        Route::post('perguruan_tinggi/store', 'PerguruanTinggiController@store')->name('perguruan_tinggi.store');
-        Route::get('perguruan_tinggi/edit/{perguruan_tinggi}', 'PerguruanTinggiController@edit')->name('perguruan_tinggi.edit');
-        Route::post('perguruan_tinggi/update/{perguruan_tinggi}', 'PerguruanTinggiController@update')->name('perguruan_tinggi.update');
-        Route::delete('perguruan_tinggi/delete', 'PerguruanTinggiController@delete')->name('perguruan_tinggi.delete');
+        // Route assigned name "perguruan_tinggi.index"...
+        Route::name('perguruan_tinggi.')->group(function () {
+            Route::get('perguruan_tinggi', 'PerguruanTinggiController@index')->name('index');
+            Route::get('perguruan_tinggi/index_json', 'PerguruanTinggiController@indexJson')->name('index.json');
+            Route::get('perguruan_tinggi/create', 'PerguruanTinggiController@create')->name('create');
+            Route::post('perguruan_tinggi/store', 'PerguruanTinggiController@store')->name('store');
+            Route::get('perguruan_tinggi/edit/{perguruan_tinggi}', 'PerguruanTinggiController@edit')->name('edit');
+            Route::post('perguruan_tinggi/update/{perguruan_tinggi}', 'PerguruanTinggiController@update')->name('update');
+            Route::delete('perguruan_tinggi/delete', 'PerguruanTinggiController@delete')->name('delete');
+        });
+        
         // Perguruan Tinggi END
 
         // Kode Bagian START
-        Route::get('kode_bagian', 'KodeBagianController@index')->name('kode_bagian.index');
-        Route::get('kode_bagian/index_json', 'KodeBagianController@indexJson')->name('kode_bagian.index.json');
-        Route::get('kode_bagian/create', 'KodeBagianController@create')->name('kode_bagian.create');
-        Route::post('kode_bagian/store', 'KodeBagianController@store')->name('kode_bagian.store');
-        Route::get('kode_bagian/edit/{kode_bagian}', 'KodeBagianController@edit')->name('kode_bagian.edit');
-        Route::post('kode_bagian/update/{kode_bagian}', 'KodeBagianController@update')->name('kode_bagian.update');
-        Route::delete('kode_bagian/delete', 'KodeBagianController@delete')->name('kode_bagian.delete');
+        // Route assigned name "kode_bagian.index"...
+        Route::name('kode_bagian.')->group(function () {
+            Route::get('kode_bagian', 'KodeBagianController@index')->name('index');
+            Route::get('kode_bagian/index_json', 'KodeBagianController@indexJson')->name('index.json');
+            Route::get('kode_bagian/create', 'KodeBagianController@create')->name('create');
+            Route::post('kode_bagian/store', 'KodeBagianController@store')->name('store');
+            Route::get('kode_bagian/edit/{kode_bagian}', 'KodeBagianController@edit')->name('edit');
+            Route::post('kode_bagian/update/{kode_bagian}', 'KodeBagianController@update')->name('update');
+            Route::delete('kode_bagian/delete', 'KodeBagianController@delete')->name('delete');
+        });
+        
         // Kode Bagian END
 
         // Kode Jabatan START
-        Route::get('kode_jabatan', 'KodeJabatanController@index')->name('kode_jabatan.index');
-        Route::get('kode_jabatan/index_json', 'KodeJabatanController@indexJson')->name('kode_jabatan.index.json');
-        Route::get('kode_jabatan/create', 'KodeJabatanController@create')->name('kode_jabatan.create');
-        Route::post('kode_jabatan/store', 'KodeJabatanController@store')->name('kode_jabatan.store');
-        Route::get('kode_jabatan/edit/{kode_jabatan}', 'KodeJabatanController@edit')->name('kode_jabatan.edit');
-        Route::post('kode_jabatan/update/{kode_jabatan}', 'KodeJabatanController@update')->name('kode_jabatan.update');
-        Route::delete('kode_jabatan/delete', 'KodeJabatanController@delete')->name('kode_jabatan.delete');
+        // Route assigned name "kode_jabatan.index"...
+        Route::name('kode_jabatan.')->group(function () {
+            Route::get('kode_jabatan', 'KodeJabatanController@index')->name('index');
+            Route::get('kode_jabatan/index_json', 'KodeJabatanController@indexJson')->name('index.json');
+            Route::get('kode_jabatan/create', 'KodeJabatanController@create')->name('create');
+            Route::post('kode_jabatan/store', 'KodeJabatanController@store')->name('store');
+            Route::get('kode_jabatan/edit/{kode_jabatan}', 'KodeJabatanController@edit')->name('edit');
+            Route::post('kode_jabatan/update/{kode_jabatan}', 'KodeJabatanController@update')->name('update');
+            Route::delete('kode_jabatan/delete', 'KodeJabatanController@delete')->name('delete');
+        });
+        
         // Kode Jabatan END
 
         
