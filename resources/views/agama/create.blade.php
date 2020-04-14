@@ -16,10 +16,10 @@
 				</a>
 				<span class="kt-subheader__breadcrumbs-separator"></span>
 				<a href="" class="kt-subheader__breadcrumbs-link">
-					Kode Bagian 
+					Agama
 				</a>
 				<span class="kt-subheader__breadcrumbs-separator"></span>
-				<span class="kt-subheader__breadcrumbs-link kt-subheader__breadcrumbs-link--active">Ubah</span>
+				<span class="kt-subheader__breadcrumbs-link kt-subheader__breadcrumbs-link--active">Tambah</span>
 			</div>
 		</div>
 	</div>
@@ -34,8 +34,8 @@
 					<i class="kt-font-brand flaticon2-plus-1"></i>
 				</span>
 				<h3 class="kt-portlet__head-title">
-					Ubah Kode Bagian
-				</h3>			
+					Tambah Agama
+				</h3>
 			</div>
 			<div class="kt-portlet__head-toolbar">
 				<div class="kt-portlet__head-wrapper">
@@ -43,19 +43,19 @@
 			</div>
 		</div>
 			<div class="kt-portlet__body">
-				<form class="kt-form kt-form--label-right" id="formKodeBagian" action="{{ route('kode_bagian.update', ['kode_bagian' => $kode_bagian->kode]) }}" method="POST">
+				<form class="kt-form kt-form--label-right" id="formAgama" action="{{ route('agama.store') }}" method="POST">
 					@csrf
 					<div class="form-group row">
-						<label for="kode" class="col-2 col-form-label">Kode Bagian</label>
+						<label for="kode" class="col-2 col-form-label">Kode Agama</label>
 						<div class="col-10">
-							<input class="form-control" type="text" name="kode" id="kode" value="{{ $kode_bagian->kode }}">
+							<input class="form-control" type="text" name="kode" id="kode">
 						</div>
 					</div>
 
 					<div class="form-group row">
-						<label for="nama" class="col-2 col-form-label">Nama Bagian</label>
+						<label for="nama" class="col-2 col-form-label">Nama Agama</label>
 						<div class="col-10">
-							<input class="form-control" type="text" name="nama" id="nama" value="{{ $kode_bagian->nama }}">
+							<input class="form-control" type="text" name="nama" id="nama">
 						</div>
 					</div>
 
@@ -78,5 +78,5 @@
 @endsection
 
 @section('scripts')
-{!! JsValidator::formRequest('App\Http\Requests\KodeBagianUpdate', '#formKodeBagian') !!}
+{!! JsValidator::formRequest('App\Http\Requests\AgamaStore', '#formAgama') !!}
 @endsection
