@@ -150,6 +150,12 @@
                     'potongan_otomatis.create',
                     'potongan_otomatis.edit'
                 ); // isi nama semua route potongan otomatis gajian
+                $potongan_insentif = array(
+                    'potongan_insentif.index',
+                    'potongan_insentif.search.index',
+                    'potongan_insentif.create',
+                    'potongan_insentif.edit'
+                ); // isi nama semua route potongan insentif
                 $honor_komite = array(
                     'honor_komite.index',
                     'honor_komite.search.index',
@@ -166,6 +172,7 @@
                     $koreksi_gaji,
                     $honor_komite,
                     $potongan_manual,
+                    $potongan_insentif,
                     $potongan_otomatis
                 ); //isi nama submenu
                 $lembur = array(
@@ -208,6 +215,20 @@
                     $proses_insentif,
                     $tunjangan_golongan
                 ); //isi nama Subdomain proses gaji sdm
+                $jamsostek = array(
+                    'jamsostek.index',
+                    'jamsostek.create',
+                    'jamsostek.edit',
+                );
+                $pensiun = array(
+                    'pensiun.index',
+                    'pensiun.create',
+                    'pensiun.edit',
+                );
+                $sdm_jamsostek_pensiun = array_merge(
+                    $jamsostek,
+                    $pensiun
+                ); //isi nama Subdomain jamsostek pensiun
                 $report_sdm_payroll = array(
                     'report_sdm_payroll.index',
                     'report_sdm_payroll.create',
@@ -237,7 +258,8 @@
                     $proses_insentif,
                     $report_sdm_payroll,
                     $absensi_karyawan,
-                    $implementasi_gcg
+                    $implementasi_gcg,
+                    $sdm_jamsostek_pensiun
                 ); // array merge semua submenu
             @endphp
 
@@ -508,6 +530,14 @@
                                             <span class="kt-menu__link-text">Potongan Otomatis</span>
                                         </a>
                                     </li>
+                                    <li class="kt-menu__item kt-menu__item{{ set_active_submenu($potongan_insentif) }}" aria-haspopup="true">
+                                        <a href="{{route('potongan_insentif.index')}}" class="kt-menu__link ">
+                                            <i class="kt-menu__link-bullet kt-menu__link-bullet--line">
+                                                <span></span>
+                                            </i>
+                                            <span class="kt-menu__link-text">Potongan Insentif</span>
+                                        </a>
+                                    </li>
                                     <li class="kt-menu__item kt-menu__item{{ set_active_submenu($honor_komite) }}" aria-haspopup="true">
                                         <a href="{{route('honor_komite.index')}}" class="kt-menu__link ">
                                             <i class="kt-menu__link-bullet kt-menu__link-bullet--line">
@@ -579,6 +609,35 @@
                                                 <span></span>
                                             </i>
                                             <span class="kt-menu__link-text">Tunjangan Pergolongan</span>
+                                        </a>
+                                    </li>
+                                </ul>
+                            </div>
+                        </li>
+                        <li class="kt-menu__item kt-menu__item--submenu {{  set_active($sdm_jamsostek_pensiun) }}" aria-haspopup="true" data-ktmenu-submenu-toggle="hover">
+                            <a href="javascript:;" class="kt-menu__link kt-menu__toggle">
+                                <i class="kt-menu__link-bullet kt-menu__link-bullet--dot">
+                                    <span></span>
+                                </i>
+                                <span class="kt-menu__link-text">Jamsostek & Pensiun</span>
+                                <i class="kt-menu__ver-arrow la la-angle-right"></i>
+                            </a>
+                            <div class="kt-menu__submenu "><span class="kt-menu__arrow"></span>
+                                <ul class="kt-menu__subnav">
+                                    <li class="kt-menu__item kt-menu__item{{ set_active_submenu($jamsostek) }}" aria-haspopup="true">
+                                        <a href="{{ route('jamsostek.index') }}" class="kt-menu__link ">
+                                            <i class="kt-menu__link-bullet kt-menu__link-bullet--line">
+                                                <span></span>
+                                            </i>
+                                            <span class="kt-menu__link-text">Jamsostek</span>
+                                        </a>
+                                    </li>
+                                    <li class="kt-menu__item kt-menu__item{{ set_active_submenu($pensiun) }}" aria-haspopup="true">
+                                        <a href="{{route('pensiun.index')}}" class="kt-menu__link ">
+                                            <i class="kt-menu__link-bullet kt-menu__link-bullet--line">
+                                                <span></span>
+                                            </i>
+                                            <span class="kt-menu__link-text">Pensiun</span>
                                         </a>
                                     </li>
                                 </ul>

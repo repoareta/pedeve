@@ -154,8 +154,8 @@
 						});
 				}else{
 					Swal.fire({
-						type  : 'error',
-						title : 'Data Potongan Manual Yang Diinput Sudah Ada.',
+						type  : 'info',
+						title : 'Data Potongan Koreksi Gaji Yang Diinput Sudah Ada.',
 						text  : 'Failed',
 					});
 				}

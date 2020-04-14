@@ -167,7 +167,7 @@ $('#form-create').submit(function(){
 			});
 		}else{
 			Swal.fire({
-				type  : 'error',
+				type  : 'info',
 				title : 'Data Potongan Otomatis Yang Diinput Sudah Ada.',
 				text  : 'Failed',
 			});

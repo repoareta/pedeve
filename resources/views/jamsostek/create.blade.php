@@ -6,7 +6,7 @@
 	<div class="kt-container  kt-container--fluid ">
 		<div class="kt-subheader__main">
 			<h3 class="kt-subheader__title">
-				Tunjangan Per Golongan </h3>
+				Jamsostek </h3>
 			<span class="kt-subheader__separator kt-hidden"></span>
 			<div class="kt-subheader__breadcrumbs">
 				<a href="#" class="kt-subheader__breadcrumbs-home"><i class="flaticon2-shelter"></i></a>
@@ -15,7 +15,7 @@
 					Sdm & Payroll </a>
 				<span class="kt-subheader__breadcrumbs-separator"></span>
 				<a href="" class="kt-subheader__breadcrumbs-link">
-					Tunjangan Per Golongan </a>
+					Jamsostek </a>
 				<span class="kt-subheader__breadcrumbs-separator"></span>
 				<span class="kt-subheader__breadcrumbs-link kt-subheader__breadcrumbs-link--active">Tambah</span>
 			</div>
@@ -32,7 +32,7 @@
 					<i class="kt-font-brand flaticon2-plus-1"></i>
 				</span>
 				<h3 class="kt-portlet__head-title">
-					Tambah Tunjangan Per Golongan
+					Tambah Jamsostek
 				</h3>			
 			</div>
 			<div class="kt-portlet__head-toolbar">
@@ -49,29 +49,47 @@
 						<div class="alert alert-secondary" role="alert">
 							<div class="alert-text">
 								<h5 class="kt-portlet__head-title">
-									Header Tunjangan Per Golongan
+									Header Jamsostek
 								</h5>	
 							</div>
 						</div>
 						<div class="form-group row">
-							<label class="col-2 col-form-label">Golongan<span style="color:red;">*</span></label>
+							<label class="col-2 col-form-label">Pribadi<span style="color:red;">*</span></label>
 							<div class="col-4">
-								<input class="form-control" name="golongan" type="text" value="" id="golongan" required oninvalid="this.setCustomValidity('Golongan Harus Diisi..')" oninput="setCustomValidity('')" autocomplete='off'>
-								<small style="color: red; display: none;" id="att-kode-golongan">Golongan Sudah Ada.</small>
+								<input class="form-control" type="number"  required name="pribadi"  size="20" maxlength="20" value="" step="0.01"  pattern="^\d+(?:\.\d{1,2})?$" onblur="this.parentNode.parentNode.style.backgroundColor=/^\d+(?:\.\d{1,2})?$/.test(this.value)?'inherit':''" required oninvalid="this.setCustomValidity('Pribadi Harus Diisi..')" oninput="setCustomValidity('')" autocomplete='off'>
 							</div>
 						</div>
 						<div class="form-group row">
-							<label class="col-2 col-form-label">Nilai<span style="color:red;">*</span></label>
+							<label class="col-2 col-form-label">Accident<span style="color:red;">*</span></label>
 							<div class="col-4">
-								<input class="form-control" name="nilai" type="text" value="" id="nilai" required oninvalid="this.setCustomValidity('Nilai Harus Diisi..')" oninput="setCustomValidity('')" autocomplete='off' onkeypress="return hanyaAngka(event)">
+								<input class="form-control" name="accident" type="number" value="" size="20" maxlength="20" step="0.01"  pattern="^\d+(?:\.\d{1,2})?$" onblur="this.parentNode.parentNode.style.backgroundColor=/^\d+(?:\.\d{1,2})?$/.test(this.value)?'inherit':''" required oninvalid="this.setCustomValidity('Accident Harus Diisi..')" oninput="setCustomValidity('')" >
 							</div>
 						</div>
+						<div class="form-group row">
+							<label class="col-2 col-form-label">Pensiun<span style="color:red;">*</span></label>
+							<div class="col-4">
+								<input class="form-control" name="pensiun" type="number" value="" size="20" maxlength="20" step="0.01"  pattern="^\d+(?:\.\d{1,2})?$" onblur="this.parentNode.parentNode.style.backgroundColor=/^\d+(?:\.\d{1,2})?$/.test(this.value)?'inherit':''" required oninvalid="this.setCustomValidity('Pensiun Harus Diisi..')" oninput="setCustomValidity('')" >
+							</div>
+						</div>
+						<div class="form-group row">
+							<label class="col-2 col-form-label">Life<span style="color:red;">*</span></label>
+							<div class="col-4">
+								<input class="form-control" name="life" type="number" value="" size="20" maxlength="20" step="0.01"  pattern="^\d+(?:\.\d{1,2})?$" onblur="this.parentNode.parentNode.style.backgroundColor=/^\d+(?:\.\d{1,2})?$/.test(this.value)?'inherit':''" required oninvalid="this.setCustomValidity('Life Harus Diisi..')" oninput="setCustomValidity('')" >
+							</div>
+						</div>
+						<div class="form-group row">
+							<label class="col-2 col-form-label">Manulife<span style="color:red;">*</span></label>
+							<div class="col-4">
+								<input class="form-control" name="manulife" type="number" value="" size="20" maxlength="20" step="0.01"  pattern="^\d+(?:\.\d{1,2})?$" onblur="this.parentNode.parentNode.style.backgroundColor=/^\d+(?:\.\d{1,2})?$/.test(this.value)?'inherit':''" required oninvalid="this.setCustomValidity('Manulife Harus Diisi..')" oninput="setCustomValidity('')" >
+							</div>
+						</div>
+						
 						
 						<div class="kt-form__actions">
 							<div class="row">
 								<div class="col-2"></div>
 								<div class="col-10">
-									<a  href="{{route('tunjangan_golongan.index')}}" class="btn btn-warning"><i class="fa fa-reply" aria-hidden="true"></i>Cancel</a>
+									<a  href="{{route('jamsostek.index')}}" class="btn btn-warning"><i class="fa fa-reply" aria-hidden="true"></i>Cancel</a>
 									<button type="submit" id="btn-save" class="btn btn-brand"><i class="fa fa-check" aria-hidden="true"></i>Save</button>
 								</div>
 							</div>
@@ -91,7 +109,7 @@
 
 		$('#form-create').submit(function(){
 			$.ajax({
-				url  : "{{route('tunjangan_golongan.store')}}",
+				url  : "{{route('jamsostek.store')}}",
 				type : "POST",
 				data : $('#form-create').serialize(),
 				dataType : "JSON",
@@ -107,13 +125,13 @@
 						text  : 'Berhasil',
 						timer : 2000
 					}).then(function() {
-							window.location.replace("{{ route('tunjangan_golongan.index')}}");;
+							window.location.replace("{{ route('jamsostek.index')}}");;
 						});
 				}else{
 					Swal.fire({
 						type  : 'info',
-						title : 'Data Tunjangan Pergolongan Yang Diinput Sudah Ada.',
-						text  : 'Failed',
+						title : 'Hanya boleh ada satu data, entri dibatalkan.',
+						text  : 'Info',
 					});
 				}
 				}, 
@@ -123,38 +141,6 @@
 			});	
 			return false;
 		});
-
-		$('#golongan').keyup(function(){
-		var golongan = $('#golongan').val();
-		$.ajax({
-			url : "{{route('tunjangan_golongan.golongan.json')}}",
-			type : "POST",
-			dataType: 'json',
-			data : {golongan:golongan},
-			headers: {
-				'X-CSRF-Token': '{{ csrf_token() }}',
-				},
-			success : function(data){
-				console.log(data);
-				if (data == 1) {
-					document.getElementById('btn-save').disabled = true;
-					$('#att-kode-golongan').fadeIn();
-				} else {
-					document.getElementById('btn-save').disabled = false;
-					$('#att-kode-golongan').fadeOut();
-				}
-			},
-			error : function(){
-				alert("Ada kesalahan controller!");
-			}
-		})
-	});
-
-
-
-
-
-
 
     var KTBootstrapDatepicker = function () {
 
