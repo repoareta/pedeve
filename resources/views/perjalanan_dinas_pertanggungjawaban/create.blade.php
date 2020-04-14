@@ -117,7 +117,7 @@
 					<div class="form-group row">
 						<label for="jumlah" class="col-2 col-form-label">Jumlah</label>
 						<div class="col-10">
-							<input class="form-control" type="number" name="jumlah" id="jumlah">
+							<input class="form-control" type="number" name="jumlah" id="jumlah" value="0.00">
 						</div>
 					</div>
 
@@ -144,7 +144,7 @@
 				</h3>
 				
 				<div class="kt-portlet__head-actions" style="font-size: 2em;">
-					<span class="kt-font-success" id="openDetail" data-toggle="kt-tooltip" data-placement="top" title="Tambah Data">
+					<span class="kt-font-success pointer-link" id="openDetail" data-toggle="kt-tooltip" data-placement="top" title="Tambah Data">
 						<i class="fas fa-plus-circle"></i>
 					</span>
 	

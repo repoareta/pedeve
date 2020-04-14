@@ -138,5 +138,30 @@
             });
         }
     });
+
+    $('#no_panjar').select2().on('change', function() {
+        var id = $(this).val().split('/').join('-');
+        var url = '{{ route("perjalanan_dinas.show.json") }}';
+
+        $.ajax({
+            url: url,
+            type: "GET",
+            data: {
+                id: id,
+                _token:"{{ csrf_token() }}"		
+            },
+            success: function(response){
+                console.log(response);
+                // isi keterangan
+                $('#keterangan').val(response.keterangan);
+                // isi jumlah
+                const jumlah = parseFloat(response.jum_panjar).toFixed(2);
+                $('#jumlah').val(jumlah);
+            },
+            error: function () {
+                alert("Terjadi kesalahan, coba lagi nanti");
+            }
+        });
+    });
 </script>
 @yield("scripts")

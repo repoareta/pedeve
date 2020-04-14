@@ -70,22 +70,26 @@ Route::group(['middleware'=> ['auth','checkRole:1']], function () {
         // P UANG MUKA KERJA DETAIL END
         
         // PERJALANAN DINAS START
-        Route::get('perjalanan_dinas', 'PerjalananDinasController@index')->name('perjalanan_dinas.index');
-        Route::get('perjalanan_dinas/index_json', 'PerjalananDinasController@indexJson')->name('perjalanan_dinas.index.json');
-        Route::get('perjalanan_dinas/index_json_detail/{no_panjar}', 'PerjalananDinasController@indexJsonDetail')->name('perjalanan_dinas.index.json.detail');
-        Route::get('perjalanan_dinas/create', 'PerjalananDinasController@create')->name('perjalanan_dinas.create');
-        Route::post('perjalanan_dinas/store', 'PerjalananDinasController@store')->name('perjalanan_dinas.store');
-        Route::post('perjalanan_dinas/store_detail', 'PerjalananDinasController@storeDetail')->name('perjalanan_dinas.store.detail');
-        Route::get('perjalanan_dinas/edit/{no_panjar}', 'PerjalananDinasController@edit')->name('perjalanan_dinas.edit');
-        Route::post('perjalanan_dinas/update/{no_panjar}', 'PerjalananDinasController@update')->name('perjalanan_dinas.update');
-        Route::post('perjalanan_dinas/update_detail', 'PerjalananDinasController@updateDetail')->name('perjalanan_dinas.update.detail');
-        Route::get('perjalanan_dinas/show_json_detail', 'PerjalananDinasController@showJsonDetail')->name('perjalanan_dinas.show.json.detail');
-        Route::delete('perjalanan_dinas/delete', 'PerjalananDinasController@delete')->name('perjalanan_dinas.delete');
-        Route::delete('perjalanan_dinas/delete_detail', 'PerjalananDinasController@deleteDetail')->name('perjalanan_dinas.delete.detail');
-        Route::get('perjalanan_dinas/rekap', 'PerjalananDinasController@rekap')->name('perjalanan_dinas.rekap');
-        Route::post('perjalanan_dinas/rekap/export', 'PerjalananDinasController@rekapExport')->name('perjalanan_dinas.rekap.export');
-
-        Route::get('perjalanan_dinas/export/{no_panjar}', 'PerjalananDinasController@rowExport')->name('perjalanan_dinas.export');
+        // Route assigned name "kode_bagian.index"...
+        Route::name('perjalanan_dinas.')->group(function () {
+            Route::get('perjalanan_dinas', 'PerjalananDinasController@index')->name('index');
+            Route::get('perjalanan_dinas/index_json', 'PerjalananDinasController@indexJson')->name('index.json');
+            Route::get('perjalanan_dinas/show_json', 'PerjalananDinasController@showJson')->name('show.json');
+            Route::get('perjalanan_dinas/index_json_detail/{no_panjar}', 'PerjalananDinasController@indexJsonDetail')->name('perjalanan_dinas.index.json.detail');
+            Route::get('perjalanan_dinas/create', 'PerjalananDinasController@create')->name('create');
+            Route::post('perjalanan_dinas/store', 'PerjalananDinasController@store')->name('store');
+            Route::post('perjalanan_dinas/store_detail', 'PerjalananDinasController@storeDetail')->name('store.detail');
+            Route::get('perjalanan_dinas/edit/{no_panjar}', 'PerjalananDinasController@edit')->name('edit');
+            Route::post('perjalanan_dinas/update/{no_panjar}', 'PerjalananDinasController@update')->name('update');
+            Route::post('perjalanan_dinas/update_detail', 'PerjalananDinasController@updateDetail')->name('update.detail');
+            Route::get('perjalanan_dinas/show_json_detail', 'PerjalananDinasController@showJsonDetail')->name('show.json.detail');
+            Route::delete('perjalanan_dinas/delete', 'PerjalananDinasController@delete')->name('delete');
+            Route::delete('perjalanan_dinas/delete_detail', 'PerjalananDinasController@deleteDetail')->name('delete.detail');
+            Route::get('perjalanan_dinas/export/{no_panjar}', 'PerjalananDinasController@rowExport')->name('export');
+            Route::get('perjalanan_dinas/rekap', 'PerjalananDinasController@rekap')->name('rekap');
+            Route::post('perjalanan_dinas/rekap/export', 'PerjalananDinasController@rekapExport')->name('rekap.export');
+        });
+        
         // PERJALANAN DINAS END
 
         // P PERJALANAN DINAS START
