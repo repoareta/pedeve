@@ -226,7 +226,6 @@ Route::group(['middleware'=> ['auth','checkRole:1']], function () {
             Route::post('kode_jabatan/update/{kode_bagian}/{kdjab}', 'KodeJabatanController@update')->name('update');
             Route::delete('kode_jabatan/delete', 'KodeJabatanController@delete')->name('delete');
         });
-        
         // Kode Jabatan END
 
         
@@ -245,9 +244,19 @@ Route::group(['middleware'=> ['auth','checkRole:1']], function () {
         // Agama END
 
         // master pekerja
-        Route::get('master_pekerja', 'MasterPekerjaController@index')->name('master_pekerja.index');
-        Route::get('master_pekerja/create', 'MasterPekerjaController@create')->name('master_pekerja.create');
-        Route::get('master_pekerja/edit', 'MasterPekerjaController@edit')->name('master_pekerja.edit');
+        // Kode Jabatan START
+        // Route assigned name "kode_jabatan.index"...
+        Route::name('pekerja.')->group(function () {
+            Route::get('pekerja', 'PekerjaController@index')->name('index');
+            Route::get('pekerja/index_json', 'PekerjaController@indexJson')->name('index.json');
+            Route::get('pekerja/show_json/{pekerja}', 'PekerjaController@showJson')->name('show.json');
+            Route::get('pekerja/create', 'PekerjaController@create')->name('create');
+            Route::post('pekerja/store', 'PekerjaController@store')->name('store');
+            Route::get('pekerja/edit/{pekerja}', 'PekerjaController@edit')->name('edit');
+            Route::post('pekerja/update/{pekerja}', 'PekerjaController@update')->name('update');
+            Route::delete('pekerja/delete', 'PekerjaController@delete')->name('delete');
+        });
+        // Kode Jabatan END
         
         //potongan koreksi gaji
         Route::get('potongan_koreksi_gaji', 'PotonganKoreksiGajiController@index')->name('potongan_koreksi_gaji.index');

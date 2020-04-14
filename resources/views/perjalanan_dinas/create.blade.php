@@ -167,7 +167,7 @@
 					<div class="form-group row">
 						<label for="jumlah" class="col-2 col-form-label">Jumlah</label>
 						<div class="col-10">
-							<input class="form-control" type="number" name="jumlah" id="jumlah">
+							<input class="form-control" type="number" name="jumlah" id="jumlah" value="0.00">
 						</div>
 					</div>
 
@@ -329,6 +329,54 @@
 
 		$('.kt-select2').select2().on('change', function() {
 			$(this).valid();
+		});
+
+		$('#nopek').select2().on('change', function() {
+			var id = $(this).val();
+			var url = '{{ route("pekerja.show.json", ":pekerja") }}';
+			// go to page edit
+			url = url.replace(':pekerja',id);
+			$.ajax({
+				url: url,
+				type: "GET",
+				data: {
+					_token:"{{ csrf_token() }}"		
+				},
+				success: function(response){
+					console.log(response);
+					// isi jabatan
+					$('#jabatan').val(response.jabatan).trigger('change');
+					// isi golongan
+					$('#golongan').val(response.golongan);
+				},
+				error: function () {
+					alert("Terjadi kesalahan, coba lagi nanti");
+				}
+			});
+		});
+
+		$('#nopek_detail').select2().on('change', function() {
+			var id = $('#nopek_detail').val().split('-')[0];
+			var url = '{{ route("pekerja.show.json", ":pekerja") }}';
+			// go to page edit
+			url = url.replace(':pekerja',id);
+			$.ajax({
+				url: url,
+				type: "GET",
+				data: {
+					_token:"{{ csrf_token() }}"		
+				},
+				success: function(response){
+					console.log(response);
+					// isi jabatan
+					$('#jabatan_detail').val(response.jabatan).trigger('change');
+					// isi golongan
+					$('#golongan_detail').val(response.golongan);
+				},
+				error: function () {
+					alert("Terjadi kesalahan, coba lagi nanti");
+				}
+			});
 		});
 
 		var t = $('#kt_table').DataTable({

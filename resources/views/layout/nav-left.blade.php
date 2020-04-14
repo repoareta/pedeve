@@ -133,10 +133,10 @@
                     $agama
                 );
 
-                $master_pekerja = array(
-                    'master_pekerja.index',
-                    'master_pekerja.create',
-                    'master_pekerja.edit'
+                $pekerja = array(
+                    'pekerja.index',
+                    'pekerja.create',
+                    'pekerja.edit'
                 ); // isi nama semua route master pekerja
                 $potongan_manual = array(
                     'potongan_manual.index',
@@ -227,7 +227,7 @@
                 //menu sdm & Payroll
                 $sdm_payroll = array_merge(
                     $master_data_menu,
-                    $master_pekerja,
+                    $pekerja,
                     $potongan_koreksi_gaji,
                     $lembur,
                     $pinjaman_pekerja,
@@ -464,8 +464,8 @@
                                 </ul>
                             </div>
                         </li>
-                        <li class="kt-menu__item kt-menu__item{{ set_active_submenu($master_pekerja) }}" aria-haspopup="true">
-                            <a href="{{ route('master_pekerja.index') }}" class="kt-menu__link">
+                        <li class="kt-menu__item kt-menu__item{{ set_active_submenu($pekerja) }}" aria-haspopup="true">
+                            <a href="{{ route('pekerja.index') }}" class="kt-menu__link">
                                 <i class="kt-menu__link-bullet kt-menu__link-bullet--dot">
                                     <span></span>
                                 </i>
