@@ -357,7 +357,7 @@
 						<div class="col-3">
 							<input  class="form-control" name="acc" type="text" value="" id="acc" >
 						</div>
-						<div id="div-acc" class="col-3" style="display:none;">
+						<div id="div-acc" class="col-5" style="display:none;">
 							<select name="acc" id="select-acc" class="form-control selectpicker" data-live-search="true">
 									@foreach($data_account as $row)
 								<option value="{{$row->kodeacct}}">{{$row->kodeacct}} - {{$row->descacct}}</option>
@@ -372,7 +372,7 @@
 						<div class="col-3">
 							<input  class="form-control" name="bagian" type="text" value="" id="bagian" >
 						</div>
-						<div id="div-bagian" class="col-3" style="display:none;">
+						<div id="div-bagian" class="col-5" style="display:none;">
 							<select name="bagian" id="select-bagian"  class="form-control selectpicker" data-live-search="true">
 									@foreach($data_bagian as $row)
 								<option value="{{$row->kode}}" <?php if( '<input value="$row->kode">' == '<input id="bagian">' ) echo 'selected' ; ?>>{{$row->kode}} - {{$row->nama}}</option>
@@ -395,7 +395,7 @@
 						<div class="col-3">
 							<input  class="form-control" name="jb" type="text" value="" id="jb" >
 						</div>
-						<div id="div-jb" class="col-3" style="display:none;">
+						<div id="div-jb" class="col-5" style="display:none;">
 							<select name="jb" id="select-jb"  class="form-control selectpicker" data-live-search="true">
 									@foreach($data_jenisbiaya as $row)
 								<option value="{{$row->kode}}" >{{$row->kode}} - {{$row->keterangan}}</option>
@@ -410,7 +410,7 @@
 						<div class="col-3">
 							<input  class="form-control" name="cj" type="text" value="" id="cj" >
 						</div>
-						<div class="col-3" id="div-cj" style="display:none;">
+						<div class="col-5" id="div-cj" style="display:none;">
 							<select name="cj" id="select-cj" class="form-control selectpicker" data-live-search="true">
 									@foreach($data_cj as $row)
 								<option value="{{$row->kode}}">{{$row->kode}} - {{$row->nama}}</option>

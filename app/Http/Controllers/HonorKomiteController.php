@@ -39,7 +39,7 @@ class HonorKomiteController extends Controller
             $bulan_buku = $data_bul->bulan_buku;
         }
         $tahuns = substr($bulan_buku,0,-2);
-        $bulan = $request->bulan;
+        $bulan = ltrim($request->bulan, '0');
         $tahun = $request->tahun;
         $nopek = $request->nopek;
         if($nopek == null ){
@@ -51,7 +51,7 @@ class HonorKomiteController extends Controller
                 $data_list = DB::select("select a.tahun, a.bulan, a.nopek, a.aard, a.jmlcc, a.ccl, a.nilai, a.userid,a.pajak, b.nama as nama_nopek from pay_honorarium a join sdm_master_pegawai b on a.nopek=b.nopeg where a.bulan='$bulan' and a.tahun='$tahun' order by a.tahun,a.bulan,a.nopek");
             }
         }else{
-            if($bulan == null and $tahun = null){
+            if($bulan == null and $tahun == null){
                 $data_list = DB::select("select a.tahun, a.bulan, a.nopek, a.aard, a.jmlcc, a.ccl, a.nilai, a.userid,a.pajak, b.nama as nama_nopek from pay_honorarium a join sdm_master_pegawai b on a.nopek=b.nopeg where a.nopek='$nopek' order by a.tahun,a.bulan,a.nopek");	
             }else{
                 $data_list = DB::select("select a.tahun, a.bulan, a.nopek, a.aard, a.jmlcc, a.ccl, a.nilai, a.userid,a.pajak, b.nama as nama_nopek from pay_honorarium a join sdm_master_pegawai b on a.nopek=b.nopeg where a.bulan='$bulan' and a.tahun='$tahun' and a.nopek='$nopek' order by a.tahun,a.bulan,a.nopek");

@@ -78,7 +78,7 @@
 						<input class="form-control" type="hidden" value="{{$data->bulan}}" name="bulan">
 								
 						</div>
-								<div class="col-2" >
+								<div class="col-4" >
 									<input class="form-control" type="text" value="{{$data->tahun}}" name="tahun" readonly style="background-color:#DCDCDC; cursor:not-allowed">
 									<input class="form-control" type="hidden" value="{{Auth::user()->userid}}"  name="userid" autocomplete='off'>
 								</div>

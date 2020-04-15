@@ -40,7 +40,7 @@ class PotonganManualController extends Controller
             }
             $tahuns = substr($bulan_buku,0,-2);
         
-            $bulan = $request->bulan;
+            $bulan = ltrim($request->bulan, '0');
             $tahun = $request->tahun;
             $nopek = $request->nopek;
             if($nopek == null){

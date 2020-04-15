@@ -59,19 +59,19 @@
 		</div>
 	</div>
 	<div class="kt-portlet__body">
-		<div style="float:right;"><form action="{{route('lembur.search.index')}}" method="post">{{csrf_field()}}
-			<p style="font-weight:bold;">
-			No. Pegawai: <select style="width:10%;height:30px;box-radius:50%;border-radius:30px;" name="nopek" id="nopek" class="selectpicker" data-live-search="true">
-						<option value="">- Pilih -</option>
-						@foreach($data_pegawai as $data)
-						<option value="{{$data->nopeg}}">{{$data->nopeg}} - {{$data->nama}}</option>
-						@endforeach
-					</select>
-								
-			Bulan/Tahun: <input style="width:10%;height:40px;box-radius:20%;border-radius:10px;"  name="tanggal" id="tanggal" type="text" size="4" maxlength="4" value="" onkeypress="return hanyaAngka(event)" autocomplete='off'>  
-			<button type="submit" style="font-size: 20px;margin-left:5px;border-radius:10px;" class="kt-font-info pointer-link" data-toggle="kt-tooltip" data-placement="top" title="Cari Data"> <i class="fa fa-search"></i></button>  
+		<form action="{{route('lembur.search.index')}}" method="post">{{csrf_field()}}
+				Pegawai	<select style="width:25%;height:30px;box-radius:50%;border-radius:30px;" name="nopek" class="selectpicker" data-live-search="true">
+								<option value="">- Pilih -</option>
+								@foreach($data_pegawai as $data)
+								<option value="{{$data->nopeg}}">{{$data->nopeg}} - {{$data->nama}}</option>
+								@endforeach
+						</select>
+				Bulan: 	<input  style="width:4em;height:35px;border: 1px solid #DCDCDC;border-radius:5px;"  name="bulan" type="text" size="2" maxlength="2" value="" onkeypress="return hanyaAngka(event)" autocomplete='off'>
+
+				Tahun: 	<input style="width:10%;height:35px;border: 1px solid #DCDCDC;border-radius:5px;"  name="tahun" id="tahun" type="text" size="4" maxlength="4" value="" onkeypress="return hanyaAngka(event)" autocomplete='off'>  
+					<button type="submit" style="font-size: 20px;margin-left:5px;border-radius:10px;border-radius:10px;background-color:white;" class="kt-font-info pointer-link" data-toggle="kt-tooltip" data-placement="top" title="Cari Data"> <i class="fa fa-search"></i></button>  
+					
 			</form>
-		</div>
 		<!--begin: Datatable -->
 		<table class="table table-striped table-bordered table-hover table-checkable" id="kt_table">
 			<thead class="thead-light">

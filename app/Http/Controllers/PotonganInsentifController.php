@@ -39,7 +39,7 @@ class PotonganInsentifController extends Controller
             }
             $tahuns = substr($bulan_buku,0,-2);
         
-            $bulan = $request->bulan;
+            $bulan = ltrim($request->bulan, '0');
             $tahun = $request->tahun;
             $nopek = $request->nopek;
 
@@ -52,7 +52,7 @@ class PotonganInsentifController extends Controller
             $data_list = DB::select("select a.tahun, a.bulan, a.nopek, a.nilai, a.userid,b.nama as nama_nopek from pay_potongan_insentif a join sdm_master_pegawai b on a.nopek=b.nopeg where a.bulan='$bulan' and a.tahun='$tahun' order by a.nopek asc");
             }
         }else{
-            if($bulan == null and $tahun = null){
+            if($bulan == null and $tahun == null){
             $data_list = DB::select("select a.tahun, a.bulan, a.nopek, a.nilai, a.userid,b.nama as nama_nopek from pay_potongan_insentif a join sdm_master_pegawai b on a.nopek=b.nopeg where a.nopek='$nopek' order by a.tahun,a.bulan desc");
             }else{
             $data_list = DB::select("select a.tahun, a.bulan, a.nopek, a.nilai, a.userid,b.nama as nama_nopek from pay_potongan_insentif a join sdm_master_pegawai b on a.nopek=b.nopeg where a.nopek='$nopek' and a.bulan='$bulan' and a.tahun='$tahun'" ); 			

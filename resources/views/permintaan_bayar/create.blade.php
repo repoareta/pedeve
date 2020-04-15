@@ -93,7 +93,7 @@
 							</div>
 						</div>
 						<div class="form-group row">
-							<label for="" class="col-2 col-form-label">Rekening Bank<span style="color:red;">*</span></label>
+							<label for="" class="col-2 col-form-label">Rekening Bank</label>
 							<div class="col-10">
 								<input style=" width: 17px;height: 26px;margin-left:50px;" name="rekyes" type="checkbox"  id="rekyes" value="1"></td>
 							</div>
