@@ -11,7 +11,9 @@
             <ul class="kt-menu__nav ">
                 <li class="kt-menu__item  kt-menu__item--submenu kt-menu__item--rel kt-menu__item--active" data-ktmenu-submenu-toggle="click" aria-haspopup="true">
                     <div class="kt-menu__link kt-menu__toggle">
-                        <span class="kt-menu__link-text">{{ ucwords(str_replace('_', ' ', Request::segment(1))) }}</span>
+                        <span class="kt-menu__link-text">
+                            {{ ucwords(str_replace('_', ' ', Request::segment(1) == 'sdm' ? 'SDM & Payroll' : Request::segment(1))) }}
+                        </span>
                     </div>
                 </li>
             </ul>
