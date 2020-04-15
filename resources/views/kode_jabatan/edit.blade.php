@@ -16,7 +16,7 @@
 				</a>
 				<span class="kt-subheader__breadcrumbs-separator"></span>
 				<a href="" class="kt-subheader__breadcrumbs-link">
-					Perguruan Tinggi 
+					Kode Jabatan
 				</a>
 				<span class="kt-subheader__breadcrumbs-separator"></span>
 				<span class="kt-subheader__breadcrumbs-link kt-subheader__breadcrumbs-link--active">Ubah</span>
@@ -34,7 +34,7 @@
 					<i class="kt-font-brand flaticon2-plus-1"></i>
 				</span>
 				<h3 class="kt-portlet__head-title">
-					Ubah Perguruan Tinggi
+					Ubah Kode Jabatan
 				</h3>			
 			</div>
 			<div class="kt-portlet__head-toolbar">
@@ -43,19 +43,48 @@
 			</div>
 		</div>
 			<div class="kt-portlet__body">
-				<form class="kt-form kt-form--label-right" id="formPerguruanTinggi" action="{{ route('perguruan_tinggi.update', ['perguruan_tinggi' => $perguruan_tinggi->kode]) }}" method="POST">
+				<form class="kt-form kt-form--label-right" id="formKodeJabatan" action="{{ route('kode_jabatan.update', ['kode_bagian' => $kode_bagian->kode, 'kode_jabatan' => $kode_jabatan->kdjab]) }}" method="POST">
 					@csrf
 					<div class="form-group row">
-						<label for="kode" class="col-2 col-form-label">Kode Perguruan Tinggi</label>
+						<label for="kode" class="col-2 col-form-label">Kode Bagian</label>
 						<div class="col-10">
-							<input class="form-control" type="text" name="kode" id="kode" value="{{ $perguruan_tinggi->kode }}">
+							<select class="form-control kt-select2" name="kode_bagian" id="kode_bagian">
+								<option value="">- Pilih Kode Bagian -</option>
+								@foreach ($kode_bagian_list as $kode_bagian_row)
+									<option value="{{ $kode_bagian_row->kode }}" 
+									@if ($kode_bagian_row->kode == $kode_bagian->kode)
+										selected
+									@endif>{{ $kode_bagian_row->kode.' - '.$kode_bagian_row->nama }}</option>
+								@endforeach
+							</select>
 						</div>
 					</div>
 
 					<div class="form-group row">
-						<label for="nama" class="col-2 col-form-label">Nama Perguruan Tinggi</label>
+						<label for="kode" class="col-2 col-form-label">Kode Jabatan</label>
 						<div class="col-10">
-							<input class="form-control" type="text" name="nama" id="nama" value="{{ $perguruan_tinggi->nama }}">
+							<input class="form-control" type="text" name="kode_jabatan" id="kode_jabatan" value="{{ $kode_jabatan->kdjab }}">
+						</div>
+					</div>
+
+					<div class="form-group row">
+						<label for="nama" class="col-2 col-form-label">Nama Jabatan</label>
+						<div class="col-10">
+							<input class="form-control" type="text" name="nama" id="nama" value="{{ $kode_jabatan->keterangan }}">
+						</div>
+					</div>
+
+					<div class="form-group row">
+						<label for="nama" class="col-2 col-form-label">Golongan</label>
+						<div class="col-10">
+							<input class="form-control" type="text" name="golongan" id="golongan" value="{{ $kode_jabatan->goljob }}">
+						</div>
+					</div>
+
+					<div class="form-group row">
+						<label for="nama" class="col-2 col-form-label">Tunjangan</label>
+						<div class="col-10">
+							<input class="form-control" type="text" name="tunjangan" id="tunjangan" value="{{ $kode_jabatan->tunjangan }}">
 						</div>
 					</div>
 
@@ -78,5 +107,13 @@
 @endsection
 
 @section('scripts')
-{!! JsValidator::formRequest('App\Http\Requests\PerguruanTinggiUpdate', '#formPerguruanTinggi') !!}
+{!! JsValidator::formRequest('App\Http\Requests\KodeJabatanUpdate', '#formKodeJabatan') !!}
+
+<script type="text/javascript">
+	$(document).ready(function () {
+		$('.kt-select2').select2().on('change', function() {
+			$(this).valid();
+		});
+	});
+</script>
 @endsection

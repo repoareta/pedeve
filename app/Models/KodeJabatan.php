@@ -3,9 +3,12 @@
 namespace App\Models;
 
 use Illuminate\Database\Eloquent\Model;
+use App\Traits\CompositeKey;
 
 class KodeJabatan extends Model
 {
+    use CompositeKey;
+    
     protected $table = "sdm_tbl_kdjab";
     protected $primaryKey = ['kdbag', 'kdjab'];
     protected $keyType = 'string';
@@ -17,8 +20,8 @@ class KodeJabatan extends Model
      *
      * @return void
      */
-    public function kode_bagian()
+    public function kode_bagian_latest()
     {
-        return $this->belongsTo('App\Models\KodeBagian', 'kdbag', 'kode');
+        return $this->belongsTo('App\Models\KodeBagian', 'kdbag', 'kode')->latest();
     }
 }

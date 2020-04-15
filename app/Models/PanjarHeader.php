@@ -8,6 +8,7 @@ class PanjarHeader extends Model
 {
     protected $table = "panjar_header";
     protected $primaryKey = 'no_panjar'; // or null
+    protected $keyType = 'string';
     public $timestamps = false;
     public $incrementing = false;
     

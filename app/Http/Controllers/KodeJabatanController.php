@@ -41,7 +41,7 @@ class KodeJabatanController extends Controller
 
         return datatables()->of($kode_jabatan_list)
             ->addColumn('action', function ($row) {
-                $radio = '<label class="kt-radio kt-radio--bold kt-radio--brand"><input type="radio" name="radio1" value="'.$row->kode.'"><span></span></label>';
+                $radio = '<label class="kt-radio kt-radio--bold kt-radio--brand"><input type="radio" name="radio1" value="'.$row->kdbag.'-'.$row->kdjab.'"><span></span></label>';
                 return $radio;
             })
             ->addColumn('kdbag', function ($row) {
@@ -72,9 +72,17 @@ class KodeJabatanController extends Controller
      * @param  \Illuminate\Http\Request  $request
      * @return \Illuminate\Http\Response
      */
-    public function store(KodeJabatanStore $request)
+    public function store(KodeJabatanStore $request, KodeJabatan $kode_jabatan)
     {
-        //
+        $kode_jabatan->kdbag = $request->kode_bagian;
+        $kode_jabatan->kdjab = $request->kode_jabatan;
+        $kode_jabatan->keterangan = $request->nama;
+        $kode_jabatan->goljob = $request->golongan;
+        $kode_jabatan->tunjangan = $request->tunjangan;
+        $kode_jabatan->save();
+
+        Alert::success('Simpan Data Kode Jabatan', 'Berhasil')->persistent(true)->autoClose(2000);
+        return redirect()->route('kode_jabatan.index');
     }
 
     /**
@@ -83,9 +91,15 @@ class KodeJabatanController extends Controller
      * @param  int  $id
      * @return \Illuminate\Http\Response
      */
-    public function edit($id)
+    public function edit(KodeBagian $kode_bagian, $kdjab)
     {
-        return view('kode_jabatan.index');
+        $kode_bagian_list = KodeBagian::all();
+
+        $kode_jabatan = KodeJabatan::where('kdbag', $kode_bagian->kode)
+        ->where('kdjab', $kdjab)
+        ->firstOrFail();
+
+        return view('kode_jabatan.edit', compact('kode_bagian', 'kode_bagian_list', 'kode_jabatan'));
     }
 
     /**
@@ -95,9 +109,28 @@ class KodeJabatanController extends Controller
      * @param  int  $id
      * @return \Illuminate\Http\Response
      */
-    public function update(KodeJabatanUpdate $request, $id)
+    public function update(KodeJabatanUpdate $request, KodeBagian $kode_bagian, $kdjab)
     {
-        //
+        $kode_jabatan = KodeJabatan::where('kdbag', $kode_bagian->kode)
+        ->where('kdjab', $kdjab)
+        ->firstOrFail();
+
+        $kode_jabatan->kdbag = $request->kode_bagian;
+        $kode_jabatan->kdjab = $request->kode_jabatan;
+        $kode_jabatan->keterangan = $request->nama;
+        $kode_jabatan->goljob = $request->golongan;
+        $kode_jabatan->tunjangan = $request->tunjangan;
+
+        try {
+            $kode_jabatan->save();
+        } catch (\Illuminate\Database\QueryException $e) {
+            Alert::error('Kode Bagian dan Kode Jabatan sudah ada', 'Gagal')->persistent(true)->autoClose(2000);
+
+            return redirect()->route('kode_jabatan.edit', ['kode_bagian' => $kode_bagian->kode, 'kode_jabatan' => $kdjab]);
+        }
+
+        Alert::success('Ubah Data Kode Jabatan', 'Berhasil')->persistent(true)->autoClose(2000);
+        return redirect()->route('kode_jabatan.index');
     }
 
     /**
@@ -108,6 +141,10 @@ class KodeJabatanController extends Controller
      */
     public function delete(Request $request)
     {
-        //
+        KodeJabatan::where('kdbag', $request->kode_bagian)
+        ->where('kdjab', $request->kode_jabatan)
+        ->delete();
+
+        return response()->json();
     }
 }

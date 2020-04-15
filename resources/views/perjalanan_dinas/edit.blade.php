@@ -171,7 +171,7 @@
 				<div class="form-group row">
 					<label for="jumlah" class="col-2 col-form-label">Jumlah</label>
 					<div class="col-10">
-						<input class="form-control" type="number" name="jumlah" id="jumlah" value="{{ $panjar_header->jum_panjar }}">
+						<input class="form-control" type="number" name="jumlah" id="jumlah" value="{{ float_two($panjar_header->jum_panjar) }}">
 					</div>
 				</div>
 

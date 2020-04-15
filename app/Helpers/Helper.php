@@ -45,6 +45,16 @@ function currency_idr($angka)
     return "Rp. ".number_format($angka, 2, ',', '.');
 }
 
+/**
+ * membuat format mata uang rupiah
+ * @param  [type] $angka [description]
+ * @return [type]        [description]
+ */
+function float_two($angka)
+{
+    return number_format($angka, 2);
+}
+
 
 function pajak($nilai)
 {
@@ -57,27 +67,26 @@ function pajak($nilai)
     $data_sdmprogresif = DB::select("select * from sdm_tbl_progressif order by awal asc");
     // SdmTblProgressif::orderBy('awal','asc');
     // $pph21ok = 0;
-    foreach($data_sdmprogresif as $data_prog)
-    {
+    foreach ($data_sdmprogresif as $data_prog) {
         $awal = $data_prog->awal;
         $akhir = $data_prog->akhir;
         $persen = $data_prog->prosen;
         $prosen = $persen/100;
         $range = $akhir - $awal;
-        if($sisapokok > 0){
+        if ($sisapokok > 0) {
             $sisapokok1 = $sisapokok;
-            if($sisapokok1 > 0 and $sisapokok1 < $range){
+            if ($sisapokok1 > 0 and $sisapokok1 < $range) {
                 $pph21r = $sisapokok1 * $prosen;
-            }elseif($sisapokok1 > 0 and $sisapokok1 >= $range ){
+            } elseif ($sisapokok1 > 0 and $sisapokok1 >= $range) {
                 $pph21r = $range * $prosen;
-            }else{
+            } else {
                 $pph21r = 0;
             }
-        }else {
+        } else {
             $pph21r = 0;
         }
         $pph21ok =  $pph21r;
         $sisapokok = $sisapokok1 - $range;
-     return   $pajakbulan = ($pph21ok/12);
-    } 
+        return   $pajakbulan = ($pph21ok/12);
+    }
 }

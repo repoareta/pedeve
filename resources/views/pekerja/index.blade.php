@@ -12,10 +12,10 @@
 				<a href="#" class="kt-subheader__breadcrumbs-home"><i class="flaticon2-shelter"></i></a>
 				<span class="kt-subheader__breadcrumbs-separator"></span>
 				<a href="" class="kt-subheader__breadcrumbs-link">
-					SDM & Payroll
+					SDM & Payroll 
 				</a>
 				<span class="kt-subheader__breadcrumbs-separator"></span>
-				<span class="kt-subheader__breadcrumbs-link kt-subheader__breadcrumbs-link--active">Kode Jabatan</span>
+				<span class="kt-subheader__breadcrumbs-link kt-subheader__breadcrumbs-link--active">Pekerja</span>
 			</div>
 		</div>
 	</div>
@@ -30,11 +30,11 @@
 				<i class="kt-font-brand flaticon2-line-chart"></i>
 			</span>
 			<h3 class="kt-portlet__head-title">
-				Tabel Master Data Kode Jabatan
+				Tabel Master Data Pekerja
 			</h3>
 			
 			<div class="kt-portlet__head-actions" style="font-size: 2rem;">
-				<a href="{{ route('kode_jabatan.create') }}">
+				<a href="{{ route('pekerja.create') }}">
 					<span class="kt-font-success" data-toggle="kt-tooltip" data-placement="top" title="Tambah Data">
 						<i class="fas fa-plus-circle"></i>
 					</span>
@@ -61,11 +61,8 @@
 			<thead class="thead-light">
 				<tr>
 					<th></th>
-					<th>Kode & Nama Bagian</th>
-					<th>Kode Jabatan</th>
-					<th>Nama Jabatan</th>
-					<th>Golongan</th>
-					<th>Tunjangan</th>
+					<th>Nopeg</th>
+					<th>Nama</th>
 				</tr>
 			</thead>
 			<tbody>
@@ -85,14 +82,11 @@
 			scrollX   : true,
 			processing: true,
 			serverSide: true,
-			ajax      : "{{ route('kode_jabatan.index.json') }}",
+			ajax      : "{{ route('pekerja.index.json') }}",
 			columns: [
 				{data: 'action', name: 'aksi', orderable: false, searchable: false, class:'radio-button', width: '10'},
-				{data: 'kdbag', name: 'kdbag', class:'no-wrap'},
-				{data: 'kdjab', name: 'kdjab', class:'no-wrap'},
-				{data: 'keterangan', name: 'keterangan', class:'no-wrap'},
-				{data: 'goljob', name: 'goljob', class:'no-wrap'},
-				{data: 'tunjangan', name: 'tunjangan', class:'no-wrap text-right'}
+				{data: 'nopeg', name: 'nopeg', class:'no-wrap'},
+				{data: 'nama', name: 'nama', class:'no-wrap'}
 			]
 		});
 
@@ -102,14 +96,10 @@
 			e.preventDefault();
 			if($('input[type=radio]').is(':checked')) { 
 				$("input[type=radio]:checked").each(function() {
-					var kode_bagian = $(this).val().split("-")[0];
-					var kode_jabatan = $(this).val().split("-")[1];
-					
-					var url = '{{ route("kode_jabatan.edit", [":kode_bagian", ":kode_jabatan"]) }}';
+					var id = $(this).val().split("/").join("-");
+					var url = '{{ route("pekerja.edit", ":kode") }}';
 					// go to page edit
-					window.location.href = url
-					.replace(':kode_bagian', kode_bagian)
-					.replace(':kode_jabatan', kode_jabatan);
+					window.location.href = url.replace(':kode',id);
 				});
 			} else {
 				swalAlertInit('ubah');
@@ -120,8 +110,7 @@
 			e.preventDefault();
 			if($('input[type=radio]').is(':checked')) { 
 				$("input[type=radio]:checked").each(function() {
-					var kode_bagian = $(this).val().split("-")[0];
-					var kode_jabatan = $(this).val().split("-")[1];
+					var id = $(this).val();
 					// delete stuff
 					const swalWithBootstrapButtons = Swal.mixin({
 					customClass: {
@@ -133,7 +122,7 @@
 
 					swalWithBootstrapButtons.fire({
 						title: "Data yang akan dihapus?",
-						text: "Kode Jabatan : " + kode_jabatan,
+						text: "Kode Pekerja : " + id,
 						type: 'warning',
 						showCancelButton: true,
 						reverseButtons: true,
@@ -143,18 +132,17 @@
 					.then((result) => {
 						if (result.value) {
 							$.ajax({
-								url: "{{ route('kode_jabatan.delete') }}",
+								url: "{{ route('pekerja.delete') }}",
 								type: 'DELETE',
 								dataType: 'json',
 								data: {
-									"kode_bagian": kode_bagian,
-									"kode_jabatan": kode_jabatan,
+									"id": id,
 									"_token": "{{ csrf_token() }}",
 								},
 								success: function () {
 									Swal.fire({
 										type  : 'success',
-										title : 'Hapus Kode Jabatan: ' + kode_jabatan,
+										title : 'Hapus Kode Pekerja: ' + id,
 										text  : 'Berhasil',
 										timer : 2000
 									}).then(function() {

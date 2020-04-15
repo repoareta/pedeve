@@ -88,5 +88,80 @@
         });
 
     })(jQuery, jQuery.fn.dataTable);
+
+    $('#nopek').select2().on('change', function() {
+        var id = $(this).val();
+        var url = '{{ route("pekerja.show.json", ":pekerja") }}';
+        // go to page edit
+        url = url.replace(':pekerja',id);
+        $.ajax({
+            url: url,
+            type: "GET",
+            data: {
+                _token:"{{ csrf_token() }}"		
+            },
+            success: function(response){
+                // console.log(response);
+                // isi jabatan
+                $('#jabatan').val(response.jabatan).trigger('change');
+                // isi golongan
+                $('#golongan').val(response.golongan);
+            },
+            error: function () {
+                alert("Terjadi kesalahan, coba lagi nanti");
+            }
+        });
+    });
+
+    $('#nopek_detail').select2().on('change', function() {
+        var id = $('#nopek_detail').val().split('-')[0];
+        var url = '{{ route("pekerja.show.json", ":pekerja") }}';
+        // go to page edit
+        url = url.replace(':pekerja',id);
+        if(id != ''){
+            $.ajax({
+                url: url,
+                type: "GET",
+                data: {
+                    _token:"{{ csrf_token() }}"		
+                },
+                success: function(response){
+                    // console.log(response);
+                    // isi jabatan
+                    $('#jabatan_detail').val(response.jabatan).trigger('change');
+                    // isi golongan
+                    $('#golongan_detail').val(response.golongan);
+                },
+                error: function () {
+                    alert("Terjadi kesalahan, coba lagi nanti");
+                }
+            });
+        }
+    });
+
+    $('#no_panjar').select2().on('change', function() {
+        var id = $(this).val().split('/').join('-');
+        var url = '{{ route("perjalanan_dinas.show.json") }}';
+
+        $.ajax({
+            url: url,
+            type: "GET",
+            data: {
+                id: id,
+                _token:"{{ csrf_token() }}"		
+            },
+            success: function(response){
+                console.log(response);
+                // isi keterangan
+                $('#keterangan').val(response.keterangan);
+                // isi jumlah
+                const jumlah = parseFloat(response.jum_panjar).toFixed(2);
+                $('#jumlah').val(jumlah);
+            },
+            error: function () {
+                alert("Terjadi kesalahan, coba lagi nanti");
+            }
+        });
+    });
 </script>
 @yield("scripts")

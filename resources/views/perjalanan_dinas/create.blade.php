@@ -167,7 +167,7 @@
 					<div class="form-group row">
 						<label for="jumlah" class="col-2 col-form-label">Jumlah</label>
 						<div class="col-10">
-							<input class="form-control" type="number" name="jumlah" id="jumlah">
+							<input class="form-control" type="number" name="jumlah" id="jumlah" value="0.00">
 						</div>
 					</div>
 

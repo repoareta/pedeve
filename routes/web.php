@@ -70,22 +70,26 @@ Route::group(['middleware'=> ['auth','checkRole:1']], function () {
         // P UANG MUKA KERJA DETAIL END
         
         // PERJALANAN DINAS START
-        Route::get('perjalanan_dinas', 'PerjalananDinasController@index')->name('perjalanan_dinas.index');
-        Route::get('perjalanan_dinas/index_json', 'PerjalananDinasController@indexJson')->name('perjalanan_dinas.index.json');
-        Route::get('perjalanan_dinas/index_json_detail/{no_panjar}', 'PerjalananDinasController@indexJsonDetail')->name('perjalanan_dinas.index.json.detail');
-        Route::get('perjalanan_dinas/create', 'PerjalananDinasController@create')->name('perjalanan_dinas.create');
-        Route::post('perjalanan_dinas/store', 'PerjalananDinasController@store')->name('perjalanan_dinas.store');
-        Route::post('perjalanan_dinas/store_detail', 'PerjalananDinasController@storeDetail')->name('perjalanan_dinas.store.detail');
-        Route::get('perjalanan_dinas/edit/{no_panjar}', 'PerjalananDinasController@edit')->name('perjalanan_dinas.edit');
-        Route::post('perjalanan_dinas/update/{no_panjar}', 'PerjalananDinasController@update')->name('perjalanan_dinas.update');
-        Route::post('perjalanan_dinas/update_detail', 'PerjalananDinasController@updateDetail')->name('perjalanan_dinas.update.detail');
-        Route::get('perjalanan_dinas/show_json_detail', 'PerjalananDinasController@showJsonDetail')->name('perjalanan_dinas.show.json.detail');
-        Route::delete('perjalanan_dinas/delete', 'PerjalananDinasController@delete')->name('perjalanan_dinas.delete');
-        Route::delete('perjalanan_dinas/delete_detail', 'PerjalananDinasController@deleteDetail')->name('perjalanan_dinas.delete.detail');
-        Route::get('perjalanan_dinas/rekap', 'PerjalananDinasController@rekap')->name('perjalanan_dinas.rekap');
-        Route::post('perjalanan_dinas/rekap/export', 'PerjalananDinasController@rekapExport')->name('perjalanan_dinas.rekap.export');
-
-        Route::get('perjalanan_dinas/export/{no_panjar}', 'PerjalananDinasController@rowExport')->name('perjalanan_dinas.export');
+        // Route assigned name "kode_bagian.index"...
+        Route::name('perjalanan_dinas.')->group(function () {
+            Route::get('perjalanan_dinas', 'PerjalananDinasController@index')->name('index');
+            Route::get('perjalanan_dinas/index_json', 'PerjalananDinasController@indexJson')->name('index.json');
+            Route::get('perjalanan_dinas/show_json', 'PerjalananDinasController@showJson')->name('show.json');
+            Route::get('perjalanan_dinas/index_json_detail/{no_panjar}', 'PerjalananDinasController@indexJsonDetail')->name('perjalanan_dinas.index.json.detail');
+            Route::get('perjalanan_dinas/create', 'PerjalananDinasController@create')->name('create');
+            Route::post('perjalanan_dinas/store', 'PerjalananDinasController@store')->name('store');
+            Route::post('perjalanan_dinas/store_detail', 'PerjalananDinasController@storeDetail')->name('store.detail');
+            Route::get('perjalanan_dinas/edit/{no_panjar}', 'PerjalananDinasController@edit')->name('edit');
+            Route::post('perjalanan_dinas/update/{no_panjar}', 'PerjalananDinasController@update')->name('update');
+            Route::post('perjalanan_dinas/update_detail', 'PerjalananDinasController@updateDetail')->name('update.detail');
+            Route::get('perjalanan_dinas/show_json_detail', 'PerjalananDinasController@showJsonDetail')->name('show.json.detail');
+            Route::delete('perjalanan_dinas/delete', 'PerjalananDinasController@delete')->name('delete');
+            Route::delete('perjalanan_dinas/delete_detail', 'PerjalananDinasController@deleteDetail')->name('delete.detail');
+            Route::get('perjalanan_dinas/export/{no_panjar}', 'PerjalananDinasController@rowExport')->name('export');
+            Route::get('perjalanan_dinas/rekap', 'PerjalananDinasController@rekap')->name('rekap');
+            Route::post('perjalanan_dinas/rekap/export', 'PerjalananDinasController@rekapExport')->name('rekap.export');
+        });
+        
         // PERJALANAN DINAS END
 
         // P PERJALANAN DINAS START
@@ -222,11 +226,10 @@ Route::group(['middleware'=> ['auth','checkRole:1']], function () {
             Route::get('kode_jabatan/index_json', 'KodeJabatanController@indexJson')->name('index.json');
             Route::get('kode_jabatan/create', 'KodeJabatanController@create')->name('create');
             Route::post('kode_jabatan/store', 'KodeJabatanController@store')->name('store');
-            Route::get('kode_jabatan/edit/{kode_jabatan}', 'KodeJabatanController@edit')->name('edit');
-            Route::post('kode_jabatan/update/{kode_jabatan}', 'KodeJabatanController@update')->name('update');
+            Route::get('kode_jabatan/edit/{kode_bagian}/{kdjab}', 'KodeJabatanController@edit')->name('edit');
+            Route::post('kode_jabatan/update/{kode_bagian}/{kdjab}', 'KodeJabatanController@update')->name('update');
             Route::delete('kode_jabatan/delete', 'KodeJabatanController@delete')->name('delete');
         });
-        
         // Kode Jabatan END
 
         
@@ -245,9 +248,19 @@ Route::group(['middleware'=> ['auth','checkRole:1']], function () {
         // Agama END
 
         // master pekerja
-        Route::get('master_pekerja', 'MasterPekerjaController@index')->name('master_pekerja.index');
-        Route::get('master_pekerja/create', 'MasterPekerjaController@create')->name('master_pekerja.create');
-        Route::get('master_pekerja/edit', 'MasterPekerjaController@edit')->name('master_pekerja.edit');
+        // Kode Jabatan START
+        // Route assigned name "kode_jabatan.index"...
+        Route::name('pekerja.')->group(function () {
+            Route::get('pekerja', 'PekerjaController@index')->name('index');
+            Route::get('pekerja/index_json', 'PekerjaController@indexJson')->name('index.json');
+            Route::get('pekerja/show_json/{pekerja}', 'PekerjaController@showJson')->name('show.json');
+            Route::get('pekerja/create', 'PekerjaController@create')->name('create');
+            Route::post('pekerja/store', 'PekerjaController@store')->name('store');
+            Route::get('pekerja/edit/{pekerja}', 'PekerjaController@edit')->name('edit');
+            Route::post('pekerja/update/{pekerja}', 'PekerjaController@update')->name('update');
+            Route::delete('pekerja/delete', 'PekerjaController@delete')->name('delete');
+        });
+        // Kode Jabatan END
         
         //potongan koreksi gaji
         Route::get('potongan_koreksi_gaji', 'PotonganKoreksiGajiController@index')->name('potongan_koreksi_gaji.index');

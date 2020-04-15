@@ -35,7 +35,7 @@ class PerjalananDinasPertanggungJawabanController extends Controller
      */
     public function indexJson()
     {
-        $panjar_list = PPanjarHeader::all();
+        $panjar_list = PPanjarHeader::orderBy('tgl_ppanjar', 'desc')->get();
 
         return datatables()->of($panjar_list)
             ->addColumn('tgl_ppanjar', function ($row) {

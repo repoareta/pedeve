@@ -201,6 +201,14 @@ class PerjalananDinasController extends Controller
         return response()->json($panjar_detail, 200);
     }
 
+    public function showJson(Request $request)
+    {
+        $no_panjar = str_replace('-', '/', $request->id);
+        $data = PanjarHeader::find($no_panjar);
+
+        return response()->json($data, 200);
+    }
+
     public function showJsonDetail(Request $request)
     {
         // $nopek = substr($request->no_nopek, strpos($request->no_nopek, "-") + 1);
