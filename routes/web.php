@@ -440,4 +440,43 @@ Route::group(['middleware'=> ['auth','checkRole:1']], function () {
         Route::get('implementasi_gcg/create', 'ImplementasiGcgController@create')->name('implementasi_gcg.create');
         Route::get('implementasi_gcg/edit', 'ImplementasiGcgController@edit')->name('implementasi_gcg.edit');
     });
+
+
+    //PERBENDAHARAAN
+    Route::prefix('perbendaharaan')->group(function () {
+
+           //Pembayaran PKPP
+        // Route assigned name "pembayaran_pkppp.index"...
+        Route::name('pembayaran_pkpp.')->group(function () {
+            Route::get('pembayaran_pkpp', 'PembayaranPkppController@index')->name('index');
+            Route::post('pembayaran_pkpp/search', 'PembayaranPkppController@searchIndex')->name('search.index');
+            Route::get('pembayaran_pkpp/create', 'PembayaranPkppController@create')->name('create');
+            Route::post('pembayaran_pkpp/store', 'PembayaranPkppController@store')->name('store');
+            Route::get('pembayaran_pkpp/edit/{bulan}/{tahun}/{nopek}', 'PembayaranPkppController@edit')->name('edit');
+            Route::post('pembayaran_pkpp/update', 'PembayaranPkppController@update')->name('update');
+            Route::delete('pembayaran_pkpp/delete', 'PembayaranPkppController@delete')->name('delete');
+        });
+        //end pembayaran_pkppp
+
+           //Pembayaran PKPP
+        // Route assigned name "pembayaran_pkppp.index"...
+        Route::name('pembayaran_mmd.')->group(function () {
+            Route::get('pembayaran_mmd', 'PembayaranMmdController@index')->name('index');
+            Route::post('pembayaran_mmd/search', 'PembayaranMmdController@searchIndex')->name('search.index');
+            Route::get('pembayaran_mmd/create', 'PembayaranMmdController@create')->name('create');
+            Route::post('pembayaran_mmd/store', 'PembayaranMmdController@store')->name('store');
+            Route::get('pembayaran_mmd/edit/{bulan}/{tahun}/{nopek}', 'PembayaranMmdController@edit')->name('edit');
+            Route::post('pembayaran_mmd/update', 'PembayaranMmdController@update')->name('update');
+            Route::delete('pembayaran_mmd/delete', 'PembayaranMmdController@delete')->name('delete');
+        });
+        //end pembayaran_pkppp
+
+
+
+    });
+
+
+
 });
+
+
