@@ -20,8 +20,8 @@ class KodeJabatan extends Model
      *
      * @return void
      */
-    public function kode_bagian_latest()
+    public function kode_bagian()
     {
-        return $this->belongsTo('App\Models\KodeBagian', 'kdbag', 'kode')->latest();
+        return $this->belongsTo('App\Models\KodeBagian', 'kdbag', 'kode');
     }
 }

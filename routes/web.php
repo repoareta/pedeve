@@ -75,7 +75,7 @@ Route::group(['middleware'=> ['auth','checkRole:1']], function () {
             Route::get('perjalanan_dinas', 'PerjalananDinasController@index')->name('index');
             Route::get('perjalanan_dinas/index_json', 'PerjalananDinasController@indexJson')->name('index.json');
             Route::get('perjalanan_dinas/show_json', 'PerjalananDinasController@showJson')->name('show.json');
-            Route::get('perjalanan_dinas/index_json_detail/{no_panjar}', 'PerjalananDinasController@indexJsonDetail')->name('perjalanan_dinas.index.json.detail');
+            Route::get('perjalanan_dinas/index_json_detail/{no_panjar}', 'PerjalananDinasController@indexJsonDetail')->name('index.json.detail');
             Route::get('perjalanan_dinas/create', 'PerjalananDinasController@create')->name('create');
             Route::post('perjalanan_dinas/store', 'PerjalananDinasController@store')->name('store');
             Route::post('perjalanan_dinas/store_detail', 'PerjalananDinasController@storeDetail')->name('store.detail');
