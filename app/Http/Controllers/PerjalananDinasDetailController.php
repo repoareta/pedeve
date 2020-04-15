@@ -4,6 +4,14 @@ namespace App\Http\Controllers;
 
 use Illuminate\Http\Request;
 
+// Load Model
+use App\Models\PanjarHeader;
+use App\Models\PanjarDetail;
+
+// Load Plugin
+use Carbon\Carbon;
+use Session;
+
 class PerjalananDinasDetailController extends Controller
 {
     /**
@@ -11,7 +19,7 @@ class PerjalananDinasDetailController extends Controller
      *
      * @return \Illuminate\Http\Response
      */
-    public function index()
+    public function indexJson()
     {
         //
     }
