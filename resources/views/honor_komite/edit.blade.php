@@ -78,7 +78,7 @@
 						<input class="form-control" type="hidden" value="{{$row->bulan}}" name="bulan">
 								
 						</div>
-								<div class="col-2" >
+								<div class="col-4" >
 									<input class="form-control" type="text" value="{{$row->tahun}}" name="tahun" readonly style="background-color:#DCDCDC; cursor:not-allowed">
 									<input class="form-control" type="hidden" value="{{Auth::user()->userid}}"  name="userid" autocomplete='off'>
 								</div>
@@ -92,7 +92,7 @@
 						</div>
 						<div class="form-group row">
 							<label class="col-2 col-form-label">Nilai<span style="color:red;">*</span></label>
-							<div class="col-4">
+							<div class="col-8">
 								<input class="form-control" name="nilai" type="text" value="<?php echo number_format($row->nilai, 0, '', ''); ?>" id="nilai" required oninvalid="this.setCustomValidity('Nilai Harus Diisi..')" oninput="setCustomValidity('')" autocomplete='off' onkeypress="return hanyaAngka(event)">
 								<input type="hidden" value="<?php echo number_format($row->pajak, 0, '', ''); ?>" name="pajak" id="pajak">
 							</div>

@@ -78,7 +78,7 @@
 						<input class="form-control" type="hidden" value="{{$row->bulan}}" name="bulan">
 								
 						</div>
-								<div class="col-2" >
+								<div class="col-6" >
 									<input class="form-control" type="text" value="{{$row->tahun}}" name="tahun" readonly style="background-color:#DCDCDC; cursor:not-allowed">
 									<input class="form-control" type="hidden" value="{{Auth::user()->userid}}"  name="userid" autocomplete='off'>
 								</div>
@@ -104,10 +104,14 @@
 							</div>
 						</div>
 						@endforeach
-						<div style="float:right;">
-							<div class="kt-form__actions">
-								<a  href="{{route('potongan_koreksi_gaji.index')}}" class="btn btn-warning"><i class="fa fa-reply" aria-hidden="true"></i>Cancel</a>
-								<button type="submit" class="btn btn-brand"><i class="fa fa-check" aria-hidden="true"></i>Save</button>
+						<div class="kt-form__actions">
+							<div class="row">
+								<div class="col"></div>
+								<div class="col"></div>
+								<div class="col-10">
+									<a  href="{{route('potongan_koreksi_gaji.index')}}" class="btn btn-warning"><i class="fa fa-reply" aria-hidden="true"></i>Cancel</a>
+									<button type="submit" class="btn btn-brand"><i class="fa fa-check" aria-hidden="true"></i>Save</button>
+								</div>
 							</div>
 						</div>
 					</div>

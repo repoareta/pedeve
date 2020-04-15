@@ -61,36 +61,23 @@
 	</div>
 	<div class="kt-portlet__body">
 			<form action="{{route('potongan_otomatis.search.index')}}" method="post">{{csrf_field()}}
-					<p style="font-weight:bold;">
-				Pegawai	<select style="font-family: sans-serif;font-weight:bold;width:20%;height:25px;border-radius:5px;" name="nopek" class="" data-live-search="true">
+			Pegawai:	<select style="width:25%;height:30px;box-radius:50%;border-radius:30px;" name="nopek" class="selectpicker" data-live-search="true">
 								<option value="">- Pilih -</option>
 								@foreach($data_pegawai as $data)
-									<option value="{{$data->nopeg}}"> {{$data->nama}}</option>
+								<option value="{{$data->nopeg}}">{{$data->nopeg}} - {{$data->nama}}</option>
 								@endforeach
-							</select>
-			Potongan	<select style="font-family: sans-serif;font-weight:bold;width:20%;height:25px;border-radius:5px;" name="aard" class="" data-live-search="true">
-								<option value="">- Pilih -</option>
+						</select>
+			Potongan:	<select style="width:25%;height:30px;box-radius:50%;border-radius:30px;" name="aard" class="selectpicker" data-live-search="true">
+									<option value="">- Pilih -</option>
 								@foreach($data_potongan as $dataa)
-									<option value="{{$dataa->kode}}">{{$dataa->nama}}</option>
+									<option value="{{$dataa->kode}}">{{$dataa->nama}}{{$dataa->nama}}</option>
 								@endforeach
-							</select>
-				Bulan:   <select style="font-family: sans-serif;font-weight:bold;width:-10%;height:25px;border-radius:5px;" name="bulan" id="bulan" class="" data-live-search="true">
-							<option value="">- Pilih -</option>
-							<option value="1">Januari</option>
-							<option value="2">Februari</option>
-							<option value="3">Maret</option>
-							<option value="4">April</option>
-							<option value="5">Mei</option>
-							<option value="6">Juni</option>
-							<option value="7">Juli</option>
-							<option value="8">Agustus</option>
-							<option value="9">September</option>
-							<option value="10">Oktober</option>
-							<option value="11">November</option>
-							<option value="12">Desember</option>						
-					</select>
-			Tahun: <input style="font-family: sans-serif;font-weight:bold;width:10%;height:25px;border-radius:5px;"  name="tahun"  type="text" size="4" maxlength="4" value="" onkeypress="return hanyaAngka(event)" autocomplete='off'>  
-			<button type="submit" style="font-size: 20px;margin-left:5px;border-radius:10px;" class="kt-font-info pointer-link" data-toggle="kt-tooltip" data-placement="top" title="Cari Data"> <i class="fa fa-search"></i></button>  
+						</select>
+				Bulan: 	<input  style="width:4em;height:35px;border: 1px solid #DCDCDC;border-radius:5px;"  name="bulan" type="text" size="2" maxlength="2" value="" onkeypress="return hanyaAngka(event)" autocomplete='off'>
+
+				Tahun: 	<input style="width:10%;height:35px;border: 1px solid #DCDCDC;border-radius:5px;"  name="tahun" id="tahun" type="text" size="4" maxlength="4" value="" onkeypress="return hanyaAngka(event)" autocomplete='off'>  
+					<button type="submit" style="font-size: 20px;margin-left:5px;border-radius:10px;border-radius:10px;background-color:white;" class="kt-font-info pointer-link" data-toggle="kt-tooltip" data-placement="top" title="Cari Data"> <i class="fa fa-search"></i></button>  
+					
 			</form>
 		<!--begin: Datatable -->
 		<table class="table table-striped table-bordered table-hover table-checkable" id="kt_table" width="100%">

@@ -39,7 +39,7 @@ class PotonganKoreksiGajiController extends Controller
                 $bulan_buku = $data_bul->bulan_buku;
             }
             $tahuns = substr($bulan_buku,0,-2);
-            $bulan = $request->bulan;
+            $bulan = ltrim($request->bulan, '0');
             $tahun = $request->tahun;
             $nopek = $request->nopek;
         if($nopek == null){
@@ -68,7 +68,7 @@ class PotonganKoreksiGajiController extends Controller
      */
     public function create()
     {
-        $data_pegawai = SdmMasterPegawai::whereNotIn('status',['P'])->get();
+        $data_pegawai = DB::select("select nopeg,nama,status,nama from sdm_master_pegawai where status <>'P' order by nopeg");
         $pay_aard = PayAard::where('jenis', 10)->get();
         return view('potongan_koreksi_gaji.create', compact('pay_aard','data_pegawai'));
     }
