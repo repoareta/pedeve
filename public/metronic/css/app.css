@@ -60,6 +60,18 @@
     transition: all 0.3s ease;
 }
 
+label.kt-radio.kt-radio--solid {
+    display: inline-block;
+    position: relative;
+    padding-left: 30px;
+    text-align: left;
+    margin-bottom: 10px;
+    cursor: pointer;
+    font-size: 1rem;
+    -webkit-transition: all .3s ease;
+    transition: all .3s ease;
+}
+
 /* td.sorting_1 {
     padding-top: 0px;
 } */
@@ -86,4 +98,11 @@ td.no-wrap {
 
 .pointer-link {
     cursor: pointer;
+}
+
+.kt-aside-menu .kt-menu__nav>.kt-menu__item .kt-menu__submenu .kt-menu__item>.kt-menu__heading .kt-menu__link-text,
+.kt-aside-menu .kt-menu__nav>.kt-menu__item .kt-menu__submenu .kt-menu__item>.kt-menu__link .kt-menu__link-text {
+    font-weight: 300;
+    font-size: 1rem;
+    text-transform: initial;
 }

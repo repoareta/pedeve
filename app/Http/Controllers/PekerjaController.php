@@ -73,7 +73,7 @@ class PekerjaController extends Controller
      */
     public function create()
     {
-        //
+        return view('pekerja.create');
     }
 
     /**
@@ -82,9 +82,9 @@ class PekerjaController extends Controller
      * @param  \Illuminate\Http\Request  $request
      * @return \Illuminate\Http\Response
      */
-    public function store(Request $request)
+    public function store(Request $request, Pekerja $pekerja)
     {
-        //
+        dd($request);
     }
 
     /**
