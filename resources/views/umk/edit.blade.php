@@ -114,15 +114,28 @@
 							<input  class="form-control" type="text" value="<?php echo number_format($count, 0, '', ''); ?>" name="jumlah" id="jumlah" size="16" maxlength="16" hidden readonly>
 						</div>
 					</div>
+					<?php
+					if($data_umk->app_pbd == 'Y'){ ?>
 					<div class="kt-form__actions">
 						<div class="row">
 							<div class="col-2"></div>
 							<div class="col-10">
 								<a  href="{{route('uang_muka_kerja.index')}}" class="btn btn-warning"><i class="fa fa-reply" aria-hidden="true"></i>Cancel</a>
-								<button type="submit" class="btn btn-brand"><i class="fa fa-check" aria-hidden="true"></i>Save</button>
+								<button type="submit" class="btn btn-brand" disabled style="cursor:not-allowed"><i class="fa fa-check" aria-hidden="true"></i>Save</button>
 							</div>
 						</div>
 					</div>
+					<?php }else{ ?>
+						<div class="kt-form__actions">
+							<div class="row">
+								<div class="col-2"></div>
+								<div class="col-10">
+									<a  href="{{route('uang_muka_kerja.index')}}" class="btn btn-warning"><i class="fa fa-reply" aria-hidden="true"></i>Cancel</a>
+									<button type="submit" class="btn btn-brand"><i class="fa fa-check" aria-hidden="true"></i>Save</button>
+								</div>
+							</div>
+						</div>
+					<?php } ?>
                     @endforeach
 				</div>
 			</div>
@@ -143,6 +156,21 @@
 					<div class="kt-portlet__head-toolbar">
 						<div class="kt-portlet__head-wrapper">
 							<div class="kt-portlet__head-actions">
+							@foreach($data_umks as $data)
+							<?php
+							if($data->app_pbd == 'Y'){ ?>
+								<span style="font-size: 2em;" class="kt-font-success" data-toggle="kt-tooltip" data-placement="top" title="Tambah Data">
+									<i class="fas fa-plus-circle" disabled style="cursor:not-allowed"></i>
+								</span>
+				
+								<span style="font-size: 2em;" class="kt-font-warning pointer-link" data-toggle="kt-tooltip" data-placement="top" title="Ubah Data">
+									<i class="fas fa-edit"  disabled style="cursor:not-allowed"></i>
+								</span>
+				
+								<span style="font-size: 2em;" class="kt-font-danger pointer-link" data-toggle="kt-tooltip" data-placement="top" title="Hapus Data">
+									<i class="fas fa-times-circle"  disabled style="cursor:not-allowed"></i>
+								</span>
+							<?php }else{ ?>
 								<a href="#" id="btn-create-detail" data-target="#kt_modal_4">
 									<span style="font-size: 2em;" class="kt-font-success" data-toggle="kt-tooltip" data-placement="top" title="Tambah Data">
 										<i class="fas fa-plus-circle"></i>
@@ -156,6 +184,8 @@
 								<span style="font-size: 2em;" class="kt-font-danger pointer-link" data-toggle="kt-tooltip" data-placement="top" title="Hapus Data">
 									<i class="fas fa-times-circle" id="deleteRow"></i>
 								</span>
+							<?php } ?>
+							@endforeach
 							</div>
 						</div>
 					</div>
@@ -427,8 +457,6 @@
 							<input  class="form-control" type="text" value="" id="nilai" name="nilai" onkeypress="return hanyaAngka(event)" autocomplete='off'>
 						</div>
 					</div>
-
-																					
 					<div class="kt-form__actions">
 						<div class="row">
 							<div class="col-2"></div>

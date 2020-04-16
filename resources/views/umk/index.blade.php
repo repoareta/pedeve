@@ -72,7 +72,7 @@
 		<table id="data-umk-table" class="table table-striped table-bordered table-hover table-checkable" width="100%">
 			<thead class="thead-light">
 				<tr>
-					<th><input type="radio" hidden name="btn-radio"  data-id="1" class="btn-radio" checked ><input type="radio" hidden name="btn-radio-rekap"  data-id-rekap="1" class="btn-radio-rekap" checked ></th>
+					<th><input type="radio" hidden name="btn-radio"  data-id="1" class="btn-radio" checked ></th>
 					<th>Tanggal</th>
 					<th>No UMK</th>
 					<th>No Kas/Bank</th>
@@ -87,12 +87,12 @@
 				<tr>
 					<td>
 						<?php if($data->app_pbd == 'Y'){
-							echo '<label class="kt-radio kt-radio--bold kt-radio--brand"><input type="radio" data-id-rekap="'.str_replace('/', '-', $data->no_umk).'" class="btn-radio-rekap" name="btn-radio-rekap"><span></span></label>';
+							echo '<label class="kt-radio kt-radio--bold kt-radio--brand"><input type="radio" data-s="Y" dataumk="'.$data->no_umk.'" data-id="'.str_replace('/', '-', $data->no_umk).'" class="btn-radio" name="btn-radio"><span></span></label>';
 						}else{
 							if($data->app_sdm == 'Y'){
-							echo '<label class="kt-radio kt-radio--bold kt-radio--brand"><input type="radio" disabled class="btn-radio" ><span></span></label>';
+							echo '<label class="kt-radio kt-radio--bold kt-radio--brand"><input type="radio" data-s="N" dataumk="'.$data->no_umk.'" data-id="'.str_replace('/', '-', $data->no_umk).'" name="btn-radio" class="btn-radio" ><span></span></label>';
 							}else{
-								echo '<label class="kt-radio kt-radio--bold kt-radio--brand"><input type="radio" class="btn-radio" dataumk="'.$data->no_umk.'" data-id="'.str_replace('/', '-', $data->no_umk).'" name="btn-radio"><span></span></label>';
+								echo '<label class="kt-radio kt-radio--bold kt-radio--brand"><input type="radio" data-s="N" class="btn-radio" dataumk="'.$data->no_umk.'" data-id="'.str_replace('/', '-', $data->no_umk).'" name="btn-radio"><span></span></label>';
 							}
 						} ?>
 					</td>
@@ -155,9 +155,9 @@ $('#reportRow').on('click', function(e) {
 	e.preventDefault();
 
 var allVals = [];  
-$(".btn-radio-rekap:checked").each(function() {  
+$(".btn-radio:checked").each(function() {  
 	e.preventDefault();
-	var dataid = $(this).attr('data-id-rekap');
+	var dataid = $(this).attr('data-id');
 	var dataa = $(this).attr('dataumk');
 
 	if(dataid == 1) 
@@ -209,51 +209,60 @@ $('#deleteRow').click(function(e) {
 				{  
 					swalAlertInit('hapus'); 
 				}  else { 
-				$("input[type=radio]:checked").each(function() {
-					var id = $(this).attr('dataumk');
-					// delete stuff
-						const swalWithBootstrapButtons = Swal.mixin({
-						customClass: {
-							confirmButton: 'btn btn-primary',
-							cancelButton: 'btn btn-danger'
-						},
-							buttonsStyling: false
-						})
-						swalWithBootstrapButtons.fire({
-							title: "Data yang akan dihapus?",
-							text: "No. UMK : " + id,
-							type: 'warning',
-							showCancelButton: true,
-							reverseButtons: true,
-							confirmButtonText: 'Ya, hapus',
-							cancelButtonText: 'Batalkan'
-						})
-						.then((result) => {
-						if (result.value) {
-							$.ajax({
-								url: "{{ route('uang_muka_kerja.delete') }}",
-								type: 'DELETE',
-								dataType: 'json',
-								data: {
-									"id": id,
-									"_token": "{{ csrf_token() }}",
-								},
-								success: function () {
-									Swal.fire({
-										type  : 'success',
-										title : 'Hapus No. UMK ' + id,
-										text  : 'Berhasil',
-										timer : 2000
-									}).then(function() {
-										location.reload();
+					$("input[type=radio]:checked").each(function() {
+						var id = $(this).attr('dataumk');
+						var status = $(this).attr('data-s');
+						// delete stuff
+						if(status == 'Y'){
+							Swal.fire({
+										type  : 'info',
+										title : 'Data Tidak Bisa Dihapus, Data Sudah di Proses Perbendaharaan.',
+										text  : 'Failed',
 									});
-								},
-								error: function () {
-									alert("Terjadi kesalahan, coba lagi nanti");
-								}
-							});
-						}
-					});
+						}else{
+							const swalWithBootstrapButtons = Swal.mixin({
+							customClass: {
+								confirmButton: 'btn btn-primary',
+								cancelButton: 'btn btn-danger'
+							},
+								buttonsStyling: false
+							})
+							swalWithBootstrapButtons.fire({
+								title: "Data yang akan dihapus?",
+								text: "No. UMK : " + id,
+								type: 'warning',
+								showCancelButton: true,
+								reverseButtons: true,
+								confirmButtonText: 'Ya, hapus',
+								cancelButtonText: 'Batalkan'
+							})
+							.then((result) => {
+							if (result.value) {
+								$.ajax({
+									url: "{{ route('uang_muka_kerja.delete') }}",
+									type: 'DELETE',
+									dataType: 'json',
+									data: {
+										"id": id,
+										"_token": "{{ csrf_token() }}",
+									},
+									success: function () {
+										Swal.fire({
+											type  : 'success',
+											title : 'Hapus No. UMK ' + id,
+											text  : 'Berhasil',
+											timer : 2000
+										}).then(function() {
+											location.reload();
+										});
+									},
+									error: function () {
+										alert("Terjadi kesalahan, coba lagi nanti");
+									}
+								});
+							}
+						});
+					}
 				});
 			} 
 			

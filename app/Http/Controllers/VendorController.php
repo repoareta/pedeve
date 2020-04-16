@@ -60,6 +60,7 @@ class VendorController extends Controller
             Vendor::where('vendorid', $request->vendorid)
                 ->update([
                 'nama' => $request->nama,
+                'norek' => $request->norek,
                 'alamat' => $request->alamat,
                 'telpon' => $request->telp,
                 ]);
@@ -67,6 +68,7 @@ class VendorController extends Controller
             }else{
                 DB::table('tbl_vendor')->insert([
                 'nama' => $request->nama,
+                'norek' => $request->norek,
                 'alamat' => $request->alamat,
                 'telpon' => $request->telp,
                 ]);

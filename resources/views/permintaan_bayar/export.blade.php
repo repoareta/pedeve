@@ -71,12 +71,12 @@
                     <td width="600px">TERLAMPIR DIKIRIMKAN DOKUMEN PENUNJANG :</td><br>
                 </tr>
                 <tr style="font-size: 10pt;">
-                    <td width="200px">{{$data_report->lampiran}}</td>
+                    <td width="200px">{{strtoupper($data_report->lampiran)}}</td>
                 </tr>
         </table>
         <table width="100%" style="padding-top:10px;" >
                 <tr style="font-size: 10pt;">
-                    <td width="200px">UNTUK PEMBAYARAN</td><td width="20px">:</td><td>{{$data_report->keterangan}}</td>
+                    <td width="200px">UNTUK PEMBAYARAN</td><td width="20px">:</td><td>{{strtoupper($data_report->keterangan)}}</td>
                 </tr>
         </table>
         <table width="100%" style="padding-top:10px;" >
@@ -86,7 +86,7 @@
         </table>
         <table width="100%" style="padding-top:5px;" >
                 <tr style="font-size: 10pt;">
-                    <td width="200px">DIBAYARKAN KEPADA</td><td width="20px">:</td><td>{{$data_report->kepada}}</td>
+                    <td width="200px">DIBAYARKAN KEPADA</td><td width="20px">:</td><td>{{strtoupper($data_report->kepada)}}</td>
                 </tr>
         </table>
         
@@ -110,7 +110,7 @@
         <table width="100%"  >
                 <tr style="font-size: 10pt;">
                     <td style="border-bottom:2px dotted black;" width="70px" align="center">{{$no}}</td>
-                    <td style="border-bottom:2px dotted black;" width="275">{{$data_detail->keterangan}}</td>
+                    <td style="border-bottom:2px dotted black;" width="275">{{strtoupper($data_detail->keterangan)}}</td>
                     <td  width="70"  align="center">{{$data_detail->account}}</td>
                     <td  width="50">USD</td>
                     <td  ><?php echo number_format($data_detail->nilai, 0, ',', '.'); ?></td>
@@ -132,7 +132,7 @@
                     <td align="center" width="200">MENYETUJUI,</td><td align="center" width="200">PEMOHON,</td><br>
                 </tr>
                 <tr style="font-size: 10pt;">
-                    <td align="center" width="200">CS & BS</td><td align="center" width="200">IA & RM</td><br>
+                    <td align="center" width="200">{{strtoupper($data_report->menyetujuijb)}}</td><td align="center" width="200">{{strtoupper($data_report->pemohonjb)}}</td><br>
                 </tr>
         </table>
         <table width="100%" style="font-size: 10pt; padding-top:10px;">
@@ -170,12 +170,12 @@
                     <td width="600px">TERLAMPIR DIKIRIMKAN DOKUMEN PENUNJANG :</td><br>
                 </tr>
                 <tr style="font-size: 10pt;">
-                    <td width="200px">{{$data_report->lampiran}}</td>
+                    <td width="200px">{{strtoupper($data_report->lampiran)}}</td>
                 </tr>
         </table>
         <table width="100%" style="padding-top:10px;" >
                 <tr style="font-size: 10pt;">
-                    <td width="200px">UNTUK PEMBAYARAN</td><td width="20px">:</td><td>{{$data_report->keterangan}}</td>
+                    <td width="200px">UNTUK PEMBAYARAN</td><td width="20px">:</td><td>{{strtoupper($data_report->keterangan)}}</td>
                 </tr>
         </table>
         <table width="100%" style="padding-top:10px;" >
@@ -188,7 +188,7 @@
         </table>
         <table width="100%" style="padding-top:5px;" >
                 <tr style="font-size: 10pt;">
-                    <td width="200px">DIBAYARKAN KEPADA</td><td width="20px">:</td><td>{{$data_report->kepada}}</td>
+                    <td width="200px">DIBAYARKAN KEPADA</td><td width="20px">:</td><td>{{strtoupper($data_report->kepada)}}</td>
                 </tr>
         </table>
         
@@ -212,7 +212,7 @@
         <table width="100%"  >
                 <tr style="font-size: 10pt;">
                     <td style="border-bottom:2px dotted black;" width="70px" align="center">{{$no}}</td>
-                    <td style="border-bottom:2px dotted black;" width="275">{{$data_detail->keterangan}}</td>
+                    <td style="border-bottom:2px dotted black;" width="275">{{strtoupper($data_detail->keterangan)}}</td>
                     <td  width="70"  align="center">{{$data_detail->account}}</td>
                     <td  width="50">Rp.</td>
                     <td  ><?php echo number_format($data_detail->nilai, 2, ',', '.'); ?></td>

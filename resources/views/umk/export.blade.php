@@ -70,7 +70,7 @@
                     <td width="600px">PERMINTAAN UANG MUKA KERJA/PANJAR KERJA YANG AKAN DIPERGUNAKAN UNTUK :</td>
                 </tr>
                 <tr style="font-size: 10pt;">
-                    <td width="200px">{{$data_report->keterangan}}</td>
+                    <td width="200px">{{strtoupper($data_report->keterangan)}}</td>
                 </tr>
         </table>
         <table width="100%" style="padding-top:20px;" >
@@ -88,7 +88,7 @@
         @foreach($detail_list as $data_detail)
         <?php $no++; ?>
                 <tr style="font-size: 10pt;">
-                <td style="border-bottom:2px dotted black;" align="center">{{$no}}</td><td style="border-bottom:2px dotted black;" width="560px">{{$data_detail->keterangan}}</td><td width="60px">USD</td><td><?php echo number_format($data_detail->nilai, 0, ',', '.'); ?></td><br>
+                <td style="border-bottom:2px dotted black;" align="center">{{$no}}</td><td style="border-bottom:2px dotted black;" width="560px">{{strtoupper($data_detail->keterangan)}}</td><td width="60px">USD</td><td><?php echo number_format($data_detail->nilai, 0, ',', '.'); ?></td><br>
                 </tr>
         @endforeach
         </table>
@@ -107,7 +107,7 @@
                     <td align="center" width="200">MENYETUJUI,</td><td align="center" width="200">PEMOHON,</td><br>
                 </tr>
                 <tr style="font-size: 10pt;">
-                    <td align="center" width="200">CS & BS</td><td align="center" width="200">IA & RM</td><br>
+                    <td align="center" width="200">{{strtoupper($request->menyetujuijb)}}</td><td align="center" width="200">{{strtoupper($request->pemohonjb)}}</td><br>
                 </tr>
         </table>
         <table width="100%" style="font-size: 10pt; padding-top:10px;">
@@ -144,7 +144,7 @@
                     <td width="600px">PERMINTAAN UANG MUKA KERJA/PANJAR KERJA YANG AKAN DIPERGUNAKAN UNTUK :</td>
                 </tr>
                 <tr style="font-size: 10pt;">
-                    <td width="200px">{{$data_report->keterangan}}</td>
+                    <td width="200px">{{strtoupper($data_report->keterangan)}}</td>
                 </tr>
         </table>
         <table width="100%" style="padding-top:20px;" >
@@ -165,7 +165,7 @@
         @foreach($detail_list as $data_detail)
         <?php $no++; ?>
                 <tr style="font-size: 10pt;">
-                <td style="border-bottom:2px dotted black;" align="center">{{$no}}</td><td style="border-bottom:2px dotted black;" width="560px">{{$data_detail->keterangan}}</td><td width="60px">Rp.</td><td><?php echo number_format($data_detail->nilai, 2, ',', '.'); ?></td><br>
+                <td style="border-bottom:2px dotted black;" align="center">{{$no}}</td><td style="border-bottom:2px dotted black;" width="560px">{{strtoupper($data_detail->keterangan)}}</td><td width="60px">Rp.</td><td><?php echo number_format($data_detail->nilai, 2, ',', '.'); ?></td><br>
                 </tr>
         @endforeach
         </table>

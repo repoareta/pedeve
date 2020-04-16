@@ -83,16 +83,30 @@
                     <input class="form-control" type="text" name="tglsurat" value="{{ date('d/m/Y') }}"  id="tglsurat" size="15" maxlength="15" required autocomplete='off'>
 				</div>
 			</div>
-
+			@foreach($data_report as $data)
+			<?php
+			if($data->app_pbd == 'Y'){ ?>
             <div class="kt-form__actions">
                 <div class="row">
                     <div class="col-2"></div>
                     <div class="col-10">
                         <a  href="{{ route('uang_muka_kerja.index') }}" class="btn btn-warning"><i class="fa fa-reply" aria-hidden="true"></i> Batal</a>
-                        <button type="submit" class="btn btn-brand" onclick="$('form').attr('target', '_blank')"><i class="fa fa-print" aria-hidden="true"></i> Cetak</button>
+                        <button type="submit" class="btn btn-brand" disabled style="cursor:not-allowed"><i class="fa fa-print" aria-hidden="true"></i> Cetak</button>
                     </div>
                 </div>
-            </div>
+			</div>
+			<?php }else{ ?>
+				<div class="kt-form__actions">
+					<div class="row">
+						<div class="col-2"></div>
+						<div class="col-10">
+							<a  href="{{ route('uang_muka_kerja.index') }}" class="btn btn-warning"><i class="fa fa-reply" aria-hidden="true"></i> Batal</a>
+							<button type="submit" class="btn btn-brand" onclick="$('form').attr('target', '_blank')"><i class="fa fa-print" aria-hidden="true"></i> Cetak</button>
+						</div>
+					</div>
+				</div>
+			<?php } ?>
+			@endforeach
         </form>
 	</div>
 </div>
