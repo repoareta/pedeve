@@ -60,9 +60,15 @@
 		</div>
 	</div>
 	<div class="kt-portlet__body">
-		<div style="float:right;"><form action="{{route('permintaan_bayar.search.index')}}" method="post">{{csrf_field()}}
-		  <p style="font-weight:bold;">No. Permintaan: <input style="width:20%;height:30px;box-radius:50%;border-radius:10px;"  name="permintaan" type="text" size="18" maxlength="18" value="" autocomplete='off'> Tahun: <input style="width:10%;height:30px;box-radius:50%;border-radius:10px;"  name="tahun" type="text" size="4" maxlength="4" value="" onkeypress="return hanyaAngka(event)" autocomplete='off'> Bulan: <input style="width:10%;height:30px;box-radius:50%;border-radius:10px;"  name="bulan" type="text" size="2" maxlength="2" value="" onkeypress="return hanyaAngka(event)" autocomplete='off'> <button type="submit" style="font-size: 20px;margin-left:5px;border-radius:10px;" class="kt-font-info pointer-link" data-toggle="kt-tooltip" data-placement="top" title="Cari Data"> <i class="fa fa-search"></i></button>  
-		</form></div>
+			<form action="{{route('permintaan_bayar.search.index')}}" method="post">{{csrf_field()}}
+			No. UMK: 	<input  style="width:14em;height:35px;border: 1px solid #DCDCDC;border-radius:5px;"  name="permintaan" type="text" size="18" maxlength="18" value="" autocomplete='off'> 
+
+				Bulan: 	<input  style="width:4em;height:35px;border: 1px solid #DCDCDC;border-radius:5px;"  name="bulan" type="text" size="2" maxlength="2" value="" onkeypress="return hanyaAngka(event)" autocomplete='off'>
+
+				Tahun: 	<input style="width:10%;height:35px;border: 1px solid #DCDCDC;border-radius:5px;"  name="tahun" id="tahun" type="text" size="4" maxlength="4" value="" onkeypress="return hanyaAngka(event)" autocomplete='off'>  
+					<button type="submit" style="font-size: 20px;margin-left:5px;border-radius:10px;border-radius:10px;background-color:white;" class="kt-font-info pointer-link" data-toggle="kt-tooltip" data-placement="top" title="Cari Data"> <i class="fa fa-search"></i></button>  
+					
+			</form>
 
 		<!--begin: Datatable -->
 		<table class="table table-striped table-bordered table-hover table-checkable" id="table-permintaan">
@@ -83,12 +89,12 @@
 				<tr>
 					<td>
 						<?php if($data->app_pbd == 'Y'){
-							 echo'<label class="kt-radio kt-radio--bold kt-radio--brand"><input type="radio" data-id-rekap="'.str_replace('/', '-', $data->no_bayar).'" class="btn-radio-rekap" name="btn-radio-rekap"><span></span></label>';
+							 echo'<label class="kt-radio kt-radio--bold kt-radio--brand"><input type="radio" class="btn-radio" data-s="Y" databayar="'.$data->no_bayar.'" data-id="'.str_replace('/', '-', $data->no_bayar).'" name="btn-radio" ><span></span></label>';
 						}else{
 							if($data->app_sdm == 'Y'){
-							echo '<label class="kt-radio kt-radio--bold kt-radio--brand"><input class="btn-radio" type="radio" disabled class="btn-radio" ><span></span></label>';
+							echo '<label class="kt-radio kt-radio--bold kt-radio--brand"><input type="radio" class="btn-radio" data-s="N" databayar="'.$data->no_bayar.'" data-id="'.str_replace('/', '-', $data->no_bayar).'" name="btn-radio"><span></span></label>';
 							}else{
-							 echo '<label  class="kt-radio kt-radio--bold kt-radio--brand"><input type="radio" class="btn-radio" databayar="'.$data->no_bayar.'" data-id="'.str_replace('/', '-', $data->no_bayar).'" name="btn-radio"><span></span></label>';
+							 echo '<label  class="kt-radio kt-radio--bold kt-radio--brand"><input type="radio" class="btn-radio" data-s="N" databayar="'.$data->no_bayar.'" data-id="'.str_replace('/', '-', $data->no_bayar).'" name="btn-radio"><span></span></label>';
 							}
 						} ?>
 					</td>
@@ -146,10 +152,10 @@
 $('#reportRow').on('click', function(e) {
 	e.preventDefault();
 
-	if($('input[class=btn-radio-rekap]').is(':checked')) { 
-		$("input[class=btn-radio-rekap]:checked").each(function() {  
+	if($('input[class=btn-radio]').is(':checked')) { 
+		$("input[class=btn-radio]:checked").each(function() {  
 			e.preventDefault();
-			var dataid = $(this).attr('data-id-rekap');
+			var dataid = $(this).attr('data-id');
 				location.replace("{{url('umum/permintaan_bayar/rekap')}}"+ '/' +dataid);
 		});
 	} else{
@@ -178,49 +184,58 @@ $('#reportRow').on('click', function(e) {
 			if($('input[class=btn-radio]').is(':checked')) { 
 				$("input[class=btn-radio]:checked").each(function() {
 					var id = $(this).attr('data-id');
+					var status = $(this).attr('data-s');
 					// delete stuff
-					const swalWithBootstrapButtons = Swal.mixin({
-						customClass: {
-							confirmButton: 'btn btn-primary',
-							cancelButton: 'btn btn-danger'
-						},
-							buttonsStyling: false
-						})
-						swalWithBootstrapButtons.fire({
-							title: "Data yang akan dihapus?",
-							text: "No. bayar : " + id,
-							type: 'warning',
-							showCancelButton: true,
-							reverseButtons: true,
-							confirmButtonText: 'Ya, hapus',
-							cancelButtonText: 'Batalkan'
-						})
-						.then((result) => {
-						if (result.value) {
-							$.ajax({
-								url: "{{ route('permintaan_bayar.delete') }}",
-								type: 'DELETE',
-								dataType: 'json',
-								data: {
-									"id": id,
-									"_token": "{{ csrf_token() }}",
-								},
-								success: function () {
-									Swal.fire({
-										type  : 'success',
-										title : 'Hapus No. UMK ' + id,
-										text  : 'Berhasil',
-										timer : 2000
-									}).then(function() {
-										location.reload();
-									});
-								},
-								error: function () {
-									alert("Terjadi kesalahan, coba lagi nanti");
-								}
-							});
-						}
-					});
+					if(status == 'Y'){
+						Swal.fire({
+									type  : 'info',
+									title : 'Data Tidak Bisa Dihapus, Data Sudah di Proses Perbendaharaan.',
+									text  : 'Failed',
+								});
+					}else{
+						const swalWithBootstrapButtons = Swal.mixin({
+							customClass: {
+								confirmButton: 'btn btn-primary',
+								cancelButton: 'btn btn-danger'
+							},
+								buttonsStyling: false
+							})
+							swalWithBootstrapButtons.fire({
+								title: "Data yang akan dihapus?",
+								text: "No. bayar : " + id,
+								type: 'warning',
+								showCancelButton: true,
+								reverseButtons: true,
+								confirmButtonText: 'Ya, hapus',
+								cancelButtonText: 'Batalkan'
+							})
+							.then((result) => {
+							if (result.value) {
+								$.ajax({
+									url: "{{ route('permintaan_bayar.delete') }}",
+									type: 'DELETE',
+									dataType: 'json',
+									data: {
+										"id": id,
+										"_token": "{{ csrf_token() }}",
+									},
+									success: function () {
+										Swal.fire({
+											type  : 'success',
+											title : 'Hapus No. UMK ' + id,
+											text  : 'Berhasil',
+											timer : 2000
+										}).then(function() {
+											location.reload();
+										});
+									},
+									error: function () {
+										alert("Terjadi kesalahan, coba lagi nanti");
+									}
+								});
+							}
+						});
+					}
 				});
 			} else {
 				swalAlertInit('hapus');

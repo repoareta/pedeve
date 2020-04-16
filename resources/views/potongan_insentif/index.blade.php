@@ -6,7 +6,7 @@
 	<div class="kt-container  kt-container--fluid ">
 		<div class="kt-subheader__main">
 			<h3 class="kt-subheader__title">
-				Potongan </h3>
+				Potongan Insentif </h3>
 			<span class="kt-subheader__separator kt-hidden"></span>
 			<div class="kt-subheader__breadcrumbs">
 				<a href="#" class="kt-subheader__breadcrumbs-home"><i class="flaticon2-shelter"></i></a>
@@ -14,7 +14,7 @@
 				<a href="" class="kt-subheader__breadcrumbs-link">
 					Payroll </a>
 				<span class="kt-subheader__breadcrumbs-separator"></span>
-				<span class="kt-subheader__breadcrumbs-link kt-subheader__breadcrumbs-link--active">Potongan</span>
+				<span class="kt-subheader__breadcrumbs-link kt-subheader__breadcrumbs-link--active">Potongan Insentif</span>
 			</div>
 		</div>
 	</div>
@@ -29,12 +29,12 @@
 				<i class="kt-font-brand flaticon2-line-chart"></i>
 			</span>
 			<h3 class="kt-portlet__head-title">
-				Tabel Potongan
+				Tabel Potongan Insentif
 			</h3>			
 			<div class="kt-portlet__head-toolbar">
 				<div class="kt-portlet__head-wrapper">
 					<div class="kt-portlet__head-actions">
-						<a href="{{ route('potongan_manual.create') }}">
+						<a href="{{ route('potongan_insentif.create') }}">
 							<span style="font-size: 2em;" class="kt-font-success" data-toggle="kt-tooltip" data-placement="top" title="Tambah Data">
 								<i class="fas fa-plus-circle"></i>
 							</span>
@@ -60,8 +60,8 @@
 		</div>
 	</div>
 	<div class="kt-portlet__body">
-			<form action="{{route('potongan_manual.search.index')}}" method="post">{{csrf_field()}}
-				Pegawai	<select style="width:25%;height:30px;box-radius:50%;border-radius:30px;" name="nopek" class="selectpicker" data-live-search="true">
+	<form action="{{route('potongan_insentif.search.index')}}" method="post">{{csrf_field()}}
+				Pegawai	<select style="width:25%;height:30px;box-radius:50%;border-radius:30px;" name="nopek"  class="selectpicker" data-live-search="true">
 								<option value="">- Pilih -</option>
 								@foreach($data_pegawai as $data)
 								<option value="{{$data->nopeg}}">{{$data->nopeg}} - {{$data->nama}}</option>
@@ -80,9 +80,6 @@
 					<th></th>
 					<th>Bulan</th>
 					<th>Pegawai</th>
-					<th>AARD</th>
-					<th>Cicilan Ke-</th>
-					<th>Jumlah Cicilan</th>
 					<th>Nilai</th>
 				</tr>
 			</thead>
@@ -106,15 +103,12 @@
 							      );
 							    $bulan= strtoupper($array_bln[$data->bulan]);
 					?>
-						<?php echo '<label class="kt-radio kt-radio--bold kt-radio--brand"><input type="radio" tahun="'.$data->tahun.'" bulan="'.$data->bulan.'"  aard="'.$data->aard.'" nopek="'.$data->nopek.'" nama="'.$data->nama_nopek.'" data-nopek="" class="btn-radio" name="btn-radio-rekap"><span></span></label>'; ?>
+						<?php echo '<label class="kt-radio kt-radio--bold kt-radio--brand"><input type="radio" tahun="'.$data->tahun.'" bulan="'.$data->bulan.'"   nopek="'.$data->nopek.'" nama="'.$data->nama_nopek.'" data-nopek="" class="btn-radio" name="btn-radio-rekap"><span></span></label>'; ?>
 					</td>
 					<td>
 					<?php echo $bulan ?>
 					</td>
 					<td>{{$data->nopek}}-{{$data->nama_nopek}}</td>
-					<td>{{$data->aard}}-{{$data->nama_aard}}</td>
-					<td align="center"><?php echo number_format($data->ccl, 0, '', '') ?></td>
-					<td align="center"><?php echo number_format($data->jmlcc, 0, '', '') ?></td>
 					<td>Rp. <?php echo number_format($data->nilai, 2, '.', ',') ?></td>
 				</tr>
 			@endforeach
@@ -151,9 +145,8 @@ $('#editRow').click(function(e) {
 			var tahun = $(this).attr('tahun');
 			var bulan = $(this).attr('bulan');
 			var nopek = $(this).attr('nopek');
-			var aard  = $(this).attr('aard');
 			var nama  = $(this).attr('nama');
-			location.replace("{{url('sdm/potongan_manual/edit')}}"+ '/' +bulan+'/' +tahun+'/'+aard+ '/' +nopek);
+			location.replace("{{url('sdm/potongan_insentif/edit')}}"+ '/' +bulan+'/' +tahun+'/' +nopek);
 		});
 	} else {
 		swalAlertInit('ubah');
@@ -163,7 +156,7 @@ $('#editRow').click(function(e) {
 //refresh data
 $('#show-data').on('click', function(e) {
 	e.preventDefault();
-		location.replace("{{ route('potongan_manual.index') }}");
+		location.replace("{{ route('potongan_insentif.index') }}");
 
 });
 
@@ -175,7 +168,6 @@ if($('input[type=radio]').is(':checked')) {
 		var tahun = $(this).attr('tahun');
 		var bulan = $(this).attr('bulan');
 		var nopek = $(this).attr('nopek');
-		var aard  = $(this).attr('aard');
 		var nama  = $(this).attr('nama');
 		// delete stuff
 		const swalWithBootstrapButtons = Swal.mixin({
@@ -197,14 +189,13 @@ if($('input[type=radio]').is(':checked')) {
 			.then((result) => {
 			if (result.value) {
 				$.ajax({
-					url: "{{ route('potongan_manual.delete') }}",
+					url: "{{ route('potongan_insentif.delete') }}",
 					type: 'DELETE',
 					dataType: 'json',
 					data: {
 						"bulan": bulan,
 						"tahun": tahun,
 						"nopek": nopek,
-						"aard": aard,
 						"nama": nama,
 						"_token": "{{ csrf_token() }}",
 					},

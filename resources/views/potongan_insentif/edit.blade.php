@@ -6,7 +6,7 @@
 	<div class="kt-container  kt-container--fluid ">
 		<div class="kt-subheader__main">
 			<h3 class="kt-subheader__title">
-				Koreksi Gaji </h3>
+				Potongan Insentif </h3>
 			<span class="kt-subheader__separator kt-hidden"></span>
 			<div class="kt-subheader__breadcrumbs">
 				<a href="#" class="kt-subheader__breadcrumbs-home"><i class="flaticon2-shelter"></i></a>
@@ -15,7 +15,7 @@
 					Sdm & Payroll </a>
 				<span class="kt-subheader__breadcrumbs-separator"></span>
 				<a href="" class="kt-subheader__breadcrumbs-link">
-					Koreksi Gaji </a>
+					Potongan Insentif </a>
 				<span class="kt-subheader__breadcrumbs-separator"></span>
 				<span class="kt-subheader__breadcrumbs-link kt-subheader__breadcrumbs-link--active">Edit</span>
 			</div>
@@ -32,7 +32,7 @@
 					<i class="kt-font-brand flaticon2-plus-1"></i>
 				</span>
 				<h3 class="kt-portlet__head-title">
-					Edit Koreksi Gaji
+					Edit Potongan Insentif
 				</h3>			
 			</div>
 			<div class="kt-portlet__head-toolbar">
@@ -49,13 +49,13 @@
 						<div class="alert alert-secondary" role="alert">
 							<div class="alert-text">
 								<h5 class="kt-portlet__head-title">
-									Header Koreksi Gaji
+									Header Potongan Insentif
 								</h5>	
 							</div>
 						</div>
-						@foreach($data_list as $row)
+						@foreach($data_list as $data)
 						<div class="form-group row">
-						<label for="spd-input" class="col-2 col-form-label">Bulan/Tahun<span style="color:red;">*</span></label>
+						<label for="spd-input" class="col-2 col-form-label">Bulan Gaji<span style="color:red;">*</span></label>
 						<div class="col-4">
 							<?php 
 							$array_bln	 = array (
@@ -72,35 +72,28 @@
 										'November',
 										'Desember'
 									);
-									$bulan= strtoupper($array_bln[$row->bulan]);
+									$bulan= strtoupper($array_bln[$data->bulan]);
 							?>
 						<input class="form-control" type="text" value="{{$bulan}}"readonly style="background-color:#DCDCDC; cursor:not-allowed">
-						<input class="form-control" type="hidden" value="{{$row->bulan}}" name="bulan">
+						<input class="form-control" type="hidden" value="{{$data->bulan}}" name="bulan">
 								
 						</div>
-								<div class="col-6" >
-									<input class="form-control" type="text" value="{{$row->tahun}}" name="tahun" readonly style="background-color:#DCDCDC; cursor:not-allowed">
+								<div class="col-4" >
+									<input class="form-control" type="text" value="{{$data->tahun}}" name="tahun" readonly style="background-color:#DCDCDC; cursor:not-allowed">
 									<input class="form-control" type="hidden" value="{{Auth::user()->userid}}"  name="userid" autocomplete='off'>
 								</div>
 						</div>
 						<div class="form-group row">
 							<label for="" class="col-2 col-form-label">Pegawai<span style="color:red;">*</span></label>
-							<div class="col-10">
-								<input class="form-control" type="text" value="{{$row->nopek}} - {{$row->nama_nopek}}"  readonly style="background-color:#DCDCDC; cursor:not-allowed">
-								<input class="form-control" type="hidden" value="{{$row->nopek}}" name="nopek">
-							</div>
-						</div>
-						<div class="form-group row">
-							<label for="" class="col-2 col-form-label">AARD<span style="color:red;">*</span></label>
-							<div class="col-10">
-								<input class="form-control" type="hidden" value="{{$row->aard}}" name="aard">
-								<input class="form-control" type="text" value="{{$row->aard}} - {{$row->nama_aard}}"  readonly style="background-color:#DCDCDC; cursor:not-allowed">
+							<div class="col-8">
+							<input class="form-control" type="text" value="{{$data->nopek}} - {{$data->nama_nopek}}"  readonly style="background-color:#DCDCDC; cursor:not-allowed">
+							<input class="form-control" type="hidden" value="{{$data->nopek}}" name="nopek" >
 							</div>
 						</div>
 						<div class="form-group row">
 							<label class="col-2 col-form-label">Nilai<span style="color:red;">*</span></label>
-							<div class="col-4">
-								<input class="form-control" name="nilai" type="text" value="<?php echo number_format($row->nilai, 0, '', ''); ?>" id="nilai" required oninvalid="this.setCustomValidity('Nilai Harus Diisi..')" oninput="setCustomValidity('')" autocomplete='off' onkeypress="return hanyaAngka(event)">
+							<div class="col-8">
+								<input class="form-control" name="nilai" type="text" value="<?php echo number_format($data->nilai, 0, '', '') ?>" id="nilai" size="17" maxlength="17" required oninvalid="this.setCustomValidity('Nilai Harus Diisi..')" oninput="setCustomValidity('')" autocomplete='off' onkeypress="return hanyaAngka(event)">
 							</div>
 						</div>
 						@endforeach
@@ -109,7 +102,7 @@
 								<div class="col"></div>
 								<div class="col"></div>
 								<div class="col-10">
-									<a  href="{{route('potongan_koreksi_gaji.index')}}" class="btn btn-warning"><i class="fa fa-reply" aria-hidden="true"></i>Cancel</a>
+									<a  href="{{route('potongan_insentif.index')}}" class="btn btn-warning"><i class="fa fa-reply" aria-hidden="true"></i>Cancel</a>
 									<button type="submit" class="btn btn-brand"><i class="fa fa-check" aria-hidden="true"></i>Save</button>
 								</div>
 							</div>
@@ -127,33 +120,41 @@
 	<script type="text/javascript">
 	$(document).ready(function () {
 
-		$('#form-edit').submit(function(){
-			$.ajax({
-				url  : "{{route('potongan_koreksi_gaji.update')}}",
-				type : "POST",
-				data : $('#form-edit').serialize(),
-				dataType : "JSON",
-				headers: {
-				'X-CSRF-Token': '{{ csrf_token() }}',
-				},
-				success : function(data){
-				console.log(data);
-				Swal.fire({
-					type  : 'success',
-					title : 'Data Berhasil Diubah',
-					text  : 'Berhasil',
-					timer : 2000
-				}).then(function() {
-						window.location.replace("{{ route('potongan_koreksi_gaji.index')}}");;
-					});
-				}, 
-				error : function(){
-					alert("Terjadi kesalahan, coba lagi nanti");
-				}
-			});	
-			return false;
-		});
 
+$('#nilai').keyup(function(){
+		var nilai=parseInt($('#nilai').val());
+	var pajak=(35/65)*nilai;
+	var a =parseInt(pajak);
+		$('#pajak').val(a);
+});
+
+
+// /edit lembur
+$('#form-edit').submit(function(){
+$.ajax({
+	url  : "{{route('potongan_insentif.update')}}",
+	type : "POST",
+	data : $('#form-edit').serialize(),
+	dataType : "JSON",
+	headers: {
+	'X-CSRF-Token': '{{ csrf_token() }}',
+	},
+	success : function(data){
+	console.log(data);
+	Swal.fire({
+		type  : 'success',
+		title : 'Data Potongan Insentif Berhasil Diubah',
+		text  : 'Berhasil',
+	}).then(function() {
+			window.location.replace("{{ route('potongan_insentif.index') }}");;
+		});
+	}, 
+	error : function(){
+		alert("Terjadi kesalahan, coba lagi nanti");
+	}
+});	
+return false;
+});
 
 
 

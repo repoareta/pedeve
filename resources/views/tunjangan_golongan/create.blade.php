@@ -111,7 +111,7 @@
 						});
 				}else{
 					Swal.fire({
-						type  : 'error',
+						type  : 'info',
 						title : 'Data Tunjangan Pergolongan Yang Diinput Sudah Ada.',
 						text  : 'Failed',
 					});

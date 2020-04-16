@@ -50,14 +50,14 @@
 					</div>
 				</div>
 				<div class="form-group row">
-					<label for="example-email-input" class="col-2 col-form-label">Tgl. Lembur</label>
+					<label for="example-email-input" class="col-2 col-form-label">Tgl. Lembur<span style="color:red;">*</span></label>
 					<div class="col-10">
-						<input class="form-control" type="text" value="{{date('d/m/Y')}}" id="tanggal" name="tanggal" autocomplete='off' required>
+						<input class="form-control" type="text" value="{{ date('Y-m-d') }}" id="tanggal" name="tanggal" autocomplete='off' required>
 						<input class="form-control" type="hidden" value="{{Auth::user()->userid}}"  name="userid" autocomplete='off'>
 					</div>
 				</div>
 				<div class="form-group row">
-					<label for="spd-input" class="col-2 col-form-label">Bulan/Tahun</label>
+					<label for="spd-input" class="col-2 col-form-label">Bulan/Tahun<span style="color:red;">*</span></label>
 					<div class="col-2">
 					<?php 
 						$tgl = date_create(now());
@@ -84,9 +84,9 @@
 							</div>
 				</div>
 				<div class="form-group row">
-					<label for="spd-input" class="col-2 col-form-label">Pegawai</label>
+					<label for="" class="col-2 col-form-label">Pegawai<span style="color:red;">*</span></label>
 					<div class="col-10">
-						<select  name="nopek" id="nopek" class="form-control selectpicker" data-live-search="true" required>
+						<select name="nopek"  class="form-control selectpicker" data-live-search="true" required autocomplete='off'>
 							<option value="">- Pilih -</option>
 							@foreach($data_pegawai as $data)
 							<option value="{{$data->nopeg}}">{{$data->nopeg}} - {{$data->nama}}</option>
@@ -204,7 +204,7 @@ var demos = function () {
 		templates: arrows,
 		autoclose: true,
 		// language : 'id',
-		format   : 'dd/mm/yyyy'
+		format   : 'yyyy-mm-dd'
 	});
 };
 

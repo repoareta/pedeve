@@ -89,7 +89,7 @@
 							</div>
 						</div>
 						<div class="form-group row">
-							<label for="" class="col-2 col-form-label">Rekening Bank<span style="color:red;">*</span></label>
+							<label for="" class="col-2 col-form-label">Rekening Bank</label>
 							<div class="col-10">
 								<input style=" width: 17px;height: 26px;margin-left:50px;" name="rekyes" type="checkbox"  id="rekyes" value="{{$data_bayar->rekyes}}" <?php if ($data_bayar->rekyes == '1' )  echo 'checked' ; ?>></td>
 							</div>
@@ -157,15 +157,30 @@
 								<input style="background-color:#DCDCDC; cursor:not-allowed"  class="form-control" name="totalnilai" type="text" id="totalnilai" value="Rp. <?php echo number_format($count, 0, ',', '.'); ?>"  readonly>
 							</div>
 						</div>
+                        @foreach($data_bayars as $data_bayar)
+						<?php
+						if($data_bayar->app_pbd == 'Y'){ ?>
 						<div class="kt-form__actions">
 							<div class="row">
 								<div class="col-2"></div>
 								<div class="col-10">
 									<a  href="{{route('permintaan_bayar.index')}}" class="btn btn-warning"><i class="fa fa-reply" aria-hidden="true"></i>Cancel</a>
-									<button type="submit" class="btn btn-brand"><i class="fa fa-reply" aria-hidden="true"></i>Save</button>
+									<button type="submit" class="btn btn-brand" disabled style="cursor:not-allowed"><i class="fa fa-check" aria-hidden="true"></i>Save</button>
 								</div>
 							</div>
 						</div>
+						<?php }else{ ?>
+							<div class="kt-form__actions">
+								<div class="row">
+									<div class="col-2"></div>
+									<div class="col-10">
+										<a  href="{{route('permintaan_bayar.index')}}" class="btn btn-warning"><i class="fa fa-reply" aria-hidden="true"></i>Cancel</a>
+										<button type="submit" class="btn btn-brand"><i class="fa fa-check" aria-hidden="true"></i>Save</button>
+									</div>
+								</div>
+							</div>
+						<?php } ?>
+						@endforeach
 					</div>
 				</div>
 			</form>
@@ -184,23 +199,40 @@
 						<div class="kt-portlet__head-toolbar">
 							<div class="kt-portlet__head-wrapper">
 								<div class="kt-portlet__head-actions">
-									<a href="#" data-toggle="modal" data-target="#kt_modal_4">
+								@foreach($data_bayars as $data)
+									<?php
+									if($data->app_pbd == 'Y'){ ?>
+										<span style="font-size: 2em;" class="kt-font-success" data-toggle="kt-tooltip" data-placement="top" title="Tambah Data">
+											<i class="fas fa-plus-circle" disabled style="cursor:not-allowed"></i>
+										</span>
+						
+										<span style="font-size: 2em;" class="kt-font-warning pointer-link" data-toggle="kt-tooltip" data-placement="top" title="Ubah Data">
+											<i class="fas fa-edit"  disabled style="cursor:not-allowed"></i>
+										</span>
+						
+										<span style="font-size: 2em;" class="kt-font-danger pointer-link" data-toggle="kt-tooltip" data-placement="top" title="Hapus Data">
+											<i class="fas fa-times-circle"  disabled style="cursor:not-allowed"></i>
+										</span>
+									<?php }else{ ?>
+										<a href="#" data-toggle="modal" data-target="#kt_modal_4">
 										<span style="font-size: 2em;" class="kt-font-success">
 											<i class="fas fa-plus-circle"></i>
 										</span>
-									</a>
-					
-									<a href="#" id="editRow">
-										<span style="font-size: 2em;" class="kt-font-warning">
-											<i class="fas fa-edit"></i>
-										</span>
-									</a>
-					
-									<a href="#" id="deleteRow">
-										<span style="font-size: 2em;" class="kt-font-danger">
-											<i class="fas fa-times-circle"></i>
-										</span>
-									</a>
+										</a>
+						
+										<a href="#" id="editRow">
+											<span style="font-size: 2em;" class="kt-font-warning">
+												<i class="fas fa-edit"></i>
+											</span>
+										</a>
+						
+										<a href="#" id="deleteRow">
+											<span style="font-size: 2em;" class="kt-font-danger">
+												<i class="fas fa-times-circle"></i>
+											</span>
+										</a>
+									<?php } ?>
+									@endforeach
 								</div>
 							</div>
 						</div>
@@ -284,7 +316,7 @@
 					<div class="form-group row">
 						<label for="example-text-input" class="col-2 col-form-label">Account</label>
 						<label for="example-text-input" class=" col-form-label">:</label>
-						<div  class="col-3" >
+						<div  class="col-8" >
 							<select name="acc"  class="form-control selectpicker" data-live-search="true">
 								<option value="">-Pilih-</option>
 									@foreach($data_account as $row)
@@ -297,7 +329,7 @@
 					<div class="form-group row">
 						<label for="example-text-input" class="col-2 col-form-label">Kode Bagian</label>
 						<label for="example-text-input" class=" col-form-label">:</label>
-						<div  class="col-3">
+						<div  class="col-8">
 							<select name="bagian"  class="form-control selectpicker" data-live-search="true">
 								<option value="">-Pilih-</option>
 									@foreach($data_bagian as $row)
@@ -318,7 +350,7 @@
 					<div class="form-group row">
 						<label for="example-text-input" class="col-2 col-form-label">Jenis Biaya</label>
 						<label for="example-text-input" class=" col-form-label">:</label>
-						<div  class="col-3">
+						<div  class="col-8">
 							<select name="jb"  class="form-control selectpicker" data-live-search="true">
 								<option value="">-Pilih-</option>
 									@foreach($data_jenisbiaya as $row)
@@ -331,7 +363,7 @@
 					<div class="form-group row">
 						<label for="example-text-input" class="col-2 col-form-label">C. Judex</label>
 						<label for="example-text-input" class=" col-form-label">:</label>
-						<div class="col-3">
+						<div class="col-8">
 							<select name="cj" class="form-control selectpicker" data-live-search="true">
 								<option value="">-Pilih-</option>
 									@foreach($data_cj as $row)
@@ -404,7 +436,7 @@
 						<div class="col-3">
 							<input  class="form-control" name="acc" type="text" value="" id="acc" >
 						</div>
-						<div id="div-acc" class="col-3" style="display:none;">
+						<div id="div-acc" class="col-5" style="display:none;">
 							<select name="acc" id="select-acc" class="form-control selectpicker" data-live-search="true">
 									@foreach($data_account as $row)
 								<option value="{{$row->kodeacct}}">{{$row->kodeacct}} - {{$row->descacct}}</option>
@@ -419,7 +451,7 @@
 						<div class="col-3">
 							<input  class="form-control" name="bagian" type="text" value="" id="bagian" >
 						</div>
-						<div id="div-bagian" class="col-3" style="display:none;">
+						<div id="div-bagian" class="col-5" style="display:none;">
 							<select name="bagian" id="select-bagian"  class="form-control selectpicker" data-live-search="true">
 									@foreach($data_bagian as $row)
 								<option value="{{$row->kode}}" >{{$row->kode}} - {{$row->nama}}</option>
@@ -442,7 +474,7 @@
 						<div class="col-3">
 							<input  class="form-control" name="jb" type="text" value="" id="jb" >
 						</div>
-						<div id="div-jb" class="col-3" style="display:none;">
+						<div id="div-jb" class="col-5" style="display:none;">
 							<select name="jb" id="select-jb"  class="form-control selectpicker" data-live-search="true">
 									@foreach($data_jenisbiaya as $row)
 								<option value="{{$row->kode}}" >{{$row->kode}} - {{$row->keterangan}}</option>
@@ -457,7 +489,7 @@
 						<div class="col-3">
 							<input  class="form-control" name="cj" type="text" value="" id="cj" >
 						</div>
-						<div class="col-3" id="div-cj" style="display:none;">
+						<div class="col-5" id="div-cj" style="display:none;">
 							<select name="cj" id="select-cj" class="form-control selectpicker" data-live-search="true">
 									@foreach($data_cj as $row)
 								<option value="{{$row->kode}}">{{$row->kode}} - {{$row->nama}}</option>

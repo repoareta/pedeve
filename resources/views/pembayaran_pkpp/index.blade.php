@@ -6,15 +6,15 @@
 	<div class="kt-container  kt-container--fluid ">
 		<div class="kt-subheader__main">
 			<h3 class="kt-subheader__title">
-				Potongan </h3>
+				Dafta Pencairan Poko </h3>
 			<span class="kt-subheader__separator kt-hidden"></span>
 			<div class="kt-subheader__breadcrumbs">
 				<a href="#" class="kt-subheader__breadcrumbs-home"><i class="flaticon2-shelter"></i></a>
 				<span class="kt-subheader__breadcrumbs-separator"></span>
 				<a href="" class="kt-subheader__breadcrumbs-link">
-					Payroll </a>
+					Perbendaharaan </a>
 				<span class="kt-subheader__breadcrumbs-separator"></span>
-				<span class="kt-subheader__breadcrumbs-link kt-subheader__breadcrumbs-link--active">Potongan</span>
+				<span class="kt-subheader__breadcrumbs-link kt-subheader__breadcrumbs-link--active">Dafta Pencairan Poko</span>
 			</div>
 		</div>
 	</div>
@@ -29,12 +29,12 @@
 				<i class="kt-font-brand flaticon2-line-chart"></i>
 			</span>
 			<h3 class="kt-portlet__head-title">
-				Tabel Potongan
+				Tabel Dafta Pencairan Poko
 			</h3>			
 			<div class="kt-portlet__head-toolbar">
 				<div class="kt-portlet__head-wrapper">
 					<div class="kt-portlet__head-actions">
-						<a href="{{ route('potongan_manual.create') }}">
+						<a href="{{ route('pembayaran_pkpp.create') }}">
 							<span style="font-size: 2em;" class="kt-font-success" data-toggle="kt-tooltip" data-placement="top" title="Tambah Data">
 								<i class="fas fa-plus-circle"></i>
 							</span>
@@ -60,13 +60,8 @@
 		</div>
 	</div>
 	<div class="kt-portlet__body">
-			<form action="{{route('potongan_manual.search.index')}}" method="post">{{csrf_field()}}
-				Pegawai	<select style="width:25%;height:30px;box-radius:50%;border-radius:30px;" name="nopek" class="selectpicker" data-live-search="true">
-								<option value="">- Pilih -</option>
-								@foreach($data_pegawai as $data)
-								<option value="{{$data->nopeg}}">{{$data->nopeg}} - {{$data->nama}}</option>
-								@endforeach
-						</select>
+			<form action="{{route('pembayaran_pkpp.search.index')}}" method="post">{{csrf_field()}}
+				
 				Bulan: 	<input  style="width:4em;height:35px;border: 1px solid #DCDCDC;border-radius:5px;"  name="bulan" type="text" size="2" maxlength="2" value="" onkeypress="return hanyaAngka(event)" autocomplete='off'>
 
 				Tahun: 	<input style="width:10%;height:35px;border: 1px solid #DCDCDC;border-radius:5px;"  name="tahun" id="tahun" type="text" size="4" maxlength="4" value="" onkeypress="return hanyaAngka(event)" autocomplete='off'>  
@@ -77,45 +72,40 @@
 		<table class="table table-striped table-bordered table-hover table-checkable" id="kt_table" width="100%">
 			<thead class="thead-light">
 				<tr>
-					<th></th>
-					<th>Bulan</th>
-					<th>Pegawai</th>
-					<th>AARD</th>
-					<th>Cicilan Ke-</th>
-					<th>Jumlah Cicilan</th>
-					<th>Nilai</th>
+					<th>STATUS BYR</th>
+					<th>NO.DOKUMEN</th>
+					<th>TANGGAL</th>
+					<th>NO.BUKTI</th>
+					<th>KEPADA</th>
+					<th>JK</th>
+					<th>NO.KAS</th>
+					<th>CI</th>
+					<th>KURS</th>
+					<th>NILAI</th>
 				</tr>
 			</thead>
 			@foreach($data_list as $data)
 				<tr>
 					<td>
-					<?php 
-						$array_bln	 = array (
-							        1 =>   'Januari',
-							        'Februari',
-							        'Maret',
-							        'April',
-							        'Mei',
-							        'Juni',
-							        'Juli',
-							        'Agustus',
-							        'September',
-							        'Oktober',
-							        'November',
-							        'Desember'
-							      );
-							    $bulan= strtoupper($array_bln[$data->bulan]);
-					?>
-						<?php echo '<label class="kt-radio kt-radio--bold kt-radio--brand"><input type="radio" tahun="'.$data->tahun.'" bulan="'.$data->bulan.'"  aard="'.$data->aard.'" nopek="'.$data->nopek.'" nama="'.$data->nama_nopek.'" data-nopek="" class="btn-radio" name="btn-radio-rekap"><span></span></label>'; ?>
+						<?php if($data->verified == 'Y'){
+							echo '<p align="center"><span style="font-size: 2em;" class="kt-font-success pointer-link" data-toggle="kt-tooltip" data-placement="top" title="Data Sudah Diverifikasi"><i class="fas fa-check-circle" ></i></span></p>';
+						}else{
+							if($data->paid == 'Y'){
+								echo '<p align="center"><a href=""><span style="font-size: 2em;" class="kt-font-warning pointer-link" data-toggle="kt-tooltip" data-placement="top"  title="Batalkan Pembayaran"><i class="fas fa-check-circle" ></i></span></a></p>';
+							}else{
+								echo '<p align="center"><a href=""><span style="font-size: 2em;" class="kt-font-danger pointer-link" data-toggle="kt-tooltip" data-placement="top" title="Klik Untuk Pembayaran"><i class="fas fa-ban" ></i></span></a></p>';
+							}
+						} ?>
 					</td>
-					<td>
-					<?php echo $bulan ?>
-					</td>
-					<td>{{$data->nopek}}-{{$data->nama_nopek}}</td>
-					<td>{{$data->aard}}-{{$data->nama_aard}}</td>
-					<td align="center"><?php echo number_format($data->ccl, 0, '', '') ?></td>
-					<td align="center"><?php echo number_format($data->jmlcc, 0, '', '') ?></td>
-					<td>Rp. <?php echo number_format($data->nilai, 2, '.', ',') ?></td>
+					<td>{{$data->docno}}</td>
+					<td>{{$data->originaldate}}</td>
+					<td>{{$data->voucher}}</td>
+					<td>{{$data->kepada}}</td>
+					<td>{{$data->jk}}</td>
+					<td>{{$data->store}}</td>
+					<td>{{$data->ci}}</td>
+					<td>{{$data->rate}}</td>
+					<td>{{$data->nilai_dok}}</td>					
 				</tr>
 			@endforeach
 			<tbody>
@@ -142,7 +132,7 @@ var t = $('#kt_table').DataTable({
 },
 });
 
-// edit potongan Otomatis
+// edit Dafta Pencairan Poko Otomatis
 $('#editRow').click(function(e) {
 	e.preventDefault();
 
@@ -153,7 +143,7 @@ $('#editRow').click(function(e) {
 			var nopek = $(this).attr('nopek');
 			var aard  = $(this).attr('aard');
 			var nama  = $(this).attr('nama');
-			location.replace("{{url('sdm/potongan_manual/edit')}}"+ '/' +bulan+'/' +tahun+'/'+aard+ '/' +nopek);
+			location.replace("{{url('sdm/pembayaran_pkpp/edit')}}"+ '/' +bulan+'/' +tahun+'/'+aard+ '/' +nopek);
 		});
 	} else {
 		swalAlertInit('ubah');
@@ -163,11 +153,11 @@ $('#editRow').click(function(e) {
 //refresh data
 $('#show-data').on('click', function(e) {
 	e.preventDefault();
-		location.replace("{{ route('potongan_manual.index') }}");
+		location.replace("{{ route('pembayaran_pkpp.index') }}");
 
 });
 
-// delete potongan otomatis
+// delete Dafta Pencairan Poko otomatis
 $('#deleteRow').click(function(e) {
 e.preventDefault();
 if($('input[type=radio]').is(':checked')) { 
@@ -197,7 +187,7 @@ if($('input[type=radio]').is(':checked')) {
 			.then((result) => {
 			if (result.value) {
 				$.ajax({
-					url: "{{ route('potongan_manual.delete') }}",
+					url: "{{ route('pembayaran_pkpp.delete') }}",
 					type: 'DELETE',
 					dataType: 'json',
 					data: {

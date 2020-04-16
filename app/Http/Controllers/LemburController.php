@@ -21,7 +21,13 @@ class LemburController extends Controller
      */
     public function index()
     {
-        $data_list = DB::select("select a.bulan,a.tahun, a.tanggal, a.nopek, a.libur, a.mulai, a.sampai, a.makanpg, a.makansg, a.makanml, a.transport,a.lembur,(a.makanpg+a.makansg+a.makanml+a.transport+a.lembur) as total, b.nama as nama_nopek from pay_lembur a join sdm_master_pegawai b on a.nopek=b.nopeg order by a.tanggal desc");
+        $data_tahunbulan = DB::select("select max(thnbln) as bulan_buku from timetrans where status='1' and length(thnbln)='6'");
+        foreach($data_tahunbulan as $data_bul)
+        {
+            $bulan_buku = $data_bul->bulan_buku;
+        }
+        $tahuns = substr($bulan_buku,0,-2);
+        $data_list = DB::select("select a.bulan,a.tahun, a.tanggal, a.nopek, a.libur, a.mulai, a.sampai, a.makanpg, a.makansg, a.makanml, a.transport,a.lembur,(a.makanpg+a.makansg+a.makanml+a.transport+a.lembur) as total, b.nama as nama_nopek from pay_lembur a join sdm_master_pegawai b on a.nopek=b.nopeg where a.tahun='$tahuns' order by a.tanggal desc");
         $data_pegawai = DB::select("select nopeg,nama,status,nama from sdm_master_pegawai where status <>'P' order by nopeg");	
         return view('lembur.index',compact('data_list','data_pegawai'));
     }
@@ -29,21 +35,30 @@ class LemburController extends Controller
 
     public function searchIndex(Request $request)
     {
-            $tahun = substr($request->tanggal,-4);
-            $bulan = ltrim(substr($request->tanggal,0,-5), '0');
+            $data_tahunbulan = DB::select("select max(thnbln) as bulan_buku from timetrans where status='1' and length(thnbln)='6'");
+            foreach($data_tahunbulan as $data_bul)
+            {
+                $bulan_buku = $data_bul->bulan_buku;
+            }
+            $tahuns = substr($bulan_buku,0,-2);
+            $bulan = ltrim($request->bulan, '0');
+            $tahun = $request->tahun;
             $nopek = $request->nopek;
-            $tanggal = $request->tanggal;
+          
+
             if($nopek == null){
-                if($tanggal == null){
-                    $data_list = DB::select("select a.bulan,a.tahun, a.tanggal, a.nopek, a.libur, a.mulai, a.sampai, a.makanpg, a.makansg, a.makanml, a.transport,a.lembur,(a.makanpg+a.makansg+a.makanml+a.transport+a.lembur) as total, b.nama as nama_nopek from pay_lembur a join sdm_master_pegawai b on a.nopek=b.nopeg order by a.tanggal desc");
+                if($bulan == null and $tahun == null){
+                    $data_list = DB::select("select a.bulan,a.tahun, a.tanggal, a.nopek, a.libur, a.mulai, a.sampai, a.makanpg, a.makansg, a.makanml, a.transport,a.lembur,(a.makanpg+a.makansg+a.makanml+a.transport+a.lembur) as total, b.nama as nama_nopek from pay_lembur a join sdm_master_pegawai b on a.nopek=b.nopeg where a.tahun='$tahuns' order by a.tanggal desc");
+                }elseif($bulan == null and $tahun <> null){
+                    $data_list = DB::select("select a.bulan,a.tahun, a.tanggal, a.nopek, a.libur, a.mulai, a.sampai, a.makanpg, a.makansg, a.makanml, a.transport,a.lembur,(a.makanpg+a.makansg+a.makanml+a.transport+a.lembur) as total, b.nama as nama_nopek from pay_lembur a join sdm_master_pegawai b on a.nopek=b.nopeg where a.tahun='$tahun' order by a.tanggal desc");
                 }else{
                     $data_list = DB::select("select a.bulan,a.tahun, a.tanggal, a.nopek, a.libur, a.mulai, a.sampai, a.makanpg, a.makansg, a.makanml, a.transport,a.lembur,(a.makanpg+a.makansg+a.makanml+a.transport+a.lembur) as total, b.nama as nama_nopek from pay_lembur a join sdm_master_pegawai b on a.nopek=b.nopeg where a.bulan='$bulan' and a.tahun='$tahun' order by a.nopek asc");
                 }
             }else{
-                if($tanggal == null){
-                    $data_list = DB::select("select a.bulan,a.tahun, a.tanggal, a.nopek, a.libur, a.mulai, a.sampai, a.makanpg, a.makansg, a.makanml, a.transport,a.lembur,(a.makanpg+a.makansg+a.makanml+a.transport+a.lembur) as total, b.nama as nama_nopek from pay_lembur a join sdm_master_pegawai b on a.nopek=b.nopeg where a.nopek like '%$nopek%' order by a.tanggal desc");
+                if($bulan == null and $tahun == null){
+                    $data_list = DB::select("select a.bulan,a.tahun, a.tanggal, a.nopek, a.libur, a.mulai, a.sampai, a.makanpg, a.makansg, a.makanml, a.transport,a.lembur,(a.makanpg+a.makansg+a.makanml+a.transport+a.lembur) as total, b.nama as nama_nopek from pay_lembur a join sdm_master_pegawai b on a.nopek=b.nopeg where a.nopek='$nopek' order by a.tanggal desc");
                 }else{
-                    $data_list = DB::select("select a.bulan,a.tahun, a.tanggal, a.nopek, a.libur, a.mulai, a.sampai, a.makanpg, a.makansg, a.makanml, a.transport,a.lembur,(a.makanpg+a.makansg+a.makanml+a.transport+a.lembur) as total, b.nama as nama_nopek  from pay_lembur a join sdm_master_pegawai b on a.nopek=b.nopeg where a.bulan='$bulan' and a.tahun='$tahun' and a.nopek like '%$nopek%' order by a.tanggal asc");
+                    $data_list = DB::select("select a.bulan,a.tahun, a.tanggal, a.nopek, a.libur, a.mulai, a.sampai, a.makanpg, a.makansg, a.makanml, a.transport,a.lembur,(a.makanpg+a.makansg+a.makanml+a.transport+a.lembur) as total, b.nama as nama_nopek  from pay_lembur a join sdm_master_pegawai b on a.nopek=b.nopeg where a.bulan='$bulan' and a.tahun='$tahun' and a.nopek='$nopek' order by a.tanggal asc");
                 }
             }
         $data_pegawai = DB::select("select nopeg,nama,status,nama from sdm_master_pegawai where status <>'P' order by nopeg");	

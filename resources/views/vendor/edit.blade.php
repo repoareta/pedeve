@@ -59,6 +59,13 @@
 						</div>
 					</div>
 					<div class="form-group row">
+						<label for="nopek-input" class="col-2 col-form-label">No. Rekening<span style="color:red;">*</span></label>
+						<div class="col-10">
+							<input class="form-control" type="text" name="norek" value="{{$data->norek}}"  id="norek" size="20" maxlength="20"  required oninvalid="this.setCustomValidity('Alamat Harus Diisi..')" oninput="setCustomValidity('')" autocomplete='off'>
+
+						</div>
+					</div>
+					<div class="form-group row">
 						<label for="nopek-input" class="col-2 col-form-label">Alamat Vendor<span style="color:red;">*</span></label>
 						<div class="col-10">
 							<textarea class="form-control" type="text" name="alamat" value=""  id="alamat"  required oninvalid="this.setCustomValidity('Alamat Harus Diisi..')" oninput="setCustomValidity('')" autocomplete='off'>{{$data->alamat}}</textarea>

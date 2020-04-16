@@ -6,7 +6,7 @@
 	<div class="kt-container  kt-container--fluid ">
 		<div class="kt-subheader__main">
 			<h3 class="kt-subheader__title">
-				Potongan Manual </h3>
+				Potongan Insentif </h3>
 			<span class="kt-subheader__separator kt-hidden"></span>
 			<div class="kt-subheader__breadcrumbs">
 				<a href="#" class="kt-subheader__breadcrumbs-home"><i class="flaticon2-shelter"></i></a>
@@ -15,7 +15,7 @@
 					Sdm & Payroll </a>
 				<span class="kt-subheader__breadcrumbs-separator"></span>
 				<a href="" class="kt-subheader__breadcrumbs-link">
-					Potongan Manual </a>
+					Potongan Insentif </a>
 				<span class="kt-subheader__breadcrumbs-separator"></span>
 				<span class="kt-subheader__breadcrumbs-link kt-subheader__breadcrumbs-link--active">Tambah</span>
 			</div>
@@ -32,7 +32,7 @@
 					<i class="kt-font-brand flaticon2-plus-1"></i>
 				</span>
 				<h3 class="kt-portlet__head-title">
-					Tambah Potongan Manual
+					Tambah Potongan Insentif
 				</h3>			
 			</div>
 			<div class="kt-portlet__head-toolbar">
@@ -49,7 +49,7 @@
 						<div class="alert alert-secondary" role="alert">
 							<div class="alert-text">
 								<h5 class="kt-portlet__head-title">
-									Header Potongan Manual
+									Header Potongan Insentif
 								</h5>	
 							</div>
 						</div>
@@ -93,29 +93,6 @@
 							</div>
 						</div>
 						<div class="form-group row">
-							<label for="" class="col-2 col-form-label">Aard<span style="color:red;">*</span></label>
-							<div class="col-8">
-								<select name="aard"  class="form-control selectpicker" data-live-search="true" required autocomplete='off'>
-									<option value="">- Pilih -</option>
-									@foreach($pay_aard as $data)
-									<option value="{{$data->kode}}">{{$data->kode}} - {{$data->nama}}</option>
-									@endforeach
-								</select>
-							</div>
-						</div>
-						<div class="form-group row">
-							<label class="col-2 col-form-label">Cicilan Ke-<span style="color:red;">*</span></label>
-							<div class="col-8">
-								<input class="form-control" name="ccl" type="text" value="" id="ccl" size="3" maxlength="3" required oninvalid="this.setCustomValidity('Cicilan Harus Diisi..')" oninput="setCustomValidity('')" autocomplete='off' onkeypress="return hanyaAngka(event)">
-							</div>
-						</div>
-						<div class="form-group row">
-							<label class="col-2 col-form-label">Jml Cicilan<span style="color:red;">*</span></label>
-							<div class="col-8">
-								<input class="form-control" name="jmlcc" type="text" value="" id="jmlcc" size="5" maxlength="5" required oninvalid="this.setCustomValidity('Jml Cicilan Harus Diisi..')" oninput="setCustomValidity('')" autocomplete='off' onkeypress="return hanyaAngka(event)">
-							</div>
-						</div>
-						<div class="form-group row">
 							<label class="col-2 col-form-label">Nilai<span style="color:red;">*</span></label>
 							<div class="col-8">
 								<input class="form-control" name="nilai" type="text" value="" id="nilai" size="17" maxlength="17" required oninvalid="this.setCustomValidity('Nilai Harus Diisi..')" oninput="setCustomValidity('')" autocomplete='off' onkeypress="return hanyaAngka(event)">
@@ -127,7 +104,7 @@
 								<div class="col"></div>
 								<div class="col"></div>
 								<div class="col-10">
-									<a  href="{{route('potongan_manual.index')}}" class="btn btn-warning"><i class="fa fa-reply" aria-hidden="true"></i>Cancel</a>
+									<a  href="{{route('potongan_insentif.index')}}" class="btn btn-warning"><i class="fa fa-reply" aria-hidden="true"></i>Cancel</a>
 									<button type="submit" class="btn btn-brand"><i class="fa fa-check" aria-hidden="true"></i>Save</button>
 								</div>
 							</div>
@@ -147,7 +124,7 @@
 
 $('#form-create').submit(function(){
 	$.ajax({
-		url  : "{{route('potongan_manual.store')}}",
+		url  : "{{route('potongan_insentif.store')}}",
 		type : "POST",
 		data : $('#form-create').serialize(),
 		dataType : "JSON",
@@ -163,12 +140,12 @@ $('#form-create').submit(function(){
 				text  : 'Berhasil',
 				timer : 2000
 			}).then(function() {
-					window.location.replace("{{ route('potongan_manual.index')}}");;
+					window.location.replace("{{ route('potongan_insentif.index')}}");;
 				});
 		}else{
 			Swal.fire({
 				type  : 'info',
-				title : 'Data Potongan Manual Yang Diinput Sudah Ada.',
+				title : 'Data Potongan Insentif Yang Diinput Sudah Ada.',
 				text  : 'Failed',
 			});
 		}

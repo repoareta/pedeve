@@ -23,51 +23,47 @@ Route::group(['middleware'=> ['auth','checkRole:1']], function () {
     Route::prefix('umum')->group(function () {
 
         // UMK
-        Route::get('uang_muka_kerja', 'UangMukaKerjaController@index')->name('uang_muka_kerja.index');
-        Route::post('uang_muka_kerja/search_json', 'UangMukaKerjaController@searchIndex')->name('uang_muka_kerja.search.index');
-        Route::get('uang_muka_kerja/create', 'UangMukaKerjaController@create')->name('uang_muka_kerja.create');
-        Route::post('uang_muka_kerja/store', 'UangMukaKerjaController@store')->name('uang_muka_kerja.store');
-        Route::post('uang_muka_kerja/store_detail', 'UangMukaKerjaController@storeDetail')->name('uang_muka_kerja.store.detail');
-        Route::post('uang_muka_kerja/store_app', 'UangMukaKerjaController@storeApp')->name('uang_muka_kerja.store.app');
-        Route::delete('uang_muka_kerja/delete', 'UangMukaKerjaController@delete')->name('uang_muka_kerja.delete');
-        Route::delete('uang_muka_kerja/delete_detail', 'UangMukaKerjaController@deleteDetail')->name('uang_muka_kerja.delete.detail');
-        Route::get('uang_muka_kerja/edit/{no}', 'UangMukaKerjaController@edit')->name('uang_muka_kerja.edit');
-        Route::get('uang_muka_kerja/edit_detail/{id}/{no}', 'UangMukaKerjaController@edit_detail')->name('uang_muka_kerja.edit.detail');
-        Route::get('uang_muka_kerja/approv/{id}', 'UangMukaKerjaController@approv')->name('uang_muka_kerja.approv');
-        Route::get('uang_muka_kerja/rekap/{id}', 'UangMukaKerjaController@rekap')->name('uang_muka_kerja.rekap');
-        Route::get('uang_muka_kerja/rekaprange', 'UangMukaKerjaController@rekapRange')->name('uang_muka_kerja.rekap.range');
-        Route::post('uang_muka_kerja/rekap/export', 'UangMukaKerjaController@rekapExport')->name('uang_muka_kerja.rekap.export');
-        Route::post('uang_muka_kerja/rekap/export/range', 'UangMukaKerjaController@rekapExportRange')->name('uang_muka_kerja.rekap.export.range');
+        // Route assigned name "uang_muka_kerja.index"...
+        Route::name('uang_muka_kerja.')->group(function () {
+            Route::get('uang_muka_kerja', 'UangMukaKerjaController@index')->name('index');
+            Route::post('uang_muka_kerja/search_json', 'UangMukaKerjaController@searchIndex')->name('search.index');
+            Route::get('uang_muka_kerja/create', 'UangMukaKerjaController@create')->name('create');
+            Route::post('uang_muka_kerja/store', 'UangMukaKerjaController@store')->name('store');
+            Route::post('uang_muka_kerja/store_detail', 'UangMukaKerjaController@storeDetail')->name('store.detail');
+            Route::post('uang_muka_kerja/store_app', 'UangMukaKerjaController@storeApp')->name('store.app');
+            Route::delete('uang_muka_kerja/delete', 'UangMukaKerjaController@delete')->name('delete');
+            Route::delete('uang_muka_kerja/delete_detail', 'UangMukaKerjaController@deleteDetail')->name('delete.detail');
+            Route::get('uang_muka_kerja/edit/{no}', 'UangMukaKerjaController@edit')->name('edit');
+            Route::get('uang_muka_kerja/edit_detail/{id}/{no}', 'UangMukaKerjaController@edit_detail')->name('edit.detail');
+            Route::get('uang_muka_kerja/approv/{id}', 'UangMukaKerjaController@approv')->name('approv');
+            Route::get('uang_muka_kerja/rekap/{id}', 'UangMukaKerjaController@rekap')->name('rekap');
+            Route::get('uang_muka_kerja/rekaprange', 'UangMukaKerjaController@rekapRange')->name('rekap.range');
+            Route::post('uang_muka_kerja/rekap/export', 'UangMukaKerjaController@rekapExport')->name('rekap.export');
+            Route::post('uang_muka_kerja/rekap/export/range', 'UangMukaKerjaController@rekapExportRange')->name('rekap.export.range');
 
-        
+            // Route assigned name "uang_muka_kerja.pertanggungjawaban.index"...
+            Route::name('pertanggungjawaban.')->group(function () {
+                // P UANG MUKA KERJA START
+                Route::get('uang_muka_kerja/pertanggungjawaban', 'UangMukaKerjaPertanggungJawabanController@index')->name('index');
+                Route::get('uang_muka_kerja/pertanggungjawaban/index_json', 'UangMukaKerjaPertanggungJawabanController@indexJson')->name('index.json');
+                Route::get('uang_muka_kerja/pertanggungjawaban/create', 'UangMukaKerjaPertanggungJawabanController@create')->name('create');
+                Route::post('uang_muka_kerja/pertanggungjawaban/store', 'UangMukaKerjaPertanggungJawabanController@store')->name('store');
+                Route::get('uang_muka_kerja/pertanggungjawaban/edit/{no_pumk}', 'UangMukaKerjaPertanggungJawabanController@edit')->name('edit');
+                Route::post('uang_muka_kerja/pertanggungjawaban/update/{no_pumk}', 'UangMukaKerjaPertanggungJawabanController@update')->name('update');
+                Route::get('uang_muka_kerja/pertanggungjawaban/approval/{no_pumk}', 'UangMukaKerjaPertanggungJawabanController@approv')->name('approval');
+                Route::delete('uang_muka_kerja/pertanggungjawaban/delete', 'UangMukaKerjaPertanggungJawabanController@delete')->name('delete');
+                // P UANG MUKA KERJA END
 
-        // P UANG MUKA KERJA START
-        Route::get('uang_muka_kerja/pertanggungjawaban', 'UangMukaKerjaPertanggungJawabanController@index')->name('uang_muka_kerja.pertanggungjawaban.index');
-
-        Route::get('uang_muka_kerja/pertanggungjawaban/index_json', 'UangMukaKerjaPertanggungJawabanController@indexJson')->name('uang_muka_kerja.pertanggungjawaban.index.json');
-
-        Route::get('uang_muka_kerja/pertanggungjawaban/create', 'UangMukaKerjaPertanggungJawabanController@create')->name('uang_muka_kerja.pertanggungjawaban.create');
-        Route::post('uang_muka_kerja/pertanggungjawaban/store', 'UangMukaKerjaPertanggungJawabanController@store')->name('uang_muka_kerja.pertanggungjawaban.store');
-
-        Route::get('uang_muka_kerja/pertanggungjawaban/edit/{no_pumk}', 'UangMukaKerjaPertanggungJawabanController@edit')->name('uang_muka_kerja.pertanggungjawaban.edit');
-        Route::post('uang_muka_kerja/pertanggungjawaban/update/{no_pumk}', 'UangMukaKerjaPertanggungJawabanController@update')->name('uang_muka_kerja.pertanggungjawaban.update');
-
-        Route::get('uang_muka_kerja/pertanggungjawaban/approval/{no_pumk}', 'UangMukaKerjaPertanggungJawabanController@approv')->name('uang_muka_kerja.pertanggungjawaban.approval');
-
-        Route::delete('uang_muka_kerja/pertanggungjawaban/delete', 'UangMukaKerjaPertanggungJawabanController@delete')->name('uang_muka_kerja.pertanggungjawaban.delete');
-        // P UANG MUKA KERJA END
-
-        // P UANG MUKA KERJA DETAIL START
-        Route::get('uang_muka_kerja/pertanggungjawaban/detail/index_json', 'UangMukaKerjaPertanggungJawabanDetailController@indexJson')->name('uang_muka_kerja.pertanggungjawaban.detail.index.json');
-
-        Route::post('uang_muka_kerja/pertanggungjawaban/detail/store', 'UangMukaKerjaPertanggungJawabanDetailController@store')->name('uang_muka_kerja.pertanggungjawaban.detail.store');
-
-        Route::get('uang_muka_kerja/pertanggungjawaban/detail/show/{no}/{no_pumk?}', 'UangMukaKerjaPertanggungJawabanDetailController@show')->name('uang_muka_kerja.pertanggungjawaban.detail.show.json');
-
-        Route::post('uang_muka_kerja/pertanggungjawaban/detail/update/{no}/{no_pumk?}', 'UangMukaKerjaPertanggungJawabanDetailController@update')->name('uang_muka_kerja.pertanggungjawaban.detail.update');
-
-        Route::delete('uang_muka_kerja/pertanggungjawaban/detail/delete', 'UangMukaKerjaPertanggungJawabanDetailController@delete')->name('uang_muka_kerja.pertanggungjawaban.detail.delete');
-        // P UANG MUKA KERJA DETAIL END
+                // P UANG MUKA KERJA DETAIL START
+                Route::get('uang_muka_kerja/pertanggungjawaban/detail/index_json', 'UangMukaKerjaPertanggungJawabanDetailController@indexJson')->name('detail.index.json');
+                Route::post('uang_muka_kerja/pertanggungjawaban/detail/store', 'UangMukaKerjaPertanggungJawabanDetailController@store')->name('detail.store');
+                Route::get('uang_muka_kerja/pertanggungjawaban/detail/show/{no}/{no_pumk?}', 'UangMukaKerjaPertanggungJawabanDetailController@show')->name('detail.show.json');
+                Route::post('uang_muka_kerja/pertanggungjawaban/detail/update/{no}/{no_pumk?}', 'UangMukaKerjaPertanggungJawabanDetailController@update')->name('detail.update');
+                Route::delete('uang_muka_kerja/pertanggungjawaban/detail/delete', 'UangMukaKerjaPertanggungJawabanDetailController@delete')->name('detail.delete');
+                // P UANG MUKA KERJA DETAIL END
+            });
+        });
+        //END UANG MUKA KERJA
         
         // PERJALANAN DINAS START
         // Route assigned name "perjalanan_dinas.index"...
@@ -92,13 +88,9 @@ Route::group(['middleware'=> ['auth','checkRole:1']], function () {
 
             // PERJALANAN DINAS DETAIL START
             Route::get('perjalanan_dinas/detail/index_json', 'PerjalananDinasDetailController@indexJson')->name('detail.index.json');
-
             Route::get('perjalanan_dinas/pertanggungjawaban/detail/show', 'PerjalananDinasDetailController@show')->name('detail.show');
-
             Route::post('perjalanan_dinas/pertanggungjawaban/detail/store', 'PerjalananDinasDetailController@store')->name('detail.store');
-
             Route::post('perjalanan_dinas/pertanggungjawaban/detail/update', 'PerjalananDinasDetailController@update')->name('detail.update');
-
             Route::delete('perjalanan_dinas/pertanggungjawaban/detail/delete', 'PerjalananDinasDetailController@delete')->name('detail.delete');
             // PERJALANAN DINAS DETAIL END
 
@@ -117,36 +109,34 @@ Route::group(['middleware'=> ['auth','checkRole:1']], function () {
 
                 // P PERJALANAN DINAS DETAIL START
                 Route::get('perjalanan_dinas/pertanggungjawaban/detail/index_json', 'PerjalananDinasPertanggungJawabanDetailController@indexJson')->name('detail.index.json');
-
                 Route::get('perjalanan_dinas/pertanggungjawaban/detail/show', 'PerjalananDinasPertanggungJawabanDetailController@show')->name('detail.show');
-
                 Route::post('perjalanan_dinas/pertanggungjawaban/detail/store', 'PerjalananDinasPertanggungJawabanDetailController@store')->name('detail.store');
-
                 Route::post('perjalanan_dinas/pertanggungjawaban/detail/update', 'PerjalananDinasPertanggungJawabanDetailController@update')->name('detail.update');
-
                 Route::delete('perjalanan_dinas/pertanggungjawaban/detail/delete', 'PerjalananDinasPertanggungJawabanDetailController@delete')->name('detail.delete');
                 // P PERJALANAN DINAS DETAIL END
             });
         });
 
         // Permintaan Bayar
-        Route::get('permintaan_bayar', 'PermintaanBayarController@index')->name('permintaan_bayar.index');
-        Route::post('permintaan_bayar/search_index', 'PermintaanBayarController@searchIndex')->name('permintaan_bayar.search.index');
-        Route::get('permintaan_bayar/create', 'PermintaanBayarController@create')->name('permintaan_bayar.create');
-        Route::post('permintaan_bayar/store', 'PermintaanBayarController@store')->name('permintaan_bayar.store');
-        Route::post('permintaan_bayar/store_detail', 'PermintaanBayarController@storeDetail')->name('permintaan_bayar.store.detail');
-        Route::post('permintaan_bayar/store_app', 'PermintaanBayarController@storeApp')->name('permintaan_bayar.store.app');
-        Route::get('permintaan_bayar/edit/{no}', 'PermintaanBayarController@edit')->name('permintaan_bayar.edit');
-        Route::get('permintaan_bayar/editdetail/{id}/{no}', 'PermintaanBayarController@editDetail')->name('permintaan_bayar.edit.detail');
-        Route::get('permintaan_bayar/approv/{id}', 'PermintaanBayarController@approv')->name('permintaan_bayar.approv');
-        Route::delete('permintaan_bayar/delete', 'PermintaanBayarController@delete')->name('permintaan_bayar.delete');
-        Route::delete('permintaan_bayar/delete_detail', 'PermintaanBayarController@deleteDetail')->name('permintaan_bayar.delete.detail');
-        Route::get('permintaan_bayar/rekap/{id}', 'PermintaanBayarController@rekap')->name('permintaan_bayar.rekap');
-        Route::get('permintaan_bayar/rekaprange', 'PermintaanBayarController@rekapRange')->name('permintaan_bayar.rekap.range');
-        Route::post('permintaan_bayar/rekap/export', 'PermintaanBayarController@rekapExport')->name('permintaan_bayar.rekap.export');
-        Route::post('permintaan_bayar/rekap/export/range', 'PermintaanBayarController@rekapExportRange')->name('permintaan_bayar.rekap.export.range');
-        
-        
+        // Route assigned name "permintaan_bayar.index"...
+        Route::name('permintaan_bayar.')->group(function () {
+            Route::get('permintaan_bayar', 'PermintaanBayarController@index')->name('index');
+            Route::post('permintaan_bayar/search_index', 'PermintaanBayarController@searchIndex')->name('search.index');
+            Route::get('permintaan_bayar/create', 'PermintaanBayarController@create')->name('create');
+            Route::post('permintaan_bayar/store', 'PermintaanBayarController@store')->name('store');
+            Route::post('permintaan_bayar/store_detail', 'PermintaanBayarController@storeDetail')->name('store.detail');
+            Route::post('permintaan_bayar/store_app', 'PermintaanBayarController@storeApp')->name('store.app');
+            Route::get('permintaan_bayar/edit/{no}', 'PermintaanBayarController@edit')->name('edit');
+            Route::get('permintaan_bayar/editdetail/{id}/{no}', 'PermintaanBayarController@editDetail')->name('edit.detail');
+            Route::get('permintaan_bayar/approv/{id}', 'PermintaanBayarController@approv')->name('approv');
+            Route::delete('permintaan_bayar/delete', 'PermintaanBayarController@delete')->name('delete');
+            Route::delete('permintaan_bayar/delete_detail', 'PermintaanBayarController@deleteDetail')->name('delete.detail');
+            Route::get('permintaan_bayar/rekap/{id}', 'PermintaanBayarController@rekap')->name('rekap');
+            Route::get('permintaan_bayar/rekaprange', 'PermintaanBayarController@rekapRange')->name('rekap.range');
+            Route::post('permintaan_bayar/rekap/export', 'PermintaanBayarController@rekapExport')->name('rekap.export');
+            Route::post('permintaan_bayar/rekap/export/range', 'PermintaanBayarController@rekapExportRange')->name('rekap.export.range');
+        });
+        //END PERMINTAAN BAYAR
 
         // ANGGARAN SUBMAIN START
         Route::name('anggaran.')->group(function () {
@@ -183,12 +173,16 @@ Route::group(['middleware'=> ['auth','checkRole:1']], function () {
         
         
         //vendor
-        Route::get('vendor', 'VendorController@index')->name('vendor.index');
-        Route::get('vendor/index_json', 'VendorController@indexJson')->name('vendor.index.json');
-        Route::get('vendor/create', 'VendorController@create')->name('vendor.create');
-        Route::post('vendor/store', 'VendorController@store')->name('vendor.store');
-        Route::get('vendor/edit/{id}', 'VendorController@edit')->name('vendor.edit');
-        Route::delete('vendor/delete', 'VendorController@delete')->name('vendor.delete');
+        // Route assigned name "vendor.index"...
+        Route::name('vendor.')->group(function () {
+            Route::get('vendor', 'VendorController@index')->name('index');
+            Route::get('vendor/index_json', 'VendorController@indexJson')->name('index.json');
+            Route::get('vendor/create', 'VendorController@create')->name('create');
+            Route::post('vendor/store', 'VendorController@store')->name('store');
+            Route::get('vendor/edit/{id}', 'VendorController@edit')->name('edit');
+            Route::delete('vendor/delete', 'VendorController@delete')->name('delete');
+        });
+        //END VENDOR
     });
 
 
@@ -235,7 +229,6 @@ Route::group(['middleware'=> ['auth','checkRole:1']], function () {
             Route::post('kode_bagian/update/{kode_bagian}', 'KodeBagianController@update')->name('update');
             Route::delete('kode_bagian/delete', 'KodeBagianController@delete')->name('delete');
         });
-        
         // Kode Bagian END
 
         // Kode Jabatan START
@@ -282,75 +275,158 @@ Route::group(['middleware'=> ['auth','checkRole:1']], function () {
         // Kode Jabatan END
         
         //potongan koreksi gaji
-        Route::get('potongan_koreksi_gaji', 'PotonganKoreksiGajiController@index')->name('potongan_koreksi_gaji.index');
-        Route::post('potongan_koreksi_gaji/search', 'PotonganKoreksiGajiController@searchIndex')->name('potongan_koreksi_gaji.search.index');
-        Route::get('potongan_koreksi_gaji/create', 'PotonganKoreksiGajiController@create')->name('potongan_koreksi_gaji.create');
-        Route::post('potongan_koreksi_gaji/store', 'PotonganKoreksiGajiController@store')->name('potongan_koreksi_gaji.store');
-        Route::get('potongan_koreksi_gaji/edit/{bulan}/{tahun}/{arrd}/{nopek}', 'PotonganKoreksiGajiController@edit')->name('potongan_koreksi_gaji.edit');
-        Route::post('potongan_koreksi_gaji/update', 'PotonganKoreksiGajiController@update')->name('potongan_koreksi_gaji.update');
-        Route::delete('potongan_koreksi_gaji/delete', 'PotonganKoreksiGajiController@delete')->name('potongan_koreksi_gaji.delete');
-        
+        // Route assigned name "potongan_koreksi_gaji.index"...
+        Route::name('potongan_koreksi_gaji.')->group(function () {
+            Route::get('potongan_koreksi_gaji', 'PotonganKoreksiGajiController@index')->name('index');
+            Route::post('potongan_koreksi_gaji/search', 'PotonganKoreksiGajiController@searchIndex')->name('search.index');
+            Route::get('potongan_koreksi_gaji/create', 'PotonganKoreksiGajiController@create')->name('create');
+            Route::post('potongan_koreksi_gaji/store', 'PotonganKoreksiGajiController@store')->name('store');
+            Route::get('potongan_koreksi_gaji/edit/{bulan}/{tahun}/{arrd}/{nopek}', 'PotonganKoreksiGajiController@edit')->name('edit');
+            Route::post('potongan_koreksi_gaji/update', 'PotonganKoreksiGajiController@update')->name('update');
+            Route::delete('potongan_koreksi_gaji/delete', 'PotonganKoreksiGajiController@delete')->name('delete');
+        });
+        //end potongan_koreksi_gaji
+
         //potongan manual
-        Route::get('potongan_manual', 'PotonganManualController@index')->name('potongan_manual.index');
-        Route::post('potongan_manual/search', 'PotonganManualController@searchIndex')->name('potongan_manual.search.index');
-        Route::get('potongan_manual/create', 'PotonganManualController@create')->name('potongan_manual.create');
-        Route::post('potongan_manual/store', 'PotonganManualController@store')->name('potongan_manual.store');
-        Route::get('potongan_manual/edit/{bulan}/{tahun}/{arrd}/{nopek}', 'PotonganManualController@edit')->name('potongan_manual.edit');
-        Route::post('potongan_manual/update', 'PotonganManualController@update')->name('potongan_manual.update');
-        Route::delete('potongan_manual/delete', 'PotonganManualController@delete')->name('potongan_manual.delete');
-        
+        // Route assigned name "potongan_manual.index"...
+        Route::name('potongan_manual.')->group(function () {
+            Route::get('potongan_manual', 'PotonganManualController@index')->name('index');
+            Route::post('potongan_manual/search', 'PotonganManualController@searchIndex')->name('search.index');
+            Route::get('potongan_manual/create', 'PotonganManualController@create')->name('create');
+            Route::post('potongan_manual/store', 'PotonganManualController@store')->name('store');
+            Route::get('potongan_manual/edit/{bulan}/{tahun}/{arrd}/{nopek}', 'PotonganManualController@edit')->name('edit');
+            Route::post('potongan_manual/update', 'PotonganManualController@update')->name('update');
+            Route::delete('potongan_manual/delete', 'PotonganManualController@delete')->name('delete');
+        });
+        //end potongan_manual
+
         //potongan otomatis
-        Route::get('potongan_otomatis', 'PotonganOtomatisController@index')->name('potongan_otomatis.index');
-        Route::post('potongan_otomatis/search', 'PotonganOtomatisController@searchIndex')->name('potongan_otomatis.search.index');
-        Route::get('potongan_otomatis/create', 'PotonganOtomatisController@create')->name('potongan_otomatis.create');
-        Route::post('potongan_otomatis/store', 'PotonganOtomatisController@store')->name('potongan_otomatis.store');
-        Route::get('potongan_otomatis/edit/{bulan}/{tahun}/{arrd}/{nopek}', 'PotonganOtomatisController@edit')->name('potongan_otomatis.edit');
-        Route::post('potongan_otomatis/update', 'PotonganOtomatisController@update')->name('potongan_otomatis.update');
-        Route::delete('potongan_otomatis/delete', 'PotonganOtomatisController@delete')->name('potongan_otomatis.delete');
-       
+        // Route assigned name "potongan_otomatis.index"...
+        Route::name('potongan_otomatis.')->group(function () {
+            Route::get('potongan_otomatis', 'PotonganOtomatisController@index')->name('index');
+            Route::post('potongan_otomatis/search', 'PotonganOtomatisController@searchIndex')->name('search.index');
+            Route::get('potongan_otomatis/create', 'PotonganOtomatisController@create')->name('create');
+            Route::post('potongan_otomatis/store', 'PotonganOtomatisController@store')->name('store');
+            Route::get('potongan_otomatis/edit/{bulan}/{tahun}/{arrd}/{nopek}', 'PotonganOtomatisController@edit')->name('edit');
+            Route::post('potongan_otomatis/update', 'PotonganOtomatisController@update')->name('update');
+            Route::delete('potongan_otomatis/delete', 'PotonganOtomatisController@delete')->name('delete');
+        });
+        //end potongan_otomatis
+
+        //potongan insentif
+        // Route assigned name "potongan_insentif.index"...
+        Route::name('potongan_insentif.')->group(function () {
+            Route::get('potongan_insentif', 'PotonganInsentifController@index')->name('index');
+            Route::post('potongan_insentif/search', 'PotonganInsentifController@searchIndex')->name('search.index');
+            Route::get('potongan_insentif/create', 'PotonganInsentifController@create')->name('create');
+            Route::post('potongan_insentif/store', 'PotonganInsentifController@store')->name('store');
+            Route::get('potongan_insentif/edit/{bulan}/{tahun}/{nopek}', 'PotonganInsentifController@edit')->name('edit');
+            Route::post('potongan_insentif/update', 'PotonganInsentifController@update')->name('update');
+            Route::delete('potongan_insentif/delete', 'PotonganInsentifController@delete')->name('delete');
+        });
+        //end potongan_insentif
+
         //honor komite
-        Route::get('honor_komite', 'HonorKomiteController@index')->name('honor_komite.index');
-        Route::post('honor_komite/search', 'HonorKomiteController@searchIndex')->name('honor_komite.search.index');
-        Route::get('honor_komite/create', 'HonorKomiteController@create')->name('honor_komite.create');
-        Route::post('honor_komite/store', 'HonorKomiteController@store')->name('honor_komite.store');
-        Route::get('honor_komite/edit/{bulan}/{tahun}/{nopek}', 'HonorKomiteController@edit')->name('honor_komite.edit');
-        Route::post('honor_komite/update', 'HonorKomiteController@update')->name('honor_komite.update');
-        Route::delete('honor_komite/delete', 'HonorKomiteController@delete')->name('honor_komite.delete');
-        
+        // Route assigned name "honor_komite.index"...
+        Route::name('honor_komite.')->group(function () {
+            Route::get('honor_komite', 'HonorKomiteController@index')->name('index');
+            Route::post('honor_komite/search', 'HonorKomiteController@searchIndex')->name('search.index');
+            Route::get('honor_komite/create', 'HonorKomiteController@create')->name('create');
+            Route::post('honor_komite/store', 'HonorKomiteController@store')->name('store');
+            Route::get('honor_komite/edit/{bulan}/{tahun}/{nopek}', 'HonorKomiteController@edit')->name('edit');
+            Route::post('honor_komite/update', 'HonorKomiteController@update')->name('update');
+            Route::delete('honor_komite/delete', 'HonorKomiteController@delete')->name('delete');
+        });
+        //end honor_komite
+
         // Lembur
-        Route::get('lembur', 'LemburController@index')->name('lembur.index');
-        Route::post('lembur/search', 'LemburController@searchIndex')->name('lembur.search.index');
-        Route::get('lembur/create', 'LemburController@create')->name('lembur.create');
-        Route::post('lembur/store', 'LemburController@store')->name('lembur.store');
-        Route::get('lembur/edit/{id}/{nopek}', 'LemburController@edit')->name('lembur.edit');
-        Route::post('lembur/update', 'LemburController@update')->name('lembur.update');
-        Route::delete('lembur/delete', 'LemburController@delete')->name('lembur.delete');
+        // Route assigned name "lembur.index"...
+        Route::name('lembur.')->group(function () {
+            Route::get('lembur', 'LemburController@index')->name('index');
+            Route::post('lembur/search', 'LemburController@searchIndex')->name('search.index');
+            Route::get('lembur/create', 'LemburController@create')->name('create');
+            Route::post('lembur/store', 'LemburController@store')->name('store');
+            Route::get('lembur/edit/{id}/{nopek}', 'LemburController@edit')->name('edit');
+            Route::post('lembur/update', 'LemburController@update')->name('update');
+            Route::delete('lembur/delete', 'LemburController@delete')->name('delete');
+        });
+        //end lembur
 
         //pinjaman pekerja
         Route::get('pinjaman_pekerja', 'PinjamanPekerjaController@index')->name('pinjaman_pekerja.index');
         Route::get('pinjaman_pekerja/create', 'PinjamanPekerjaController@create')->name('pinjaman_pekerja.create');
         Route::get('pinjaman_pekerja/edit', 'PinjamanPekerjaController@edit')->name('pinjaman_pekerja.edit');
+        
         //proses gaji
-        Route::get('proses_gaji', 'ProsesGajiController@index')->name('proses_gaji.index');
-        Route::post('proses_gaji/store', 'ProsesGajiController@store')->name('proses_gaji.store');
-        Route::get('proses_gaji/edit', 'ProsesGajiController@edit')->name('proses_gaji.edit');
+        // Route assigned name "proses_gaji.index"...
+        Route::name('proses_gaji.')->group(function () {
+            Route::get('proses_gaji', 'ProsesGajiController@index')->name('index');
+            Route::post('proses_gaji/store', 'ProsesGajiController@store')->name('store');
+            Route::get('proses_gaji/edit', 'ProsesGajiController@edit')->name('edit');
+        });
+        //end proses_gaji
+
         //proses thr
-        Route::get('proses_thr', 'ProsesThrController@index')->name('proses_thr.index');
-        Route::post('proses_thr/store', 'ProsesThrController@store')->name('proses_thr.store');
-        Route::get('proses_thr/edit', 'ProsesThrController@edit')->name('proses_thr.edit');
+        // Route assigned name "proses_thr.index"...
+        Route::name('proses_thr.')->group(function () {
+            Route::get('proses_thr', 'ProsesThrController@index')->name('index');
+            Route::post('proses_thr/store', 'ProsesThrController@store')->name('store');
+            Route::get('proses_thr/edit', 'ProsesThrController@edit')->name('edit');
+        });
+        //end proses_gaji
+
         //proses insentif
-        Route::get('proses_insentif', 'ProsesInsentifController@index')->name('proses_insentif.index');
-        Route::post('proses_insentif/store', 'ProsesInsentifController@store')->name('proses_insentif.store');
-        Route::get('proses_insentif/edit', 'ProsesInsentifController@edit')->name('proses_insentif.edit');
+        // Route assigned name "proses_insentif.index"...
+        Route::name('proses_insentif.')->group(function () {
+            Route::get('proses_insentif', 'ProsesInsentifController@index')->name('index');
+            Route::post('proses_insentif/store', 'ProsesInsentifController@store')->name('store');
+            Route::get('proses_insentif/edit', 'ProsesInsentifController@edit')->name('edit');
+        });
+        //end proses_insentif
+
         //tunjangan golongan
-        Route::get('tunjangan_golongan', 'TunjanganGolonganController@index')->name('tunjangan_golongan.index');
-        Route::get('tunjangan_golongan/index_json', 'TunjanganGolonganController@indexJson')->name('tunjangan_golongan.index.json');
-        Route::get('tunjangan_golongan/create', 'TunjanganGolonganController@create')->name('tunjangan_golongan.create');
-        Route::post('tunjangan_golongan/cek_golongan/json', 'TunjanganGolonganController@cekGolonganJson')->name('tunjangan_golongan.golongan.json');
-        Route::post('tunjangan_golongan/store', 'TunjanganGolonganController@store')->name('tunjangan_golongan.store');
-        Route::get('tunjangan_golongan/edit/{id}', 'TunjanganGolonganController@edit')->name('tunjangan_golongan.edit');
-        Route::post('tunjangan_golongan/update', 'TunjanganGolonganController@update')->name('tunjangan_golongan.update');
-        Route::delete('tunjangan_golongan/delete', 'TunjanganGolonganController@delete')->name('tunjangan_golongan.delete');
+        // Route assigned name "tunjangan_golongan.index"...
+        Route::name('tunjangan_golongan.')->group(function () {
+            Route::get('tunjangan_golongan', 'TunjanganGolonganController@index')->name('index');
+            Route::get('tunjangan_golongan/index_json', 'TunjanganGolonganController@indexJson')->name('index.json');
+            Route::get('tunjangan_golongan/create', 'TunjanganGolonganController@create')->name('create');
+            Route::post('tunjangan_golongan/cek_golongan/json', 'TunjanganGolonganController@cekGolonganJson')->name('golongan.json');
+            Route::post('tunjangan_golongan/store', 'TunjanganGolonganController@store')->name('store');
+            Route::get('tunjangan_golongan/edit/{id}', 'TunjanganGolonganController@edit')->name('edit');
+            Route::post('tunjangan_golongan/update', 'TunjanganGolonganController@update')->name('update');
+            Route::delete('tunjangan_golongan/delete', 'TunjanganGolonganController@delete')->name('delete');
+        });
+        //end tunjangan_golongan
+
+        //jamsostek
+        // Route assigned name "jamsostek.index"...
+        Route::name('jamsostek.')->group(function () {
+            Route::get('jamsostek', 'JamsostekController@index')->name('index');
+            Route::get('jamsostek/index_json', 'JamsostekController@indexJson')->name('index.json');
+            Route::get('jamsostek/create', 'JamsostekController@create')->name('create');
+            Route::post('jamsostek/cek_golongan/json', 'JamsostekController@cekGolonganJson')->name('golongan.json');
+            Route::post('jamsostek/store', 'JamsostekController@store')->name('store');
+            Route::get('jamsostek/edit/{id}', 'JamsostekController@edit')->name('edit');
+            Route::post('jamsostek/update', 'JamsostekController@update')->name('update');
+            Route::delete('jamsostek/delete', 'JamsostekController@delete')->name('delete');
+        });
+        //end jamsostek
+
+        //pensiun
+        // Route assigned name "pensiun.index"...
+        Route::name('pensiun.')->group(function () {
+            Route::get('pensiun', 'PensiunController@index')->name('index');
+            Route::get('pensiun/index_json', 'PensiunController@indexJson')->name('index.json');
+            Route::get('pensiun/create', 'PensiunController@create')->name('create');
+            Route::post('pensiun/cek_golongan/json', 'PensiunController@cekGolonganJson')->name('golongan.json');
+            Route::post('pensiun/store', 'PensiunController@store')->name('store');
+            Route::get('pensiun/edit/{id}', 'PensiunController@edit')->name('edit');
+            Route::post('pensiun/update', 'PensiunController@update')->name('update');
+            Route::delete('pensiun/delete', 'PensiunController@delete')->name('delete');
+        });
+        //end pensiun
+        
+
         //proses report sdm payroll
         Route::get('report_sdm_payroll', 'ReportSdmPayrollController@index')->name('report_sdm_payroll.index');
         Route::get('report_sdm_payroll/create', 'ReportSdmPayrollController@create')->name('report_sdm_payroll.create');
@@ -363,5 +439,36 @@ Route::group(['middleware'=> ['auth','checkRole:1']], function () {
         Route::get('implementasi_gcg', 'ImplementasiGcgController@index')->name('implementasi_gcg.index');
         Route::get('implementasi_gcg/create', 'ImplementasiGcgController@create')->name('implementasi_gcg.create');
         Route::get('implementasi_gcg/edit', 'ImplementasiGcgController@edit')->name('implementasi_gcg.edit');
+    });
+
+
+    //PERBENDAHARAAN
+    Route::prefix('perbendaharaan')->group(function () {
+
+           //Pembayaran PKPP
+        // Route assigned name "pembayaran_pkppp.index"...
+        Route::name('pembayaran_pkpp.')->group(function () {
+            Route::get('pembayaran_pkpp', 'PembayaranPkppController@index')->name('index');
+            Route::post('pembayaran_pkpp/search', 'PembayaranPkppController@searchIndex')->name('search.index');
+            Route::get('pembayaran_pkpp/create', 'PembayaranPkppController@create')->name('create');
+            Route::post('pembayaran_pkpp/store', 'PembayaranPkppController@store')->name('store');
+            Route::get('pembayaran_pkpp/edit/{bulan}/{tahun}/{nopek}', 'PembayaranPkppController@edit')->name('edit');
+            Route::post('pembayaran_pkpp/update', 'PembayaranPkppController@update')->name('update');
+            Route::delete('pembayaran_pkpp/delete', 'PembayaranPkppController@delete')->name('delete');
+        });
+        //end pembayaran_pkppp
+
+        //Pembayaran PKPP
+        // Route assigned name "pembayaran_pkppp.index"...
+        Route::name('pembayaran_mmd.')->group(function () {
+            Route::get('pembayaran_mmd', 'PembayaranMmdController@index')->name('index');
+            Route::post('pembayaran_mmd/search', 'PembayaranMmdController@searchIndex')->name('search.index');
+            Route::get('pembayaran_mmd/create', 'PembayaranMmdController@create')->name('create');
+            Route::post('pembayaran_mmd/store', 'PembayaranMmdController@store')->name('store');
+            Route::get('pembayaran_mmd/edit/{bulan}/{tahun}/{nopek}', 'PembayaranMmdController@edit')->name('edit');
+            Route::post('pembayaran_mmd/update', 'PembayaranMmdController@update')->name('update');
+            Route::delete('pembayaran_mmd/delete', 'PembayaranMmdController@delete')->name('delete');
+        });
+        //end pembayaran_pkppp
     });
 });

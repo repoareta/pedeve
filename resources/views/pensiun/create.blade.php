@@ -6,7 +6,7 @@
 	<div class="kt-container  kt-container--fluid ">
 		<div class="kt-subheader__main">
 			<h3 class="kt-subheader__title">
-				Koreksi Gaji </h3>
+				Pensiun </h3>
 			<span class="kt-subheader__separator kt-hidden"></span>
 			<div class="kt-subheader__breadcrumbs">
 				<a href="#" class="kt-subheader__breadcrumbs-home"><i class="flaticon2-shelter"></i></a>
@@ -15,7 +15,7 @@
 					Sdm & Payroll </a>
 				<span class="kt-subheader__breadcrumbs-separator"></span>
 				<a href="" class="kt-subheader__breadcrumbs-link">
-					Koreksi Gaji </a>
+					Pensiun </a>
 				<span class="kt-subheader__breadcrumbs-separator"></span>
 				<span class="kt-subheader__breadcrumbs-link kt-subheader__breadcrumbs-link--active">Tambah</span>
 			</div>
@@ -32,7 +32,7 @@
 					<i class="kt-font-brand flaticon2-plus-1"></i>
 				</span>
 				<h3 class="kt-portlet__head-title">
-					Tambah Koreksi Gaji
+					Tambah Pensiun
 				</h3>			
 			</div>
 			<div class="kt-portlet__head-toolbar">
@@ -49,73 +49,41 @@
 						<div class="alert alert-secondary" role="alert">
 							<div class="alert-text">
 								<h5 class="kt-portlet__head-title">
-									Header Koreksi Gaji
+									Header Pensiun
 								</h5>	
 							</div>
 						</div>
 						<div class="form-group row">
-						<label for="spd-input" class="col-2 col-form-label">Bulan/Tahun<span style="color:red;">*</span></label>
-						<div class="col-4">
-								<?php 
-									$tgl = date_create(now());
-									$tahun = date_format($tgl, 'Y'); 
-									$bulan = date_format($tgl, 'n'); 
-								?>
-								<select class="form-control" name="bulan" required>
-									<option value="1" <?php if($bulan  == 1 ) echo 'selected' ; ?>>Januari</option>
-									<option value="2" <?php if($bulan  == 2 ) echo 'selected' ; ?>>Februari</option>
-									<option value="3" <?php if($bulan  == 3 ) echo 'selected' ; ?>>Maret</option>
-									<option value="4" <?php if($bulan  == 4 ) echo 'selected' ; ?>>April</option>
-									<option value="5" <?php if($bulan  == 5 ) echo 'selected' ; ?>>Mei</option>
-									<option value="6" <?php if($bulan  == 6 ) echo 'selected' ; ?>>Juni</option>
-									<option value="7" <?php if($bulan  == 7 ) echo 'selected' ; ?>>Juli</option>
-									<option value="8" <?php if($bulan  == 8 ) echo 'selected' ; ?>>Agustus</option>
-									<option value="9" <?php if($bulan  == 9 ) echo 'selected' ; ?>>September</option>
-									<option value="10" <?php if($bulan  ==10  ) echo 'selected' ; ?>>Oktober</option>
-									<option value="11" <?php if($bulan  == 11 ) echo 'selected' ; ?>>November</option>
-									<option value="12" <?php if($bulan  == 12 ) echo 'selected' ; ?>>Desember</option>
-								</select>
-						</div>
-								<div class="col-6" >
-									<input class="form-control" type="text" value="{{$tahun}}"   name="tahun" size="4" maxlength="4" onkeypress="return hanyaAngka(event)" autocomplete='off' required>
-									<input class="form-control" type="hidden" value="{{Auth::user()->userid}}"  name="userid" autocomplete='off'>
-								</div>
-						</div>
-						<div class="form-group row">
-							<label for="" class="col-2 col-form-label">Pegawai<span style="color:red;">*</span></label>
-							<div class="col-10">
-								<select name="nopek"  class="form-control selectpicker" data-live-search="true" required autocomplete='off'>
-									<option value="">- Pilih -</option>
-									@foreach($data_pegawai as $data)
-									<option value="{{$data->nopeg}}">{{$data->nopeg}} - {{$data->nama}}</option>
-									@endforeach
-								</select>
-							</div>
-						</div>
-						<div class="form-group row">
-							<label for="" class="col-2 col-form-label">AARD<span style="color:red;">*</span></label>
-							<div class="col-10">
-								<select name="aard" id="aard" class="form-control selectpicker" data-live-search="true" required autocomplete='off'>
-									<option value="">- Pilih -</option>
-									@foreach($pay_aard as $dataa)
-									<option value="{{$dataa->kode}}">{{$dataa->kode}} - {{$dataa->nama}}</option>
-									@endforeach
-								</select>
-							</div>
-						</div>
-						<div class="form-group row">
-							<label class="col-2 col-form-label">Nilai<span style="color:red;">*</span></label>
+							<label class="col-2 col-form-label">Pribadi<span style="color:red;">*</span></label>
 							<div class="col-4">
-								<input class="form-control" name="nilai" type="text" value="" id="nilai" required oninvalid="this.setCustomValidity('Nilai Harus Diisi..')" oninput="setCustomValidity('')" autocomplete='off' onkeypress="return hanyaAngka(event)">
+								<input class="form-control" type="number"  required name="pribadi"  size="20" maxlength="20" value="" step="0.01"  pattern="^\d+(?:\.\d{1,2})?$" onblur="this.parentNode.parentNode.style.backgroundColor=/^\d+(?:\.\d{1,2})?$/.test(this.value)?'inherit':''" required oninvalid="this.setCustomValidity('Pribadi Harus Diisi..')" oninput="setCustomValidity('')" autocomplete='off'>
 							</div>
 						</div>
+						<div class="form-group row">
+							<label class="col-2 col-form-label">Perusahaan Direksi<span style="color:red;">*</span></label>
+							<div class="col-4">
+								<input class="form-control" name="perusahaan" type="number" value="" size="20" maxlength="20" step="0.01"  pattern="^\d+(?:\.\d{1,2})?$" onblur="this.parentNode.parentNode.style.backgroundColor=/^\d+(?:\.\d{1,2})?$/.test(this.value)?'inherit':''" required oninvalid="this.setCustomValidity('Perusahaan Direksi Harus Diisi..')" oninput="setCustomValidity('')" >
+							</div>
+						</div>
+						<div class="form-group row">
+							<label class="col-2 col-form-label">Perusahaan Pekerja<span style="color:red;">*</span></label>
+							<div class="col-4">
+								<input class="form-control" name="perusahaan2" type="number" value="" size="20" maxlength="20" step="0.01"  pattern="^\d+(?:\.\d{1,2})?$" onblur="this.parentNode.parentNode.style.backgroundColor=/^\d+(?:\.\d{1,2})?$/.test(this.value)?'inherit':''" required oninvalid="this.setCustomValidity('Perusahaan Pekerja Harus Diisi..')" oninput="setCustomValidity('')" >
+							</div>
+						</div>
+						<div class="form-group row">
+							<label class="col-2 col-form-label">Perusahaan Direksi(BNI)<span style="color:red;">*</span></label>
+							<div class="col-4">
+								<input class="form-control" name="perusahaan3" type="number" value="" size="20" maxlength="20" step="0.01"  pattern="^\d+(?:\.\d{1,2})?$" onblur="this.parentNode.parentNode.style.backgroundColor=/^\d+(?:\.\d{1,2})?$/.test(this.value)?'inherit':''" required oninvalid="this.setCustomValidity('Perusahaan Direksi(BNI) Harus Diisi..')" oninput="setCustomValidity('')" >
+							</div>
+						</div>						
 						
 						<div class="kt-form__actions">
 							<div class="row">
-								<div class="col"></div>
+								<div class="col-2"></div>
 								<div class="col-10">
-									<a  href="{{route('potongan_koreksi_gaji.index')}}" class="btn btn-warning"><i class="fa fa-reply" aria-hidden="true"></i>Cancel</a>
-									<button type="submit" class="btn btn-brand"><i class="fa fa-check" aria-hidden="true"></i>Save</button>
+									<a  href="{{route('pensiun.index')}}" class="btn btn-warning"><i class="fa fa-reply" aria-hidden="true"></i>Cancel</a>
+									<button type="submit" id="btn-save" class="btn btn-brand"><i class="fa fa-check" aria-hidden="true"></i>Save</button>
 								</div>
 							</div>
 						</div>
@@ -134,7 +102,7 @@
 
 		$('#form-create').submit(function(){
 			$.ajax({
-				url  : "{{route('potongan_koreksi_gaji.store')}}",
+				url  : "{{route('pensiun.store')}}",
 				type : "POST",
 				data : $('#form-create').serialize(),
 				dataType : "JSON",
@@ -150,13 +118,13 @@
 						text  : 'Berhasil',
 						timer : 2000
 					}).then(function() {
-							window.location.replace("{{ route('potongan_koreksi_gaji.index')}}");;
+							window.location.replace("{{ route('pensiun.index')}}");;
 						});
 				}else{
 					Swal.fire({
 						type  : 'info',
-						title : 'Data Potongan Koreksi Gaji Yang Diinput Sudah Ada.',
-						text  : 'Failed',
+						title : 'Hanya boleh ada satu data, entri dibatalkan.',
+						text  : 'Info',
 					});
 				}
 				}, 
@@ -166,9 +134,6 @@
 			});	
 			return false;
 		});
-
-
-
 
     var KTBootstrapDatepicker = function () {
 
