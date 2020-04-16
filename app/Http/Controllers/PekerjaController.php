@@ -6,7 +6,9 @@ use Illuminate\Http\Request;
 
 // Load Model
 use App\Models\Pekerja;
+use App\Models\Jabatan;
 use App\Models\KodeJabatan;
+use App\Models\KodeBagian;
 
 //load form request (for validation)
 use App\Http\Requests\PekerjaStore;
@@ -34,12 +36,31 @@ class PekerjaController extends Controller
      */
     public function indexJson()
     {
-        $pekerja_list = Pekerja::orderBy('nopeg', 'desc')->get();
+        $pekerja_list = Pekerja::orderBy('nopeg', 'desc')
+        ->with('jabatan')
+        ->get();
 
         return datatables()->of($pekerja_list)
             ->addColumn('action', function ($row) {
                 $radio = '<label class="kt-radio kt-radio--bold kt-radio--brand"><input type="radio" name="radio1" value="'.$row->nopeg.'"><span></span></label>';
                 return $radio;
+            })
+            ->addColumn('bagian', function ($row) {
+                $kode_bagian = optional($row->jabatan_latest())->kdbag;
+                $bagian = KodeBagian::find($kode_bagian);
+                $nama_bagian = optional($bagian)->nama ? ' - '.optional($bagian)->nama : null;
+                
+                return $kode_bagian.$nama_bagian;
+            })
+            ->addColumn('jabatan', function ($row) {
+                $kode_bagian = optional($row->jabatan_latest())->kdbag;
+                $kode_jabatan = optional($row->jabatan_latest())->kdjab;
+                $jabatan = KodeJabatan::where('kdbag', $kode_bagian)
+                    ->where('kdjab', $kode_jabatan)
+                    ->first();
+                $nama_jabatan = optional($jabatan)->keterangan ? ' - '.optional($jabatan)->keterangan : null;
+                
+                return $kode_jabatan.$nama_jabatan;
             })
             ->rawColumns(['action'])
             ->make(true);
