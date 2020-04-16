@@ -59,6 +59,7 @@
 				<tr>
 					<th></th>
 					<th>Nama</th>
+					<th>No. Rekening</th>
 					<th>Alamat</th>
 					<th>No Telp</th>
 				</tr>
@@ -90,6 +91,7 @@ $(document).ready(function(){
 			columns: [
 				{data: 'action', name: 'action'},
 				{data: 'nama', name: 'nama'},
+				{data: 'norek', name: 'norek'},
 				{data: 'alamat', name: 'alamat'},
 				{data: 'telpon', name: 'telpon'},
 			]

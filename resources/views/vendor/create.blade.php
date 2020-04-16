@@ -59,6 +59,13 @@
 						</div>
 					</div>
 					<div class="form-group row">
+						<label for="spd-input" class="col-2 col-form-label">No Rekening<span style="color:red;">*</span></label>
+						<div class="col-10">
+							<input type="hidden" value="00" name="vendorid">
+							<input  class="form-control" type="text" value="" id="norek" name="norek" size="20" maxlength="20" required oninvalid="this.setCustomValidity('No Rekening Harus Diisi..')" oninput="setCustomValidity('')" autocomplete='off' onkeypress="return hanyaAngka(event)">
+						</div>
+					</div>
+					<div class="form-group row">
 						<label for="nopek-input" class="col-2 col-form-label">Alamat Vendor<span style="color:red;">*</span></label>
 						<div class="col-10">
 							<textarea class="form-control" type="text" name="alamat" value=""  id="alamat" required oninvalid="this.setCustomValidity('Alamat Harus Diisi..')" oninput="setCustomValidity('')" autocomplete='off'></textarea>
