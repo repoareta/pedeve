@@ -40,156 +40,261 @@
 				<div class="kt-portlet__head-wrapper">
 				</div>
 			</div>
-		</div>
+		</div>		
+		<div class="kt-portlet__body">
+			<form class="kt-form kt-form--label-right" id="formPekerja" action="{{ route('pekerja.store') }}" method="POST">
+				@csrf
+				<div class="row">
+					<div class="col-lg-5">
+						<div class="form-group row">
+							<label for="kode" class="col-4 col-form-label">Nomor Pegawai</label>
+							<div class="col-8">
+								<input class="form-control" type="text" name="nomor" id="nomor">
+							</div>
+						</div>
+		
+						<div class="form-group row">
+							<label for="nama" class="col-4 col-form-label">Bagian</label>
+							<div class="col-8">
+								<select class="form-control kt-select2" name="bagian" id="bagian">
+									<option value=""> - Pilih Bagian- </option>
+									@foreach ($kode_bagian_list as $kode_bagian)
+										<option value="{{ $kode_bagian->kode }}">{{ $kode_bagian->kode.' - '.$kode_bagian->nama }}</option>
+									@endforeach
+								</select>
+							</div>
+						</div>
+		
+						<div class="form-group row">
+							<label for="tahun" class="col-4 col-form-label">Status</label>
+							<div class="col-8">
+								<select class="form-control kt-select2" name="status" id="status">
+									<option value=""> - Pilih Status- </option>
+									<option value="">Aktif</option>
+									<option value="">Tidak Aktif</option>
+								</select>
+							</div>
+						</div>
+		
+						<div class="form-group row">
+							<label for="" class="col-4 col-form-label">Jabatan</label>
+							<div class="col-8">
+								<select class="form-control kt-select2" name="jabatan" id="jabatan">
+									<option value=""> - Pilih Jabatan- </option>
+									@foreach ($kode_jabatan_list as $kode_jabatan)
+										<option value="{{ $kode_jabatan->kdjab }}">{{ $kode_jabatan->kdjab.' - '.$kode_jabatan->keterangan }}</option>
+									@endforeach
+								</select>
+							</div>
+						</div>
+		
+						<div class="form-group row">
+							<label for="" class="col-4 col-form-label">Tgl Aktif Dinas</label>
+							<div class="col-8">
+								<div class="input-group date">
+									<input type="text" class="form-control" readonly="" placeholder="Pilih Tanggal Aktif Dinas" id="tanggal_aktif_dinas">
+									<div class="input-group-append">
+										<span class="input-group-text">
+											<i class="la la-calendar-check-o"></i>
+										</span>
+									</div>
+								</div>
+							</div>
+						</div>
+		
+						<div class="form-group row">
+							<label for="" class="col-4 col-form-label">No. YPD</label>
+							<div class="col-8">
+								<input class="form-control" type="text" name="no_ypd" id="no_ypd">
+							</div>
+						</div>
+		
+						<div class="form-group row">
+							<label for="" class="col-4 col-form-label">NPWP</label>
+							<div class="col-8">
+								<input class="form-control" type="text" name="npwp" id="npwp">
+							</div>
+						</div>
+		
+						<div class="form-group row">
+							<label for="" class="col-4 col-form-label">No. Astek</label>
+							<div class="col-8">
+								<input class="form-control" type="text" name="no_astek" id="no_astek">
+							</div>
+						</div>
+		
+						<div class="form-group row">
+							<label for="" class="col-4 col-form-label">Gelar</label>
+							<div class="col-8">
+								<input class="form-control" type="text" name="gelar_1" id="gelar_1" placeholder="Gelar 1">
+							</div>
+						</div>
+						<div class="form-group row">
+							<label for="" class="col-4 col-form-label"></label>
+							<div class="col-8">
+								<input class="form-control" type="text" name="gelar_2" id="gelar_2" placeholder="Gelar 2">
+							</div>
+						</div>
+						<div class="form-group row">
+							<label for="" class="col-4 col-form-label"></label>
+							<div class="col-8">
+								<input class="form-control" type="text" name="gelar_3" id="gelar_3" placeholder="Gelar 3">
+							</div>
+						</div>
+					</div>
+	
+					<div class="col-lg-5">
+						<div class="form-group row">
+							<label for="kode" class="col-4 col-form-label">Nama Pegawai</label>
+							<div class="col-8">
+								<input class="form-control" type="text" name="nama" id="nama">
+							</div>
+						</div>
+		
+						<div class="form-group row">
+							<label for="nama" class="col-4 col-form-label">Tempat Lahir</label>
+							<div class="col-8">
+								<input class="form-control" type="text" name="tempat_lahir" id="tempat_lahir">
+							</div>
+						</div>
 
-		<form class="kt-form kt-form--fit kt-form--label-right">
-			<div class="kt-portlet__body">
-				<div class="form-group row">
-					<label class="col-lg-2 col-form-label">Full Name:</label>
-					<div class="col-lg-3">
-						<input type="email" class="form-control" placeholder="Enter full name">
-						<span class="form-text text-muted">Please enter your full name</span>
-					</div>
-					<label class="col-lg-2 col-form-label">Contact Number:</label>
-					<div class="col-lg-3">
-						<input type="email" class="form-control" placeholder="Enter contact number">
-						<span class="form-text text-muted">Please enter your contact number</span>
-					</div>
-				</div>	     
-				<div class="form-group row">
-					<label class="col-lg-2 col-form-label">Address:</label>
-					<div class="col-lg-3">
-						<div class="kt-input-icon">
-							<input type="text" class="form-control" placeholder="Enter your address">
-							<span class="kt-input-icon__icon kt-input-icon__icon--right"><span><i class="la la-map-marker"></i></span></span>
+						<div class="form-group row">
+							<label for="nama" class="col-4 col-form-label">Tanggal Lahir</label>
+							<div class="col-8">
+								<div class="input-group date">
+									<input type="text" class="form-control" readonly="" placeholder="Pilih Tanggal Lahir" id="tanggal_lahir">
+									<div class="input-group-append">
+										<span class="input-group-text">
+											<i class="la la-calendar-check-o"></i>
+										</span>
+									</div>
+								</div>
+							</div>
 						</div>
-						<span class="form-text text-muted">Please enter your address</span>
-					</div>
-					<label class="col-lg-2 col-form-label">Postcode:</label>
-					<div class="col-lg-3">
-						<div class="kt-input-icon">
-							<input type="text" class="form-control" placeholder="Enter your postcode">
-							<span class="kt-input-icon__icon kt-input-icon__icon--right"><span><i class="la la-bookmark-o"></i></span></span>
+		
+						<div class="form-group row">
+							<label for="tahun" class="col-4 col-form-label">Provinsi Lahir</label>
+							<div class="col-8">
+								<select class="form-control kt-select2" name="provinsi" id="provinsi">
+									<option value=""> - Pilih Provinsi- </option>
+									@foreach ($provinsi_list as $provinsi)
+										<option value="{{ $provinsi->kode }}">{{ $provinsi->nama }}</option>
+									@endforeach
+								</select>
+							</div>
 						</div>
-						<span class="form-text text-muted">Please enter your postcode</span>
+						
+						<div class="form-group row">
+							<label for="" class="col-4 col-form-label">Agama</label>
+							<div class="col-8">
+								<select class="form-control kt-select2" name="agama" id="agama">
+									<option value=""> - Pilih Agama- </option>
+									@foreach ($agama_list as $agama)
+										<option value="{{ $agama->kode }}">{{ $agama->nama }}</option>
+									@endforeach
+								</select>
+							</div>
+						</div>
+		
+						<div class="form-group row">
+							<label for="" class="col-4 col-form-label">Jenis Kelamin</label>
+							<div class="col-8">
+								<div class="kt-radio-inline">
+									<label class="kt-radio kt-radio--solid">
+										<input type="radio" name="jenis_kelamin" checked value="L"> Laki-laki
+										<span></span>
+									</label>
+									<label class="kt-radio kt-radio--solid">
+										<input type="radio" name="jenis_kelamin" value="P"> Perempuan
+										<span></span>
+									</label>
+								</div>
+							</div>
+						</div>
+		
+						<div class="form-group row">
+							<label for="" class="col-4 col-form-label">Golongan Darah</label>
+							<div class="col-8">
+								<select class="form-control kt-select2" name="golongan_darah" id="golongan_darah">
+									<option value=""> - Pilih Golongan Darah- </option>
+									<option value="A">A</option>
+									<option value="B">B</option>
+									<option value="AB">AB</option>
+									<option value="O">O</option>
+								</select>
+							</div>
+						</div>
+		
+						<div class="form-group row">
+							<label for="" class="col-4 col-form-label">Kode Keluarga</label>
+							<div class="col-8">
+								<input class="form-control" type="text" name="kode_keluarga" id="kode_keluarga">
+							</div>
+						</div>
+		
+						<div class="form-group row">
+							<label for="" class="col-4 col-form-label">Alamat</label>
+							<div class="col-8">
+								<input class="form-control" placeholder="Alamat 1" type="text" name="alamat_1" id="alamat_1">
+							</div>
+						</div>
+
+						<div class="form-group row">
+							<label for="" class="col-4 col-form-label"></label>
+							<div class="col-8">
+								<input class="form-control" placeholder="Alamat 2" type="text" name="alamat_2" id="alamat_2">
+							</div>
+						</div>
+
+						<div class="form-group row">
+							<label for="" class="col-4 col-form-label"></label>
+							<div class="col-8">
+								<input class="form-control" placeholder="Alamat 3" type="text" name="alamat_3" id="alamat_3">
+							</div>
+						</div>
+		
+						<div class="form-group row">
+							<label for="" class="col-4 col-form-label">No. Handphone</label>
+							<div class="col-8">
+								<input class="form-control" type="text" name="no_handphone" id="no_handphone">
+							</div>
+						</div>
+		
+						<div class="form-group row">
+							<label for="" class="col-4 col-form-label">No. Telepon</label>
+							<div class="col-8">
+								<input class="form-control" type="text" name="no_telepon" id="no_telepon">
+							</div>
+						</div>
 					</div>
-				</div>	     
-				<div class="form-group row">
-					<label class="col-lg-2 col-form-label">Group:</label>
-					<div class="col-lg-3">
-						<div class="kt-radio-inline">
-							<label class="kt-radio kt-radio--solid">
-								<input type="radio" name="example_2" checked="" value="2"> Sales Person
-								<span></span>
+
+					<div class="col-lg-2">
+						<div class="kt-avatar" id="kt_user_avatar_2">
+							<div class="kt-avatar__holder" style="background-image: url(assets/media/users/default.jpg)"></div>
+							<label class="kt-avatar__upload" data-toggle="kt-tooltip" title="" data-original-title="Ubah foto">
+								<i class="fa fa-pen"></i>
+								<input type="file" name="profile_avatar" accept=".png, .jpg, .jpeg">
 							</label>
-							<label class="kt-radio kt-radio--solid">
-								<input type="radio" name="example_2" value="2"> Customer
-								<span></span>
-							</label>
+							<span class="kt-avatar__cancel" data-toggle="kt-tooltip" title="" data-original-title="Hapus foto">
+								<i class="fa fa-times"></i>
+							</span>
 						</div>
-						<span class="form-text text-muted">Please select user group</span>
-					</div>
-				</div>	            
-			</div>
-			<div class="kt-portlet__foot kt-portlet__foot--fit-x">
-				<div class="kt-form__actions">
-					<div class="row">
-						<div class="col-lg-2"></div>
-						<div class="col-lg-10">
-							<button type="reset" class="btn btn-success">Submit</button>
-							<button type="reset" class="btn btn-secondary">Cancel</button>
-						</div>
+						<span class="form-text text-muted">Tipe berkas: .png, .jpg, jpeg.</span>
 					</div>
 				</div>
-			</div>
-		</form>
-		
-			<div class="kt-portlet__body">
 
-				
-
-				<form class="kt-form kt-form--label-right" id="formAnggaran" action="{{ route('anggaran.store') }}" method="POST">
-					@csrf
-					<div class="form-group row">
-						<label for="kode" class="col-2 col-form-label">Nama Pegawai</label>
-						<div class="col-10">
-							<input class="form-control" type="text" name="kode" id="kode">
-						</div>
-					</div>
-
-					<div class="form-group row">
-						<label for="nama" class="col-2 col-form-label">Tempat & Tanggal Lahir</label>
-						<div class="col-10">
-							<input class="form-control" type="text" name="nama" id="nama">
-						</div>
-					</div>
-
-					<div class="form-group row">
-						<label for="tahun" class="col-2 col-form-label">Provinsi</label>
-						<div class="col-10">
-							<input class="form-control" type="text" name="tahun" id="tahun" value="{{ date('Y') }}">
-						</div>
-					</div>
-
-					<div class="form-group row">
-						<label for="nilai" class="col-2 col-form-label">Jenis Kelamin</label>
-						<div class="col-10">
-							<input class="form-control" type="text" name="nilai" id="nilai">
-						</div>
-					</div>
-
-					<div class="form-group row">
-						<label for="nilai" class="col-2 col-form-label">Agama</label>
-						<div class="col-10">
-							<input class="form-control" type="text" name="nilai" id="nilai">
-						</div>
-					</div>
-
-					<div class="form-group row">
-						<label for="nilai" class="col-2 col-form-label">Golongan Darah</label>
-						<div class="col-10">
-							<input class="form-control" type="text" name="nilai" id="nilai">
-						</div>
-					</div>
-
-					<div class="form-group row">
-						<label for="nilai" class="col-2 col-form-label">Kode Keluarga</label>
-						<div class="col-10">
-							<input class="form-control" type="text" name="nilai" id="nilai">
-						</div>
-					</div>
-
-					<div class="form-group row">
-						<label for="nilai" class="col-2 col-form-label">Alamat</label>
-						<div class="col-10">
-							<input class="form-control" type="text" name="nilai" id="nilai">
-						</div>
-					</div>
-
-					<div class="form-group row">
-						<label for="nilai" class="col-2 col-form-label">No. Handphone</label>
-						<div class="col-10">
-							<input class="form-control" type="text" name="nilai" id="nilai">
-						</div>
-					</div>
-
-					<div class="form-group row">
-						<label for="nilai" class="col-2 col-form-label">No. Telepon</label>
-						<div class="col-10">
-							<input class="form-control" type="text" name="nilai" id="nilai">
-						</div>
-					</div>
-
-					<div class="kt-form__actions">
+				<div class="kt-form__actions">
+					<div class="col-lg-5">
 						<div class="row">
-							<div class="col-2"></div>
-							<div class="col-10">
+							<div class="col-4"></div>
+							<div class="col-8">
 								<a  href="{{ url()->previous() }}" class="btn btn-warning"><i class="fa fa-reply" aria-hidden="true"></i> Batal</a>
 								<button type="submit" class="btn btn-brand"><i class="fa fa-check" aria-hidden="true"></i> Simpan</button>
 							</div>
 						</div>
 					</div>
-				</form>
+				</div>
+			</form>
 		</div>
 		{{-- END BODY --}}		
 	</div>	
@@ -199,5 +304,45 @@
 @endsection
 
 @section('scripts')
-{!! JsValidator::formRequest('App\Http\Requests\AnggaranStore', '#formAnggaran') !!}
+{!! JsValidator::formRequest('App\Http\Requests\PekerjaStore', '#formPekerja') !!}
+
+<script>
+$(document).ready(function () {
+	$('.kt-select2').select2().on('change', function() {
+		$(this).valid();
+	});
+
+	// minimum setup
+	$('#tanggal_aktif_dinas, #tanggal_lahir').datepicker({
+		todayHighlight: true,
+		orientation: "bottom left",
+		autoclose: true,
+		// language : 'id',
+		format   : 'yyyy-mm-dd'
+	});
+
+	// Class definition
+	var KTAvatarDemo = function () {
+		// Private functions
+		var initDemos = function () {
+			var avatar1 = new KTAvatar('kt_user_avatar_1');
+			var avatar2 = new KTAvatar('kt_user_avatar_2');
+			var avatar3 = new KTAvatar('kt_user_avatar_3');
+			var avatar4 = new KTAvatar('kt_user_avatar_4');
+		}
+
+		return {
+			// public functions
+			init: function() {
+				initDemos();
+			}
+		};
+	}();
+
+	KTUtil.ready(function() {
+		KTAvatarDemo.init();
+	});
+
+});
+</script>
 @endsection

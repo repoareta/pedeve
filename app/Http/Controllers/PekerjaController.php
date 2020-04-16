@@ -9,6 +9,8 @@ use App\Models\Pekerja;
 use App\Models\Jabatan;
 use App\Models\KodeJabatan;
 use App\Models\KodeBagian;
+use App\Models\Provinsi;
+use App\Models\Agama;
 
 //load form request (for validation)
 use App\Http\Requests\PekerjaStore;
@@ -73,7 +75,17 @@ class PekerjaController extends Controller
      */
     public function create()
     {
-        return view('pekerja.create');
+        $kode_bagian_list = KodeBagian::all();
+        $kode_jabatan_list = KodeJabatan::all();
+        $provinsi_list = Provinsi::all();
+        $agama_list = Agama::all();
+
+        return view('pekerja.create', compact(
+            'kode_bagian_list',
+            'kode_jabatan_list',
+            'provinsi_list',
+            'agama_list'
+        ));
     }
 
     /**
