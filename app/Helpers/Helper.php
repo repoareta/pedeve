@@ -52,7 +52,7 @@ function currency_idr($angka)
  */
 function float_two($angka)
 {
-    return number_format($angka, 2);
+    return str_replace(',', '', number_format($angka, 2));
 }
 
 

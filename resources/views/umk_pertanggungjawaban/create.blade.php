@@ -115,9 +115,16 @@
 					</div>
 
 					<div class="form-group row">
+						<label for="jumlah" class="col-2 col-form-label">Keterangan</label>
+						<div class="col-10">
+							<input class="form-control" type="text" name="keterangan" id="keterangan">
+						</div>
+					</div>
+
+					<div class="form-group row">
 						<label for="jumlah" class="col-2 col-form-label">Jumlah</label>
 						<div class="col-10">
-							<input class="form-control" type="number" name="jumlah" id="jumlah">
+							<input class="form-control" type="number" name="jumlah" id="jumlah" value="0.00">
 						</div>
 					</div>
 
@@ -242,7 +249,7 @@
 					<div class="form-group row">
 						<label for="spd-input" class="col-2 col-form-label">Perintah Kerja</label>
 						<div class="col-10">
-							<input class="form-control" type="text" name="perintah_kerja_detail" id="perintah_kerja_detail">
+							<input class="form-control" type="text" name="perintah_kerja_detail" id="perintah_kerja_detail" value="000">
 						</div>
 					</div>
 

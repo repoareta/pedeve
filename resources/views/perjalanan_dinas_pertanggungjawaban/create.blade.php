@@ -115,9 +115,14 @@
 					</div>
 
 					<div class="form-group row">
-						<label for="jumlah" class="col-2 col-form-label">Jumlah</label>
-						<div class="col-10">
+						<label for="jumlah" class="col-2 col-form-label">Jumlah Panjar Dinas</label>
+						<div class="col-5">
 							<input class="form-control" type="number" name="jumlah" id="jumlah" value="0.00">
+						</div>
+
+						<label for="example-email-input" class="col-2 col-form-label">Jumlah Panjar Detail</label>
+						<div class="col-3">
+							<input class="form-control" type="number" name="jumlah_detail" id="jumlah_detail">
 						</div>
 					</div>
 
@@ -269,7 +274,6 @@
 	}
 
 	$(document).ready(function () {
-
 		$('.kt-select2').select2().on('change', function() {
 			$(this).valid();
 		});
@@ -286,9 +290,15 @@
 				{data: 'keterangan', name: 'keterangan'},
 				{data: 'nilai', name: 'nilai', class:'no-wrap text-right'},
 				{data: 'qty', name: 'qty', class:'no-wrap text-right'},
-				{data: 'total', name: 'total', class:'no-wrap text-right'}
+				{data: 'total', name: 'total', class:'no-wrap text-right'},
+				{data: 'total', name: 'total', class:'no-wrap text-right', visible: false},
 			],
+			drawCallback: function () {
+				var sum = $('#kt_table').DataTable().column(7).data().sum();
+				$('#jumlah_detail').val(sum);
+			},
 			order: [[ 0, "asc" ], [ 1, "asc" ]]
+			
 		});
 	
 		$('#openDetail').click(function(e) {
