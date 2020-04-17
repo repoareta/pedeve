@@ -38,7 +38,7 @@ class PekerjaController extends Controller
      */
     public function indexJson()
     {
-        $pekerja_list = Pekerja::orderBy('nopeg', 'desc')
+        $pekerja_list = Pekerja::orderBy('tglentry', 'desc')
         ->with('jabatan')
         ->get();
 
@@ -128,9 +128,19 @@ class PekerjaController extends Controller
      * @param  int  $id
      * @return \Illuminate\Http\Response
      */
-    public function edit($id)
+    public function edit(Pekerja $pekerja)
     {
-        //
+        $kode_bagian_list = KodeBagian::all();
+        $kode_jabatan_list = KodeJabatan::all();
+        $provinsi_list = Provinsi::all();
+        $agama_list = Agama::all();
+
+        return view('pekerja.edit', compact(
+            'kode_bagian_list',
+            'kode_jabatan_list',
+            'provinsi_list',
+            'agama_list'
+        ));
     }
 
     /**
