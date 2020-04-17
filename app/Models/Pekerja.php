@@ -17,6 +17,16 @@ class Pekerja extends Model
      *
      * @return void
      */
+    public function jabatan()
+    {
+        return $this->hasMany('App\Models\Jabatan', 'nopeg');
+    }
+
+    /**
+     * Kode Jabatan dimiliki Kode Bagian
+     *
+     * @return void
+     */
     public function jabatan_latest()
     {
         return $this->hasMany('App\Models\Jabatan', 'nopeg')->latest()->first();

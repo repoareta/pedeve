@@ -25,4 +25,9 @@ class Jabatan extends Model
     {
         return $this->belongsTo('App\Models\KodeBagian', 'kdbag', 'kode');
     }
+
+    public function kode_jabatan()
+    {
+        return $this->belongsTo('App\Models\KodeJabatan', 'kdjab', 'kdjab');
+    }
 }

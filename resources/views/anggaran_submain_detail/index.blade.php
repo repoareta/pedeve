@@ -35,31 +35,33 @@
 			</span>
 			<h3 class="kt-portlet__head-title">
 				Tabel Umum Anggaran Submain Detail
-			</h3>			
+			</h3>
+
+			<div class="kt-portlet__head-actions">
+				<a href="{{ route('anggaran.submain.detail.create', ['kode_main' => $kode_main, 'kode_submain' => $kode_submain]) }}">
+					<span style="font-size: 2em;" class="kt-font-success" data-toggle="kt-tooltip" data-placement="top" title="Tambah Data">
+						<i class="fas fa-plus-circle"></i>
+					</span>
+				</a>
+
+				<span style="font-size: 2em;" class="kt-font-warning pointer-link" id="editRow" data-toggle="kt-tooltip" data-placement="top" title="Ubah Data">
+					<i class="fas fa-edit"></i>
+				</span>
+
+				<span style="font-size: 2em;" class="kt-font-danger pointer-link" id="deleteRow" data-toggle="kt-tooltip" data-placement="top" title="Hapus Data">
+					<i class="fas fa-times-circle"></i>
+				</span>
+
+				<a href="{{ route('anggaran.submain.index', ['kode_main' => $kode_main]) }}">
+					<span style="font-size: 2em;" class="kt-font-info" data-toggle="kt-tooltip" data-placement="top" title="Kembali ke Anggaran Submain {{ $kode_submain }}">
+						<i class="fas fa-arrow-left"></i>
+					</span>
+				</a>
+			</div>
 		</div>
 		<div class="kt-portlet__head-toolbar">
 			<div class="kt-portlet__head-wrapper">
-				<div class="kt-portlet__head-actions">
-					<a href="{{ route('anggaran.submain.detail.create', ['kode_main' => $kode_main, 'kode_submain' => $kode_submain]) }}">
-						<span style="font-size: 2em;" class="kt-font-success" data-toggle="kt-tooltip" data-placement="top" title="Tambah Data">
-							<i class="fas fa-plus-circle"></i>
-						</span>
-					</a>
-	
-					<span style="font-size: 2em;" class="kt-font-warning pointer-link" id="editRow" data-toggle="kt-tooltip" data-placement="top" title="Ubah Data">
-						<i class="fas fa-edit"></i>
-					</span>
-	
-					<span style="font-size: 2em;" class="kt-font-danger pointer-link" id="deleteRow" data-toggle="kt-tooltip" data-placement="top" title="Hapus Data">
-						<i class="fas fa-times-circle"></i>
-					</span>
-
-					<a href="{{ route('anggaran.submain.index', ['kode_main' => $kode_main]) }}">
-						<span style="font-size: 2em;" class="kt-font-info" data-toggle="kt-tooltip" data-placement="top" title="Kembali ke Anggaran Submain {{ $kode_submain }}">
-							<i class="fas fa-arrow-left"></i>
-						</span>
-					</a>
-				</div>
+				
 			</div>
 		</div>
 	</div>
