@@ -1,18 +1,27 @@
-<div class="kt-portlet__head-actions" style="font-size: 2rem;">
-    <a href="#" id="openDetail">
-        <span class="kt-font-success" data-toggle="kt-tooltip" data-placement="top" title="Tambah Data">
-            <i class="fas fa-plus-circle"></i>
+<div class="kt-portlet__head" style="padding-left:0px;">
+    <div class="kt-portlet__head-label">
+        <span class="kt-portlet__head-icon">
+            <i class="kt-font-brand flaticon-users-1"></i>
         </span>
-    </a>
+        <h3 class="kt-portlet__head-title">
+            Keluarga
+        </h3>
 
-    <span class="kt-font-warning pointer-link" id="editRow" data-toggle="kt-tooltip" data-placement="top" title="Ubah Data">
-        <i class="fas fa-edit"></i>
-    </span>
+        <div class="kt-portlet__head-actions" style="font-size: 2rem;">
+            <span class="kt-font-success pointer-link" id="addRow" data-toggle="kt-tooltip" data-placement="top" title="Tambah Data">
+                <i class="fas fa-plus-circle"></i>
+            </span>
 
-    <span class="kt-font-danger pointer-link" id="deleteRow" data-toggle="kt-tooltip" data-placement="top" title="Hapus Data">
-        <i class="fas fa-times-circle"></i>
-    </span>
-</div>	
+            <span class="kt-font-warning pointer-link" id="editRow" data-toggle="kt-tooltip" data-placement="top" title="Ubah Data">
+                <i class="fas fa-edit"></i>
+            </span>
+
+            <span class="kt-font-danger pointer-link" id="deleteRow" data-toggle="kt-tooltip" data-placement="top" title="Hapus Data">
+                <i class="fas fa-times-circle"></i>
+            </span>
+        </div>		
+    </div>
+</div>
 
 <table class="table table-striped table-bordered table-hover table-checkable" id="kt_table">
     <thead class="thead-light">

@@ -71,8 +71,9 @@
 							<div class="col-8">
 								<select class="form-control kt-select2" name="status" id="status">
 									<option value=""> - Pilih Status- </option>
-									<option value="">Aktif</option>
-									<option value="">Tidak Aktif</option>
+									<option value="A">Aktif</option>
+									<option value="K">Aktif</option>
+									<option value="P">Pensiun</option>
 								</select>
 							</div>
 						</div>
@@ -93,7 +94,7 @@
 							<label for="" class="col-4 col-form-label">Tgl Aktif Dinas</label>
 							<div class="col-8">
 								<div class="input-group date">
-									<input type="text" class="form-control" readonly="" placeholder="Pilih Tanggal Aktif Dinas" id="tanggal_aktif_dinas">
+									<input type="text" class="form-control" readonly="" placeholder="Pilih Tanggal Aktif Dinas" name="tanggal_aktif_dinas" id="tanggal_aktif_dinas">
 									<div class="input-group-append">
 										<span class="input-group-text">
 											<i class="la la-calendar-check-o"></i>
@@ -163,7 +164,7 @@
 							<label for="nama" class="col-4 col-form-label">Tanggal Lahir</label>
 							<div class="col-8">
 								<div class="input-group date">
-									<input type="text" class="form-control" readonly="" placeholder="Pilih Tanggal Lahir" id="tanggal_lahir">
+									<input type="text" class="form-control" readonly="" placeholder="Pilih Tanggal Lahir" id="tanggal_lahir" name="tanggal_lahir">
 									<div class="input-group-append">
 										<span class="input-group-text">
 											<i class="la la-calendar-check-o"></i>
@@ -295,10 +296,15 @@
 						</div>
 					</div>
 				</div>
+
 			</form>
 		</div>
 		{{-- END BODY --}}
-		
+		<style>
+			a.nav-link {
+				margin-bottom: -1px;
+			}
+		</style>
 		<div class="kt-portlet__head kt-portlet__head">
 			<div class="kt-portlet__head-label">
 				<span class="kt-portlet__head-icon">
@@ -309,7 +315,7 @@
 				</h3>
 			</div>
 			<div class="kt-portlet__head-toolbar">
-				<ul class="nav nav-tabs nav-tabs-line nav-tabs-bold nav-tabs-line-brand" role="tablist">
+				<ul class="nav nav-tabs nav-tabs-line nav-tabs-bold nav-tabs-line-primary" role="tablist">
 					<li class="nav-item">
 						<a class="nav-link active" data-toggle="tab" href="#detail_keluarga" role="tab" aria-selected="true">
 						Keluarga
@@ -368,7 +374,7 @@
 				</ul>
 			</div>
 		</div>
-		<div class="kt-portlet__body">
+		<div class="kt-portlet__body" style="padding-top:10px">
 			<div class="tab-content">
 				<div class="tab-pane active" id="detail_keluarga">
 					@include('pekerja.detail_keluarga')
