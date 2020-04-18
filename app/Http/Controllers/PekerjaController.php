@@ -137,6 +137,9 @@ class PekerjaController extends Controller
 
         $pekerja->save();
 
+        if ($request->url == 'edit') {
+            return redirect()->route('pekerja.edit', ['pekerja' => $pekerja->nopeg]);
+        }
         Alert::success('Simpan Pekerja', 'Berhasil')->persistent(true)->autoClose(2000);
         return redirect()->route('pekerja.index');
     }

@@ -42,6 +42,15 @@
 			</div>
 		</div>		
 		<div class="kt-portlet__body">
+			@if ($errors->any())
+				<div class="alert alert-danger">
+					<ul>
+						@foreach ($errors->all() as $error)
+							<li>{{ $error }}</li>
+						@endforeach
+					</ul>
+				</div>
+			@endif
 			<form class="kt-form kt-form--label-right" id="formPekerja" action="{{ route('pekerja.store') }}" method="POST" enctype="multipart/form-data">
 				@csrf
 				<div class="row">
@@ -394,7 +403,9 @@ $(document).ready(function () {
 	});
 
 
-	$("#formPekerja").on('submit', function(){
+	$("#formPekerja").on('submit', function(e){
+		e.preventDefault();
+
 		if ($('#status-error').length){
 			$("#status-error").insertAfter("#status-nya");
 		}
@@ -428,7 +439,33 @@ $(document).ready(function () {
 		}
 
 		if($(this).valid()) {
-			alert('hehe');
+			const swalWithBootstrapButtons = Swal.mixin({
+			customClass: {
+				confirmButton: 'btn btn-primary',
+				cancelButton: 'btn btn-danger'
+			},
+				buttonsStyling: false
+			})
+
+			swalWithBootstrapButtons.fire({
+				title: "Ingin melanjutkan isi detail pegawai?",
+				text: "",
+				type: 'warning',
+				showCancelButton: true,
+				reverseButtons: true,
+				confirmButtonText: 'Ya, Lanjut Isi Detail Pegawai',
+				cancelButtonText: 'Tidak'
+			})
+			.then((result) => {
+				if (result.value) {
+					$(this).append('<input type="hidden" name="url" value="edit" />');
+					$(this).unbind('submit').submit();
+				}
+				else if (result.dismiss === Swal.DismissReason.cancel) {
+					$(this).append('<input type="hidden" name="url" value="pekerja.index" />');
+					$(this).unbind('submit').submit();
+				}
+			});
 		}
 	});
 
