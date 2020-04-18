@@ -74,6 +74,7 @@
 									<option value="K">Kontrak</option>
 									<option value="P">Pensiun</option>
 								</select>
+								<div id="status-nya"></div>
 							</div>
 						</div>
 		
@@ -140,6 +141,7 @@
 										<option value="{{ $pendidikan->kode }}">{{ $pendidikan->nama }}</option>
 									@endforeach
 								</select>
+								<div id="gelar_1-nya"></div>
 							</div>
 						</div>
 						<div class="form-group row">
@@ -151,6 +153,7 @@
 										<option value="{{ $pendidikan->kode }}">{{ $pendidikan->nama }}</option>
 									@endforeach
 								</select>
+								<div id="gelar_2-nya"></div>
 							</div>
 						</div>
 						<div class="form-group row">
@@ -162,6 +165,7 @@
 										<option value="{{ $pendidikan->kode }}">{{ $pendidikan->nama }}</option>
 									@endforeach
 								</select>
+								<div id="gelar_3-nya"></div>
 							</div>
 						</div>
 					</div>
@@ -204,6 +208,7 @@
 										<option value="{{ $provinsi->kode }}">{{ $provinsi->nama }}</option>
 									@endforeach
 								</select>
+								<div id="provinsi-nya"></div>
 							</div>
 						</div>
 						
@@ -216,6 +221,7 @@
 										<option value="{{ $agama->kode }}">{{ $agama->nama }}</option>
 									@endforeach
 								</select>
+								<div id="agama-nya"></div>
 							</div>
 						</div>
 		
@@ -245,6 +251,7 @@
 									<option value="AB">AB</option>
 									<option value="O">O</option>
 								</select>
+								<div id="golongan_darah-nya"></div>
 							</div>
 						</div>
 		
@@ -302,7 +309,7 @@
 								<i class="fa fa-times"></i>
 							</span>
 						</div>
-						<span class="form-text text-muted">Tipe berkas: .png, .jpg, jpeg.</span>
+						<span class="form-text text-muted" id="photo-nya">Tipe berkas: .png, .jpg, jpeg.</span>
 					</div>
 				</div>
 
@@ -364,6 +371,65 @@ $(document).ready(function () {
 
 	KTUtil.ready(function() {
 		KTAvatarDemo.init();
+	});
+
+	$('#gelar_1, #gelar_2, #gelar_3').select2().on('change', function() {
+		if ($('#gelar_1-error').length){
+			$("#gelar_1-error").insertAfter("#gelar_1-nya");
+		} else {
+			$(this).valid();
+		}
+
+		if ($('#gelar_2-error').length){
+			$("#gelar_2-error").insertAfter("#gelar_2-nya");
+		} else {
+			$(this).valid();
+		}
+		
+		if ($('#gelar_3-error').length){
+			$("#gelar_3-error").insertAfter("#gelar_3-nya");
+		} else {
+			$(this).valid();
+		}
+	});
+
+
+	$("#formPekerja").on('submit', function(){
+		if ($('#status-error').length){
+			$("#status-error").insertAfter("#status-nya");
+		}
+
+		if ($('#provinsi-error').length){
+			$("#provinsi-error").insertAfter("#provinsi-nya");
+		}
+
+		if ($('#agama-error').length){
+			$("#agama-error").insertAfter("#agama-nya");
+		}
+
+		if ($('#golongan_darah-error').length){
+			$("#golongan_darah-error").insertAfter("#golongan_darah-nya");
+		}
+
+		if ($('#gelar_1-error').length){
+			$("#gelar_1-error").insertAfter("#gelar_1-nya");
+		}
+		
+		if ($('#gelar_2-error').length){
+			$("#gelar_2-error").insertAfter("#gelar_2-nya");
+		}
+		
+		if ($('#gelar_3-error').length){
+			$("#gelar_3-error").insertAfter("#gelar_3-nya");
+		}
+
+		if ($('#photo-error').length){
+			$("#photo-error").insertAfter("#photo-nya");
+		}
+
+		if($(this).valid()) {
+			alert('hehe');
+		}
 	});
 
 });
