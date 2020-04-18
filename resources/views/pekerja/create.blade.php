@@ -42,7 +42,7 @@
 			</div>
 		</div>		
 		<div class="kt-portlet__body">
-			<form class="kt-form kt-form--label-right" id="formPekerja" action="{{ route('pekerja.store') }}" method="POST">
+			<form class="kt-form kt-form--label-right" id="formPekerja" action="{{ route('pekerja.store') }}" method="POST" enctype="multipart/form-data">
 				@csrf
 				<div class="row">
 					<div class="col-lg-5">
@@ -70,8 +70,9 @@
 							<div class="col-8">
 								<select class="form-control kt-select2" name="status" id="status">
 									<option value=""> - Pilih Status- </option>
-									<option value="">Aktif</option>
-									<option value="">Tidak Aktif</option>
+									<option value="K">Aktif</option>
+									<option value="K">Kontrak</option>
+									<option value="P">Pensiun</option>
 								</select>
 							</div>
 						</div>
@@ -87,12 +88,19 @@
 								</select>
 							</div>
 						</div>
+
+						<div class="form-group row">
+							<label for="" class="col-4 col-form-label">Golongan</label>
+							<div class="col-8">
+								<input class="form-control" type="text" name="golongan" id="golongan" readonly>
+							</div>
+						</div>
 		
 						<div class="form-group row">
 							<label for="" class="col-4 col-form-label">Tgl Aktif Dinas</label>
 							<div class="col-8">
 								<div class="input-group date">
-									<input type="text" class="form-control" readonly="" placeholder="Pilih Tanggal Aktif Dinas" id="tanggal_aktif_dinas">
+									<input type="text" class="form-control" readonly="" placeholder="Pilih Tanggal Aktif Dinas" name="tanggal_aktif_dinas" id="tanggal_aktif_dinas">
 									<div class="input-group-append">
 										<span class="input-group-text">
 											<i class="la la-calendar-check-o"></i>
@@ -103,9 +111,9 @@
 						</div>
 		
 						<div class="form-group row">
-							<label for="" class="col-4 col-form-label">No. YPD</label>
+							<label for="" class="col-4 col-form-label">No. YDP</label>
 							<div class="col-8">
-								<input class="form-control" type="text" name="no_ypd" id="no_ypd">
+								<input class="form-control" type="text" name="no_ydp" id="no_ydp">
 							</div>
 						</div>
 		
@@ -126,19 +134,34 @@
 						<div class="form-group row">
 							<label for="" class="col-4 col-form-label">Gelar</label>
 							<div class="col-8">
-								<input class="form-control" type="text" name="gelar_1" id="gelar_1" placeholder="Gelar 1">
+								<select class="form-control kt-select2" name="gelar_1" id="gelar_1">
+									<option value="">- Pilih Gelar -</option>
+									@foreach ($pendidikan_list as $pendidikan)
+										<option value="{{ $pendidikan->kode }}">{{ $pendidikan->nama }}</option>
+									@endforeach
+								</select>
 							</div>
 						</div>
 						<div class="form-group row">
 							<label for="" class="col-4 col-form-label"></label>
 							<div class="col-8">
-								<input class="form-control" type="text" name="gelar_2" id="gelar_2" placeholder="Gelar 2">
+								<select class="form-control kt-select2" name="gelar_2" id="gelar_2">
+									<option value="">- Pilih Gelar -</option>
+									@foreach ($pendidikan_list as $pendidikan)
+										<option value="{{ $pendidikan->kode }}">{{ $pendidikan->nama }}</option>
+									@endforeach
+								</select>
 							</div>
 						</div>
 						<div class="form-group row">
 							<label for="" class="col-4 col-form-label"></label>
 							<div class="col-8">
-								<input class="form-control" type="text" name="gelar_3" id="gelar_3" placeholder="Gelar 3">
+								<select class="form-control kt-select2" name="gelar_3" id="gelar_3">
+									<option value="">- Pilih Gelar -</option>
+									@foreach ($pendidikan_list as $pendidikan)
+										<option value="{{ $pendidikan->kode }}">{{ $pendidikan->nama }}</option>
+									@endforeach
+								</select>
 							</div>
 						</div>
 					</div>
@@ -162,7 +185,7 @@
 							<label for="nama" class="col-4 col-form-label">Tanggal Lahir</label>
 							<div class="col-8">
 								<div class="input-group date">
-									<input type="text" class="form-control" readonly="" placeholder="Pilih Tanggal Lahir" id="tanggal_lahir">
+									<input type="text" class="form-control" readonly="" placeholder="Pilih Tanggal Lahir" name="tanggal_lahir" id="tanggal_lahir">
 									<div class="input-group-append">
 										<span class="input-group-text">
 											<i class="la la-calendar-check-o"></i>
@@ -273,7 +296,7 @@
 							<div class="kt-avatar__holder" style="background-image: url(assets/media/users/default.jpg)"></div>
 							<label class="kt-avatar__upload" data-toggle="kt-tooltip" title="" data-original-title="Ubah foto">
 								<i class="fa fa-pen"></i>
-								<input type="file" name="profile_avatar" accept=".png, .jpg, .jpeg">
+								<input type="file" name="photo" accept=".png, .jpg, .jpeg">
 							</label>
 							<span class="kt-avatar__cancel" data-toggle="kt-tooltip" title="" data-original-title="Hapus foto">
 								<i class="fa fa-times"></i>
