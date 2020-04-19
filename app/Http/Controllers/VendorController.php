@@ -61,6 +61,8 @@ class VendorController extends Controller
                 ->update([
                 'nama' => $request->nama,
                 'norek' => $request->norek,
+                'nama_bank' => $request->nama_bank,
+                'cabang_bank' => $request->cabang_bank,
                 'alamat' => $request->alamat,
                 'telpon' => $request->telp,
                 ]);
@@ -69,6 +71,8 @@ class VendorController extends Controller
                 DB::table('tbl_vendor')->insert([
                 'nama' => $request->nama,
                 'norek' => $request->norek,
+                'nama_bank' => $request->nama_bank,
+                'cabang_bank' => $request->cabang_bank,
                 'alamat' => $request->alamat,
                 'telpon' => $request->telp,
                 ]);

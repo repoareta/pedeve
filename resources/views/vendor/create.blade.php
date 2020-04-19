@@ -66,6 +66,20 @@
 						</div>
 					</div>
 					<div class="form-group row">
+						<label for="spd-input" class="col-2 col-form-label">Nama Bank<span style="color:red;">*</span></label>
+						<div class="col-10">
+							<input type="hidden" value="00" name="vendorid">
+							<input  class="form-control" type="text" value="" id="nama_bank" name="nama_bank" size="80" maxlength="80" required oninvalid="this.setCustomValidity('Nama Bank Harus Diisi..')" oninput="setCustomValidity('')" autocomplete='off' >
+						</div>
+					</div>
+					<div class="form-group row">
+						<label for="spd-input" class="col-2 col-form-label">Cabang Bank<span style="color:red;">*</span></label>
+						<div class="col-10">
+							<input type="hidden" value="00" name="vendorid">
+							<input  class="form-control" type="text" value="" id="cabang_bank" name="cabang_bank" size="80" maxlength="80" required oninvalid="this.setCustomValidity('Cabang Bank Harus Diisi..')" oninput="setCustomValidity('')" autocomplete='off' >
+						</div>
+					</div>
+					<div class="form-group row">
 						<label for="nopek-input" class="col-2 col-form-label">Alamat Vendor<span style="color:red;">*</span></label>
 						<div class="col-10">
 							<textarea class="form-control" type="text" name="alamat" value=""  id="alamat" required oninvalid="this.setCustomValidity('Alamat Harus Diisi..')" oninput="setCustomValidity('')" autocomplete='off'></textarea>

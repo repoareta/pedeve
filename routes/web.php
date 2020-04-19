@@ -445,30 +445,54 @@ Route::group(['middleware'=> ['auth','checkRole:1']], function () {
     //PERBENDAHARAAN
     Route::prefix('perbendaharaan')->group(function () {
 
-           //Pembayaran PKPP
-        // Route assigned name "pembayaran_pkppp.index"...
-        Route::name('pembayaran_pkpp.')->group(function () {
-            Route::get('pembayaran_pkpp', 'PembayaranPkppController@index')->name('index');
-            Route::post('pembayaran_pkpp/search', 'PembayaranPkppController@searchIndex')->name('search.index');
-            Route::get('pembayaran_pkpp/create', 'PembayaranPkppController@create')->name('create');
-            Route::post('pembayaran_pkpp/store', 'PembayaranPkppController@store')->name('store');
-            Route::get('pembayaran_pkpp/edit/{bulan}/{tahun}/{nopek}', 'PembayaranPkppController@edit')->name('edit');
-            Route::post('pembayaran_pkpp/update', 'PembayaranPkppController@update')->name('update');
-            Route::delete('pembayaran_pkpp/delete', 'PembayaranPkppController@delete')->name('delete');
-        });
-        //end pembayaran_pkppp
+           //Penerimaan kas
+        // Route assigned name "penerimaan_kas.index"...
+        Route::name('penerimaan_kas.')->group(function () {
+            Route::get('penerimaan_kas', 'PenerimaanKasController@index')->name('index');
+            Route::post('penerimaan_kas/search', 'PenerimaanKasController@searchIndex')->name('search.index');
+            Route::get('penerimaan_kas/createmp', 'PenerimaanKasController@createmp')->name('createmp');
+            Route::post('penerimaan_kas/create', 'PenerimaanKasController@create')->name('create');
+            Route::post('penerimaan_kas/create/json', 'PenerimaanKasController@createJson')->name('createJson');
+            Route::post('penerimaan_kas/lokasi/json', 'PenerimaanKasController@lokasiJson')->name('lokasiJson');
+            Route::post('penerimaan_kas/nobukti/json', 'PenerimaanKasController@nobuktiJson')->name('nobuktiJson');
+            Route::post('penerimaan_kas/store', 'PenerimaanKasController@store')->name('store');
+            Route::post('penerimaan_kas/store_detail', 'PenerimaanKasController@storeDetail')->name('store.detail');
+            Route::post('penerimaan_kas/store_app', 'PenerimaanKasController@storeApp')->name('store.app');
+            Route::get('penerimaan_kas/edit/{no}', 'PenerimaanKasController@edit')->name('edit');
+            Route::get('penerimaan_kas/editdetail/{id}/{no}', 'PenerimaanKasController@editDetail')->name('edit.detail');
+            Route::post('penerimaan_kas/update', 'PenerimaanKasController@update')->name('update');
+            Route::delete('penerimaan_kas/delete', 'PenerimaanKasController@delete')->name('delete');
+            Route::delete('penerimaan_kas/deletedetail', 'PenerimaanKasController@deleteDetail')->name('delete.detail');
+            Route::get('penerimaan_kas/approv/{id}/{status}', 'PenerimaanKasController@approv')->name('approv');
 
-        //Pembayaran PKPP
-        // Route assigned name "pembayaran_pkppp.index"...
-        Route::name('pembayaran_mmd.')->group(function () {
-            Route::get('pembayaran_mmd', 'PembayaranMmdController@index')->name('index');
-            Route::post('pembayaran_mmd/search', 'PembayaranMmdController@searchIndex')->name('search.index');
-            Route::get('pembayaran_mmd/create', 'PembayaranMmdController@create')->name('create');
-            Route::post('pembayaran_mmd/store', 'PembayaranMmdController@store')->name('store');
-            Route::get('pembayaran_mmd/edit/{bulan}/{tahun}/{nopek}', 'PembayaranMmdController@edit')->name('edit');
-            Route::post('pembayaran_mmd/update', 'PembayaranMmdController@update')->name('update');
-            Route::delete('pembayaran_mmd/delete', 'PembayaranMmdController@delete')->name('delete');
         });
-        //end pembayaran_pkppp
+        //end penerimaan kas
+
+        //informasi saldo
+        // Route assigned name "informasi_saldo.index"...
+        Route::name('informasi_saldo.')->group(function () {
+            Route::get('informasi_saldo', 'InformasiSaldoController@index')->name('index');
+            Route::post('informasi_saldo/search', 'InformasiSaldoController@searchIndex')->name('search.index');
+            Route::get('informasi_saldo/create', 'InformasiSaldoController@create')->name('create');
+            Route::post('informasi_saldo/store', 'InformasiSaldoController@store')->name('store');
+            Route::get('informasi_saldo/edit/{bulan}/{tahun}/{nopek}', 'InformasiSaldoController@edit')->name('edit');
+            Route::post('informasi_saldo/update', 'InformasiSaldoController@update')->name('update');
+            Route::delete('informasi_saldo/delete', 'InformasiSaldoController@delete')->name('delete');
+        });
+        //end informasi_saldo
+
+        //inisialisasi saldo
+        // Route assigned name "inisialisasi_saldo.index"...
+        Route::name('inisialisasi_saldo.')->group(function () {
+            Route::get('inisialisasi_saldo', 'InisialisasiSaldoController@index')->name('index');
+            Route::get('inisialisasi_saldo/index/json', 'InisialisasiSaldoController@indexJson')->name('index.json');
+            Route::post('inisialisasi_saldo/nokas/json', 'InisialisasiSaldoController@nokasJson')->name('nokas.json');
+            Route::get('inisialisasi_saldo/create', 'InisialisasiSaldoController@create')->name('create');
+            Route::post('inisialisasi_saldo/store', 'InisialisasiSaldoController@store')->name('store');
+            Route::get('inisialisasi_saldo/edit/{jk}/{nokas}', 'InisialisasiSaldoController@edit')->name('edit');
+            Route::post('inisialisasi_saldo/update', 'InisialisasiSaldoController@update')->name('update');
+            Route::delete('inisialisasi_saldo/delete', 'InisialisasiSaldoController@delete')->name('delete');
+        });
+        //end inisialisasi_saldo
     });
 });

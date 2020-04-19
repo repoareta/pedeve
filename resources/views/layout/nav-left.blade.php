@@ -261,6 +261,44 @@
                     $implementasi_gcg,
                     $sdm_jamsostek_pensiun
                 ); // array merge semua submenu
+                //menu Perbendaharaan
+
+
+                $penerimaan_kas = array(
+                    'penerimaan_kas.index',
+                    'penerimaan_kas.search.index',
+                    'penerimaan_kas.createmp',
+                    'penerimaan_kas.create',
+                    'penerimaan_kas.edit',
+                    'penerimaan_kas.edit.detail',
+                    'penerimaan_kas.approv'
+                ); // isi nama semua route penerimaan kas
+               
+               
+                $informasi_saldo = array(
+                    'informasi_saldo.index',
+                    'informasi_saldo.create',
+                    'informasi_saldo.edit',
+                ); // isi nama semua route Informasi saldo
+
+                $inisialisasi_saldo = array(
+                    'inisialisasi_saldo.index',
+                    'inisialisasi_saldo.search.index',
+                    'inisialisasi_saldo.create',
+                    'inisialisasi_saldo.edit',
+                ); // isi nama semua route inisialisasi saldo
+
+
+
+                $saldo = array_merge(
+                    $informasi_saldo,
+                    $inisialisasi_saldo
+                ); //isi nama Subdomain saldo
+
+                $perbendaharaan = array_merge(
+                    $penerimaan_kas,
+                    $saldo
+                ); // array merge semua submenu
             @endphp
 
             <li class="kt-menu__item  kt-menu__item--submenu {{ set_active($umum) }}" aria-haspopup="true" data-ktmenu-submenu-toggle="hover">
@@ -677,7 +715,7 @@
                 </div>
             </li>
             
-            <li class="kt-menu__item  kt-menu__item--submenu" aria-haspopup="true" data-ktmenu-submenu-toggle="hover">
+            <li class="kt-menu__item  kt-menu__item--submenu {{ set_active($perbendaharaan) }}" aria-haspopup="true" data-ktmenu-submenu-toggle="hover">
                 <a href="javascript:;" class="kt-menu__link kt-menu__toggle">
                     <span class="kt-menu__link-icon">
                         <i class="fa fa-chalkboard"></i>
@@ -695,8 +733,8 @@
                                 </span>
                             </span>
                         </li>
-                        <li class="kt-menu__item " aria-haspopup="true">
-                            <a href="{{ route('perjalanan_dinas.index') }}" class="kt-menu__link">
+                        <li class="kt-menu__item kt-menu__item{{ set_active_submenu($penerimaan_kas) }} " aria-haspopup="true">
+                            <a href="{{ route('penerimaan_kas.index') }}" class="kt-menu__link">
                                 <i class="kt-menu__link-bullet kt-menu__link-bullet--dot">
                                     <span></span>
                                 </i>
@@ -705,30 +743,30 @@
                                 </span>
                             </a>
                         </li>
-                        <li class="kt-menu__item kt-menu__item--submenu {{  set_active($sdm_jamsostek_pensiun) }}" aria-haspopup="true" data-ktmenu-submenu-toggle="hover">
+                        <li class="kt-menu__item kt-menu__item--submenu {{ set_active($saldo) }}" aria-haspopup="true" data-ktmenu-submenu-toggle="hover">
                             <a href="javascript:;" class="kt-menu__link kt-menu__toggle">
                                 <i class="kt-menu__link-bullet kt-menu__link-bullet--dot">
                                     <span></span>
                                 </i>
-                                <span class="kt-menu__link-text">Pembayaran</span>
+                                <span class="kt-menu__link-text">Saldo</span>
                                 <i class="kt-menu__ver-arrow la la-angle-right"></i>
                             </a>
                             <div class="kt-menu__submenu "><span class="kt-menu__arrow"></span>
                                 <ul class="kt-menu__subnav">
-                                    <li class="kt-menu__item kt-menu__item{{ set_active_submenu($jamsostek) }}" aria-haspopup="true">
-                                        <a href="{{ route('pembayaran_pkpp.index') }}" class="kt-menu__link ">
+                                    <li class="kt-menu__item kt-menu__item{{ set_active_submenu($informasi_saldo) }}" aria-haspopup="true">
+                                        <a href="{{ route('informasi_saldo.index') }}" class="kt-menu__link">
                                             <i class="kt-menu__link-bullet kt-menu__link-bullet--line">
                                                 <span></span>
                                             </i>
-                                            <span class="kt-menu__link-text">Pembayaran PKPP</span>
+                                            <span class="kt-menu__link-text">Informasi Saldo</span>
                                         </a>
                                     </li>
-                                    <li class="kt-menu__item kt-menu__item{{ set_active_submenu($pensiun) }}" aria-haspopup="true">
-                                        <a href="{{route('pembayaran_mmd.index')}}" class="kt-menu__link ">
+                                    <li class="kt-menu__item kt-menu__item{{ set_active_submenu($inisialisasi_saldo) }}" aria-haspopup="true">
+                                        <a href="{{route('inisialisasi_saldo.index')}}" class="kt-menu__link">
                                             <i class="kt-menu__link-bullet kt-menu__link-bullet--line">
                                                 <span></span>
                                             </i>
-                                            <span class="kt-menu__link-text">Pembayaran MMD</span>
+                                            <span class="kt-menu__link-text">Inisialisasi Saldo</span>
                                         </a>
                                     </li>
                                 </ul>

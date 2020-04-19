@@ -17,6 +17,8 @@ class UpdateRowVendor extends Migration
          Schema::table('tbl_vendor', function (Blueprint $table) {
             //
         $table->string('norek',20)->nullable()->after('nama');
+        $table->string('nama_bank',100)->nullable()->after('norek');
+        $table->string('cabang_bank',100)->nullable()->after('nama_bank');
         });
     }
 
