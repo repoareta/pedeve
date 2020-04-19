@@ -126,7 +126,7 @@
 
 					swalWithBootstrapButtons.fire({
 						title: "Data yang akan dihapus?",
-						text: "Kode Pekerja : " + id,
+						text: "Nomor Pegawai : " + id,
 						type: 'warning',
 						showCancelButton: true,
 						reverseButtons: true,
@@ -146,7 +146,7 @@
 								success: function () {
 									Swal.fire({
 										type  : 'success',
-										title : 'Hapus Kode Pekerja: ' + id,
+										title : 'Hapus Nomor Pegawai: ' + id,
 										text  : 'Berhasil',
 										timer : 2000
 									}).then(function() {

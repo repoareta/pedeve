@@ -11,13 +11,17 @@ use App\Models\KodeJabatan;
 use App\Models\KodeBagian;
 use App\Models\Provinsi;
 use App\Models\Agama;
+use App\Models\Pendidikan;
 
 //load form request (for validation)
 use App\Http\Requests\PekerjaStore;
 use App\Http\Requests\PekerjaUpdate;
 
 // Load Plugin
+use Carbon\Carbon;
 use Alert;
+use Auth;
+use Storage;
 
 class PekerjaController extends Controller
 {
@@ -38,7 +42,7 @@ class PekerjaController extends Controller
      */
     public function indexJson()
     {
-        $pekerja_list = Pekerja::orderBy('nopeg', 'desc')
+        $pekerja_list = Pekerja::orderBy('tglentry', 'desc')
         ->with('jabatan')
         ->get();
 
@@ -79,12 +83,14 @@ class PekerjaController extends Controller
         $kode_jabatan_list = KodeJabatan::all();
         $provinsi_list = Provinsi::all();
         $agama_list = Agama::all();
+        $pendidikan_list = Pendidikan::all();
 
         return view('pekerja.create', compact(
             'kode_bagian_list',
             'kode_jabatan_list',
             'provinsi_list',
-            'agama_list'
+            'agama_list',
+            'pendidikan_list'
         ));
     }
 
@@ -94,9 +100,48 @@ class PekerjaController extends Controller
      * @param  \Illuminate\Http\Request  $request
      * @return \Illuminate\Http\Response
      */
-    public function store(Request $request, Pekerja $pekerja)
+    public function store(PekerjaStore $request, Pekerja $pekerja)
     {
-        dd($request);
+        $pekerja->nopeg        = $request->nomor;
+        $pekerja->nama         = $request->nama;
+        $pekerja->status       = $request->status;
+        $pekerja->tgllahir     = $request->tanggal_lahir;
+        $pekerja->tempatlhr    = $request->tempat_lahir;
+        $pekerja->proplhr      = $request->provinsi;
+        $pekerja->agama        = $request->agama;
+        $pekerja->goldarah     = $request->golongan_darah;
+        $pekerja->notlp        = $request->no_telepon;
+        $pekerja->kodekeluarga = $request->kode_keluarga;
+        $pekerja->noydp        = $request->no_ydp;
+        $pekerja->noastek      = $request->no_astek;
+        $pekerja->tglaktifdns  = $request->tanggal_aktif_dinas;
+        $pekerja->alamat1      = $request->alamat_1;
+        $pekerja->alamat2      = $request->alamat_2;
+        $pekerja->alamat3      = $request->alamat_3;
+        $pekerja->gelar1       = $request->gelar_1;
+        $pekerja->gelar2       = $request->gelar_2;
+        $pekerja->gelar3       = $request->gelar_3;
+        $pekerja->nohp         = $request->no_handphone;
+        $pekerja->gender       = $request->jenis_kelamin;
+        $pekerja->npwp         = $request->npwp;
+        $pekerja->userid       = Auth::user()->id;
+        $pekerja->tglentry     = Carbon::now();
+        $pekerja->fasilitas    = null;
+
+        if ($request->file('photo')) {
+            $photo = $request->file('photo')->getClientOriginalName();
+            $extension = $request->file('photo')->getClientOriginalExtension();
+            $pekerja->photo = str_replace($photo, $pekerja->nopeg.".".$extension, $photo);
+            $photo_path = $request->file('photo')->storeAs('pekerja_img', $pekerja->photo, 'public');
+        }
+
+        $pekerja->save();
+
+        if ($request->url == 'edit') {
+            return redirect()->route('pekerja.edit', ['pekerja' => $pekerja->nopeg]);
+        }
+        Alert::success('Simpan Pekerja', 'Berhasil')->persistent(true)->autoClose(2000);
+        return redirect()->route('pekerja.index');
     }
 
     /**
@@ -128,9 +173,19 @@ class PekerjaController extends Controller
      * @param  int  $id
      * @return \Illuminate\Http\Response
      */
-    public function edit($id)
+    public function edit(Pekerja $pekerja)
     {
-        //
+        $kode_bagian_list = KodeBagian::all();
+        $kode_jabatan_list = KodeJabatan::all();
+        $provinsi_list = Provinsi::all();
+        $agama_list = Agama::all();
+
+        return view('pekerja.edit', compact(
+            'kode_bagian_list',
+            'kode_jabatan_list',
+            'provinsi_list',
+            'agama_list'
+        ));
     }
 
     /**
@@ -151,8 +206,15 @@ class PekerjaController extends Controller
      * @param  int  $id
      * @return \Illuminate\Http\Response
      */
-    public function destroy($id)
+    public function delete(Request $request)
     {
-        //
+        $pekerja = Pekerja::find($request->id);
+        
+        $image_path = "public/pekerja_img/$pekerja->photo";  // Value is not URL but directory file path
+        Storage::delete($image_path);
+
+        $pekerja->delete();
+
+        return response()->json();
     }
 }
