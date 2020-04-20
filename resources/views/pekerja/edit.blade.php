@@ -118,7 +118,7 @@
 							<label for="" class="col-4 col-form-label">Tgl Aktif Dinas</label>
 							<div class="col-8">
 								<div class="input-group date">
-									<input type="text" class="form-control" readonly="" placeholder="Pilih Tanggal Aktif Dinas" name="tanggal_aktif_dinas" id="tanggal_aktif_dinas" value="{{ date('Y-m-d', strtotime($pekerja->tglaktifdns)) }}">
+									<input type="text" class="form-control datepicker" readonly="" placeholder="Pilih Tanggal Aktif Dinas" name="tanggal_aktif_dinas" id="tanggal_aktif_dinas" value="{{ date('Y-m-d', strtotime($pekerja->tglaktifdns)) }}">
 									<div class="input-group-append">
 										<span class="input-group-text">
 											<i class="la la-calendar-check-o"></i>
@@ -218,7 +218,7 @@
 							<label for="nama" class="col-4 col-form-label">Tanggal Lahir</label>
 							<div class="col-8">
 								<div class="input-group date">
-									<input type="text" class="form-control" readonly="" placeholder="Pilih Tanggal Lahir" name="tanggal_lahir" id="tanggal_lahir" value="{{ date('Y-m-d', strtotime($pekerja->tgllahir)) }}">
+									<input type="text" class="form-control datepicker" readonly="" placeholder="Pilih Tanggal Lahir" name="tanggal_lahir" id="tanggal_lahir" value="{{ date('Y-m-d', strtotime($pekerja->tgllahir)) }}">
 									<div class="input-group-append">
 										<span class="input-group-text">
 											<i class="la la-calendar-check-o"></i>
@@ -532,7 +532,7 @@ $(document).ready(function () {
 	});
 
 	// minimum setup
-	$('#tanggal_aktif_dinas, #tanggal_lahir').datepicker({
+	$('.datepicker').datepicker({
 		todayHighlight: true,
 		orientation: "bottom left",
 		autoclose: true,
