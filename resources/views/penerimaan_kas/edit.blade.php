@@ -67,6 +67,7 @@
 							<label for="" class="col-2 col-form-label">No.Dokumen</label>
 							<div class="col-6">
 								<input type="text" class="form-control"  value="{{$mp}}" size="1" maxlength="1" name="mp" id="mp" readonly style="background-color:#DCDCDC; cursor:not-allowed"></td>
+								<input style="background-color:#DCDCDC; cursor:not-allowed"  class="form-control" type="hidden" value="{{$nodok}}"  name="nodok" readonly>
 							</div>
 							<div class="col-4">
 								<input type="text" class="form-control"  value="{{$nomor}}" size="1" maxlength="1" name="nomor" id="nomor" readonly style="background-color:#DCDCDC; cursor:not-allowed"></td>
@@ -126,12 +127,13 @@
 									<option value="">- Pilih -</option>
 									
 								</select>
+								<input class="form-control" type="hidden"  value="{{$data->store}}" id="lokasi2">
 								<input class="form-control" type="hidden"  value="{{$data->namabank}}-{{$data->norekening}}" id="lokasi1">
 							</div>
 							@if($mp == 'P')
 							<label class="col-1 col-form-label">No Bukti</label>
 							<div class="col-2" >
-								<input class="form-control" type="text" name="nobukti" value=""  id="nobukti" size="4" maxlength="4" readonly style="background-color:#DCDCDC; cursor:not-allowed">
+								<input class="form-control" type="text" name="nobukti" value="{{$data->voucher}}"  id="nobukti" size="4" maxlength="4" readonly style="background-color:#DCDCDC; cursor:not-allowed">
 							</div>
 							<label class="col-1 col-form-label">No Ver</label>
 							<div class="col-2" >
@@ -140,7 +142,7 @@
 							@else
 							<label class="col-1 col-form-label">No Bukti</label>
 							<div class="col-5" >
-								<input class="form-control" type="text" name="nobukti" value=""  id="nobukti" size="4" maxlength="4" readonly style="background-color:#DCDCDC; cursor:not-allowed">
+								<input class="form-control" type="text" name="nobukti" value="{{$data->voucher}}"  id="nobukti" size="4" maxlength="4" readonly style="background-color:#DCDCDC; cursor:not-allowed">
 							</div>
 							<div class="col-1" >
 								<input class="form-control" type="hidden" name="nover" value="{{$data->mrs_no}}"  id="nover" size="4" maxlength="4" readonly style="background-color:#DCDCDC; cursor:not-allowed">
@@ -160,7 +162,6 @@
 							<div class="col-10">
 								<input class="form-control" type="text"  value="{{number_format($data->nilai_dok,0,',','.')}}" size="16" maxlength="16" readonly required oninvalid="this.setCustomValidity('Sejumlah Harus Diisi..')" oninput="setCustomValidity('')" autocomplete='off' onkeypress="return hanyaAngka(event)">
 								<input class="form-control" type="hidden" name="nilai" id="nilai" value="{{number_format($count,0,'','')}}" size="16" maxlength="16" required oninvalid="this.setCustomValidity('Sejumlah Harus Diisi..')" oninput="setCustomValidity('')" autocomplete='off' onkeypress="return hanyaAngka(event)">
-								<input class="form-control" type="hidden" name="iklan" value=""  id="iklan" size="4" maxlength="4" readonly style="background-color:#DCDCDC; cursor:not-allowed">
 							</div>
 						</div>
 						<div class="form-group row">
@@ -536,6 +537,7 @@
 var jk = $('#jk').val();
 var ci = $('#ci').val();
 var lokasi1 = $('#lokasi1').val();
+var lokasi2 = $('#lokasi2').val();
 
 
 $.ajax({
@@ -552,36 +554,11 @@ $.ajax({
 	success : function(data){
 				var html = '';
 				var i;
-					html += '<option value="'+data[i].kodestore+'">'+lokasi1+'</option>';
+					html += '<option value="'+lokasi2+'">'+lokasi1+'</option>';
 				for(i=0; i<data.length; i++){
 					html += '<option value="'+data[i].kodestore+'">'+data[i].namabank+'-'+data[i].norekening+'</option>';
 				}
 				$('#lokasi').html(html);		
-	},
-	error : function(){
-		alert("Ada kesalahan controller!");
-	}
-})
-
-var lokasi = $('#lokasi').val();
-var mp = $('#mp').val();
-var tahun = $('#tahun').val();
-
-$.ajax({
-	url : "{{route('penerimaan_kas.nobuktiJson')}}",
-	type : "POST",
-	dataType: 'json',
-	data : {
-		lokasi:lokasi,
-		mp:mp,
-		tahun:tahun
-		},
-	headers: {
-		'X-CSRF-Token': '{{ csrf_token() }}',
-		},
-	success : function(data){
-	var nobukti = data;
-		$("#nobukti").val(nobukti);
 	},
 	error : function(){
 		alert("Ada kesalahan controller!");
@@ -616,7 +593,8 @@ $('#form-edit').submit(function(){
 	return false;
 });
 
-$("#bagian").on("change", function(){
+$("#bagian").on("change", function(e){
+	e.preventDefault();
 var bagian = $('#bagian').val();
 var mp = $('#mp').val();
 var bulan = $('#bulan').val();
@@ -705,31 +683,34 @@ var jk = $('#jk').val();
 	})
 });
 
-$("#lokasi").on("change", function(){
-var lokasi = $('#lokasi').val();
-var mp = $('#mp').val();
-var tahun = $('#tahun').val();
+$("#lokasi").on("click", function(){
+	$("#lokasi").on("change", function(){
+		
+	var lokasi = $('#lokasi').val();
+	var mp = $('#mp').val();
+	var tahun = $('#tahun').val();
 
-	$.ajax({
-		url : "{{route('penerimaan_kas.nobuktiJson')}}",
-		type : "POST",
-		dataType: 'json',
-		data : {
-			lokasi:lokasi,
-			mp:mp,
-			tahun:tahun
+		$.ajax({
+			url : "{{route('penerimaan_kas.nobuktiJson')}}",
+			type : "POST",
+			dataType: 'json',
+			data : {
+				lokasi:lokasi,
+				mp:mp,
+				tahun:tahun
+				},
+			headers: {
+				'X-CSRF-Token': '{{ csrf_token() }}',
+				},
+			success : function(data){
+			var nobukti = data;
+				$("#nobukti").val(nobukti);
 			},
-		headers: {
-			'X-CSRF-Token': '{{ csrf_token() }}',
-			},
-		success : function(data){
-		var nobukti = data;
-			$("#nobukti").val(nobukti);
-		},
-		error : function(){
-			alert("Ada kesalahan controller!");
-		}
-	})
+			error : function(){
+				alert("Ada kesalahan controller!");
+			}
+		})
+	});
 });
 
 $('#nilai').keyup(function(){

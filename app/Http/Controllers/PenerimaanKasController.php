@@ -326,7 +326,7 @@ class PenerimaanKasController extends Controller
      */
     public function update(Request $request)
     {
-        Kasdoc::where('docno', $request->docno)
+        Kasdoc::where('docno', $request->nodok)
             ->update([
                 'thnbln' =>  $request->bulanbuku,
                 'jk' =>  $request->jk,
