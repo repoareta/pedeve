@@ -54,14 +54,14 @@
 					<div class="form-group row">
 						<label for="spd-input" class="col-2 col-form-label">Nama</label>
 						<div class="col-10">
-							<input class="form-control" type="text" name="nama_keluarga" id="nama_keluarga">
+							<input class="form-control" type="text" name="nama_keluarga" id="nama_keluarga" data-nama="">
 						</div>
 					</div>
 
 					<div class="form-group row">
 						<label for="spd-input" class="col-2 col-form-label">Status</label>
 						<div class="col-10">
-							<select class="form-control kt-select2" id="status_keluarga" name="status_keluarga" style="width: 100% !important;">
+							<select class="form-control kt-select2" id="status_keluarga" name="status_keluarga" data-status="" style="width: 100% !important;">
 								<option value="">- Pilih Status -</option>
 								<option value="S">Suami<option>
 								<option value="I">Istri<option>
@@ -94,7 +94,7 @@
 						<label for="spd-input" class="col-2 col-form-label">Agama</label>
 						<div class="col-10">
 							<select class="form-control kt-select2" name="agama_keluarga" id="agama_keluarga" style="width: 100% !important;">
-								<option value="">- Pilih Jabatan -</option>
+								<option value="">- Pilih Agama -</option>
 								@foreach ($agama_list as $agama)
 									<option value="{{ $agama->kode }}">{{ $agama->nama }}</option>
 								@endforeach
@@ -255,13 +255,17 @@
 				url = "{{ route('pekerja.keluarga.store', ['pekerja' => $pekerja->nopeg]) }}";
 				swal_title = "Tambah Detail Keluarga";
 			} else {
-				url = "{{ route('pekerja.keluarga.update', [
-					'pekerja' => $pekerja->nopeg,
-					'status' => ':hehe',
-					'nama' => ':hehe'
+				url = "{{ route('pekerja.keluarga.update', 
+					[
+						'pekerja' => $pekerja->nopeg,
+						'status' => ':status',
+						'nama' => ':nama'
 					]) }}";
-				session = true;
-				swal_title = "Update Detail Panjar";
+				url = url
+				.replace(':status', $('#status_keluarga').data('status'))
+				.replace(':nama', $('#nama_keluarga').data('nama'));
+
+				swal_title = "Update Detail Keluarga";
 			}
 
 			$.ajax({
@@ -286,8 +290,10 @@
 					// clear form
 					$('#keluargaModal').on('hidden.bs.modal', function () {
 						$(this).find('form').trigger('reset');
-						$('#nopek_detail').val('').trigger('change');
-						$('#jabatan_detail').val('').trigger('change');
+						$('#status_keluarga').val('').trigger('change');
+						$('#agama_keluarga').val('').trigger('change');
+						$('#pendidikan_keluarga').val('').trigger('change');
+						$('#golongan_darah_keluarga').val('').trigger('change');
 					});
 					// append to datatable
 					t.ajax.reload();
@@ -300,11 +306,13 @@
 		return false;
 	});
 
-	$('#deleteRow').click(function(e) {
+	$('#deleteRowKeluarga').click(function(e) {
 		e.preventDefault();
-		if($('input[type=radio]').is(':checked')) { 
-			$("input[type=radio]:checked").each(function() {
-				var no_nopek = $(this).val();
+		if($('input[name=radio_keluarga]').is(':checked')) { 
+			$("input[name=radio_keluarga]:checked").each(function() {
+				var nopeg = $(this).val().split('-')[0];
+				var status = $(this).val().split('-')[1];
+				var nama = $(this).val().split('-')[2];
 				
 				const swalWithBootstrapButtons = Swal.mixin({
 				customClass: {
@@ -316,7 +324,7 @@
 
 				swalWithBootstrapButtons.fire({
 					title: "Data yang akan dihapus?",
-					text: "Nopek : " + no_nopek,
+					text: "Nama : " + nama,
 					type: 'warning',
 					showCancelButton: true,
 					reverseButtons: true,
@@ -326,18 +334,19 @@
 				.then((result) => {
 					if (result.value) {
 						$.ajax({
-							url: "{{ route('perjalanan_dinas.delete.detail') }}",
+							url: "{{ route('pekerja.keluarga.delete') }}",
 							type: 'DELETE',
 							dataType: 'json',
 							data: {
-								"no_nopek": no_nopek,
-								"session": true,
+								"nopeg": nopeg,
+								"status": status,
+								"nama": nama,
 								"_token": "{{ csrf_token() }}",
 							},
 							success: function () {
 								Swal.fire({
 									type  : 'success',
-									title : 'Hapus Detail Panjar ' + no_nopek,
+									title : 'Hapus Detail Keluarga ' + nama,
 									text  : 'Success',
 									timer : 2000
 								}).then(function() {
@@ -356,36 +365,57 @@
 		}
 	});
 
-	$('#editRow').click(function(e) {
+	
+
+	$('#editRowKeluarga').click(function(e) {
 		e.preventDefault();
 
-		if($('input[type=radio]').is(':checked')) { 
-			$("input[type=radio]:checked").each(function() {
+		if($('input[name=radio_keluarga]').is(':checked')) { 
+			$("input[name=radio_keluarga]:checked").each(function() {
 				// get value from row					
-				var no_urut = $(this).val().split('-')[0];
-				var no_nopek = $(this).val().split('-')[1];
+				var nopeg = $(this).val().split('-')[0];
+				var status = $(this).val().split('-')[1];
+				var nama = $(this).val().split('-')[2];
+
 				$.ajax({
-					url: "{{ route('perjalanan_dinas.show.json.detail') }}",
+					url: "{{ route('pekerja.keluarga.show.json') }}",
 					type: 'GET',
 					data: {
-						"no_urut": no_urut,
-						"no_nopek": no_nopek,
-						"session": true,
+						"nopeg" : "{{ $pekerja->nopeg }}",
+						"status" : status,
+						"nama" : nama,
 						"_token": "{{ csrf_token() }}",
 					},
 					success: function (response) {
+						console.log(response);
 						// update stuff
 						// append value
-						$('#no_urut').val(response.no);
-						$('#keterangan_detail').val(response.keterangan);
-						$('#nopek_detail').val(response.nopek + '-' + response.nama).trigger('change');
-						$('#jabatan_detail').val(response.jabatan).trigger('change');
-						$('#golongan_detail').val(response.status);
+						if(response.photo) {
+							var img = "{{ asset('storage/pekerja_img/') }}" + "/" + response.photo;
+
+							$(".kt-avatar__holder").css(
+								'background-image', 
+								"url(" + img + ")"
+							);
+						}
+						
+						$('#nama_keluarga').val(response.nama);
+						$('#status_keluarga').val(response.status).trigger('change');
+						$('#tempat_lahir_keluarga').val(response.tempatlahir);
+						$('#tanggal_lahir_keluarga').val(response.tgllahir);
+						$('#agama_keluarga').val(response.agama).trigger('change');
+						$('#golongan_darah_keluarga').val(response.goldarah).trigger('change');
+						$('#pendidikan_keluarga').val(response.kodependidikan).trigger('change');
+						$('#tempat_pendidikan_keluarga').val(response.tempatpendidikan);
+						
 						// title
-						$('#title_modal').text('Ubah Detail Panjar Dinas');
+						$('#title_modal').text('Ubah Detail Keluarga');
 						$('#title_modal').data('state', 'update');
+						// for url update
+						$('#nama_keluarga').data('nama', response.nama);
+						$('#status_keluarga').data('status', response.status);
 						// open modal
-						$('#keluargaModal').modal('toggle');
+						$('#keluargaModal').modal('show');
 					},
 					error: function () {
 						alert("Terjadi kesalahan, coba lagi nanti");
