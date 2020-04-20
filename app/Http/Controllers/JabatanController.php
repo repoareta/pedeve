@@ -4,6 +4,19 @@ namespace App\Http\Controllers;
 
 use Illuminate\Http\Request;
 
+// Load Model
+use App\Models\Pekerja;
+use App\Models\Jabatan;
+
+//load form request (for validation)
+use App\Http\Requests\JabatanStore;
+use App\Http\Requests\JabatanUpdate;
+
+// Load Plugin
+use Carbon\Carbon;
+use Auth;
+use Storage;
+
 class JabatanController extends Controller
 {
     /**
@@ -11,19 +24,29 @@ class JabatanController extends Controller
      *
      * @return \Illuminate\Http\Response
      */
-    public function index()
+    public function indexJson(Pekerja $pekerja)
     {
-        //
-    }
+        $jabatan_list = Jabatan::where('nopeg', $pekerja->nopeg)->get();
 
-    /**
-     * Show the form for creating a new resource.
-     *
-     * @return \Illuminate\Http\Response
-     */
-    public function create()
-    {
-        //
+        return datatables()->of($jabatan_list)
+            ->addColumn('action', function ($row) {
+                $radio = '<label class="kt-radio kt-radio--bold kt-radio--brand"><input type="radio" name="radio_jabatan" value="'.$row->nopeg.'-'.$row->kdbag.'-'.$row->kdjab.'"><span></span></label>';
+                return $radio;
+            })
+            ->addColumn('bagian', function ($row) {
+                return $row->kdbag;
+            })
+            ->addColumn('jabatan', function ($row) {
+                return $row->kdjab;
+            })
+            ->addColumn('mulai', function ($row) {
+                return Carbon::parse($row->mulai)->translatedFormat('d F Y');
+            })
+            ->addColumn('sampai', function ($row) {
+                return Carbon::parse($row->mulai)->translatedFormat('d F Y');
+            })
+            ->rawColumns(['action'])
+            ->make(true);
     }
 
     /**
@@ -32,9 +55,23 @@ class JabatanController extends Controller
      * @param  \Illuminate\Http\Request  $request
      * @return \Illuminate\Http\Response
      */
-    public function store(Request $request)
+    public function store(Request $request, Pekerja $pekerja)
     {
-        //
+        $jabatan           = new Jabatan;
+        $jabatan->nopeg    = $pekerja->nopeg;
+        $jabatan->kdbag    = $request->bagian_pekerja;
+        $jabatan->kdjab    = $request->jabatan_pekerja;
+        $jabatan->mulai    = $request->mulai;
+        $jabatan->sampai   = $request->sampai;
+        $jabatan->noskep   = $request->no_skep;
+        $jabatan->tglskep  = $request->tanggal_skep;
+        $jabatan->userid   = Auth::user()->userid;
+        $jabatan->tglentry = Carbon::now();
+        $jabatan->id       = null;
+
+        $jabatan->save();
+
+        return response()->json(['response' => true], 200);
     }
 
     /**
@@ -44,17 +81,6 @@ class JabatanController extends Controller
      * @return \Illuminate\Http\Response
      */
     public function show($id)
-    {
-        //
-    }
-
-    /**
-     * Show the form for editing the specified resource.
-     *
-     * @param  int  $id
-     * @return \Illuminate\Http\Response
-     */
-    public function edit($id)
     {
         //
     }

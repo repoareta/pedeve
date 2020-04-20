@@ -531,6 +531,10 @@ $(document).ready(function () {
 		$(this).valid();
 	});
 
+	$('a[data-toggle="tab"]').on( 'shown.bs.tab', function (e) {
+        $.fn.dataTable.tables( {visible: true, api: true} ).columns.adjust();
+    } );
+
 	// minimum setup
 	$('.datepicker').datepicker({
 		todayHighlight: true,
@@ -653,4 +657,5 @@ $(document).ready(function () {
 </script>
 
 @yield('detail_keluarga_script')
+@yield('detail_jabatan_script')
 @endsection
