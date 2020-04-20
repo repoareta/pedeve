@@ -52,12 +52,20 @@
 				</div>
 				<input class="form-control" type="hidden" name="userid" value="{{Auth::user()->userid}}">
 				<div class="form-group row">
-						<label for="example-email-input" class="col-1 col-form-label"></label>
-						<div class="col-6">
-							<input style=" width: 17px;height: 17px;margin-left:50px;" value="M" type="radio"  name="mp" checked  autocomplete='off' />  <label style="font-size:12px; margin-left:10px;">PENERIMAAN /BKM</label>
-							<input style=" width: 17px;height: 17px;margin-left:50px;" value="P" type="radio"   name="mp"   autocomplete='off'/><label style="font-size:12px; margin-left:10px;"> PENGELUARAN /BKP</label>
+					<label for="" class="col-2 col-form-label"></label>
+					<div class="col-8">
+						<div class="kt-radio-inline">
+							<label class="kt-radio kt-radio--solid">
+								<input type="radio" name="mp" checked value="M"> PENERIMAAN /BKM
+								<span></span>
+							</label>
+							<label class="kt-radio kt-radio--solid">
+								<input type="radio" name="mp" value="P"> PENGELUARAN /BKP
+								<span></span>
+							</label>
 						</div>
 					</div>
+				</div>
 				<div class="kt-form__actions">
 					<div class="row">
 						<div class="col-2"></div>
