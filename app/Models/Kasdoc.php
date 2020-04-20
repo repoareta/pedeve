@@ -7,7 +7,12 @@ use Illuminate\Database\Eloquent\Model;
 class Kasdoc extends Model
 {
     protected $table = "kasdoc";
-    protected $primaryKey = null; // or null
+    protected $primaryKey = 'docno'; // or null
     public $timestamps = false;
     public $incrementing = false;
+
+    public function storejk()
+    {
+        return $this->belongsTo(Storejk::class);
+    }
 }

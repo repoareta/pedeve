@@ -343,7 +343,7 @@
 						<label for="example-text-input" class="col-2 col-form-label">Perintah Kerja</label>
 						<label for="example-text-input" class=" col-form-label">:</label>
 						<div class="col-4">
-							<input  class="form-control" type="text" value="000"  name="pk" size="6" maxlength="6">
+							<input  class="form-control" type="text" value="000"  name="pk" size="6" maxlength="6" autocomplete='off'>
 						</div>
 					</div>
 
@@ -433,11 +433,9 @@
 					<div class="form-group row">
 						<label for="example-text-input" class="col-2 col-form-label">Account</label>
 						<label for="example-text-input" class=" col-form-label">:</label>
-						<div class="col-3">
-							<input  class="form-control" name="acc" type="text" value="" id="acc" >
-						</div>
-						<div id="div-acc" class="col-5" style="display:none;">
+						<div id="div-acc" class="col-8">
 							<select name="acc" id="select-acc" class="form-control selectpicker" data-live-search="true">
+								<option value="">-Pilih-</option>
 									@foreach($data_account as $row)
 								<option value="{{$row->kodeacct}}">{{$row->kodeacct}} - {{$row->descacct}}</option>
 									@endforeach
@@ -448,11 +446,9 @@
 					<div class="form-group row">
 						<label for="example-text-input" class="col-2 col-form-label">Kode Bagian</label>
 						<label for="example-text-input" class=" col-form-label">:</label>
-						<div class="col-3">
-							<input  class="form-control" name="bagian" type="text" value="" id="bagian" >
-						</div>
-						<div id="div-bagian" class="col-5" style="display:none;">
+						<div id="div-bagian" class="col-8">
 							<select name="bagian" id="select-bagian"  class="form-control selectpicker" data-live-search="true">
+								<option value="">-Pilih-</option>
 									@foreach($data_bagian as $row)
 								<option value="{{$row->kode}}" >{{$row->kode}} - {{$row->nama}}</option>
 									@endforeach
@@ -463,19 +459,17 @@
 					<div class="form-group row">
 						<label for="example-text-input" class="col-2 col-form-label">Perintah Kerja</label>
 						<label for="example-text-input" class=" col-form-label">:</label>
-						<div class="col-4">
-							<input  class="form-control" type="text" value="" id="pk" name="pk" size="6" maxlength="6">
+						<div class="col-8">
+							<input  class="form-control" type="text" value="" id="pk" name="pk" size="6" maxlength="6" autocomplete='off'>
 						</div>
 					</div>
 
 					<div class="form-group row">
 						<label for="example-text-input" class="col-2 col-form-label">Jenis Biaya</label>
 						<label for="example-text-input" class=" col-form-label">:</label>
-						<div class="col-3">
-							<input  class="form-control" name="jb" type="text" value="" id="jb" >
-						</div>
-						<div id="div-jb" class="col-5" style="display:none;">
+						<div id="div-jb" class="col-8">
 							<select name="jb" id="select-jb"  class="form-control selectpicker" data-live-search="true">
+								<option value="">-Pilih-</option>
 									@foreach($data_jenisbiaya as $row)
 								<option value="{{$row->kode}}" >{{$row->kode}} - {{$row->keterangan}}</option>
 									@endforeach
@@ -486,11 +480,9 @@
 					<div class="form-group row">
 						<label for="example-text-input" class="col-2 col-form-label">C. Judex</label>
 						<label for="example-text-input" class=" col-form-label">:</label>
-						<div class="col-3">
-							<input  class="form-control" name="cj" type="text" value="" id="cj" >
-						</div>
-						<div class="col-5" id="div-cj" style="display:none;">
+						<div class="col-8" id="div-cj">
 							<select name="cj" id="select-cj" class="form-control selectpicker" data-live-search="true">
+								<option value="">-Pilih-</option>
 									@foreach($data_cj as $row)
 								<option value="{{$row->kode}}">{{$row->kode}} - {{$row->nama}}</option>
 									@endforeach
@@ -631,33 +623,7 @@ if (KTUtil.isRTL()) {
 		return false;
 	});
 
-//edit bagian
-$('#bagian').on('click', function(e) {
-	$('#bagian').attr('disabled', true);
-	$('#div-bagian').fadeIn();
-	$( "#select-bagian" ).prop( "disabled", false );
-});
 
-//edit account
-$('#acc').on('click', function(e) {
-	$('#acc').attr('disabled', true);
-	$('#div-acc').fadeIn();
-	$( "#select-acc" ).prop( "disabled", false );
-});
-
-//edit jenis bayar
-$('#jb').on('click', function(e) {
-	$('#jb').attr('disabled', true);
-	$('#div-jb').fadeIn();
-	$( "#select-jb" ).prop( "disabled", false );
-});
-
-//edit cj
-$('#cj').on('click', function(e) {
-	$('#cj').attr('disabled', true);
-	$('#div-cj').fadeIn();
-	$( "#select-cj" ).prop( "disabled", false );
-});
 
 //tampil edit detail
 $('#editRow').on('click', function(e) {
@@ -681,18 +647,15 @@ $(".btn-radio:checked").each(function() {
 			{
 				$('#no').val(data.no);
 				$('#keterangan').val(data.keterangan);
-				$('#acc').val(data.account);
-				$('#bagian').val(data.bagian);
 				$('#pk').val(data.pk);
-				$('#jb').val(data.jb);
-				$('#cj').val(data.cj);
 				var output=parseInt(data.nilai);
 				$('#nilai').val(output);
 				$('.modal-edit-detail-bayar').modal('show');
-				$( "#select-bagian" ).prop( "disabled", true );
-				$( "#select-acc" ).prop( "disabled", true );
-				$( "#select-jb" ).prop( "disabled", true );
-				$( "#select-cj" ).prop( "disabled", true );
+				$('#select-bagian').val(data.bagian).trigger('change');
+				$('#select-acc').val(data.account).trigger('change');
+				$('#select-jb').val(data.jb).trigger('change');
+				$('#select-cj').val(data.cj).trigger('change');
+
 			}
 		})
 	}

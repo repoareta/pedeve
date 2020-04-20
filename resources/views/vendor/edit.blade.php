@@ -61,7 +61,21 @@
 					<div class="form-group row">
 						<label for="nopek-input" class="col-2 col-form-label">No. Rekening<span style="color:red;">*</span></label>
 						<div class="col-10">
-							<input class="form-control" type="text" name="norek" value="{{$data->norek}}"  id="norek" size="20" maxlength="20"  required oninvalid="this.setCustomValidity('Alamat Harus Diisi..')" oninput="setCustomValidity('')" autocomplete='off'>
+							<input class="form-control" type="text" name="norek" value="{{$data->norek}}"  id="norek" size="20" maxlength="20"  required oninvalid="this.setCustomValidity('No Rekening Harus Diisi..')" oninput="setCustomValidity('')" autocomplete='off'>
+
+						</div>
+					</div>
+					<div class="form-group row">
+						<label for="nopek-input" class="col-2 col-form-label">Nama Bank<span style="color:red;">*</span></label>
+						<div class="col-10">
+							<input class="form-control" type="text" name="nama_bank" value="{{$data->nama_bank}}"  id="nama_bank" size="80" maxlength="80"  required oninvalid="this.setCustomValidity('Nama Bank Harus Diisi..')" oninput="setCustomValidity('')" autocomplete='off'>
+
+						</div>
+					</div>
+					<div class="form-group row">
+						<label for="nopek-input" class="col-2 col-form-label">Cabang Bank<span style="color:red;">*</span></label>
+						<div class="col-10">
+							<input class="form-control" type="text" name="cabang_bank" value="{{$data->cabang_bank}}"  id="cabang_bank" size="80" maxlength="80"  required oninvalid="this.setCustomValidity('Cabang Bank Harus Diisi..')" oninput="setCustomValidity('')" autocomplete='off'>
 
 						</div>
 					</div>

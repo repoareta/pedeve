@@ -3,13 +3,8 @@
 namespace App\Http\Controllers;
 
 use Illuminate\Http\Request;
-use App\Models\Kasdoc;
-use DB;
-use PDF;
-use Excel;
-use Alert;
 
-class PembayaranPkppController extends Controller
+class InformasiSaldoController extends Controller
 {
     /**
      * Display a listing of the resource.
@@ -18,18 +13,7 @@ class PembayaranPkppController extends Controller
      */
     public function index()
     {
-        $data_tahunbulan = DB::select("select max(thnbln) as bulan_buku from timetrans where status='1' and length(thnbln)='6'");
-        if(!empty($data_tahunbulan)){
-            foreach($data_tahunbulan as $data_bul)
-            {
-                $bulan_buku = $data_bul->bulan_buku;
-            }
-        }else{
-            $bulan_buku = '0';
-        }
-        $tahun = substr($bulan_buku,0,-2);
-        $data_list = Kasdoc::where('thnbln',$bulan_buku)->get();
-        return view('pembayaran_pkpp.index',compact('data_list'));
+        return view('informasi_saldo.index');
     }
 
     /**
