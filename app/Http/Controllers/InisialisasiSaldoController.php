@@ -137,7 +137,7 @@ class InisialisasiSaldoController extends Controller
      */
     public function edit($jk,$nokas)
     {
-        $data_list = DB::select("select a.*, b.* from saldostore a join storejk b on a.nokas=b.kodestore where jk='$jk' and nokas='$nokas'" ); 			
+        $data_list = DB::select("select a.*, b.namabank,b.norekening,b.kodestore from saldostore a join storejk b on a.nokas=b.kodestore where jk='$jk' and nokas='$nokas'" ); 			
         return view('inisialisasi_saldo.edit',compact('data_list'));
     }
 
@@ -149,9 +149,15 @@ class InisialisasiSaldoController extends Controller
      * @param  int  $id
      * @return \Illuminate\Http\Response
      */
-    public function update(Request $request, $id)
-    {
-        //
+    public function update(Request $request)
+    {	
+        Saldostore::where('jk', $request->jk)
+            ->where('nokas',$request->nokas)
+            ->update([
+                'saldoakhir' => $request->saldoakhir,
+                'inputdate' => $request->tanggal,
+            ]);
+            return response()->json();
     }
 
     /**

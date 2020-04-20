@@ -42,7 +42,7 @@
 		</div>
 		<div class="card-body table-responsive" >
 			<!--begin: Datatable -->
-			<form  class="kt-form kt-form--label-right" id="form-create">
+			<form  class="kt-form kt-form--label-right" id="form-edit">
 				{{csrf_field()}}
 				<div class="kt-portlet__body">
 					<div class="form-group form-group-last">
@@ -57,31 +57,29 @@
 						<div class="form-group row">
 							<label class="col-2 col-form-label">Jenis Kartu<span style="color:red;">*</span></label>
 							<div class="col-10">
-								<select name="jk" id="jk" class="form-control selectpicker" data-live-search="true" required>
+								<select class="form-control" data-live-search="true" disabled style="background-color:#DCDCDC; cursor:not-allowed">
 									<option value="">- Pilih -</option>
 									<option value="10" <?php if($data->jk == '10' ) echo 'selected' ; ?>>Kas(Rupiah)</option>
 									<option value="11" <?php if($data->jk == '11' ) echo 'selected' ; ?>>Bank(Rupiah)</option>
 									<option value="13" <?php if($data->jk == '13' ) echo 'selected' ; ?>>Bank(Dollar)</option>
 									
 								</select>							
+								<input class="form-control" type="hidden" value="{{$data->jk}}"   name="jk" id="jk" size="6" maxlength="6">
 							</div>
 						</div>
 
 						<div class="form-group row">
 							<label for="jenis-dinas-input" class="col-2 col-form-label">Nokas<span style="color:red;">*</span></label>
 							<div class="col-10">
-								<select name="nokas" id="nokas" class="form-control" data-live-search="true" required>
-									<option value="">- Pilih -</option>									
-								</select>
-									<input class="form-control" type="hidden" value="{{$data->nokas}}"   name="nokas1" id="nokas1" size="6" maxlength="6" readonly style="background-color:#DCDCDC; cursor:not-allowed">
-									<input class="form-control" type="hidden" value="{{$data->namabank}}  -  {{$data->norekening}}"   name="nokas2" id="nokas2" size="6" maxlength="6" readonly style="background-color:#DCDCDC; cursor:not-allowed">
+									<input class="form-control" type="text" value="{{$data->kodestore}} -- {{$data->namabank}}"   size="6" maxlength="6" readonly style="background-color:#DCDCDC; cursor:not-allowed">
+									<input class="form-control" type="hidden" value="{{$data->kodestore}}"   name="nokas" id="nokas" size="6" maxlength="6">
 							</div>
 						</div>
 						<div class="form-group row">
 							<label for="mulai-input" class="col-2 col-form-label">Saldo Akhir<span style="color:red;">*</span></label>
 							<div class="col-10">
 								<div class="input-daterange input-group" >
-									<input type="text" class="form-control" name="saldoakhir"  value="" required  autocomplete='off' onkeypress="return hanyaAngka(event)"/>
+									<input type="number" class="form-control" name="saldoakhir"  value="{{number_format($data->saldoakhir,0,'','')}}" required  autocomplete='off' oninvalid="this.setCustomValidity('Saldo AKhir Harus Diisi..')" oninput="setCustomValidity('')" />
 								</div>
 							</div>
 						</div>
@@ -89,7 +87,11 @@
 							<label for="mulai-input" class="col-2 col-form-label">Tanggal Input<span style="color:red;">*</span></label>
 							<div class="col-10">
 								<div class="input-daterange input-group" >
-									<input type="text" class="form-control" name="tanggal" id="tanggal" value="" size="30" maxlength="30" required  autocomplete='off'/>
+								<?php
+									$tgl = date_create($data->inputdate);
+									$tanggal = date_format($tgl, 'Y-m-d');
+								?>
+									<input type="text" class="form-control" name="tanggal" id="tanggal" value="{{$tanggal}}" size="30" maxlength="30" required  autocomplete='off' oninvalid="this.setCustomValidity('Tanggal Input Harus Diisi..')" onchange="setCustomValidity('')"/>
 								</div>
 							</div>
 						</div>
@@ -115,61 +117,26 @@
 @section('scripts')
 	<script type="text/javascript">
 	$(document).ready(function () {
-		var jk = $('#jk').val();
-		var nokas1 = $('#nokas1').val();
-		var nokas2 = $('#nokas2').val();
 
+$('#form-edit').submit(function(){
 	$.ajax({
-		url : "{{route('inisialisasi_saldo.nokas.json')}}",
+		url  : "{{route('inisialisasi_saldo.update')}}",
 		type : "POST",
-		dataType: 'json',
-		data : {
-			jk:jk,
-			},
-		headers: {
-			'X-CSRF-Token': '{{ csrf_token() }}',
-			},
-		success : function(data){
-					var html = '';
-                    var i;
-					html += '<option value="'+nokas1+'">'+nokas2+'</option>';
-                    for(i=0; i<data.length; i++){
-                        html += '<option value="'+data[i].kodestore+'">'+data[i].namabank+'-'+data[i].norekening+'</option>';
-                    }
-                    $('#nokas').html(html);		
-		},
-		error : function(){
-			alert("Ada kesalahan controller!");
-		}
-	})
-
-$('#form-create').submit(function(){
-	$.ajax({
-		url  : "{{route('inisialisasi_saldo.store')}}",
-		type : "POST",
-		data : $('#form-create').serialize(),
+		data : $('#form-edit').serialize(),
 		dataType : "JSON",
 		headers: {
 		'X-CSRF-Token': '{{ csrf_token() }}',
 		},
 		success : function(data){
 		console.log(data);
-		if(data == 1){
 			Swal.fire({
 				type  : 'success',
-				title : 'Data Berhasil DiEdit',
+				title : 'Data Berhasil Diubah',
 				text  : 'Berhasil',
 				timer : 2000
 			}).then(function() {
 				window.location.replace("{{ route('inisialisasi_saldo.index') }}");;
 				});
-		}else{
-			Swal.fire({
-				type  : 'info',
-				title : 'Data Yang Diinput Sudah Ada.',
-				text  : 'Failed',
-			});
-		}
 		}, 
 		error : function(){
 			alert("Terjadi kesalahan, coba lagi nanti");
@@ -178,34 +145,7 @@ $('#form-create').submit(function(){
 	return false;
 });
 
-	$("#jk").on("change", function(){
-	var jk = $('#jk').val();
-
-	$.ajax({
-		url : "{{route('inisialisasi_saldo.nokas.json')}}",
-		type : "POST",
-		dataType: 'json',
-		data : {
-			jk:jk,
-			},
-		headers: {
-			'X-CSRF-Token': '{{ csrf_token() }}',
-			},
-		success : function(data){
-					var html = '';
-                    var i;
-						html += '<option value="">- Pilih - </option>';
-                    for(i=0; i<data.length; i++){
-                        html += '<option value="'+data[i].kodestore+'">'+data[i].namabank+'-'+data[i].norekening+'</option>';
-                    }
-                    $('#nokas').html(html);		
-		},
-		error : function(){
-			alert("Ada kesalahan controller!");
-		}
-	})
-});
-
+	
 
 $('#tanggal').datepicker({
 			todayHighlight: true,

@@ -57,7 +57,7 @@
 						<div class="form-group row">
 							<label class="col-2 col-form-label">Jenis Kartu<span style="color:red;">*</span></label>
 							<div class="col-10">
-								<select name="jk" id="jk" class="form-control selectpicker" data-live-search="true" required>
+								<select name="jk" id="jk" class="form-control " data-live-search="true" required oninvalid="this.setCustomValidity('Jenis Kartu Harus Diisi..')" onchange="setCustomValidity('')"> 
 									<option value="">- Pilih -</option>
 									<option value="10">Kas(Rupiah)</option>
 									<option value="11">Bank(Rupiah)</option>
@@ -70,7 +70,7 @@
 						<div class="form-group row">
 							<label for="jenis-dinas-input" class="col-2 col-form-label">Nokas<span style="color:red;">*</span></label>
 							<div class="col-10">
-								<select name="nokas" id="nokas" class="form-control" data-live-search="true" required>
+								<select name="nokas" id="nokas" class="form-control" data-live-search="true" required oninvalid="this.setCustomValidity('Nokas Harus Diisi..')" onchange="setCustomValidity('')">
 									<option value="">- Pilih -</option>
 									
 									
@@ -82,7 +82,7 @@
 							<label for="mulai-input" class="col-2 col-form-label">Saldo Akhir<span style="color:red;">*</span></label>
 							<div class="col-10">
 								<div class="input-daterange input-group" >
-									<input type="text" class="form-control" name="saldoakhir"  value="" required  autocomplete='off' onkeypress="return hanyaAngka(event)"/>
+									<input type="number" class="form-control" name="saldoakhir"  value="" required  autocomplete='off' oninvalid="this.setCustomValidity('Saldo Akhir Harus Diisi..')" oninput="setCustomValidity('')" />
 								</div>
 							</div>
 						</div>
@@ -90,7 +90,7 @@
 							<label for="mulai-input" class="col-2 col-form-label">Tanggal Input<span style="color:red;">*</span></label>
 							<div class="col-10">
 								<div class="input-daterange input-group" >
-									<input type="text" class="form-control" name="tanggal" id="tanggal" value="" size="30" maxlength="30" required  autocomplete='off'/>
+									<input type="text" class="form-control" name="tanggal" id="tanggal" value="" size="30" maxlength="30" required  autocomplete='off' oninvalid="this.setCustomValidity('Tanggal Input Harus Diisi..')" onchange="setCustomValidity('')"/>
 								</div>
 							</div>
 						</div>
@@ -116,7 +116,7 @@
 @section('scripts')
 	<script type="text/javascript">
 	$(document).ready(function () {
-
+		$('select').selectize(options);
 $('#form-create').submit(function(){
 	$.ajax({
 		url  : "{{route('inisialisasi_saldo.store')}}",

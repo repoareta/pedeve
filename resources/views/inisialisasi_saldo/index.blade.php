@@ -48,9 +48,9 @@
 							<i class="fas fa-times-circle"></i>
 						</span>
 
-						<!-- <span style="font-size: 2em;" class="kt-font-info pointer-link" id="exportRow" data-toggle="kt-tooltip" data-placement="top" title="Cetak Data">
+						<span style="font-size: 2em;" class="kt-font-info pointer-link" id="exportRow" data-toggle="kt-tooltip" data-placement="top" title="Cetak Data">
 							<i class="fas fa-print"></i>
-						</span> -->
+						</span>
 					</div>
 				</div>
 			</div>
