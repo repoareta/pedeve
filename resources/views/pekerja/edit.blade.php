@@ -80,9 +80,16 @@
 							<div class="col-8">
 								<select class="form-control kt-select2" name="status" id="status">
 									<option value=""> - Pilih Status- </option>
-									<option value="K">Aktif</option>
-									<option value="K">Kontrak</option>
-									<option value="P">Pensiun</option>
+									<option 
+										@if($pekerja->status == 'K')
+											selected
+										@endif
+									value="K">Kontrak</option>
+									<option 
+										@if($pekerja->status == 'P')
+											selected
+										@endif
+									value="P">Pensiun</option>
 								</select>
 								<div id="status-nya"></div>
 							</div>
