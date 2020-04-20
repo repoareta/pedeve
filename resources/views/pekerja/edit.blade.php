@@ -43,14 +43,23 @@
 			</div>
 		</div>		
 		<div class="kt-portlet__body">
-			<form class="kt-form kt-form--label-right" id="formPekerja" action="{{ route('pekerja.store') }}" method="POST">
+			@if ($errors->any())
+				<div class="alert alert-danger">
+					<ul>
+						@foreach ($errors->all() as $error)
+							<li>{{ $error }}</li>
+						@endforeach
+					</ul>
+				</div>
+			@endif
+			<form class="kt-form kt-form--label-right" id="formPekerja" action="{{ route('pekerja.update', ['pekerja' => $pekerja->nopeg]) }}" method="POST" enctype="multipart/form-data">
 				@csrf
 				<div class="row">
 					<div class="col-lg-5">
 						<div class="form-group row">
 							<label for="kode" class="col-4 col-form-label">Nomor Pegawai</label>
 							<div class="col-8">
-								<input class="form-control" type="text" name="nomor" id="nomor">
+								<input class="form-control" type="text" name="nomor" id="nomor" value="{{ $pekerja->nopeg }}">
 							</div>
 						</div>
 		
@@ -71,10 +80,11 @@
 							<div class="col-8">
 								<select class="form-control kt-select2" name="status" id="status">
 									<option value=""> - Pilih Status- </option>
-									<option value="A">Aktif</option>
 									<option value="K">Aktif</option>
+									<option value="K">Kontrak</option>
 									<option value="P">Pensiun</option>
 								</select>
+								<div id="status-nya"></div>
 							</div>
 						</div>
 		
@@ -89,12 +99,19 @@
 								</select>
 							</div>
 						</div>
+
+						<div class="form-group row">
+							<label for="" class="col-4 col-form-label">Golongan</label>
+							<div class="col-8">
+								<input class="form-control" type="text" name="golongan" id="golongan" readonly>
+							</div>
+						</div>
 		
 						<div class="form-group row">
 							<label for="" class="col-4 col-form-label">Tgl Aktif Dinas</label>
 							<div class="col-8">
 								<div class="input-group date">
-									<input type="text" class="form-control" readonly="" placeholder="Pilih Tanggal Aktif Dinas" name="tanggal_aktif_dinas" id="tanggal_aktif_dinas">
+									<input type="text" class="form-control" readonly="" placeholder="Pilih Tanggal Aktif Dinas" name="tanggal_aktif_dinas" id="tanggal_aktif_dinas" value="{{ date('Y-m-d', strtotime($pekerja->tglaktifdns)) }}">
 									<div class="input-group-append">
 										<span class="input-group-text">
 											<i class="la la-calendar-check-o"></i>
@@ -105,42 +122,72 @@
 						</div>
 		
 						<div class="form-group row">
-							<label for="" class="col-4 col-form-label">No. YPD</label>
+							<label for="" class="col-4 col-form-label">No. YDP</label>
 							<div class="col-8">
-								<input class="form-control" type="text" name="no_ypd" id="no_ypd">
+								<input class="form-control" type="text" name="no_ydp" id="no_ydp" value="{{ $pekerja->noydp }}">
 							</div>
 						</div>
 		
 						<div class="form-group row">
 							<label for="" class="col-4 col-form-label">NPWP</label>
 							<div class="col-8">
-								<input class="form-control" type="text" name="npwp" id="npwp">
+								<input class="form-control" type="text" name="npwp" id="npwp" value="{{ $pekerja->npwp }}">
 							</div>
 						</div>
 		
 						<div class="form-group row">
 							<label for="" class="col-4 col-form-label">No. Astek</label>
 							<div class="col-8">
-								<input class="form-control" type="text" name="no_astek" id="no_astek">
+								<input class="form-control" type="text" name="no_astek" id="no_astek" value="{{ $pekerja->noastek }}">
 							</div>
 						</div>
 		
 						<div class="form-group row">
 							<label for="" class="col-4 col-form-label">Gelar</label>
 							<div class="col-8">
-								<input class="form-control" type="text" name="gelar_1" id="gelar_1" placeholder="Gelar 1">
+								<select class="form-control kt-select2" name="gelar_1" id="gelar_1">
+									<option value="">- Pilih Gelar -</option>
+									@foreach ($pendidikan_list as $pendidikan)
+										<option value="{{ $pendidikan->kode }}" 
+											@if($pendidikan->kode == $pekerja->gelar1)
+												selected
+											@endif 
+										>{{ $pendidikan->nama }}</option>
+									@endforeach
+								</select>
+								<div id="gelar_1-nya"></div>
 							</div>
 						</div>
 						<div class="form-group row">
 							<label for="" class="col-4 col-form-label"></label>
 							<div class="col-8">
-								<input class="form-control" type="text" name="gelar_2" id="gelar_2" placeholder="Gelar 2">
+								<select class="form-control kt-select2" name="gelar_2" id="gelar_2">
+									<option value="">- Pilih Gelar -</option>
+									@foreach ($pendidikan_list as $pendidikan)
+										<option value="{{ $pendidikan->kode }}"
+											@if($pendidikan->kode == $pekerja->gelar2)
+												selected
+											@endif 
+										>{{ $pendidikan->nama }}</option>
+									@endforeach
+								</select>
+								<div id="gelar_2-nya"></div>
 							</div>
 						</div>
 						<div class="form-group row">
 							<label for="" class="col-4 col-form-label"></label>
 							<div class="col-8">
-								<input class="form-control" type="text" name="gelar_3" id="gelar_3" placeholder="Gelar 3">
+								<select class="form-control kt-select2" name="gelar_3" id="gelar_3">
+									<option value="">- Pilih Gelar -</option>
+									@foreach ($pendidikan_list as $pendidikan)
+										<option value="{{ $pendidikan->kode }}"
+											@if($pendidikan->kode == $pekerja->gelar3)
+												selected
+											@endif
+										>{{ $pendidikan->nama }}</option>
+									@endforeach
+								</select>
+								<div id="gelar_3-nya"></div>
 							</div>
 						</div>
 					</div>
@@ -149,14 +196,14 @@
 						<div class="form-group row">
 							<label for="kode" class="col-4 col-form-label">Nama Pegawai</label>
 							<div class="col-8">
-								<input class="form-control" type="text" name="nama" id="nama">
+								<input class="form-control" type="text" name="nama" id="nama" value="{{ $pekerja->nama }}">
 							</div>
 						</div>
 		
 						<div class="form-group row">
 							<label for="nama" class="col-4 col-form-label">Tempat Lahir</label>
 							<div class="col-8">
-								<input class="form-control" type="text" name="tempat_lahir" id="tempat_lahir">
+								<input class="form-control" type="text" name="tempat_lahir" id="tempat_lahir" value="{{ $pekerja->tempatlhr }}">
 							</div>
 						</div>
 
@@ -164,7 +211,7 @@
 							<label for="nama" class="col-4 col-form-label">Tanggal Lahir</label>
 							<div class="col-8">
 								<div class="input-group date">
-									<input type="text" class="form-control" readonly="" placeholder="Pilih Tanggal Lahir" id="tanggal_lahir" name="tanggal_lahir">
+									<input type="text" class="form-control" readonly="" placeholder="Pilih Tanggal Lahir" name="tanggal_lahir" id="tanggal_lahir" value="{{ date('Y-m-d', strtotime($pekerja->tgllahir)) }}">
 									<div class="input-group-append">
 										<span class="input-group-text">
 											<i class="la la-calendar-check-o"></i>
@@ -180,9 +227,14 @@
 								<select class="form-control kt-select2" name="provinsi" id="provinsi">
 									<option value=""> - Pilih Provinsi- </option>
 									@foreach ($provinsi_list as $provinsi)
-										<option value="{{ $provinsi->kode }}">{{ $provinsi->nama }}</option>
+										<option value="{{ $provinsi->kode }}"
+											@if($provinsi->kode == $pekerja->proplhr)
+												selected
+											@endif
+										>{{ $provinsi->nama }}</option>
 									@endforeach
 								</select>
+								<div id="provinsi-nya"></div>
 							</div>
 						</div>
 						
@@ -192,9 +244,14 @@
 								<select class="form-control kt-select2" name="agama" id="agama">
 									<option value=""> - Pilih Agama- </option>
 									@foreach ($agama_list as $agama)
-										<option value="{{ $agama->kode }}">{{ $agama->nama }}</option>
+										<option value="{{ $agama->kode }}"
+											@if($agama->kode == $pekerja->agama)
+												selected
+											@endif
+										>{{ $agama->nama }}</option>
 									@endforeach
 								</select>
+								<div id="agama-nya"></div>
 							</div>
 						</div>
 		
@@ -203,11 +260,19 @@
 							<div class="col-8">
 								<div class="kt-radio-inline">
 									<label class="kt-radio kt-radio--solid">
-										<input type="radio" name="jenis_kelamin" checked value="L"> Laki-laki
+										<input type="radio" name="jenis_kelamin" 
+											@if($pekerja->gender == 'L')
+											checked
+											@endif
+										value="L"> Laki-laki
 										<span></span>
 									</label>
 									<label class="kt-radio kt-radio--solid">
-										<input type="radio" name="jenis_kelamin" value="P"> Perempuan
+										<input type="radio" name="jenis_kelamin"
+											@if($pekerja->gender == 'P')
+											checked
+											@endif
+										value="P"> Perempuan
 										<span></span>
 									</label>
 								</div>
@@ -219,69 +284,91 @@
 							<div class="col-8">
 								<select class="form-control kt-select2" name="golongan_darah" id="golongan_darah">
 									<option value=""> - Pilih Golongan Darah- </option>
-									<option value="A">A</option>
-									<option value="B">B</option>
-									<option value="AB">AB</option>
-									<option value="O">O</option>
+									<option value="A" 
+										@if($pekerja->goldarah == 'A')
+										selected
+										@endif
+									>A</option>
+									<option value="B"
+										@if($pekerja->goldarah == 'B')
+										selected
+										@endif
+									>B</option>
+									<option value="AB"
+										@if($pekerja->goldarah == 'AB')
+										selected
+										@endif
+									>AB</option>
+									<option value="O"
+										@if($pekerja->goldarah == 'O')
+										selected
+										@endif
+									>O</option>
 								</select>
+								<div id="golongan_darah-nya"></div>
 							</div>
 						</div>
 		
 						<div class="form-group row">
 							<label for="" class="col-4 col-form-label">Kode Keluarga</label>
 							<div class="col-8">
-								<input class="form-control" type="text" name="kode_keluarga" id="kode_keluarga">
+								<input class="form-control" type="text" name="kode_keluarga" id="kode_keluarga" value="{{ $pekerja->kodekeluarga }}">
 							</div>
 						</div>
 		
 						<div class="form-group row">
 							<label for="" class="col-4 col-form-label">Alamat</label>
 							<div class="col-8">
-								<input class="form-control" placeholder="Alamat 1" type="text" name="alamat_1" id="alamat_1">
+								<input class="form-control" placeholder="Alamat 1" type="text" name="alamat_1" id="alamat_1" value="{{ $pekerja->alamat1 }}">
 							</div>
 						</div>
 
 						<div class="form-group row">
 							<label for="" class="col-4 col-form-label"></label>
 							<div class="col-8">
-								<input class="form-control" placeholder="Alamat 2" type="text" name="alamat_2" id="alamat_2">
+								<input class="form-control" placeholder="Alamat 2" type="text" name="alamat_2" id="alamat_2" value="{{ $pekerja->alamat2 }}">
 							</div>
 						</div>
 
 						<div class="form-group row">
 							<label for="" class="col-4 col-form-label"></label>
 							<div class="col-8">
-								<input class="form-control" placeholder="Alamat 3" type="text" name="alamat_3" id="alamat_3">
+								<input class="form-control" placeholder="Alamat 3" type="text" name="alamat_3" id="alamat_3" value="{{ $pekerja->alamat3 }}">
 							</div>
 						</div>
 		
 						<div class="form-group row">
 							<label for="" class="col-4 col-form-label">No. Handphone</label>
 							<div class="col-8">
-								<input class="form-control" type="text" name="no_handphone" id="no_handphone">
+								<input class="form-control" type="text" name="no_handphone" id="no_handphone" value="{{ $pekerja->nohp }}">
 							</div>
 						</div>
 		
 						<div class="form-group row">
 							<label for="" class="col-4 col-form-label">No. Telepon</label>
 							<div class="col-8">
-								<input class="form-control" type="text" name="no_telepon" id="no_telepon">
+								<input class="form-control" type="text" name="no_telepon" id="no_telepon" value="{{ $pekerja->notlp }}">
 							</div>
 						</div>
 					</div>
 
 					<div class="col-lg-2">
 						<div class="kt-avatar" id="kt_user_avatar_2">
+							@if ($pekerja->photo)
+							<div class="kt-avatar__holder" style="background-image: url({{ asset('storage/pekerja_img/'.$pekerja->photo) }})"></div>
+							@else
 							<div class="kt-avatar__holder" style="background-image: url(assets/media/users/default.jpg)"></div>
+							@endif
+							
 							<label class="kt-avatar__upload" data-toggle="kt-tooltip" title="" data-original-title="Ubah foto">
 								<i class="fa fa-pen"></i>
-								<input type="file" name="profile_avatar" accept=".png, .jpg, .jpeg">
+								<input type="file" name="photo" accept=".png, .jpg, .jpeg">
 							</label>
 							<span class="kt-avatar__cancel" data-toggle="kt-tooltip" title="" data-original-title="Hapus foto">
 								<i class="fa fa-times"></i>
 							</span>
 						</div>
-						<span class="form-text text-muted">Tipe berkas: .png, .jpg, jpeg.</span>
+						<span class="form-text text-muted" id="photo-nya">Tipe berkas: .png, .jpg, jpeg.</span>
 					</div>
 				</div>
 
@@ -429,7 +516,7 @@
 @endsection
 
 @section('scripts')
-{!! JsValidator::formRequest('App\Http\Requests\PekerjaStore', '#formPekerja') !!}
+{!! JsValidator::formRequest('App\Http\Requests\PekerjaUpdate', '#formPekerja') !!}
 
 <script>
 $(document).ready(function () {
@@ -466,6 +553,93 @@ $(document).ready(function () {
 
 	KTUtil.ready(function() {
 		KTAvatarDemo.init();
+	});
+
+	$('#gelar_1, #gelar_2, #gelar_3').select2().on('change', function() {
+		if ($('#gelar_1-error').length){
+			$("#gelar_1-error").insertAfter("#gelar_1-nya");
+		} else {
+			$(this).valid();
+		}
+
+		if ($('#gelar_2-error').length){
+			$("#gelar_2-error").insertAfter("#gelar_2-nya");
+		} else {
+			$(this).valid();
+		}
+		
+		if ($('#gelar_3-error').length){
+			$("#gelar_3-error").insertAfter("#gelar_3-nya");
+		} else {
+			$(this).valid();
+		}
+	});
+
+
+	$("#formPekerja").on('submit', function(e){
+		e.preventDefault();
+
+		if ($('#status-error').length){
+			$("#status-error").insertAfter("#status-nya");
+		}
+
+		if ($('#provinsi-error').length){
+			$("#provinsi-error").insertAfter("#provinsi-nya");
+		}
+
+		if ($('#agama-error').length){
+			$("#agama-error").insertAfter("#agama-nya");
+		}
+
+		if ($('#golongan_darah-error').length){
+			$("#golongan_darah-error").insertAfter("#golongan_darah-nya");
+		}
+
+		if ($('#gelar_1-error').length){
+			$("#gelar_1-error").insertAfter("#gelar_1-nya");
+		}
+		
+		if ($('#gelar_2-error').length){
+			$("#gelar_2-error").insertAfter("#gelar_2-nya");
+		}
+		
+		if ($('#gelar_3-error').length){
+			$("#gelar_3-error").insertAfter("#gelar_3-nya");
+		}
+
+		if ($('#photo-error').length){
+			$("#photo-error").insertAfter("#photo-nya");
+		}
+
+		if($(this).valid()) {
+			const swalWithBootstrapButtons = Swal.mixin({
+			customClass: {
+				confirmButton: 'btn btn-primary',
+				cancelButton: 'btn btn-danger'
+			},
+				buttonsStyling: false
+			})
+
+			swalWithBootstrapButtons.fire({
+				title: "Ingin melanjutkan isi detail pegawai?",
+				text: "",
+				type: 'warning',
+				showCancelButton: true,
+				reverseButtons: true,
+				confirmButtonText: 'Ya, Lanjut Isi Detail Pegawai',
+				cancelButtonText: 'Tidak'
+			})
+			.then((result) => {
+				if (result.value) {
+					$(this).append('<input type="hidden" name="url" value="edit" />');
+					$(this).unbind('submit').submit();
+				}
+				else if (result.dismiss === Swal.DismissReason.cancel) {
+					$(this).append('<input type="hidden" name="url" value="pekerja.index" />');
+					$(this).unbind('submit').submit();
+				}
+			});
+		}
 	});
 
 });
