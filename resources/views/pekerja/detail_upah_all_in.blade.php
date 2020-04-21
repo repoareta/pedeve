@@ -41,7 +41,7 @@
 	<div class="modal-dialog modal-lg" role="document">
 		<div class="modal-content">
 			<div class="modal-header">
-				<h5 class="modal-title" id="title_modal" data-state="add">Tambah Detail Upah All In</h5>
+				<h5 class="modal-title title_modal" data-state="add">Tambah Detail Upah All In</h5>
 				<button type="button" class="close" data-dismiss="modal" aria-label="Close">
 				</button>
 			</div>
@@ -113,13 +113,13 @@
 	$('#addRowUpahAllIn').click(function(e) {
 		e.preventDefault();
 		$('#upahAllInModal').modal('show');
-		$('#title_modal').data('state', 'add');
+		$('.title_modal').data('state', 'add');
 	});
 
 	$("#formUpahAllIn").on('submit', function(){
 		if($(this).valid()) {
 			// do your ajax stuff here
-			var state = $('#title_modal').data('state');
+			var state = $('.title_modal').data('state');
 			var url, swal_title;
 
 			if(state == 'add'){
@@ -140,14 +140,11 @@
 			$.ajax({
 				url: url,
 				type: "POST",
-				dataType: "JSON",
-				processData: false,
-        		contentType: false,
 				headers: {
 				'X-CSRF-TOKEN': "{{ csrf_token() }}"
 				},
-				data: new FormData(this),
-				success: function(dataResult){
+				data: $(this).serializeArray(),
+				success: function(response){
 					Swal.fire({
 						type : 'success',
 						title: swal_title,
@@ -253,8 +250,8 @@
 						$('#mulai_upah_all_in').val(response.mulai_date);
 						$('#sampai_upah_all_in').val(response.sampai_date);
 						// title
-						$('#title_modal').text('Ubah Detail Upah All In');
-						$('#title_modal').data('state', 'update');
+						$('.title_modal').text('Ubah Detail Upah All In');
+						$('.title_modal').data('state', 'update');
 						// for url update
 						$('#nilai_upah_all_in').data('nilai', response.nilai);
 						// open modal

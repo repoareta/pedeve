@@ -24,7 +24,9 @@ class UpahAllInStore extends FormRequest
     public function rules()
     {
         return [
-            'nilai_upah_all_in' => "required"
+            'nilai_upah_all_in'  => "required|numeric",
+            'mulai_upah_all_in'  => "nullable|date|required_with:sampai_upah_all_in",
+            'sampai_upah_all_in' => "nullable|date|after:2019-12-12",
         ];
     }
 }

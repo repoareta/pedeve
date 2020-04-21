@@ -56,7 +56,7 @@ class UpahAllInController extends Controller
      * @param  \Illuminate\Http\Request  $request
      * @return \Illuminate\Http\Response
      */
-    public function store(Request $request, Pekerja $pekerja)
+    public function store(UpahAllInStore $request, Pekerja $pekerja)
     {
         $upah           = new UpahAllIn;
         $upah->nopek    = $pekerja->nopeg;
