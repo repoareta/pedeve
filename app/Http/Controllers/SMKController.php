@@ -9,13 +9,12 @@ use App\Models\Pekerja;
 use App\Models\SMK;
 
 //load form request (for validation)
-use App\Http\Requests\KursusStore;
-use App\Http\Requests\KursusUpdate;
+use App\Http\Requests\SMKStore;
+use App\Http\Requests\SMKUpdate;
 
 // Load Plugin
 use Carbon\Carbon;
 use Auth;
-use Storage;
 
 class SMKController extends Controller
 {
@@ -38,24 +37,23 @@ class SMKController extends Controller
     }
 
     /**
-     * Show the form for creating a new resource.
-     *
-     * @return \Illuminate\Http\Response
-     */
-    public function create()
-    {
-        //
-    }
-
-    /**
      * Store a newly created resource in storage.
      *
      * @param  \Illuminate\Http\Request  $request
      * @return \Illuminate\Http\Response
      */
-    public function store(Request $request)
+    public function store(Request $request, Pekerja $pekerja)
     {
-        //
+        $smk            = new SMK;
+        $smk->nopeg     = $pekerja->nopeg;
+        $smk->tahun     = $request->tahun_smk;
+        $smk->nilai     = $request->nilai_smk;
+        $smk->userid    = Auth::user()->userid;
+        $smk->tglentry = Carbon::now();
+
+        $smk->save();
+
+        return response()->json($smk, 200);
     }
 
     /**
@@ -64,20 +62,13 @@ class SMKController extends Controller
      * @param  int  $id
      * @return \Illuminate\Http\Response
      */
-    public function show($id)
+    public function showJson(Request $request)
     {
-        //
-    }
+        $smk = SMK::where('nopeg', $request->nopeg)
+        ->where('tahun', $request->tahun)
+        ->first();
 
-    /**
-     * Show the form for editing the specified resource.
-     *
-     * @param  int  $id
-     * @return \Illuminate\Http\Response
-     */
-    public function edit($id)
-    {
-        //
+        return response()->json($smk, 200);
     }
 
     /**
@@ -87,9 +78,20 @@ class SMKController extends Controller
      * @param  int  $id
      * @return \Illuminate\Http\Response
      */
-    public function update(Request $request, $id)
+    public function update(Request $request, Pekerja $pekerja, $tahun)
     {
-        //
+        $smk = SMK::where('nopeg', $pekerja->nopeg)
+        ->where('tahun', $request->tahun)
+        ->first();
+
+        $smk->nopeg    = $pekerja->nopeg;
+        $smk->tahun    = $request->tahun_smk;
+        $smk->nilai    = $request->nilai_smk;
+        $smk->userid   = Auth::user()->userid;
+
+        $smk->save();
+
+        return response()->json($smk, 200);
     }
 
     /**
@@ -98,8 +100,12 @@ class SMKController extends Controller
      * @param  int  $id
      * @return \Illuminate\Http\Response
      */
-    public function destroy($id)
+    public function delete(Request $request)
     {
-        //
+        $smk = SMK::where('nopeg', $request->nopeg)
+        ->where('tahun', $request->tahun)
+        ->delete();
+
+        return response()->json(['delete' => true], 200);
     }
 }

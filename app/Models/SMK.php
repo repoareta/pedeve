@@ -10,7 +10,7 @@ class SMK extends Model
     use CompositeKey;
 
     protected $table = "sdm_smk";
-    protected $primaryKey = ['nopeg', 'tahun', 'nilai'];
+    protected $primaryKey = ['nopeg', 'tahun'];
     protected $keyType = 'string';
     public $timestamps = false;
     public $incrementing = false;
