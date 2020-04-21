@@ -42,37 +42,24 @@
 	<div class="modal-dialog modal-lg" role="document">
 		<div class="modal-content">
 			<div class="modal-header">
-				<h5 class="modal-title" id="title_modal" data-state="add">Tambah Detail Jabatan</h5>
+				<h5 class="modal-title" id="title_modal" data-state="add">Tambah Detail Upah Tetap</h5>
 				<button type="button" class="close" data-dismiss="modal" aria-label="Close">
 				</button>
 			</div>
-			<form class="kt-form kt-form--label-right" action="" method="POST" id="formUpahTetap" enctype="multipart/form-data">
+			<form class="kt-form kt-form--label-right" action="" method="POST" id="formUpahTetap">
 				<div class="modal-body">
 					<div class="form-group row">
-						<label for="spd-input" class="col-2 col-form-label">Bagian</label>
+						<label for="" class="col-2 col-form-label">Upah Tetap</label>
 						<div class="col-10">
-							<select class="form-control kt-select2" name="bagian_pekerja" id="bagian_pekerja" style="width: 100% !important;">
-								<option value=""> - Pilih Bagian- </option>
-                                @foreach ($kode_bagian_list as $kode_bagian)
-                                    <option value="{{ $kode_bagian->kode }}">{{ $kode_bagian->kode.' - '.$kode_bagian->nama }}</option>
-                                @endforeach
-							</select>
-							<div id="bagian_pekerja-nya"></div>
-						</div>
-					</div>
-
-					<div class="form-group row">
-						<label for="spd-input" class="col-2 col-form-label">Golongan</label>
-						<div class="col-10">
-							<input class="form-control" type="text" readonly name="golongan_pekerja" id="golongan_pekerja">
+							<input class="form-control" type="number" name="nilai_upah_tetap" id="nilai_upah_tetap">
 						</div>
                     </div>
 
                     <div class="form-group row">
-						<label for="spd-input" class="col-2 col-form-label">Mulai</label>
+						<label for="" class="col-2 col-form-label">Mulai</label>
 						<div class="col-4">
 							<div class="input-group date">
-								<input type="text" class="form-control datepicker" readonly="" placeholder="Pilih Tanggal" name="mulai" id="mulai">
+								<input type="text" class="form-control datepicker" readonly="" placeholder="Pilih Tanggal" name="mulai_upah_tetap" id="mulai_upah_tetap">
 								<div class="input-group-append">
 									<span class="input-group-text">
 										<i class="la la-calendar-check-o"></i>
@@ -81,10 +68,10 @@
 							</div>
                         </div>
                         
-                        <label for="spd-input" class="col-2 col-form-label">Sampai</label>
+                        <label for="" class="col-2 col-form-label">Sampai</label>
 						<div class="col-4">
 							<div class="input-group date">
-								<input type="text" class="form-control datepicker" readonly="" placeholder="Pilih Tanggal" name="sampai" id="sampai">
+								<input type="text" class="form-control datepicker" readonly="" placeholder="Pilih Tanggal" name="sampai_upah_tetap" id="sampai_upah_tetap">
 								<div class="input-group-append">
 									<span class="input-group-text">
 										<i class="la la-calendar-check-o"></i>
@@ -95,27 +82,11 @@
                     </div>
 
                     <div class="form-group row">
-						<label for="spd-input" class="col-2 col-form-label">Nomor SKEP</label>
+						<label for="" class="col-2 col-form-label">Keterangan</label>
 						<div class="col-10">
-							<input class="form-control" type="text" name="no_skep" id="no_skep">
+							<input class="form-control" type="text" name="keterangan_upah_tetap" id="keterangan_upah_tetap">
 						</div>
                     </div>
-
-                    <div class="form-group row">
-						<label for="spd-input" class="col-2 col-form-label">Tanggal SKEP</label>
-						<div class="col-10">
-							<div class="input-group date">
-								<input type="text" class="form-control datepicker" readonly="" placeholder="Pilih Tanggal" name="tanggal_skep" id="tanggal_skep">
-								<div class="input-group-append">
-									<span class="input-group-text">
-										<i class="la la-calendar-check-o"></i>
-									</span>
-								</div>
-							</div>
-						</div>
-                    </div>
-                    
-                    
 				</div>
 				<div class="modal-footer">
 					<button type="button" class="btn btn-warning" data-dismiss="modal"><i class="fa fa-reply" aria-hidden="true"></i> Batal</button>
@@ -128,7 +99,8 @@
 <!--end::Modal-->
 
 @section('detail_upah_tetap_script')
-{!! JsValidator::formRequest('App\Http\Requests\JabatanStore', '#formUpahTetap') !!}
+{!! JsValidator::formRequest('App\Http\Requests\UpahTetapStore', '#formUpahTetap') !!}
+
 <script type="text/javascript">
 	$(document).ready(function () {
 
@@ -154,72 +126,35 @@
 		$('#title_modal').data('state', 'add');
 	});
 
-	$("#formPanjarDinas").on('submit', function(){
-		if ($('#nopek-error').length){
-			$("#nopek-error").insertAfter("#nopek-nya");
-		}
-
-		if ($('#jabatan-error').length){
-			$("#jabatan-error").insertAfter("#jabatan-nya");
-		}
-
-		if ($('#jenis_dinas-error').length){
-			$("#jenis_dinas-error").insertAfter("#jenis_dinas-nya");
-		}
-
-		if ($('#biaya-error').length){
-			$("#biaya-error").insertAfter("#biaya-nya");
-		}
-
-		if ($('#sampai-error').length){
-			$("#sampai-error").addClass("float-right");
-		}
-	});
-
 	$("#formUpahTetap").on('submit', function(){
-		if ($('#nopek_detail-error').length){
-			$("#nopek_detail-error").insertAfter("#nopek_detail-nya");
-		}
-
-		if ($('#jabatan_detail-error').length){
-			$("#jabatan_detail-error").insertAfter("#jabatan_detail-nya");
-		}
-
 		if($(this).valid()) {
-			// do your ajax stuff here
-			var jabatan = $(this).serializeArray();
-
 			var state = $('#title_modal').data('state');
 
-			var url, session, swal_title;
+			var url, swal_title;
 
 			if(state == 'add'){
 				url = "{{ route('pekerja.upah_tetap.store', ['pekerja' => $pekerja->nopeg]) }}";
-				swal_title = "Tambah Detail Jabatan";
+				swal_title = "Tambah Detail Upah Tetap";
 			} else {
 				url = "{{ route('pekerja.upah_tetap.update', 
 					[
 						'pekerja' => $pekerja->nopeg,
-						'status' => ':status',
-						'nama' => ':nama'
+						'nilai' => ':nilai',
 					]) }}";
 				url = url
-				.replace(':status', $('#status_upah_tetap').data('status'))
-				.replace(':nama', $('#nama_upah_tetap').data('nama'));
+				.replace(':nilai', $('#nilai_upah_tetap').data('nilai'));
 
-				swal_title = "Update Detail Jabatan";
+				swal_title = "Update Detail Upah Tetap";
 			}
 
 			$.ajax({
 				url: url,
 				type: "POST",
 				dataType: "JSON",
-				processData: false,
-        		contentType: false,
 				headers: {
-				'X-CSRF-TOKEN': "{{ csrf_token() }}"
+					'X-CSRF-TOKEN': "{{ csrf_token() }}"
 				},
-				data: new FormData(this),
+				data: $(this).serializeArray(),
 				success: function(dataResult){
 					Swal.fire({
 						type : 'success',
@@ -253,8 +188,7 @@
 		if($('input[name=radio_upah_tetap]').is(':checked')) { 
 			$("input[name=radio_upah_tetap]:checked").each(function() {
 				var nopeg = $(this).val().split('-')[0];
-				var status = $(this).val().split('-')[1];
-				var nama = $(this).val().split('-')[2];
+				var ut = $(this).val().split('-')[1];
 				
 				const swalWithBootstrapButtons = Swal.mixin({
 				customClass: {
@@ -266,7 +200,7 @@
 
 				swalWithBootstrapButtons.fire({
 					title: "Data yang akan dihapus?",
-					text: "Nama : " + nama,
+					text: "Upah Tetap : " + ut,
 					type: 'warning',
 					showCancelButton: true,
 					reverseButtons: true,
@@ -281,14 +215,13 @@
 							dataType: 'json',
 							data: {
 								"nopeg": nopeg,
-								"status": status,
-								"nama": nama,
+								"ut": ut,
 								"_token": "{{ csrf_token() }}",
 							},
 							success: function () {
 								Swal.fire({
 									type  : 'success',
-									title : 'Hapus Detail Jabatan ' + nama,
+									title : 'Hapus Detail Upah Tetap ' + ut,
 									text  : 'Success',
 									timer : 2000
 								}).then(function() {
@@ -316,46 +249,30 @@
 			$("input[name=radio_upah_tetap]:checked").each(function() {
 				// get value from row					
 				var nopeg = $(this).val().split('-')[0];
-				var status = $(this).val().split('-')[1];
-				var nama = $(this).val().split('-')[2];
+				var ut = $(this).val().split('-')[1];
 
 				$.ajax({
 					url: "{{ route('pekerja.upah_tetap.show.json') }}",
 					type: 'GET',
 					data: {
 						"nopeg" : "{{ $pekerja->nopeg }}",
-						"status" : status,
-						"nama" : nama,
+						"ut"    : ut,
 						"_token": "{{ csrf_token() }}",
 					},
 					success: function (response) {
 						console.log(response);
 						// update stuff
-						// append value
-						if(response.photo) {
-							var img = "{{ asset('storage/pekerja_img/') }}" + "/" + response.photo;
-
-							$(".kt-avatar__holder").css(
-								'background-image', 
-								"url(" + img + ")"
-							);
-						}
-						
-						$('#nama_upah_tetap').val(response.nama);
-						$('#status_upah_tetap').val(response.status).trigger('change');
-						$('#tempat_lahir_upah_tetap').val(response.tempatlahir);
-						$('#tanggal_lahir_upah_tetap').val(response.tgllahir);
-						$('#agama_upah_tetap').val(response.agama).trigger('change');
-						$('#golongan_darah_upah_tetap').val(response.goldarah).trigger('change');
-						$('#pendidikan_upah_tetap').val(response.kodependidikan).trigger('change');
-						$('#tempat_pendidikan_upah_tetap').val(response.tempatpendidikan);
+						// append value						
+						$('#nilai_upah_tetap').val(response.ut);
+						$('#mulai_upah_tetap').val(response.mulai);
+						$('#sampai_upah_tetap').val(response.sampai);
+						$('#keterangan_upah_tetap').val(response.keterangan);
 						
 						// title
-						$('#title_modal').text('Ubah Detail Jabatan');
+						$('#title_modal').text('Ubah Detail Upah Tetap');
 						$('#title_modal').data('state', 'update');
 						// for url update
-						$('#nama_upah_tetap').data('nama', response.nama);
-						$('#status_upah_tetap').data('status', response.status);
+						$('#nilai_upah_tetap').data('nilai', response.ut);
 						// open modal
 						$('#upahTetapModal').modal('show');
 					},

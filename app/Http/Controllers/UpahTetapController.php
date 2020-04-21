@@ -9,13 +9,12 @@ use App\Models\Pekerja;
 use App\Models\UpahTetap;
 
 //load form request (for validation)
-use App\Http\Requests\KursusStore;
-use App\Http\Requests\KursusUpdate;
+use App\Http\Requests\UpahTetapStore;
+use App\Http\Requests\UpahTetapUpdate;
 
 // Load Plugin
 use Carbon\Carbon;
 use Auth;
-use Storage;
 
 class UpahTetapController extends Controller
 {
@@ -30,21 +29,11 @@ class UpahTetapController extends Controller
 
         return datatables()->of($upah_tetap_list)
             ->addColumn('action', function ($row) {
-                $radio = '<label class="kt-radio kt-radio--bold kt-radio--brand"><input type="radio" name="radio_smk" value="'.$row->nopeg.'-'.$row->ut.'"><span></span></label>';
+                $radio = '<label class="kt-radio kt-radio--bold kt-radio--brand"><input type="radio" name="radio_upah_tetap" value="'.$row->nopeg.'-'.$row->ut.'"><span></span></label>';
                 return $radio;
             })
             ->rawColumns(['action'])
             ->make(true);
-    }
-
-    /**
-     * Show the form for creating a new resource.
-     *
-     * @return \Illuminate\Http\Response
-     */
-    public function create()
-    {
-        //
     }
 
     /**
@@ -53,9 +42,20 @@ class UpahTetapController extends Controller
      * @param  \Illuminate\Http\Request  $request
      * @return \Illuminate\Http\Response
      */
-    public function store(Request $request)
+    public function store(Request $request, Pekerja $pekerja)
     {
-        //
+        $upah             = new UpahTetap;
+        $upah->nopeg      = $pekerja->nopeg;
+        $upah->ut         = $request->nilai_upah_tetap;
+        $upah->mulai      = $request->mulai_upah_tetap;
+        $upah->sampai     = $request->sampai_upah_tetap;
+        $upah->keterangan = $request->keterangan_upah_tetap;
+        $upah->userid     = Auth::user()->userid;
+        $upah->tglentry   = Carbon::now();
+
+        $upah->save();
+
+        return response()->json($upah, 200);
     }
 
     /**
@@ -64,20 +64,13 @@ class UpahTetapController extends Controller
      * @param  int  $id
      * @return \Illuminate\Http\Response
      */
-    public function show($id)
+    public function showJson(Request $request)
     {
-        //
-    }
+        $upah = UpahTetap::where('nopeg', $request->nopeg)
+        ->where('ut', $request->ut)
+        ->first();
 
-    /**
-     * Show the form for editing the specified resource.
-     *
-     * @param  int  $id
-     * @return \Illuminate\Http\Response
-     */
-    public function edit($id)
-    {
-        //
+        return response()->json($upah, 200);
     }
 
     /**
@@ -87,9 +80,22 @@ class UpahTetapController extends Controller
      * @param  int  $id
      * @return \Illuminate\Http\Response
      */
-    public function update(Request $request, $id)
+    public function update(Request $request, Pekerja $pekerja, $nilai)
     {
-        //
+        $upah = UpahTetap::where('nopeg', $pekerja->nopeg)
+        ->where('ut', $nilai)
+        ->first();
+
+        $upah->nopeg      = $pekerja->nopeg;
+        $upah->ut         = $request->nilai_upah_tetap;
+        $upah->mulai      = $request->mulai_upah_tetap;
+        $upah->sampai     = $request->sampai_upah_tetap;
+        $upah->keterangan = $request->keterangan_upah_tetap;
+        $upah->userid     = Auth::user()->userid;
+
+        $upah->save();
+
+        return response()->json($upah, 200);
     }
 
     /**
@@ -98,8 +104,12 @@ class UpahTetapController extends Controller
      * @param  int  $id
      * @return \Illuminate\Http\Response
      */
-    public function destroy($id)
+    public function delete(Request $request)
     {
-        //
+        $upah = UpahTetap::where('nopeg', $request->nopeg)
+        ->where('ut', $request->ut)
+        ->delete();
+
+        return response()->json(['delete' => true], 200);
     }
 }
