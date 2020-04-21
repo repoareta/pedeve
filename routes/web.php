@@ -352,6 +352,24 @@ Route::group(['middleware'=> ['auth','checkRole:1']], function () {
                 Route::post('pekerja/smk/update/{pekerja}/{status}/{nama}', 'SMKController@update')->name('update');
                 Route::delete('pekerja/smk/delete', 'SMKController@delete')->name('delete');
             });
+
+            // Route assigned name "pekerja.upah_tetap.index"...
+            Route::name('upah_tetap.')->group(function () {
+                Route::get('pekerja/upah_tetap/{pekerja}', 'UpahTetapController@indexJson')->name('index.json');
+                Route::post('pekerja/upah_tetap/store/{pekerja}', 'UpahTetapController@store')->name('store');
+                Route::get('pekerja/upah_tetap/show_json', 'UpahTetapController@showJson')->name('show.json'); // get issue when combine with prefix pekerja
+                Route::post('pekerja/upah_tetap/update/{pekerja}/{status}/{nama}', 'UpahTetapController@update')->name('update');
+                Route::delete('pekerja/upah_tetap/delete', 'UpahTetapController@delete')->name('delete');
+            });
+
+            // Route assigned name "pekerja.upah_all_in.index"...
+            Route::name('upah_all_in.')->group(function () {
+                Route::get('pekerja/upah_all_in/{pekerja}', 'UpahAllInController@indexJson')->name('index.json');
+                Route::post('pekerja/upah_all_in/store/{pekerja}', 'UpahAllInController@store')->name('store');
+                Route::get('upah_all_in/show_json', 'UpahAllInController@showJson')->name('show.json'); // get issue when combine with prefix pekerja
+                Route::post('pekerja/upah_all_in/update/{pekerja}/{nilai}', 'UpahAllInController@update')->name('update');
+                Route::delete('pekerja/upah_all_in/delete', 'UpahAllInController@delete')->name('delete');
+            });
         });
         // Kode Jabatan END
         
