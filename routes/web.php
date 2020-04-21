@@ -290,13 +290,31 @@ Route::group(['middleware'=> ['auth','checkRole:1']], function () {
                 Route::delete('pekerja/jabatan/delete', 'JabatanController@delete')->name('delete');
             });
 
-            // Route assigned name "pekerja.keluarga.index"...
+            // Route assigned name "pekerja.golongan_gaji.index"...
             Route::name('golongan_gaji.')->group(function () {
                 Route::get('pekerja/golongan_gaji/{pekerja}', 'GolonganGajiController@indexJson')->name('index.json');
                 Route::post('pekerja/golongan_gaji/store/{pekerja}', 'GolonganGajiController@store')->name('store');
                 Route::get('golongan_gaji/show_json', 'GolonganGajiController@showJson')->name('show.json'); // get issue when combine with prefix pekerja
                 Route::post('pekerja/golongan_gaji/update/{pekerja}/{status}/{nama}', 'GolonganGajiController@update')->name('update');
                 Route::delete('pekerja/golongan_gaji/delete', 'GolonganGajiController@delete')->name('delete');
+            });
+
+            // Route assigned name "pekerja.kursus.index"...
+            Route::name('kursus.')->group(function () {
+                Route::get('pekerja/kursus/{pekerja}', 'KursusController@indexJson')->name('index.json');
+                Route::post('pekerja/kursus/store/{pekerja}', 'KursusController@store')->name('store');
+                Route::get('kursus/show_json', 'KursusController@showJson')->name('show.json'); // get issue when combine with prefix pekerja
+                Route::post('pekerja/kursus/update/{pekerja}/{status}/{nama}', 'KursusController@update')->name('update');
+                Route::delete('pekerja/kursus/delete', 'KursusController@delete')->name('delete');
+            });
+
+            // Route assigned name "pekerja.pendidikan.index"...
+            Route::name('pendidikan.')->group(function () {
+                Route::get('pekerja/pendidikan/{pekerja}', 'PekerjaPendidikanController@indexJson')->name('index.json');
+                Route::post('pekerja/pendidikan/store/{pekerja}', 'PekerjaPendidikanController@store')->name('store');
+                Route::get('pekerja/pendidikan/show_json', 'PekerjaPendidikanController@showJson')->name('show.json'); // get issue when combine with prefix pekerja
+                Route::post('pekerja/pendidikan/update/{pekerja}/{status}/{nama}', 'PekerjaPendidikanController@update')->name('update');
+                Route::delete('pekerja/pendidikan/delete', 'PekerjaPendidikanController@delete')->name('delete');
             });
         });
         // Kode Jabatan END

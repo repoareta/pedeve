@@ -527,6 +527,7 @@
 
 <script>
 $(document).ready(function () {
+
 	$('.kt-select2').select2().on('change', function() {
 		$(this).valid();
 	});

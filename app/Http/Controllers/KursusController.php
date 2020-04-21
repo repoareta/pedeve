@@ -4,6 +4,19 @@ namespace App\Http\Controllers;
 
 use Illuminate\Http\Request;
 
+// Load Model
+use App\Models\Pekerja;
+use App\Models\Kursus;
+
+//load form request (for validation)
+use App\Http\Requests\KursusStore;
+use App\Http\Requests\KursusUpdate;
+
+// Load Plugin
+use Carbon\Carbon;
+use Auth;
+use Storage;
+
 class KursusController extends Controller
 {
     /**
@@ -11,19 +24,17 @@ class KursusController extends Controller
      *
      * @return \Illuminate\Http\Response
      */
-    public function index()
+    public function indexJson(Pekerja $pekerja)
     {
-        //
-    }
+        $kursus_list = Kursus::where('nopeg', $pekerja->nopeg)->get();
 
-    /**
-     * Show the form for creating a new resource.
-     *
-     * @return \Illuminate\Http\Response
-     */
-    public function create()
-    {
-        //
+        return datatables()->of($kursus_list)
+            ->addColumn('action', function ($row) {
+                $radio = '<label class="kt-radio kt-radio--bold kt-radio--brand"><input type="radio" name="radio_kursus" value="'.$row->nopeg.'-'.$row->nama.'"><span></span></label>';
+                return $radio;
+            })
+            ->rawColumns(['action'])
+            ->make(true);
     }
 
     /**
@@ -44,17 +55,6 @@ class KursusController extends Controller
      * @return \Illuminate\Http\Response
      */
     public function show($id)
-    {
-        //
-    }
-
-    /**
-     * Show the form for editing the specified resource.
-     *
-     * @param  int  $id
-     * @return \Illuminate\Http\Response
-     */
-    public function edit($id)
     {
         //
     }

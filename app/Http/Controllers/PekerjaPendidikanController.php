@@ -4,6 +4,19 @@ namespace App\Http\Controllers;
 
 use Illuminate\Http\Request;
 
+// Load Model
+use App\Models\Pekerja;
+use App\Models\PekerjaPendidikan;
+
+//load form request (for validation)
+use App\Http\Requests\PekerjaPendidikanStore;
+use App\Http\Requests\PekerjaPendidikanUpdate;
+
+// Load Plugin
+use Carbon\Carbon;
+use Auth;
+use Storage;
+
 class PekerjaPendidikanController extends Controller
 {
     /**
@@ -11,9 +24,18 @@ class PekerjaPendidikanController extends Controller
      *
      * @return \Illuminate\Http\Response
      */
-    public function index()
+    public function indexJson(Pekerja $pekerja)
     {
-        //
+        $pendidikan_list = PekerjaPendidikan::where('nopeg', $pekerja->nopeg)->get();
+
+        return datatables()->of($pendidikan_list)
+            ->addColumn('action', function ($row) {
+                $radio = '<label class="kt-radio kt-radio--bold kt-radio--brand"><input type="radio" name="radio_pendidikan" value="'.$row->nopeg.'-'.$row->nopeg.'-'.$row->nopeg.'"><span></span></label>';
+                
+                return $radio;
+            })
+            ->rawColumns(['action'])
+            ->make(true);
     }
 
     /**
