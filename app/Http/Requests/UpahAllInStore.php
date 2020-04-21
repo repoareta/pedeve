@@ -26,7 +26,7 @@ class UpahAllInStore extends FormRequest
         return [
             'nilai_upah_all_in'  => "required|numeric",
             'mulai_upah_all_in'  => "nullable|date|required_with:sampai_upah_all_in",
-            'sampai_upah_all_in' => "nullable|date|after:2019-12-12",
+            'sampai_upah_all_in' => "nullable|date",
         ];
     }
 }
