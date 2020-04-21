@@ -658,4 +658,13 @@ $(document).ready(function () {
 
 @yield('detail_keluarga_script')
 @yield('detail_jabatan_script')
+@yield('detail_golongan_gaji_script')
+@yield('detail_kursus_script')
+@yield('detail_pendidikan_script')
+@yield('detail_penghargaan_script')
+@yield('detail_pengalaman_kerja_script')
+@yield('detail_seminar_script')
+@yield('detail_smk_script')
+@yield('detail_upah_tetap_script')
+@yield('detail_upah_all_in_script')
 @endsection

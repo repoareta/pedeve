@@ -289,6 +289,15 @@ Route::group(['middleware'=> ['auth','checkRole:1']], function () {
                 Route::post('pekerja/jabatan/update/{pekerja}/{status}/{nama}', 'JabatanController@update')->name('update');
                 Route::delete('pekerja/jabatan/delete', 'JabatanController@delete')->name('delete');
             });
+
+            // Route assigned name "pekerja.keluarga.index"...
+            Route::name('golongan_gaji.')->group(function () {
+                Route::get('pekerja/golongan_gaji/{pekerja}', 'GolonganGajiController@indexJson')->name('index.json');
+                Route::post('pekerja/golongan_gaji/store/{pekerja}', 'GolonganGajiController@store')->name('store');
+                Route::get('golongan_gaji/show_json', 'GolonganGajiController@showJson')->name('show.json'); // get issue when combine with prefix pekerja
+                Route::post('pekerja/golongan_gaji/update/{pekerja}/{status}/{nama}', 'GolonganGajiController@update')->name('update');
+                Route::delete('pekerja/golongan_gaji/delete', 'GolonganGajiController@delete')->name('delete');
+            });
         });
         // Kode Jabatan END
         
