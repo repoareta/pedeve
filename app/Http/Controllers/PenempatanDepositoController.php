@@ -7,6 +7,7 @@ use App\Models\Rekapkas;
 use App\Models\Penempatandepo;
 use App\Models\Kasline;
 use App\Models\Mtrdeposito;
+use App\Models\Dtldepositotest;
 use DB;
 use PDF;
 use Excel;
@@ -65,7 +66,7 @@ class PenempatanDepositoController extends Controller
 
     public function linenoJson(Request $request)
     {
-    $datas = DB::select("select a.docno,a.lineno,a.asal,a.nominal,a.kdbank,a.keterangan,b.descacct from mtrdeposito  a join account b on a.kdbank=b.kodeacct  where a.docno='$request->lineno' and proses='N' order by docno");
+    $datas = DB::select("select a.docno,a.lineno,a.asal,round(a.nominal,0) as nominal,a.kdbank,a.keterangan,b.descacct from mtrdeposito  a join account b on a.kdbank=b.kodeacct  where a.docno='$request->lineno' and proses='N' order by docno");
         return response()->json($datas[0]);
     }
     public function kursJson(Request $request)
@@ -150,9 +151,12 @@ class PenempatanDepositoController extends Controller
      * @param  int  $id
      * @return \Illuminate\Http\Response
      */
-    public function edit($id)
+    public function edit($id,$lineno,$pjg)
     {
-        //
+        $nodok=str_replace('-', '/', $id);
+
+        $data_list = DB::select("select a.*, b.descacct as namabank from mtrdeposito a join account b on a.kdbank=b.kodeacct where a.docno='$nodok' and lineno='$lineno' and perpanjangan='$pjg'");
+        return view('penempatan_deposito.edit',compact('data_list'));
     }
 
     /**
@@ -162,9 +166,46 @@ class PenempatanDepositoController extends Controller
      * @param  int  $id
      * @return \Illuminate\Http\Response
      */
-    public function update(Request $request, $id)
+    public function update(Request $request)
     {
-        //
+        $docno = $request->nodok;
+        $lineno = $request->lineno;
+        $asal = $request->asal;
+        $kdbank = $request->kdbank;
+        $tgldep = $request->tanggal;
+        $tgltempo = $request->tanggal2;
+        $tahunbunga = $request->tahunbunga;
+        $noseri = $request->noseri;
+        $nominal = $request->nominal;
+        $namabank = $request->namabank;
+        $perpanjangan = $request->perpanjangan;
+        $keterangan = $request->keterangan;
+        $kurs = $request->kurs;
+
+       Dtldepositotest::where('docno', $request->nodok)->where('lineno', $request->lineno)->where('perpanjangan', $request->perpanjangan)->delete();
+        
+       Penempatandepo::where('docno', $request->nodok)->where('lineno', $request->lineno)
+        ->update([
+            'tgldepo' =>  $tgldep,
+            'tgltempo' =>  $tgltempo,
+            'bungatahun' =>  $tahunbunga,
+            'asal' =>  $asal,
+            'noseri' =>  $noseri,
+            'nominal' =>  $nominal,
+            'kdbank' =>  $kdbank,
+            'keterangan' =>  $keterangan,
+            'kurs' =>  $kurs,
+            'statcair' =>  'N',
+        ]);
+        Mtrdeposito::where('docno', $request->nodok)->where('lineno', $request->lineno)->where('perpanjangan', $request->perpanjangan)
+        ->update([
+            'noseri' =>  $noseri,
+            'tgldep' =>  $tgldep,
+            'tgltempo' =>  $tgltempo,
+            'bungatahun' =>  $tahunbunga,
+            'proses' =>  'Y',
+        ]);
+        return response()->json();   
     }
 
     /**
@@ -173,8 +214,17 @@ class PenempatanDepositoController extends Controller
      * @param  int  $id
      * @return \Illuminate\Http\Response
      */
-    public function destroy($id)
+    public function delete(Request $request)
     {
-        //
+        $nodok=str_replace('-', '/', $request->nodok);
+
+     Dtldepositotest::where('docno', $nodok)->where('lineno', $request->lineno)->where('perpanjangan', $request->pjg)->delete();
+     Mtrdeposito::where('docno', $nodok)->where('lineno', $request->lineno)->where('perpanjangan', $request->pjg)->delete();
+     Penempatandepo::where('docno', $nodok)->where('lineno', $request->lineno)->delete();
+     Kasline::where('docno', $nodok)->where('lineno', $request->lineno)
+     ->update([
+         'inputpwd' =>  'N',
+     ]);
+     return response()->json();   
     }
 }

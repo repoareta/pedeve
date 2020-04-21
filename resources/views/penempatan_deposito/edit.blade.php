@@ -6,16 +6,16 @@
 	<div class="kt-container  kt-container--fluid ">
 		<div class="kt-subheader__main">
 			<h3 class="kt-subheader__title">
-				Honorarium Komite/Rapat </h3>
+				Penempatan Deposito </h3>
 			<span class="kt-subheader__separator kt-hidden"></span>
 			<div class="kt-subheader__breadcrumbs">
 				<a href="#" class="kt-subheader__breadcrumbs-home"><i class="flaticon2-shelter"></i></a>
 				<span class="kt-subheader__breadcrumbs-separator"></span>
 				<a href="" class="kt-subheader__breadcrumbs-link">
-					Sdm & Payroll </a>
+					Perbendaharaan </a>
 				<span class="kt-subheader__breadcrumbs-separator"></span>
 				<a href="" class="kt-subheader__breadcrumbs-link">
-					Honorarium Komite/Rapat </a>
+					Penempatan Deposito </a>
 				<span class="kt-subheader__breadcrumbs-separator"></span>
 				<span class="kt-subheader__breadcrumbs-link kt-subheader__breadcrumbs-link--active">Edit</span>
 			</div>
@@ -32,7 +32,7 @@
 					<i class="kt-font-brand flaticon2-plus-1"></i>
 				</span>
 				<h3 class="kt-portlet__head-title">
-					Edit Honorarium Komite/Rapat
+					Edit Penempatan Deposito
 				</h3>			
 			</div>
 			<div class="kt-portlet__head-toolbar">
@@ -49,61 +49,72 @@
 						<div class="alert alert-secondary" role="alert">
 							<div class="alert-text">
 								<h5 class="kt-portlet__head-title">
-									Header Honorarium Komite/Rapat
+									Header Penempatan Deposito
 								</h5>	
 							</div>
 						</div>
-						@foreach($data_list as $row)
+						@foreach($data_list as $data)
 						<div class="form-group row">
-						<label for="spd-input" class="col-2 col-form-label">Bulan/Tahun<span style="color:red;">*</span></label>
-						<div class="col-4">
-							<?php 
-							$array_bln	 = array (
-										1 =>   'Januari',
-										'Februari',
-										'Maret',
-										'April',
-										'Mei',
-										'Juni',
-										'Juli',
-										'Agustus',
-										'September',
-										'Oktober',
-										'November',
-										'Desember'
-									);
-									$bulan= strtoupper($array_bln[$row->bulan]);
-							?>
-						<input class="form-control" type="text" value="{{$bulan}}"readonly style="background-color:#DCDCDC; cursor:not-allowed">
-						<input class="form-control" type="hidden" value="{{$row->bulan}}" name="bulan">
-								
-						</div>
-								<div class="col-4" >
-									<input class="form-control" type="text" value="{{$row->tahun}}" name="tahun" readonly style="background-color:#DCDCDC; cursor:not-allowed">
-									<input class="form-control" type="hidden" value="{{Auth::user()->userid}}"  name="userid" autocomplete='off'>
-								</div>
-						</div>
-						<div class="form-group row">
-							<label for="" class="col-2 col-form-label">Pegawai<span style="color:red;">*</span></label>
-							<div class="col-8">
-								<input class="form-control" type="text" value="{{$row->nopek}} - {{$row->nama_nopek}}"  readonly style="background-color:#DCDCDC; cursor:not-allowed">
-								<input class="form-control" type="hidden" value="{{$row->nopek}}" name="nopek" >
+							<label for="jenis-dinas-input" class="col-2 col-form-label">No. Dokumen<span style="color:red;">*</span></label>
+							<div class="col-10">
+									<input class="form-control" type="text" value="{{$data->docno}}"   name="nodok" id="nodok" size="6" maxlength="6" readonly style="background-color:#DCDCDC; cursor:not-allowed">
+									<input class="form-control" type="hidden" value="{{$data->kurs}}"   name="kurs" id="kurs" size="6" maxlength="6" readonly style="background-color:#DCDCDC; cursor:not-allowed">
+									<input class="form-control" type="hidden" value="{{$data->lineno}}"   name="lineno" id="lineno" size="6" maxlength="6" readonly style="background-color:#DCDCDC; cursor:not-allowed">
+									<input class="form-control" type="hidden" value="{{$data->keterangan}}"   name="keterangan" id="keterangan" size="50" maxlength="50" readonly style="background-color:#DCDCDC; cursor:not-allowed">
 							</div>
 						</div>
 						<div class="form-group row">
-							<label class="col-2 col-form-label">Nilai<span style="color:red;">*</span></label>
-							<div class="col-8">
-								<input class="form-control" name="nilai" type="text" value="<?php echo number_format($row->nilai, 0, '', ''); ?>" id="nilai" required oninvalid="this.setCustomValidity('Nilai Harus Diisi..')" oninput="setCustomValidity('')" autocomplete='off' onkeypress="return hanyaAngka(event)">
-								<input type="hidden" value="<?php echo number_format($row->pajak, 0, '', ''); ?>" name="pajak" id="pajak">
+							<label for="spd-input" class="col-2 col-form-label">Asal<span style="color:red;">*</span></label>
+							<div class="col-10">
+								<input  class="form-control" type="text" value="{{$data->asal}}" id="asal" name="asal" size="2" maxlength="2" onkeyup="this.value = this.value.toUpperCase()" required oninvalid="this.setCustomValidity('Asal Harus Diisi..')" oninput="setCustomValidity('')" autocomplete='off' >
+								<input  class="form-control" type="hidden" value="{{$data->perpanjangan}}" id="perpanjangan" name="perpanjangan" size="2" maxlength="2" onkeyup="this.value = this.value.toUpperCase()" required oninvalid="this.setCustomValidity('Asal Harus Diisi..')" oninput="setCustomValidity('')" autocomplete='off' >
+							</div>
+						</div>
+						<div class="form-group row">
+							<label for="spd-input" class="col-2 col-form-label">Bank<span style="color:red;">*</span></label>
+							<div class="col-10">
+								<input  class="form-control" type="text" value="{{$data->namabank}}" id="namabank" name="namabank" size="30" maxlength="30" onkeyup="this.value = this.value.toUpperCase()" required oninvalid="this.setCustomValidity('Nama Bank Harus Diisi..')" oninput="setCustomValidity('')" autocomplete='off' >
+								<input  class="form-control" type="hidden" value="{{$data->kdbank}}" id="kdbank" name="kdbank" size="30" maxlength="30" required oninvalid="this.setCustomValidity('Nama Bank Harus Diisi..')" oninput="setCustomValidity('')" autocomplete='off' >
+							</div>
+						</div>
+						<div class="form-group row">
+							<label for="spd-input" class="col-2 col-form-label">Nominal<span style="color:red;">*</span></label>
+							<div class="col-10">
+								<input  class="form-control" type="number" value="{{number_format($data->nominal,0,'','')}}" id="nominal" name="nominal" size="15" maxlength="15" required oninvalid="this.setCustomValidity('Nominal Harus Diisi..')" oninput="setCustomValidity('')" autocomplete='off' >
+							</div>
+						</div>
+						<div class="form-group row">
+							<label for="spd-input" class="col-2 col-form-label">Tgl Deposito<span style="color:red;">*</span></label>
+							<div class="col-10">
+								<input  class="form-control" type="text" value="<?php $tgl= date_create($data->tgldep); echo date_format($tgl, 'Y-m-d') ?>" id="tanggal" name="tanggal" size="15" maxlength="15" required oninvalid="this.setCustomValidity('Tgl Deposito Harus Diisi..')" onchange="setCustomValidity('')" autocomplete='off' >
+							</div>
+						</div>
+						<div class="form-group row">
+							<label for="spd-input" class="col-2 col-form-label">Jatuh Tempo<span style="color:red;">*</span></label>
+							<div class="col-10">
+								<input  class="form-control" type="text" value="<?php $tgl= date_create($data->tgltempo); echo date_format($tgl, 'Y-m-d') ?>" id="tanggal2" name="tanggal2" size="15" maxlength="15" required oninvalid="this.setCustomValidity('Jatuh Tempo Harus Diisi..')" onchange="setCustomValidity('')" autocomplete='off' >
+							</div>
+						</div>
+						<div class="form-group row">
+							<label for="spd-input" class="col-2 col-form-label">Bunga % Tahun<span style="color:red;">*</span></label>
+							<div class="col-10">
+								<input  class="form-control" type="number" value="{{number_format($data->bungatahun,0,'','')}}" id="tahunbunga" name="tahunbunga" size="15" maxlength="15" step="0.01" pattern="^\d+(?:\.\d{1,2})?$" onblur="this.parentNode.parentNode.style.backgroundColor=/^\d+(?:\.\d{1,2})?$/.test(this.value)?'inherit':''" required oninvalid="this.setCustomValidity('Bungan % Tahun Harus Diisi..')" oninput="setCustomValidity('')" autocomplete='off' >
+							</div>
+						</div>
+						<div class="form-group row">
+							<label for="spd-input" class="col-2 col-form-label">No. Seri<span style="color:red;">*</span></label>
+							<div class="col-10">
+								<input  class="form-control" type="text" value="{{$data->noseri}}" id="noseri" name="noseri" size="15" maxlength="15" onkeyup="this.value = this.value.toUpperCase()" required oninvalid="this.setCustomValidity('No. Seri Harus Diisi..')" oninput="setCustomValidity('')" autocomplete='off' >
 							</div>
 						</div>
 						@endforeach
+						
 						<div class="kt-form__actions">
 							<div class="row">
 								<div class="col"></div>
 								<div class="col"></div>
 								<div class="col-10">
-									<a  href="{{route('honor_komite.index')}}" class="btn btn-warning"><i class="fa fa-reply" aria-hidden="true"></i>Cancel</a>
+									<a  href="{{route('penempatan_deposito.index')}}" class="btn btn-warning"><i class="fa fa-reply" aria-hidden="true"></i>Cancel</a>
 									<button type="submit" class="btn btn-brand"><i class="fa fa-check" aria-hidden="true"></i>Save</button>
 								</div>
 							</div>
@@ -121,16 +132,10 @@
 	<script type="text/javascript">
 	$(document).ready(function () {
 
-		$('#nilai').keyup(function(){
-             var nilai=parseInt($('#nilai').val());
-            var pajak=(35/65)*nilai;
-			var a =parseInt(pajak);
-             $('#pajak').val(a);
-        });
 
 		$('#form-edit').submit(function(){
 			$.ajax({
-				url  : "{{route('honor_komite.update')}}",
+				url  : "{{route('penempatan_deposito.update')}}",
 				type : "POST",
 				data : $('#form-edit').serialize(),
 				dataType : "JSON",
@@ -139,14 +144,14 @@
 				},
 				success : function(data){
 				console.log(data);
-				Swal.fire({
-					type  : 'success',
-					title : 'Data Berhasil Diubah',
-					text  : 'Berhasil',
-					timer : 2000
-				}).then(function() {
-						window.location.replace("{{ route('honor_komite.index')}}");;
-					});
+					Swal.fire({
+						type  : 'success',
+						title : 'Data Berhasil Diubah',
+						text  : 'Berhasil',
+						timer : 2000
+					}).then(function() {
+							window.location.replace("{{ route('penempatan_deposito.index')}}");;
+						});
 				}, 
 				error : function(){
 					alert("Terjadi kesalahan, coba lagi nanti");
@@ -155,48 +160,23 @@
 			return false;
 		});
 
+		$('#tanggal').datepicker({
+			todayHighlight: true,
+			orientation: "bottom left",
+			autoclose: true,
+			// language : 'id',
+			format   : 'yyyy-mm-dd'
+		});
+		$('#tanggal2').datepicker({
+			todayHighlight: true,
+			orientation: "bottom left",
+			autoclose: true,
+			// language : 'id',
+			format   : 'yyyy-mm-dd'
+		});
 
 
 
-    var KTBootstrapDatepicker = function () {
-
-var arrows;
-if (KTUtil.isRTL()) {
-	arrows = {
-		leftArrow: '<i class="la la-angle-right"></i>',
-		rightArrow: '<i class="la la-angle-left"></i>'
-	}
-} else {
-	arrows = {
-		leftArrow: '<i class="la la-angle-left"></i>',
-		rightArrow: '<i class="la la-angle-right"></i>'
-	}
-}
-
-// Private functions
-var demos = function () {
-
-	// minimum setup
-	$('#tgldebet').datepicker({
-		rtl: KTUtil.isRTL(),
-		todayHighlight: true,
-		orientation: "bottom left",
-		templates: arrows,
-		autoclose: true,
-		// language : 'id',
-		format   : 'mm/yyyy'
-	});
-};
-
-return {
-	// public functions
-	init: function() {
-		demos(); 
-	}
-};
-}();
-
-KTBootstrapDatepicker.init();
 });
 		function hanyaAngka(evt) {
 		  var charCode = (evt.which) ? evt.which : event.keyCode

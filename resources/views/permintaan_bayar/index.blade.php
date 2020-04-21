@@ -121,6 +121,7 @@
 		</table>
 
 		<!--end: Datatable -->
+		</div>
 	</div>
 </div>
 @endsection

@@ -70,13 +70,13 @@
 						<div class="form-group row">
 							<label for="spd-input" class="col-2 col-form-label">Asal<span style="color:red;">*</span></label>
 							<div class="col-10">
-								<input  class="form-control" type="text" value="" id="asal" name="asal" size="2" maxlength="2" required oninvalid="this.setCustomValidity('Asal Harus Diisi..')" oninput="setCustomValidity('')" autocomplete='off' >
+								<input  class="form-control" type="text" value="" id="asal" name="asal" size="2" maxlength="2" onkeyup="this.value = this.value.toUpperCase()" required oninvalid="this.setCustomValidity('Asal Harus Diisi..')" oninput="setCustomValidity('')" autocomplete='off' >
 							</div>
 						</div>
 						<div class="form-group row">
 							<label for="spd-input" class="col-2 col-form-label">Bank<span style="color:red;">*</span></label>
 							<div class="col-10">
-								<input  class="form-control" type="text" value="" id="namabank" name="namabank" size="30" maxlength="30" required oninvalid="this.setCustomValidity('Nama Bank Harus Diisi..')" oninput="setCustomValidity('')" autocomplete='off' >
+								<input  class="form-control" type="text" value="" id="namabank" name="namabank" size="30" maxlength="30" onkeyup="this.value = this.value.toUpperCase()" required oninvalid="this.setCustomValidity('Nama Bank Harus Diisi..')" oninput="setCustomValidity('')" autocomplete='off' >
 								<input  class="form-control" type="hidden" value="" id="kdbank" name="kdbank" size="30" maxlength="30" required oninvalid="this.setCustomValidity('Nama Bank Harus Diisi..')" oninput="setCustomValidity('')" autocomplete='off' >
 							</div>
 						</div>
@@ -101,13 +101,13 @@
 						<div class="form-group row">
 							<label for="spd-input" class="col-2 col-form-label">Bunga % Tahun<span style="color:red;">*</span></label>
 							<div class="col-10">
-								<input  class="form-control" type="number" value="" id="tahunbunga" name="tahunbunga" size="15" maxlength="15" required oninvalid="this.setCustomValidity('Bungan % Tahun Harus Diisi..')" oninput="setCustomValidity('')" autocomplete='off' >
+								<input  class="form-control" type="number" value="" id="tahunbunga" name="tahunbunga" size="15" maxlength="15" step="0.01" pattern="^\d+(?:\.\d{1,2})?$" onblur="this.parentNode.parentNode.style.backgroundColor=/^\d+(?:\.\d{1,2})?$/.test(this.value)?'inherit':''" required oninvalid="this.setCustomValidity('Bungan % Tahun Harus Diisi..')" oninput="setCustomValidity('')" autocomplete='off' >
 							</div>
 						</div>
 						<div class="form-group row">
 							<label for="spd-input" class="col-2 col-form-label">No. Seri<span style="color:red;">*</span></label>
 							<div class="col-10">
-								<input  class="form-control" type="number" value="" id="noseri" name="noseri" size="15" maxlength="15" required oninvalid="this.setCustomValidity('No. Seri Harus Diisi..')" oninput="setCustomValidity('')" autocomplete='off' >
+								<input  class="form-control" type="text" value="" id="noseri" name="noseri" size="15" maxlength="15" onkeyup="this.value = this.value.toUpperCase()" required oninvalid="this.setCustomValidity('No. Seri Harus Diisi..')" oninput="setCustomValidity('')" autocomplete='off' >
 							</div>
 						</div>
 						
@@ -151,6 +151,9 @@
 					$('#lineno').val(data.lineno);
 					$('#keterangan').val(data.keterangan);
 					$('#kdbank').val(data.kdbank);
+					$('#namabank').val(data.descacct);
+					$('#nominal').val(data.nominal);
+					$('#asal').val(data.asal);
 				},
 				error : function(){
 					alert("Ada kesalahan controller!");

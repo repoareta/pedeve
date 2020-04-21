@@ -523,7 +523,7 @@ Route::group(['middleware'=> ['auth','checkRole:1']], function () {
             Route::post('penempatan_deposito/nokas/json', 'PenempatanDepositoController@nokasJson')->name('nokas.json');
             Route::get('penempatan_deposito/create', 'PenempatanDepositoController@create')->name('create');
             Route::post('penempatan_deposito/store', 'PenempatanDepositoController@store')->name('store');
-            Route::get('penempatan_deposito/edit/{jk}/{nokas}', 'PenempatanDepositoController@edit')->name('edit');
+            Route::get('penempatan_deposito/edit/{nodok}/{lineno}/{pjg}', 'PenempatanDepositoController@edit')->name('edit');
             Route::post('penempatan_deposito/update', 'PenempatanDepositoController@update')->name('update');
             Route::delete('penempatan_deposito/delete', 'PenempatanDepositoController@delete')->name('delete');
         });

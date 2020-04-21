@@ -100,7 +100,7 @@
 					$warni = "000000";
 				} ?>
 			<tr>
-				<td>{{$data->selhari}}'-'{{$data->selbulan}}'-'{{$data->seltahun}}</td>
+				<td><?php echo'<label class="kt-radio kt-radio--bold kt-radio--brand"><input type="radio" class="btn-radio" name="btn-radio" nodok="'.$data->docno.'" lineno="'.$data->lineno.'" pjg="'.$data->perpanjangan.'"><span></span></label>' ?></td>
 				<td><font color="{{$warni}}">{{$data->noseri}}</font></td>
 				<td><font color="{{$warni}}">{{$data->namabank}}</font></td>
 				<td><font color="{{$warni}}">{{$data->asal}}</font></td>
@@ -146,12 +146,10 @@ $('#editRow').click(function(e) {
 
 	if($('input[type=radio]').is(':checked')) { 
 		$("input[type=radio]:checked").each(function(){
-			var tahun = $(this).attr('tahun');
-			var bulan = $(this).attr('bulan');
-			var nopek = $(this).attr('nopek');
-			var aard  = $(this).attr('aard');
-			var nama  = $(this).attr('nama');
-			location.replace("{{url('perbendaharaan/penempatan_deposito/edit')}}"+ '/' +bulan+'/' +tahun+ '/' +nopek);
+			var nodok = $(this).attr('nodok').split("/").join("-");
+			var lineno = $(this).attr('lineno');
+			var pjg = $(this).attr('pjg');
+			location.replace("{{url('perbendaharaan/penempatan_deposito/edit')}}"+ '/' +nodok+'/' +lineno+ '/' +pjg);
 		});
 	} else {
 		swalAlertInit('ubah');
@@ -169,11 +167,9 @@ $('#deleteRow').click(function(e) {
 	e.preventDefault();
 	if($('input[type=radio]').is(':checked')) { 
 		$("input[type=radio]:checked").each(function() {
-			var tahun = $(this).attr('tahun');
-			var bulan = $(this).attr('bulan');
-			var nopek = $(this).attr('nopek');
-			var aard  = $(this).attr('aard');
-			var nama  = $(this).attr('nama');
+			var nodok = $(this).attr('nodok').split("/").join("-");
+			var lineno = $(this).attr('lineno');
+			var pjg = $(this).attr('pjg');
 			// delete stuff
 			const swalWithBootstrapButtons = Swal.mixin({
 				customClass: {
@@ -184,7 +180,7 @@ $('#deleteRow').click(function(e) {
 				})
 				swalWithBootstrapButtons.fire({
 					title: "Data yang akan dihapus?",
-					text: "Detail data : "+bulan+ '-'  + tahun+'-' +nama,
+					text: "Detail data No. dokumen : "+nodok+ ' nomer lineno : '  +lineno,
 					type: 'warning',
 					showCancelButton: true,
 					reverseButtons: true,
@@ -198,17 +194,15 @@ $('#deleteRow').click(function(e) {
 						type: 'DELETE',
 						dataType: 'json',
 						data: {
-							"bulan": bulan,
-							"tahun": tahun,
-							"nopek": nopek,
-							"aard": aard,
-							"nama": nama,
+							"nodok": nodok,
+							"lineno": lineno,
+							"pjg": pjg,
 							"_token": "{{ csrf_token() }}",
 						},
 						success: function () {
 							Swal.fire({
 								type  : 'success',
-								title : "Detail data : "+bulan+ '-'  + tahun+'-' +nama,
+								title : "Detail data No. dokumen : "+nodok+ ' nomer lineno : '  +lineno,
 								text  : 'Berhasil',
 								timer : 2000
 							}).then(function() {
