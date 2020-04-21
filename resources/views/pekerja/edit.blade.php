@@ -408,6 +408,19 @@
 					Detail Pekerja
 				</h3>
 			</div>
+
+			<style>
+				.nav-tabs {
+				overflow-x: auto;
+				overflow-y: hidden;
+				display: -webkit-box;
+				display: -moz-box;
+				}
+				.nav-tabs>li {
+				float: none;
+				}
+			</style>
+
 			<div class="kt-portlet__head-toolbar">
 				<ul class="nav nav-tabs nav-tabs-line nav-tabs-bold nav-tabs-line-primary" role="tablist">
 					<li class="nav-item">

@@ -4,6 +4,19 @@ namespace App\Http\Controllers;
 
 use Illuminate\Http\Request;
 
+// Load Model
+use App\Models\Pekerja;
+use App\Models\Penghargaan;
+
+//load form request (for validation)
+use App\Http\Requests\KursusStore;
+use App\Http\Requests\KursusUpdate;
+
+// Load Plugin
+use Carbon\Carbon;
+use Auth;
+use Storage;
+
 class PenghargaanController extends Controller
 {
     /**
@@ -11,19 +24,17 @@ class PenghargaanController extends Controller
      *
      * @return \Illuminate\Http\Response
      */
-    public function index()
+    public function indexJson(Pekerja $pekerja)
     {
-        //
-    }
+        $penghargaan_list = Penghargaan::where('nopeg', $pekerja->nopeg)->get();
 
-    /**
-     * Show the form for creating a new resource.
-     *
-     * @return \Illuminate\Http\Response
-     */
-    public function create()
-    {
-        //
+        return datatables()->of($penghargaan_list)
+            ->addColumn('action', function ($row) {
+                $radio = '<label class="kt-radio kt-radio--bold kt-radio--brand"><input type="radio" name="radio_penghargaan" value="'.$row->nopeg.'-'.$row->nama.'"><span></span></label>';
+                return $radio;
+            })
+            ->rawColumns(['action'])
+            ->make(true);
     }
 
     /**
@@ -44,17 +55,6 @@ class PenghargaanController extends Controller
      * @return \Illuminate\Http\Response
      */
     public function show($id)
-    {
-        //
-    }
-
-    /**
-     * Show the form for editing the specified resource.
-     *
-     * @param  int  $id
-     * @return \Illuminate\Http\Response
-     */
-    public function edit($id)
     {
         //
     }
