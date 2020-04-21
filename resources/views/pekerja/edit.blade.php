@@ -80,9 +80,16 @@
 							<div class="col-8">
 								<select class="form-control kt-select2" name="status" id="status">
 									<option value=""> - Pilih Status- </option>
-									<option value="K">Aktif</option>
-									<option value="K">Kontrak</option>
-									<option value="P">Pensiun</option>
+									<option 
+										@if($pekerja->status == 'K')
+											selected
+										@endif
+									value="K">Kontrak</option>
+									<option 
+										@if($pekerja->status == 'P')
+											selected
+										@endif
+									value="P">Pensiun</option>
 								</select>
 								<div id="status-nya"></div>
 							</div>
@@ -111,7 +118,7 @@
 							<label for="" class="col-4 col-form-label">Tgl Aktif Dinas</label>
 							<div class="col-8">
 								<div class="input-group date">
-									<input type="text" class="form-control" readonly="" placeholder="Pilih Tanggal Aktif Dinas" name="tanggal_aktif_dinas" id="tanggal_aktif_dinas" value="{{ date('Y-m-d', strtotime($pekerja->tglaktifdns)) }}">
+									<input type="text" class="form-control datepicker" readonly="" placeholder="Pilih Tanggal Aktif Dinas" name="tanggal_aktif_dinas" id="tanggal_aktif_dinas" value="{{ date('Y-m-d', strtotime($pekerja->tglaktifdns)) }}">
 									<div class="input-group-append">
 										<span class="input-group-text">
 											<i class="la la-calendar-check-o"></i>
@@ -211,7 +218,7 @@
 							<label for="nama" class="col-4 col-form-label">Tanggal Lahir</label>
 							<div class="col-8">
 								<div class="input-group date">
-									<input type="text" class="form-control" readonly="" placeholder="Pilih Tanggal Lahir" name="tanggal_lahir" id="tanggal_lahir" value="{{ date('Y-m-d', strtotime($pekerja->tgllahir)) }}">
+									<input type="text" class="form-control datepicker" readonly="" placeholder="Pilih Tanggal Lahir" name="tanggal_lahir" id="tanggal_lahir" value="{{ date('Y-m-d', strtotime($pekerja->tgllahir)) }}">
 									<div class="input-group-append">
 										<span class="input-group-text">
 											<i class="la la-calendar-check-o"></i>
@@ -524,8 +531,12 @@ $(document).ready(function () {
 		$(this).valid();
 	});
 
+	$('a[data-toggle="tab"]').on( 'shown.bs.tab', function (e) {
+        $.fn.dataTable.tables( {visible: true, api: true} ).columns.adjust();
+    } );
+
 	// minimum setup
-	$('#tanggal_aktif_dinas, #tanggal_lahir').datepicker({
+	$('.datepicker').datepicker({
 		todayHighlight: true,
 		orientation: "bottom left",
 		autoclose: true,
@@ -646,4 +657,5 @@ $(document).ready(function () {
 </script>
 
 @yield('detail_keluarga_script')
+@yield('detail_jabatan_script')
 @endsection

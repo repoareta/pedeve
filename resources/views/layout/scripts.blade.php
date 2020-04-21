@@ -176,29 +176,5 @@
             }
         });
     });
-
-    // Dynamic binding to on 'click' and Toggle the nested nav
-    $('.kt-menu__nav').on('click', '.kt-menu__item--submenu', function(){
-        // $('.kt-menu__item--submenu').not(this).removeClass('kt-menu__item--open');
-        // $('.kt-menu__item--submenu')
-        // .not(this)
-        // .removeClass('kt-menu__item--open');
-        
-        // remove item here
-        // $('.kt-menu__item--submenu, .kt-menu__item--here')
-        // .not(this)
-        // .removeClass('kt-menu__item--open')
-        // .addClass('hapus-menu');
-
-        // $(this).addClass('kt-menu__item--open');
-
-        // $(this)
-        // .closest('li.kt-menu__item--submenu')
-        // .addClass('kt-menu__item--open');
-
-        // $(this).siblings('.kt-menu__item--submenu').toggle();
-        // $(this).find('.kt-menu__ver-arrow').toggleClass('la-angle-up');
-        // alert(this.find('kt-menu--submenu').text());
-    });
 </script>
 @yield("scripts")
