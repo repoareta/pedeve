@@ -45,7 +45,7 @@
 				<button type="button" class="close" data-dismiss="modal" aria-label="Close">
 				</button>
 			</div>
-			<form class="kt-form kt-form--label-right" action="" method="POST" id="formUpahAllIn" enctype="multipart/form-data">
+			<form class="kt-form kt-form--label-right" action="" method="POST" id="formUpahAllIn">
 				<div class="modal-body">
 					<div class="form-group row">
 						<label for="spd-input" class="col-2 col-form-label">Nilai</label>
@@ -141,7 +141,7 @@
 				url: url,
 				type: "POST",
 				headers: {
-				'X-CSRF-TOKEN': "{{ csrf_token() }}"
+					'X-CSRF-TOKEN': "{{ csrf_token() }}"
 				},
 				data: $(this).serializeArray(),
 				success: function(response){

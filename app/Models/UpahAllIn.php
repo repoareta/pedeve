@@ -5,8 +5,6 @@ namespace App\Models;
 use Illuminate\Database\Eloquent\Model;
 use App\Traits\CompositeKey;
 
-use Carbon\Carbon;
-
 class UpahAllIn extends Model
 {
     use CompositeKey;

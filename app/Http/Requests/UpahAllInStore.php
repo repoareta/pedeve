@@ -4,6 +4,8 @@ namespace App\Http\Requests;
 
 use Illuminate\Foundation\Http\FormRequest;
 
+use Illuminate\Validation\Rule;
+
 class UpahAllInStore extends FormRequest
 {
     /**
@@ -24,9 +26,15 @@ class UpahAllInStore extends FormRequest
     public function rules()
     {
         return [
-            'nilai_upah_all_in'  => "required|numeric",
+            'nilai_upah_all_in'  => [
+                'required',
+                'numeric',
+                // Rule::unique('sdm_allin', 'nilai')->where(function ($query) {
+                //     $query->where('nopek', $this->pekerja->nopeg);
+                // })
+            ],
             'mulai_upah_all_in'  => "nullable|date|required_with:sampai_upah_all_in",
-            'sampai_upah_all_in' => "nullable|date",
+            'sampai_upah_all_in' => "nullable|date"
         ];
     }
 }

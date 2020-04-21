@@ -10,7 +10,7 @@ use App\Models\UpahAllIn;
 
 //load form request (for validation)
 use App\Http\Requests\UpahAllInStore;
-use App\Http\Requests\KursusUpdate;
+use App\Http\Requests\UpahAllInUpdate;
 
 // Load Plugin
 use Carbon\Carbon;
@@ -56,7 +56,7 @@ class UpahAllInController extends Controller
      * @param  \Illuminate\Http\Request  $request
      * @return \Illuminate\Http\Response
      */
-    public function store(UpahAllInStore $request, Pekerja $pekerja)
+    public function store(Request $request, Pekerja $pekerja)
     {
         $upah           = new UpahAllIn;
         $upah->nopek    = $pekerja->nopeg;
