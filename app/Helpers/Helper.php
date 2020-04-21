@@ -4,8 +4,9 @@
  * membuat set active di tiap class yang diisi route
  * @param [type] $uri    [description]
  * @param string $output [description]
+ * kt-menu__item--here remove for collapse menu
  */
-function set_active($uri, $output = 'kt-menu__item--open kt-menu__item--here')
+function set_active($uri, $output = 'kt-menu__item--open')
 {
     if (is_array($uri)) {
         foreach ($uri as $u) {
