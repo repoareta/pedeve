@@ -288,16 +288,22 @@
                     'inisialisasi_saldo.edit',
                 ); // isi nama semua route inisialisasi saldo
 
-
-
                 $saldo = array_merge(
                     $informasi_saldo,
                     $inisialisasi_saldo
                 ); //isi nama Subdomain saldo
+                
+                $deposito = array(
+                    'penempatan_deposito.index',
+                    'penempatan_deposito.search.index',
+                    'penempatan_deposito.create',
+                    'penempatan_deposito.edit',
+                ); // isi nama semua route penempatan deposito
 
                 $perbendaharaan = array_merge(
                     $penerimaan_kas,
-                    $saldo
+                    $saldo,
+                    $deposito
                 ); // array merge semua submenu
             @endphp
 
@@ -811,13 +817,13 @@
                                 </span>
                             </a>
                         </li>
-                        <li class="kt-menu__item " aria-haspopup="true">
-                            <a href="{{ route('perjalanan_dinas.index') }}" class="kt-menu__link">
+                        <li class="kt-menu__item kt-menu__item--submenu {{ set_active($deposito) }}" aria-haspopup="true" data-ktmenu-submenu-toggle="hover">
+                            <a href="{{ route('penempatan_deposito.index') }}" class="kt-menu__link">
                                 <i class="kt-menu__link-bullet kt-menu__link-bullet--dot">
                                     <span></span>
                                 </i>
                                 <span class="kt-menu__link-text">
-                                    Deposito
+                                    Penempatan Deposito
                                 </span>
                             </a>
                         </li>

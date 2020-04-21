@@ -472,7 +472,7 @@ Route::group(['middleware'=> ['auth','checkRole:1']], function () {
         // Route assigned name "informasi_saldo.index"...
         Route::name('informasi_saldo.')->group(function () {
             Route::get('informasi_saldo', 'InformasiSaldoController@index')->name('index');
-            Route::post('informasi_saldo/search', 'InformasiSaldoController@searchIndex')->name('search.index');
+            Route::post('informasi_saldo/index/json', 'InformasiSaldoController@indexJson')->name('index.json');
             Route::get('informasi_saldo/create', 'InformasiSaldoController@create')->name('create');
             Route::post('informasi_saldo/store', 'InformasiSaldoController@store')->name('store');
             Route::get('informasi_saldo/edit/{bulan}/{tahun}/{nopek}', 'InformasiSaldoController@edit')->name('edit');
@@ -494,5 +494,22 @@ Route::group(['middleware'=> ['auth','checkRole:1']], function () {
             Route::delete('inisialisasi_saldo/delete', 'InisialisasiSaldoController@delete')->name('delete');
         });
         //end inisialisasi_saldo
+
+        //Penempatan deposito
+        // Route assigned name "penempatan_deposito.index"...
+        Route::name('penempatan_deposito.')->group(function () {
+            Route::get('penempatan_deposito', 'PenempatanDepositoController@index')->name('index');
+            Route::post('penempatan_deposito/search', 'PenempatanDepositoController@searchIndex')->name('search.index');
+            Route::post('penempatan_deposito/lineno/json', 'PenempatanDepositoController@linenoJson')->name('linenoJson');
+            Route::post('penempatan_deposito/kurs/json', 'PenempatanDepositoController@kursJson')->name('kursJson');
+            Route::post('penempatan_deposito/kdbank/json', 'PenempatanDepositoController@kdbankJson')->name('kdbankJson');
+            Route::post('penempatan_deposito/nokas/json', 'PenempatanDepositoController@nokasJson')->name('nokas.json');
+            Route::get('penempatan_deposito/create', 'PenempatanDepositoController@create')->name('create');
+            Route::post('penempatan_deposito/store', 'PenempatanDepositoController@store')->name('store');
+            Route::get('penempatan_deposito/edit/{jk}/{nokas}', 'PenempatanDepositoController@edit')->name('edit');
+            Route::post('penempatan_deposito/update', 'PenempatanDepositoController@update')->name('update');
+            Route::delete('penempatan_deposito/delete', 'PenempatanDepositoController@delete')->name('delete');
+        });
+        //end penempatan_deposito
     });
 });
