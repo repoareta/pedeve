@@ -23,11 +23,11 @@ class Jabatan extends Model
      */
     public function kode_bagian()
     {
-        return $this->belongsTo('App\Models\KodeBagian', 'kdbag', 'kode');
+        return $this->belongsTo('App\Models\KodeBagian', 'kdbag');
     }
 
     public function kode_jabatan()
     {
-        return $this->belongsTo('App\Models\KodeJabatan', 'kdjab', 'kdjab');
+        return $this->belongsTo('App\Models\KodeJabatan', 'kdjab', 'kdbag');
     }
 }

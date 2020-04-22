@@ -15,7 +15,6 @@ use App\Http\Requests\JabatanUpdate;
 // Load Plugin
 use Carbon\Carbon;
 use Auth;
-use Storage;
 
 class JabatanController extends Controller
 {
@@ -30,11 +29,11 @@ class JabatanController extends Controller
 
         return datatables()->of($jabatan_list)
             ->addColumn('action', function ($row) {
-                $radio = '<label class="kt-radio kt-radio--bold kt-radio--brand"><input type="radio" name="radio_jabatan" value="'.$row->nopeg.'-'.$row->kdbag.'-'.$row->kdjab.'"><span></span></label>';
+                $radio = '<label class="kt-radio kt-radio--bold kt-radio--brand"><input type="radio" name="radio_jabatan" value="'.$row->nopeg.'_'.$row->mulai.'_'.$row->kdbag.'_'.$row->kdjab.'"><span></span></label>';
                 return $radio;
             })
             ->addColumn('bagian', function ($row) {
-                return $row->kdbag;
+                return $row->kdbag.' - '.$row->kode_bagian->nama;
             })
             ->addColumn('jabatan', function ($row) {
                 return $row->kdjab;
@@ -80,7 +79,7 @@ class JabatanController extends Controller
      * @param  int  $id
      * @return \Illuminate\Http\Response
      */
-    public function show($id)
+    public function showJson(Request $request)
     {
         //
     }
@@ -92,7 +91,7 @@ class JabatanController extends Controller
      * @param  int  $id
      * @return \Illuminate\Http\Response
      */
-    public function update(Request $request, $id)
+    public function update(Request $request, Pekerja $pekerja, $mulai)
     {
         //
     }
@@ -103,8 +102,14 @@ class JabatanController extends Controller
      * @param  int  $id
      * @return \Illuminate\Http\Response
      */
-    public function destroy($id)
+    public function delete(Request $request)
     {
-        //
+        $jabatan = Jabatan::where('nopeg', $request->nopeg)
+        ->where('mulai', $request->mulai)
+        ->where('kdbag', $request->kdbag)
+        ->where('kdjab', $request->kdjab)
+        ->delete();
+
+        return response()->json(['deleted' => true], 200);
     }
 }
