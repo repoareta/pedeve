@@ -34,7 +34,7 @@
 					<i class="kt-font-brand flaticon2-plus-1"></i>
 				</span>
 				<h3 class="kt-portlet__head-title">
-					Tambah Pekerja
+					Ubah Pekerja
 				</h3>			
 			</div>
 			<div class="kt-portlet__head-toolbar">

@@ -9,13 +9,12 @@ use App\Models\Pekerja;
 use App\Models\Penghargaan;
 
 //load form request (for validation)
-use App\Http\Requests\KursusStore;
-use App\Http\Requests\KursusUpdate;
+use App\Http\Requests\PenghargaanStore;
+use App\Http\Requests\PenghargaanUpdate;
 
 // Load Plugin
 use Carbon\Carbon;
 use Auth;
-use Storage;
 
 class PenghargaanController extends Controller
 {
@@ -30,7 +29,7 @@ class PenghargaanController extends Controller
 
         return datatables()->of($penghargaan_list)
             ->addColumn('action', function ($row) {
-                $radio = '<label class="kt-radio kt-radio--bold kt-radio--brand"><input type="radio" name="radio_penghargaan" value="'.$row->nopeg.'-'.$row->nama.'"><span></span></label>';
+                $radio = '<label class="kt-radio kt-radio--bold kt-radio--brand"><input type="radio" name="radio_penghargaan" value="'.$row->nopeg.'_'.$row->tanggal.'_'.$row->nama.'"><span></span></label>';
                 return $radio;
             })
             ->rawColumns(['action'])
@@ -43,9 +42,19 @@ class PenghargaanController extends Controller
      * @param  \Illuminate\Http\Request  $request
      * @return \Illuminate\Http\Response
      */
-    public function store(Request $request)
+    public function store(Request $request, Pekerja $pekerja)
     {
-        //
+        $penghargaan = new Penghargaan;
+        $penghargaan->nopeg = $pekerja->nopeg;
+        $penghargaan->tanggal = $request->tanggal_penghargaan;
+        $penghargaan->nama = $request->nama_penghargaan;
+        $penghargaan->pemberi = $request->pemberi_penghargaan;
+        $penghargaan->userid = Auth::user()->userid;
+        $penghargaan->tglentry = Carbon::now();
+
+        $penghargaan->save();
+
+        return response()->json($penghargaan, 200);
     }
 
     /**
@@ -54,9 +63,14 @@ class PenghargaanController extends Controller
      * @param  int  $id
      * @return \Illuminate\Http\Response
      */
-    public function show($id)
+    public function showJson(Request $request)
     {
-        //
+        $penghargaan = Penghargaan::where('nopeg', $request->nopeg)
+        ->where('tanggal', $request->tanggal)
+        ->where('nama', $request->nama)
+        ->first();
+
+        return response()->json($penghargaan, 200);
     }
 
     /**
@@ -66,9 +80,22 @@ class PenghargaanController extends Controller
      * @param  int  $id
      * @return \Illuminate\Http\Response
      */
-    public function update(Request $request, $id)
+    public function update(Request $request, Pekerja $pekerja, $tanggal, $nama)
     {
-        //
+        $penghargaan = Penghargaan::where('nopeg', $pekerja->nopeg)
+        ->where('tanggal', $request->tanggal)
+        ->where('nama', $request->nama)
+        ->first();
+
+        $penghargaan->nopeg = $pekerja->nopeg;
+        $penghargaan->tanggal = $request->tanggal_penghargaan;
+        $penghargaan->nama = $request->nama_penghargaan;
+        $penghargaan->pemberi = $request->pemberi_penghargaan;
+        $penghargaan->userid = Auth::user()->userid;
+
+        $penghargaan->save();
+
+        return response()->json($penghargaan, 200);
     }
 
     /**
@@ -77,8 +104,13 @@ class PenghargaanController extends Controller
      * @param  int  $id
      * @return \Illuminate\Http\Response
      */
-    public function destroy($id)
+    public function delete(Request $request)
     {
-        //
+        $penghargaan = Penghargaan::where('nopeg', $request->nopeg)
+        ->where('tanggal', $request->tanggal)
+        ->where('nama', $request->nama)
+        ->delete();
+
+        return response()->json(['deleted' => true], 200);
     }
 }

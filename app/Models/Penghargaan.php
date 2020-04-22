@@ -10,7 +10,7 @@ class Penghargaan extends Model
     use CompositeKey;
 
     protected $table = "sdm_penghargaan";
-    protected $primaryKey = ['nopeg', 'tanggal', 'nama', 'pemberi'];
+    protected $primaryKey = ['nopeg', 'tanggal'];
     protected $keyType = 'string';
     public $timestamps = false;
     public $incrementing = false;

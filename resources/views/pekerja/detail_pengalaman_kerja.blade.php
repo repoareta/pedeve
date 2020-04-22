@@ -48,25 +48,26 @@
 				<button type="button" class="close" data-dismiss="modal" aria-label="Close">
 				</button>
 			</div>
-			<form class="kt-form kt-form--label-right" action="" method="POST" id="formPengalamanKerja" enctype="multipart/form-data">
+			<form class="kt-form kt-form--label-right" action="" method="POST" id="formPengalamanKerja">
 				<div class="modal-body">
 					<div class="form-group row">
-						<label for="spd-input" class="col-2 col-form-label">Bagian</label>
+						<label for="spd-input" class="col-2 col-form-label">Instansi</label>
 						<div class="col-10">
-							<select class="form-control kt-select2" name="bagian_pekerja" id="bagian_pekerja" style="width: 100% !important;">
-								<option value=""> - Pilih Bagian- </option>
-                                @foreach ($kode_bagian_list as $kode_bagian)
-                                    <option value="{{ $kode_bagian->kode }}">{{ $kode_bagian->kode.' - '.$kode_bagian->nama }}</option>
-                                @endforeach
-							</select>
-							<div id="bagian_pekerja-nya"></div>
+							<input class="form-control" type="text" name="instansi_pengalaman_kerja" id="instansi_pengalaman_kerja">
 						</div>
 					</div>
-
+					
 					<div class="form-group row">
-						<label for="spd-input" class="col-2 col-form-label">Golongan</label>
+						<label for="spd-input" class="col-2 col-form-label">Status</label>
 						<div class="col-10">
-							<input class="form-control" type="text" readonly name="golongan_pekerja" id="golongan_pekerja">
+							<input class="form-control" type="text" name="status_pengalaman_kerja" id="status_pengalaman_kerja">
+						</div>
+					</div>
+					
+					<div class="form-group row">
+						<label for="spd-input" class="col-2 col-form-label">Pangkat</label>
+						<div class="col-10">
+							<input class="form-control" type="text" name="pangkat_pengalaman_kerja" id="pangkat_pengalaman_kerja">
 						</div>
                     </div>
 
@@ -74,7 +75,7 @@
 						<label for="spd-input" class="col-2 col-form-label">Mulai</label>
 						<div class="col-4">
 							<div class="input-group date">
-								<input type="text" class="form-control datepicker" readonly="" placeholder="Pilih Tanggal" name="mulai" id="mulai">
+								<input type="text" class="form-control datepicker" readonly="" placeholder="Pilih Tanggal" name="mulai_pengalaman_kerja" id="mulai_pengalaman_kerja">
 								<div class="input-group-append">
 									<span class="input-group-text">
 										<i class="la la-calendar-check-o"></i>
@@ -86,7 +87,7 @@
                         <label for="spd-input" class="col-2 col-form-label">Sampai</label>
 						<div class="col-4">
 							<div class="input-group date">
-								<input type="text" class="form-control datepicker" readonly="" placeholder="Pilih Tanggal" name="sampai" id="sampai">
+								<input type="text" class="form-control datepicker" readonly="" placeholder="Pilih Tanggal" name="sampai_pengalaman_kerja" id="sampai_pengalaman_kerja">
 								<div class="input-group-append">
 									<span class="input-group-text">
 										<i class="la la-calendar-check-o"></i>
@@ -97,27 +98,18 @@
                     </div>
 
                     <div class="form-group row">
-						<label for="spd-input" class="col-2 col-form-label">Nomor SKEP</label>
+						<label for="spd-input" class="col-2 col-form-label">Negara</label>
 						<div class="col-10">
-							<input class="form-control" type="text" name="no_skep" id="no_skep">
+							<input class="form-control" type="text" name="negara_pengalaman_kerja" id="negara_pengalaman_kerja" value="INDONESIA">
+						</div>
+					</div>
+					
+					<div class="form-group row">
+						<label for="spd-input" class="col-2 col-form-label">Kota</label>
+						<div class="col-10">
+							<input class="form-control" type="text" name="kota_pengalaman_kerja" id="kota_pengalaman_kerja">
 						</div>
                     </div>
-
-                    <div class="form-group row">
-						<label for="spd-input" class="col-2 col-form-label">Tanggal SKEP</label>
-						<div class="col-10">
-							<div class="input-group date">
-								<input type="text" class="form-control datepicker" readonly="" placeholder="Pilih Tanggal" name="tanggal_skep" id="tanggal_skep">
-								<div class="input-group-append">
-									<span class="input-group-text">
-										<i class="la la-calendar-check-o"></i>
-									</span>
-								</div>
-							</div>
-						</div>
-                    </div>
-                    
-                    
 				</div>
 				<div class="modal-footer">
 					<button type="button" class="btn btn-warning" data-dismiss="modal"><i class="fa fa-reply" aria-hidden="true"></i> Batal</button>
@@ -130,7 +122,7 @@
 <!--end::Modal-->
 
 @section('detail_pengalaman_kerja_script')
-{!! JsValidator::formRequest('App\Http\Requests\JabatanStore', '#formPengalamanKerja') !!}
+{!! JsValidator::formRequest('App\Http\Requests\PengalamanKerjaStore', '#formPengalamanKerja') !!}
 <script type="text/javascript">
 	$(document).ready(function () {
 
@@ -158,72 +150,38 @@
 		$('#title_modal').data('state', 'add');
 	});
 
-	$("#formPanjarDinas").on('submit', function(){
-		if ($('#nopek-error').length){
-			$("#nopek-error").insertAfter("#nopek-nya");
-		}
-
-		if ($('#jabatan-error').length){
-			$("#jabatan-error").insertAfter("#jabatan-nya");
-		}
-
-		if ($('#jenis_dinas-error').length){
-			$("#jenis_dinas-error").insertAfter("#jenis_dinas-nya");
-		}
-
-		if ($('#biaya-error').length){
-			$("#biaya-error").insertAfter("#biaya-nya");
-		}
-
-		if ($('#sampai-error').length){
-			$("#sampai-error").addClass("float-right");
-		}
-	});
-
 	$("#formPengalamanKerja").on('submit', function(){
-		if ($('#nopek_detail-error').length){
-			$("#nopek_detail-error").insertAfter("#nopek_detail-nya");
-		}
-
-		if ($('#jabatan_detail-error').length){
-			$("#jabatan_detail-error").insertAfter("#jabatan_detail-nya");
-		}
-
 		if($(this).valid()) {
 			// do your ajax stuff here
-			var jabatan = $(this).serializeArray();
-
 			var state = $('#title_modal').data('state');
 
-			var url, session, swal_title;
+			var url, swal_title;
 
 			if(state == 'add'){
 				url = "{{ route('pekerja.pengalaman_kerja.store', ['pekerja' => $pekerja->nopeg]) }}";
-				swal_title = "Tambah Detail Jabatan";
+				swal_title = "Tambah Detail Pengalaman Kerja";
 			} else {
 				url = "{{ route('pekerja.pengalaman_kerja.update', 
 					[
 						'pekerja' => $pekerja->nopeg,
-						'status' => ':status',
-						'nama' => ':nama'
+						'mulai'   => ':mulai',
+						'pangkat' => ':pangkat'
 					]) }}";
 				url = url
-				.replace(':status', $('#status_pengalaman_kerja').data('status'))
-				.replace(':nama', $('#nama_pengalaman_kerja').data('nama'));
+				.replace(':mulai', $('#mulai_pengalaman_kerja').data('mulai'))
+				.replace(':pangkat', $('#pangkat_pengalaman_kerja').data('pangkat'));
 
-				swal_title = "Update Detail Jabatan";
+				swal_title = "Update Detail Pengalaman Kerja";
 			}
 
 			$.ajax({
 				url: url,
 				type: "POST",
 				dataType: "JSON",
-				processData: false,
-        		contentType: false,
 				headers: {
-				'X-CSRF-TOKEN': "{{ csrf_token() }}"
+					'X-CSRF-TOKEN': "{{ csrf_token() }}"
 				},
-				data: new FormData(this),
+				data: $(this).serializeArray(),
 				success: function(dataResult){
 					Swal.fire({
 						type : 'success',
@@ -236,10 +194,6 @@
 					// clear form
 					$('#pengalamanKerjaModal').on('hidden.bs.modal', function () {
 						$(this).find('form').trigger('reset');
-						$('#status_pengalaman_kerja').val('').trigger('change');
-						$('#agama_pengalaman_kerja').val('').trigger('change');
-						$('#pendidikan_pengalaman_kerja').val('').trigger('change');
-						$('#golongan_darah_pengalaman_kerja').val('').trigger('change');
 					});
 					// append to datatable
 					t.ajax.reload();
@@ -256,9 +210,9 @@
 		e.preventDefault();
 		if($('input[name=radio_pengalaman_kerja]').is(':checked')) { 
 			$("input[name=radio_pengalaman_kerja]:checked").each(function() {
-				var nopeg = $(this).val().split('-')[0];
-				var status = $(this).val().split('-')[1];
-				var nama = $(this).val().split('-')[2];
+				var nopeg = $(this).val().split('_')[0];
+				var mulai = $(this).val().split('_')[1];
+				var pangkat = $(this).val().split('_')[2];
 				
 				const swalWithBootstrapButtons = Swal.mixin({
 				customClass: {
@@ -270,7 +224,7 @@
 
 				swalWithBootstrapButtons.fire({
 					title: "Data yang akan dihapus?",
-					text: "Nama : " + nama,
+					text: "Nama Pangkat : " + pangkat,
 					type: 'warning',
 					showCancelButton: true,
 					reverseButtons: true,
@@ -284,15 +238,15 @@
 							type: 'DELETE',
 							dataType: 'json',
 							data: {
-								"nopeg": nopeg,
-								"status": status,
-								"nama": nama,
+								"nopeg": "{{ $pekerja->nopeg }}",
+								"mulai": mulai,
+								"pangkat": pangkat,
 								"_token": "{{ csrf_token() }}",
 							},
 							success: function () {
 								Swal.fire({
 									type  : 'success',
-									title : 'Hapus Detail Jabatan ' + nama,
+									title : 'Hapus Detail Pengalaman Kerja ' + pangkat,
 									text  : 'Success',
 									timer : 2000
 								}).then(function() {
@@ -319,47 +273,34 @@
 		if($('input[name=radio_pengalaman_kerja]').is(':checked')) { 
 			$("input[name=radio_pengalaman_kerja]:checked").each(function() {
 				// get value from row					
-				var nopeg = $(this).val().split('-')[0];
-				var status = $(this).val().split('-')[1];
-				var nama = $(this).val().split('-')[2];
+				var nopeg = $(this).val().split('_')[0];
+				var mulai = $(this).val().split('_')[1];
+				var pangkat = $(this).val().split('_')[2];
 
 				$.ajax({
 					url: "{{ route('pekerja.pengalaman_kerja.show.json') }}",
 					type: 'GET',
 					data: {
 						"nopeg" : "{{ $pekerja->nopeg }}",
-						"status" : status,
-						"nama" : nama,
+						"mulai" : mulai,
+						"pangkat" : pangkat,
 						"_token": "{{ csrf_token() }}",
 					},
 					success: function (response) {
-						console.log(response);
-						// update stuff
-						// append value
-						if(response.photo) {
-							var img = "{{ asset('storage/pekerja_img/') }}" + "/" + response.photo;
-
-							$(".kt-avatar__holder").css(
-								'background-image', 
-								"url(" + img + ")"
-							);
-						}
-						
-						$('#nama_pengalaman_kerja').val(response.nama);
-						$('#status_pengalaman_kerja').val(response.status).trigger('change');
-						$('#tempat_lahir_pengalaman_kerja').val(response.tempatlahir);
-						$('#tanggal_lahir_pengalaman_kerja').val(response.tgllahir);
-						$('#agama_pengalaman_kerja').val(response.agama).trigger('change');
-						$('#golongan_darah_pengalaman_kerja').val(response.goldarah).trigger('change');
-						$('#pendidikan_pengalaman_kerja').val(response.kodependidikan).trigger('change');
-						$('#tempat_pendidikan_pengalaman_kerja').val(response.tempatpendidikan);
+						$('#mulai_pengalaman_kerja').val(response.mulai);
+						$('#sampai_pengalaman_kerja').val(response.sampai);
+						$('#status_pengalaman_kerja').val(response.status);
+						$('#instansi_pengalaman_kerja').val(response.instansi);
+						$('#pangkat_pengalaman_kerja').val(response.pangkat);
+						$('#kota_pengalaman_kerja').val(response.kota);
+						$('#negara_pengalaman_kerja').val(response.negara);
 						
 						// title
-						$('#title_modal').text('Ubah Detail Jabatan');
+						$('#title_modal').text('Ubah Detail Pengalaman Kerja');
 						$('#title_modal').data('state', 'update');
 						// for url update
-						$('#nama_pengalaman_kerja').data('nama', response.nama);
-						$('#status_pengalaman_kerja').data('status', response.status);
+						$('#mulai_pengalaman_kerja').data('mulai', response.mulai);
+						$('#pangkat_pengalaman_kerja').data('pangkat', response.pangkat);
 						// open modal
 						$('#pengalamanKerjaModal').modal('show');
 					},

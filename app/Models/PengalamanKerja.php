@@ -10,7 +10,7 @@ class PengalamanKerja extends Model
     use CompositeKey;
 
     protected $table = "sdm_pengkerja";
-    protected $primaryKey = ['nopeg', 'status'];
+    protected $primaryKey = ['nopeg', 'mulai'];
     protected $keyType = 'string';
     public $timestamps = false;
     public $incrementing = false;

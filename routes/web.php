@@ -319,19 +319,19 @@ Route::group(['middleware'=> ['auth','checkRole:1']], function () {
 
             // Route assigned name "pekerja.penghargaan.index"...
             Route::name('penghargaan.')->group(function () {
-                Route::get('pekerja/penghargaan/{pekerja}', 'PenghargaanController@indexJson')->name('index.json');
+                Route::get('pekerja/penghargaan/index_json/{pekerja}', 'PenghargaanController@indexJson')->name('index.json');
                 Route::post('pekerja/penghargaan/store/{pekerja}', 'PenghargaanController@store')->name('store');
                 Route::get('pekerja/penghargaan/show_json', 'PenghargaanController@showJson')->name('show.json'); // get issue when combine with prefix pekerja
-                Route::post('pekerja/penghargaan/update/{pekerja}/{status}/{nama}', 'PenghargaanController@update')->name('update');
+                Route::post('pekerja/penghargaan/update/{pekerja}/{tanggal}/{nama}', 'PenghargaanController@update')->name('update');
                 Route::delete('pekerja/penghargaan/delete', 'PenghargaanController@delete')->name('delete');
             });
 
             // Route assigned name "pekerja.pengalaman_kerja.index"...
             Route::name('pengalaman_kerja.')->group(function () {
-                Route::get('pekerja/pengalaman_kerja/{pekerja}', 'PengalamanKerjaController@indexJson')->name('index.json');
+                Route::get('pekerja/pengalaman_kerja/index_json/{pekerja}', 'PengalamanKerjaController@indexJson')->name('index.json');
                 Route::post('pekerja/pengalaman_kerja/store/{pekerja}', 'PengalamanKerjaController@store')->name('store');
                 Route::get('pekerja/pengalaman_kerja/show_json', 'PengalamanKerjaController@showJson')->name('show.json'); // get issue when combine with prefix pekerja
-                Route::post('pekerja/pengalaman_kerja/update/{pekerja}/{status}/{nama}', 'PengalamanKerjaController@update')->name('update');
+                Route::post('pekerja/pengalaman_kerja/update/{pekerja}/{mulai}/{pangkat}', 'PengalamanKerjaController@update')->name('update');
                 Route::delete('pekerja/pengalaman_kerja/delete', 'PengalamanKerjaController@delete')->name('delete');
             });
 

@@ -41,70 +41,31 @@
 	<div class="modal-dialog modal-lg" role="document">
 		<div class="modal-content">
 			<div class="modal-header">
-				<h5 class="modal-title" id="title_modal" data-state="add">Tambah Detail Jabatan</h5>
+				<h5 class="modal-title" id="title_modal" data-state="add">Tambah Detail Penghargaan</h5>
 				<button type="button" class="close" data-dismiss="modal" aria-label="Close">
 				</button>
 			</div>
 			<form class="kt-form kt-form--label-right" action="" method="POST" id="formPenghargaan" enctype="multipart/form-data">
 				<div class="modal-body">
 					<div class="form-group row">
-						<label for="spd-input" class="col-2 col-form-label">Bagian</label>
+						<label for="spd-input" class="col-2 col-form-label" style="padding-right: 0px;">Nama Penghargaan</label>
 						<div class="col-10">
-							<select class="form-control kt-select2" name="bagian_pekerja" id="bagian_pekerja" style="width: 100% !important;">
-								<option value=""> - Pilih Bagian- </option>
-                                @foreach ($kode_bagian_list as $kode_bagian)
-                                    <option value="{{ $kode_bagian->kode }}">{{ $kode_bagian->kode.' - '.$kode_bagian->nama }}</option>
-                                @endforeach
-							</select>
-							<div id="bagian_pekerja-nya"></div>
+							<input class="form-control" type="text" name="nama_penghargaan" id="nama_penghargaan">
 						</div>
 					</div>
-
+					
 					<div class="form-group row">
-						<label for="spd-input" class="col-2 col-form-label">Golongan</label>
+						<label for="spd-input" class="col-2 col-form-label">Pemberi</label>
 						<div class="col-10">
-							<input class="form-control" type="text" readonly name="golongan_pekerja" id="golongan_pekerja">
+							<input class="form-control" type="text" name="pemberi_penghargaan" id="pemberi_penghargaan">
 						</div>
                     </div>
 
                     <div class="form-group row">
-						<label for="spd-input" class="col-2 col-form-label">Mulai</label>
-						<div class="col-4">
-							<div class="input-group date">
-								<input type="text" class="form-control datepicker" readonly="" placeholder="Pilih Tanggal" name="mulai" id="mulai">
-								<div class="input-group-append">
-									<span class="input-group-text">
-										<i class="la la-calendar-check-o"></i>
-									</span>
-								</div>
-							</div>
-                        </div>
-                        
-                        <label for="spd-input" class="col-2 col-form-label">Sampai</label>
-						<div class="col-4">
-							<div class="input-group date">
-								<input type="text" class="form-control datepicker" readonly="" placeholder="Pilih Tanggal" name="sampai" id="sampai">
-								<div class="input-group-append">
-									<span class="input-group-text">
-										<i class="la la-calendar-check-o"></i>
-									</span>
-								</div>
-							</div>
-						</div>
-                    </div>
-
-                    <div class="form-group row">
-						<label for="spd-input" class="col-2 col-form-label">Nomor SKEP</label>
-						<div class="col-10">
-							<input class="form-control" type="text" name="no_skep" id="no_skep">
-						</div>
-                    </div>
-
-                    <div class="form-group row">
-						<label for="spd-input" class="col-2 col-form-label">Tanggal SKEP</label>
+						<label for="spd-input" class="col-2 col-form-label">Tanggal</label>
 						<div class="col-10">
 							<div class="input-group date">
-								<input type="text" class="form-control datepicker" readonly="" placeholder="Pilih Tanggal" name="tanggal_skep" id="tanggal_skep">
+								<input type="text" class="form-control datepicker" readonly="" placeholder="Pilih Tanggal" name="tanggal_penghargaan" id="tanggal_penghargaan">
 								<div class="input-group-append">
 									<span class="input-group-text">
 										<i class="la la-calendar-check-o"></i>
@@ -127,7 +88,7 @@
 <!--end::Modal-->
 
 @section('detail_penghargaan_script')
-{!! JsValidator::formRequest('App\Http\Requests\JabatanStore', '#formPenghargaan') !!}
+{!! JsValidator::formRequest('App\Http\Requests\PenghargaanStore', '#formPenghargaan') !!}
 <script type="text/javascript">
 	$(document).ready(function () {
 
@@ -152,72 +113,37 @@
 		$('#title_modal').data('state', 'add');
 	});
 
-	$("#formPanjarDinas").on('submit', function(){
-		if ($('#nopek-error').length){
-			$("#nopek-error").insertAfter("#nopek-nya");
-		}
-
-		if ($('#jabatan-error').length){
-			$("#jabatan-error").insertAfter("#jabatan-nya");
-		}
-
-		if ($('#jenis_dinas-error').length){
-			$("#jenis_dinas-error").insertAfter("#jenis_dinas-nya");
-		}
-
-		if ($('#biaya-error').length){
-			$("#biaya-error").insertAfter("#biaya-nya");
-		}
-
-		if ($('#sampai-error').length){
-			$("#sampai-error").addClass("float-right");
-		}
-	});
-
 	$("#formPenghargaan").on('submit', function(){
-		if ($('#nopek_detail-error').length){
-			$("#nopek_detail-error").insertAfter("#nopek_detail-nya");
-		}
-
-		if ($('#jabatan_detail-error').length){
-			$("#jabatan_detail-error").insertAfter("#jabatan_detail-nya");
-		}
-
 		if($(this).valid()) {
-			// do your ajax stuff here
-			var jabatan = $(this).serializeArray();
-
 			var state = $('#title_modal').data('state');
 
-			var url, session, swal_title;
+			var url, swal_title;
 
 			if(state == 'add'){
 				url = "{{ route('pekerja.penghargaan.store', ['pekerja' => $pekerja->nopeg]) }}";
-				swal_title = "Tambah Detail Jabatan";
+				swal_title = "Tambah Detail Penghargaan";
 			} else {
 				url = "{{ route('pekerja.penghargaan.update', 
 					[
 						'pekerja' => $pekerja->nopeg,
-						'status' => ':status',
-						'nama' => ':nama'
+						'tanggal' => ':tanggal',
+						'nama' => ':nama',
 					]) }}";
 				url = url
-				.replace(':status', $('#status_penghargaan').data('status'))
+				.replace(':tanggal', $('#tanggal_penghargaan').data('tanggal'))
 				.replace(':nama', $('#nama_penghargaan').data('nama'));
 
-				swal_title = "Update Detail Jabatan";
+				swal_title = "Update Detail Penghargaan";
 			}
 
 			$.ajax({
 				url: url,
 				type: "POST",
 				dataType: "JSON",
-				processData: false,
-        		contentType: false,
 				headers: {
-				'X-CSRF-TOKEN': "{{ csrf_token() }}"
+					'X-CSRF-TOKEN': "{{ csrf_token() }}"
 				},
-				data: new FormData(this),
+				data: $(this).serializeArray(),
 				success: function(dataResult){
 					Swal.fire({
 						type : 'success',
@@ -230,10 +156,6 @@
 					// clear form
 					$('#penghargaanModal').on('hidden.bs.modal', function () {
 						$(this).find('form').trigger('reset');
-						$('#status_penghargaan').val('').trigger('change');
-						$('#agama_penghargaan').val('').trigger('change');
-						$('#pendidikan_penghargaan').val('').trigger('change');
-						$('#golongan_darah_penghargaan').val('').trigger('change');
 					});
 					// append to datatable
 					t.ajax.reload();
@@ -250,9 +172,9 @@
 		e.preventDefault();
 		if($('input[name=radio_penghargaan]').is(':checked')) { 
 			$("input[name=radio_penghargaan]:checked").each(function() {
-				var nopeg = $(this).val().split('-')[0];
-				var status = $(this).val().split('-')[1];
-				var nama = $(this).val().split('-')[2];
+				var nopeg = $(this).val().split('_')[0];
+				var tanggal = $(this).val().split('_')[1];
+				var nama = $(this).val().split('_')[2];
 				
 				const swalWithBootstrapButtons = Swal.mixin({
 				customClass: {
@@ -264,7 +186,7 @@
 
 				swalWithBootstrapButtons.fire({
 					title: "Data yang akan dihapus?",
-					text: "Nama : " + nama,
+					text: "Nama Penghargaan: " + nama,
 					type: 'warning',
 					showCancelButton: true,
 					reverseButtons: true,
@@ -278,15 +200,15 @@
 							type: 'DELETE',
 							dataType: 'json',
 							data: {
-								"nopeg": nopeg,
-								"status": status,
+								"nopeg": "{{ $pekerja->nopeg }}",
+								"tanggal": tanggal,
 								"nama": nama,
 								"_token": "{{ csrf_token() }}",
 							},
 							success: function () {
 								Swal.fire({
 									type  : 'success',
-									title : 'Hapus Detail Jabatan ' + nama,
+									title : 'Hapus Detail Penghargaan ' + nama,
 									text  : 'Success',
 									timer : 2000
 								}).then(function() {
@@ -313,47 +235,29 @@
 		if($('input[name=radio_penghargaan]').is(':checked')) { 
 			$("input[name=radio_penghargaan]:checked").each(function() {
 				// get value from row					
-				var nopeg = $(this).val().split('-')[0];
-				var status = $(this).val().split('-')[1];
-				var nama = $(this).val().split('-')[2];
+				var nopeg = $(this).val().split('_')[0];
+				var tanggal = $(this).val().split('_')[1];
+				var nama = $(this).val().split('_')[2];
 
 				$.ajax({
 					url: "{{ route('pekerja.penghargaan.show.json') }}",
 					type: 'GET',
 					data: {
-						"nopeg" : "{{ $pekerja->nopeg }}",
-						"status" : status,
-						"nama" : nama,
-						"_token": "{{ csrf_token() }}",
+						"nopeg"  : "{{ $pekerja->nopeg }}",
+						"tanggal": tanggal,
+						"nama"   : nama,
+						"_token" : "{{ csrf_token() }}",
 					},
 					success: function (response) {
-						console.log(response);
-						// update stuff
-						// append value
-						if(response.photo) {
-							var img = "{{ asset('storage/pekerja_img/') }}" + "/" + response.photo;
-
-							$(".kt-avatar__holder").css(
-								'background-image', 
-								"url(" + img + ")"
-							);
-						}
-						
+						$('#tanggal_penghargaan').val(response.tanggal);
 						$('#nama_penghargaan').val(response.nama);
-						$('#status_penghargaan').val(response.status).trigger('change');
-						$('#tempat_lahir_penghargaan').val(response.tempatlahir);
-						$('#tanggal_lahir_penghargaan').val(response.tgllahir);
-						$('#agama_penghargaan').val(response.agama).trigger('change');
-						$('#golongan_darah_penghargaan').val(response.goldarah).trigger('change');
-						$('#pendidikan_penghargaan').val(response.kodependidikan).trigger('change');
-						$('#tempat_pendidikan_penghargaan').val(response.tempatpendidikan);
-						
+						$('#pemberi_penghargaan').val(response.pemberi);
 						// title
-						$('#title_modal').text('Ubah Detail Jabatan');
+						$('#title_modal').text('Ubah Detail Penghargaan');
 						$('#title_modal').data('state', 'update');
 						// for url update
 						$('#nama_penghargaan').data('nama', response.nama);
-						$('#status_penghargaan').data('status', response.status);
+						$('#tanggal_penghargaan').data('tanggal', response.tanggal);
 						// open modal
 						$('#penghargaanModal').modal('show');
 					},

@@ -9,13 +9,12 @@ use App\Models\Pekerja;
 use App\Models\PengalamanKerja;
 
 //load form request (for validation)
-use App\Http\Requests\KursusStore;
-use App\Http\Requests\KursusUpdate;
+use App\Http\Requests\PengalamanKerjaStore;
+use App\Http\Requests\PengalamanKerjaUpdate;
 
 // Load Plugin
 use Carbon\Carbon;
 use Auth;
-use Storage;
 
 class PengalamanKerjaController extends Controller
 {
@@ -30,21 +29,11 @@ class PengalamanKerjaController extends Controller
 
         return datatables()->of($pengalaman_kerja_list)
             ->addColumn('action', function ($row) {
-                $radio = '<label class="kt-radio kt-radio--bold kt-radio--brand"><input type="radio" name="radio_pengalaman_kerja" value="'.$row->nopeg.'-'.$row->status.'"><span></span></label>';
+                $radio = '<label class="kt-radio kt-radio--bold kt-radio--brand"><input type="radio" name="radio_pengalaman_kerja" value="'.$row->nopeg.'_'.$row->mulai.'_'.$row->pangkat.'"><span></span></label>';
                 return $radio;
             })
             ->rawColumns(['action'])
             ->make(true);
-    }
-
-    /**
-     * Show the form for creating a new resource.
-     *
-     * @return \Illuminate\Http\Response
-     */
-    public function create()
-    {
-        //
     }
 
     /**
@@ -53,9 +42,23 @@ class PengalamanKerjaController extends Controller
      * @param  \Illuminate\Http\Request  $request
      * @return \Illuminate\Http\Response
      */
-    public function store(Request $request)
+    public function store(Request $request, Pekerja $pekerja)
     {
-        //
+        $pengalaman_kerja = new PengalamanKerja;
+        $pengalaman_kerja->nopeg    = $pekerja->nopeg;
+        $pengalaman_kerja->mulai    = $request->mulai_pengalaman_kerja;
+        $pengalaman_kerja->sampai   = $request->sampai_pengalaman_kerja;
+        $pengalaman_kerja->status   = $request->status_pengalaman_kerja;
+        $pengalaman_kerja->instansi = $request->instansi_pengalaman_kerja;
+        $pengalaman_kerja->pangkat  = $request->pangkat_pengalaman_kerja;
+        $pengalaman_kerja->kota     = $request->kota_pengalaman_kerja;
+        $pengalaman_kerja->negara   = $request->negara_pengalaman_kerja;
+        $pengalaman_kerja->userid   = Auth::user()->userid;
+        $pengalaman_kerja->tglentry = Carbon::now();
+
+        $pengalaman_kerja->save();
+
+        return response()->json($pengalaman_kerja, 200);
     }
 
     /**
@@ -64,20 +67,14 @@ class PengalamanKerjaController extends Controller
      * @param  int  $id
      * @return \Illuminate\Http\Response
      */
-    public function show($id)
+    public function showJson(Request $request)
     {
-        //
-    }
+        $pengalaman_kerja = PengalamanKerja::where('nopeg', $request->nopeg)
+        ->where('mulai', $request->mulai)
+        ->where('pangkat', $request->pangkat)
+        ->first();
 
-    /**
-     * Show the form for editing the specified resource.
-     *
-     * @param  int  $id
-     * @return \Illuminate\Http\Response
-     */
-    public function edit($id)
-    {
-        //
+        return response()->json($pengalaman_kerja, 200);
     }
 
     /**
@@ -87,9 +84,26 @@ class PengalamanKerjaController extends Controller
      * @param  int  $id
      * @return \Illuminate\Http\Response
      */
-    public function update(Request $request, $id)
+    public function update(Request $request, Pekerja $pekerja, $mulai)
     {
-        //
+        $pengalaman_kerja = PengalamanKerja::where('nopeg', $pekerja->nopeg)
+        ->where('mulai', $request->mulai)
+        ->where('pangkat', $request->pangkat)
+        ->first();
+
+        $pengalaman_kerja->nopeg    = $pekerja->nopeg;
+        $pengalaman_kerja->mulai    = $request->mulai_pengalaman_kerja;
+        $pengalaman_kerja->sampai   = $request->sampai_pengalaman_kerja;
+        $pengalaman_kerja->status   = $request->status_pengalaman_kerja;
+        $pengalaman_kerja->instansi = $request->instansi_pengalaman_kerja;
+        $pengalaman_kerja->pangkat  = $request->pangkat_pengalaman_kerja;
+        $pengalaman_kerja->kota     = $request->kota_pengalaman_kerja;
+        $pengalaman_kerja->negara   = $request->negara_pengalaman_kerja;
+        $pengalaman_kerja->userid   = Auth::user()->userid;
+
+        $pengalaman_kerja->save();
+
+        return response()->json($pengalaman_kerja, 200);
     }
 
     /**
@@ -98,8 +112,13 @@ class PengalamanKerjaController extends Controller
      * @param  int  $id
      * @return \Illuminate\Http\Response
      */
-    public function destroy($id)
+    public function delete(Request $request)
     {
-        //
+        $pengalaman_kerja = PengalamanKerja::where('nopeg', $request->nopeg)
+        ->where('mulai', $request->mulai)
+        ->where('pangkat', $request->pangkat)
+        ->delete();
+
+        return response()->json(['deleted' => true], 200);
     }
 }
