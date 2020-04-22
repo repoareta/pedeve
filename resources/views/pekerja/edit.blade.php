@@ -34,7 +34,7 @@
 					<i class="kt-font-brand flaticon2-plus-1"></i>
 				</span>
 				<h3 class="kt-portlet__head-title">
-					Tambah Pekerja
+					Ubah Pekerja
 				</h3>			
 			</div>
 			<div class="kt-portlet__head-toolbar">
@@ -408,6 +408,19 @@
 					Detail Pekerja
 				</h3>
 			</div>
+
+			<style>
+				.nav-tabs {
+				overflow-x: auto;
+				overflow-y: hidden;
+				display: -webkit-box;
+				display: -moz-box;
+				}
+				.nav-tabs>li {
+				float: none;
+				}
+			</style>
+
 			<div class="kt-portlet__head-toolbar">
 				<ul class="nav nav-tabs nav-tabs-line nav-tabs-bold nav-tabs-line-primary" role="tablist">
 					<li class="nav-item">
@@ -527,6 +540,7 @@
 
 <script>
 $(document).ready(function () {
+
 	$('.kt-select2').select2().on('change', function() {
 		$(this).valid();
 	});
@@ -658,4 +672,13 @@ $(document).ready(function () {
 
 @yield('detail_keluarga_script')
 @yield('detail_jabatan_script')
+@yield('detail_golongan_gaji_script')
+@yield('detail_kursus_script')
+@yield('detail_pendidikan_script')
+@yield('detail_penghargaan_script')
+@yield('detail_pengalaman_kerja_script')
+@yield('detail_seminar_script')
+@yield('detail_smk_script')
+@yield('detail_upah_tetap_script')
+@yield('detail_upah_all_in_script')
 @endsection
