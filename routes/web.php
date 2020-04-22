@@ -274,28 +274,28 @@ Route::group(['middleware'=> ['auth','checkRole:1']], function () {
             
             // Route assigned name "pekerja.keluarga.index"...
             Route::name('keluarga.')->group(function () {
-                Route::get('pekerja/keluarga/{pekerja}', 'KeluargaController@indexJson')->name('index.json');
+                Route::get('pekerja/keluarga/index_json/{pekerja}', 'KeluargaController@indexJson')->name('index.json');
                 Route::post('pekerja/keluarga/store/{pekerja}', 'KeluargaController@store')->name('store');
-                Route::get('keluarga/show_json', 'KeluargaController@showJson')->name('show.json'); // get issue when combine with prefix pekerja
+                Route::get('pekerja/keluarga/show_json', 'KeluargaController@showJson')->name('show.json'); // get issue when combine with prefix pekerja
                 Route::post('pekerja/keluarga/update/{pekerja}/{status}/{nama}', 'KeluargaController@update')->name('update');
                 Route::delete('pekerja/keluarga/delete', 'KeluargaController@delete')->name('delete');
             });
 
             // Route assigned name "pekerja.keluarga.index"...
             Route::name('jabatan.')->group(function () {
-                Route::get('pekerja/jabatan/{pekerja}', 'JabatanController@indexJson')->name('index.json');
+                Route::get('pekerja/jabatan/index_json/{pekerja}', 'JabatanController@indexJson')->name('index.json');
                 Route::post('pekerja/jabatan/store/{pekerja}', 'JabatanController@store')->name('store');
-                Route::get('jabatan/show_json', 'JabatanController@showJson')->name('show.json'); // get issue when combine with prefix pekerja
+                Route::get('pekerja/jabatan/show_json', 'JabatanController@showJson')->name('show.json'); // get issue when combine with prefix pekerja
                 Route::post('pekerja/jabatan/update/{pekerja}/{status}/{nama}', 'JabatanController@update')->name('update');
                 Route::delete('pekerja/jabatan/delete', 'JabatanController@delete')->name('delete');
             });
 
             // Route assigned name "pekerja.golongan_gaji.index"...
             Route::name('golongan_gaji.')->group(function () {
-                Route::get('pekerja/golongan_gaji/{pekerja}', 'GolonganGajiController@indexJson')->name('index.json');
+                Route::get('pekerja/golongan_gaji/index_json/{pekerja}', 'GolonganGajiController@indexJson')->name('index.json');
                 Route::post('pekerja/golongan_gaji/store/{pekerja}', 'GolonganGajiController@store')->name('store');
                 Route::get('golongan_gaji/show_json', 'GolonganGajiController@showJson')->name('show.json'); // get issue when combine with prefix pekerja
-                Route::post('pekerja/golongan_gaji/update/{pekerja}/{status}/{nama}', 'GolonganGajiController@update')->name('update');
+                Route::post('pekerja/golongan_gaji/update/{pekerja}/{golongan_gaji}/{tanggal}', 'GolonganGajiController@update')->name('update');
                 Route::delete('pekerja/golongan_gaji/delete', 'GolonganGajiController@delete')->name('delete');
             });
 

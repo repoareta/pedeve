@@ -89,8 +89,8 @@
 		ajax: "{{ route('pekerja.golongan_gaji.index.json', ['pekerja' => $pekerja->nopeg]) }}",
 		columns: [
 			{data: 'action', name: 'aksi', orderable: false, searchable: false, class:'radio-button'},
-			{data: 'tanggal', name: 'tanggal'},
-			{data: 'golgaji', name: 'golgaji'}
+			{data: 'golgaji', name: 'golgaji'},
+			{data: 'tanggal', name: 'tanggal'}
 		],
 		order: [[ 0, "asc" ], [ 1, "asc" ]]
 	});
@@ -102,72 +102,37 @@
 		$('#title_modal').data('state', 'add');
 	});
 
-	$("#formPanjarDinas").on('submit', function(){
-		if ($('#nopek-error').length){
-			$("#nopek-error").insertAfter("#nopek-nya");
-		}
-
-		if ($('#jabatan-error').length){
-			$("#jabatan-error").insertAfter("#jabatan-nya");
-		}
-
-		if ($('#jenis_dinas-error').length){
-			$("#jenis_dinas-error").insertAfter("#jenis_dinas-nya");
-		}
-
-		if ($('#biaya-error').length){
-			$("#biaya-error").insertAfter("#biaya-nya");
-		}
-
-		if ($('#sampai-error').length){
-			$("#sampai-error").addClass("float-right");
-		}
-	});
-
 	$("#formGolonganGaji").on('submit', function(){
-		if ($('#nopek_detail-error').length){
-			$("#nopek_detail-error").insertAfter("#nopek_detail-nya");
-		}
-
-		if ($('#jabatan_detail-error').length){
-			$("#jabatan_detail-error").insertAfter("#jabatan_detail-nya");
-		}
-
 		if($(this).valid()) {
-			// do your ajax stuff here
-			var jabatan = $(this).serializeArray();
-
 			var state = $('#title_modal').data('state');
 
-			var url, session, swal_title;
+			var url, swal_title;
 
 			if(state == 'add'){
 				url = "{{ route('pekerja.golongan_gaji.store', ['pekerja' => $pekerja->nopeg]) }}";
-				swal_title = "Tambah Detail Jabatan";
+				swal_title = "Tambah Detail Golongan Gaji";
 			} else {
 				url = "{{ route('pekerja.golongan_gaji.update', 
 					[
 						'pekerja' => $pekerja->nopeg,
-						'status' => ':status',
-						'nama' => ':nama'
+						'golongan_gaji' => ':golongan_gaji',
+						'tanggal' => ':tanggal'
 					]) }}";
 				url = url
-				.replace(':status', $('#status_jabatan').data('status'))
-				.replace(':nama', $('#nama_jabatan').data('nama'));
+				.replace(':golongan_gaji', $('#golongan_gaji').data('golongan_gaji'))
+				.replace(':tanggal', $('#tanggal_golongan_gaji').data('tanggal'));
 
-				swal_title = "Update Detail Jabatan";
+				swal_title = "Update Detail Golongan Gaji";
 			}
 
 			$.ajax({
 				url: url,
 				type: "POST",
 				dataType: "JSON",
-				processData: false,
-        		contentType: false,
 				headers: {
-				'X-CSRF-TOKEN': "{{ csrf_token() }}"
+					'X-CSRF-TOKEN': "{{ csrf_token() }}"
 				},
-				data: new FormData(this),
+				data: $(this).serializeArray(),
 				success: function(dataResult){
 					Swal.fire({
 						type : 'success',
@@ -180,10 +145,6 @@
 					// clear form
 					$('#golonganGajiModal').on('hidden.bs.modal', function () {
 						$(this).find('form').trigger('reset');
-						$('#status_jabatan').val('').trigger('change');
-						$('#agama_jabatan').val('').trigger('change');
-						$('#pendidikan_jabatan').val('').trigger('change');
-						$('#golongan_darah_jabatan').val('').trigger('change');
 					});
 					// append to datatable
 					t.ajax.reload();
@@ -198,11 +159,11 @@
 
 	$('#deleteRowGolonganGaji').click(function(e) {
 		e.preventDefault();
-		if($('input[name=radio_jabatan]').is(':checked')) { 
-			$("input[name=radio_jabatan]:checked").each(function() {
-				var nopeg = $(this).val().split('-')[0];
-				var status = $(this).val().split('-')[1];
-				var nama = $(this).val().split('-')[2];
+		if($('input[name=radio_golongan_gaji]').is(':checked')) { 
+			$("input[name=radio_golongan_gaji]:checked").each(function() {
+				var nopeg = $(this).val().split('_')[0];
+				var golongan_gaji = $(this).val().split('_')[1];
+				var tanggal = $(this).val().split('_')[2];
 				
 				const swalWithBootstrapButtons = Swal.mixin({
 				customClass: {
@@ -214,7 +175,7 @@
 
 				swalWithBootstrapButtons.fire({
 					title: "Data yang akan dihapus?",
-					text: "Nama : " + nama,
+					text: "Nama Golongan Gaji: " + golongan_gaji,
 					type: 'warning',
 					showCancelButton: true,
 					reverseButtons: true,
@@ -229,14 +190,14 @@
 							dataType: 'json',
 							data: {
 								"nopeg": nopeg,
-								"status": status,
-								"nama": nama,
+								"golongan_gaji": golongan_gaji,
+								"tanggal": tanggal,
 								"_token": "{{ csrf_token() }}",
 							},
 							success: function () {
 								Swal.fire({
 									type  : 'success',
-									title : 'Hapus Detail Jabatan ' + nama,
+									title : 'Hapus Detail Golongan Gaji ' + golongan_gaji,
 									text  : 'Success',
 									timer : 2000
 								}).then(function() {
@@ -260,50 +221,34 @@
 	$('#editRowGolonganGaji').click(function(e) {
 		e.preventDefault();
 
-		if($('input[name=radio_jabatan]').is(':checked')) { 
-			$("input[name=radio_jabatan]:checked").each(function() {
+		if($('input[name=radio_golongan_gaji]').is(':checked')) { 
+			$("input[name=radio_golongan_gaji]:checked").each(function() {
 				// get value from row					
-				var nopeg = $(this).val().split('-')[0];
-				var status = $(this).val().split('-')[1];
-				var nama = $(this).val().split('-')[2];
+				var nopeg = $(this).val().split('_')[0];
+				var golongan_gaji = $(this).val().split('_')[1];
+				var tanggal = $(this).val().split('_')[2];
 
 				$.ajax({
 					url: "{{ route('pekerja.golongan_gaji.show.json') }}",
 					type: 'GET',
 					data: {
 						"nopeg" : "{{ $pekerja->nopeg }}",
-						"status" : status,
-						"nama" : nama,
+						"golongan_gaji" : golongan_gaji,
+						"tanggal" : tanggal,
 						"_token": "{{ csrf_token() }}",
 					},
 					success: function (response) {
-						console.log(response);
-						// update stuff
-						// append value
-						if(response.photo) {
-							var img = "{{ asset('storage/pekerja_img/') }}" + "/" + response.photo;
-
-							$(".kt-avatar__holder").css(
-								'background-image', 
-								"url(" + img + ")"
-							);
-						}
 						
-						$('#nama_jabatan').val(response.nama);
-						$('#status_jabatan').val(response.status).trigger('change');
-						$('#tempat_lahir_jabatan').val(response.tempatlahir);
-						$('#tanggal_lahir_jabatan').val(response.tgllahir);
-						$('#agama_jabatan').val(response.agama).trigger('change');
-						$('#golongan_darah_jabatan').val(response.goldarah).trigger('change');
-						$('#pendidikan_jabatan').val(response.kodependidikan).trigger('change');
-						$('#tempat_pendidikan_jabatan').val(response.tempatpendidikan);
+						$('#golongan_gaji').val(response.golgaji);
+						$('#tanggal_golongan_gaji').val(response.tanggal);
 						
 						// title
-						$('#title_modal').text('Ubah Detail Jabatan');
+						$('#title_modal').text('Ubah Detail Golongan Gaji');
 						$('#title_modal').data('state', 'update');
+
 						// for url update
-						$('#nama_jabatan').data('nama', response.nama);
-						$('#status_jabatan').data('status', response.status);
+						$('#golongan_gaji').data('golongan_gaji', response.golgaji);
+						$('#tanggal_golongan_gaji').data('tanggal', response.tanggal);
 						// open modal
 						$('#golonganGajiModal').modal('show');
 					},

@@ -24,7 +24,8 @@ class GolonganGajiStore extends FormRequest
     public function rules()
     {
         return [
-            //
+            "golongan_gaji" => "required|alpha_num|max:2",
+            "tanggal_golongan_gaji" => "required|date",
         ];
     }
 }
