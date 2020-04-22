@@ -10,7 +10,7 @@ class Kursus extends Model
     use CompositeKey;
 
     protected $table = "sdm_kursus";
-    protected $primaryKey = ['nopeg', 'nama'];
+    protected $primaryKey = ['nopeg', 'mulai'];
     protected $keyType = 'string';
     public $timestamps = false;
     public $incrementing = false;

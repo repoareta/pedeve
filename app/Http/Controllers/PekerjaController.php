@@ -125,7 +125,7 @@ class PekerjaController extends Controller
         $pekerja->nohp         = $request->no_handphone;
         $pekerja->gender       = $request->jenis_kelamin;
         $pekerja->npwp         = $request->npwp;
-        $pekerja->userid       = Auth::user()->id;
+        $pekerja->userid       = Auth::user()->userid;
         $pekerja->tglentry     = Carbon::now();
         $pekerja->fasilitas    = null;
 

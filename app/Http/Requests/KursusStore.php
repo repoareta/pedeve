@@ -24,7 +24,13 @@ class KursusStore extends FormRequest
     public function rules()
     {
         return [
-            //
+            "nama_kursus"          => "required",
+            "penyelenggara_kursus" => "required",
+            "mulai_kursus"         => "required|date",
+            "sampai_kursus"        => "required|date",
+            "negara_kursus"        => "required",
+            "kota_kursus"          => "required",
+            "keterangan_kursus"    => "nullable",
         ];
     }
 }

@@ -44,11 +44,11 @@ class SMKController extends Controller
      */
     public function store(Request $request, Pekerja $pekerja)
     {
-        $smk            = new SMK;
-        $smk->nopeg     = $pekerja->nopeg;
-        $smk->tahun     = $request->tahun_smk;
-        $smk->nilai     = $request->nilai_smk;
-        $smk->userid    = Auth::user()->userid;
+        $smk           = new SMK;
+        $smk->nopeg    = $pekerja->nopeg;
+        $smk->tahun    = $request->tahun_smk;
+        $smk->nilai    = $request->nilai_smk;
+        $smk->userid   = Auth::user()->userid;
         $smk->tglentry = Carbon::now();
 
         $smk->save();

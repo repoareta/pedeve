@@ -45,29 +45,23 @@
 	<div class="modal-dialog modal-lg" role="document">
 		<div class="modal-content">
 			<div class="modal-header">
-				<h5 class="modal-title" id="title_modal" data-state="add">Tambah Detail Jabatan</h5>
+				<h5 class="modal-title" id="title_modal" data-state="add">Tambah Detail Kursus</h5>
 				<button type="button" class="close" data-dismiss="modal" aria-label="Close">
 				</button>
 			</div>
-			<form class="kt-form kt-form--label-right" action="" method="POST" id="formPekerjaJabatan" enctype="multipart/form-data">
+			<form class="kt-form kt-form--label-right" action="" method="POST" id="formKursus" enctype="multipart/form-data">
 				<div class="modal-body">
 					<div class="form-group row">
-						<label for="spd-input" class="col-2 col-form-label">Bagian</label>
+						<label for="spd-input" class="col-2 col-form-label">Nama Kursus</label>
 						<div class="col-10">
-							<select class="form-control kt-select2" name="bagian_pekerja" id="bagian_pekerja" style="width: 100% !important;">
-								<option value=""> - Pilih Bagian- </option>
-                                @foreach ($kode_bagian_list as $kode_bagian)
-                                    <option value="{{ $kode_bagian->kode }}">{{ $kode_bagian->kode.' - '.$kode_bagian->nama }}</option>
-                                @endforeach
-							</select>
-							<div id="bagian_pekerja-nya"></div>
+							<input class="form-control" type="text" name="nama_kursus" id="nama_kursus">
 						</div>
 					</div>
-
+					
 					<div class="form-group row">
-						<label for="spd-input" class="col-2 col-form-label">Golongan</label>
+						<label for="spd-input" class="col-2 col-form-label">Penyelenggara</label>
 						<div class="col-10">
-							<input class="form-control" type="text" readonly name="golongan_pekerja" id="golongan_pekerja">
+							<input class="form-control" type="text" name="penyelenggara_kursus" id="penyelenggara_kursus">
 						</div>
                     </div>
 
@@ -75,7 +69,7 @@
 						<label for="spd-input" class="col-2 col-form-label">Mulai</label>
 						<div class="col-4">
 							<div class="input-group date">
-								<input type="text" class="form-control datepicker" readonly="" placeholder="Pilih Tanggal" name="mulai" id="mulai">
+								<input type="text" class="form-control datepicker" readonly="" placeholder="Pilih Tanggal" name="mulai_kursus" id="mulai_kursus">
 								<div class="input-group-append">
 									<span class="input-group-text">
 										<i class="la la-calendar-check-o"></i>
@@ -87,7 +81,7 @@
                         <label for="spd-input" class="col-2 col-form-label">Sampai</label>
 						<div class="col-4">
 							<div class="input-group date">
-								<input type="text" class="form-control datepicker" readonly="" placeholder="Pilih Tanggal" name="sampai" id="sampai">
+								<input type="text" class="form-control datepicker" readonly="" placeholder="Pilih Tanggal" name="sampai_kursus" id="sampai_kursus">
 								<div class="input-group-append">
 									<span class="input-group-text">
 										<i class="la la-calendar-check-o"></i>
@@ -98,27 +92,23 @@
                     </div>
 
                     <div class="form-group row">
-						<label for="spd-input" class="col-2 col-form-label">Nomor SKEP</label>
+						<label for="spd-input" class="col-2 col-form-label">Negara</label>
 						<div class="col-10">
-							<input class="form-control" type="text" name="no_skep" id="no_skep">
+							<input class="form-control" type="text" name="negara_kursus" id="negara_kursus" value="INDONESIA">
+						</div>
+					</div>
+					<div class="form-group row">
+						<label for="spd-input" class="col-2 col-form-label">Kota</label>
+						<div class="col-10">
+							<input class="form-control" type="text" name="kota_kursus" id="kota_kursus">
+						</div>
+					</div>
+					<div class="form-group row">
+						<label for="spd-input" class="col-2 col-form-label">Keterangan</label>
+						<div class="col-10">
+							<input class="form-control" type="text" name="keterangan_kursus" id="keterangan_kursus">
 						</div>
                     </div>
-
-                    <div class="form-group row">
-						<label for="spd-input" class="col-2 col-form-label">Tanggal SKEP</label>
-						<div class="col-10">
-							<div class="input-group date">
-								<input type="text" class="form-control datepicker" readonly="" placeholder="Pilih Tanggal" name="tanggal_skep" id="tanggal_skep">
-								<div class="input-group-append">
-									<span class="input-group-text">
-										<i class="la la-calendar-check-o"></i>
-									</span>
-								</div>
-							</div>
-						</div>
-                    </div>
-                    
-                    
 				</div>
 				<div class="modal-footer">
 					<button type="button" class="btn btn-warning" data-dismiss="modal"><i class="fa fa-reply" aria-hidden="true"></i> Batal</button>
@@ -131,7 +121,7 @@
 <!--end::Modal-->
 
 @section('detail_kursus_script')
-{!! JsValidator::formRequest('App\Http\Requests\JabatanStore', '#formPekerjaJabatan') !!}
+{!! JsValidator::formRequest('App\Http\Requests\KursusStore', '#formKursus') !!}
 <script type="text/javascript">
 	$(document).ready(function () {
 
@@ -160,72 +150,38 @@
 		$('#title_modal').data('state', 'add');
 	});
 
-	$("#formPanjarDinas").on('submit', function(){
-		if ($('#nopek-error').length){
-			$("#nopek-error").insertAfter("#nopek-nya");
-		}
-
-		if ($('#jabatan-error').length){
-			$("#jabatan-error").insertAfter("#jabatan-nya");
-		}
-
-		if ($('#jenis_dinas-error').length){
-			$("#jenis_dinas-error").insertAfter("#jenis_dinas-nya");
-		}
-
-		if ($('#biaya-error').length){
-			$("#biaya-error").insertAfter("#biaya-nya");
-		}
-
-		if ($('#sampai-error').length){
-			$("#sampai-error").addClass("float-right");
-		}
-	});
-
-	$("#formPekerjaJabatan").on('submit', function(){
-		if ($('#nopek_detail-error').length){
-			$("#nopek_detail-error").insertAfter("#nopek_detail-nya");
-		}
-
-		if ($('#jabatan_detail-error').length){
-			$("#jabatan_detail-error").insertAfter("#jabatan_detail-nya");
-		}
-
+	$("#formKursus").on('submit', function(){
 		if($(this).valid()) {
-			// do your ajax stuff here
-			var jabatan = $(this).serializeArray();
 
 			var state = $('#title_modal').data('state');
 
-			var url, session, swal_title;
+			var url, swal_title;
 
 			if(state == 'add'){
 				url = "{{ route('pekerja.kursus.store', ['pekerja' => $pekerja->nopeg]) }}";
-				swal_title = "Tambah Detail Jabatan";
+				swal_title = "Tambah Detail Kursus";
 			} else {
 				url = "{{ route('pekerja.kursus.update', 
 					[
 						'pekerja' => $pekerja->nopeg,
-						'status' => ':status',
+						'mulai' => ':mulai',
 						'nama' => ':nama'
 					]) }}";
 				url = url
-				.replace(':status', $('#status_kursus').data('status'))
+				.replace(':mulai', $('#mulai_kursus').data('mulai'))
 				.replace(':nama', $('#nama_kursus').data('nama'));
 
-				swal_title = "Update Detail Jabatan";
+				swal_title = "Update Detail Kursus";
 			}
 
 			$.ajax({
 				url: url,
 				type: "POST",
 				dataType: "JSON",
-				processData: false,
-        		contentType: false,
 				headers: {
-				'X-CSRF-TOKEN': "{{ csrf_token() }}"
+					'X-CSRF-TOKEN': "{{ csrf_token() }}"
 				},
-				data: new FormData(this),
+				data: $(this).serializeArray(),
 				success: function(dataResult){
 					Swal.fire({
 						type : 'success',
@@ -238,10 +194,6 @@
 					// clear form
 					$('#kursusModal').on('hidden.bs.modal', function () {
 						$(this).find('form').trigger('reset');
-						$('#status_kursus').val('').trigger('change');
-						$('#agama_kursus').val('').trigger('change');
-						$('#pendidikan_kursus').val('').trigger('change');
-						$('#golongan_darah_kursus').val('').trigger('change');
 					});
 					// append to datatable
 					t.ajax.reload();
@@ -258,9 +210,9 @@
 		e.preventDefault();
 		if($('input[name=radio_kursus]').is(':checked')) { 
 			$("input[name=radio_kursus]:checked").each(function() {
-				var nopeg = $(this).val().split('-')[0];
-				var status = $(this).val().split('-')[1];
-				var nama = $(this).val().split('-')[2];
+				var nopeg = $(this).val().split('_')[0];
+				var mulai = $(this).val().split('_')[1];
+				var nama = $(this).val().split('_')[2];
 				
 				const swalWithBootstrapButtons = Swal.mixin({
 				customClass: {
@@ -286,15 +238,15 @@
 							type: 'DELETE',
 							dataType: 'json',
 							data: {
-								"nopeg": nopeg,
-								"status": status,
+								"nopeg": "{{ $pekerja->nopeg }}",
+								"mulai": mulai,
 								"nama": nama,
 								"_token": "{{ csrf_token() }}",
 							},
 							success: function () {
 								Swal.fire({
 									type  : 'success',
-									title : 'Hapus Detail Jabatan ' + nama,
+									title : 'Hapus Detail Kursus ' + nama,
 									text  : 'Success',
 									timer : 2000
 								}).then(function() {
@@ -321,47 +273,34 @@
 		if($('input[name=radio_kursus]').is(':checked')) { 
 			$("input[name=radio_kursus]:checked").each(function() {
 				// get value from row					
-				var nopeg = $(this).val().split('-')[0];
-				var status = $(this).val().split('-')[1];
-				var nama = $(this).val().split('-')[2];
+				var nopeg = $(this).val().split('_')[0];
+				var mulai = $(this).val().split('_')[1];
+				var nama = $(this).val().split('_')[2];
 
 				$.ajax({
 					url: "{{ route('pekerja.kursus.show.json') }}",
 					type: 'GET',
 					data: {
 						"nopeg" : "{{ $pekerja->nopeg }}",
-						"status" : status,
+						"mulai" : mulai,
 						"nama" : nama,
 						"_token": "{{ csrf_token() }}",
 					},
-					success: function (response) {
-						console.log(response);
-						// update stuff
-						// append value
-						if(response.photo) {
-							var img = "{{ asset('storage/pekerja_img/') }}" + "/" + response.photo;
-
-							$(".kt-avatar__holder").css(
-								'background-image', 
-								"url(" + img + ")"
-							);
-						}
-						
+					success: function (response) {						
+						$('#mulai_kursus').val(response.mulai);
+						$('#sampai_kursus').val(response.sampai);
 						$('#nama_kursus').val(response.nama);
-						$('#status_kursus').val(response.status).trigger('change');
-						$('#tempat_lahir_kursus').val(response.tempatlahir);
-						$('#tanggal_lahir_kursus').val(response.tgllahir);
-						$('#agama_kursus').val(response.agama).trigger('change');
-						$('#golongan_darah_kursus').val(response.goldarah).trigger('change');
-						$('#pendidikan_kursus').val(response.kodependidikan).trigger('change');
-						$('#tempat_pendidikan_kursus').val(response.tempatpendidikan);
+						$('#penyelenggara_kursus').val(response.penyelenggara);
+						$('#kota_kursus').val(response.kota);
+						$('#negara_kursus').val(response.negara);
+						$('#keterangan_kursus').val(response.keterangan);
 						
 						// title
-						$('#title_modal').text('Ubah Detail Jabatan');
+						$('#title_modal').text('Ubah Detail Kursus');
 						$('#title_modal').data('state', 'update');
 						// for url update
+						$('#mulai_kursus').data('mulai', response.mulai);
 						$('#nama_kursus').data('nama', response.nama);
-						$('#status_kursus').data('status', response.status);
 						// open modal
 						$('#kursusModal').modal('show');
 					},
