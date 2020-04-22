@@ -171,6 +171,43 @@
 		$('#title_modal').data('state', 'add');
 	});
 
+	$('#bagian_pekerja').on('change', function(){
+		var bagian = $('#bagian_pekerja').val();
+
+		// getJabatanByBagian
+		$.ajax({
+			url: "{{ route('kode_jabatan.index.json.bagian') }}",
+			type: "GET",
+			dataType: "JSON",
+			headers: {
+				'X-CSRF-TOKEN': "{{ csrf_token() }}"
+			},
+			data: {
+				"kodebagian" : bagian
+			},
+			success: function(response){
+				$("#jabatan_pekerja").select2('destroy').empty().select2({
+					data: response
+				});
+
+				// for(var i = 0; i < response.length; i++)
+				// {
+				// 	$('#jabatan_pekerja').append('<option data-golongan="'+response[i].golongan+'" value="'+response[i].id+'">'+response[i].text+'</option>');
+				// }
+
+				// $('#jabatan_pekerja').select2();
+			},
+			error: function () {
+				alert("Terjadi kesalahan, coba lagi nanti");
+			}
+		});
+	});
+
+	$('#jabatan_pekerja').on('change', function(){
+		data = $("#jabatan_pekerja").select2('data')[0];
+		$("#golongan_pekerja").val(data.golongan);
+	});
+
 	$("#formPekerjaJabatan").on('submit', function(){
 		if ($('#bagian_pekerja-error').length){
 			$("#bagian_pekerja-error").insertAfter("#bagian_pekerja-nya");
@@ -181,12 +218,10 @@
 		}
 
 		if($(this).valid()) {
-			// do your ajax stuff here
-			var jabatan = $(this).serializeArray();
 
 			var state = $('#title_modal').data('state');
 
-			var url, session, swal_title;
+			var url, swal_title;
 
 			if(state == 'add'){
 				url = "{{ route('pekerja.jabatan.store', ['pekerja' => $pekerja->nopeg]) }}";
@@ -209,12 +244,10 @@
 				url: url,
 				type: "POST",
 				dataType: "JSON",
-				processData: false,
-        		contentType: false,
 				headers: {
-				'X-CSRF-TOKEN': "{{ csrf_token() }}"
+					'X-CSRF-TOKEN': "{{ csrf_token() }}"
 				},
-				data: new FormData(this),
+				data: $(this).serializeArray(),
 				success: function(dataResult){
 					Swal.fire({
 						type : 'success',
@@ -227,10 +260,8 @@
 					// clear form
 					$('#jabatanModal').on('hidden.bs.modal', function () {
 						$(this).find('form').trigger('reset');
-						$('#status_jabatan').val('').trigger('change');
-						$('#agama_jabatan').val('').trigger('change');
-						$('#pendidikan_jabatan').val('').trigger('change');
-						$('#golongan_darah_jabatan').val('').trigger('change');
+						$('#bagian_pekerja').val('').trigger('change');
+						$('#jabatan_pekerja').val('').trigger('change');
 					});
 					// append to datatable
 					t.ajax.reload();
@@ -303,8 +334,6 @@
 			swalAlertInit('hapus');
 		}
 	});
-
-	
 
 	$('#editRowJabatan').click(function(e) {
 		e.preventDefault();

@@ -147,4 +147,35 @@ class KodeJabatanController extends Controller
 
         return response()->json();
     }
+
+    public function indexJsonByBagian(Request $request)
+    {
+        if ($request->kodebagian == '') {
+            $kode_jabatan_list = KodeJabatan::all();
+        } else {
+            $kode_jabatan_list = KodeJabatan::where('kdbag', $request->kodebagian)->get();
+        }
+
+        
+        
+
+        $kode_jabatan_list_new = [];
+        foreach ($kode_jabatan_list as $kode_jabatan) {
+            $kode_jabatan_list_new[] = [
+                'id'       => $kode_jabatan->kdjab,
+                'text'     => $kode_jabatan->kdjab.' - '.$kode_jabatan->keterangan,
+                'golongan' => $kode_jabatan->goljob
+            ];
+        }
+
+        $pilih_jabatan[] =  array(
+            'id'       => '',
+            'text'     => '- Pilih Jabatan -',
+            'golongan' => null
+        );
+
+        $kode_jabatan_list_new = array_merge($pilih_jabatan, $kode_jabatan_list_new);
+
+        return response()->json($kode_jabatan_list_new, 200);
+    }
 }

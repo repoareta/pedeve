@@ -236,6 +236,7 @@ Route::group(['middleware'=> ['auth','checkRole:1']], function () {
         Route::name('kode_jabatan.')->group(function () {
             Route::get('kode_jabatan', 'KodeJabatanController@index')->name('index');
             Route::get('kode_jabatan/index_json', 'KodeJabatanController@indexJson')->name('index.json');
+            Route::get('kode_jabatan/index_json_bagian', 'KodeJabatanController@indexJsonByBagian')->name('index.json.bagian');
             Route::get('kode_jabatan/create', 'KodeJabatanController@create')->name('create');
             Route::post('kode_jabatan/store', 'KodeJabatanController@store')->name('store');
             Route::get('kode_jabatan/edit/{kode_bagian}/{kdjab}', 'KodeJabatanController@edit')->name('edit');
