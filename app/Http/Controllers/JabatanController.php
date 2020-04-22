@@ -70,7 +70,7 @@ class JabatanController extends Controller
 
         $jabatan->save();
 
-        return response()->json(['response' => true], 200);
+        return response()->json($jabatan, 200);
     }
 
     /**
@@ -81,7 +81,13 @@ class JabatanController extends Controller
      */
     public function showJson(Request $request)
     {
-        //
+        $jabatan = Jabatan::where('nopeg', $request->nopeg)
+        ->where('mulai', $request->mulai)
+        ->where('kdbag', $request->kdbag)
+        ->where('kdjab', $request->kdjab)
+        ->first();
+
+        return response()->json($jabatan, 200);
     }
 
     /**

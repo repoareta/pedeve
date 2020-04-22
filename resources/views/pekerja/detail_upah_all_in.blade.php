@@ -91,7 +91,7 @@
 <!--end::Modal-->
 
 @section('detail_upah_all_in_script')
-{!! JsValidator::formRequest('App\Http\Requests\UPahAllInStore', '#formUpahAllIn') !!}
+{!! JsValidator::formRequest('App\Http\Requests\UpahAllInStore', '#formUpahAllIn') !!}
 <script type="text/javascript">
 	$(document).ready(function () {
 
