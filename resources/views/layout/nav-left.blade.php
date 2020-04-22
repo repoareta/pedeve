@@ -229,11 +229,46 @@
                     $jamsostek,
                     $pensiun
                 ); //isi nama Subdomain jamsostek pensiun
-                $report_sdm_payroll = array(
-                    'report_sdm_payroll.index',
-                    'report_sdm_payroll.create',
-                    'report_sdm_payroll.edit'
-                ); // isi nama semua route  report sdm dan payroll
+
+
+                $slip_gaji = array(
+                    'proses_gaji.slipGaji'
+                );//isi nama semua route slip gaji
+                $iuran_jamsostek = array(
+                    'jamsostek.ctkiuranjs'
+                );//isi nama semua route iuran jamsostek
+                $iuran_pensiun = array(
+                    'pensiun.ctkiuranpensiun'
+                );//isi nama semua route iuran pensiun
+                $rekap_iuran_pensiun = array(
+                    'pensiun.ctkrekapiuranpensiun'
+                );//isi nama semua route rekap iuran pensiun
+                $rekap_iuran_jamsostek = array(
+                    'jamsostek.ctkrekapiuranjamsostek'
+                );//isi nama semua route rekap iuran jamsostek
+                $rekap_lembur = array(
+                    'lembur.ctkrekaplembur'
+                );//isi nama semua route rekap lembur
+                $rekap_gaji = array(
+                    'proses_gaji.ctkrekapgaji'
+                );//isi nama semua route rekap gaji
+                $slip_thr = array(
+                    'proses_thr.ctkslipthr'
+                );//isi nama semua route slip thr
+                $slip_insentif = array(
+                    'proses_insentif.ctkslipinsentif'
+                );//isi nama semua route slip insentif
+                $report_sdm_payroll = array_merge(
+                    $slip_gaji,
+                    $iuran_jamsostek,
+                    $iuran_pensiun,
+                    $rekap_iuran_pensiun,
+                    $rekap_iuran_jamsostek,
+                    $rekap_lembur,
+                    $rekap_gaji,
+                    $slip_thr,
+                    $slip_insentif
+                ); // isi nama Subdomain  report sdm dan payroll
                 $absensi_karyawan = array(
                     'absensi_karyawan.index',
                     'absensi_karyawan.create',
@@ -288,16 +323,22 @@
                     'inisialisasi_saldo.edit',
                 ); // isi nama semua route inisialisasi saldo
 
-
-
                 $saldo = array_merge(
                     $informasi_saldo,
                     $inisialisasi_saldo
                 ); //isi nama Subdomain saldo
+                
+                $deposito = array(
+                    'penempatan_deposito.index',
+                    'penempatan_deposito.search.index',
+                    'penempatan_deposito.create',
+                    'penempatan_deposito.edit',
+                ); // isi nama semua route penempatan deposito
 
                 $perbendaharaan = array_merge(
                     $penerimaan_kas,
-                    $saldo
+                    $saldo,
+                    $deposito
                 ); // array merge semua submenu
             @endphp
 
@@ -681,15 +722,90 @@
                                 </ul>
                             </div>
                         </li>
-                        <li class="kt-menu__item kt-menu__item{{ set_active_submenu($report_sdm_payroll) }}" aria-haspopup="true">
-                            <a href="{{ route('report_sdm_payroll.index') }}" class="kt-menu__link">
+                        <li class="kt-menu__item kt-menu__item--submenu {{ set_active($report_sdm_payroll) }}" aria-haspopup="true" data-ktmenu-submenu-toggle="hover">
+                            <a href="javascript:;" class="kt-menu__link kt-menu__toggle">
                                 <i class="kt-menu__link-bullet kt-menu__link-bullet--dot">
                                     <span></span>
                                 </i>
-                                <span class="kt-menu__link-text">
-                                    Report SDM & Payrol  
-                                </span>
+                                <span class="kt-menu__link-text">Report SDM & Payroll</span>
+                                <i class="kt-menu__ver-arrow la la-angle-right"></i>
                             </a>
+                            <div class="kt-menu__submenu "><span class="kt-menu__arrow"></span>
+                                <ul class="kt-menu__subnav">
+                                    <li class="kt-menu__item kt-menu__item{{ set_active_submenu($iuran_jamsostek) }}" aria-haspopup="true">
+                                        <a href="{{ route('jamsostek.ctkiuranjs') }}" class="kt-menu__link">
+                                            <i class="kt-menu__link-bullet kt-menu__link-bullet--line">
+                                                <span></span>
+                                            </i>
+                                            <span class="kt-menu__link-text">Daftar Iuran Jamsostek</span>
+                                        </a>
+                                    </li>
+                                    <li class="kt-menu__item kt-menu__item{{ set_active_submenu($iuran_pensiun) }}" aria-haspopup="true">
+                                        <a href="{{ route('pensiun.ctkiuranpensiun') }}" class="kt-menu__link">
+                                            <i class="kt-menu__link-bullet kt-menu__link-bullet--line">
+                                                <span></span>
+                                            </i>
+                                            <span class="kt-menu__link-text">Daftar Iuran Pensiun</span>
+                                        </a>
+                                    </li>
+                                    <li class="kt-menu__item kt-menu__item{{ set_active_submenu($rekap_lembur) }}" aria-haspopup="true">
+                                        <a href="{{ route('lembur.ctkrekaplembur') }}" class="kt-menu__link">
+                                            <i class="kt-menu__link-bullet kt-menu__link-bullet--line">
+                                                <span></span>
+                                            </i>
+                                            <span class="kt-menu__link-text">Rekap Lembur</span>
+                                        </a>
+                                    </li>
+                                    <li class="kt-menu__item kt-menu__item{{ set_active_submenu($rekap_gaji) }}" aria-haspopup="true">
+                                        <a href="{{ route('proses_gaji.ctkrekapgaji') }}" class="kt-menu__link">
+                                            <i class="kt-menu__link-bullet kt-menu__link-bullet--line">
+                                                <span></span>
+                                            </i>
+                                            <span class="kt-menu__link-text">Rekap Gaji</span>
+                                        </a>
+                                    </li>
+                                    <li class="kt-menu__item kt-menu__item{{ set_active_submenu($rekap_iuran_pensiun) }}" aria-haspopup="true">
+                                        <a href="{{ route('pensiun.ctkrekapiuranpensiun') }}" class="kt-menu__link">
+                                            <i class="kt-menu__link-bullet kt-menu__link-bullet--line">
+                                                <span></span>
+                                            </i>
+                                            <span class="kt-menu__link-text">Rekap Iuran Pensiun</span>
+                                        </a>
+                                    </li>
+                                    <li class="kt-menu__item kt-menu__item{{ set_active_submenu($rekap_iuran_jamsostek) }}" aria-haspopup="true">
+                                        <a href="{{ route('jamsostek.ctkrekapiuranjamsostek') }}" class="kt-menu__link">
+                                            <i class="kt-menu__link-bullet kt-menu__link-bullet--line">
+                                                <span></span>
+                                            </i>
+                                            <span class="kt-menu__link-text">Rekap Iuran Jamsostek</span>
+                                        </a>
+                                    </li>
+                                    <li class="kt-menu__item kt-menu__item{{ set_active_submenu($slip_gaji) }}" aria-haspopup="true">
+                                        <a href="{{route('proses_gaji.slipGaji')}}" class="kt-menu__link">
+                                            <i class="kt-menu__link-bullet kt-menu__link-bullet--line">
+                                                <span></span>
+                                            </i>
+                                            <span class="kt-menu__link-text">Slip Gaji</span>
+                                        </a>
+                                    </li>
+                                    <li class="kt-menu__item kt-menu__item{{ set_active_submenu($slip_thr) }}" aria-haspopup="true">
+                                        <a href="{{ route('proses_thr.ctkslipthr') }}" class="kt-menu__link">
+                                            <i class="kt-menu__link-bullet kt-menu__link-bullet--line">
+                                                <span></span>
+                                            </i>
+                                            <span class="kt-menu__link-text">Slip THR</span>
+                                        </a>
+                                    </li>
+                                    <li class="kt-menu__item kt-menu__item{{ set_active_submenu($slip_insentif) }}" aria-haspopup="true">
+                                        <a href="{{ route('proses_insentif.ctkslipinsentif') }}" class="kt-menu__link">
+                                            <i class="kt-menu__link-bullet kt-menu__link-bullet--line">
+                                                <span></span>
+                                            </i>
+                                            <span class="kt-menu__link-text">Slip Insentif</span>
+                                        </a>
+                                    </li>
+                                </ul>
+                            </div>
                         </li>
                         <li class="kt-menu__item kt-menu__item{{ set_active_submenu($absensi_karyawan) }}" aria-haspopup="true">
                             <a href="{{ route('absensi_karyawan.index') }}" class="kt-menu__link">
@@ -811,13 +927,13 @@
                                 </span>
                             </a>
                         </li>
-                        <li class="kt-menu__item " aria-haspopup="true">
-                            <a href="{{ route('perjalanan_dinas.index') }}" class="kt-menu__link">
+                        <li class="kt-menu__item kt-menu__item--submenu {{ set_active($deposito) }}" aria-haspopup="true" data-ktmenu-submenu-toggle="hover">
+                            <a href="{{ route('penempatan_deposito.index') }}" class="kt-menu__link">
                                 <i class="kt-menu__link-bullet kt-menu__link-bullet--dot">
                                     <span></span>
                                 </i>
                                 <span class="kt-menu__link-text">
-                                    Deposito
+                                    Penempatan Deposito
                                 </span>
                             </a>
                         </li>

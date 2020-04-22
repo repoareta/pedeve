@@ -4,6 +4,10 @@ namespace App\Http\Controllers;
 
 use Illuminate\Http\Request;
 use App\Models\PayTblPensiun;
+use DB;
+use PDF;
+use Excel;
+use Alert;
 
 class PensiunController extends Controller
 {
@@ -131,5 +135,36 @@ class PensiunController extends Controller
     {
         PayTblPensiun::where('pribadi', $request->dataid)->delete();
         return response()->json();
+    }
+
+    public function ctkiuranpensiun()
+    {
+        return view('pensiun.rekap');
+    }
+    public function rekapExport(Request $request)
+    {
+        $pdf = PDF::loadview('pensiun.export_iuranpensiun',compact('request'))->setPaper('a4', 'landscape');
+        $pdf->output();
+        $dom_pdf = $pdf->getDomPDF();
+
+        $canvas = $dom_pdf ->get_canvas();
+        $canvas->page_text(730, 100, "Halaman {PAGE_NUM} Dari {PAGE_COUNT}", null, 10, array(0, 0, 0)); //iuran pensiun landscape
+        // return $pdf->download('rekap_umk_'.date('Y-m-d H:i:s').'.pdf');
+        return $pdf->stream();
+    }
+    public function ctkrekapiuranpensiun()
+    {
+        return view('pensiun.rekapiuran');
+    }
+    public function rekapIuranExport(Request $request)
+    {
+        $pdf = PDF::loadview('pensiun.export_rekap_iuranpensiun',compact('request'))->setPaper('a4', 'landscape');
+        $pdf->output();
+        $dom_pdf = $pdf->getDomPDF();
+
+        $canvas = $dom_pdf ->get_canvas();
+        $canvas->page_text(740, 110, "Halaman {PAGE_NUM} Dari {PAGE_COUNT}", null, 10, array(0, 0, 0)); //iuran pensiun landscape
+        // return $pdf->download('rekap_umk_'.date('Y-m-d H:i:s').'.pdf');
+        return $pdf->stream();
     }
 }

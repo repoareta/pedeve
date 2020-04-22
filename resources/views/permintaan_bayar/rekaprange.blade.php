@@ -46,11 +46,11 @@
                 <label for="mulai-input" class="col-2 col-form-label">Mulai</label>
                 <div class="col-8">
                     <div class="input-daterange input-group" id="date_range_picker">
-                        <input type="text" class="form-control" name="mulai" autocomplete="off" required />
+                        <input type="text" class="form-control" name="mulai" autocomplete="off" required oninvalid="this.setCustomValidity('Mulai Harus Diisi..')" onchange="setCustomValidity('')"/>
                         <div class="input-group-append">
                             <span class="input-group-text">Sampai</span>
                         </div>
-                        <input type="text" class="form-control" name="sampai" autocomplete="off" />
+                        <input type="text" class="form-control" name="sampai" autocomplete="off" required oninvalid="this.setCustomValidity('Sampai Harus Diisi..')" onchange="setCustomValidity('')"/>
                     </div>
                     <span class="form-text text-muted">Pilih rentang waktu rekap permintaan bayar</span>
                 </div>

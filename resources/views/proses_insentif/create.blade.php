@@ -64,7 +64,7 @@
 				<div class="form-group row">
 					<label for="nopek-input" class="col-2 col-form-label">Bulan/Tahun<span style="color:red;">*</span></label>
 					<div class="col-6">
-						<input class="form-control" type="text" name="tanggal" value="" id="tanggal" size="7" maxlength="7" required  autocomplete='off'>
+						<input class="form-control" type="text" name="tanggal" value="" id="tanggal" size="7" maxlength="7" required  autocomplete='off' oninvalid="this.setCustomValidity('Bulan/Tahun Harus Diisi..')" onchange="setCustomValidity('')">
 					</div>
 				</div>
 				<div class="form-group row">
