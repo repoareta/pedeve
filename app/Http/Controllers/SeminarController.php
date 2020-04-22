@@ -9,13 +9,12 @@ use App\Models\Pekerja;
 use App\Models\Seminar;
 
 //load form request (for validation)
-use App\Http\Requests\KursusStore;
-use App\Http\Requests\KursusUpdate;
+use App\Http\Requests\SeminarStore;
+use App\Http\Requests\SeminarUpdate;
 
 // Load Plugin
 use Carbon\Carbon;
 use Auth;
-use Storage;
 
 class SeminarController extends Controller
 {
@@ -30,21 +29,11 @@ class SeminarController extends Controller
 
         return datatables()->of($seminar_list)
             ->addColumn('action', function ($row) {
-                $radio = '<label class="kt-radio kt-radio--bold kt-radio--brand"><input type="radio" name="radio_seminar" value="'.$row->nopeg.'-'.$row->nama.'"><span></span></label>';
+                $radio = '<label class="kt-radio kt-radio--bold kt-radio--brand"><input type="radio" name="radio_seminar" value="'.$row->nopeg.'_'.$row->mulai.'_'.$row->nama.'"><span></span></label>';
                 return $radio;
             })
             ->rawColumns(['action'])
             ->make(true);
-    }
-
-    /**
-     * Show the form for creating a new resource.
-     *
-     * @return \Illuminate\Http\Response
-     */
-    public function create()
-    {
-        //
     }
 
     /**
@@ -53,9 +42,23 @@ class SeminarController extends Controller
      * @param  \Illuminate\Http\Request  $request
      * @return \Illuminate\Http\Response
      */
-    public function store(Request $request)
+    public function store(Request $request, Pekerja $pekerja)
     {
-        //
+        $seminar = new Seminar;
+        $seminar->nopeg         = $pekerja->nopeg;
+        $seminar->mulai         = $request->mulai_seminar;
+        $seminar->sampai        = $request->sampai_seminar;
+        $seminar->nama          = $request->nama_seminar;
+        $seminar->penyelenggara = $request->penyelenggara_seminar;
+        $seminar->kota          = $request->kota_seminar;
+        $seminar->negara        = $request->negara_seminar;
+        $seminar->keterangan    = $request->keterangan_seminar;
+        $seminar->userid        = Auth::user()->userid;
+        $seminar->tglentry      = Carbon::now();
+
+        $seminar->save();
+
+        return response()->json($seminar, 200);
     }
 
     /**
@@ -64,20 +67,13 @@ class SeminarController extends Controller
      * @param  int  $id
      * @return \Illuminate\Http\Response
      */
-    public function show($id)
+    public function showJson(Request $request)
     {
-        //
-    }
+        $seminar = Seminar::where('nopeg', $request->nopeg)
+        ->where('mulai', $request->mulai)
+        ->first();
 
-    /**
-     * Show the form for editing the specified resource.
-     *
-     * @param  int  $id
-     * @return \Illuminate\Http\Response
-     */
-    public function edit($id)
-    {
-        //
+        return response()->json($seminar, 200);
     }
 
     /**
@@ -87,9 +83,26 @@ class SeminarController extends Controller
      * @param  int  $id
      * @return \Illuminate\Http\Response
      */
-    public function update(Request $request, $id)
+    public function update(Request $request, Pekerja $pekerja, $mulai)
     {
-        //
+        $seminar = Seminar::where('nopeg', $pekerja->nopeg)
+        ->where('mulai', $request->mulai)
+        ->first();
+
+        $seminar->nopeg         = $pekerja->nopeg;
+        $seminar->mulai         = $request->mulai_seminar;
+        $seminar->sampai        = $request->sampai_seminar;
+        $seminar->nama          = $request->nama_seminar;
+        $seminar->penyelenggara = $request->penyelenggara_seminar;
+        $seminar->kota          = $request->kota_seminar;
+        $seminar->negara        = $request->negara_seminar;
+        $seminar->keterangan    = $request->keterangan_seminar;
+        $seminar->userid        = Auth::user()->userid;
+        $seminar->tglentry      = Carbon::now();
+
+        $seminar->save();
+
+        return response()->json($seminar, 200);
     }
 
     /**
@@ -98,8 +111,12 @@ class SeminarController extends Controller
      * @param  int  $id
      * @return \Illuminate\Http\Response
      */
-    public function destroy($id)
+    public function delete(Request $request)
     {
-        //
+        $seminar = Seminar::where('nopeg', $request->nopeg)
+        ->where('mulai', $request->mulai)
+        ->delete();
+
+        return response()->json(['delete' => true], 200);
     }
 }

@@ -340,7 +340,7 @@ Route::group(['middleware'=> ['auth','checkRole:1']], function () {
                 Route::get('pekerja/seminar/index_json/{pekerja}', 'SeminarController@indexJson')->name('index.json');
                 Route::post('pekerja/seminar/store/{pekerja}', 'SeminarController@store')->name('store');
                 Route::get('pekerja/seminar/show_json', 'SeminarController@showJson')->name('show.json'); // get issue when combine with prefix pekerja
-                Route::post('pekerja/seminar/update/{pekerja}/{status}/{nama}', 'SeminarController@update')->name('update');
+                Route::post('pekerja/seminar/update/{pekerja}/{mulai}', 'SeminarController@update')->name('update');
                 Route::delete('pekerja/seminar/delete', 'SeminarController@delete')->name('delete');
             });
 

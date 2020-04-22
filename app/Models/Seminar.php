@@ -10,7 +10,7 @@ class Seminar extends Model
     use CompositeKey;
 
     protected $table = "sdm_seminar";
-    protected $primaryKey = ['nopeg', 'nama'];
+    protected $primaryKey = ['nopeg', 'mulai'];
     protected $keyType = 'string';
     public $timestamps = false;
     public $incrementing = false;
