@@ -88,7 +88,6 @@
 			<tbody>
 			@foreach($data_list as $data)
 				<tr>
-					<td>{{$data->tahun}}</td>
 					<td>
 					<?php 
 						$array_bln	 = array (
@@ -109,6 +108,7 @@
 					?>
 						<?php echo '<label class="kt-radio kt-radio--bold kt-radio--brand"><input type="radio" tahun="'.$data->tahun.'" bulan="'.$data->bulan.'"  aard="'.$data->aard.'" nopek="'.$data->nopek.'" nama="'.$data->nama_nopek.'" data-nopek="" class="btn-radio" name="btn-radio-rekap"><span></span></label>'; ?>
 					</td>
+					<td>{{$data->tahun}}</td>
 					<td>
 					<?php echo $bulan ?>
 					</td>

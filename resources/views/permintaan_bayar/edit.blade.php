@@ -80,7 +80,7 @@
 						<div class="form-group row">
 							<label for="jenis-dinas-input" class="col-2 col-form-label">Dibayar Kepada<span style="color:red;">*</span></label>
 							<div class="col-10">
-								<select name="dibayar" id="dibayar" class="form-control selectpicker" data-live-search="true" required>
+								<select name="dibayar" id="dibayar" class="form-control selectpicker" data-live-search="true" required oninvalid="this.setCustomValidity('Dibayar Kepada Harus Diisi..')" onchange="setCustomValidity('')">
 									<option value="">- Pilih -</option>
 									@foreach ($vendor as $row)
 									<option value="{{ $row->nama }}" <?php if($row->nama  == $data_bayar->kepada ) echo 'selected' ; ?>>{{ $row->nama }}</option>
@@ -97,7 +97,7 @@
 						<div class="form-group row">
 							<label for="dari-input" class="col-2 col-form-label">Debet Dari<span style="color:red;">*</span></label>
 							<div class="col-10">
-								<select name="debetdari" id="select-debetdari" class="form-control selectpicker" data-live-search="true" required>
+								<select name="debetdari" id="select-debetdari" class="form-control selectpicker" data-live-search="true" required oninvalid="this.setCustomValidity('Debet Dari Harus Diisi..')" onchange="setCustomValidity('')">
                                     <option value="">- Pilih -</option>
 									@foreach ($debit_nota as $row)
 									<option value="{{ $row->kode }}" <?php if($row->kode == $data_bayar->debet_dari ) echo 'selected' ; ?>>{{ $row->kode.' - '.$row->keterangan }}</option>
@@ -113,7 +113,7 @@
 							</div>
 							<label class="col-2 col-form-label">Tgl Debet<span style="color:red;">*</span></label>
 							<div class="col-3" >
-								<input class="form-control" type="text" name="tgldebet" value="<?php echo date("Y-m-d", strtotime($data_bayar->debet_tgl)) ?>" id="tgldebet" size="15" maxlength="15" required>
+								<input class="form-control" type="text" name="tgldebet" value="<?php echo date("Y-m-d", strtotime($data_bayar->debet_tgl)) ?>" id="tgldebet" size="15" maxlength="15" required oninvalid="this.setCustomValidity('Tgl Debet Harus Diisi..')" onchange="setCustomValidity('')">
 							</div>
 						</div>
 						<div class="form-group row">

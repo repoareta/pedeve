@@ -83,7 +83,7 @@
 						<div class="form-group row">
 							<label for="" class="col-2 col-form-label">Dibayar Kepada<span style="color:red;">*</span></label>
 							<div class="col-10">
-								<select name="dibayar" id="dibayar" class="form-control selectpicker" data-live-search="true" required>
+								<select name="dibayar" id="dibayar" class="form-control selectpicker" data-live-search="true" required oninvalid="this.setCustomValidity('Dibayar Kepada Harus Diisi..')" onchange="setCustomValidity('')">
 									<option value="">- Pilih -</option>
 									@foreach ($vendor as $row)
 									<option value="{{ $row->nama }}">{{ $row->nama }}</option>
@@ -101,7 +101,7 @@
 						<div class="form-group row">
 							<label for="dari-input" class="col-2 col-form-label">Debet Dari<span style="color:red;">*</span></label>
 							<div class="col-10">
-								<select name="debetdari" id="select-debetdari" class="form-control selectpicker" data-live-search="true" required>
+								<select name="debetdari" id="select-debetdari" class="form-control selectpicker" data-live-search="true" required oninvalid="this.setCustomValidity('Debet Dari Harus Diisi..')" onchange="setCustomValidity('')">
 									<option value="">- Pilih -</option>
 									@foreach ($debit_nota as $row)
 									<option value="{{ $row->kode }}">{{ $row->kode.' - '.$row->keterangan }}</option>
@@ -118,7 +118,7 @@
 							<label for="spd-input" class="col-1 col-form-label"></span></label>
 							<label class="col-1.5 col-form-label">Tgl Debet<span style="color:red;">*</span></label>
 							<div class="col-3" >
-								<input class="form-control" type="text" name="tgldebet" value="" data-date-format="dd/MM/yyyy" id="tgldebet" size="15" maxlength="15" required autocomplete='off'>
+								<input class="form-control" type="text" name="tgldebet" value=""  id="tgldebet" size="15" maxlength="15" required autocomplete='off' oninvalid="this.setCustomValidity('Tgl Debet Harus Diisi..')" onchange="setCustomValidity('')">
 							</div>
 						</div>
 						<div class="form-group row">
@@ -148,11 +148,11 @@
 							<label for="mulai-input" class="col-2 col-form-label">Periode <span style="color:red;">*</span></label>
 							<div class="col-10">
 								<div class="input-daterange input-group" id="date_range_picker">
-									<input type="text" class="form-control" name="mulai" required autocomplete='off'/>
+									<input type="text" class="form-control" name="mulai" required autocomplete='off' oninvalid="this.setCustomValidity('Priode Harus Diisi..')" onchange="setCustomValidity('')"/>
 									<div class="input-group-append">
 										<span class="input-group-text">s/d</span>
 									</div>
-									<input type="text" class="form-control" name="sampai" required autocomplete='off' />
+									<input type="text" class="form-control" name="sampai" required autocomplete='off' oninvalid="this.setCustomValidity('Priode Harus Diisi..')" onchange="setCustomValidity('')"/>
 								</div>
 							</div>
 						</div>

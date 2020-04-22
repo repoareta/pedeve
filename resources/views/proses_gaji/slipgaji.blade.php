@@ -6,7 +6,7 @@
 	<div class="kt-container  kt-container--fluid ">
 		<div class="kt-subheader__main">
 			<h3 class="kt-subheader__title">
-				Proses Upah Bulanan </h3>
+				Cetak Slip Gaji </h3>
 			<span class="kt-subheader__separator kt-hidden"></span>
 			<div class="kt-subheader__breadcrumbs">
 				<a href="#" class="kt-subheader__breadcrumbs-home"><i class="flaticon2-shelter"></i></a>
@@ -17,7 +17,7 @@
 				<a href="" class="kt-subheader__breadcrumbs-link">
 					 </a>
 				<!-- <span class="kt-subheader__breadcrumbs-separator"></span> -->
-				<span class="kt-subheader__breadcrumbs-link kt-subheader__breadcrumbs-link--active">Proses Upah Bulanan</span>
+				<span class="kt-subheader__breadcrumbs-link kt-subheader__breadcrumbs-link--active">Cetak Slip Gaji</span>
 			</div>
 		</div>
 	</div>
@@ -32,7 +32,7 @@
 					<i class="kt-font-brand flaticon2-plus-1"></i>
 				</span>
 				<h3 class="kt-portlet__head-title">
-					Proses Upah Bulanan
+					Cetak Slip Gaji
 				</h3>			
 			</div>
 			<div class="kt-portlet__head-toolbar">
@@ -40,53 +40,51 @@
 				</div>
 			</div>
 		</div>
-		<form class="kt-form kt-form--label-right" action="{{route('proses_gaji.store')}}" method="post">
+		<form class="kt-form kt-form--label-right" action="{{route('proses_gaji.cetak_slipgaji')}}" method="post">
 		{{csrf_field()}}
 			<div class="kt-portlet__body">
 				<div class="form-group form-group-last">
 					<div class="alert alert-secondary" role="alert">
 						<div class="alert-text">
-							Header Proses Upah Bulanan
+							Header Cetak Slip Gaji
 						</div>
 					</div>
 				</div>
 				<input class="form-control" type="hidden" name="userid" value="{{Auth::user()->userid}}">
 				<div class="form-group row">
-					<label for="dari-input" class="col-2 col-form-label">Status Pekerja<span style="color:red;">*</span></label>
-					<div class="col-6">
-						<select name="prosesupah" id="select-debetdari" class="form-control selectpicker" data-live-search="true">
-							<option value="A">Semua</option>
-							<option value="C">Pekerja Tetap</option>
-							<option value="K">Kontrak</option>
-							<option value="B">Perbantuan</option>
-							<option value="U">Komisaris</option>
-							<option value="O">Komite</option>
-							<option value="N">Pekerja Baru</option>
-						</select>								
-					</div>
+				<label for="spd-input" class="col-2 col-form-label">Bulan Gaji<span style="color:red;">*</span></label>
+				<div class="col-4">
+						<?php 
+							$tgl = date_create(now());
+							$tahun = date_format($tgl, 'Y'); 
+							$bulan = date_format($tgl, 'n'); 
+						?>
+						<select class="form-control" name="bulan" required>
+							<option value="1" <?php if($bulan  == 1 ) echo 'selected' ; ?>>Januari</option>
+							<option value="2" <?php if($bulan  == 2 ) echo 'selected' ; ?>>Februari</option>
+							<option value="3" <?php if($bulan  == 3 ) echo 'selected' ; ?>>Maret</option>
+							<option value="4" <?php if($bulan  == 4 ) echo 'selected' ; ?>>April</option>
+							<option value="5" <?php if($bulan  == 5 ) echo 'selected' ; ?>>Mei</option>
+							<option value="6" <?php if($bulan  == 6 ) echo 'selected' ; ?>>Juni</option>
+							<option value="7" <?php if($bulan  == 7 ) echo 'selected' ; ?>>Juli</option>
+							<option value="8" <?php if($bulan  == 8 ) echo 'selected' ; ?>>Agustus</option>
+							<option value="9" <?php if($bulan  == 9 ) echo 'selected' ; ?>>September</option>
+							<option value="10" <?php if($bulan  ==10  ) echo 'selected' ; ?>>Oktober</option>
+							<option value="11" <?php if($bulan  == 11 ) echo 'selected' ; ?>>November</option>
+							<option value="12" <?php if($bulan  == 12 ) echo 'selected' ; ?>>Desember</option>
+						</select>
 				</div>
-				<div class="form-group row">
-					<label for="nopek-input" class="col-2 col-form-label">Bulan/Tahun<span style="color:red;">*</span></label>
-					<div class="col-6">
-						<input class="form-control" type="text" name="tanggalupah" value="" id="tanggal" size="7" maxlength="7" required  autocomplete='off' oninvalid="this.setCustomValidity('Bulan/Tahun Harus Diisi..')" onchange="setCustomValidity('')">
-						@if (session('proses'))
-						<small style="color: red;" id="att-kode-proses-upah">Bulan dan tahun yang dimasukan sudah pernah di proses.</small>
-                        @endif
-					</div>
-				</div>
-				<div class="form-group row">
-					<label for="spd-input" class="col-2 col-form-label"></label>
-					<div class="col-5">
-						<input id="ci"   style=" width: 26px;height: 26px;margin-left:50px;" value="proses" type="radio"  name="radioupah"  checked />  <label style="font-size:14px; margin-left:10px;">Proses</label>
-						<input  id="ci" style=" width: 26px;height: 26px;margin-left:50px;" value="batal" type="radio"    name="radioupah"  /><label style="font-size:14px; margin-left:10px;"> Batalkan</label>
-					</div>
+						<div class="col-4" >
+							<input class="form-control" type="text" value="{{$tahun}}"   name="tahun" size="4" maxlength="4" onkeypress="return hanyaAngka(event)" autocomplete='off' required>
+							<input class="form-control" type="hidden" value="{{Auth::user()->userid}}"  name="userid" autocomplete='off'>
+						</div>
 				</div>
 				<div class="kt-form__actions">
 					<div class="row">
 						<div class="col-2"></div>
 						<div class="col-10">
 							<a  href="#" class="btn btn-warning"><i class="fa fa-reply" aria-hidden="true"></i>Cancel</a>
-							<button type="submit" id="btn-save" class="btn btn-brand"><i class="fa fa-check" aria-hidden="true"></i>Process</button>
+							<button type="submit" id="btn-save" onclick="$('form').attr('target', '_blank')" class="btn btn-brand"><i class="fa fa-check" aria-hidden="true"></i>Process</button>
 						</div>
 					</div>
 				</div>

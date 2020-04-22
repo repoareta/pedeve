@@ -207,7 +207,7 @@ class PenempatanDepositoController extends Controller
         ]);
         return response()->json();   
     }
-
+    
     /**
      * Remove the specified resource from storage.
      *
@@ -217,14 +217,57 @@ class PenempatanDepositoController extends Controller
     public function delete(Request $request)
     {
         $nodok=str_replace('-', '/', $request->nodok);
-
+        
      Dtldepositotest::where('docno', $nodok)->where('lineno', $request->lineno)->where('perpanjangan', $request->pjg)->delete();
      Mtrdeposito::where('docno', $nodok)->where('lineno', $request->lineno)->where('perpanjangan', $request->pjg)->delete();
      Penempatandepo::where('docno', $nodok)->where('lineno', $request->lineno)->delete();
      Kasline::where('docno', $nodok)->where('lineno', $request->lineno)
      ->update([
          'inputpwd' =>  'N',
-     ]);
+         ]);
      return response()->json();   
+    }
+    
+    //perpanjangan Deposito
+    public function depopjg($id,$lineno,$pjg)
+    {
+        $nodok=str_replace('-', '/', $id);
+        
+        $data_list = DB::select("select a.*, b.descacct as namabank from mtrdeposito a join account b on a.kdbank=b.kodeacct where a.docno='$nodok' and lineno='$lineno' and perpanjangan='$pjg'");
+        return view('penempatan_deposito.createper',compact('data_list'));
+    }
+
+
+    public function updatedepopjg(Request $request)
+    {
+        $docno = $request->nodok;
+        $lineno = $request->lineno;
+        $asal = $request->asal;
+        $kdbank = $request->kdbank;
+        $tgldep = $request->tanggal;
+        $tgltempo = $request->tanggal2;
+        $tahunbunga = $request->tahunbunga;
+        $noseri = $request->noseri;
+        $nominal = $request->nominal;
+        $namabank = $request->namabank;
+        $perpanjangan = $request->perpanjangan+1;
+        $keterangan = $request->keterangan;
+        $kurs = $request->kurs;
+
+       Mtrdeposito::insert([
+        'docno' => $docno,
+        'lineno' => $lineno,
+        'tgldep' => $tgldep,
+        'tgltempo' => $tgltempo,
+        'bungatahun' => $tahunbunga,
+        'asal' => $asal,
+        'noseri' => $noseri,
+        'nominal' => $nominal,
+        'kdbank' => $kdbank,
+        'keterangan' => $keterangan,
+        'proses' => 'Y',
+        'perpanjangan' => $perpanjangan 
+        ]);
+        return response()->json();   
     }
 }

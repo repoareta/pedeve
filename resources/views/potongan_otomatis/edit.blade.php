@@ -83,7 +83,7 @@
 							<div class="form-group row">
 								<label for="" class="col-2 col-form-label">Hutang<span style="color:red;">*</span></label>
 								<div class="col-8">
-									<select name="aardhut" id="aard" class="form-control selectpicker" data-live-search="true" required autocomplete='off'>
+									<select name="aardhut" id="aard" class="form-control selectpicker" data-live-search="true" required autocomplete='off' oninvalid="this.setCustomValidity('Hutang Harus Diisi..')" onchange="setCustomValidity('')">
 										<option value="">- Pilih -</option>
 										@foreach($pay_hutang as $dataa)
 										<option value="{{$dataa->kode}}" <?php if($dataa->kode == $data->aardhut ) echo 'selected' ; ?>>{{$dataa->kode}} - {{$dataa->nama}}</option>

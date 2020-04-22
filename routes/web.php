@@ -367,6 +367,8 @@ Route::group(['middleware'=> ['auth','checkRole:1']], function () {
             Route::get('lembur/edit/{id}/{nopek}', 'LemburController@edit')->name('edit');
             Route::post('lembur/update', 'LemburController@update')->name('update');
             Route::delete('lembur/delete', 'LemburController@delete')->name('delete');
+            Route::get('lembur/ctkrekaplembur', 'LemburController@ctkrekaplembur')->name('ctkrekaplembur');
+            Route::post('lembur/rekap/export', 'LemburController@rekapExport')->name('rekap.export');
         });
         //end lembur
 
@@ -381,6 +383,10 @@ Route::group(['middleware'=> ['auth','checkRole:1']], function () {
             Route::get('proses_gaji', 'ProsesGajiController@index')->name('index');
             Route::post('proses_gaji/store', 'ProsesGajiController@store')->name('store');
             Route::get('proses_gaji/edit', 'ProsesGajiController@edit')->name('edit');
+            Route::get('proses_gaji/slip/gaji', 'ProsesGajiController@slipGaji')->name('slipGaji');
+            Route::post('proses_gaji/cetak/slipgaji', 'ProsesGajiController@cetak_slipgaji')->name('cetak_slipgaji');
+            Route::get('proses_gaji/ctkrekapgaji', 'ProsesGajiController@ctkrekapgaji')->name('ctkrekapgaji');
+            Route::post('proses_gaji/rekap/export', 'ProsesGajiController@rekapExport')->name('rekap.export');    
         });
         //end proses_gaji
 
@@ -390,15 +396,20 @@ Route::group(['middleware'=> ['auth','checkRole:1']], function () {
             Route::get('proses_thr', 'ProsesThrController@index')->name('index');
             Route::post('proses_thr/store', 'ProsesThrController@store')->name('store');
             Route::get('proses_thr/edit', 'ProsesThrController@edit')->name('edit');
+            Route::get('proses_thr/ctkslipthr', 'ProsesThrController@ctkslipthr')->name('ctkslipthr');
+            Route::post('proses_thr/rekap/export', 'ProsesThrController@rekapExport')->name('rekap.export');
+
         });
-        //end proses_gaji
+        //end proses_thr
 
         //proses insentif
         // Route assigned name "proses_insentif.index"...
         Route::name('proses_insentif.')->group(function () {
             Route::get('proses_insentif', 'ProsesInsentifController@index')->name('index');
             Route::post('proses_insentif/store', 'ProsesInsentifController@store')->name('store');
-            Route::get('proses_insentif/edit', 'ProsesInsentifController@edit')->name('edit');
+            Route::get('proses_insentif/edit', 'ProsesInsentifController@edit')->name('edit'); 
+            Route::get('proses_insentif/ctkslipinsentif', 'ProsesInsentifController@ctkslipinsentif')->name('ctkslipinsentif');
+            Route::post('proses_insentif/rekap/export', 'ProsesInsentifController@rekapExport')->name('rekap.export');
         });
         //end proses_insentif
 
@@ -427,9 +438,13 @@ Route::group(['middleware'=> ['auth','checkRole:1']], function () {
             Route::get('jamsostek/edit/{id}', 'JamsostekController@edit')->name('edit');
             Route::post('jamsostek/update', 'JamsostekController@update')->name('update');
             Route::delete('jamsostek/delete', 'JamsostekController@delete')->name('delete');
+            Route::get('jamsostek/ctkiuranjs', 'JamsostekController@ctkiuranjs')->name('ctkiuranjs');
+            Route::post('jamsostek/rekap/export', 'JamsostekController@rekapExport')->name('rekap.export');
+            Route::get('jamsostek/ctkrekapiuranjamsostek', 'JamsostekController@ctkrekapiuranjamsostek')->name('ctkrekapiuranjamsostek');
+            Route::post('jamsostek/rekapiuran/export', 'JamsostekController@rekapIuranExport')->name('rekapiuran.export');
         });
         //end jamsostek
-
+        
         //pensiun
         // Route assigned name "pensiun.index"...
         Route::name('pensiun.')->group(function () {
@@ -441,6 +456,10 @@ Route::group(['middleware'=> ['auth','checkRole:1']], function () {
             Route::get('pensiun/edit/{id}', 'PensiunController@edit')->name('edit');
             Route::post('pensiun/update', 'PensiunController@update')->name('update');
             Route::delete('pensiun/delete', 'PensiunController@delete')->name('delete');
+            Route::get('pensiun/ctkiuranpensiun', 'PensiunController@ctkiuranpensiun')->name('ctkiuranpensiun');
+            Route::post('pensiun/rekap/export', 'PensiunController@rekapExport')->name('rekap.export');
+            Route::get('pensiun/ctkrekapiuranpensiun', 'PensiunController@ctkrekapiuranpensiun')->name('ctkrekapiuranpensiun');
+            Route::post('pensiun/rekapiuran/export', 'PensiunController@rekapIuranExport')->name('rekapiuran.export');
         });
         //end pensiun
         
@@ -526,6 +545,8 @@ Route::group(['middleware'=> ['auth','checkRole:1']], function () {
             Route::get('penempatan_deposito/edit/{nodok}/{lineno}/{pjg}', 'PenempatanDepositoController@edit')->name('edit');
             Route::post('penempatan_deposito/update', 'PenempatanDepositoController@update')->name('update');
             Route::delete('penempatan_deposito/delete', 'PenempatanDepositoController@delete')->name('delete');
+            Route::get('penempatan_deposito/depopjg/{nodok}/{lineno}/{pjg}', 'PenempatanDepositoController@depopjg')->name('depopjg');
+            Route::post('penempatan_deposito/updatedepopjg', 'PenempatanDepositoController@updatedepopjg')->name('updatedepopjg');
         });
         //end penempatan_deposito
     });

@@ -66,7 +66,7 @@
 					<div class="form-group row">
 						<label for="jenis-dinas-input" class="col-2 col-form-label">Dibayar Kepada<span style="color:red;">*</span></label>
 						<div class="col-10">
-								<select name="kepada" id="kepada" class="form-control selectpicker" data-live-search="true" required>
+								<select name="kepada" id="kepada" class="form-control selectpicker" data-live-search="true" required oninvalid="this.setCustomValidity('Dibayar Kepada Harus Diisi..')" onchange="setCustomValidity('')">
 									<option value="">- Pilih -</option>
 									@foreach ($vendor as $row)
 									<option value="{{ $row->nama }}"  <?php if($row->nama  == $data_umk->kepada ) echo 'selected' ; ?>>{{ $row->nama }}</option>

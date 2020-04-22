@@ -47,10 +47,13 @@
 						<span style="font-size: 2em;" class="kt-font-danger pointer-link" id="deleteRow" data-toggle="kt-tooltip" data-placement="top" title="Hapus Data">
 							<i class="fas fa-times-circle"></i>
 						</span>
+						<span style="font-size: 2em;" class=" pointer-link" id="dolarRow" data-toggle="kt-tooltip" data-placement="top" title="Perpanjang Deposito">
+						<i class="fas fa-dollar-sign"></i>
+						</span>
 
-						<!-- <span style="font-size: 2em;" class="kt-font-info pointer-link" id="exportRow" data-toggle="kt-tooltip" data-placement="top" title="Cetak Data">
+						<span style="font-size: 2em;" class="kt-font-info pointer-link" id="exportRow" data-toggle="kt-tooltip" data-placement="top" title="Cetak Data">
 							<i class="fas fa-print"></i>
-						</span> -->
+						</span>
 						<span style="font-size: 2em;" class="kt-font-info pointer-link" data-toggle="kt-tooltip" data-placement="top" title="Refresh Ketampilan Tabel Awal">
 							<i class="fas fa-sync-alt" id="show-data"></i>
 						</span>
@@ -140,7 +143,7 @@
 		});
 		
 
-//edit potongan Manual
+//edit penempatan deposito
 $('#editRow').click(function(e) {
 	e.preventDefault();
 
@@ -156,13 +159,29 @@ $('#editRow').click(function(e) {
 	}
 });
 
+//perpanjang deposito
+$('#dolarRow').click(function(e) {
+	e.preventDefault();
+
+	if($('input[type=radio]').is(':checked')) { 
+		$("input[type=radio]:checked").each(function(){
+			var nodok = $(this).attr('nodok').split("/").join("-");
+			var lineno = $(this).attr('lineno');
+			var pjg = $(this).attr('pjg');
+			location.replace("{{url('perbendaharaan/penempatan_deposito/depopjg')}}"+ '/' +nodok+'/' +lineno+ '/' +pjg);
+		});
+	} else {
+		swalAlertInit('perpanjangan deposito');
+	}
+});
+
 //refresh data
 $('#show-data').on('click', function(e) {
 	e.preventDefault();
 		location.replace("{{ route('penempatan_deposito.index') }}");
 
 });
-//delete potongan manual
+//delete penempatan deposito
 $('#deleteRow').click(function(e) {
 	e.preventDefault();
 	if($('input[type=radio]').is(':checked')) { 
