@@ -12,6 +12,7 @@ use App\Models\KodeBagian;
 use App\Models\Provinsi;
 use App\Models\Agama;
 use App\Models\Pendidikan;
+use App\Models\PerguruanTinggi;
 
 //load form request (for validation)
 use App\Http\Requests\PekerjaStore;
@@ -180,6 +181,7 @@ class PekerjaController extends Controller
         $provinsi_list = Provinsi::all();
         $agama_list = Agama::all();
         $pendidikan_list = Pendidikan::all();
+        $perguruan_tinggi_list = PerguruanTinggi::all();
 
         return view('pekerja.edit', compact(
             'kode_bagian_list',
@@ -187,6 +189,7 @@ class PekerjaController extends Controller
             'provinsi_list',
             'agama_list',
             'pendidikan_list',
+            'perguruan_tinggi_list',
             'pekerja'
         ));
     }
@@ -222,13 +225,13 @@ class PekerjaController extends Controller
         $pekerja->nohp         = $request->no_handphone;
         $pekerja->gender       = $request->jenis_kelamin;
         $pekerja->npwp         = $request->npwp;
-        $pekerja->userid       = Auth::user()->id;
+        $pekerja->userid       = Auth::user()->userid;
         $pekerja->tglentry     = Carbon::now();
         $pekerja->fasilitas    = null;
 
         if ($request->file('photo')) {
             // Value is not URL but directory file path
-            $image_path = "public/pekerja_img/$pekerja->photo";  
+            $image_path = "public/pekerja_img/$pekerja->photo";
             Storage::delete($image_path);
 
             $photo = $request->file('photo')->getClientOriginalName();

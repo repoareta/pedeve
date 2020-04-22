@@ -13,7 +13,7 @@ class PekerjaPendidikanStore extends FormRequest
      */
     public function authorize()
     {
-        return false;
+        return true;
     }
 
     /**
@@ -24,7 +24,12 @@ class PekerjaPendidikanStore extends FormRequest
     public function rules()
     {
         return [
-            //
+            "kode_pendidikan_pekerja"    => "required",
+            "tempat_didik_pekerja"       => "required",
+            "kode_pt_pendidikan_pekerja" => "nullable",
+            "mulai_pendidikan_pekerja"   => "required|date",
+            "sampai_pendidikan_pekerja"  => "nullable|date",
+            "catatan_pendidikan_pekerja" => "nullable",
         ];
     }
 }

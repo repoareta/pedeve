@@ -310,10 +310,10 @@ Route::group(['middleware'=> ['auth','checkRole:1']], function () {
 
             // Route assigned name "pekerja.pendidikan.index"...
             Route::name('pendidikan.')->group(function () {
-                Route::get('pekerja/pendidikan/{pekerja}', 'PekerjaPendidikanController@indexJson')->name('index.json');
+                Route::get('pekerja/pendidikan/index_json/{pekerja}', 'PekerjaPendidikanController@indexJson')->name('index.json');
                 Route::post('pekerja/pendidikan/store/{pekerja}', 'PekerjaPendidikanController@store')->name('store');
                 Route::get('pekerja/pendidikan/show_json', 'PekerjaPendidikanController@showJson')->name('show.json'); // get issue when combine with prefix pekerja
-                Route::post('pekerja/pendidikan/update/{pekerja}/{status}/{nama}', 'PekerjaPendidikanController@update')->name('update');
+                Route::post('pekerja/pendidikan/update/{pekerja}/{mulai}/{tempatdidik}/{kodedidik}', 'PekerjaPendidikanController@update')->name('update');
                 Route::delete('pekerja/pendidikan/delete', 'PekerjaPendidikanController@delete')->name('delete');
             });
 
