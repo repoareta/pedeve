@@ -25,18 +25,17 @@
 <!-- end:: Subheader -->
 
 <div class="kt-container  kt-container--fluid  kt-grid__item kt-grid__item--fluid">
-<div class="kt-portlet kt-portlet--mobile">
-	<div class="kt-portlet__head kt-portlet__head--lg">
-		<div class="kt-portlet__head-label">
-			<span class="kt-portlet__head-icon">
-				<i class="kt-font-brand flaticon2-line-chart"></i>
-			</span>
-			<h3 class="kt-portlet__head-title">
-				Tambah Uang Muka Kerja
-			</h3>
+	<div class="kt-portlet kt-portlet--mobile">
+		<div class="kt-portlet__head kt-portlet__head--lg">
+			<div class="kt-portlet__head-label">
+				<span class="kt-portlet__head-icon">
+					<i class="kt-font-brand flaticon2-line-chart"></i>
+				</span>
+				<h3 class="kt-portlet__head-title">
+					Tambah Uang Muka Kerja
+				</h3>
+			</div>
 		</div>
-	</div>
-		<div class="card-body table-responsive" >
 		<!--begin: Datatable -->
 		<form  class="kt-form kt-form--label-right" id="form-create-umk">
 			{{csrf_field()}}
@@ -85,7 +84,7 @@
 					</div>
 					<div class="form-group row">
 						<label for="id-pekerja;-input" class="col-2 col-form-label">Bulan Buku<span style="color:red;">*</span></label>
-						<div class="col-5">
+						<div class="col-10">
 							<input class="form-control" type="text"  value="{{$bulan_buku}}"  name="bulan_buku" size="6" maxlength="6" readonly style="background-color:#DCDCDC; cursor:not-allowed" >
 						</div>
 					</div>
@@ -98,7 +97,7 @@
 					</div>
 					<div class="form-group row">
 						<label for="tujuan-input" class="col-2 col-form-label">Kurs <span style="color:red;display:none" id="simbol-kurs">*</span></label>
-						<div class="col-2">
+						<div class="col-10">
 							<input class="form-control" type="text" value="1" name="kurs" id="kurs" size="10" maxlength="10" autocomplete='off' onkeypress="return hanyaAngka(event)"  >
 						</div>
 					</div>
@@ -110,7 +109,7 @@
 					</div>
 					<div class="form-group row">
 						<label for="example-datetime-local-input" class="col-2 col-form-label">Jumlah</label>
-						<div class="col-5">
+						<div class="col-10">
 							<input style="background-color:#DCDCDC; cursor:not-allowed" class="form-control" type="text" value="Rp. 0"  readonly>
 							<input class="form-control" type="hidden" value="" name="jumlah" id="jumlah" size="70" maxlength="200" readonly>
 						</div>
@@ -141,23 +140,17 @@
 					<div class="kt-portlet__head-toolbar">
 						<div class="kt-portlet__head-wrapper">
 							<div class="kt-portlet__head-actions">
-								<a  href="#" style="cursor:not-allowed" data-toggle="modal" data-target="#kt_modal_4">
-									<span style="font-size: 2em;" class="kt-font-success">
-										<i class="fas fa-plus-circle"></i>
-									</span>
-								</a>
-				
-								<a href="#" style="cursor:not-allowed" data-toggle="modal" data-target="#kt_modal_4">
-									<span style="font-size: 2em;" class="kt-font-warning">
-										<i class="fas fa-edit"></i>
-									</span>
-								</a>
-				
-								<a href="#" style="cursor:not-allowed" data-toggle="modal" data-target="#kt_modal_4">
-									<span style="font-size: 2em;" class="kt-font-danger">
-										<i class="fas fa-times-circle"></i>
-									</span>
-								</a>
+								<span style="font-size: 2em;cursor:not-allowed" class="kt-font-success">
+									<i class="fas fa-plus-circle"></i>
+								</span>
+			
+								<span style="font-size: 2em;cursor:not-allowed" class="kt-font-warning">
+									<i class="fas fa-edit"></i>
+								</span>
+			
+								<span style="font-size: 2em;cursor:not-allowed" class="kt-font-danger">
+									<i class="fas fa-times-circle"></i>
+								</span>
 							</div>
 						</div>
 					</div>
@@ -187,13 +180,16 @@
 		<!--end: Datatable -->
 	</div>
 </div>
-</div>
 @endsection
 
 @section('scripts')
 	<script type="text/javascript">
 	$(document).ready(function () {
-		$('#kt_table').DataTable();
+		$('#kt_table').DataTable({
+			scrollX   : true,
+			processing: true,
+			serverSide: false,
+		});
 	});
 
 function displayResult(ci){ 

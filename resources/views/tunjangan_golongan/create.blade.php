@@ -55,14 +55,14 @@
 						</div>
 						<div class="form-group row">
 							<label class="col-2 col-form-label">Golongan<span style="color:red;">*</span></label>
-							<div class="col-4">
+							<div class="col-10">
 								<input class="form-control" name="golongan" type="text" value="" id="golongan" required oninvalid="this.setCustomValidity('Golongan Harus Diisi..')" oninput="setCustomValidity('')" autocomplete='off'>
 								<small style="color: red; display: none;" id="att-kode-golongan">Golongan Sudah Ada.</small>
 							</div>
 						</div>
 						<div class="form-group row">
 							<label class="col-2 col-form-label">Nilai<span style="color:red;">*</span></label>
-							<div class="col-4">
+							<div class="col-10">
 								<input class="form-control" name="nilai" type="text" value="" id="nilai" required oninvalid="this.setCustomValidity('Nilai Harus Diisi..')" oninput="setCustomValidity('')" autocomplete='off' onkeypress="return hanyaAngka(event)">
 							</div>
 						</div>

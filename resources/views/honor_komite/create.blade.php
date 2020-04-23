@@ -55,7 +55,7 @@
 						</div>
 						<div class="form-group row">
 						<label for="spd-input" class="col-2 col-form-label">Bulan/Tahun<span style="color:red;">*</span></label>
-						<div class="col-4">
+						<div class="col-5">
 								<?php 
 									$tgl = date_create(now());
 									$tahun = date_format($tgl, 'Y'); 
@@ -76,14 +76,14 @@
 									<option value="12" <?php if($bulan  == 12 ) echo 'selected' ; ?>>Desember</option>
 								</select>
 						</div>
-								<div class="col-4" >
+								<div class="col-5" >
 									<input class="form-control" type="text" value="{{$tahun}}"   name="tahun" size="4" maxlength="4" onkeypress="return hanyaAngka(event)" autocomplete='off' required>
 									<input class="form-control" type="hidden" value="{{Auth::user()->userid}}"  name="userid" autocomplete='off'>
 								</div>
 						</div>
 						<div class="form-group row">
 							<label for="" class="col-2 col-form-label">Pegawai<span style="color:red;">*</span></label>
-							<div class="col-8">
+							<div class="col-10">
 								<select name="nopek"  class="form-control selectpicker" data-live-search="true" required autocomplete='off' oninvalid="this.setCustomValidity('Pegawai Harus Diisi..')" onchange="setCustomValidity('')">
 									<option value="">- Pilih -</option>
 									@foreach($data_pegawai as $data)
@@ -94,7 +94,7 @@
 						</div>
 						<div class="form-group row">
 							<label class="col-2 col-form-label">Nilai<span style="color:red;">*</span></label>
-							<div class="col-8">
+							<div class="col-10">
 								<input class="form-control" name="nilai" type="text" value="" id="nilai" required oninvalid="this.setCustomValidity('Nilai Harus Diisi..')" oninput="setCustomValidity('')" autocomplete='off' onkeypress="return hanyaAngka(event)">
 								<input type="hidden" value="0" name="pajak" id="pajak">
 							</div>

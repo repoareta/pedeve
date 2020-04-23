@@ -40,7 +40,6 @@
 				</div>
 			</div>
 		</div>
-		<div class="card-body table-responsive" >
 			<!--begin: Datatable -->
 			<form  class="kt-form kt-form--label-right" id="form-update-permintaan-bayar">
 				{{csrf_field()}}
@@ -153,7 +152,7 @@
                         @endforeach
 						<div class="form-group row">
 							<label class="col-2 col-form-label">Total Nilai</label>
-							<div class="col-4">
+							<div class="col-10">
 								<input style="background-color:#DCDCDC; cursor:not-allowed"  class="form-control" name="totalnilai" type="text" id="totalnilai" value="Rp. <?php echo number_format($count, 0, ',', '.'); ?>"  readonly>
 							</div>
 						</div>
@@ -278,7 +277,6 @@
 					</table>
 				</div>
 			<!--end: Datatable -->
-		</div>
 	</div>
 </div>
 
@@ -521,7 +519,11 @@
 @section('scripts')
 	<script type="text/javascript">
 	$(document).ready(function () {
-		$('#tabel-detail-permintaan').DataTable();
+		$('#tabel-detail-permintaan').DataTable({
+			scrollX   : true,
+			processing: true,
+			serverSide: false,
+		});
 
 
 // proses update permintaan bayar

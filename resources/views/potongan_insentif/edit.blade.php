@@ -56,7 +56,7 @@
 						@foreach($data_list as $data)
 						<div class="form-group row">
 						<label for="spd-input" class="col-2 col-form-label">Bulan Gaji<span style="color:red;">*</span></label>
-						<div class="col-4">
+						<div class="col-5">
 							<?php 
 							$array_bln	 = array (
 										1 =>   'Januari',
@@ -78,21 +78,21 @@
 						<input class="form-control" type="hidden" value="{{$data->bulan}}" name="bulan">
 								
 						</div>
-								<div class="col-4" >
+								<div class="col-5" >
 									<input class="form-control" type="text" value="{{$data->tahun}}" name="tahun" readonly style="background-color:#DCDCDC; cursor:not-allowed">
 									<input class="form-control" type="hidden" value="{{Auth::user()->userid}}"  name="userid" autocomplete='off'>
 								</div>
 						</div>
 						<div class="form-group row">
 							<label for="" class="col-2 col-form-label">Pegawai<span style="color:red;">*</span></label>
-							<div class="col-8">
+							<div class="col-10">
 							<input class="form-control" type="text" value="{{$data->nopek}} - {{$data->nama_nopek}}"  readonly style="background-color:#DCDCDC; cursor:not-allowed">
 							<input class="form-control" type="hidden" value="{{$data->nopek}}" name="nopek" >
 							</div>
 						</div>
 						<div class="form-group row">
 							<label class="col-2 col-form-label">Nilai<span style="color:red;">*</span></label>
-							<div class="col-8">
+							<div class="col-10">
 								<input class="form-control" name="nilai" type="text" value="<?php echo number_format($data->nilai, 0, '', '') ?>" id="nilai" size="17" maxlength="17" required oninvalid="this.setCustomValidity('Nilai Harus Diisi..')" oninput="setCustomValidity('')" autocomplete='off' onkeypress="return hanyaAngka(event)">
 							</div>
 						</div>

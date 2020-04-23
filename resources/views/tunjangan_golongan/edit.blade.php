@@ -56,13 +56,13 @@
 						@foreach($data_list as $data)
 						<div class="form-group row">
 							<label class="col-2 col-form-label">Golongan<span style="color:red;">*</span></label>
-							<div class="col-4">
+							<div class="col-10">
 								<input class="form-control" name="golongan" type="text" value="{{$data->golongan}}" id="golongan" readonly style="background-color:#DCDCDC; cursor:not-allowed" >
 							</div>
 						</div>
 						<div class="form-group row">
 							<label class="col-2 col-form-label">Nilai<span style="color:red;">*</span></label>
-							<div class="col-4">
+							<div class="col-10">
 								<input class="form-control" name="nilai" type="text" value="<?php echo number_format($data->nilai,0,'','') ?>" id="nilai" required oninvalid="this.setCustomValidity('Nilai Harus Diisi..')" oninput="setCustomValidity('')" autocomplete='off' onkeypress="return hanyaAngka(event)">
 							</div>
 						</div>

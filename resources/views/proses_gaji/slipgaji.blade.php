@@ -43,17 +43,10 @@
 		<form class="kt-form kt-form--label-right" action="{{route('proses_gaji.cetak_slipgaji')}}" method="post">
 		{{csrf_field()}}
 			<div class="kt-portlet__body">
-				<div class="form-group form-group-last">
-					<div class="alert alert-secondary" role="alert">
-						<div class="alert-text">
-							Header Cetak Slip Gaji
-						</div>
-					</div>
-				</div>
 				<input class="form-control" type="hidden" name="userid" value="{{Auth::user()->userid}}">
 				<div class="form-group row">
 				<label for="spd-input" class="col-2 col-form-label">Bulan Gaji<span style="color:red;">*</span></label>
-				<div class="col-4">
+				<div class="col-5">
 						<?php 
 							$tgl = date_create(now());
 							$tahun = date_format($tgl, 'Y'); 
@@ -74,7 +67,7 @@
 							<option value="12" <?php if($bulan  == 12 ) echo 'selected' ; ?>>Desember</option>
 						</select>
 				</div>
-						<div class="col-4" >
+						<div class="col-5" >
 							<input class="form-control" type="text" value="{{$tahun}}"   name="tahun" size="4" maxlength="4" onkeypress="return hanyaAngka(event)" autocomplete='off' required>
 							<input class="form-control" type="hidden" value="{{Auth::user()->userid}}"  name="userid" autocomplete='off'>
 						</div>
@@ -84,7 +77,7 @@
 						<div class="col-2"></div>
 						<div class="col-10">
 							<a  href="#" class="btn btn-warning"><i class="fa fa-reply" aria-hidden="true"></i>Cancel</a>
-							<button type="submit" id="btn-save" onclick="$('form').attr('target', '_blank')" class="btn btn-brand"><i class="fa fa-check" aria-hidden="true"></i>Process</button>
+							<button type="submit" id="btn-save" onclick="$('form').attr('target', '_blank')" class="btn btn-brand"><i class="fa fa-print" aria-hidden="true"></i>Cetak</button>
 						</div>
 					</div>
 				</div>

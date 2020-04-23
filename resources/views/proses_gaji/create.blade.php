@@ -53,7 +53,7 @@
 				<input class="form-control" type="hidden" name="userid" value="{{Auth::user()->userid}}">
 				<div class="form-group row">
 					<label for="dari-input" class="col-2 col-form-label">Status Pekerja<span style="color:red;">*</span></label>
-					<div class="col-6">
+					<div class="col-10">
 						<select name="prosesupah" id="select-debetdari" class="form-control selectpicker" data-live-search="true">
 							<option value="A">Semua</option>
 							<option value="C">Pekerja Tetap</option>
@@ -67,7 +67,7 @@
 				</div>
 				<div class="form-group row">
 					<label for="nopek-input" class="col-2 col-form-label">Bulan/Tahun<span style="color:red;">*</span></label>
-					<div class="col-6">
+					<div class="col-10">
 						<input class="form-control" type="text" name="tanggalupah" value="" id="tanggal" size="7" maxlength="7" required  autocomplete='off' oninvalid="this.setCustomValidity('Bulan/Tahun Harus Diisi..')" onchange="setCustomValidity('')">
 						@if (session('proses'))
 						<small style="color: red;" id="att-kode-proses-upah">Bulan dan tahun yang dimasukan sudah pernah di proses.</small>

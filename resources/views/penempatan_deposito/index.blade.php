@@ -6,7 +6,7 @@
 	<div class="kt-container  kt-container--fluid ">
 		<div class="kt-subheader__main">
 			<h3 class="kt-subheader__title">
-				Honorarium Komite/Rapat </h3>
+				Penempatan Deposito </h3>
 			<span class="kt-subheader__separator kt-hidden"></span>
 			<div class="kt-subheader__breadcrumbs">
 				<a href="#" class="kt-subheader__breadcrumbs-home"><i class="flaticon2-shelter"></i></a>
@@ -14,7 +14,7 @@
 				<a href="" class="kt-subheader__breadcrumbs-link">
 					Payroll </a>
 				<span class="kt-subheader__breadcrumbs-separator"></span>
-				<span class="kt-subheader__breadcrumbs-link kt-subheader__breadcrumbs-link--active">Honorarium Komite/Rapat</span>
+				<span class="kt-subheader__breadcrumbs-link kt-subheader__breadcrumbs-link--active">Penempatan Deposito</span>
 			</div>
 		</div>
 	</div>
@@ -29,7 +29,7 @@
 				<i class="kt-font-brand flaticon2-line-chart"></i>
 			</span>
 			<h3 class="kt-portlet__head-title">
-				Tabel Honorarium Komite/Rapat
+				Tabel Penempatan Deposito
 			</h3>			
 			<div class="kt-portlet__head-toolbar">
 				<div class="kt-portlet__head-wrapper">
