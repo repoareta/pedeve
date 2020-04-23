@@ -25,19 +25,17 @@
 <!-- end:: Subheader -->
 
 <div class="kt-container  kt-container--fluid  kt-grid__item kt-grid__item--fluid">
-<div class="kt-portlet kt-portlet--mobile">
-	<div class="kt-portlet__head kt-portlet__head--lg">
-		<div class="kt-portlet__head-label">
-			<span class="kt-portlet__head-icon">
-				<i class="kt-font-brand flaticon2-line-chart"></i>
-			</span>
-			<h3 class="kt-portlet__head-title">
-				Menu Uang Muka Kerja
-			</h3>
+	<div class="kt-portlet kt-portlet--mobile">
+		<div class="kt-portlet__head kt-portlet__head--lg">
+			<div class="kt-portlet__head-label">
+				<span class="kt-portlet__head-icon">
+					<i class="kt-font-brand flaticon2-line-chart"></i>
+				</span>
+				<h3 class="kt-portlet__head-title">
+					Menu Uang Muka Kerja
+				</h3>
+			</div>
 		</div>
-	</div>
-	<div class="">
-		<div class="card-body table-responsive" >
 		<!--begin: Datatable -->
 		<form  class="kt-form kt-form--label-right" id="form-update-umk">
 			{{csrf_field()}}
@@ -83,7 +81,7 @@
 					</div>
 					<div class="form-group row">
 						<label for="id-pekerja;-input" class="col-2 col-form-label">Bulan Buku<span style="color:red;">*</span></label>
-						<div class="col-5">
+						<div class="col-10">
                             <input class="form-control" type="text" value="{{$data_umk->bulan_buku}}"   name="bulan_buku" size="6" maxlength="6" readonly style="background-color:#DCDCDC; cursor:not-allowed">
 						</div>
 					</div>
@@ -96,7 +94,7 @@
 					</div>
 					<div class="form-group row">
 						<label for="tujuan-input" class="col-2 col-form-label">Kurs<span style="color:red;">*</span></label>
-						<div class="col-2">
+						<div class="col-10">
                             <input class="form-control" type="text" value="<?php echo number_format($data_umk->rate, 0, ',', '.'); ?>" name="kurs"  id="kurs" size="10" maxlength="10">
                             <input class="form-control" type="text" hidden value="{{$data_umk->rate}}" name="kurs"  size="10" maxlength="10">
 						</div>
@@ -109,7 +107,7 @@
 					</div>
 					<div class="form-group row">
 						<label for="example-datetime-local-input" class="col-2 col-form-label">Jumlah<span style="color:red;">*</span></label>
-						<div class="col-5">
+						<div class="col-10">
                             <input style="background-color:#DCDCDC; cursor:not-allowed" class="form-control" type="text" value="Rp. <?php echo number_format($count, 0, ',', '.'); ?>"  size="16" maxlength="16" readonly>
 							<input  class="form-control" type="text" value="<?php echo number_format($count, 0, '', ''); ?>" name="jumlah" id="jumlah" size="16" maxlength="16" hidden readonly>
 						</div>
@@ -230,9 +228,7 @@
 				</table>
 			</div>
 		<!--end: Datatable -->
-		</div>
 	</div>
-</div>
 </div>
 
 <!--begin::Modal creaate--> 
@@ -470,7 +466,11 @@
 @section('scripts')
 <script type="text/javascript">
 $(document).ready(function () {
-		$('#kt_table').DataTable();
+		$('#kt_table').DataTable({
+			scrollX   : true,
+			processing: true,
+			serverSide: false,
+		});
 		
     });
  

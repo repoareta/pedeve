@@ -51,16 +51,16 @@
             @foreach($data_app as $data)
             <div class="form-group row">
                 <label for="mulai-input" class="col-2 col-form-label">No.Dokumen</label>
-                <div class="col-3">
+                <div class="col-10">
                         <input style="background-color:#DCDCDC; cursor:not-allowed" type="text" class="form-control" name="noumk" value="{{$data->no_umk}}" readonly />
                         <input type="text" class="form-control" hidden name="userid" value="{{Auth::user()->userid}}" readonly />
                 </div>
             </div>
             <div class="form-group row">
                 <label for="mulai-input" class="col-2 col-form-label">Tanggal Approval</label>
-                <div class="col-2">
+                <div class="col-10">
                     <div class="input-daterange input-group" >
-                        <input type="text" class="form-control" name="tgl_app" id="date_range_picker" value="" required  autocomplete='off'/>
+                        <input type="text" class="form-control" name="tgl_app" id="date_range_picker" value="" autocomplete='off' required oninvalid="this.setCustomValidity('Tanggal Approval Harus Diisi..')" onchange="setCustomValidity('')"/>
                     </div>
                 </div>
             </div>
@@ -107,7 +107,7 @@ $(document).ready(function () {
             rtl: KTUtil.isRTL(),
             todayHighlight: true,
             templates: arrows,
-            // autoclose: true,
+            autoclose: true,
             // language : 'id',
             format   : 'yyyy-mm-dd',
             orientation: 'bottom'

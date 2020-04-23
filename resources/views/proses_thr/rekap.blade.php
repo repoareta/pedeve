@@ -44,7 +44,7 @@
             @csrf
             <div class="form-group row">
 				<label for="spd-input" class="col-2 col-form-label">Bulan/Tahun<span style="color:red;">*</span></label>
-				<div class="col-4">
+				<div class="col-5">
 					<?php 
 						$tgl = date_create(now());
 						$tahun = date_format($tgl, 'Y'); 
@@ -67,7 +67,7 @@
 						<option value="12" <?php if($bulan  == 12 ) echo 'selected' ; ?>>Desember</option>
 					</select>
 				</div>
-				<div class="col-4" >
+				<div class="col-5" >
 					<input class="form-control" type="text" value="{{$tahun}}"   name="tahun" size="4" maxlength="4" onkeypress="return hanyaAngka(event)" autocomplete='off' required>
 					<input class="form-control" type="hidden" value="{{Auth::user()->userid}}"  name="userid" autocomplete='off'>
 				</div>

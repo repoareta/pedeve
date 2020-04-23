@@ -44,7 +44,7 @@
             @csrf
             <div class="form-group row">
 				<label for="spd-input" class="col-2 col-form-label">Bulan/Tahun<span style="color:red;">*</span></label>
-				<div class="col-4">
+				<div class="col-5">
 					<?php 
 						$tgl = date_create(now());
 						$tahun = date_format($tgl, 'Y'); 
@@ -67,24 +67,24 @@
 						<option value="12" <?php if($bulan  == 12 ) echo 'selected' ; ?>>Desember</option>
 					</select>
 				</div>
-				<div class="col-4" >
+				<div class="col-5" >
 					<input class="form-control" type="text" value="{{$tahun}}"   name="tahun" size="4" maxlength="4" onkeypress="return hanyaAngka(event)" autocomplete='off' required>
 					<input class="form-control" type="hidden" value="{{Auth::user()->userid}}"  name="userid" autocomplete='off'>
 				</div>
 			</div>
             <div class="form-group row">
 				<label class="col-2 col-form-label">Penandatangan<span style="color:red;">*</span></label>
-				<div class="col-4">
+				<div class="col-5">
 					<input class="form-control" type="text" value="{{$nama}}" name="nama" id="nama" size="50" maxlength="200" required oninvalid="this.setCustomValidity('Penandatanganan Harus Diisi..')" oninput="setCustomValidity('')" autocomplete='off'>
 				</div>
 				<label class="col-1 col-form-label">Jabatan<span style="color:red;">*</span></label>
-				<div class="col-3" >
+				<div class="col-4" >
 					<input class="form-control" type="text" value="{{$jabatan}}" name="jabatan" id="jabatan" size="50" maxlength="200" required oninvalid="this.setCustomValidity('Jabatan Harus Diisi..')" oninput="setCustomValidity('')" autocomplete='off'>
 				</div>
 			</div>
             <div class="form-group row">
 				<label for="jenis-dinas-input" class="col-2 col-form-label">Tanggal Cetak<span style="color:red;">*</span></label>
-				<div class="col-8">
+				<div class="col-10">
                     <input class="form-control" type="text" name="tanggal" value="{{ date('d F Y') }}"  id="tanggal" size="15" maxlength="15" autocomplete='off' required oninvalid="this.setCustomValidity('Tanggal Cetak Harus Diisi..')" onchange="setCustomValidity('')" autocomplete='off'>
 				</div>
 			</div>

@@ -57,32 +57,32 @@
 							<input class="form-control" type="hidden" name="userid" value="{{Auth::user()->userid}}">
 							<div class="form-group row">
 								<label for="" class="col-2 col-form-label">Pegawai<span style="color:red;">*</span></label>
-								<div class="col-8">
+								<div class="col-10">
 									<input class="form-control" type="text" value="{{$data->nopek}} - {{$data->nama_pegawai}}"  readonly style="background-color:#DCDCDC; cursor:not-allowed">
 									<input class="form-control" type="hidden" value="{{$data->nopek}}" name="nopek" >
 								</div>
 							</div>
 							<div class="form-group row">
 								<label for="" class="col-2 col-form-label">Potongan<span style="color:red;">*</span></label>
-								<div class="col-8">
+								<div class="col-10">
 									<input class="form-control" type="text" value="{{$data->aardpot}}- {{$data->nama_aard}}" readonly style="background-color:#DCDCDC; cursor:not-allowed" >
 									<input class="form-control" type="hidden" value="{{$data->aardpot}}" name="aard">
 								</div>
 							</div>
 							<div class="form-group row">
 							<label for="spd-input" class="col-2 col-form-label">Mulai Bulan<span style="color:red;">*</span></label>
-							<div class="col-4">
+							<div class="col-5">
 								<input class="form-control" type="text" value="{{$data->bulan}}" name="bulan" readonly style="background-color:#DCDCDC; cursor:not-allowed">
 
 							</div>
-								<div class="col-4" >
+								<div class="col-5" >
 									<input class="form-control" type="text" value="{{$data->tahun}}" name="tahun" readonly style="background-color:#DCDCDC; cursor:not-allowed">
 								</div>
 							</div>
 
 							<div class="form-group row">
 								<label for="" class="col-2 col-form-label">Hutang<span style="color:red;">*</span></label>
-								<div class="col-8">
+								<div class="col-10">
 									<select name="aardhut" id="aard" class="form-control selectpicker" data-live-search="true" required autocomplete='off' oninvalid="this.setCustomValidity('Hutang Harus Diisi..')" onchange="setCustomValidity('')">
 										<option value="">- Pilih -</option>
 										@foreach($pay_hutang as $dataa)
@@ -93,31 +93,31 @@
 							</div>
 							<div class="form-group row">
 								<label class="col-2 col-form-label">Total Hutang<span style="color:red;">*</span></label>
-								<div class="col-8">
+								<div class="col-10">
 									<input class="form-control" name="totalhut" type="text" value="<?php echo number_format($data->totalhut, 0, '', '') ?>" id="ccl" size="17" maxlength="17" required oninvalid="this.setCustomValidity('Cicilan Harus Diisi..')" oninput="setCustomValidity('')" autocomplete='off' onkeypress="return hanyaAngka(event)">
 								</div>
 							</div>
 							<div class="form-group row">
 								<label class="col-2 col-form-label">Sisa Hutang<span style="color:red;">*</span></label>
-								<div class="col-8">
+								<div class="col-10">
 									<input class="form-control" name="akhir" type="text" value="<?php echo number_format($data->akhir, 0, '', '') ?>" id="ccl" size="17" maxlength="17" required oninvalid="this.setCustomValidity('Cicilan Harus Diisi..')" oninput="setCustomValidity('')" autocomplete='off' onkeypress="return hanyaAngka(event)">
 								</div>
 							</div>
 							<div class="form-group row">
 								<label class="col-2 col-form-label">Cicilan Ke<span style="color:red;">*</span></label>
-								<div class="col-8">
+								<div class="col-10">
 									<input class="form-control" name="ccl" type="text" value="<?php echo number_format($data->ccl, 0, '', '') ?>" id="jmlcc" size="3" maxlength="3" required oninvalid="this.setCustomValidity('Jml Cicilan Harus Diisi..')" oninput="setCustomValidity('')" autocomplete='off' onkeypress="return hanyaAngka(event)">
 								</div>
 							</div>
 							<div class="form-group row">
 								<label class="col-2 col-form-label">Jml Cicilan<span style="color:red;">*</span></label>
-								<div class="col-8">
+								<div class="col-10">
 									<input class="form-control" name="jmlcc" type="text" value="<?php echo number_format($data->jmlcc, 0, '', '') ?>" id="jmlcc" size="3" maxlength="3" required oninvalid="this.setCustomValidity('Jml Cicilan Harus Diisi..')" oninput="setCustomValidity('')" autocomplete='off' onkeypress="return hanyaAngka(event)">
 								</div>
 							</div>
 							<div class="form-group row">
 								<label class="col-2 col-form-label">Nilai Cicilan<span style="color:red;">*</span></label>
-								<div class="col-8">
+								<div class="col-10">
 									<input class="form-control" name="nilai" type="text" value="<?php echo number_format($data->nilai, 0, '', '') ?>" id="nilai" size="17" maxlength="17" required oninvalid="this.setCustomValidity('Jml Cicilan Harus Diisi..')" oninput="setCustomValidity('')" autocomplete='off' onkeypress="return hanyaAngka(event)">
 								</div>
 							</div>				

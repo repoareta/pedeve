@@ -79,7 +79,7 @@
 			</div>
             <div class="form-group row">
 				<label for="jenis-dinas-input" class="col-2 col-form-label">Tanggal Cetak</label>
-				<div class="col-5">
+				<div class="col-10">
                     <input class="form-control" type="text" name="tglsurat" value="{{ date('d/m/Y') }}"  id="tglsurat" size="15" maxlength="15" required autocomplete='off'>
 				</div>
 			</div>
