@@ -171,44 +171,57 @@
 		$('#title_modal').data('state', 'add');
 	});
 
-	$("#formPanjarDinas").on('submit', function(){
-		if ($('#nopek-error').length){
-			$("#nopek-error").insertAfter("#nopek-nya");
-		}
+	$('#bagian_pekerja').on('change', function(){
+		var bagian = $('#bagian_pekerja').val();
 
-		if ($('#jabatan-error').length){
-			$("#jabatan-error").insertAfter("#jabatan-nya");
-		}
+		// getJabatanByBagian
+		$.ajax({
+			url: "{{ route('kode_jabatan.index.json.bagian') }}",
+			type: "GET",
+			dataType: "JSON",
+			headers: {
+				'X-CSRF-TOKEN': "{{ csrf_token() }}"
+			},
+			data: {
+				"kodebagian" : bagian
+			},
+			success: function(response){
+				$("#jabatan_pekerja").select2('destroy').empty().select2({
+					data: response
+				});
 
-		if ($('#jenis_dinas-error').length){
-			$("#jenis_dinas-error").insertAfter("#jenis_dinas-nya");
-		}
+				// for(var i = 0; i < response.length; i++)
+				// {
+				// 	$('#jabatan_pekerja').append('<option data-golongan="'+response[i].golongan+'" value="'+response[i].id+'">'+response[i].text+'</option>');
+				// }
 
-		if ($('#biaya-error').length){
-			$("#biaya-error").insertAfter("#biaya-nya");
-		}
+				// $('#jabatan_pekerja').select2();
+			},
+			error: function () {
+				alert("Terjadi kesalahan, coba lagi nanti");
+			}
+		});
+	});
 
-		if ($('#sampai-error').length){
-			$("#sampai-error").addClass("float-right");
-		}
+	$('#jabatan_pekerja').on('change', function(){
+		data = $("#jabatan_pekerja").select2('data')[0];
+		$("#golongan_pekerja").val(data.golongan);
 	});
 
 	$("#formPekerjaJabatan").on('submit', function(){
-		if ($('#nopek_detail-error').length){
-			$("#nopek_detail-error").insertAfter("#nopek_detail-nya");
+		if ($('#bagian_pekerja-error').length){
+			$("#bagian_pekerja-error").insertAfter("#bagian_pekerja-nya");
 		}
 
-		if ($('#jabatan_detail-error').length){
-			$("#jabatan_detail-error").insertAfter("#jabatan_detail-nya");
+		if ($('#jabatan_pekerja-error').length){
+			$("#jabatan_pekerja-error").insertAfter("#jabatan_pekerja-nya");
 		}
 
 		if($(this).valid()) {
-			// do your ajax stuff here
-			var jabatan = $(this).serializeArray();
 
 			var state = $('#title_modal').data('state');
 
-			var url, session, swal_title;
+			var url, swal_title;
 
 			if(state == 'add'){
 				url = "{{ route('pekerja.jabatan.store', ['pekerja' => $pekerja->nopeg]) }}";
@@ -231,12 +244,10 @@
 				url: url,
 				type: "POST",
 				dataType: "JSON",
-				processData: false,
-        		contentType: false,
 				headers: {
-				'X-CSRF-TOKEN': "{{ csrf_token() }}"
+					'X-CSRF-TOKEN': "{{ csrf_token() }}"
 				},
-				data: new FormData(this),
+				data: $(this).serializeArray(),
 				success: function(dataResult){
 					Swal.fire({
 						type : 'success',
@@ -249,10 +260,8 @@
 					// clear form
 					$('#jabatanModal').on('hidden.bs.modal', function () {
 						$(this).find('form').trigger('reset');
-						$('#status_jabatan').val('').trigger('change');
-						$('#agama_jabatan').val('').trigger('change');
-						$('#pendidikan_jabatan').val('').trigger('change');
-						$('#golongan_darah_jabatan').val('').trigger('change');
+						$('#bagian_pekerja').val('').trigger('change');
+						$('#jabatan_pekerja').val('').trigger('change');
 					});
 					// append to datatable
 					t.ajax.reload();
@@ -269,9 +278,10 @@
 		e.preventDefault();
 		if($('input[name=radio_jabatan]').is(':checked')) { 
 			$("input[name=radio_jabatan]:checked").each(function() {
-				var nopeg = $(this).val().split('-')[0];
-				var status = $(this).val().split('-')[1];
-				var nama = $(this).val().split('-')[2];
+				var nopeg = $(this).val().split('_')[0];
+				var mulai = $(this).val().split('_')[1];
+				var kdbag = $(this).val().split('_')[2];
+				var kdjab = $(this).val().split('_')[3];
 				
 				const swalWithBootstrapButtons = Swal.mixin({
 				customClass: {
@@ -283,7 +293,7 @@
 
 				swalWithBootstrapButtons.fire({
 					title: "Data yang akan dihapus?",
-					text: "Nama : " + nama,
+					text: "Nama Jabatan : " + kdjab,
 					type: 'warning',
 					showCancelButton: true,
 					reverseButtons: true,
@@ -297,15 +307,16 @@
 							type: 'DELETE',
 							dataType: 'json',
 							data: {
-								"nopeg": nopeg,
-								"status": status,
-								"nama": nama,
+								"nopeg": "{{ $pekerja->nopeg }}",
+								"mulai": mulai,
+								"kdbag": kdbag,
+								"kdjab": kdjab,
 								"_token": "{{ csrf_token() }}",
 							},
 							success: function () {
 								Swal.fire({
 									type  : 'success',
-									title : 'Hapus Detail Jabatan ' + nama,
+									title : 'Hapus Detail Jabatan ' + kdjab,
 									text  : 'Success',
 									timer : 2000
 								}).then(function() {
@@ -323,8 +334,6 @@
 			swalAlertInit('hapus');
 		}
 	});
-
-	
 
 	$('#editRowJabatan').click(function(e) {
 		e.preventDefault();
@@ -346,18 +355,6 @@
 						"_token": "{{ csrf_token() }}",
 					},
 					success: function (response) {
-						console.log(response);
-						// update stuff
-						// append value
-						if(response.photo) {
-							var img = "{{ asset('storage/pekerja_img/') }}" + "/" + response.photo;
-
-							$(".kt-avatar__holder").css(
-								'background-image', 
-								"url(" + img + ")"
-							);
-						}
-						
 						$('#nama_jabatan').val(response.nama);
 						$('#status_jabatan').val(response.status).trigger('change');
 						$('#tempat_lahir_jabatan').val(response.tempatlahir);
