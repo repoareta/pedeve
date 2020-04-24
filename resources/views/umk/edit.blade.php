@@ -75,8 +75,8 @@
 					<div class="form-group row">
 						<label for="example-email-input" class="col-2 col-form-label">Jenis Uang Muka<span style="color:red;">*</span></label>
 						<div class="col-6">
-							<input style=" width: 17px;height: 26px;margin-left:50px;" value="K" <?php if ($data_umk->jenis_um == 'K' )  echo 'checked' ; ?> type="radio" id="jenis_um" name="jenis_um" />  <label style="font-size:12px; margin-left:10px;">Uang Muka Kerja</label>
-							<input style=" width: 17px;height: 26px;margin-left:50px;" value="D" <?php if ($data_umk->jenis_um == 'D' )  echo 'checked' ; ?> type="radio"  id="jenis_um" name="jenis_um"/><label style="font-size:12px; margin-left:10px;"> Uang Muka Dinas</label>
+							<input style=" width: 17px;height: 26px;margin-left:50px;" value="K" <?php if ($data_umk->jenis_um == 'K' )  echo 'checked' ; ?> type="radio" name="jenis_um" />  <label style="font-size:12px; margin-left:10px;">Uang Muka Kerja</label>
+							<input style=" width: 17px;height: 26px;margin-left:50px;" value="D" <?php if ($data_umk->jenis_um == 'D' )  echo 'checked' ; ?> type="radio"  name="jenis_um"/><label style="font-size:12px; margin-left:10px;"> Uang Muka Dinas</label>
 						</div>
 					</div>
 					<div class="form-group row">
@@ -88,15 +88,15 @@
 					<div class="form-group row">
 						<label for="dari-input" class="col-2 col-form-label">Mata Uang<span style="color:red;">*</span></label>
 						<div class="col-10">
-							<input id="ci"   style=" width: 17px;height: 26px;margin-left:50px;" value="1" <?php if ($data_umk->ci == '1' )  echo 'checked' ; ?> type="radio"  name="ci" onclick="displayResult(1)"  />  <label style="font-size:12px; margin-left:10px;">IDR</label>
-							<input  id="ci" style=" width: 17px;height: 26px;margin-left:50px;" value="2" <?php if ($data_umk->ci == '2' )  echo 'checked' ; ?> type="radio"    name="ci"  onclick="displayResult(2)" /><label style="font-size:12px; margin-left:10px;"> USD</label>
+							<input   style=" width: 17px;height: 26px;margin-left:50px;" value="1" <?php if ($data_umk->ci == '1' )  echo 'checked' ; ?> type="radio"  name="ci" onclick="displayResult(1)"  />  <label style="font-size:12px; margin-left:10px;">IDR</label>
+							<input  style=" width: 17px;height: 26px;margin-left:50px;" value="2" <?php if ($data_umk->ci == '2' )  echo 'checked' ; ?> type="radio"    name="ci"  onclick="displayResult(2)" /><label style="font-size:12px; margin-left:10px;"> USD</label>
 						</div>
 					</div>
 					<div class="form-group row">
 						<label for="tujuan-input" class="col-2 col-form-label">Kurs<span style="color:red;">*</span></label>
 						<div class="col-10">
-                            <input class="form-control" type="text" value="<?php echo number_format($data_umk->rate, 0, ',', '.'); ?>" name="kurs"  id="kurs" size="10" maxlength="10">
-                            <input class="form-control" type="text" hidden value="{{$data_umk->rate}}" name="kurs"  size="10" maxlength="10">
+                            <input class="form-control" type="text" value="<?php echo number_format($data_umk->rate, 0, ',', '.'); ?>" name="kurs"  id="kurs" size="10" maxlength="10" onkeypress="return hanyaAngka(event)" autocomplete='off' readonly oninvalid="this.setCustomValidity('Kurs Harus Diisi..')" oninput="setCustomValidity('')" >
+                            <input class="form-control" type="hidden" value="<?php echo number_format($data_umk->rate, 0, ',', '.'); ?>" id="data-kurs"  size="10" maxlength="10">
 						</div>
 					</div>
 					<div class="form-group row">
@@ -248,7 +248,7 @@
                     <div class="form-group row ">
 						<label for="example-text-input" class="col-2 col-form-label">No. Urut<span style="color:red;">*</span></label>
 						<label for="example-text-input" class=" col-form-label">:</label>
-						<div class="col-2">
+						<div class="col-8">
 							<input style="background-color:#DCDCDC; cursor:not-allowed"  class="form-control" type="text" value="{{$no_umk_details}}"  name="no" readonly>
 						</div>
 					</div>
@@ -363,7 +363,7 @@
                     <div class="form-group row">
 						<label for="example-text-input" class="col-2 col-form-label">No. Urut</label>
 						<label for="example-text-input" class=" col-form-label">:</label>
-						<div class="col-2">
+						<div class="col-8">
 							<input style="background-color:#DCDCDC; cursor:not-allowed"  class="form-control" type="text" value="{{$no_umk_details}}" id="no" name="no" readonly>
 						</div>
 					</div>
@@ -441,7 +441,7 @@
 					<div class="form-group row">
 						<label for="example-text-input" class="col-2 col-form-label">Jumlah</label>
 						<label for="example-text-input" class=" col-form-label">:</label>
-						<div class="col-4">
+						<div class="col-8">
 							<input  class="form-control" type="text" value="" id="nilai" name="nilai" onkeypress="return hanyaAngka(event)" autocomplete='off'>
 						</div>
 					</div>
@@ -470,6 +470,29 @@ $(document).ready(function () {
 			scrollX   : true,
 			processing: true,
 			serverSide: false,
+		});
+
+		$("input[name=ci]:checked").each(function() {  
+			var ci = $(this).val();
+			if(ci == 1)
+			{
+				$('#kurs').val(1);
+				$('#simbol-kurs').hide();
+				$( "#kurs" ).prop( "required", false );
+				$( "#kurs" ).prop( "readonly", true );
+				$('#kurs').css("background-color","#DCDCDC");
+				$('#kurs').css("cursor","not-allowed");
+
+			}else{
+				var kurs1 = $('#data-kurs').val();
+				$('#kurs').val(kurs1);
+				$('#simbol-kurs').show();
+				$( "#kurs" ).prop( "required", true );
+				$( "#kurs" ).prop( "readonly", false );
+				$('#kurs').css("background-color","#ffffff");
+				$('#kurs').css("cursor","text");
+			}
+				
 		});
 		
     });
@@ -717,18 +740,24 @@ init: function() {
 
 KTBootstrapDatepicker.init();
 function displayResult(ci){ 
-			if(ci == 1)
-			{
-				$('#kurs').val(1);
-				$('#simbol-kurs').hide();
-				$( "#kurs" ).prop( "required", false );
-
-			}else{
-				$('#kurs').val("");
-				$('#simbol-kurs').show();
-				$( "#kurs" ).prop( "required", true );
-			}
+		if(ci == 1)
+		{
+			$('#kurs').val(1);
+			$('#simbol-kurs').hide();
+			$( "#kurs" ).prop( "required", false );
+			$( "#kurs" ).prop( "readonly", true );
+			$('#kurs').css("background-color","#DCDCDC");
+			$('#kurs').css("cursor","not-allowed");
+		}else{
+			var kurs1 = $('#data-kurs').val();
+			$('#kurs').val(kurs1);
+			$('#simbol-kurs').show();
+			$( "#kurs" ).prop( "required", true );
+			$( "#kurs" ).prop( "readonly", false );
+			$('#kurs').css("background-color","#ffffff");
+			$('#kurs').css("cursor","text");
 		}
+	}
 function hanyaAngka(evt) {
 		  var charCode = (evt.which) ? evt.which : event.keyCode
 		   if (charCode > 31 && (charCode < 48 || charCode > 57))

@@ -135,6 +135,7 @@
 							<label for="spd-input" class="col-2 col-form-label">Kurs<span style="color:red;">*</span></label>
 							<div class="col-3">
 								<input class="form-control" type="text" name="kurs" id="kurs" value="<?php echo number_format($data_bayar->rate, 0, ',', '.'); ?>" size="10" maxlength="10" onkeypress="return hanyaAngka(event)" >
+								<input class="form-control" type="hidden" id="data-kurs" value="<?php echo number_format($data_bayar->rate, 0, ',', '.'); ?>" >
 							</div>
 						</div>
 						<div class="form-group row">
@@ -297,7 +298,7 @@
                     <div class="form-group row">
 						<label for="example-text-input" class="col-2 col-form-label">No. Urut</label>
 						<label for="example-text-input" class=" col-form-label">:</label>
-						<div class="col-2">
+						<div class="col-8">
 							<input style="background-color:#DCDCDC; cursor:not-allowed"  class="form-control" type="text" value="{{$no_bayar_details}}"  name="no" readonly>
 						</div>
 					</div>
@@ -340,7 +341,7 @@
 					<div class="form-group row">
 						<label for="example-text-input" class="col-2 col-form-label">Perintah Kerja</label>
 						<label for="example-text-input" class=" col-form-label">:</label>
-						<div class="col-4">
+						<div class="col-8">
 							<input  class="form-control" type="text" value="000"  name="pk" size="6" maxlength="6" autocomplete='off'>
 						</div>
 					</div>
@@ -376,7 +377,7 @@
 					<div class="form-group row">
 						<label for="example-text-input" class="col-2 col-form-label">Jumlah<span style="color:red;">*</span></label>
 						<label for="example-text-input" class=" col-form-label">:</label>
-						<div class="col-4">
+						<div class="col-8">
 							<input  class="form-control" type="text" value="" name="nilai" onkeypress="return hanyaAngka(event)" required oninvalid="this.setCustomValidity('Jumlah Harus Diisi..')" oninput="setCustomValidity('')" autocomplete='off'>
 						</div>
 					</div>
@@ -414,7 +415,7 @@
                     <div class="form-group row">
 						<label for="example-text-input" class="col-2 col-form-label">No. Urut</label>
 						<label for="example-text-input" class=" col-form-label">:</label>
-						<div class="col-2">
+						<div class="col-8">
 							<input style="background-color:#DCDCDC; cursor:not-allowed"  class="form-control" type="text" value="{{$no_bayar_details}}" id="no" name="no" readonly>
 						</div>
 					</div>
@@ -492,7 +493,7 @@
 					<div class="form-group row">
 						<label for="example-text-input" class="col-2 col-form-label">Jumlah<span style="color:red;">*</span></label>
 						<label for="example-text-input" class=" col-form-label">:</label>
-						<div class="col-4">
+						<div class="col-8">
 							<input  class="form-control" type="text" value="" id="nilai" name="nilai" onkeypress="return hanyaAngka(event)" autocomplete='off'>
 						</div>
 					</div>
@@ -523,6 +524,29 @@
 			scrollX   : true,
 			processing: true,
 			serverSide: false,
+		});
+
+		$("input[name=ci]:checked").each(function() {  
+			var ci = $(this).val();
+			if(ci == 1)
+			{
+				$('#kurs').val(1);
+				$('#simbol-kurs').hide();
+				$( "#kurs" ).prop( "required", false );
+				$( "#kurs" ).prop( "readonly", true );
+				$('#kurs').css("background-color","#DCDCDC");
+				$('#kurs').css("cursor","not-allowed");
+
+			}else{
+				var kurs1 = $('#data-kurs').val();
+				$('#kurs').val(kurs1);
+				$('#simbol-kurs').show();
+				$( "#kurs" ).prop( "required", true );
+				$( "#kurs" ).prop( "readonly", false );
+				$('#kurs').css("background-color","#ffffff");
+				$('#kurs').css("cursor","text");
+			}
+				
 		});
 
 
@@ -783,18 +807,25 @@ KTBootstrapDatepicker.init();
 
 });
 function displayResult(ci){ 
-			if(ci == 1)
-			{
-				$('#kurs').val(1);
-				$('#simbol-kurs').hide();
-				$( "#kurs" ).prop( "required", false );
+	if(ci == 1)
+	{
+		$('#kurs').val(1);
+		$('#simbol-kurs').hide();
+		$( "#kurs" ).prop( "required", false );
+		$( "#kurs" ).prop( "readonly", true );
+		$('#kurs').css("background-color","#DCDCDC");
+		$('#kurs').css("cursor","not-allowed");
 
-			}else{
-				$('#kurs').val("");
-				$('#simbol-kurs').show();
-				$( "#kurs" ).prop( "required", true );
-			}
-		}
+	}else{
+		var kurs1 = $('#data-kurs').val();
+		$('#kurs').val(kurs1);
+		$('#simbol-kurs').show();
+		$( "#kurs" ).prop( "required", true );
+		$( "#kurs" ).prop( "readonly", false );
+		$('#kurs').css("background-color","#ffffff");
+		$('#kurs').css("cursor","text");
+	}
+}
         function hanyaAngka(evt) {
 		  var charCode = (evt.which) ? evt.which : event.keyCode
 		   if (charCode > 31 && (charCode < 48 || charCode > 57))

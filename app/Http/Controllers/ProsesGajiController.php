@@ -4815,12 +4815,15 @@ class ProsesGajiController extends Controller
 
     public function slipGaji()
     {
-        return view('proses_gaji.slipgaji');
+        $data_pegawai = DB::select("select nopeg,nama,status,nama from sdm_master_pegawai where status <>'P' order by nopeg");	
+        return view('proses_gaji.slipgaji',compact('data_pegawai'));
     }
     public function cetak_slipgaji(Request $request)
     {
+        $data_list = DB::select("select a.nopek,round(a.jmlcc,0) as jmlcc,round(a.ccl,0) as ccl,round(a.nilai,0) as nilai,a.aard,a.bulan,a.tahun,b.nama as nama_pegawai, c.nama as nama_aard,d.nama as nama_upah, d.cetak from pay_master_upah a join sdm_master_pegawai b on a.nopek=b.nopeg join pay_tbl_aard c on a.aard=c.kode join pay_tbl_jenisupah d on c.jenis=d.kode where a.nopek='$request->nopek' and a.tahun='$request->tahun' and bulan='$request->bulan' and a.aard in ('01','03','04','06','07','27')");
+        $data_detail = DB::select("select a.nopek,round(a.jmlcc,0) as jmlcc,round(a.ccl,0) as ccl,round(a.nilai,0)*-1 as nilai,a.aard,a.bulan,a.tahun,b.nama as nama_pegawai, c.nama as nama_aard,d.nama as nama_upah, d.cetak from pay_master_upah a join sdm_master_pegawai b on a.nopek=b.nopeg join pay_tbl_aard c on a.aard=c.kode join pay_tbl_jenisupah d on c.jenis=d.kode where a.nopek='$request->nopek' and a.tahun='$request->tahun' and bulan='$request->bulan' and a.aard in ('09','23','26')");
         
-        $pdf = PDF::loadview('proses_gaji.export_slipgaji',compact('request'))->setPaper('a4', 'Portrait');
+        $pdf = PDF::loadview('proses_gaji.export_slipgaji',compact('request','data_list','data_detail'))->setPaper('a4', 'Portrait');
         $pdf->output();
         $dom_pdf = $pdf->getDomPDF();
     

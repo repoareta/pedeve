@@ -43,6 +43,10 @@
         <!-- Define header and footer blocks before your content -->
         <header>
             <table width="100%" style="font-family: sans-serif;">
+                <?php 
+                    $tgl = date_create("$request->tahun-$request->bulan-01");
+                    $bulan =  date_format($tgl, 'F');
+                ?>
                 <tr>
                     <td align="left" style="padding-left:30px;">
                         <font style="font-size: 12pt;font-weight: bold "> Slip Upah</font><br>
@@ -53,20 +57,25 @@
                                 <td>Payroll Area</td>
                             </tr>
                             <tr>
-                                <td>Maret 2019</td>
+                                <td>{{strtoupper($bulan)}} {{strtoupper($request->tahun)}}</td>
                                 <td>PDV</td>
                             </tr>
                         </table>
                         <table style=" font-size: 10pt;text-align:left;font-weight: bold" width="95%">
+                            <?php foreach($data_list as $data_pegawai)
+                            {
+                                $nama_pegawai = $data_pegawai->nama_pegawai;
+                                $nopek = $data_pegawai->nopek;
+                            } ?>
                             <tr>
                                 <td>Nama</td>
                                 <td>:</td>
-                                <td>BAMBANG BUDI HERYANTO</td>
+                                <td>{{strtoupper($nama_pegawai)}}</td>
                             </tr>
                             <tr>
                                 <td>Nopek</td>
                                 <td>:</td>
-                                <td>12342</td>
+                                <td>{{$nopek}}</td>
                             </tr>
                         </table>
                             <td align="center" style="padding-left:150px;">
@@ -93,30 +102,41 @@
                                 <td>Cicilan Ke-</td>
                                 <td>Jumlah</td>
                             </tr>
-                            <tr style=" font-size: 10pt;">
-                                <td  style=" text-align:left;">Jenis</td>
-                                <td style=" text-align:center;">AARD</td>
-                                <td style=" text-align:left;">Keterangan</td>
-                                <td style=" text-align:center;">-</td>
-                                <td style=" text-align:center;">-</td>
-                                <td style=" text-align:right;">10.000.000,00</td>
+                            <?php $a=0; ?>
+                            @foreach($data_list as $data)
+                            
+                            <tr style=" font-size: 8pt;">
+                                <td  style=" text-align:left;">{{$data->nama_upah}}</td>
+                                <td style=" text-align:center;">{{$data->aard}}</td>
+                                <td style=" text-align:left;">{{$data->nama_aard}}</td>
+                                <td style=" text-align:center;">{{$data->jmlcc == 0 ? '-' : $data->jmlcc}}</td>
+                                <td style=" text-align:center;">{{$data->ccl == 0 ? '-' : $data->ccl}}</td>
+                                <td style=" text-align:right;">{{$data->nilai == 0 ? '-' : number_format($data->nilai,2,',','.')}}</td>
                             </tr>
+                                <?php $a++;
+                                $total[$a] = $data->nilai; ?>
+                            @endforeach
                             <tr>
                                 <td style=" font-size: 10pt;text-align:right;" colspan="5" ><font style=" text-align:right; padding-right:2%;">Sub Total : </td>
-                                <td style=" font-size: 10pt;text-align:right;"   >232 </td>
+                                <td style=" font-size: 10pt;text-align:right;font-weight: bold"   >{{number_format(array_sum($total),2,',','.')}} </td>
                             </tr>
-
-                            <tr style=" font-size: 10pt;">
-                                <td  style=" text-align:left;">Jenis</td>
-                                <td style=" text-align:center;">AARD</td>
-                                <td style=" text-align:left;">Keterangan</td>
-                                <td style=" text-align:center;">-</td>
-                                <td style=" text-align:center;">-</td>
-                                <td style=" text-align:right;">10.000.000,00</td>
+                            <?php $a=0; ?>
+                            @foreach($data_detail as $data)
+                            
+                            <tr style=" font-size: 8pt;">
+                                <td  style=" text-align:left;">{{$data->nama_upah}}</td>
+                                <td style=" text-align:center;">{{$data->aard}}</td>
+                                <td style=" text-align:left;">{{$data->nama_aard}}</td>
+                                <td style=" text-align:center;">{{$data->jmlcc == 0 ? '-' : $data->jmlcc}}</td>
+                                <td style=" text-align:center;">{{$data->ccl == 0 ? '-' : $data->ccl}}</td>
+                                <td style=" text-align:right;">{{$data->nilai == 0 ? '-' : number_format($data->nilai,2,',','.')}}</td>
                             </tr>
-                            <tr >
-                                <td style=" font-size: 10pt;text-align:right;" colspan="5" ><font style=" text-align:right; padding-right:2%;">Penghasilan Bersih : </td>
-                                <td style=" font-size: 10pt;text-align:right;"   >232 </td>
+                                <?php $a++;
+                                $totaldetail[$a] = $data->nilai; ?>
+                            @endforeach
+                            <tr>
+                                <td style=" font-size: 10pt;text-align:right;" colspan="5" ><font style=" text-align:right; padding-right:2%;">Sub Total : </td>
+                                <td style=" font-size: 10pt;text-align:right;font-weight: bold"   >{{number_format(array_sum($totaldetail),2,',','.')}} </td>
                             </tr>
                         </table>
                     </td>
