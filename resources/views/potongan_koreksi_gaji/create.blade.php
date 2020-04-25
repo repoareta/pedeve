@@ -84,7 +84,7 @@
 						<div class="form-group row">
 							<label for="" class="col-2 col-form-label">Pegawai<span style="color:red;">*</span></label>
 							<div class="col-10">
-								<select name="nopek"  class="form-control selectpicker" data-live-search="true" required autocomplete='off'>
+								<select name="nopek"  class="form-control selectpicker" data-live-search="true" required autocomplete='off' oninvalid="this.setCustomValidity('Pegawai Harus Diisi..')" onchange="setCustomValidity('')">
 									<option value="">- Pilih -</option>
 									@foreach($data_pegawai as $data)
 									<option value="{{$data->nopeg}}">{{$data->nopeg}} - {{$data->nama}}</option>
@@ -95,7 +95,7 @@
 						<div class="form-group row">
 							<label for="" class="col-2 col-form-label">AARD<span style="color:red;">*</span></label>
 							<div class="col-10">
-								<select name="aard" id="aard" class="form-control selectpicker" data-live-search="true" required autocomplete='off'>
+								<select name="aard" id="aard" class="form-control selectpicker" data-live-search="true" required autocomplete='off' oninvalid="this.setCustomValidity('AARD Harus Diisi..')" onchange="setCustomValidity('')">
 									<option value="">- Pilih -</option>
 									@foreach($pay_aard as $dataa)
 									<option value="{{$dataa->kode}}">{{$dataa->kode}} - {{$dataa->nama}}</option>
@@ -105,7 +105,7 @@
 						</div>
 						<div class="form-group row">
 							<label class="col-2 col-form-label">Nilai<span style="color:red;">*</span></label>
-							<div class="col-4">
+							<div class="col-10">
 								<input class="form-control" name="nilai" type="text" value="" id="nilai" required oninvalid="this.setCustomValidity('Nilai Harus Diisi..')" oninput="setCustomValidity('')" autocomplete='off' onkeypress="return hanyaAngka(event)">
 							</div>
 						</div>

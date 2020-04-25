@@ -40,7 +40,6 @@
 				</div>
 			</div>
 		</div>
-		<div class="card-body table-responsive" >
 			<!--begin: Datatable -->
 			<form  class="kt-form kt-form--label-right" id="form-update-permintaan-bayar">
 				{{csrf_field()}}
@@ -80,7 +79,7 @@
 						<div class="form-group row">
 							<label for="jenis-dinas-input" class="col-2 col-form-label">Dibayar Kepada<span style="color:red;">*</span></label>
 							<div class="col-10">
-								<select name="dibayar" id="dibayar" class="form-control selectpicker" data-live-search="true" required>
+								<select name="dibayar" id="dibayar" class="form-control selectpicker" data-live-search="true" required oninvalid="this.setCustomValidity('Dibayar Kepada Harus Diisi..')" onchange="setCustomValidity('')">
 									<option value="">- Pilih -</option>
 									@foreach ($vendor as $row)
 									<option value="{{ $row->nama }}" <?php if($row->nama  == $data_bayar->kepada ) echo 'selected' ; ?>>{{ $row->nama }}</option>
@@ -97,7 +96,7 @@
 						<div class="form-group row">
 							<label for="dari-input" class="col-2 col-form-label">Debet Dari<span style="color:red;">*</span></label>
 							<div class="col-10">
-								<select name="debetdari" id="select-debetdari" class="form-control selectpicker" data-live-search="true" required>
+								<select name="debetdari" id="select-debetdari" class="form-control selectpicker" data-live-search="true" required oninvalid="this.setCustomValidity('Debet Dari Harus Diisi..')" onchange="setCustomValidity('')">
                                     <option value="">- Pilih -</option>
 									@foreach ($debit_nota as $row)
 									<option value="{{ $row->kode }}" <?php if($row->kode == $data_bayar->debet_dari ) echo 'selected' ; ?>>{{ $row->kode.' - '.$row->keterangan }}</option>
@@ -113,7 +112,7 @@
 							</div>
 							<label class="col-2 col-form-label">Tgl Debet<span style="color:red;">*</span></label>
 							<div class="col-3" >
-								<input class="form-control" type="text" name="tgldebet" value="<?php echo date("Y-m-d", strtotime($data_bayar->debet_tgl)) ?>" id="tgldebet" size="15" maxlength="15" required>
+								<input class="form-control" type="text" name="tgldebet" value="<?php echo date("Y-m-d", strtotime($data_bayar->debet_tgl)) ?>" id="tgldebet" size="15" maxlength="15" required oninvalid="this.setCustomValidity('Tgl Debet Harus Diisi..')" onchange="setCustomValidity('')">
 							</div>
 						</div>
 						<div class="form-group row">
@@ -153,7 +152,7 @@
                         @endforeach
 						<div class="form-group row">
 							<label class="col-2 col-form-label">Total Nilai</label>
-							<div class="col-4">
+							<div class="col-10">
 								<input style="background-color:#DCDCDC; cursor:not-allowed"  class="form-control" name="totalnilai" type="text" id="totalnilai" value="Rp. <?php echo number_format($count, 0, ',', '.'); ?>"  readonly>
 							</div>
 						</div>
@@ -278,7 +277,6 @@
 					</table>
 				</div>
 			<!--end: Datatable -->
-		</div>
 	</div>
 </div>
 
@@ -521,7 +519,11 @@
 @section('scripts')
 	<script type="text/javascript">
 	$(document).ready(function () {
-		$('#tabel-detail-permintaan').DataTable();
+		$('#tabel-detail-permintaan').DataTable({
+			scrollX   : true,
+			processing: true,
+			serverSide: false,
+		});
 
 
 // proses update permintaan bayar

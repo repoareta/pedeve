@@ -180,10 +180,10 @@
         </table>
         <table width="100%" style="padding-top:10px;" >
                 <tr style="font-size: 10pt;">
-                    <td width="200px">SEBESAR</td><td width="20px">:</td><td><?php echo currency_idr($list_acount); ?></td>
+                    <td width="200px">SEBESAR</td><td width="20px">:</td><td><?php echo currency_idr($list_acount);  $count=number_format($list_acount,0,'','')?></td>
                 </tr>
                 <tr style="font-size: 9pt;">
-                    <td width="200px"></td><td width="20px"></td><td>{{ strtoupper(Terbilang::angka($list_acount)) }} {{strtoupper('rupiah')}}</td>
+                    <td width="200px"></td><td width="20px"></td><td>{{ strtoupper(Terbilang::angka($count)) }} {{strtoupper('rupiah')}}</td>
                 </tr>
         </table>
         <table width="100%" style="padding-top:5px;" >

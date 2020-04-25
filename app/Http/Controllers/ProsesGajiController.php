@@ -4781,22 +4781,14 @@ class ProsesGajiController extends Controller
      * @param  int  $id
      * @return \Illuminate\Http\Response
      */
-    public function show($id)
-    {
-        //
-    }
-
+    
     /**
      * Show the form for editing the specified resource.
      *
      * @param  int  $id
      * @return \Illuminate\Http\Response
      */
-    public function edit($id)
-    {
-        //
-    }
-
+    
     /**
      * Update the specified resource in storage.
      *
@@ -4818,5 +4810,46 @@ class ProsesGajiController extends Controller
     public function destroy($id)
     {
         //
+    }
+
+
+    public function slipGaji()
+    {
+        return view('proses_gaji.slipgaji');
+    }
+    public function cetak_slipgaji(Request $request)
+    {
+        
+        $pdf = PDF::loadview('proses_gaji.export_slipgaji',compact('request'))->setPaper('a4', 'Portrait');
+        $pdf->output();
+        $dom_pdf = $pdf->getDomPDF();
+    
+        $canvas = $dom_pdf ->get_canvas();
+        $canvas->page_text(910, 120, "Halaman {PAGE_NUM} Dari {PAGE_COUNT}", null, 10, array(0, 0, 0)); //slip Gaji landscape
+        // return $pdf->download('rekap_umk_'.date('Y-m-d H:i:s').'.pdf');
+        return $pdf->stream();
+    }
+
+
+    public function ctkrekapgaji()
+    {
+        return view('proses_gaji.rekap');
+    }
+    public function rekapExport(Request $request)
+    {
+        
+        $pdf = PDF::loadview('proses_gaji.export_rekapgaji',compact('request'))->setPaper('Legal', 'landscape');
+        $pdf->output();
+        $dom_pdf = $pdf->getDomPDF();
+    
+        $canvas = $dom_pdf ->get_canvas();
+        $canvas->page_text(910, 120, "Halaman {PAGE_NUM} Dari {PAGE_COUNT}", null, 10, array(0, 0, 0)); //Rekap Gaji landscape
+        // $canvas->page_text(730, 100, "Halaman {PAGE_NUM} Dari {PAGE_COUNT}", null, 10, array(0, 0, 0)); //Gaji Pokok landscape
+        // $canvas->page_text(730, 100, "Halaman {PAGE_NUM} Dari {PAGE_COUNT}", null, 10, array(0, 0, 0)); lembur landscape
+        // $canvas->page_text(550, 810, "{PAGE_NUM}", null, 10, array(0, 0, 0));iuran pensiun Portrait
+        // $canvas->page_text(730, 100, "Halaman {PAGE_NUM} Dari {PAGE_COUNT}", null, 10, array(0, 0, 0)); //rekap iuran pensiun landscape
+        // $canvas->page_text(730, 100, "Halaman {PAGE_NUM} Dari {PAGE_COUNT}", null, 10, array(0, 0, 0)); iuran jamsostek landscape
+        // return $pdf->download('rekap_umk_'.date('Y-m-d H:i:s').'.pdf');
+        return $pdf->stream();
     }
 }

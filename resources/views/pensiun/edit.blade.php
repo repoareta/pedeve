@@ -56,26 +56,26 @@
 						@foreach($data_list as $data)
 						<div class="form-group row">
 							<label class="col-2 col-form-label">Pribadi<span style="color:red;">*</span></label>
-							<div class="col-4">
+							<div class="col-10">
 								<input class="form-control" type="number"  required  name="pribadi1" size="20" maxlength="20" value="<?php echo number_format($data->pribadi, 2, '.', ',') ?>" step="0.01"  pattern="^\d+(?:\.\d{1,2})?$" onblur="this.parentNode.parentNode.style.backgroundColor=/^\d+(?:\.\d{1,2})?$/.test(this.value)? 'inherit':''">
 								<input class="form-control" type="hidden"  required name="pribadi"  size="20" maxlength="20" value="{{$data->pribadi}}" step="0.01"  pattern="^\d+(?:\.\d{1,2})?$" onblur="this.parentNode.parentNode.style.backgroundColor=/^\d+(?:\.\d{1,2})?$/.test(this.value)? 'inherit':''" >
 							</div>
 						</div>
 						<div class="form-group row">
 							<label class="col-2 col-form-label">Perusahaan Direksi<span style="color:red;">*</span></label>
-							<div class="col-4">
+							<div class="col-10">
 								<input class="form-control" name="perusahaan" type="number" value="<?php echo number_format($data->perusahaan, 2, '.', ',') ?>" size="20" maxlength="20" step="0.01"  pattern="^\d+(?:\.\d{1,2})?$" onblur="this.parentNode.parentNode.style.backgroundColor=/^\d+(?:\.\d{1,2})?$/.test(this.value)? 'inherit':''"  >
 							</div>
 						</div>
 						<div class="form-group row">
 							<label class="col-2 col-form-label">Perusahaan Pekerja<span style="color:red;">*</span></label>
-							<div class="col-4">
+							<div class="col-10">
 								<input class="form-control" name="perusahaan2" type="number" value="<?php echo number_format($data->perusahaan2, 2, '.', ',') ?>" size="20" maxlength="20" step="0.01"  pattern="^\d+(?:\.\d{1,2})?$" onblur="this.parentNode.parentNode.style.backgroundColor=/^\d+(?:\.\d{1,2})?$/.test(this.value)? 'inherit':''" >
 							</div>
 						</div>
 						<div class="form-group row">
 							<label class="col-2 col-form-label">Perusahaan Direksi(BNI)<span style="color:red;">*</span></label>
-							<div class="col-4">
+							<div class="col-10">
 								<input class="form-control" name="perusahaan3" type="number" value="<?php echo number_format($data->perusahaan3, 2, '.', ',') ?>" size="20" maxlength="20" step="0.01"  pattern="^\d+(?:\.\d{1,2})?$" onblur="this.parentNode.parentNode.style.backgroundColor=/^\d+(?:\.\d{1,2})?$/.test(this.value)? 'inherit':''"  >
 							</div>
 						</div>

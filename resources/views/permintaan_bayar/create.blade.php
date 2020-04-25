@@ -40,7 +40,6 @@
 				</div>
 			</div>
 		</div>
-		<div class="card-body table-responsive" >
 			<!--begin: Datatable -->
 			<form  class="kt-form kt-form--label-right" id="form-create-permintaan-bayar">
 				{{csrf_field()}}
@@ -62,8 +61,7 @@
 								<input style="background-color:#DCDCDC; cursor:not-allowed" class="form-control" type="text" name="nobayar" value="{{ $permintaan_header_count }}" id="nobayar" readonly>
 							</div>
 
-							<label for="spd-input" class="col-1 col-form-label"></span></label>
-							<label for="spd-input" class="col-1 col-form-label">Tanggal<span style="color:red;">*</span></label>
+							<label for="spd-input" class="col-2 col-form-label">Tanggal<span style="color:red;">*</span></label>
 							<div class="col-3">
 								<input class="form-control" type="text" name="tanggal" id="tanggal" value="{{ date('Y-m-d') }}">
 							</div>
@@ -83,7 +81,7 @@
 						<div class="form-group row">
 							<label for="" class="col-2 col-form-label">Dibayar Kepada<span style="color:red;">*</span></label>
 							<div class="col-10">
-								<select name="dibayar" id="dibayar" class="form-control selectpicker" data-live-search="true" required>
+								<select name="dibayar" id="dibayar" class="form-control selectpicker" data-live-search="true" required oninvalid="this.setCustomValidity('Dibayar Kepada Harus Diisi..')" onchange="setCustomValidity('')">
 									<option value="">- Pilih -</option>
 									@foreach ($vendor as $row)
 									<option value="{{ $row->nama }}">{{ $row->nama }}</option>
@@ -101,7 +99,7 @@
 						<div class="form-group row">
 							<label for="dari-input" class="col-2 col-form-label">Debet Dari<span style="color:red;">*</span></label>
 							<div class="col-10">
-								<select name="debetdari" id="select-debetdari" class="form-control selectpicker" data-live-search="true" required>
+								<select name="debetdari" id="select-debetdari" class="form-control selectpicker" data-live-search="true" required oninvalid="this.setCustomValidity('Debet Dari Harus Diisi..')" onchange="setCustomValidity('')">
 									<option value="">- Pilih -</option>
 									@foreach ($debit_nota as $row)
 									<option value="{{ $row->kode }}">{{ $row->kode.' - '.$row->keterangan }}</option>
@@ -115,10 +113,9 @@
 							<div class="col-5">
 								<input class="form-control" type="text" name="nodebet" id="nodebet" value="" size="15" maxlength="15" required oninvalid="this.setCustomValidity('No. Debet Harus Diisi..')" oninput="setCustomValidity('')" autocomplete='off'>
 							</div>
-							<label for="spd-input" class="col-1 col-form-label"></span></label>
-							<label class="col-1.5 col-form-label">Tgl Debet<span style="color:red;">*</span></label>
+							<label class="col-2 col-form-label">Tgl Debet<span style="color:red;">*</span></label>
 							<div class="col-3" >
-								<input class="form-control" type="text" name="tgldebet" value="" data-date-format="dd/MM/yyyy" id="tgldebet" size="15" maxlength="15" required autocomplete='off'>
+								<input class="form-control" type="text" name="tgldebet" value=""  id="tgldebet" size="15" maxlength="15" required autocomplete='off' oninvalid="this.setCustomValidity('Tgl Debet Harus Diisi..')" onchange="setCustomValidity('')">
 							</div>
 						</div>
 						<div class="form-group row">
@@ -126,8 +123,7 @@
 							<div class="col-5">
 								<input style="background-color:#DCDCDC; cursor:not-allowed" readonly  class="form-control" name="nokas" type="text" value="" id="nokas" size="10" maxlength="25" autocomplete='off'>
 							</div>
-							<label for="spd-input" class="col-1 col-form-label"></span></label>
-							<label for="spd-input"  class="col-1.5 col-form-label">Bulan Buku<span style="color:red;">*</span></label>
+							<label for="spd-input"  class="col-2 col-form-label">Bulan Buku<span style="color:red;">*</span></label>
 							<div class="col-3" >
 								<input style="background-color:#DCDCDC; cursor:not-allowed" readonly class="form-control" type="text" value="{{$bulan_buku}}"   name="bulanbuku" size="6" maxlength="6"  >
 							</div>
@@ -138,8 +134,7 @@
 									<input id="ci"   style=" width: 17px;height: 26px;margin-left:50px;" value="1" type="radio"  name="ci" onclick="displayResult(1)"  checked />  <label style="font-size:12px; margin-left:10px;">IDR</label>
 									<input  id="ci" style=" width: 17px;height: 26px;margin-left:50px;" value="2" type="radio"    name="ci"  onclick="displayResult(2)" /><label style="font-size:12px; margin-left:10px;"> USD</label>
 							</div>
-							<label for="spd-input" class="col-1 col-form-label"></span></label>
-							<label for="spd-input" class="col-1 col-form-label">Kurs<span style="color:red;display:none" id="simbol-kurs">*</span></label>
+							<label for="spd-input" class="col-2 col-form-label">Kurs<span style="color:red;display:none" id="simbol-kurs">*</span></label>
 							<div class="col-3">
 								<input class="form-control" type="text" value="1" name="kurs" id="kurs" size="10" maxlength="10" autocomplete='off' onkeypress="return hanyaAngka(event)" >
 							</div>
@@ -148,17 +143,17 @@
 							<label for="mulai-input" class="col-2 col-form-label">Periode <span style="color:red;">*</span></label>
 							<div class="col-10">
 								<div class="input-daterange input-group" id="date_range_picker">
-									<input type="text" class="form-control" name="mulai" required autocomplete='off'/>
+									<input type="text" class="form-control" name="mulai" required autocomplete='off' oninvalid="this.setCustomValidity('Priode Harus Diisi..')" onchange="setCustomValidity('')"/>
 									<div class="input-group-append">
 										<span class="input-group-text">s/d</span>
 									</div>
-									<input type="text" class="form-control" name="sampai" required autocomplete='off' />
+									<input type="text" class="form-control" name="sampai" required autocomplete='off' oninvalid="this.setCustomValidity('Priode Harus Diisi..')" onchange="setCustomValidity('')"/>
 								</div>
 							</div>
 						</div>
 						<div class="form-group row">
 							<label class="col-2 col-form-label">Total Nilai</label>
-							<div class="col-4">
+							<div class="col-10">
 								<input style="background-color:#DCDCDC; cursor:not-allowed" class="form-control" type="text" value="Rp. 0" readonly>
 								<input style="background-color:#DCDCDC; cursor:not-allowed" class="form-control" name="totalnilai" type="hidden" value="" id="totalnilai"  readonly>
 							</div>
@@ -189,23 +184,17 @@
 						<div class="kt-portlet__head-toolbar">
 							<div class="kt-portlet__head-wrapper">
 								<div class="kt-portlet__head-actions">
-									<a href="#" style="cursor:not-allowed" data-toggle="modal" data-target="#kt_modal_4">
-										<span style="font-size: 2em;" class="kt-font-success">
-											<i class="fas fa-plus-circle"></i>
-										</span>
-									</a>
-					
-									<a href="#" style="cursor:not-allowed" data-toggle="modal" data-target="#kt_modal_4" >
-										<span style="font-size: 2em;" class="kt-font-warning">
-											<i class="fas fa-edit"></i>
-										</span>
-									</a>
-					
-									<a href="#" style="cursor:not-allowed" data-toggle="modal" data-target="#kt_modal_4">
-										<span style="font-size: 2em;" class="kt-font-danger">
-											<i class="fas fa-times-circle"></i>
-										</span>
-									</a>
+									<span style="font-size: 2em;cursor:not-allowed" class="kt-font-success">
+										<i class="fas fa-plus-circle"></i>
+									</span>
+				
+									<span style="font-size: 2em;cursor:not-allowed" class="kt-font-warning">
+										<i class="fas fa-edit"></i>
+									</span>
+				
+									<span style="font-size: 2em;cursor:not-allowed" class="kt-font-danger">
+										<i class="fas fa-times-circle"></i>
+									</span>
 								</div>
 							</div>
 						</div>
@@ -233,7 +222,6 @@
 				</div>
 			</form>
 			<!--end: Datatable -->
-		</div>
 	</div>
 </div>
 @endsection
@@ -241,7 +229,11 @@
 @section('scripts')
 	<script type="text/javascript">
 	$(document).ready(function () {
-		$('#tabel-detail-permintaan').DataTable();
+		$('#tabel-detail-permintaan').DataTable({
+			scrollX   : true,
+			processing: true,
+			serverSide: false,
+		});
 
 
 		
@@ -299,7 +291,7 @@ var demos = function () {
 		rtl: KTUtil.isRTL(),
 		todayHighlight: true,
 		templates: arrows,
-		// autoclose: true,
+		autoclose: true,
 		// language : 'id',
 		format   : 'yyyy-mm-dd'
 	});
