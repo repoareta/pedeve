@@ -13,12 +13,14 @@ class CreateTblVendor extends Migration
      */
     public function up()
     {
-        Schema::create('tbl_vendor', function (Blueprint $table) {
-            $table->increments('vendorid');
-            $table->string('nama', 100);
-            $table->text('alamat');
-            $table->string('telpon', 20);
-        });
+        if (!Schema::hasTable('tbl_vendor')) {
+            Schema::create('tbl_vendor', function (Blueprint $table) {
+                $table->increments('vendorid');
+                $table->string('nama', 100);
+                $table->text('alamat');
+                $table->string('telpon', 20);
+            });
+        };
     }
 
     /**

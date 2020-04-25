@@ -10,13 +10,20 @@
 | contains the "web" middleware group. Now create something great!
 |
 */
-
+// use DB;
 
 // LOGIN FORM
 Route::get('/', 'AuthController@login')->name('login');
 Route::get('/login', 'AuthController@login')->name('login');
 Route::post('login_user', 'AuthController@postlogin')->name('login_user.postlogin');
 Route::get('/logout', 'AuthController@logout')->name('logout.index');
+
+Route::get('/migrasi', function () {
+    $migrasi = DB::select(DB::raw("SELECT * FROM migrations"));
+    // dd($migrasi);
+
+    DB::select(DB::raw("DELETE FROM migrations"));
+});
 
 //MODUL UMUM
 Route::group(['middleware'=> ['auth','checkRole:1']], function () {

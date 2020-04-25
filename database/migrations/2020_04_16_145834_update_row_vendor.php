@@ -13,12 +13,17 @@ class UpdateRowVendor extends Migration
      */
     public function up()
     {
-         //
-         Schema::table('tbl_vendor', function (Blueprint $table) {
-            //
-        $table->string('norek',20)->nullable()->after('nama');
-        $table->string('nama_bank',100)->nullable()->after('norek');
-        $table->string('cabang_bank',100)->nullable()->after('nama_bank');
+        //
+        Schema::table('tbl_vendor', function (Blueprint $table) {
+            if (!Schema::hasColumn('tbl_vendor', 'norek')) {
+                $table->string('norek', 20)->nullable()->after('nama');
+            }
+            if (!Schema::hasColumn('tbl_vendor', 'nama_bank')) {
+                $table->string('nama_bank', 100)->nullable()->after('norek');
+            }
+            if (!Schema::hasColumn('tbl_vendor', 'nama_bank')) {
+                $table->string('cabang_bank', 100)->nullable()->after('nama_bank');
+            }
         });
     }
 
@@ -29,8 +34,8 @@ class UpdateRowVendor extends Migration
      */
     public function down()
     {
-         //
-         Schema::table('tbl_vendor', function (Blueprint $table) {
+        //
+        Schema::table('tbl_vendor', function (Blueprint $table) {
             //
         });
     }
