@@ -13,10 +13,10 @@ class TblKerjaHeader extends Migration
      */
     public function up()
     {
-        //
         Schema::table('kerja_header', function (Blueprint $table) {
-            //
-        $table->string('kepada')->nullable()->after('jumlah');
+            if (!Schema::hasColumn('kerja_header', 'kepada')) {
+                $table->string('kepada')->nullable()->after('jumlah');
+            }
         });
     }
 
