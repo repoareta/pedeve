@@ -119,6 +119,7 @@
                 $('#jabatan').val(response.jabatan).trigger('change');
                 // isi golongan
                 $('#golongan').val(response.golongan);
+                console.log(response.pekerja.noktp);
             },
             error: function () {
                 alert("Terjadi kesalahan, coba lagi nanti");

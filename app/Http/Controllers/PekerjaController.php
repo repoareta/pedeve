@@ -155,14 +155,15 @@ class PekerjaController extends Controller
     {
         // SHOW
         // Nopeg, Nama Jabatan dan Golongan
-        $pekerja = $pekerja->jabatan_latest();
-        $kode_jabatan = KodeJabatan::where('kdjab', $pekerja->kdjab)
-        ->where('kdbag', $pekerja->kdbag)
+        $pekerja_jabatan = $pekerja->jabatan_latest();
+        $kode_jabatan = KodeJabatan::where('kdjab', $pekerja_jabatan->kdjab)
+        ->where('kdbag', $pekerja_jabatan->kdbag)
         ->firstOrFail();
 
         $data = [
             'golongan' => $kode_jabatan->goljob,
             'jabatan' => $kode_jabatan->keterangan,
+            'pekerja' => $pekerja
         ];
 
         return response()->json($data, 200);

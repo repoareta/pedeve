@@ -108,11 +108,22 @@ class PerjalananDinasController extends Controller
         ->orderBy('keterangan', 'ASC')
         ->get();
 
-        $panjar_header_count = PanjarHeader::all()->count();
+        // get tanggal panjar
+        $last_panjar = PanjarHeader::latest()->first();
+
+        $year_now = date('Y');
+        $year_last_panjar = date('Y', strtotime($last_panjar->tgl_panjar));
+        $last_panjar_no = implode('/', array_slice(explode('/', $last_panjar->no_panjar), 0, 1)) + 1;
+        if ($year_now > $year_last_panjar) {
+            // reset no_spd ke 001
+            $no_spd = sprintf("%03d", 1)."/PDV/CS/$year_now";
+        } else {
+            $no_spd = sprintf("%03d", $last_panjar_no)."/PDV/CS/$year_now";
+        }
 
         return view('perjalanan_dinas.create', compact(
             'pegawai_list',
-            'panjar_header_count',
+            'no_spd',
             'jabatan_list'
         ));
     }
@@ -129,7 +140,7 @@ class PerjalananDinasController extends Controller
         
         $panjar_header = new PanjarHeader;
         $panjar_header->no_panjar = $request->no_spd;
-        $panjar_header->tgl_panjar = $request->tanggal;
+        $panjar_header->tgl_panjar = date('Y-m-d H:i:s', strtotime(date('H:i:s'), strtotime($request->tanggal)));
         $panjar_header->nopek = $request->nopek;
         $panjar_header->nama = $pegawai->nama;
         $panjar_header->jabatan = $request->jabatan;
