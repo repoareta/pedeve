@@ -24,8 +24,8 @@ class PPerjalananDinasStore extends FormRequest
     public function rules()
     {
         return [
-            'no_pj_panjar' => 'required',
-            'tanggal'      => 'required',
+            'no_pj_panjar' => 'required|unique:App\Models\PPanjarHeader,no_ppanjar',
+            'tanggal'      => 'required|date',
             'no_panjar'    => 'required',
             'keterangan'   => 'required',
             'nopek'        => 'required',

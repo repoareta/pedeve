@@ -11,6 +11,10 @@ use App\Models\PPanjarDetail;
 use App\Models\SdmMasterPegawai;
 use App\Models\SdmTblKdjab;
 
+
+//load form request (for validation)
+use App\Http\Requests\PPerjalananDinasStore;
+
 // Load Plugin
 use Carbon\Carbon;
 use Session;
@@ -104,7 +108,7 @@ class PerjalananDinasPertanggungJawabanController extends Controller
      * @param  \Illuminate\Http\Request  $request
      * @return \Illuminate\Http\Response
      */
-    public function store(Request $request)
+    public function store(PPerjalananDinasStore $request)
     {
         $pegawai = SdmMasterPegawai::find($request->nopek);
         
