@@ -121,9 +121,14 @@
 				</div>
 
 				<div class="form-group row">
-					<label for="jumlah" class="col-2 col-form-label">Jumlah</label>
-					<div class="col-10">
-						<input class="form-control" type="number" name="jumlah" id="jumlah" value="{{ float_two($ppanjar_header->jmlpanjar) }}">
+					<label for="jumlah" class="col-2 col-form-label">Jumlah Panjar Dinas</label>
+					<div class="col-5">
+						<input class="form-control" type="number" name="jumlah" id="jumlah" data-jumlah="{{ float_two($ppanjar_header->panjar_header->jum_panjar) }}" value="{{ float_two($ppanjar_header->jmlpanjar) }}">
+					</div>
+
+					<label for="example-email-input" class="col-2 col-form-label">Jumlah Panjar Detail</label>
+					<div class="col-3">
+						<input class="form-control" type="number" name="jumlah_detail" id="jumlah_detail">
 					</div>
 				</div>
 
@@ -150,15 +155,15 @@
 				</h3>
 				
 				<div class="kt-portlet__head-actions" style="font-size: 2rem;">
-					<span id="openDetail" class="kt-font-success" data-toggle="kt-tooltip" data-placement="top" title="Tambah Data">
+					<span id="openDetail" class="kt-font-success pointer-link" data-toggle="kt-tooltip" data-placement="top" title="Tambah Data">
 						<i class="fas fa-plus-circle"></i>
 					</span>
 	
-					<span id="editRow" class="kt-font-warning" data-toggle="kt-tooltip" data-placement="top" title="Ubah Data">
+					<span id="editRow" class="kt-font-warning pointer-link" data-toggle="kt-tooltip" data-placement="top" title="Ubah Data">
 						<i class="fas fa-edit"></i>
 					</span>
 	
-					<span id="deleteRow" class="kt-font-danger" data-toggle="kt-tooltip" data-placement="top" title="Hapus Data">
+					<span id="deleteRow" class="kt-font-danger pointer-link" data-toggle="kt-tooltip" data-placement="top" title="Hapus Data">
 						<i class="fas fa-times-circle"></i>
 					</span>
 				</div>
@@ -289,8 +294,13 @@
 				{data: 'keterangan', name: 'keterangan'},
 				{data: 'nilai', name: 'nilai', class:'no-wrap text-right'},
 				{data: 'qty', name: 'qty', class:'no-wrap text-right'},
-				{data: 'total', name: 'total', class:'no-wrap text-right'}
+				{data: 'total', name: 'total', class:'no-wrap text-right'},
+				{data: 'total', name: 'total', class:'no-wrap text-right', visible: false},
 			],
+			drawCallback: function () {
+				var sum = $('#kt_table').DataTable().column(7).data().sum();
+				$('#jumlah_detail').val(sum.toFixed(2)).trigger("change");
+			},
 			order: [[ 0, "asc" ], [ 1, "asc" ]]
 		});
 
@@ -309,6 +319,15 @@
 			autoclose: true,
 			// language : 'id',
 			format   : 'yyyy-mm-dd'
+		});
+
+		$("#jumlah_detail, #jumlah").on('change', function(e){
+			var jumlah = $('#jumlah').data('jumlah');
+			var jumlah_detail = $('#jumlah_detail').val();
+
+			var selisih = jumlah - jumlah_detail;
+
+			$('#jumlah').val(selisih.toFixed(2));
 		});
 
 		$("#formPPanjarDinas").on('submit', function(){
@@ -348,7 +367,15 @@
 					session = false;
 					swal_title = "Tambah Detail Pertanggungjawaban Panjar Dinas";
 				} else {
-					url = "{{ route('perjalanan_dinas.pertanggungjawaban.detail.update') }}";
+					url = "{{ route('perjalanan_dinas.pertanggungjawaban.detail.update', [
+						'no_ppanjar' => str_replace('/', '-', $ppanjar_header->no_ppanjar),
+						'no_urut' => ':no_urut',
+						'nopek' => ':nopek'
+					]) }}";
+
+					url = url
+						.replace(':no_urut', $('#no_urut').data('no_urut'))
+						.replace(':nopek', $('#nopek_detail').data('nopek_detail'));
 					session = false;
 					swal_title = "Update Detail Pertanggungjawaban Panjar Dinas";
 				}
@@ -483,6 +510,9 @@
 							// title
 							$('#title_modal').text('Ubah Detail Panjar Dinas');
 							$('#title_modal').data('state', 'update');
+
+							$('#no_urut').data('no_urut', response.no);
+							$('#nopek_detail').data('nopek_detail', response.nopek);
 							// open modal
 							$('#kt_modal_4').modal('toggle');
 						},

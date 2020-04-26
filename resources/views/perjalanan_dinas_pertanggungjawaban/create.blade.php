@@ -295,7 +295,7 @@
 			],
 			drawCallback: function () {
 				var sum = $('#kt_table').DataTable().column(7).data().sum();
-				$('#jumlah_detail').val(sum).trigger("change");
+				$('#jumlah_detail').val(sum.toFixed(2)).trigger("change");
 			},
 			order: [[ 0, "asc" ], [ 1, "asc" ]]
 			

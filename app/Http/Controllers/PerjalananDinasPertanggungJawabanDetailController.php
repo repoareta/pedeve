@@ -37,6 +37,15 @@ class PerjalananDinasPertanggungJawabanDetailController extends Controller
                 $radio = '<label class="kt-radio kt-radio--bold kt-radio--brand"><input type="radio" name="radio1" value="'.$row->no.'-'.$row->nopek.'"><span></span></label>';
                 return $radio;
             })
+            ->addColumn('nilai', function ($row) {
+                return float_two($row->nilai);
+            })
+            ->addColumn('qty', function ($row) {
+                return float_two($row->qty);
+            })
+            ->addColumn('total', function ($row) {
+                return float_two($row->total);
+            })
             ->rawColumns(['action'])
             ->make(true);
     }
@@ -67,7 +76,15 @@ class PerjalananDinasPertanggungJawabanDetailController extends Controller
                 session()->push('ppanjar_detail', $ppanjar_detail);
             }
         } else {
-            // insert to database
+            $ppanjar_detail = new PPanjarDetail;
+            $ppanjar_detail->no         = $request->no;
+            $ppanjar_detail->no_ppanjar = $request->no_ppanjar ? $request->no_ppanjar : null;        // for add update only
+            $ppanjar_detail->nopek      = $request->nopek;
+            $ppanjar_detail->keterangan = $request->keterangan;
+            $ppanjar_detail->nilai      = float_two($request->nilai);
+            $ppanjar_detail->qty        = $request->qty;
+            $ppanjar_detail->total      = float_two($ppanjar_detail->nilai * $ppanjar_detail->qty);
+        
             $ppanjar_detail->save();
         }
 
@@ -94,7 +111,9 @@ class PerjalananDinasPertanggungJawabanDetailController extends Controller
             }
         } else {
             $data = PPanjarDetail::where('no_ppanjar', $request->no_ppanjar)
-            ->where('nopek', $nopek)->first();
+            ->where('no', $no)
+            ->where('nopek', $nopek)
+            ->first();
         }
 
         return response()->json($data, 200);

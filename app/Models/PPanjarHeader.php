@@ -18,4 +18,14 @@ class PPanjarHeader extends Model
     const CREATED_AT = 'tgl_ppanjar';
     
     protected $dates = ['deleted_at'];
+
+    /**
+     * Kode Jabatan dimiliki Kode Bagian
+     *
+     * @return void
+     */
+    public function panjar_header()
+    {
+        return $this->belongsTo('App\Models\PanjarHeader', 'no_panjar');
+    }
 }
