@@ -128,7 +128,9 @@
     });
 
     $('#nopek_detail').select2().on('change', function() {
-        var id = $('#nopek_detail').val().split('-')[0];
+        // console.log($(this).val());
+        var id = $(this).val().split('-')[0];
+        // var id = $('#nopek_detail').val().split('-')[0];
         var url = '{{ route("pekerja.show.json", ":pekerja") }}';
         // go to page edit
         url = url.replace(':pekerja',id);
@@ -170,7 +172,7 @@
                 $('#keterangan').val(response.keterangan);
                 // isi jumlah
                 const jumlah = parseFloat(response.jum_panjar).toFixed(2);
-                $('#jumlah').val(jumlah);
+                $('#jumlah').val(jumlah).trigger('change');
                 $('#nopek').val(response.nopek).trigger('change');
             },
             error: function () {

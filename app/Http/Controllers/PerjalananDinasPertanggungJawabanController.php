@@ -75,10 +75,25 @@ class PerjalananDinasPertanggungJawabanController extends Controller
 
         $ppanjar_header_count = PPanjarHeader::all()->count();
 
+        $last_ppanjar = PPanjarHeader::withTrashed()->latest()->first();
+        
+        $date_now = date('d');
+        $month_now = date('m');
+        $year_now = date('Y');
+
+        $year_last_ppanjar = date('Y', strtotime($last_ppanjar->tgl_ppanjar));
+        $last_ppanjar_no = implode('/', array_slice(explode('/', $last_ppanjar->no_ppanjar), 0, 1)) + 1;
+        if ($year_now > $year_last_ppanjar) {
+            // reset no_pspd ke 001
+            $no_pspd = sprintf("%03d", 1)."/CS/$date_now/$month_now/$year_now";
+        } else {
+            $no_pspd = sprintf("%03d", $last_ppanjar_no)."/CS/$date_now/$month_now/$year_now";
+        }
+
         return view('perjalanan_dinas_pertanggungjawaban.create', compact(
             'pegawai_list',
             'panjar_header_list',
-            'ppanjar_header_count',
+            'no_pspd',
             'jabatan_list'
         ));
     }
@@ -97,7 +112,7 @@ class PerjalananDinasPertanggungJawabanController extends Controller
         $ppanjar_header->no_ppanjar = $request->no_pj_panjar;
         $ppanjar_header->no_panjar = $request->no_panjar;
         $ppanjar_header->keterangan = $request->keterangan;
-        $ppanjar_header->tgl_ppanjar = $request->tanggal;
+        $ppanjar_header->tgl_ppanjar = date('Y-m-d H:i:s', strtotime(date('H:i:s'), strtotime($request->tanggal)));
         $ppanjar_header->nopek = $request->nopek;
         $ppanjar_header->nama = $pegawai->nama;
         $ppanjar_header->pangkat = $request->jabatan;
@@ -125,17 +140,6 @@ class PerjalananDinasPertanggungJawabanController extends Controller
         }
 
         return redirect()->route('perjalanan_dinas.pertanggungjawaban.index');
-    }
-
-    /**
-     * Display the specified resource.
-     *
-     * @param  int  $id
-     * @return \Illuminate\Http\Response
-     */
-    public function show($id)
-    {
-        //
     }
 
     /**
@@ -205,7 +209,6 @@ class PerjalananDinasPertanggungJawabanController extends Controller
     public function delete(Request $request)
     {
         PPanjarHeader::where('no_ppanjar', $request->id)->delete();
-        PPanjarDetail::where('no_ppanjar', $request->id)->delete();
 
         return response()->json();
     }

@@ -119,7 +119,7 @@ Route::group(['middleware'=> ['auth','checkRole:1']], function () {
                 Route::get('perjalanan_dinas/pertanggungjawaban/detail/index_json', 'PerjalananDinasPertanggungJawabanDetailController@indexJson')->name('detail.index.json');
                 Route::get('perjalanan_dinas/pertanggungjawaban/detail/show', 'PerjalananDinasPertanggungJawabanDetailController@show')->name('detail.show');
                 Route::post('perjalanan_dinas/pertanggungjawaban/detail/store', 'PerjalananDinasPertanggungJawabanDetailController@store')->name('detail.store');
-                Route::post('perjalanan_dinas/pertanggungjawaban/detail/update', 'PerjalananDinasPertanggungJawabanDetailController@update')->name('detail.update');
+                Route::post('perjalanan_dinas/pertanggungjawaban/detail/update/{no_ppanjar}/{no_urut}/{nopek}', 'PerjalananDinasPertanggungJawabanDetailController@update')->name('detail.update');
                 Route::delete('perjalanan_dinas/pertanggungjawaban/detail/delete', 'PerjalananDinasPertanggungJawabanDetailController@delete')->name('detail.delete');
                 // P PERJALANAN DINAS DETAIL END
             });

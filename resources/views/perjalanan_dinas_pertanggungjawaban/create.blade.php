@@ -55,7 +55,7 @@
 					<div class="form-group row">
 						<label for="spd-input" class="col-2 col-form-label">No. PJ Panjar</label>
 						<div class="col-5">
-							<input class="form-control" type="text" name="no_pj_panjar" value="{{ ($ppanjar_header_count + 1).'/CS/'.date('d').'/'.date('m').'/'.date('Y') }}" id="no_pj_panjar">
+							<input class="form-control" type="text" name="no_pj_panjar" value="{{ $no_pspd }}" id="no_pj_panjar">
 						</div>
 
 						<label for="spd-input" class="col-2 col-form-label">Tanggal PJ Panjar</label>
@@ -232,14 +232,14 @@
 					<div class="form-group row">
 						<label for="spd-input" class="col-2 col-form-label">Nilai</label>
 						<div class="col-10">
-							<input class="form-control" type="text" name="nilai_detail" id="nilai_detail">
+							<input class="form-control" type="number" name="nilai_detail" id="nilai_detail" value="0.00">
 						</div>
 					</div>
 
 					<div class="form-group row">
 						<label for="spd-input" class="col-2 col-form-label">Qty</label>
 						<div class="col-10">
-							<input class="form-control" type="text" name="qty_detail" id="qty_detail">
+							<input class="form-control" type="number" name="qty_detail" id="qty_detail">
 						</div>
 					</div>
 
@@ -295,7 +295,7 @@
 			],
 			drawCallback: function () {
 				var sum = $('#kt_table').DataTable().column(7).data().sum();
-				$('#jumlah_detail').val(sum);
+				$('#jumlah_detail').val(sum).trigger("change");
 			},
 			order: [[ 0, "asc" ], [ 1, "asc" ]]
 			
@@ -315,6 +315,15 @@
 			autoclose: true,
 			// language : 'id',
 			format   : 'yyyy-mm-dd'
+		});
+
+		$("#jumlah_detail, #jumlah").on('change', function(e){
+			var jumlah = $('#jumlah').val();
+			var jumlah_detail = $('#jumlah_detail').val();
+
+			var selisih = jumlah - jumlah_detail;
+
+			$('#jumlah').val(selisih.toFixed(2));
 		});
 
 		$("#formPPanjarDinas").on('submit', function(){
@@ -338,12 +347,13 @@
 
 			if($(this).valid()) {
 				// do your ajax stuff here
-				var no = $('#no_urut').val();
+				var no         = $('#no_urut').val();
 				var keterangan = $('#keterangan_detail').val();
-				var nopek = $('#nopek_detail').val().split('-')[0];
-				var nilai = $('#nilai_detail').val();
-				var qty = $('#qty_detail').val();
-				var total = nilai*qty;
+				var nopek      = $('#nopek_detail').val().split('-')[0];
+				var nama       = $('#nopek_detail').val().split('-')[1];
+				var nilai      = $('#nilai_detail').val();
+				var qty        = $('#qty_detail').val();
+				var total      = nilai*qty;
 
 				var state = $('#title_modal').data('state');
 
@@ -354,7 +364,16 @@
 					session = true;
 					swal_title = "Tambah Detail Pertanggungjawaban Panjar";
 				} else {
-					url = "{{ route('perjalanan_dinas.pertanggungjawaban.detail.update') }}";
+					url = "{{ route('perjalanan_dinas.pertanggungjawaban.detail.update', [
+						'no_ppanjar' => 'null',
+						'no_urut' => ':no_urut',
+						'nopek' => ':nopek'
+					]) }}";
+
+					url = url
+						.replace(':no_urut', $('#no_urut').data('no_urut'))
+						.replace(':nopek', $('#nopek_detail').data('nopek_detail'));
+
 					session = true;
 					swal_title = "Update Detail Panjar";
 				}
@@ -366,6 +385,7 @@
 						no: no,
 						keterangan: keterangan,
 						nopek: nopek,
+						nama: nama,
 						nilai: nilai,
 						qty: qty,
 						total: total,
@@ -462,7 +482,7 @@
 					var no_urut = $(this).val().split('-')[0];
 					var no_nopek = $(this).val().split('-')[1];
 					$.ajax({
-						url: "{{ route('perjalanan_dinas.show.json.detail') }}",
+						url: "{{ route('perjalanan_dinas.pertanggungjawaban.detail.show') }}",
 						type: 'GET',
 						data: {
 							"no_urut": no_urut,
@@ -476,11 +496,14 @@
 							$('#no_urut').val(response.no);
 							$('#keterangan_detail').val(response.keterangan);
 							$('#nopek_detail').val(response.nopek + '-' + response.nama).trigger('change');
-							$('#jabatan_detail').val(response.jabatan).trigger('change');
-							$('#golongan_detail').val(response.status);
+							$('#nilai_detail').val(response.nilai);
+							$('#qty_detail').val(response.qty);
 							// title
 							$('#title_modal').text('Ubah Detail Panjar Dinas');
 							$('#title_modal').data('state', 'update');
+
+							$('#no_urut').data('no_urut', response.no);
+							$('#nopek_detail').data('nopek_detail', response.nopek);
 							// open modal
 							$('#kt_modal_4').modal('toggle');
 						},
