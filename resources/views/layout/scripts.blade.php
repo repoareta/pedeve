@@ -172,8 +172,9 @@
                 $('#keterangan').val(response.keterangan);
                 // isi jumlah
                 const jumlah = parseFloat(response.jum_panjar).toFixed(2);
-                $('#jumlah').val(jumlah).trigger('change');
-                $('#nopek').val(response.nopek).trigger('change');
+                $('#jumlah').data('jumlah', jumlah);
+                $('#jumlah').val(jumlah).trigger("change");
+                $('#nopek').val(response.nopek).trigger("change");
             },
             error: function () {
                 alert("Terjadi kesalahan, coba lagi nanti");

@@ -165,7 +165,17 @@ class PerjalananDinasPertanggungJawabanController extends Controller
         ->orderBy('keterangan', 'ASC')
         ->get();
 
-        $panjar_header_list = PanjarHeader::all();
+        // $panjar_header_list = PanjarHeader::all();
+
+        $no_panjar = $ppanjar_header->panjar_header->no_panjar;
+
+        $ppanjar_header_list = PPanjarHeader::select('no_panjar')
+        ->whereNotNull('no_panjar')
+        ->whereNotIn('no_panjar', ["$no_panjar"])
+        ->get()
+        ->toArray();
+
+        $panjar_header_list = PanjarHeader::whereNotIn('no_panjar', $ppanjar_header_list)->get();
 
         return view('perjalanan_dinas_pertanggungjawaban.edit', compact(
             'pegawai_list',
@@ -192,7 +202,7 @@ class PerjalananDinasPertanggungJawabanController extends Controller
         $ppanjar_header->no_ppanjar = $request->no_pj_panjar;
         $ppanjar_header->no_panjar = $request->no_panjar;
         $ppanjar_header->keterangan = $request->keterangan;
-        $ppanjar_header->tgl_ppanjar = $request->tanggal;
+        $ppanjar_header->tgl_ppanjar = date('Y-m-d H:i:s', strtotime(date('H:i:s'), strtotime($request->tanggal)));
         $ppanjar_header->nopek = $request->nopek;
         $ppanjar_header->nama = $pegawai->nama;
         $ppanjar_header->pangkat = $request->jabatan;

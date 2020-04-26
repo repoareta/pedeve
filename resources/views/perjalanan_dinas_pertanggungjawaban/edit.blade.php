@@ -505,8 +505,8 @@
 							$('#no_urut').val(response.no);
 							$('#keterangan_detail').val(response.keterangan);
 							$('#nopek_detail').val(response.nopek).trigger('change');
-							$('#nilai_detail').val(response.nilai);
-							$('#qty_detail').val(response.qty);
+							$('#nilai_detail').val(parseFloat(response.nilai).toFixed(2));
+							$('#qty_detail').val(parseFloat(response.qty).toFixed(2));
 							// title
 							$('#title_modal').text('Ubah Detail Panjar Dinas');
 							$('#title_modal').data('state', 'update');
