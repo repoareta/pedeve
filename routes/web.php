@@ -18,10 +18,12 @@ Route::get('/login', 'AuthController@login')->name('login');
 Route::post('login_user', 'AuthController@postlogin')->name('login_user.postlogin');
 Route::get('/logout', 'AuthController@logout')->name('logout.index');
 
-Route::get('/migrasi', function () {
+Route::get('/migration_show', function () {
     $migrasi = DB::select(DB::raw("SELECT * FROM migrations"));
-    // dd($migrasi);
+    dd($migrasi);
+});
 
+Route::get('/migration_clear', function () {
     DB::select(DB::raw("DELETE FROM migrations"));
 });
 
@@ -475,7 +477,7 @@ Route::group(['middleware'=> ['auth','checkRole:1']], function () {
             Route::get('proses_gaji/slip/gaji', 'ProsesGajiController@slipGaji')->name('slipGaji');
             Route::post('proses_gaji/cetak/slipgaji', 'ProsesGajiController@cetak_slipgaji')->name('cetak_slipgaji');
             Route::get('proses_gaji/ctkrekapgaji', 'ProsesGajiController@ctkrekapgaji')->name('ctkrekapgaji');
-            Route::post('proses_gaji/rekap/export', 'ProsesGajiController@rekapExport')->name('rekap.export');    
+            Route::post('proses_gaji/rekap/export', 'ProsesGajiController@rekapExport')->name('rekap.export');
         });
         //end proses_gaji
 
@@ -487,7 +489,6 @@ Route::group(['middleware'=> ['auth','checkRole:1']], function () {
             Route::get('proses_thr/edit', 'ProsesThrController@edit')->name('edit');
             Route::get('proses_thr/ctkslipthr', 'ProsesThrController@ctkslipthr')->name('ctkslipthr');
             Route::post('proses_thr/rekap/export', 'ProsesThrController@rekapExport')->name('rekap.export');
-
         });
         //end proses_thr
 
@@ -496,7 +497,7 @@ Route::group(['middleware'=> ['auth','checkRole:1']], function () {
         Route::name('proses_insentif.')->group(function () {
             Route::get('proses_insentif', 'ProsesInsentifController@index')->name('index');
             Route::post('proses_insentif/store', 'ProsesInsentifController@store')->name('store');
-            Route::get('proses_insentif/edit', 'ProsesInsentifController@edit')->name('edit'); 
+            Route::get('proses_insentif/edit', 'ProsesInsentifController@edit')->name('edit');
             Route::get('proses_insentif/ctkslipinsentif', 'ProsesInsentifController@ctkslipinsentif')->name('ctkslipinsentif');
             Route::post('proses_insentif/rekap/export', 'ProsesInsentifController@rekapExport')->name('rekap.export');
         });
