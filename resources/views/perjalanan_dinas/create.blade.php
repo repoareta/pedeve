@@ -317,7 +317,7 @@
 	function refreshTable() {
 		var table = $('#kt_table').DataTable();
 		table.clear();
-		table.ajax.url("{{ route('perjalanan_dinas.index.json.detail', ['no_panjar' => 'null']) }}").load(function() {
+		table.ajax.url("{{ route('perjalanan_dinas.detail.index.json') }}").load(function() {
 			// Callback loads updated row count into a DOM element
 			// (a Bootstrap badge on a menu item in this case):
 			var rowCount = table.rows().count();
@@ -335,7 +335,7 @@
 			scrollX   : true,
 			processing: true,
 			serverSide: true,
-			ajax: "{{ route('perjalanan_dinas.index.json.detail', ['no_panjar' => 'null']) }}",
+			ajax: "{{ route('perjalanan_dinas.detail.index.json') }}",
 			columns: [
 				{data: 'action', name: 'aksi', orderable: false, searchable: false, class:'radio-button'},
 				{data: 'no', name: 'no'},
@@ -418,11 +418,19 @@
 				var url, session, swal_title;
 
 				if(state == 'add'){
-					url = "{{ route('perjalanan_dinas.store.detail') }}";
+					url = "{{ route('perjalanan_dinas.detail.store') }}";
 					session = true;
 					swal_title = "Tambah Detail Panjar";
 				} else {
-					url = "{{ route('perjalanan_dinas.update.detail') }}";
+					url = "{{ route('perjalanan_dinas.detail.update', [
+						'no_panjar' => 'null',
+						'no_urut' => ':no_urut',
+						'nopek' => ':nopek'
+					]) }}";
+
+					url = url
+						.replace(':no_urut', $('#no_urut').data('no_urut'))
+						.replace(':nopek', $('#nopek_detail').data('nopek_detail'));
 					session = true;
 					swal_title = "Update Detail Panjar";
 				}
@@ -492,7 +500,7 @@
 					.then((result) => {
 						if (result.value) {
 							$.ajax({
-								url: "{{ route('perjalanan_dinas.delete.detail') }}",
+								url: "{{ route('perjalanan_dinas.detail.delete') }}",
 								type: 'DELETE',
 								dataType: 'json',
 								data: {
@@ -531,7 +539,7 @@
 					var no_urut = $(this).val().split('-')[0];
 					var no_nopek = $(this).val().split('-')[1];
 					$.ajax({
-						url: "{{ route('perjalanan_dinas.show.json.detail') }}",
+						url: "{{ route('perjalanan_dinas.detail.show.json') }}",
 						type: 'GET',
 						data: {
 							"no_urut": no_urut,
@@ -550,6 +558,8 @@
 							// title
 							$('#title_modal').text('Ubah Detail Panjar Dinas');
 							$('#title_modal').data('state', 'update');
+							$('#no_urut').data('no_urut', response.no);
+							$('#nopek_detail').data('nopek_detail', response.nopek);
 							// open modal
 							$('#kt_modal_4').modal('toggle');
 						},

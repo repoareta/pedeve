@@ -80,27 +80,26 @@ Route::group(['middleware'=> ['auth','checkRole:1']], function () {
             Route::get('perjalanan_dinas', 'PerjalananDinasController@index')->name('index');
             Route::get('perjalanan_dinas/index_json', 'PerjalananDinasController@indexJson')->name('index.json');
             Route::get('perjalanan_dinas/show_json', 'PerjalananDinasController@showJson')->name('show.json');
-            Route::get('perjalanan_dinas/index_json_detail/{no_panjar}', 'PerjalananDinasController@indexJsonDetail')->name('index.json.detail');
             Route::get('perjalanan_dinas/create', 'PerjalananDinasController@create')->name('create');
             Route::post('perjalanan_dinas/store', 'PerjalananDinasController@store')->name('store');
-            Route::post('perjalanan_dinas/store_detail', 'PerjalananDinasController@storeDetail')->name('store.detail');
+            
             Route::get('perjalanan_dinas/edit/{no_panjar}', 'PerjalananDinasController@edit')->name('edit');
             Route::post('perjalanan_dinas/update/{no_panjar}', 'PerjalananDinasController@update')->name('update');
-            Route::post('perjalanan_dinas/update_detail', 'PerjalananDinasController@updateDetail')->name('update.detail');
-            Route::get('perjalanan_dinas/show_json_detail', 'PerjalananDinasController@showJsonDetail')->name('show.json.detail');
             Route::delete('perjalanan_dinas/delete', 'PerjalananDinasController@delete')->name('delete');
-            Route::delete('perjalanan_dinas/delete_detail', 'PerjalananDinasController@deleteDetail')->name('delete.detail');
             Route::get('perjalanan_dinas/export/{no_panjar}', 'PerjalananDinasController@rowExport')->name('export');
             Route::get('perjalanan_dinas/rekap', 'PerjalananDinasController@rekap')->name('rekap');
             Route::post('perjalanan_dinas/rekap/export', 'PerjalananDinasController@rekapExport')->name('rekap.export');
             // PERJALANAN DINAS END
 
             // PERJALANAN DINAS DETAIL START
-            Route::get('perjalanan_dinas/detail/index_json', 'PerjalananDinasDetailController@indexJson')->name('detail.index.json');
-            Route::get('perjalanan_dinas/pertanggungjawaban/detail/show', 'PerjalananDinasDetailController@show')->name('detail.show');
-            Route::post('perjalanan_dinas/pertanggungjawaban/detail/store', 'PerjalananDinasDetailController@store')->name('detail.store');
-            Route::post('perjalanan_dinas/pertanggungjawaban/detail/update', 'PerjalananDinasDetailController@update')->name('detail.update');
-            Route::delete('perjalanan_dinas/pertanggungjawaban/detail/delete', 'PerjalananDinasDetailController@delete')->name('detail.delete');
+            Route::name('detail.')->group(function () {
+                Route::get('perjalanan_dinas/detail/index_json/{no_panjar?}', 'PerjalananDinasDetailController@indexJson')->name('index.json');
+                Route::post('perjalanan_dinas/detail/store/{no_panjar?}', 'PerjalananDinasDetailController@store')->name('store');
+                Route::get('perjalanan_dinas/detail/show', 'PerjalananDinasDetailController@show')->name('show.json');
+                Route::post('perjalanan_dinas/detail/update/{no_panjar}/{no_urut}/{nopek}', 'PerjalananDinasDetailController@update')->name('update');
+                Route::delete('perjalanan_dinas/detail/delete', 'PerjalananDinasDetailController@delete')->name('delete');
+            });
+            
             // PERJALANAN DINAS DETAIL END
 
             // Route assigned name "perjalanan_dinas.pertanggungjawaban.index"...
