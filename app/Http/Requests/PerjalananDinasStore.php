@@ -24,7 +24,7 @@ class PerjalananDinasStore extends FormRequest
     public function rules()
     {
         return [
-            'no_spd'      => 'required',
+            'no_spd'      => 'required|unique:App\Models\PanjarHeader,no_panjar',
             'tanggal'     => 'required',
             'nopek'       => 'required',
             'jabatan'     => 'required',

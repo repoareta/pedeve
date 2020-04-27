@@ -15,4 +15,14 @@ class PUmkHeader extends Model
     {
         return $this->hasMany('App\Models\PUmkDetail', 'no_pumk');
     }
+
+    public function umk_header()
+    {
+        return $this->belongsTo('App\Models\UmkHeader', 'no_umk');
+    }
+
+    public function pekerja()
+    {
+        return $this->belongsTo('App\Models\Pekerja', 'nopek');
+    }
 }
