@@ -184,8 +184,8 @@ class UangMukaKerjaController extends Controller
         $noumk=str_replace('-', '/', $no);
         $data_umks = DB::select("select * from kerja_header where no_umk = '$noumk'");
         $no_uruts = DB::select("select max(no) as no from kerja_detail where no_umk = '$noumk'");
-        $data_umk_details = DetailUmk::where('no_umk', $noumk)->get();
-        $data_account = DB::select("select kodeacct, descacct FROM account where LENGTH(kodeacct)=6 AND kodeacct NOT LIKE '%X%'");
+        $data_umk_details = DetailUmk::where('no_umk',$noumk)->get();
+        $data_account = DB::select("select kodeacct,descacct from account where length(kodeacct)=6 and kodeacct not like '%x%' order by kodeacct desc");
         $data_bagian = DB::select("SELECT A.kode,A.nama FROM sdm_tbl_kdbag A ORDER BY A.kode");
         $data_jenisbiaya = DB::select("select kode,keterangan from jenisbiaya order by kode");
         $data_cj = DB::select("select kode,nama from cashjudex order by kode");

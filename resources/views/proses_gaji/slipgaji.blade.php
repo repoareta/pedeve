@@ -45,6 +45,17 @@
 			<div class="kt-portlet__body">
 				<input class="form-control" type="hidden" name="userid" value="{{Auth::user()->userid}}">
 				<div class="form-group row">
+					<label for="dari-input" class="col-2 col-form-label">Nama Pegawai<span style="color:red;">*</span></label>
+					<div class="col-10">
+						<select name="nopek" id="select-debetdari" class="form-control selectpicker" data-live-search="true" required oninvalid="this.setCustomValidity('Nama Pegawai Harus Diisi..')" onchange="setCustomValidity('')">
+							<option value="">- Pilih -</option>
+							@foreach($data_pegawai as $data)
+							<option value="{{$data->nopeg}}">{{$data->nopeg}} - {{$data->nama}}</option>
+							@endforeach
+						</select>								
+					</div>
+				</div>
+				<div class="form-group row">
 				<label for="spd-input" class="col-2 col-form-label">Bulan Gaji<span style="color:red;">*</span></label>
 				<div class="col-5">
 						<?php 
@@ -133,5 +144,13 @@ return {
 
 KTBootstrapDatepicker.init();
 });
+
+function hanyaAngka(evt) {
+	var charCode = (evt.which) ? evt.which : event.keyCode
+	if (charCode > 31 && (charCode < 48 || charCode > 57))
+
+	return false;
+	return true;
+}
 </script>
 @endsection

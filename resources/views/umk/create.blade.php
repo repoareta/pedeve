@@ -98,7 +98,7 @@
 					<div class="form-group row">
 						<label for="tujuan-input" class="col-2 col-form-label">Kurs <span style="color:red;display:none" id="simbol-kurs">*</span></label>
 						<div class="col-10">
-							<input class="form-control" type="text" value="1" name="kurs" id="kurs" size="10" maxlength="10" autocomplete='off' onkeypress="return hanyaAngka(event)"  >
+							<input class="form-control" type="text" value="1" name="kurs" id="kurs" readonly  size="10" maxlength="10" autocomplete='off' onkeypress="return hanyaAngka(event)" oninvalid="this.setCustomValidity('Kurs Harus Diisi..')" oninput="setCustomValidity('')" >
 						</div>
 					</div>
 					<div class="form-group row">
@@ -190,21 +190,53 @@
 			processing: true,
 			serverSide: false,
 		});
+
+		$("input[name=ci]:checked").each(function() {  
+			var ci = $(this).val();
+			if(ci == 1)
+			{
+				$('#kurs').val(1);
+				$('#simbol-kurs').hide();
+				$( "#kurs" ).prop( "required", false );
+				$( "#kurs" ).prop( "readonly", true );
+				$('#kurs').css("background-color","#DCDCDC");
+				$('#kurs').css("cursor","not-allowed");
+
+			}else{
+				var kurs1 = $('#data-kurs').val();
+				$('#kurs').val(kurs1);
+				$('#simbol-kurs').show();
+				$( "#kurs" ).prop( "required", true );
+				$( "#kurs" ).prop( "readonly", false );
+				$('#kurs').css("background-color","#ffffff");
+				$('#kurs').css("cursor","text");
+			}
+				
+		});
+
+
+
 	});
 
 function displayResult(ci){ 
-		if(ci == 1)
-		{
+	if(ci == 1)
+	{
 		$('#kurs').val(1);
 		$('#simbol-kurs').hide();
 		$( "#kurs" ).prop( "required", false );
+		$( "#kurs" ).prop( "readonly", true );
+		$('#kurs').css("background-color","#DCDCDC");
+		$('#kurs').css("cursor","not-allowed");
 
-		}else{
+	}else{
 		$('#kurs').val("");
 		$('#simbol-kurs').show();
 		$( "#kurs" ).prop( "required", true );
-		}
+		$( "#kurs" ).prop( "readonly", false );
+		$('#kurs').css("background-color","#ffffff");
+		$('#kurs').css("cursor","text");
 	}
+}
 
 
 // Class definition

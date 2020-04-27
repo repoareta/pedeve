@@ -491,6 +491,7 @@ Route::group(['middleware'=> ['auth','checkRole:1']], function () {
             Route::post('proses_thr/store', 'ProsesThrController@store')->name('store');
             Route::get('proses_thr/edit', 'ProsesThrController@edit')->name('edit');
             Route::get('proses_thr/ctkslipthr', 'ProsesThrController@ctkslipthr')->name('ctkslipthr');
+            Route::post('proses_thr/cetak/slipgaji', 'ProsesThrController@cetak_slipthr')->name('cetak_slipthr');
             Route::post('proses_thr/rekap/export', 'ProsesThrController@rekapExport')->name('rekap.export');
         });
         //end proses_thr

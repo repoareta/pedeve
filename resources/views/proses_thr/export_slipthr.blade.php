@@ -63,11 +63,11 @@
                 ?>
                 <tr>
                     <td align="left" style="padding-left:30px;">
-                        <font style="font-size: 12pt;font-weight: bold "> Slip Upah</font><br>
-                        <font style="font-size: 12pt;font-weight: bold ">PT.PERTAMINA PEDEVE INDONESIA</font><br>
+                        <font style="font-size: 12pt;font-weight: bold "> Slip THR</font><br>
+                        <font style="font-size: 12pt;font-weight: bold ">PT.PERTAMINA DANA VENTURA</font><br>
                         <table border="1" style="border-collapse: collapse; font-size: 10pt;text-align:center;" width="95%">
                             <tr bgcolor="#A9A9A9">
-                                <td >Slip Upah Bulan/Tahun</td>
+                                <td >Slip THR Bulan/Tahun</td>
                                 <td>Payroll Area</td>
                             </tr>
                             <tr>
@@ -95,9 +95,7 @@
                             <td align="center" style="padding-left:150px;">
                             <img align="right" src="{{public_path() . '/images/pertamina.jpg'}}" width="160px" height="80px"  style="padding-right:30px;">
                     </td>
-
-                </tr>
-                    
+                </tr> 
             </table>
 
 
@@ -112,8 +110,6 @@
                                 <td>Jenis</td>
                                 <td>AARD</td>
                                 <td>Keterangan</td>
-                                <td>Jumlah/Cicilan</td>
-                                <td>Cicilan Ke-</td>
                                 <td>Jumlah</td>
                             </tr>
                             <?php $a=0; ?>
@@ -123,72 +119,14 @@
                                 <td  style=" text-align:left;">{{$data->nama_upah}}</td>
                                 <td style=" text-align:center;">{{$data->aard}}</td>
                                 <td style=" text-align:left;">{{$data->nama_aard}}</td>
-                                <td style=" text-align:center;">{{$data->jmlcc == 0 ? '-' : $data->jmlcc}}</td>
-                                <td style=" text-align:center;">{{$data->ccl == 0 ? '-' : $data->ccl}}</td>
                                 <td style=" text-align:right;">{{$data->nilai == 0 ? '-' : number_format($data->nilai,2,',','.')}}</td>
                             </tr>
                                 <?php $a++;
                                 $total[$a] = $data->nilai; ?>
                             @endforeach
                             <tr>
-                                <td style=" font-size: 10pt;text-align:right;" colspan="5" ><font style=" text-align:right; padding-right:2%;">Sub Total : </td>
+                                <td style=" font-size: 10pt;text-align:right;" colspan="3" ><font style=" text-align:right; padding-right:2%;">Sub Total : </td>
                                 <td style=" font-size: 10pt;text-align:right;font-weight: bold"   >{{number_format(array_sum($total),2,',','.')}} </td>
-                            </tr>
-                            <?php $a=0; ?>
-                            @foreach($data_detail as $data)
-                            <tr style=" font-size: 8pt;">
-                                <td  style=" text-align:left;">{{$data->nama_upah}}</td>
-                                <td style=" text-align:center;">{{$data->aard}}</td>
-                                <td style=" text-align:left;">{{$data->nama_aard}}</td>
-                                <td style=" text-align:center;">{{$data->jmlcc == 0 ? '-' : $data->jmlcc}}</td>
-                                <td style=" text-align:center;">{{$data->ccl == 0 ? '-' : $data->ccl}}</td>
-                                <td style=" text-align:right;">{{$data->nilai == 0 ? '-' : number_format($data->nilai,2,',','.')}}</td>
-                            </tr>
-                                <?php $a++;
-                                $totaldetail[$a] = $data->nilai; ?>
-                            @endforeach
-                            <tr>
-                            <?php $total_bersih = array_sum($total) - array_sum($totaldetail); ?>
-                                <td style=" font-size: 10pt;text-align:right;" colspan="5" ><font style=" text-align:right; padding-right:2%;">Penghasilan Bersih : </td>
-                                <td style=" font-size: 10pt;text-align:right;font-weight: bold"   >{{number_format($total_bersih,2,',','.')}} </td>
-                            </tr>
-                        </table>
-                    </td>
-                </tr>
-            </table>
-
-
-            <table width="100%" style="font-family: sans-serif;padding-left:30px;padding-top:10px;padding-right:30px;">
-                <tr style=" font-size: 10pt;text-align:center;font-weight: bold">
-                    <td  colspan="2">INFORMASI LAIN-LAIN </td>
-                </tr>
-                <tr>
-                    <td colspan="2">
-                        <table width="100%" style="border-collapse: collapse;" border="1" >
-                            <tr style=" font-size: 10pt;text-align:center; font-weight: bold">
-                                <td>Jenis</td>
-                                <td>AARD</td>
-                                <td>Nama</td>
-                                <td>Bulan Ini</td>
-                                <td>Akumulasi</td>
-                            </tr>
-                            <?php $a=0; ?>
-                            @foreach($data_lain as $data)
-                            <tr style=" font-size: 8pt;">
-                                <td width="30%" style=" text-align:left;">{{$data->nama_upah}}</td>
-                                <td width="10%" style=" text-align:center;">{{$data->aard}}</td>
-                                <td width="40%" style=" text-align:left;">{{$data->nama_aard}}</td>
-                                <td style=" text-align:right;" width="15%">{{$data->curramount == 0 ? '-' : number_format($data->curramount,2,',','.')}}</td>
-                                <td style=" text-align:right;" width="15%">{{$data->total == 0 ? '-' : number_format($data->total,2,',','.')}}</td>
-                            </tr>
-                                <?php $a++;
-                                $totallain[$a] = $data->curramount;
-                                $totalakumulasi[$a] = $data->total;?>
-                            @endforeach
-                            <tr >
-                                <td style=" font-size: 10pt;text-align:right; padding-right:2%;" colspan="3" >Sub Total Iuran Wajib Beban Perusahaan : </td>
-                                <td style=" font-size: 10pt;text-align:right;font-weight: bold"  width="15%" >{{number_format(array_sum($totallain),2,',','.')}} </td>
-                                <td style=" font-size: 10pt;text-align:right;font-weight: bold"  width="15%" >{{number_format(array_sum($totalakumulasi),2,',','.')}}</td>
                             </tr>
                         </table>
                     </td>
