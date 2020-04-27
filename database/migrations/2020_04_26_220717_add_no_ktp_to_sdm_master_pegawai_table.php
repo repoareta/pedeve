@@ -4,7 +4,7 @@ use Illuminate\Database\Migrations\Migration;
 use Illuminate\Database\Schema\Blueprint;
 use Illuminate\Support\Facades\Schema;
 
-class TblKerjaHeader extends Migration
+class AddNoKtpToSdmMasterPegawaiTable extends Migration
 {
     /**
      * Run the migrations.
@@ -13,9 +13,9 @@ class TblKerjaHeader extends Migration
      */
     public function up()
     {
-        Schema::table('kerja_header', function (Blueprint $table) {
-            if (!Schema::hasColumn('kerja_header', 'kepada')) {
-                $table->string('kepada')->nullable()->after('jumlah');
+        Schema::table('sdm_master_pegawai', function (Blueprint $table) {
+            if (!Schema::hasColumn('sdm_master_pegawai', 'noktp')) {
+                $table->string('noktp', 20)->nullable();
             }
         });
     }
@@ -27,9 +27,8 @@ class TblKerjaHeader extends Migration
      */
     public function down()
     {
-        //
-        Schema::table('kerja_header', function (Blueprint $table) {
-            //
+        Schema::table('sdm_master_pegawai', function (Blueprint $table) {
+            $table->dropColumn('noktp');
         });
     }
 }

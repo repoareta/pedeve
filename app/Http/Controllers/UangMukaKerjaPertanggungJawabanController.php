@@ -46,7 +46,7 @@ class UangMukaKerjaPertanggungJawabanController extends Controller
                 return $row->nopek." - ".$row->nama;
             })
             ->addColumn('nilai', function ($row) {
-                return currency_idr($row->pumk_detail->sum('nilai'));
+                return currency_idr(optional($row->umk_header)->jumlah - $row->pumk_detail->sum('nilai'));
             })
             ->addColumn('approval', function ($row) {
                 if ($row->app_pbd == 'Y') {
@@ -89,9 +89,12 @@ class UangMukaKerjaPertanggungJawabanController extends Controller
 
         $pumk_header_count = PUmkHeader::all()->count();
 
-        $account_list = DB::select("select kodeacct, descacct FROM account where LENGTH(kodeacct)=6 AND kodeacct NOT LIKE '%X%'");
+        $account_list = DB::select("select kodeacct, descacct FROM account where LENGTH(kodeacct)=6 AND kodeacct NOT LIKE '%X%' ORDER BY kodeacct DESC");
+
         $bagian_list = DB::select("SELECT A.kode,A.nama FROM sdm_tbl_kdbag A ORDER BY A.kode");
+
         $jenis_biaya_list = DB::select("select kode,keterangan from jenisbiaya order by kode");
+        
         $c_judex_list = DB::select("select kode,nama from cashjudex order by kode");
 
         return view('umk_pertanggungjawaban.create', compact(
@@ -120,7 +123,7 @@ class UangMukaKerjaPertanggungJawabanController extends Controller
         $pumk_header->no_pumk = $request->no_pumk;
         $pumk_header->no_umk = $request->no_umk;
         $pumk_header->keterangan = $request->keterangan;
-        $pumk_header->tgl_pumk = $request->tanggal;
+        $pumk_header->tgl_pumk = date('Y-m-d H:i:s', strtotime(date('H:i:s'), strtotime($request->tanggal)));
         $pumk_header->nopek = $request->nopek;
         $pumk_header->nama = $pegawai->nama;
         $pumk_header->app_sdm = 'N';
@@ -158,9 +161,52 @@ class UangMukaKerjaPertanggungJawabanController extends Controller
      * @param  int  $id
      * @return \Illuminate\Http\Response
      */
-    public function edit($id)
+    public function edit($no_pumk)
     {
-        //
+        $no_pumk = str_replace('-', '/', $no_pumk);
+        $pumk_header = PUmkHeader::find($no_pumk);
+
+        $no_umk = $pumk_header->umk_header->no_umk;
+
+        $pekerja_jabatan = SdmTblKdjab::where('kdbag', $pumk_header->pekerja->jabatan_latest()->kdbag)
+        ->where('kdjab', $pumk_header->pekerja->jabatan_latest()->kdjab)
+        ->first();
+
+        $pegawai_list = SdmMasterPegawai::where('status', '<>', 'P')
+        ->orderBy('nama', 'ASC')
+        ->get();
+
+        $jabatan_list = SdmTblKdjab::distinct('keterangan')
+        ->orderBy('keterangan', 'ASC')
+        ->get();
+
+        $pumk_header_list = PUmkHeader::select('no_umk')
+        ->whereNotNull('no_umk')
+        ->whereNotIn('no_umk', ["$no_umk"])
+        ->get()
+        ->toArray();
+
+        $umk_header_list = UmkHeader::whereNotIn('no_umk', $pumk_header_list)->get();
+
+        $account_list = DB::select("select kodeacct, descacct FROM account where LENGTH(kodeacct)=6 AND kodeacct NOT LIKE '%X%' ORDER BY kodeacct DESC");
+
+        $bagian_list = DB::select("SELECT A.kode,A.nama FROM sdm_tbl_kdbag A ORDER BY A.kode");
+
+        $jenis_biaya_list = DB::select("select kode,keterangan from jenisbiaya order by kode");
+        
+        $c_judex_list = DB::select("select kode,nama from cashjudex order by kode");
+
+        return view('umk_pertanggungjawaban.edit', compact(
+            'pegawai_list',
+            'umk_header_list',
+            'jabatan_list',
+            'account_list',
+            'bagian_list',
+            'jenis_biaya_list',
+            'c_judex_list',
+            'pumk_header',
+            'pekerja_jabatan'
+        ));
     }
 
     /**
@@ -170,9 +216,24 @@ class UangMukaKerjaPertanggungJawabanController extends Controller
      * @param  int  $id
      * @return \Illuminate\Http\Response
      */
-    public function update(Request $request, $id)
+    public function update(Request $request, $no_pumk)
     {
-        //
+        $pegawai = SdmMasterPegawai::find($request->nopek);
+
+        $no_pumk = str_replace('-', '/', $no_pumk);
+        
+        $pumk_header = PUmkHeader::where('no_pumk', $no_pumk)->first();
+        $pumk_header->no_pumk = $request->no_pumk;
+        $pumk_header->no_umk = $request->no_umk;
+        $pumk_header->keterangan = $request->keterangan;
+        $pumk_header->tgl_pumk = date('Y-m-d H:i:s', strtotime(date('H:i:s'), strtotime($request->tanggal)));
+        $pumk_header->nopek = $request->nopek;
+        $pumk_header->nama = $pegawai->nama;
+        // Save Panjar Header
+        $pumk_header->save();
+
+        Alert::success('Ubah Pertanggungjawaban UMK', 'Berhasil')->persistent(true)->autoClose(2000);
+        return redirect()->route('uang_muka_kerja.pertanggungjawaban.index');
     }
 
     /**

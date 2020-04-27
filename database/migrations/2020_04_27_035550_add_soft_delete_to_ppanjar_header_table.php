@@ -4,7 +4,7 @@ use Illuminate\Database\Migrations\Migration;
 use Illuminate\Database\Schema\Blueprint;
 use Illuminate\Support\Facades\Schema;
 
-class TblKerjaHeader extends Migration
+class AddSoftDeleteToPpanjarHeaderTable extends Migration
 {
     /**
      * Run the migrations.
@@ -13,9 +13,9 @@ class TblKerjaHeader extends Migration
      */
     public function up()
     {
-        Schema::table('kerja_header', function (Blueprint $table) {
-            if (!Schema::hasColumn('kerja_header', 'kepada')) {
-                $table->string('kepada')->nullable()->after('jumlah');
+        Schema::table('ppanjar_header', function (Blueprint $table) {
+            if (!Schema::hasColumn('ppanjar_header', 'deleted_at')) {
+                $table->softDeletes();
             }
         });
     }
@@ -27,9 +27,8 @@ class TblKerjaHeader extends Migration
      */
     public function down()
     {
-        //
-        Schema::table('kerja_header', function (Blueprint $table) {
-            //
+        Schema::table('ppanjar_header', function (Blueprint $table) {
+            $table->dropSoftDeletes();
         });
     }
 }

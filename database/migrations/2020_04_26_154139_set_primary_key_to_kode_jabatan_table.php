@@ -4,7 +4,7 @@ use Illuminate\Database\Migrations\Migration;
 use Illuminate\Database\Schema\Blueprint;
 use Illuminate\Support\Facades\Schema;
 
-class TblKerjaHeader extends Migration
+class SetPrimaryKeyToKodeJabatanTable extends Migration
 {
     /**
      * Run the migrations.
@@ -13,10 +13,8 @@ class TblKerjaHeader extends Migration
      */
     public function up()
     {
-        Schema::table('kerja_header', function (Blueprint $table) {
-            if (!Schema::hasColumn('kerja_header', 'kepada')) {
-                $table->string('kepada')->nullable()->after('jumlah');
-            }
+        Schema::table('sdm_tbl_kdjab', function (Blueprint $table) {
+            $table->primary(['kdbag', 'kdjab']);
         });
     }
 
@@ -27,9 +25,8 @@ class TblKerjaHeader extends Migration
      */
     public function down()
     {
-        //
-        Schema::table('kerja_header', function (Blueprint $table) {
-            //
+        Schema::table('sdm_tbl_kdjab', function (Blueprint $table) {
+            $table->dropPrimary('sdm_tbl_kdjab_pkey');
         });
     }
 }
