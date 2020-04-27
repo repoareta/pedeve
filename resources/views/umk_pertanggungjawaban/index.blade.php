@@ -105,7 +105,11 @@
 				$("input[type=radio]:checked").each(function() {
 					var id = $(this).val().split("/").join("-");
 					// go to page edit
-					window.location.href = "{{ url('umum/perjalanan_dinas/edit') }}" + '/' + id;
+					url = "{{ route('uang_muka_kerja.pertanggungjawaban.edit', [
+						'no_pumk' => ':no_pumk'
+					]) }}";
+
+					window.location.href = url.replace(':no_pumk', id);
 				});
 			} else {
 				swalAlertInit('ubah');

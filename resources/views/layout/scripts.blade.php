@@ -181,5 +181,31 @@
             }
         });
     });
+
+    $('#no_umk').select2().on('change', function(e) {
+        var id  = $(this).val().split('/').join('-');
+        var url = '{{ route("uang_muka_kerja.show.json") }}';
+
+        $.ajax({
+            url: url,
+            type: "GET",
+            data: {
+                id: id,
+                _token:"{{ csrf_token() }}"		
+            },
+            success: function(response){
+                // isi keterangan
+                $('#keterangan').val(response.keterangan);
+                // isi jumlah
+                const jumlah = parseFloat(response.jumlah).toFixed(2);
+                $('#jumlah').data('jumlah', jumlah);
+                $('#jumlah').val(jumlah).trigger("change");
+                // $('#nopek').val(response.nopek).trigger("change");
+            },
+            error: function () {
+                alert("Terjadi kesalahan, coba lagi nanti");
+            }
+        });
+    });
 </script>
 @yield("scripts")
