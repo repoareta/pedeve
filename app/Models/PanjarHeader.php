@@ -14,6 +14,8 @@ class PanjarHeader extends Model
     protected $keyType = 'string';
     public $timestamps = false;
     public $incrementing = false;
+
+    const CREATED_AT = 'tgl_panjar';
     
     protected $dates = ['deleted_at'];
     

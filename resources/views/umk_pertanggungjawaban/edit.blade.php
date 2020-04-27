@@ -22,7 +22,9 @@
 					Pertanggungjawaban 
 				</a>
 				<span class="kt-subheader__breadcrumbs-separator"></span>
-				<span class="kt-subheader__breadcrumbs-link kt-subheader__breadcrumbs-link--active">Tambah</span>
+				<span class="kt-subheader__breadcrumbs-link kt-subheader__breadcrumbs-link--active">
+					Ubah
+				</span>
 			</div>
 		</div>
 	</div>
@@ -55,17 +57,17 @@
 						</div>
 					</div>
 				</div>
-				<form class="kt-form kt-form--label-right" id="formPPUmk" action="{{ route('uang_muka_kerja.pertanggungjawaban.store') }}" method="POST">
+				<form class="kt-form kt-form--label-right" id="formPPUmk" action="{{ route('uang_muka_kerja.pertanggungjawaban.update', ['no_pumk' => str_replace('/', '-', $pumk_header->no_pumk)]) }}" method="POST">
 					@csrf
 					<div class="form-group row">
 						<label for="spd-input" class="col-2 col-form-label">No. PUMK</label>
 						<div class="col-5">
-							<input class="form-control" type="text" name="no_pumk" value="{{ sprintf("%03s", $pumk_header_count + 1).'/CS/'.date('d').'/'.date('m').'/'.date('Y') }}" id="no_pumk">
+							<input class="form-control" type="text" name="no_pumk" value="{{ $pumk_header->no_pumk }}" id="no_pumk">
 						</div>
 
 						<label for="spd-input" class="col-2 col-form-label">Tanggal PUMK</label>
 						<div class="col-3">
-							<input class="form-control" type="text" name="tanggal" id="tanggal" value="{{ date('Y-m-d') }}">
+							<input class="form-control" type="text" name="tanggal" id="tanggal" value="{{ $pumk_header->tgl_pumk }}">
 						</div>
 					</div>
 
@@ -75,7 +77,10 @@
 							<select class="form-control kt-select2" id="no_umk" name="no_umk">
 								<option value="">- Pilih No. UMK -</option>
 								@foreach ($umk_header_list as $umk)
-								<option value="{{ $umk->no_umk }}">{{ $umk->no_umk }}</option>
+								<option value="{{ $umk->no_umk }}" 
+									@if($umk->no_umk == $pumk_header->no_umk) 
+										selected 
+									@endif>{{ $umk->no_umk }}</option>
 								@endforeach
 							</select>
 							<div id="no_umk-nya"></div>
@@ -89,7 +94,10 @@
 							<select class="form-control kt-select2" id="nopek" name="nopek">
 								<option value="">- Pilih Nopek -</option>
 								@foreach ($pegawai_list as $pegawai)
-								<option value="{{ $pegawai->nopeg }}">{{ $pegawai->nopeg.' - '.$pegawai->nama }}</option>
+								<option value="{{ $pegawai->nopeg }}" 
+									@if($pegawai->nopeg == $pumk_header->nopek) 
+									selected 
+								@endif>{{ $pegawai->nopeg.' - '.$pegawai->nama }}</option>
 								@endforeach
 							</select>
 							<div id="nopek-nya"></div>
@@ -102,7 +110,10 @@
 							<select class="form-control kt-select2" name="jabatan" id="jabatan">
 								<option value="">- Pilih Jabatan -</option>
 								@foreach ($jabatan_list as $jabatan)
-									<option value="{{ $jabatan->keterangan }}">{{ $jabatan->keterangan }}</option>
+									<option value="{{ $jabatan->keterangan }}" 
+										@if($jabatan->keterangan == $pekerja_jabatan->keterangan) 
+										selected 
+									@endif>{{ $jabatan->keterangan }}</option>
 								@endforeach
 							</select>
 							<div id="jabatan-nya"></div>
@@ -110,21 +121,21 @@
 
 						<label for="example-email-input" class="col-2 col-form-label">Golongan</label>
 						<div class="col-3">
-							<input class="form-control" type="text" name="golongan" id="golongan">
+							<input class="form-control" type="text" name="golongan" id="golongan" value="{{ $pekerja_jabatan->goljob }}">
 						</div>
 					</div>
 
 					<div class="form-group row">
 						<label for="jumlah" class="col-2 col-form-label">Keterangan</label>
 						<div class="col-10">
-							<input class="form-control" type="text" name="keterangan" id="keterangan">
+							<input class="form-control" type="text" name="keterangan" id="keterangan" value="{{ $pumk_header->keterangan }}">
 						</div>
 					</div>
 
 					<div class="form-group row">
 						<label for="jumlah" class="col-2 col-form-label">Jumlah Header PUMK</label>
 						<div class="col-5">
-							<input class="form-control" type="number" name="jumlah" id="jumlah" value="0.00">
+							<input class="form-control" type="number" name="jumlah" id="jumlah" data-jumlah="{{ $pumk_header->umk_header->jumlah }}" value="0.00">
 						</div>
 
 						<label for="jumlah_detail" class="col-2 col-form-label">Jumlah Detail PUMK</label>
@@ -312,7 +323,7 @@
 	function refreshTable() {
 		var table = $('#kt_table').DataTable();
 		table.clear();
-		table.ajax.url("{{ route('uang_muka_kerja.pertanggungjawaban.detail.index.json', ['no_pumk' => 'null']) }}").load(function() {
+		table.ajax.url("{{ route('uang_muka_kerja.pertanggungjawaban.detail.index.json', ['no_pumk' => str_replace('/', '-', $pumk_header->no_pumk)]) }}").load(function() {
 			// Callback loads updated row count into a DOM element
 			// (a Bootstrap badge on a menu item in this case):
 			var rowCount = table.rows().count();
@@ -330,7 +341,7 @@
 			scrollX   : true,
 			processing: true,
 			serverSide: true,
-			ajax: "{{ route('uang_muka_kerja.pertanggungjawaban.detail.index.json', ['no_pumk' => 'null']) }}",
+			ajax: "{{ route('uang_muka_kerja.pertanggungjawaban.detail.index.json', ['no_pumk' => str_replace('/', '-', $pumk_header->no_pumk)]) }}",
 			columns: [
 				{data: 'action', name: 'aksi', orderable: false, searchable: false, class:'radio-button'},
 				{data: 'no', name: 'no'},
@@ -366,7 +377,7 @@
 		});
 
 		$("#jumlah_detail_pumk, #jumlah").on('change', function(e){
-			var jumlah = $('#jumlah').val();
+			var jumlah = $('#jumlah').data('jumlah');
 			var jumlah_detail = $('#jumlah_detail_pumk').val();
 
 			var selisih = jumlah - jumlah_detail;
@@ -427,11 +438,11 @@
 
 				if(state == 'add'){
 					url = "{{ route('uang_muka_kerja.pertanggungjawaban.detail.store') }}";
-					session = true;
+					session = false;
 					swal_title = "Tambah Detail Pertanggungjawaban UMK";
 				} else {
 					url = "{{ route('uang_muka_kerja.pertanggungjawaban.detail.update') }}";
-					session = true;
+					session = false;
 					swal_title = "Update Detail Pertanggungjawaban UMK";
 				}
 
@@ -439,21 +450,21 @@
 					url: url,
 					type: "POST",
 					data: {
-						no: no,
-						no_urut: no_urut,
-						no_pumk: null,
-						keterangan: keterangan,
-						account: account,
+						no          : no,
+						no_urut     : no_urut,
+						no_pumk     : "{{ $pumk_header->no_pumk }}",
+						keterangan  : keterangan,
+						account     : account,
 						account_nama: account_nama,
-						bagian: kode_bagian,
-						bagian_nama: kode_bagian_nama,
-						pk: perintah_kerja,
-						jb: jenis_biaya,
-						jb_nama: jenis_biaya_nama,
-						cj: c_judex,
-						cj_nama: c_judex_nama,
-						nilai: jumlah,
-						session: session,
+						bagian      : kode_bagian,
+						bagian_nama : kode_bagian_nama,
+						pk          : perintah_kerja,
+						jb          : jenis_biaya,
+						jb_nama     : jenis_biaya_nama,
+						cj          : c_judex,
+						cj_nama     : c_judex_nama,
+						nilai       : jumlah,
+						session     : session,
 						_token:"{{ csrf_token() }}"		
 					},
 					success: function(dataResult){
@@ -516,8 +527,8 @@
 								dataType: 'json',
 								data: {
 									"no": no,
-									"no_pumk": no_pumk,
-									"session": true,
+									"no_pumk": "{{ $pumk_header->no_pumk }}",
+									"session": false,
 									"_token": "{{ csrf_token() }}",
 								},
 								success: function () {
@@ -550,6 +561,7 @@
 					// get value from row					
 					var no_urut = $(this).val().split('-')[0];
 					var no_pumk = $(this).val().split('-')[1];
+
 					var url = "{{ route('uang_muka_kerja.pertanggungjawaban.detail.show.json') }}";
 
 					$.ajax({
@@ -558,7 +570,7 @@
 						data: {
 							"no_urut": no_urut,
 							"no_pumk": no_pumk,
-							"session": true,
+							"session": false,
 							"_token": "{{ csrf_token() }}",
 						},
 						success: function (response) {
@@ -567,7 +579,7 @@
 							$('#no_urut').val(response.no);
 							$('#keterangan_detail').val(response.keterangan);
 							$('#perintah_kerja_detail').val(response.pk);
-							$('#jumlah_detail').val(response.nilai);
+							$('#jumlah_detail').val(parseFloat(response.nilai).toFixed(2));
 							$('#account_detail').val(response.account + '-' + response.account_nama).trigger('change');
 							$('#kode_bagian_detail').val(response.bagian + '-' + response.bagian_nama).trigger('change');
 							$('#jenis_biaya_detail').val(response.jb + '-' + response.jb_nama).trigger('change');

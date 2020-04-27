@@ -158,12 +158,50 @@ class PensiunController extends Controller
     }
     public function rekapIuranExport(Request $request)
     {
-        $pdf = PDF::loadview('pensiun.export_rekap_iuranpensiun',compact('request'))->setPaper('a4', 'landscape');
+        $data_cek = DB::select("select * from pay_master_upah where tahun='$request->tahun'");
+        $data_cek1 = DB::select("select * from pay_master_bebanprshn where tahun='$request->tahun'");
+        if(!empty($data_cek) and !empty($data_cek1)) {
+            if($request->dp == 'BK'){        
+                $data_list = DB::select("select count(a.bulan),a.nopek,b.nama as namapegawai, sum(a.nilai),
+                                    sum(CASE WHEN a.bulan ='1'  THEN round(a.nilai,0)* -1 ELSE '0' END) as jan, 
+                                    sum(CASE WHEN a.bulan ='2'  THEN round(a.nilai,0)* -1 ELSE '0' END) as feb,
+                                    sum(CASE WHEN a.bulan ='3'  THEN round(a.nilai,0)* -1 ELSE '0' END) as mar,
+                                    sum(CASE WHEN a.bulan ='4'  THEN round(a.nilai,0)* -1 ELSE '0' END) as apr,
+                                    sum(CASE WHEN a.bulan ='5'  THEN round(a.nilai,0)* -1 ELSE '0' END) as mei,
+                                    sum(CASE WHEN a.bulan ='6'  THEN round(a.nilai,0)* -1 ELSE '0' END) as jun,
+                                    SUM(CASE WHEN a.bulan ='7' THEN round(a.nilai,0)* -1 ELSE '0' END) as jul,
+                                    SUM(CASE WHEN a.bulan ='8' THEN round(a.nilai,0)* -1 ELSE '0' END) as agu,
+                                    SUM(CASE WHEN a.bulan ='9' THEN round(a.nilai,0)* -1 ELSE '0' END) as sep,
+                                    SUM(CASE WHEN a.bulan ='10' THEN round(a.nilai,0)* -1 ELSE '0' END) as okt,
+                                    SUM(CASE WHEN a.bulan ='11' THEN round(a.nilai,0)* -1 ELSE '0' END) as nov,
+                                    SUM(CASE WHEN a.bulan ='12' THEN round(a.nilai,0)* -1 ELSE '0' END) as des    
+                                    from pay_master_upah a join sdm_master_pegawai b on a.nopek=b.nopeg where a.tahun='$request->tahun'  and a.aard='14' group by a.nopek, b.nama order by b.nama asc");
+            }else{
+                $data_list = DB::select("select b.nopeg as nopek,b.nama as namapegawai, sum(a.CURRAMOUNT),
+                                        sum(CASE WHEN a.bulan ='1' and a.aard in('15','46')  THEN round(a.CURRAMOUNT,0) ELSE '0' END) as jan, 
+                                        sum(CASE WHEN a.bulan ='2'  THEN round(a.CURRAMOUNT,0) ELSE '0' END) as feb,
+                                        sum(CASE WHEN a.bulan ='3'  THEN round(a.CURRAMOUNT,0) ELSE '0' END) as mar,
+                                        sum(CASE WHEN a.bulan ='4'  THEN round(a.CURRAMOUNT,0) ELSE '0' END) as apr,
+                                        sum(CASE WHEN a.bulan ='5'  THEN round(a.CURRAMOUNT,0) ELSE '0' END) as mei,
+                                        sum(CASE WHEN a.bulan ='6'  THEN round(a.CURRAMOUNT,0) ELSE '0' END) as jun,
+                                        SUM(CASE WHEN a.bulan ='7' THEN round(a.CURRAMOUNT,0) ELSE '0' END) as jul,
+                                        SUM(CASE WHEN a.bulan ='8' THEN round(a.CURRAMOUNT,0) ELSE '0' END) as agu,
+                                        SUM(CASE WHEN a.bulan ='9' THEN round(a.CURRAMOUNT,0) ELSE '0' END) as sep,
+                                        SUM(CASE WHEN a.bulan ='10' THEN round(a.CURRAMOUNT,0) ELSE '0' END) as okt,
+                                        SUM(CASE WHEN a.bulan ='11' THEN round(a.CURRAMOUNT,0) ELSE '0' END) as nov,
+                                        SUM(CASE WHEN a.bulan ='12' THEN round(a.CURRAMOUNT,0) ELSE '0' END) as des    
+                                        from pay_master_bebanprshn a join sdm_master_pegawai b on a.nopek=b.nopeg where a.tahun='$request->tahun'  and a.aard in ('15','46') group by b.nama,b.nopeg order by b.nama asc");
+            }
+        }else{
+            Alert::info("Tidak ditemukan data Tahun: $request->tahun", 'Failed')->persistent(true);
+            return redirect()->route('pensiun.ctkrekapiuranpensiun');
+        }
+        $pdf = PDF::loadview('pensiun.export_rekap_iuranpensiun',compact('request','data_list'))->setPaper('legal', 'landscape');
         $pdf->output();
         $dom_pdf = $pdf->getDomPDF();
 
         $canvas = $dom_pdf ->get_canvas();
-        $canvas->page_text(740, 110, "Halaman {PAGE_NUM} Dari {PAGE_COUNT}", null, 10, array(0, 0, 0)); //iuran pensiun landscape
+        // $canvas->page_text(735, 100, "Halaman {PAGE_NUM} Dari {PAGE_COUNT}", null, 10, array(0, 0, 0)); //iuran pensiun landscape
         // return $pdf->download('rekap_umk_'.date('Y-m-d H:i:s').'.pdf');
         return $pdf->stream();
     }

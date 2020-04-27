@@ -53,6 +53,23 @@
 					<input class="form-control" type="hidden" value="{{Auth::user()->userid}}"  name="userid" autocomplete='off'>
 				</div>
 			</div>
+			<div class="form-group row">
+				<label for="" class="col-2 col-form-label"></label>
+				<div class="col-8">
+					<div class="kt-radio-inline">
+						<label class="kt-radio kt-radio--solid">
+							<input type="radio" name="dp" value="BK" checked> IURAN DANA PENSIUN (BEBAN PEKERJA)
+							<span></span>
+						</label>
+					</div>
+					<div class="kt-radio-inline">
+						<label class="kt-radio kt-radio--solid">
+							<input type="radio" name="dp" value="BR"> IURAN DANA PENSIUN (BEBAN PERUSAHAAN)
+							<span></span>
+						</label>
+					</div>
+				</div>
+			</div>
             <div class="form-group row">
 				<label for="jenis-dinas-input" class="col-2 col-form-label"></label>
 				<div class="col-8">
