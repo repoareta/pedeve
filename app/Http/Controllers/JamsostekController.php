@@ -149,7 +149,8 @@ class JamsostekController extends Controller
     }
     public function rekapExport(Request $request)
     {
-        $pdf = PDF::loadview('jamsostek.export_iuranjs',compact('request'))->setPaper('a4', 'landscape');
+        $data_list = DB::select("select a.tahun, a.bulan, a.nopek,a.aard, a.nilai as gapok, b.noastek,b.nama as namapegawai, b.status from pay_master_upah a join sdm_master_pegawai b on a.nopek=b.nopeg where a.aard='09' and a.tahun='$request->tahun' and a.bulan='$request->bulan' and a.nilai*-1>0");
+        $pdf = PDF::loadview('jamsostek.export_iuranjs',compact('request','data_list'))->setPaper('a4', 'landscape');
         $pdf->output();
         $dom_pdf = $pdf->getDomPDF();
 
@@ -160,6 +161,7 @@ class JamsostekController extends Controller
     }
     public function ctkrekapiuranjamsostek()
     {
+        
         return view('jamsostek.rekapiuran');
     }
     public function rekapIuranExport(Request $request)
