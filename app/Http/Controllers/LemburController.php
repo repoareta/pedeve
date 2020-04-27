@@ -165,7 +165,8 @@ class LemburController extends Controller
     }
     public function rekapExport(Request $request)
     {
-        $pdf = PDF::loadview('lembur.export_lembur',compact('request'))->setPaper('a4', 'landscape');
+        $data_list = DB::select("select a.*, b.* from pay_lembur a join sdm_master_pegawai b on a.nopek=b.nopeg where a.tahun='2020' and a.bulan='4'");
+        $pdf = PDF::loadview('lembur.export_lembur',compact('request','data_list'))->setPaper('a4', 'landscape');
         $pdf->output();
         $dom_pdf = $pdf->getDomPDF();
 

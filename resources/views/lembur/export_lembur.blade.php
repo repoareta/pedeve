@@ -83,42 +83,64 @@
                                 <td >Siang</td>
                                 <td >Malam</td>
                             </tr>
+                            <?php $a=0; ?>
+                            @foreach($data_list as $data)
+                            <?php $a++; 
+                                $tgl = date_create($data->tanggal);
+                                $tanggal = date_format($tgl, 'd/m/Y')
+                            ?>
                             <tr >
-                                <td style="text-align:center;">1</td>
-                                <td style="text-align:left;"></td>
-                                <td style="text-align:left;"></td>
-                                <td style="text-align:left;"></td>
-                                <td style="text-align:right;"></td>
-                                <td style="text-align:right;"></td>
-                                <td style="text-align:right;"></td>
-                                <td style="text-align:right;"></td>
-                                <td style="text-align:right;"></td>
-                                <td style="text-align:right;"></td>
-                                <td style="text-align:right;"></td>
-                                <td style="text-align:right;"></td>
+                                <td style="text-align:center;">{{$a}}</td>
+                                <td style="text-align:left;">{{$data->nopek}}</td>
+                                <td style="text-align:left;">{{$data->nama}}</td>
+                                <td style="text-align:left;">{{$tanggal}}</td>
+                                <td style="text-align:right;">{{$data->mulai == 0 ? '-' : $data->mulai}}</td>
+                                <td style="text-align:right;">{{$data->sampai == 0 ? '-' : $data->sampai}}</td>
+                                <td style="text-align:right;">{{$data->lembur == 0 ? '-' : number_format($data->lembur,2,',','.')}}</td>
+                                <td style="text-align:right;">{{$data->makanpg == 0 ? '-' : number_format($data->makanpg,2,',','.')}}</td>
+                                <td style="text-align:right;">{{$data->makansg == 0 ? '-' : number_format($data->makansg,2,',','.')}}</td>
+                                <td style="text-align:right;">{{$data->makanml == 0 ? '-' : number_format($data->makanml,2,',','.')}}</td>
+                                <td style="text-align:right;">{{$data->transport == 0 ? '-' : number_format($data->transport,2,',','.')}}</td>
+                                <?php 
+                                    $lembur = $data->lembur == 0 ? '0' : round($data->lembur,0);
+                                    $makanpg = $data->makanpg == 0 ? '0' : round($data->makanpg,0);
+                                    $makansg = $data->makansg == 0 ? '0' : round($data->makansg,0);
+                                    $makanml = $data->makanml == 0 ? '0' : round($data->makanml,0);
+                                    $makantransport = $data->transport == 0 ? '0' : round($data->transport,0);
+                                    $total=$lembur+$makanpg+$makansg+$makanml+$makantransport;
+                                    $totallembur[$a] = $lembur; 
+                                    $totalmakanpg[$a] = $makanpg; 
+                                    $totalmakansg[$a] = $makansg; 
+                                    $totalmakanml[$a] = $makanml; 
+                                    $totaltransport[$a] = $makantransport; 
+                                    $totaltotal[$a] = $total; 
+                                ?>
+                                <td style="text-align:right;">{{$total == 0 ? '-' : number_format($total,2,',','.')}}</td>
                             </tr>
-                            <tr >
+                            @endforeach
+                            <!-- <tr >
                                 <td style="text-align:center;"></td>
                                 <td style="text-align:left;"></td>
                                 <td style="text-align:left;">Sub. Total</td>
                                 <td style="text-align:left;"></td>
                                 <td style="text-align:right;"></td>
                                 <td style="text-align:right;"></td>
-                                <td style="text-align:right;"></td>
-                                <td style="text-align:right;"></td>
-                                <td style="text-align:right;"></td>
-                                <td style="text-align:right;"></td>
-                                <td style="text-align:right;"></td>
-                                <td style="text-align:right;"></td>
-                            </tr>
-                            <tr >
+                                <td style="text-align:right;" > {{number_format(array_sum($totallembur),2,',','.')}}</td>
+                               <td style="text-align:right;" > {{number_format(array_sum($totalmakanpg),2,',','.')}}</td>
+                               <td style="text-align:right;" > {{number_format(array_sum($totalmakansg),2,',','.')}}</td>
+                               <td style="text-align:right;" > {{number_format(array_sum($totalmakanml),2,',','.')}}</td>
+                               <td style="text-align:right;" > {{number_format(array_sum($totaltransport),2,',','.')}}</td>
+                               <td style="text-align:right;" > {{number_format(array_sum($totaltotal),2,',','.')}}</td>
+
+                            </tr> -->
+                            <tr style="font-weight: bold">
                                <td style="text-align:right;" colspan="6">Total</td>
-                               <td style="text-align:right;" > 10</td>
-                               <td style="text-align:right;" >10</td>
-                               <td style="text-align:right;" >10</td>
-                               <td style="text-align:right;" >10</td>
-                               <td style="text-align:right;" >10</td>
-                               <td style="text-align:right;" >10</td>
+                               <td style="text-align:right;" > {{number_format(array_sum($totallembur),2,',','.')}}</td>
+                               <td style="text-align:right;" > {{number_format(array_sum($totalmakanpg),2,',','.')}}</td>
+                               <td style="text-align:right;" > {{number_format(array_sum($totalmakansg),2,',','.')}}</td>
+                               <td style="text-align:right;" > {{number_format(array_sum($totalmakanml),2,',','.')}}</td>
+                               <td style="text-align:right;" > {{number_format(array_sum($totaltransport),2,',','.')}}</td>
+                               <td style="text-align:right;" > {{number_format(array_sum($totaltotal),2,',','.')}}</td>
                             </tr>
                         </table>
                     </td>

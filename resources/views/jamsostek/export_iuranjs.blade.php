@@ -92,14 +92,14 @@
                                 <td rowspan="2">NO. PEK</td>
                                 <td rowspan="2">NAMA</td>
                                 <td rowspan="2">UPAH TETAP</td>
-                                <td rowspan="2">JAMINAN KEC. KERJA</td>
+                                <td rowspan="2">JAMINAN KEC. KERJA<br><font style="font-size: 8pt">0.8% x 2.35 GP</font></td>
                                 <td colspan="2">JAMINAN HARI TUA</td>
-                                <td rowspan="2">JAMINAN KEMATIAN</td>
+                                <td rowspan="2">JAMINAN KEMATIAN<br><font style="font-size: 8pt">0.3% x 2.35 GP</font></td>
                                 <td rowspan="2">TOTAL</td>
                             </tr>
                             <tr style="text-align:center; font-weight: bold">
-                                <td >PT PDV</td>
-                                <td >PEGAWAI</td>
+                                <td >PT PDV<br><font style="font-size: 8pt">3.7% x 2.35 GP</font></td>
+                                <td >PEGAWAI<br><font style="font-size: 8pt">2% x 2.35 GP</font></td>
                             </tr>
                             <?php $a=0; ?>
                             @foreach($data_list as $data)
