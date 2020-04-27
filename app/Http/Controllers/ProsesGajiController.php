@@ -4820,6 +4820,7 @@ class ProsesGajiController extends Controller
     }
     public function cetak_slipgaji(Request $request)
     {
+
         $data_cek = DB::select("select * from pay_master_upah a  where a.nopek='$request->nopek' and a.tahun='$request->tahun' and bulan='$request->bulan'");
         $data_cek1 = DB::select("select * from pay_master_bebanprshn a where a.nopek='$request->nopek' and a.tahun='$request->tahun' and bulan='$request->bulan' order by a.aard asc");
         if(!empty($data_cek) and !empty($data_cek1)) {
