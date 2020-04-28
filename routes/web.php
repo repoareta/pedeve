@@ -503,6 +503,7 @@ Route::group(['middleware'=> ['auth','checkRole:1']], function () {
             Route::post('proses_insentif/store', 'ProsesInsentifController@store')->name('store');
             Route::get('proses_insentif/edit', 'ProsesInsentifController@edit')->name('edit');
             Route::get('proses_insentif/ctkslipinsentif', 'ProsesInsentifController@ctkslipinsentif')->name('ctkslipinsentif');
+            Route::post('proses_insentif/cetak/slipinsentif', 'ProsesInsentifController@cetak_slipinsentif')->name('cetak_slipinsentif');
             Route::post('proses_insentif/rekap/export', 'ProsesInsentifController@rekapExport')->name('rekap.export');
         });
         //end proses_insentif
