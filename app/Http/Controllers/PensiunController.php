@@ -143,7 +143,8 @@ class PensiunController extends Controller
     }
     public function rekapExport(Request $request)
     {
-        $pdf = PDF::loadview('pensiun.export_iuranpensiun',compact('request'))->setPaper('a4', 'landscape');
+        $data_list = DB::select("select p.tahun, p.bulan, p.nopek,(select nama from sdm_master_pegawai where nopeg=p.nopek) as nama,p.aard,p.curramount as nilai from pay_master_bebanprshn p where p.aard in ('15','46') and p.tahun='$request->tahun' and p.bulan='$request->bulan' union all select a.tahun, a.bulan, a.nopek,(select nama from sdm_master_pegawai where nopeg=a.nopek) as nama,a.aard, (a.nilai*-1) as nilai from pay_master_upah a where a.aard='14' and a.tahun='$request->tahun' and a.bulan='$request->bulan' order by nama asc");
+        $pdf = PDF::loadview('pensiun.export_iuranpensiun',compact('request','data_list'))->setPaper('a4', 'Portrait');
         $pdf->output();
         $dom_pdf = $pdf->getDomPDF();
 

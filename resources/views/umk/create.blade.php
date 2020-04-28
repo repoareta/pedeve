@@ -54,7 +54,7 @@
 						<div class="col-10">
 							<?php $data_no_umk = str_replace('/', '-', $no_umk); ?>
 							<input  class="form-control" type="hidden" value="{{$data_no_umk}}" id="noumk"  size="25" maxlength="25" readonly>
-							<input style="background-color:#DCDCDC; cursor:not-allowed"  class="form-control" type="text" value="{{$no_umk}}" id="no_umk" name="no_umk" size="25" maxlength="25" readonly required>
+							<input style="background-color:#DCDCDC; cursor:not-allowed"  class="form-control" type="text" value="{{$no_umk}}"  name="no_umk" size="25" maxlength="25" readonly required>
 						</div>
 					</div>
 					<div class="form-group row">

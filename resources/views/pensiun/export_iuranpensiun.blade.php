@@ -73,22 +73,35 @@
                                 <td >DANA PENSIUN<BR> <font style="font-size: 8pt">(4,784%)</font></td>
                                 <td >BNI<br> <font style="font-size: 8pt">(3.8%)</font></td>
                             </tr>
-
+                            <?php $a=0; ?>
+                            @foreach($data_list as $data)
+                            <?php $a++; ?>
                             <tr >
-                                <td style="text-align:center;">1</td>
-                                <td style="text-align:left;">1232</td>
-                                <td style="text-align:left;">Aku</td>
-                                <td style="text-align:right;">UPAH TETAP</td>
-                                <td style="text-align:right;">JAMINAN HARI TUA</td>
-                                <td style="text-align:right;">JAMINAN HARI TUA</td>
-                                <td style="text-align:right;">TOTAL</td>
+                                <td style="text-align:center;">{{$a}}</td>
+                                <td style="text-align:left;">{{$data->nopek}}</td>
+                                <td style="text-align:left;">{{$data->nama}}</td>
+                                <td style="text-align:right;">{{$data->aard == '14' ? number_format($data->nilai,0) : '0'}}</td>
+                                <td style="text-align:right;">{{$data->aard == '15' ? number_format($data->nilai,0) : '0'}}</td>
+                                <td style="text-align:right;">{{$data->aard == '46' ? number_format($data->nilai,0) : '0'}}</td>
+                                <?php  
+                                    $iuranpekerja = $data->aard == '14' ? round($data->nilai,0) : '0';
+                                    $danapensiun = $data->aard == '15' ? round($data->nilai,0) : '0';
+                                    $bni = $data->aard == '46' ? round($data->nilai,0) : '0';
+                                    $total = $iuranpekerja+$danapensiun+$bni;
+                                    $totaliuranpekerja[$a] = $iuranpekerja;
+                                    $totaldanapensiun[$a] = $danapensiun;
+                                    $totalbni[$a] = $bni;
+                                    $totaltotal[$a] = $total;
+                                ?>
+                                <td style="text-align:right;">{{number_format($total,0)}}</td>
                             </tr>
+                            @endforeach
                             <tr >
                                <td style="text-align:right;" colspan="3">Total</td>
-                               <td style="text-align:right;" >10</td>
-                               <td style="text-align:right;" >10</td>
-                               <td style="text-align:right;" >10</td>
-                               <td style="text-align:right;" >10</td>
+                               <td style="text-align:right;" >{{number_format(array_sum($totaliuranpekerja),0)}}</td>
+                               <td style="text-align:right;" >{{number_format(array_sum($totaldanapensiun),0)}}</td>
+                               <td style="text-align:right;" >{{number_format(array_sum($totalbni),0)}}</td>
+                               <td style="text-align:right;" >{{number_format(array_sum($totaltotal),0)}}</td>
                             </tr>
                         </table>
                     </td>
