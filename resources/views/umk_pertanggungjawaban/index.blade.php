@@ -46,6 +46,10 @@
 				<span id="deleteRow" class="kt-font-danger pointer-link" data-toggle="kt-tooltip" data-placement="top" title="Hapus Data">
 					<i class="fas fa-times-circle"></i>
 				</span>
+
+				<span class="kt-font-info pointer-link" id="exportRow" data-toggle="kt-tooltip" data-placement="top" title="Cetak Data">
+					<i class="fas fa-print"></i>
+				</span>
 			</div>
 		</div>
 		<div class="kt-portlet__head-toolbar">
@@ -168,6 +172,43 @@
 				});
 			} else {
 				swalAlertInit('hapus');
+			}
+		});
+
+		$('#exportRow').click(function(e) {
+			e.preventDefault();
+			if($('input[type=radio]').is(':checked')) { 
+				$("input[type=radio]:checked").each(function() {
+					var id = $(this).val();
+					
+					const swalWithBootstrapButtons = Swal.mixin({
+					customClass: {
+						confirmButton: 'btn btn-primary',
+						cancelButton: 'btn btn-danger'
+					},
+						buttonsStyling: false
+					})
+
+					swalWithBootstrapButtons.fire({
+						title: "Data yang akan dicetak?",
+						text: "No. PUMK : " + id,
+						type: 'warning',
+						showCancelButton: true,
+						reverseButtons: true,
+						confirmButtonText: 'Cetak',
+						cancelButtonText: 'Batalkan'
+					})
+					.then((result) => {
+						if (result.value) {
+							var id = $(this).val().split("/").join("-");
+							// go to page edit
+							var url = "{{ url('umum/uang_muka_kerja/pertanggungjawaban/export') }}" + '/' + id;
+							window.open(url, '_blank');
+						}
+					});
+				});
+			} else {
+				swalAlertInit('cetak');
 			}
 		});
 
