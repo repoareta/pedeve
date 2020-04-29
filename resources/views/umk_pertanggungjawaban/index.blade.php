@@ -58,7 +58,47 @@
 		</div>
 	</div>
 	<div class="kt-portlet__body">
+		<form class="kt-form" id="search-form" method="POST">
+			<div class="form-group row">
+				<label for="spd-input" class="col-1 col-form-label">No. PUMK</label>
+				<div class="col-2">
+					<input class="form-control" type="text" name="no_pumk" id="no_pumk">
+				</div>
 
+				<label for="spd-input" class="col-form-label">Bulan</label>
+				<div class="col-2">
+					<select class="form-control kt-select2" name="bulan" id="bulan">
+						<option value="">- Pilih Bulan -</option>
+						<option value="01">Januari</option>
+						<option value="02">Februari</option>
+						<option value="03">Maret</option>
+						<option value="04">April</option>
+						<option value="05">Mei</option>
+						<option value="06">Juni</option>
+						<option value="07">Juli</option>
+						<option value="08">Agustus</option>
+						<option value="09">September</option>
+						<option value="10">Oktober</option>
+						<option value="11">November</option>
+						<option value="12">Desember</option>
+					</select>
+				</div>
+
+				<label for="spd-input" class="col-form-label">Tahun</label>
+				<div class="col-2">
+					<select class="form-control kt-select2" name="tahun" id="tahun">
+						<option value="">- Pilih Tahun -</option>
+						@foreach ($tahun as $row)
+							<option value="{{ $row->year }}">{{ $row->year }}</option>
+						@endforeach
+					</select>
+				</div>
+
+				<div class="col-2">
+					<button type="submit" class="btn btn-brand"><i class="fa fa-search" aria-hidden="true"></i> Cari</button>
+				</div>
+			</div>
+		</form>
 		<!--begin: Datatable -->
 		<table class="table table-striped table-bordered table-hover table-checkable" id="kt_table" width="100%">
 			<thead class="thead-light">
@@ -78,7 +118,7 @@
 		</table>
 
 		<!--end: Datatable -->
-	</div>
+	</>
 </div>
 </div>
 @endsection
@@ -86,11 +126,28 @@
 @section('scripts')
 	<script type="text/javascript">
 	$(document).ready(function () {
+
+		$('.kt-select2').select2().on('change', function() {
+			$(this).valid();
+		});
+
 		var t = $('#kt_table').DataTable({
+			// mengganti search dengan pagination
+			// dom: "<'row'<'col-sm-12 col-md-6'l><'col-sm-12 col-md-6'p>>" +
+			// 	 "<'row'<'col-sm-12't>>" +
+			// 	 "<'row'<'col-sm-12 col-md-5'i><'col-sm-12 col-md-7'p>>",
+			searching : false,
 			scrollX   : true,
 			processing: true,
 			serverSide: true,
-			ajax      : "{{ route('uang_muka_kerja.pertanggungjawaban.index.json') }}",
+			ajax      : {
+				url: "{{ route('uang_muka_kerja.pertanggungjawaban.index.json') }}",
+				data: function (d) {
+					d.no_pumk = $('input[name=no_pumk]').val();
+					d.bulan = $('select[name=bulan]').val();
+					d.tahun = $('select[name=tahun]').val();
+				}
+			},
 			columns: [
 				{data: 'action', name: 'aksi', orderable: false, searchable: false, class:'radio-button'},
 				{data: 'no_pumk', name: 'no_pumk'},
@@ -101,6 +158,11 @@
 				{data: 'nilai', name: 'nilai', class:'text-right'},
 				{data: 'approval', name: 'approval', class:'text-center'}
 			]
+		});
+
+		$('#search-form').on('submit', function(e) {
+			t.draw();
+			e.preventDefault();
 		});
 
 		$('#editRow').click(function(e) {
