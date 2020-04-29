@@ -19,6 +19,7 @@ use PDF;
 use Excel;
 use Alert;
 use Auth;
+use DataTables;
 
 class AnggaranController extends Controller
 {
@@ -29,7 +30,13 @@ class AnggaranController extends Controller
      */
     public function index()
     {
-        return view('anggaran.index');
+        $tahun = AnggaranMain::select('tahun')
+        ->whereNotNull('tahun')
+        ->distinct()
+        ->orderBy('tahun', 'DESC')
+        ->get();
+
+        return view('anggaran.index', compact('tahun'));
     }
 
     /**
@@ -37,15 +44,19 @@ class AnggaranController extends Controller
      *
      * @return void
      */
-    public function indexJson()
+    public function indexJson(Request $request)
     {
-        $anggaran_list = AnggaranMain::orderBy('tahun', 'desc')->get();
+        $anggaran_list = AnggaranMain::orderBy('tahun', 'desc');
 
-        return datatables()->of($anggaran_list)
-            ->addColumn('nama_main', function ($row) {
-                $link = '<a href="'.route('anggaran.submain.index', ['kode_main' => $row->kode_main]).'">'.$row->nama_main.'</a>';
+        return DataTables::of($anggaran_list)
+            ->filter(function ($query) use ($request) {
+                if ($request->has('kode_anggaran')) {
+                    $query->where('kode_main', 'like', "%{$request->get('kode_anggaran')}%");
+                }
 
-                return $link;
+                if ($request->has('tahun')) {
+                    $query->where('tahun', 'like', "%{$request->get('tahun')}%");
+                }
             })
             ->addColumn('nilai_real', function ($row) {
                 return currency_idr($row->nilai_real);

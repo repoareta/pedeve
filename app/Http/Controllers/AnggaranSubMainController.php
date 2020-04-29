@@ -5,6 +5,7 @@ namespace App\Http\Controllers;
 use Illuminate\Http\Request;
 
 // load model
+use App\Models\AnggaranMain;
 use App\Models\AnggaranSubMain;
 
 //load form request (for validation)
@@ -25,9 +26,15 @@ class AnggaranSubMainController extends Controller
      *
      * @return \Illuminate\Http\Response
      */
-    public function index($kode_main)
+    public function index()
     {
-        return view('anggaran_submain.index', compact('kode_main'));
+        $tahun = AnggaranMain::select('tahun')
+        ->whereNotNull('tahun')
+        ->distinct()
+        ->orderBy('tahun', 'DESC')
+        ->get();
+
+        return view('anggaran_submain.index', compact('tahun'));
     }
 
     /**
@@ -35,29 +42,41 @@ class AnggaranSubMainController extends Controller
      *
      * @return void
      */
-    public function indexJson($kode_main)
+    public function indexJson(Request $request)
     {
-        $anggaran_list = AnggaranSubMain::where('kode_main', $kode_main)
-        ->orderBy('tahun', 'desc')
-        ->get();
+        $anggaran_list = AnggaranSubMain::orderBy('tahun', 'desc')
+        ->orderBy('kode_submain', 'asc');
 
         return datatables()->of($anggaran_list)
-            ->addColumn('nama_submain', function ($row) {
-                $link = '<a href="'.route('anggaran.submain.detail.index', ['kode_main' => $row->kode_main, 'kode_submain' => $row->kode_submain]).'">'.$row->nama_submain.'</a>';
+            ->filter(function ($query) use ($request) {
+                if ($request->has('kode')) {
+                    $query->where('kode_submain', 'like', "%{$request->get('kode')}%");
+                }
 
-                return $link;
+                if ($request->has('tahun')) {
+                    $query->where('tahun', 'like', "%{$request->get('tahun')}%");
+                }
+            })
+            ->addColumn('main', function ($row) {
+                return $row->anggaran_main->kode_main." - ".$row->anggaran_main->nama_main;
+            })
+            ->addColumn('sub_anggaran', function ($row) {
+                return $row->kode_submain.' - '.$row->nama_submain;
+            })
+            ->addColumn('nilai', function ($row) {
+                return currency_idr($row->nilai);
             })
             ->addColumn('nilai_real', function ($row) {
                 return currency_idr($row->nilai_real);
             })
-            ->addColumn('nilai', function ($row) {
-                return currency_idr($row->nilai);
+            ->addColumn('sisa', function ($row) {
+                return currency_idr($row->nilai_real);
             })
             ->addColumn('action', function ($row) {
                 $radio = '<label class="kt-radio kt-radio--bold kt-radio--brand"><input type="radio" name="radio1" value="'.$row->kode_submain.'"><span></span></label>';
                 return $radio;
             })
-            ->rawColumns(['action', 'nama_submain'])
+            ->rawColumns(['action', 'sub_anggaran'])
             ->make(true);
     }
 
