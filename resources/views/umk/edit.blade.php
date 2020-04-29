@@ -52,7 +52,7 @@
 					<div class="form-group row">
 						<label for="spd-input" class="col-2 col-form-label">No. UMK<span style="color:red;">*</span></label>
 						<div class="col-10">
-                            <input style="background-color:#DCDCDC; cursor:not-allowed"  class="form-control" type="text" value="{{$data_umk->no_umk}}" id="no_umk" name="no_umk" size="25" maxlength="25" readonly>
+                            <input style="background-color:#DCDCDC; cursor:not-allowed"  class="form-control" type="text" value="{{$data_umk->no_umk}}" name="no_umk" size="25" maxlength="25" readonly>
                         </div>
 					</div>
 					<div class="form-group row">

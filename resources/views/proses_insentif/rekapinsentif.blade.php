@@ -6,7 +6,7 @@
 	<div class="kt-container  kt-container--fluid ">
 		<div class="kt-subheader__main">
 			<h3 class="kt-subheader__title">
-				Rekap Gaji </h3>
+				Cetak Rekap Insentif </h3>
 			<span class="kt-subheader__separator kt-hidden"></span>
 			<div class="kt-subheader__breadcrumbs">
 				<a href="#" class="kt-subheader__breadcrumbs-home"><i class="flaticon2-shelter"></i></a>
@@ -14,7 +14,7 @@
 				<a href="" class="kt-subheader__breadcrumbs-link">
 					SDM & Payroll </a>
 				<span class="kt-subheader__breadcrumbs-separator"></span>
-				<span class="kt-subheader__breadcrumbs-link kt-subheader__breadcrumbs-link--active">Rekap Gaji</span>
+				<span class="kt-subheader__breadcrumbs-link kt-subheader__breadcrumbs-link--active">Cetak Rekap Insentif</span>
 			</div>
 		</div>
 	</div>
@@ -29,7 +29,7 @@
 				<i class="kt-font-brand flaticon2-line-chart"></i>
 			</span>
 			<h3 class="kt-portlet__head-title">
-				Tabel Rekap Gaji
+				Tabel Cetak Rekap Insentif
 			</h3>			
 		</div>
 		<div class="kt-portlet__head-toolbar">
@@ -40,7 +40,7 @@
 		</div>
 	</div>
 	<div class="kt-portlet__body">
-        <form class="kt-form kt-form--label-right" action="{{ route('proses_gaji.rekap.export') }}" method="post">
+        <form class="kt-form kt-form--label-right" action="{{ route('proses_insentif.rekap.export') }}" method="post">
             @csrf
             <div class="form-group row">
 				<label for="spd-input" class="col-2 col-form-label">Bulan/Tahun<span style="color:red;">*</span></label>
@@ -49,8 +49,8 @@
 						$tgl = date_create(now());
 						$tahun = date_format($tgl, 'Y'); 
 						$bulan = date_format($tgl, 'n'); 
-						$jabatan = "CS & Business Support ,";
-						$nama = "Ali Syamsul Rohman";
+						$jabatan = "Manajer Treasurry,";
+						$nama = "Harus Diisi";
 					?>
 					<select class="form-control" name="bulan" required>
 						<option value="1" <?php if($bulan  == 1 ) echo 'selected' ; ?>>Januari</option>
@@ -70,18 +70,6 @@
 				<div class="col-4" >
 					<input class="form-control" type="text" value="{{$tahun}}"   name="tahun" size="4" maxlength="4" onkeypress="return hanyaAngka(event)" autocomplete='off' required oninvalid="this.setCustomValidity('Tahun Harus Diisi..')" oninput="setCustomValidity('')" autocomplete='off'>
 					<input class="form-control" type="hidden" value="{{Auth::user()->userid}}"  name="userid" autocomplete='off'>
-				</div>
-			</div>
-			<div class="form-group row">
-				<label for="dari-input" class="col-2 col-form-label">Status Pekerja<span style="color:red;">*</span></label>
-				<div class="col-8">
-					<select name="prosesupah" id="select-debetdari" class="form-control selectpicker" data-live-search="true" required oninvalid="this.setCustomValidity('Status Pekerja Harus Diisi..')" onchange="setCustomValidity('')" autocomplete='off'>
-						<option value="C">Pekerja Tetap</option>
-						<option value="K">Kontrak</option>
-						<option value="B">Perbantuan</option>
-						<option value="U">Komisaris</option>
-						<option value="O">Komite</option>
-					</select>								
 				</div>
 			</div>
 			<div class="form-group row">

@@ -88,6 +88,23 @@
                     <input class="form-control" type="text" name="tanggal" value="{{ date('d F Y') }}"  id="tanggal" size="15" maxlength="15" autocomplete='off' required oninvalid="this.setCustomValidity('Tanggal Cetak Harus Diisi..')" onchange="setCustomValidity('')" autocomplete='off'>
 				</div>
 			</div>
+			<div class="form-group row">
+				<label for="" class="col-2 col-form-label"></label>
+				<div class="col-8">
+					<div class="kt-radio-inline">
+						<label class="kt-radio kt-radio--solid">
+							<input type="radio" name="ijp" value="v1" checked> DAFTAR IURAN JAMSOSTEK PEKERJA 1
+							<span></span>
+						</label>
+					</div>
+					<div class="kt-radio-inline">
+						<label class="kt-radio kt-radio--solid">
+							<input type="radio" name="ijp" value="v2"> DAFTAR IURAN JAMSOSTEK PEKERJA 2
+							<span></span>
+						</label>
+					</div>
+				</div>
+			</div>
 			<div class="kt-form__actions">
 				<div class="row">
 					<div class="col-2"></div>

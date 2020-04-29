@@ -1818,14 +1818,13 @@ class ProsesThrController extends Controller
     }
     public function cetak_slipthr(Request $request)
     {
-        $data_cek = DB::select("select * from pay_master_thr a  where a.nopek='$request->nopek' and a.tahun='$request->tahun' and bulan='$request->bulan'");
-        if(!empty($data_cek)) {
-            $data_list = DB::select("select a.nopek,round(a.jmlcc,0) as jmlcc,round(a.ccl,0) as ccl,round(a.nilai,0) as nilai,a.aard,a.bulan,a.tahun,b.nama as nama_pegawai, c.nama as nama_aard,d.nama as nama_upah, d.cetak from pay_master_thr a join sdm_master_pegawai b on a.nopek=b.nopeg join pay_tbl_aard c on a.aard=c.kode join pay_tbl_jenisupah d on c.jenis=d.kode where a.nopek='$request->nopek' and a.tahun='$request->tahun' and bulan='$request->bulan' and d.kode in ('02','10')");
-            $data_detail = DB::select("select a.nopek,round(a.jmlcc,0) as jmlcc,round(a.ccl,0) as ccl,round(a.nilai,0) as nilai,a.aard,a.bulan,a.tahun,b.nama as nama_pegawai, c.nama as nama_aard,d.nama as nama_upah, d.cetak from pay_master_thr a join sdm_master_pegawai b on a.nopek=b.nopeg join pay_tbl_aard c on a.aard=c.kode join pay_tbl_jenisupah d on c.jenis=d.kode where a.nopek='$request->nopek' and a.tahun='$request->tahun' and bulan='$request->bulan' and d.kode in ('07','03')");
+        $data_list = DB::select("select a.nopek,round(a.jmlcc,0) as jmlcc,round(a.ccl,0) as ccl,round(a.nilai,0) as nilai,a.aard,a.bulan,a.tahun,b.nama as nama_pegawai, c.nama as nama_aard,d.nama as nama_upah, d.cetak from pay_master_thr a join sdm_master_pegawai b on a.nopek=b.nopeg join pay_tbl_aard c on a.aard=c.kode join pay_tbl_jenisupah d on c.jenis=d.kode where a.nopek='$request->nopek' and a.tahun='$request->tahun' and bulan='$request->bulan' and d.kode in ('02','10')");
+        $data_detail = DB::select("select a.nopek,round(a.jmlcc,0) as jmlcc,round(a.ccl,0) as ccl,round(a.nilai,0) as nilai,a.aard,a.bulan,a.tahun,b.nama as nama_pegawai, c.nama as nama_aard,d.nama as nama_upah, d.cetak from pay_master_thr a join sdm_master_pegawai b on a.nopek=b.nopeg join pay_tbl_aard c on a.aard=c.kode join pay_tbl_jenisupah d on c.jenis=d.kode where a.nopek='$request->nopek' and a.tahun='$request->tahun' and bulan='$request->bulan' and d.kode in ('07','03')");
+        if(!empty($data_list) and !empty($data_detail)) {
             $pdf = PDF::loadview('proses_thr.export_slipthr',compact('request','data_list','data_detail'))->setPaper('a4', 'Portrait');
             $pdf->output();
             $dom_pdf = $pdf->getDomPDF();
-        
+            
             $canvas = $dom_pdf ->get_canvas();
             $canvas->page_text(910, 120, "Halaman {PAGE_NUM} Dari {PAGE_COUNT}", null, 10, array(0, 0, 0)); //slip thr landscape
             // return $pdf->download('rekap_umk_'.date('Y-m-d H:i:s').'.pdf');
@@ -1835,15 +1834,26 @@ class ProsesThrController extends Controller
             return redirect()->route('proses_thr.ctkslipthr');
         }
     }
+
+    public function ctkrekapthr()
+    {
+        return view('proses_thr.rekapthr');
+    }
     public function rekapExport(Request $request)
     {
-        // $pdf = PDF::loadview('proses_thr.rekap',compact('request'))->setPaper('a4', 'landscape');
-        // $pdf->output();
-        // $dom_pdf = $pdf->getDomPDF();
+        $data_list = DB::select("select a.aard,a.bulan,a.tahun,a.nopek,a.koreksi,a.nilai,a.pengali,a.pajakthr,a.tbiayahidup,a.ut,a.tjabatan,a.status,a.potongan,b.nama as namapegawai from pay_master_thr a join sdm_master_pegawai b on a.nopek=b.nopeg where a.aard='25' and a.tahun='$request->tahun' and a.bulan='$request->bulan'");
+        if(!empty($data_list)){
+            $pdf = PDF::loadview('proses_thr.export_rekapthr',compact('request','data_list'))->setPaper('a4', 'Portrait');
+            $pdf->output();
+            $dom_pdf = $pdf->getDomPDF();
 
-        // $canvas = $dom_pdf ->get_canvas();
-        // $canvas->page_text(740, 115, "Halaman {PAGE_NUM} Dari {PAGE_COUNT}", null, 10, array(0, 0, 0)); //lembur landscape
-        // // return $pdf->download('rekap_umk_'.date('Y-m-d H:i:s').'.pdf');
-        // return $pdf->stream();
+            $canvas = $dom_pdf ->get_canvas();
+            $canvas->page_text(740, 115, "Halaman {PAGE_NUM} Dari {PAGE_COUNT}", null, 10, array(0, 0, 0)); //lembur landscape
+            // return $pdf->download('rekap_umk_'.date('Y-m-d H:i:s').'.pdf');
+            return $pdf->stream();
+        }else{
+            Alert::info("Tidak ditemukan data dengan Nopeg: $request->nopek Bulan/Tahun: $request->bulan/$request->tahun ", 'Failed')->persistent(true);
+            return redirect()->route('proses_thr.ctkrekapthr');
+        }
     }
 }
