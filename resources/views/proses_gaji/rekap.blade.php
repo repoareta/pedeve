@@ -81,7 +81,6 @@
 						<option value="B">Perbantuan</option>
 						<option value="U">Komisaris</option>
 						<option value="O">Komite</option>
-						<option value="N">Pekerja Baru</option>
 					</select>								
 				</div>
 			</div>

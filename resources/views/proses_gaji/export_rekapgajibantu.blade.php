@@ -44,9 +44,22 @@
         <header>
             <table width="100%" >
                 <?php 
-                    $tgl = date_create("$request->tahun-$request->bulan-01");
-                    $bulan =  date_format($tgl, 'F');
-                    // strtoupper
+                    $array_bln	 = array (
+                        1 =>   'Januari',
+                        'Februari',
+                        'Maret',
+                        'April',
+                        'Mei',
+                        'Juni',
+                        'Juli',
+                        'Agustus',
+                        'September',
+                        'Oktober',
+                        'November',
+                        'Desember'
+                    );
+                    
+                    $bulan= strtoupper($array_bln[$request->bulan]);
                 ?>
                 <tr>
                     <td align="left" style="padding-left:100px;font-family: sans-serif">
@@ -97,12 +110,12 @@
                                 <td rowspan="3">KODE<br> PAJAK</td>
                                 <td rowspan="3">KOREKSI/<br> LAIN-LAIN</td>
                                 <td rowspan="3">TUNJANGAN<br> PAJAK</td>
-                                <td rowspan="4">IURAN<br> PENSIUN</td>
-                                <td rowspan="4">IURAN<br> JAMSOSTEK</td>
+                                <td rowspan="3">IURAN<br> PENSIUN</td>
+                                <td rowspan="3">IURAN<br> JAMSOSTEK</td>
                                 <td colspan="4">ANGSURAN</td>
-                                <td rowspan="4">POT.<br> PAJAK</td>
+                                <td rowspan="3">POT.<br> PAJAK</td>
                                 <td rowspan="3">POT.<br> BAZMA</td>
-                                <td rowspan="3">POTONGAN.<br> SPSI</td>
+                                <td rowspan="3">POTONGAN.<br> KOPERASI</td>
                                 <td rowspan="3">PEMBULATAN</td>
                             </tr>
                             <tr style="text-align:center;font-size: 6pt;">
@@ -116,11 +129,10 @@
                                 <td>KE</td>
                             </tr>
                             <tr>
-                                <td style="padding-left:12px;font-size: 8pt;" colspan="17">CS & BUSINESS SUPPORT</td>
+                                <td style="padding-left:12px;font-size: 8pt;font-weight: bold" colspan="21">DIREKTUR UTAMA</td>
                             </tr>
                             <?php $a=0; ?>
                             @foreach($data_list as $data)
-                            <?php if($data->kode == 'D0000'){ ?>
                             <?php $a++; ?>
                             <tr style="font-size: 7pt;">
                                 <td style="text-align:center;">{{$a}}</td>
@@ -128,31 +140,28 @@
                                 <td style="text-align:left;">{{$data->nama}}</td>
                                 <td style="text-align:right;">{{number_format($data->a_upah,0)}}</td>
                                 <td style="text-align:right;">{{number_format($data->a_fc,0)}}</td>
-                                <td style="text-align:right;">{{number_format($data->a_jb,0)}}</td>
-                                <td style="text-align:right;">{{number_format($data->a_bh,0)}}</td>
-                                <td style="text-align:right;">{{number_format($data->a_lem,0)}}</td>
                                 <td style="text-align:right;">{{number_format($data->a_sbl,0)}}</td>
                                 <td style="text-align:center;">{{$data->a_kdkeluarga}}</td>
                                 <td style="text-align:right;">{{number_format($data->a_koreksi,0)}}</td>
                                 <td style="text-align:right;">{{number_format($data->tunpj,0)}}</td>
                                 <?php
                                 $a = $data->a_upah;
-                                $a1 = $data->a_jb;
-                                $a2 = $data->a_bh;
-                                $a3 = $data->a_fc;
-                                $a4 = $data->a_lem;
-                                $a5 = $data->a_sbl;
-                                $a6 = $data->a_koreksi;
-                                $a7 = $data->tunpj;
-                                $a_005 = $data->a_005;
-                                $a_011 = $data->a_011;
-                                $a_012 = $data->a_012;
+                                $a1 = $data->a_fc;
+                                $a2 = $data->a_sbl;
+                                $a3 = $data->a_koreksi;
+                                $a4 = $data->tunpj;
                                 $iuranjm = $data->iuranjm;
+                                $iuranpensiun = $data->iuranpensiun;
+                                $jumlah1 = $data->jumlah1;
+                                $jumlah2 = $data->jumlah2;
+                                $ccl1 = $data->ccl1;
+                                $ccl2 = $data->ccl2;
+                                $pot_bazma = $data->pot_bazma;
                                 $pot_pajak = $data->pot_pajak;
                                 $pembulatan = $data->pembulatan;
                                 $pot_pinjaman = $data->pot_pinjaman;
                                 $pot_koperasi = $data->pot_koperasi;
-                                $total=$a+$a1+$a2+$a3+$a4+$a5+$a6+$a7;
+                                $total=$a+$a1+$a2+$a3+$a4;
                                 $potongan =$pot_pajak+$pembulatan+$pot_pinjaman+$pot_koperasi;
                                 $gajihbersih =$total+$potongan;
                                 $subtotala[$a] = $a;
@@ -160,24 +169,78 @@
                                  $subtotala2[$a] = $a2;
                                  $subtotala3[$a] = $a3;
                                  $subtotala4[$a] = $a4;
-                                 $subtotala5[$a] = $a5;
-                                 $subtotala6[$a] = $a6;
-                                 $subtotala7[$a] = $a7;
-                                 $subtotala8[$a] = $pot_pajak;
-                                 $subtotala9[$a] = $iuranjm;
-                                 $subtotala10[$a] = $pembulatan;
-                                 $subtotala11[$a] = $gajihbersih;
-                                 $subtotala12[$a] = $total;
+                                 $subtotala5[$a] = $iuranpensiun;
+                                 $subtotala6[$a] = $iuranjm;
+                                 $subtotala7[$a] = $jumlah1;
+                                 $subtotala8[$a] = $ccl1;
+                                 $subtotala9[$a] = $jumlah2;
+                                 $subtotala10[$a] = $ccl2;
+                                 $subtotala11[$a] = $pot_pajak;
+                                 $subtotala12[$a] = $pot_bazma;
+                                 $subtotala13[$a] = $pot_koperasi;
+                                 $subtotala14[$a] = $pembulatan;
+                                 $subtotala15[$a] = $gajihbersih;
+                                 $subtotala16[$a] = $total;
                                 ?>
                                 <td style="text-align:right;">{{number_format($total,0)}}</td>
-                                <td style="text-align:right;">{{$data->pot_pajak <= 0 ? '('.number_format($data->pot_pajak*-1,0).')' : number_format($data->pot_pajak,0)}}</td>
+                                <td style="text-align:right;">{{$data->iuranpensiun <= 0 ? '('.number_format($data->iuranpensiun*-1,0).')' : number_format($data->iuranpensiun,0)}}</td>
                                 <td style="text-align:right;">{{$data->iuranjm <= 0 ? '('.number_format($data->iuranjm*-1,0).')' : number_format($data->iuranjm,0)}}</td>
+                                <td style="text-align:right;">{{number_format($data->jumlah1,0)}}</td>
+                                <td style="text-align:right;">{{number_format($data->ccl1,0)}}</td>
+                                <td style="text-align:right;">{{number_format($data->jumlah2,0)}}</td>
+                                <td style="text-align:right;">{{number_format($data->ccl2,0)}}</td>
+                                <td style="text-align:right;">{{$data->pot_pajak <= 0 ? '('.number_format($data->pot_pajak*-1,0).')' : number_format($data->pot_pajak,0)}}</td>
+                                <td style="text-align:right;">{{$data->pot_bazma <= 0 ? '('.number_format($data->pot_bazma*-1,0).')' : number_format($data->pot_bazma,0)}}</td>
+                                <td style="text-align:right;">{{$data->pot_koperasi <= 0 ? '('.number_format($data->pot_koperasi*-1,0).')' : number_format($data->pot_koperasi,0)}}</td>
                                 <td style="text-align:right;">{{$data->pembulatan <= 0 ? '('.number_format($data->pembulatan*-1,0).')' : number_format($data->pembulatan,0)}}</td>
                                 <td style="text-align:right;">{{number_format($gajihbersih,0)}}</td>
                             </tr>
-                            <?php } ?>
-
                             @endforeach
+
+                            <tr style="font-size: 7pt;font-weight: bold">
+                                <td colspan="3" style="text-align:right;">SUB TOTAL</td>
+                                <td style="text-align:right;">{{number_format(array_sum($subtotala),0)}}</td>
+                                <td style="text-align:right;">{{number_format(array_sum($subtotala1),0)}}</td>
+                                <td style="text-align:right;">{{number_format(array_sum($subtotala2),0)}}</td>
+                                <td style="text-align:center;"></td>
+                                <td style="text-align:right;">{{number_format(array_sum($subtotala3),0)}}</td>
+                                <td style="text-align:right;">{{number_format(array_sum($subtotala4),0)}}</td>
+                                <td style="text-align:right;">{{number_format(array_sum($subtotala16),0)}}</td>
+                                <td style="text-align:right;">{{array_sum($subtotala5) <= 0 ? '('.number_format(array_sum($subtotala5)*-1,0).')' : number_format(array_sum($subtotala5),0)}}</td>
+                                <td style="text-align:right;">{{array_sum($subtotala6) <= 0 ? '('.number_format(array_sum($subtotala6)*-1,0).')' : number_format(array_sum($subtotala6),0)}}</td>
+                                <td style="text-align:right;">{{number_format(array_sum($subtotala7),0)}}</td>
+                                <td style="text-align:right;">{{number_format(array_sum($subtotala8),0)}}</td>
+                                <td style="text-align:right;">{{number_format(array_sum($subtotala9),0)}}</td>
+                                <td style="text-align:right;">{{number_format(array_sum($subtotala10),0)}}</td>
+                                <td style="text-align:right;">{{array_sum($subtotala11) <= 0 ? '('.number_format(array_sum($subtotala11)*-1,0).')' : number_format(array_sum($subtotala11),0)}}</td>
+                                <td style="text-align:right;">{{array_sum($subtotala12) <= 0 ? '('.number_format(array_sum($subtotala12)*-1,0).')' : number_format(array_sum($subtotala12),0)}}</td>
+                                <td style="text-align:right;">{{array_sum($subtotala13) <= 0 ? '('.number_format(array_sum($subtotala13)*-1,0).')' : number_format(array_sum($subtotala13),0)}}</td>
+                                <td style="text-align:right;">{{array_sum($subtotala14) <= 0 ? '('.number_format(array_sum($subtotala14)*-1,0).')' : number_format(array_sum($subtotala14),0)}}</td>
+                                <td style="text-align:right;">{{array_sum($subtotala15) <= 0 ? '('.number_format(array_sum($subtotala15)*-1,0).')' : number_format(array_sum($subtotala15),0)}}</td>
+                            </tr>
+                            <tr style="font-size: 7pt;font-weight: bold">
+                                <td colspan="3" style="text-align:right;">GRAND TOTAL</td>
+                                <td style="text-align:right;">{{number_format(array_sum($subtotala),0)}}</td>
+                                <td style="text-align:right;">{{number_format(array_sum($subtotala1),0)}}</td>
+                                <td style="text-align:right;">{{number_format(array_sum($subtotala2),0)}}</td>
+                                <td style="text-align:center;"></td>
+                                <td style="text-align:right;">{{number_format(array_sum($subtotala3),0)}}</td>
+                                <td style="text-align:right;">{{number_format(array_sum($subtotala4),0)}}</td>
+                                <td style="text-align:right;">{{number_format(array_sum($subtotala16),0)}}</td>
+                                <td style="text-align:right;">{{array_sum($subtotala5) <= 0 ? '('.number_format(array_sum($subtotala5)*-1,0).')' : number_format(array_sum($subtotala5),0)}}</td>
+                                <td style="text-align:right;">{{array_sum($subtotala6) <= 0 ? '('.number_format(array_sum($subtotala6)*-1,0).')' : number_format(array_sum($subtotala6),0)}}</td>
+                                <td style="text-align:right;">{{number_format(array_sum($subtotala7),0)}}</td>
+                                <td style="text-align:right;">{{number_format(array_sum($subtotala8),0)}}</td>
+                                <td style="text-align:right;">{{number_format(array_sum($subtotala9),0)}}</td>
+                                <td style="text-align:right;">{{number_format(array_sum($subtotala10),0)}}</td>
+                                <td style="text-align:right;">{{array_sum($subtotala11) <= 0 ? '('.number_format(array_sum($subtotala11)*-1,0).')' : number_format(array_sum($subtotala11),0)}}</td>
+                                <td style="text-align:right;">{{array_sum($subtotala12) <= 0 ? '('.number_format(array_sum($subtotala12)*-1,0).')' : number_format(array_sum($subtotala12),0)}}</td>
+                                <td style="text-align:right;">{{array_sum($subtotala13) <= 0 ? '('.number_format(array_sum($subtotala13)*-1,0).')' : number_format(array_sum($subtotala13),0)}}</td>
+                                <td style="text-align:right;">{{array_sum($subtotala14) <= 0 ? '('.number_format(array_sum($subtotala14)*-1,0).')' : number_format(array_sum($subtotala14),0)}}</td>
+                                <td style="text-align:right;">{{array_sum($subtotala15) <= 0 ? '('.number_format(array_sum($subtotala15)*-1,0).')' : number_format(array_sum($subtotala15),0)}}</td>
+                            </tr>
+
+                           
                         </table>
                     </td>
                 </tr>
