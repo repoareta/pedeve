@@ -58,21 +58,40 @@
 		</div>
 	</div>
 	<div class="kt-portlet__body">
-		<form class="kt-form kt-form--label-right" id="search-form" method="POST">
+		<form class="kt-form" id="search-form" method="POST">
 			<div class="form-group row">
 				<label for="spd-input" class="col-1 col-form-label">No. PUMK</label>
-				<div class="col-3">
+				<div class="col-2">
 					<input class="form-control" type="text" name="no_pumk" id="no_pumk">
 				</div>
 
-				<label for="spd-input" class="col-1 col-form-label">Bulan</label>
+				<label for="spd-input" class="col-form-label">Bulan</label>
 				<div class="col-2">
-					<input class="form-control" type="text" name="bulan" id="bulan">
+					<select class="form-control kt-select2" name="bulan" id="bulan">
+						<option value="">- Pilih Bulan -</option>
+						<option value="01">Januari</option>
+						<option value="02">Februari</option>
+						<option value="03">Maret</option>
+						<option value="04">April</option>
+						<option value="05">Mei</option>
+						<option value="06">Juni</option>
+						<option value="07">Juli</option>
+						<option value="08">Agustus</option>
+						<option value="09">September</option>
+						<option value="10">Oktober</option>
+						<option value="11">November</option>
+						<option value="12">Desember</option>
+					</select>
 				</div>
 
-				<label for="spd-input" class="col-1 col-form-label">Tahun</label>
+				<label for="spd-input" class="col-form-label">Tahun</label>
 				<div class="col-2">
-					<input class="form-control" type="text" name="tahun" id="tahun">
+					<select class="form-control kt-select2" name="tahun" id="tahun">
+						<option value="">- Pilih Tahun -</option>
+						@foreach ($tahun as $row)
+							<option value="{{ $row->year }}">{{ $row->year }}</option>
+						@endforeach
+					</select>
 				</div>
 
 				<div class="col-2">
@@ -107,6 +126,11 @@
 @section('scripts')
 	<script type="text/javascript">
 	$(document).ready(function () {
+
+		$('.kt-select2').select2().on('change', function() {
+			$(this).valid();
+		});
+
 		var t = $('#kt_table').DataTable({
 			scrollX   : true,
 			processing: true,
@@ -115,8 +139,8 @@
 				url: "{{ route('uang_muka_kerja.pertanggungjawaban.index.json') }}",
 				data: function (d) {
 					d.no_pumk = $('input[name=no_pumk]').val();
-					d.bulan = $('input[name=bulan]').val();
-					d.tahun = $('input[name=tahun]').val();
+					d.bulan = $('select[name=bulan]').val();
+					d.tahun = $('select[name=tahun]').val();
 				}
 			},
 			columns: [

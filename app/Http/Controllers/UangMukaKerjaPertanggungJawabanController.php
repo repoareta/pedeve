@@ -30,7 +30,12 @@ class UangMukaKerjaPertanggungJawabanController extends Controller
      */
     public function index()
     {
-        return view('umk_pertanggungjawaban.index');
+        $tahun = PUmkHeader::whereNotNull('tgl_pumk')
+        ->distinct()
+        ->orderBy('year', 'DESC')
+        ->get([DB::raw('extract(year from tgl_pumk) as year')]);
+
+        return view('umk_pertanggungjawaban.index', compact('tahun'));
     }
 
     /**
@@ -61,7 +66,7 @@ class UangMukaKerjaPertanggungJawabanController extends Controller
             })
 
             ->addColumn('nama', function ($row) {
-                return $row->nopek." - ".$row->nama;
+                return $row->nopek." - ".$row->pekerja->nama;
             })
             ->addColumn('nilai', function ($row) {
                 return currency_idr(optional($row->umk_header)->jumlah - $row->pumk_detail->sum('nilai'));
