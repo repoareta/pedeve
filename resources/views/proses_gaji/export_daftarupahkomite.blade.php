@@ -114,8 +114,8 @@
                                 <td style="text-align:left;">{{$data->namapegawai}}</td>
                                 <?php 
                                     $jumpajak = $data->tunpajak+$data->potpajak;
-                                    $hon = $data->allin+$jumpajak+$data->jumkoreksi;
-                                    $jumtransfer = $data->allin+$jumpajak+$data->jumkoreksi;
+                                    $hon = $data->allin+$jumpajak;
+                                    $jumtransfer = $data->allin+$jumpajak;
                                     $subtotala1[$a] = $hon;
                                     $subtotala2[$a] = $jumtransfer;
                                 ?>                                

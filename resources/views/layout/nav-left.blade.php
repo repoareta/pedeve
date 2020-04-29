@@ -255,6 +255,12 @@
                 $rekap_gaji = array(
                     'proses_gaji.ctkrekapgaji'
                 );//isi nama semua route rekap gaji
+                $rekap_thr = array(
+                    'proses_thr.ctkrekapthr'
+                );//isi nama semua route rekap thr
+                $rekap_insentif = array(
+                    'proses_insentif.ctkrekapinsentif'
+                );//isi nama semua route rekap insentif
                 $slip_thr = array(
                     'proses_thr.ctkslipthr'
                 );//isi nama semua route slip thr
@@ -270,6 +276,8 @@
                     $rekap_iuran_jamsostek,
                     $rekap_lembur,
                     $rekap_gaji,
+                    $rekap_thr,
+                    $rekap_insentif,
                     $slip_thr,
                     $slip_insentif
                 ); // isi nama Subdomain  report sdm dan payroll
@@ -774,6 +782,22 @@
                                                 <span></span>
                                             </i>
                                             <span class="kt-menu__link-text">Rekap Gaji</span>
+                                        </a>
+                                    </li>
+                                    <li class="kt-menu__item kt-menu__item{{ set_active_submenu($rekap_thr) }}" aria-haspopup="true">
+                                        <a href="{{ route('proses_thr.ctkrekapthr') }}" class="kt-menu__link">
+                                            <i class="kt-menu__link-bullet kt-menu__link-bullet--line">
+                                                <span></span>
+                                            </i>
+                                            <span class="kt-menu__link-text">Rekap THR</span>
+                                        </a>
+                                    </li>
+                                    <li class="kt-menu__item kt-menu__item{{ set_active_submenu($rekap_insentif) }}" aria-haspopup="true">
+                                        <a href="{{ route('proses_insentif.ctkrekapinsentif') }}" class="kt-menu__link">
+                                            <i class="kt-menu__link-bullet kt-menu__link-bullet--line">
+                                                <span></span>
+                                            </i>
+                                            <span class="kt-menu__link-text">Rekap Insentif</span>
                                         </a>
                                     </li>
                                     <li class="kt-menu__item kt-menu__item{{ set_active_submenu($rekap_iuran_pensiun) }}" aria-haspopup="true">

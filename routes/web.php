@@ -495,6 +495,7 @@ Route::group(['middleware'=> ['auth','checkRole:1']], function () {
             Route::get('proses_thr/edit', 'ProsesThrController@edit')->name('edit');
             Route::get('proses_thr/ctkslipthr', 'ProsesThrController@ctkslipthr')->name('ctkslipthr');
             Route::post('proses_thr/cetak/slipgaji', 'ProsesThrController@cetak_slipthr')->name('cetak_slipthr');
+            Route::get('proses_thr/ctkrekapthr', 'ProsesThrController@ctkrekapthr')->name('ctkrekapthr');
             Route::post('proses_thr/rekap/export', 'ProsesThrController@rekapExport')->name('rekap.export');
         });
         //end proses_thr
@@ -507,6 +508,7 @@ Route::group(['middleware'=> ['auth','checkRole:1']], function () {
             Route::get('proses_insentif/edit', 'ProsesInsentifController@edit')->name('edit');
             Route::get('proses_insentif/ctkslipinsentif', 'ProsesInsentifController@ctkslipinsentif')->name('ctkslipinsentif');
             Route::post('proses_insentif/cetak/slipinsentif', 'ProsesInsentifController@cetak_slipinsentif')->name('cetak_slipinsentif');
+            Route::get('proses_insentif/ctkrekapinsentif', 'ProsesInsentifController@ctkrekapinsentif')->name('ctkrekapinsentif');
             Route::post('proses_insentif/rekap/export', 'ProsesInsentifController@rekapExport')->name('rekap.export');
         });
         //end proses_insentif
