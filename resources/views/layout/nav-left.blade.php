@@ -808,14 +808,14 @@
                                             <span class="kt-menu__link-text">Rekap Iuran Pensiun</span>
                                         </a>
                                     </li>
-                                    <li class="kt-menu__item kt-menu__item{{ set_active_submenu($rekap_iuran_jamsostek) }}" aria-haspopup="true">
+                                    <!-- <li class="kt-menu__item kt-menu__item{{ set_active_submenu($rekap_iuran_jamsostek) }}" aria-haspopup="true">
                                         <a href="{{ route('jamsostek.ctkrekapiuranjamsostek') }}" class="kt-menu__link">
                                             <i class="kt-menu__link-bullet kt-menu__link-bullet--line">
                                                 <span></span>
                                             </i>
                                             <span class="kt-menu__link-text">Rekap Iuran Jamsostek</span>
                                         </a>
-                                    </li>
+                                    </li> -->
                                     <li class="kt-menu__item kt-menu__item{{ set_active_submenu($slip_gaji) }}" aria-haspopup="true">
                                         <a href="{{route('proses_gaji.slipGaji')}}" class="kt-menu__link">
                                             <i class="kt-menu__link-bullet kt-menu__link-bullet--line">

@@ -47,10 +47,11 @@
 						<span style="font-size: 2em;" class="kt-font-danger pointer-link" id="deleteRow" data-toggle="kt-tooltip" data-placement="top" title="Hapus Data">
 							<i class="fas fa-times-circle"></i>
 						</span>
-
-						<!-- <span style="font-size: 2em;" class="kt-font-info pointer-link" id="exportRow" data-toggle="kt-tooltip" data-placement="top" title="Cetak Data">
-							<i class="fas fa-print"></i>
-						</span> -->
+						<a href="{{ route('potongan_koreksi_gaji.ctkkoreksi') }}">
+							<span style="font-size: 2em;" class="kt-font-info pointer-link" id="exportRow" data-toggle="kt-tooltip" data-placement="top" title="Cetak Data">
+								<i class="fas fa-print"></i>
+							</span>
+						</a>
 						<span style="font-size: 2em;" class="kt-font-info pointer-link" data-toggle="kt-tooltip" data-placement="top" title="Refresh Ketampilan Tabel Awal">
 							<i class="fas fa-sync-alt" id="show-data"></i>
 						</span>

@@ -397,6 +397,8 @@ Route::group(['middleware'=> ['auth','checkRole:1']], function () {
             Route::get('potongan_koreksi_gaji/edit/{bulan}/{tahun}/{arrd}/{nopek}', 'PotonganKoreksiGajiController@edit')->name('edit');
             Route::post('potongan_koreksi_gaji/update', 'PotonganKoreksiGajiController@update')->name('update');
             Route::delete('potongan_koreksi_gaji/delete', 'PotonganKoreksiGajiController@delete')->name('delete');
+            Route::get('potongan_koreksi_gaji/koreksi', 'PotonganKoreksiGajiController@ctkkoreksi')->name('ctkkoreksi');
+            Route::post('potongan_koreksi_gaji/koreksi/export', 'PotonganKoreksiGajiController@koreksiExport')->name('koreksi.export');
         });
         //end potongan_koreksi_gaji
 

@@ -140,4 +140,25 @@ class PotonganKoreksiGajiController extends Controller
         ->delete();
         return response()->json();
     }
+    public function ctkkoreksi()
+    {
+        return view('potongan_koreksi_gaji.rekapkoreksi');
+    }
+    public function koreksiExport(Request $request)
+    {
+        $data_list = DB::select("select a.aard,a.nopek,a.nilai,b.nama from pay_koreksigaji a join sdm_master_pegawai b on a.nopek=b.nopeg where a.aard in ('32','34') and a.tahun='$request->tahun' and a.bulan='$request->bulan' and b.status='$request->prosesupah' order by b.nama asc");
+        if(!empty($data_list)){
+            $pdf = PDF::loadview('potongan_koreksi_gaji.export_koreksigaji',compact('request','data_list'))->setPaper('a4', 'Portrait');
+            $pdf->output();
+            $dom_pdf = $pdf->getDomPDF();
+
+            $canvas = $dom_pdf ->get_canvas();
+            $canvas->page_text(740, 115, "Halaman {PAGE_NUM} Dari {PAGE_COUNT}", null, 10, array(0, 0, 0)); //lembur landscape
+            // return $pdf->download('rekap_umk_'.date('Y-m-d H:i:s').'.pdf');
+            return $pdf->stream();
+        }else{
+            Alert::info("Tidak ditemukan data dengan Nopeg: $request->nopek Bulan/Tahun: $request->bulan/$request->tahun ", 'Failed')->persistent(true);
+            return redirect()->route('potongan_koreksi_gaji.ctkkoreksi');
+        }
+    }
 }
