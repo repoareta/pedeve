@@ -234,6 +234,9 @@
                 $slip_gaji = array(
                     'proses_gaji.slipGaji'
                 );//isi nama semua route slip gaji
+                $daftar_upah = array(
+                    'proses_gaji.ctkdaftarupah'
+                );//isi nama semua route Daftar Upah
                 $iuran_jamsostek = array(
                     'jamsostek.ctkiuranjs'
                 );//isi nama semua route iuran jamsostek
@@ -252,6 +255,12 @@
                 $rekap_gaji = array(
                     'proses_gaji.ctkrekapgaji'
                 );//isi nama semua route rekap gaji
+                $rekap_thr = array(
+                    'proses_thr.ctkrekapthr'
+                );//isi nama semua route rekap thr
+                $rekap_insentif = array(
+                    'proses_insentif.ctkrekapinsentif'
+                );//isi nama semua route rekap insentif
                 $slip_thr = array(
                     'proses_thr.ctkslipthr'
                 );//isi nama semua route slip thr
@@ -260,12 +269,15 @@
                 );//isi nama semua route slip insentif
                 $report_sdm_payroll = array_merge(
                     $slip_gaji,
+                    $daftar_upah,
                     $iuran_jamsostek,
                     $iuran_pensiun,
                     $rekap_iuran_pensiun,
                     $rekap_iuran_jamsostek,
                     $rekap_lembur,
                     $rekap_gaji,
+                    $rekap_thr,
+                    $rekap_insentif,
                     $slip_thr,
                     $slip_insentif
                 ); // isi nama Subdomain  report sdm dan payroll
@@ -732,6 +744,14 @@
                             </a>
                             <div class="kt-menu__submenu "><span class="kt-menu__arrow"></span>
                                 <ul class="kt-menu__subnav">
+                                    <li class="kt-menu__item kt-menu__item{{ set_active_submenu($daftar_upah) }}" aria-haspopup="true">
+                                        <a href="{{ route('proses_gaji.ctkdaftarupah') }}" class="kt-menu__link">
+                                            <i class="kt-menu__link-bullet kt-menu__link-bullet--line">
+                                                <span></span>
+                                            </i>
+                                            <span class="kt-menu__link-text">Daftar Upah Kerja</span>
+                                        </a>
+                                    </li>
                                     <li class="kt-menu__item kt-menu__item{{ set_active_submenu($iuran_jamsostek) }}" aria-haspopup="true">
                                         <a href="{{ route('jamsostek.ctkiuranjs') }}" class="kt-menu__link">
                                             <i class="kt-menu__link-bullet kt-menu__link-bullet--line">
@@ -764,6 +784,22 @@
                                             <span class="kt-menu__link-text">Rekap Gaji</span>
                                         </a>
                                     </li>
+                                    <li class="kt-menu__item kt-menu__item{{ set_active_submenu($rekap_thr) }}" aria-haspopup="true">
+                                        <a href="{{ route('proses_thr.ctkrekapthr') }}" class="kt-menu__link">
+                                            <i class="kt-menu__link-bullet kt-menu__link-bullet--line">
+                                                <span></span>
+                                            </i>
+                                            <span class="kt-menu__link-text">Rekap THR</span>
+                                        </a>
+                                    </li>
+                                    <li class="kt-menu__item kt-menu__item{{ set_active_submenu($rekap_insentif) }}" aria-haspopup="true">
+                                        <a href="{{ route('proses_insentif.ctkrekapinsentif') }}" class="kt-menu__link">
+                                            <i class="kt-menu__link-bullet kt-menu__link-bullet--line">
+                                                <span></span>
+                                            </i>
+                                            <span class="kt-menu__link-text">Rekap Insentif</span>
+                                        </a>
+                                    </li>
                                     <li class="kt-menu__item kt-menu__item{{ set_active_submenu($rekap_iuran_pensiun) }}" aria-haspopup="true">
                                         <a href="{{ route('pensiun.ctkrekapiuranpensiun') }}" class="kt-menu__link">
                                             <i class="kt-menu__link-bullet kt-menu__link-bullet--line">
@@ -772,14 +808,14 @@
                                             <span class="kt-menu__link-text">Rekap Iuran Pensiun</span>
                                         </a>
                                     </li>
-                                    <li class="kt-menu__item kt-menu__item{{ set_active_submenu($rekap_iuran_jamsostek) }}" aria-haspopup="true">
+                                    <!-- <li class="kt-menu__item kt-menu__item{{ set_active_submenu($rekap_iuran_jamsostek) }}" aria-haspopup="true">
                                         <a href="{{ route('jamsostek.ctkrekapiuranjamsostek') }}" class="kt-menu__link">
                                             <i class="kt-menu__link-bullet kt-menu__link-bullet--line">
                                                 <span></span>
                                             </i>
                                             <span class="kt-menu__link-text">Rekap Iuran Jamsostek</span>
                                         </a>
-                                    </li>
+                                    </li> -->
                                     <li class="kt-menu__item kt-menu__item{{ set_active_submenu($slip_gaji) }}" aria-haspopup="true">
                                         <a href="{{route('proses_gaji.slipGaji')}}" class="kt-menu__link">
                                             <i class="kt-menu__link-bullet kt-menu__link-bullet--line">

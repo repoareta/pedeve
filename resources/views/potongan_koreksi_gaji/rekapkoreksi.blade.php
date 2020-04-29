@@ -6,7 +6,7 @@
 	<div class="kt-container  kt-container--fluid ">
 		<div class="kt-subheader__main">
 			<h3 class="kt-subheader__title">
-				Rekap Gaji </h3>
+				Cetak Rincian Koreksi Gaji </h3>
 			<span class="kt-subheader__separator kt-hidden"></span>
 			<div class="kt-subheader__breadcrumbs">
 				<a href="#" class="kt-subheader__breadcrumbs-home"><i class="flaticon2-shelter"></i></a>
@@ -14,7 +14,7 @@
 				<a href="" class="kt-subheader__breadcrumbs-link">
 					SDM & Payroll </a>
 				<span class="kt-subheader__breadcrumbs-separator"></span>
-				<span class="kt-subheader__breadcrumbs-link kt-subheader__breadcrumbs-link--active">Rekap Gaji</span>
+				<span class="kt-subheader__breadcrumbs-link kt-subheader__breadcrumbs-link--active">Cetak Rincian Koreksi Gaji</span>
 			</div>
 		</div>
 	</div>
@@ -29,7 +29,7 @@
 				<i class="kt-font-brand flaticon2-line-chart"></i>
 			</span>
 			<h3 class="kt-portlet__head-title">
-				Tabel Rekap Gaji
+				Tabel Cetak Rincian Koreksi Gaji
 			</h3>			
 		</div>
 		<div class="kt-portlet__head-toolbar">
@@ -40,7 +40,7 @@
 		</div>
 	</div>
 	<div class="kt-portlet__body">
-        <form class="kt-form kt-form--label-right" action="{{ route('proses_gaji.rekap.export') }}" method="post">
+        <form class="kt-form kt-form--label-right" action="{{ route('potongan_koreksi_gaji.koreksi.export') }}" method="post">
             @csrf
             <div class="form-group row">
 				<label for="spd-input" class="col-2 col-form-label">Bulan/Tahun<span style="color:red;">*</span></label>
@@ -80,24 +80,8 @@
 						<option value="K">Kontrak</option>
 						<option value="B">Perbantuan</option>
 						<option value="U">Komisaris</option>
-						<option value="O">Komite</option>
+						<option value="N">Pekerja Baru</option>
 					</select>								
-				</div>
-			</div>
-			<div class="form-group row">
-				<label class="col-2 col-form-label">Penandatangan<span style="color:red;">*</span></label>
-				<div class="col-4">
-					<input class="form-control" type="text" value="{{$nama}}" name="nama" id="nama" size="50" maxlength="200" required oninvalid="this.setCustomValidity('Penandatanganan Harus Diisi..')" oninput="setCustomValidity('')" autocomplete='off'>
-				</div>
-				<label class="col-1 col-form-label">Jabatan<span style="color:red;">*</span></label>
-				<div class="col-3" >
-					<input class="form-control" type="text" value="{{$jabatan}}" name="jabatan" id="jabatan" size="50" maxlength="200" required oninvalid="this.setCustomValidity('Jabatan Harus Diisi..')" oninput="setCustomValidity('')" autocomplete='off'>
-				</div>
-			</div>
-			<div class="form-group row">
-				<label for="jenis-dinas-input" class="col-2 col-form-label">Tanggal Cetak<span style="color:red;">*</span></label>
-				<div class="col-8">
-                    <input class="form-control" type="text" name="tanggal" value="{{ date('d F Y') }}"  id="tanggal" size="15" maxlength="15" autocomplete='off' required oninvalid="this.setCustomValidity('Tanggal Cetak Harus Diisi..')" onchange="setCustomValidity('')" autocomplete='off'>
 				</div>
 			</div>
 			<div class="kt-form__actions">

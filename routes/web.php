@@ -397,6 +397,8 @@ Route::group(['middleware'=> ['auth','checkRole:1']], function () {
             Route::get('potongan_koreksi_gaji/edit/{bulan}/{tahun}/{arrd}/{nopek}', 'PotonganKoreksiGajiController@edit')->name('edit');
             Route::post('potongan_koreksi_gaji/update', 'PotonganKoreksiGajiController@update')->name('update');
             Route::delete('potongan_koreksi_gaji/delete', 'PotonganKoreksiGajiController@delete')->name('delete');
+            Route::get('potongan_koreksi_gaji/koreksi', 'PotonganKoreksiGajiController@ctkkoreksi')->name('ctkkoreksi');
+            Route::post('potongan_koreksi_gaji/koreksi/export', 'PotonganKoreksiGajiController@koreksiExport')->name('koreksi.export');
         });
         //end potongan_koreksi_gaji
 
@@ -482,6 +484,8 @@ Route::group(['middleware'=> ['auth','checkRole:1']], function () {
             Route::post('proses_gaji/cetak/slipgaji', 'ProsesGajiController@cetak_slipgaji')->name('cetak_slipgaji');
             Route::get('proses_gaji/ctkrekapgaji', 'ProsesGajiController@ctkrekapgaji')->name('ctkrekapgaji');
             Route::post('proses_gaji/rekap/export', 'ProsesGajiController@rekapExport')->name('rekap.export');
+            Route::get('proses_gaji/daftar/upah', 'ProsesGajiController@ctkdaftarupah')->name('ctkdaftarupah');
+            Route::post('proses_gaji/daftar/upah/export', 'ProsesGajiController@daftarExport')->name('daftar.export');
         });
         //end proses_gaji
 
@@ -493,6 +497,7 @@ Route::group(['middleware'=> ['auth','checkRole:1']], function () {
             Route::get('proses_thr/edit', 'ProsesThrController@edit')->name('edit');
             Route::get('proses_thr/ctkslipthr', 'ProsesThrController@ctkslipthr')->name('ctkslipthr');
             Route::post('proses_thr/cetak/slipgaji', 'ProsesThrController@cetak_slipthr')->name('cetak_slipthr');
+            Route::get('proses_thr/ctkrekapthr', 'ProsesThrController@ctkrekapthr')->name('ctkrekapthr');
             Route::post('proses_thr/rekap/export', 'ProsesThrController@rekapExport')->name('rekap.export');
         });
         //end proses_thr
@@ -505,6 +510,7 @@ Route::group(['middleware'=> ['auth','checkRole:1']], function () {
             Route::get('proses_insentif/edit', 'ProsesInsentifController@edit')->name('edit');
             Route::get('proses_insentif/ctkslipinsentif', 'ProsesInsentifController@ctkslipinsentif')->name('ctkslipinsentif');
             Route::post('proses_insentif/cetak/slipinsentif', 'ProsesInsentifController@cetak_slipinsentif')->name('cetak_slipinsentif');
+            Route::get('proses_insentif/ctkrekapinsentif', 'ProsesInsentifController@ctkrekapinsentif')->name('ctkrekapinsentif');
             Route::post('proses_insentif/rekap/export', 'ProsesInsentifController@rekapExport')->name('rekap.export');
         });
         //end proses_insentif
