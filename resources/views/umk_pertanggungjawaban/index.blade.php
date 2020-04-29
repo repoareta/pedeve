@@ -132,6 +132,11 @@
 		});
 
 		var t = $('#kt_table').DataTable({
+			// mengganti search dengan pagination
+			// dom: "<'row'<'col-sm-12 col-md-6'l><'col-sm-12 col-md-6'p>>" +
+			// 	 "<'row'<'col-sm-12't>>" +
+			// 	 "<'row'<'col-sm-12 col-md-5'i><'col-sm-12 col-md-7'p>>",
+			searching : false,
 			scrollX   : true,
 			processing: true,
 			serverSide: true,
