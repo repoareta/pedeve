@@ -9,7 +9,9 @@ use App\Models\PUmkHeader;
 use App\Models\PUmkDetail;
 use App\Models\UmkHeader;
 use App\Models\SdmMasterPegawai;
-use App\Models\SdmTblKdjab;
+
+use App\Models\KodeBagian;
+use App\Models\KodeJabatan;
 
 // Load Plugin
 use Carbon\Carbon;
@@ -80,7 +82,7 @@ class UangMukaKerjaPertanggungJawabanController extends Controller
         ->orderBy('nama', 'ASC')
         ->get();
 
-        $jabatan_list = SdmTblKdjab::distinct('keterangan')
+        $jabatan_list = KodeJabatan::distinct('keterangan')
         ->orderBy('keterangan', 'ASC')
         ->get();
 
@@ -168,7 +170,7 @@ class UangMukaKerjaPertanggungJawabanController extends Controller
 
         $no_umk = $pumk_header->umk_header->no_umk;
 
-        $pekerja_jabatan = SdmTblKdjab::where('kdbag', $pumk_header->pekerja->jabatan_latest()->kdbag)
+        $pekerja_jabatan = KodeJabatan::where('kdbag', $pumk_header->pekerja->jabatan_latest()->kdbag)
         ->where('kdjab', $pumk_header->pekerja->jabatan_latest()->kdjab)
         ->first();
 
@@ -176,7 +178,7 @@ class UangMukaKerjaPertanggungJawabanController extends Controller
         ->orderBy('nama', 'ASC')
         ->get();
 
-        $jabatan_list = SdmTblKdjab::distinct('keterangan')
+        $jabatan_list = KodeJabatan::distinct('keterangan')
         ->orderBy('keterangan', 'ASC')
         ->get();
 
@@ -245,8 +247,24 @@ class UangMukaKerjaPertanggungJawabanController extends Controller
     public function delete(Request $request)
     {
         PUmkHeader::where('no_pumk', $request->id)->delete();
-        PUmkDetail::where('no_pumk', $request->id)->delete();
 
         return response()->json();
+    }
+
+    public function exportRow($no_pumk)
+    {
+        $no_pumk = str_replace('-', '/', $no_pumk);
+        
+        $pumk_header = PUmkHeader::where('no_pumk', $no_pumk)->first();
+
+        $pekerja_jabatan = KodeJabatan::where('kdbag', $pumk_header->pekerja->jabatan_latest()->kdbag)
+        ->where('kdjab', $pumk_header->pekerja->jabatan_latest()->kdjab)
+        ->first();
+
+        $pdf = PDF::loadview('umk_pertanggungjawaban.export_row', [
+            'pumk_header' => $pumk_header,
+            'pekerja_jabatan' => $pekerja_jabatan
+        ]);
+        return $pdf->stream('rekap_umk_pertanggungjawaban_'.date('Y-m-d H:i:s').'.pdf');
     }
 }
