@@ -140,7 +140,7 @@
                                 $totaldetail[$a] = $data->nilai; ?>
                             @endforeach
                             <tr>
-                            <?php $total_bersih = array_sum($total) - array_sum($totaldetail); ?>
+                            <?php $total_bersih = array_sum($total) + array_sum($totaldetail); ?>
                                 <td style=" font-size: 10pt;text-align:right;" colspan="3" ><font style=" text-align:right; padding-right:2%;">Penghasilan Bersih : </td>
                                 <td style=" font-size: 10pt;text-align:right;font-weight: bold"   >{{number_format($total_bersih,2,',','.')}} </td>
                             </tr>

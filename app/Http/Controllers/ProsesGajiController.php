@@ -4849,19 +4849,94 @@ class ProsesGajiController extends Controller
     }
     public function rekapExport(Request $request)
     {
+        if($request->prosesupah == 'C'){
+            $data_list = db::select("select a.nopek,b.nama, d.nama as nmbag, d.kode,
+            sum(CASE WHEN a.aard ='01'  THEN round(a.nilai,0) ELSE '0' END) as a_upah,
+            sum(CASE WHEN a.aard ='04'  THEN round(a.nilai,0) ELSE '0' END) as a_bh,
+            sum(CASE WHEN a.aard ='03'  THEN round(a.nilai,0) ELSE '0' END) as a_jb,
+            sum(CASE WHEN a.aard ='06'  THEN round(a.nilai,0) ELSE '0' END) as a_fc,
+            sum(CASE WHEN a.aard ='05'  THEN round(a.nilai,0) ELSE '0' END) as a_lem,
+            sum(CASE WHEN a.aard ='07'  THEN round(a.nilai,0) ELSE '0' END) as a_sbl,
+            sum(CASE WHEN a.aard in ('32','34','35','37','38')  THEN round(a.nilai,0) ELSE '0' END) as a_koreksi,
+            (case when b.KODEKELUARGA ='201' THEN 'K/1' when b.KODEKELUARGA ='202' THEN 'K/2' when b.KODEKELUARGA ='203' THEN 'K/3' when b.KODEKELUARGA ='200' THEN 'K/0' when b.KODEKELUARGA ='100' THEN '-/-' else '-/-' end) as a_kdkeluarga,
+            sum(CASE WHEN a.aard ='27'  THEN round(a.nilai,0) ELSE '0' END) as a_tunpj,
+            sum(CASE WHEN a.aard ='09'  THEN round(a.nilai,0) ELSE '0' END) as iuranjm,
+            sum(CASE WHEN a.aard ='26'  THEN round(a.nilai,0) ELSE '0' END) as pot_pajak,
+            sum(CASE WHEN a.aard ='19'  THEN round(a.nilai,0) ELSE '0' END) as pot_pinjaman,
+            sum(CASE WHEN a.aard ='23'  THEN round(a.nilai,0) ELSE '0' END) as pembulatan,
+            sum(CASE WHEN a.aard ='14'  THEN round(a.nilai,0) ELSE '0' END) as a_005,
+            sum(CASE WHEN a.aard ='17'  THEN round(a.nilai,0) ELSE '0' END) as a_011,
+            sum(CASE WHEN a.aard ='18'  THEN round(a.nilai,0) ELSE '0' END) as a_012,
+            sum(CASE WHEN a.aard in ('28','44')  THEN round(a.nilai,0) ELSE '0' END) as pot_koperasi
+            from pay_master_upah a join sdm_master_pegawai b on a.nopek=b.nopeg join sdm_jabatan c on c.nopeg=b.nopeg join sdm_tbl_kdbag d on d.kode=c.kdbag where b.status='C' and a.tahun='$request->tahun' and a.bulan='$request->bulan' and c.mulai=(select max(mulai) from sdm_jabatan where nopeg=a.nopek) group by a.nopek,b.nama,b.kodekeluarga,d.nama,d.kode");
+            $pdf = PDF::loadview('proses_gaji.export_rekapgaji',compact('request','data_list'))->setPaper('Legal', 'landscape');
+            $pdf->output();
+            $dom_pdf = $pdf->getDomPDF();
         
-        $pdf = PDF::loadview('proses_gaji.export_rekapgaji',compact('request'))->setPaper('Legal', 'landscape');
-        $pdf->output();
-        $dom_pdf = $pdf->getDomPDF();
-    
-        $canvas = $dom_pdf ->get_canvas();
-        $canvas->page_text(910, 120, "Halaman {PAGE_NUM} Dari {PAGE_COUNT}", null, 10, array(0, 0, 0)); //Rekap Gaji landscape
-        // $canvas->page_text(730, 100, "Halaman {PAGE_NUM} Dari {PAGE_COUNT}", null, 10, array(0, 0, 0)); //Gaji Pokok landscape
-        // $canvas->page_text(730, 100, "Halaman {PAGE_NUM} Dari {PAGE_COUNT}", null, 10, array(0, 0, 0)); lembur landscape
-        // $canvas->page_text(550, 810, "{PAGE_NUM}", null, 10, array(0, 0, 0));iuran pensiun Portrait
-        // $canvas->page_text(730, 100, "Halaman {PAGE_NUM} Dari {PAGE_COUNT}", null, 10, array(0, 0, 0)); //rekap iuran pensiun landscape
-        // $canvas->page_text(730, 100, "Halaman {PAGE_NUM} Dari {PAGE_COUNT}", null, 10, array(0, 0, 0)); iuran jamsostek landscape
-        // return $pdf->download('rekap_umk_'.date('Y-m-d H:i:s').'.pdf');
-        return $pdf->stream();
+            $canvas = $dom_pdf ->get_canvas();
+            $canvas->page_text(910, 120, "Halaman {PAGE_NUM} Dari {PAGE_COUNT}", null, 10, array(0, 0, 0)); //Rekap Gaji landscape
+            // return $pdf->download('rekap_umk_'.date('Y-m-d H:i:s').'.pdf');
+            return $pdf->stream();
+        }elseif ($request->prosesupah == 'K') {
+            $data_list = db::select("select a.nopek,b.nama,d.nama as nmbag,d.kode ,
+            sum(CASE WHEN a.aard ='02'  THEN round(a.nilai,0) ELSE '0' END) as a_upah,
+            sum(CASE WHEN a.aard ='03'  THEN round(a.nilai,0) ELSE '0' END) as a_jb,
+            sum(CASE WHEN a.aard ='04'  THEN round(a.nilai,0) ELSE '0' END) as a_bh,
+            sum(CASE WHEN a.aard ='06'  THEN round(a.nilai,0) ELSE '0' END) as a_fc,
+            sum(CASE WHEN a.aard ='05'  THEN round(a.nilai,0) ELSE '0' END) as a_lem,
+            sum(CASE WHEN a.aard ='07'  THEN round(a.nilai,0) ELSE '0' END) as a_sbl,
+            sum(CASE WHEN a.aard in ('32','34','35','38')  THEN round(a.nilai,0) ELSE '0' END) as a_koreksi,
+            (case when b.KODEKELUARGA ='201' THEN 'K/1' when b.KODEKELUARGA ='202' THEN 'K/2' when b.KODEKELUARGA ='203' THEN 'K/3' when b.KODEKELUARGA ='200' THEN 'K/0' when b.KODEKELUARGA ='100' THEN '-/-' else '-/-' end) as a_kdkeluarga,
+            sum(CASE WHEN a.aard ='27'  THEN round(a.nilai,0) ELSE '0' END) as tunpj,
+            sum(CASE WHEN a.aard ='09'  THEN round(a.nilai,0) ELSE '0' END) as iuranjm,
+            sum(CASE WHEN a.aard ='26'  THEN round(a.nilai,0) ELSE '0' END) as pot_pajak,
+            sum(CASE WHEN a.aard ='19'  THEN round(a.nilai,0) ELSE '0' END) as pot_pinjaman,
+            sum(CASE WHEN a.aard ='23'  THEN round(a.nilai,0) ELSE '0' END) as pembulatan,
+            sum(CASE WHEN a.aard ='14'  THEN round(a.nilai,0) ELSE '0' END) as a_005,
+            sum(CASE WHEN a.aard ='17'  THEN round(a.nilai,0) ELSE '0' END) as a_011,
+            sum(CASE WHEN a.aard ='18'  THEN round(a.nilai,0) ELSE '0' END) as a_012,
+            sum(CASE WHEN a.aard in ('28','44')  THEN round(a.nilai,0) ELSE '0' END) as pot_koperasi
+            from pay_master_upah a join sdm_master_pegawai b on a.nopek=b.nopeg join sdm_jabatan c on c.nopeg=b.nopeg join sdm_tbl_kdbag d on d.kode=c.kdbag where b.status='K' and a.tahun='$request->tahun' and a.bulan='$request->bulan' and c.mulai=(select max(mulai) from sdm_jabatan where nopeg=a.nopek) group by a.nopek,b.nama,b.kodekeluarga,d.nama,d.kode;");
+            $pdf = PDF::loadview('proses_gaji.export_rekapgajikontrak',compact('request','data_list'))->setPaper('Legal', 'landscape');
+            $pdf->output();
+            $dom_pdf = $pdf->getDomPDF();
+        
+            $canvas = $dom_pdf ->get_canvas();
+            $canvas->page_text(880, 140, "Halaman {PAGE_NUM} Dari {PAGE_COUNT}", null, 10, array(0, 0, 0)); //Rekap Gaji landscape
+            // return $pdf->download('rekap_umk_'.date('Y-m-d H:i:s').'.pdf');
+            return $pdf->stream();
+        }elseif ($request->prosesupah == 'B') {
+            $data_list = db::select("select a.nopek,b.nama,d.nama as nmbag,d.kode ,
+            sum(CASE WHEN a.aard ='02'  THEN round(a.nilai,0) ELSE '0' END) as a_upah,
+            sum(CASE WHEN a.aard ='03'  THEN round(a.nilai,0) ELSE '0' END) as a_jb,
+            sum(CASE WHEN a.aard ='04'  THEN round(a.nilai,0) ELSE '0' END) as a_bh,
+            sum(CASE WHEN a.aard ='06'  THEN round(a.nilai,0) ELSE '0' END) as a_fc,
+            sum(CASE WHEN a.aard ='05'  THEN round(a.nilai,0) ELSE '0' END) as a_lem,
+            sum(CASE WHEN a.aard ='07'  THEN round(a.nilai,0) ELSE '0' END) as a_sbl,
+            sum(CASE WHEN a.aard in ('32','34','35','45')  THEN round(a.nilai,0) ELSE '0' END) as a_koreksi,
+            (case when b.KODEKELUARGA ='201' THEN 'K/1' when b.KODEKELUARGA ='202' THEN 'K/2' when b.KODEKELUARGA ='203' THEN 'K/3' when b.KODEKELUARGA ='200' THEN 'K/0' when b.KODEKELUARGA ='100' THEN '-/-' else '-/-' end) as a_kdkeluarga,
+            sum(CASE WHEN a.aard ='27'  THEN round(a.nilai,0) ELSE '0' END) as tunpj,
+            sum(CASE WHEN a.aard ='09'  THEN round(a.nilai,0) ELSE '0' END) as iuranjm,
+            sum(CASE WHEN a.aard ='26'  THEN round(a.nilai,0) ELSE '0' END) as pot_pajak,
+            sum(CASE WHEN a.aard ='36'  THEN round(a.nilai,0) ELSE '0' END) as pot_bazma,
+            sum(CASE WHEN a.aard ='19'  THEN round(a.nilai,0) ELSE '0' END) as pot_pinjaman,
+            sum(CASE WHEN a.aard ='23'  THEN round(a.nilai,0) ELSE '0' END) as pembulatan,
+            sum(CASE WHEN a.aard ='14'  THEN round(a.nilai,0) ELSE '0' END) as iuranpensiun,
+            sum(CASE WHEN a.aard ='17'  THEN round(a.nilai,0) ELSE '0' END) as jumlah1,
+            sum(CASE WHEN a.aard ='18'  THEN round(a.nilai,0) ELSE '0' END) as jumlah2,
+            sum(CASE WHEN a.aard = '17'   THEN round(a.ccl,0) ELSE '0' END) as ccl1,
+            sum(CASE WHEN a.aard = '18'   THEN round(a.ccl,0) ELSE '0' END) as ccl2,
+            sum(CASE WHEN a.aard in ('28','44')  THEN round(a.nilai,0) ELSE '0' END) as pot_koperasi
+            from pay_master_upah a join sdm_master_pegawai b on a.nopek=b.nopeg join sdm_jabatan c on c.nopeg=b.nopeg join sdm_tbl_kdbag d on d.kode=c.kdbag where b.status='K' and a.tahun='$request->tahun' and a.bulan='$request->bulan' and c.mulai=(select max(mulai) from sdm_jabatan where nopeg=a.nopek) group by a.nopek,b.nama,b.kodekeluarga,d.nama,d.kode;");
+            $pdf = PDF::loadview('proses_gaji.export_rekapgajibantu',compact('request','data_list'))->setPaper('Legal', 'landscape');
+            $pdf->output();
+            $dom_pdf = $pdf->getDomPDF();
+        
+            $canvas = $dom_pdf ->get_canvas();
+            $canvas->page_text(880, 140, "Halaman {PAGE_NUM} Dari {PAGE_COUNT}", null, 10, array(0, 0, 0)); //Rekap Gaji landscape
+            // return $pdf->download('rekap_umk_'.date('Y-m-d H:i:s').'.pdf');
+            return $pdf->stream();
+        }
+
     }
 }

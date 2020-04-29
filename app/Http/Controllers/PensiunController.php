@@ -143,15 +143,29 @@ class PensiunController extends Controller
     }
     public function rekapExport(Request $request)
     {
-        $data_list = DB::select("select p.tahun, p.bulan, p.nopek,(select nama from sdm_master_pegawai where nopeg=p.nopek) as nama,p.aard,p.curramount as nilai from pay_master_bebanprshn p where p.aard in ('15','46') and p.tahun='$request->tahun' and p.bulan='$request->bulan' union all select a.tahun, a.bulan, a.nopek,(select nama from sdm_master_pegawai where nopeg=a.nopek) as nama,a.aard, (a.nilai*-1) as nilai from pay_master_upah a where a.aard='14' and a.tahun='$request->tahun' and a.bulan='$request->bulan' order by nama asc");
-        $pdf = PDF::loadview('pensiun.export_iuranpensiun',compact('request','data_list'))->setPaper('a4', 'Portrait');
-        $pdf->output();
-        $dom_pdf = $pdf->getDomPDF();
+        $data_cek = DB::select("select * from pay_master_upah where tahun='$request->tahun' and bulan='$request->bulan'");
+        $data_cek1 = DB::select("select * from pay_master_bebanprshn where tahun='$request->tahun' and bulan='$request->bulan'");
+        if(!empty($data_cek) and !empty($data_cek1)) {
+            $data_list = DB::select("select nopek, nama, 
+                                    sum(CASE WHEN aard ='15'  THEN curramount ELSE '0' END) as aard15,
+                                    sum(CASE WHEN aard ='46'  THEN curramount ELSE '0' END) as aard46,
+                                    sum(CASE WHEN aard ='14'  THEN curramount*-1 ELSE '0' END) as aard14
+                                    from (select a.nopek,b.nama,a.aard,a.curramount
+                                    from pay_master_bebanprshn a join sdm_master_pegawai b on a.nopek=b.nopeg where a.aard in ('15','46') and a.tahun='$request->tahun' and a.bulan='$request->bulan' union all
+                                    select c.nopek,d.nama, c.aard, c.nilai as curramount
+                                    from pay_master_upah c join sdm_master_pegawai d on c.nopek=d.nopeg where c.aard='14' and c.tahun='$request->tahun' and c.bulan='$request->bulan') d group by nama, nopek order by nama asc");
+            $pdf = PDF::loadview('pensiun.export_iuranpensiun',compact('request','data_list'))->setPaper('a4', 'Portrait');
+            $pdf->output();
+            $dom_pdf = $pdf->getDomPDF();
 
-        $canvas = $dom_pdf ->get_canvas();
-        $canvas->page_text(730, 100, "Halaman {PAGE_NUM} Dari {PAGE_COUNT}", null, 10, array(0, 0, 0)); //iuran pensiun landscape
-        // return $pdf->download('rekap_umk_'.date('Y-m-d H:i:s').'.pdf');
-        return $pdf->stream();
+            $canvas = $dom_pdf ->get_canvas();
+            $canvas->page_text(730, 100, "Halaman {PAGE_NUM} Dari {PAGE_COUNT}", null, 10, array(0, 0, 0)); //iuran pensiun landscape
+            // return $pdf->download('rekap_umk_'.date('Y-m-d H:i:s').'.pdf');
+            return $pdf->stream();
+        }else{
+            Alert::info("Tidak ditemukan data Bulan: $request->bulan dan Tahun: $request->tahun", 'Failed')->persistent(true);
+            return redirect()->route('pensiun.ctkiuranpensiun');
+        }
     }
     public function ctkrekapiuranpensiun()
     {

@@ -55,9 +55,11 @@
                    <font style="font-size: 12pt;font-weight: bold "> BULAN {{strtoupper($bulan)}} {{$request->tahun}} </font><br>
                     </td>
                 </tr>
-            </table>
-
-            <table width="100%"  style="padding-top:5%; padding-left:30px;;padding-right:30px;">
+            </table>           
+        </header>
+        <!-- Wrap the content of your PDF inside a main tag -->
+        <main>
+            <table width="100%"  style="padding-top:5%;">
                 <tr>
                     <td>
                         <table width="100%" style="font-size: 10pt;border-collapse: collapse;" border="1">
@@ -75,28 +77,28 @@
                             </tr>
                             <?php $a=0; ?>
                             @foreach($data_list as $data)
-                            <?php $a++; ?>
-                            <tr >
-                                <td style="text-align:center;">{{$a}}</td>
-                                <td style="text-align:left;">{{$data->nopek}}</td>
-                                <td style="text-align:left;">{{$data->nama}}</td>
-                                <td style="text-align:right;">{{$data->aard == '14' ? number_format($data->nilai,0) : '0'}}</td>
-                                <td style="text-align:right;">{{$data->aard == '15' ? number_format($data->nilai,0) : '0'}}</td>
-                                <td style="text-align:right;">{{$data->aard == '46' ? number_format($data->nilai,0) : '0'}}</td>
                                 <?php  
-                                    $iuranpekerja = $data->aard == '14' ? round($data->nilai,0) : '0';
-                                    $danapensiun = $data->aard == '15' ? round($data->nilai,0) : '0';
-                                    $bni = $data->aard == '46' ? round($data->nilai,0) : '0';
+                                    $a++;
+                                    $iuranpekerja = $data->aard14 = '0' ? '0' : round($data->aard14,0);
+                                    $danapensiun = $data->aard15 = '0' ? '0' : round($data->aard15,0);
+                                    $bni = $data->aard46 = '0' ? '0' : round($data->aard46,0);
                                     $total = $iuranpekerja+$danapensiun+$bni;
                                     $totaliuranpekerja[$a] = $iuranpekerja;
                                     $totaldanapensiun[$a] = $danapensiun;
                                     $totalbni[$a] = $bni;
                                     $totaltotal[$a] = $total;
                                 ?>
+                            <tr >
+                                <td style="text-align:center;">{{$a}}</td>
+                                <td style="text-align:left;">{{$data->nopek}}</td>
+                                <td style="text-align:left;">{{$data->nama}}</td>
+                                <td style="text-align:right;">{{$iuranpekerja = '0' ? '0': number_format($iuranpekerja,0)}}</td>
+                                <td style="text-align:right;">{{$danapensiun = '0' ? '0': number_format($danapensiun,0)}}</td>
+                                <td style="text-align:right;">{{$bni = '0' ? '0': number_format($bni,0)}}</td>
                                 <td style="text-align:right;">{{number_format($total,0)}}</td>
                             </tr>
                             @endforeach
-                            <tr >
+                            <tr style="font-weight: bold">
                                <td style="text-align:right;" colspan="3">Total</td>
                                <td style="text-align:right;" >{{number_format(array_sum($totaliuranpekerja),0)}}</td>
                                <td style="text-align:right;" >{{number_format(array_sum($totaldanapensiun),0)}}</td>
@@ -131,14 +133,9 @@
                     </td>
                 </tr>
             </table>
-
-
-            
-        </header>
-        <!-- Wrap the content of your PDF inside a main tag -->
-        <main>
+        </main>
         <footer>
-        <font style="padding-left:20px;font-size: 10pt;font-style: italic">Cetak:</font>
+        <font style="padding-left:20px;font-size: 10pt;font-style: italic">Cetak: {{$request->tanggal}}</font>
         </footer>
     </body>
 </html>
