@@ -234,6 +234,9 @@
                 $slip_gaji = array(
                     'proses_gaji.slipGaji'
                 );//isi nama semua route slip gaji
+                $daftar_upah = array(
+                    'proses_gaji.ctkdaftarupah'
+                );//isi nama semua route Daftar Upah
                 $iuran_jamsostek = array(
                     'jamsostek.ctkiuranjs'
                 );//isi nama semua route iuran jamsostek
@@ -260,6 +263,7 @@
                 );//isi nama semua route slip insentif
                 $report_sdm_payroll = array_merge(
                     $slip_gaji,
+                    $daftar_upah,
                     $iuran_jamsostek,
                     $iuran_pensiun,
                     $rekap_iuran_pensiun,
@@ -732,6 +736,14 @@
                             </a>
                             <div class="kt-menu__submenu "><span class="kt-menu__arrow"></span>
                                 <ul class="kt-menu__subnav">
+                                    <li class="kt-menu__item kt-menu__item{{ set_active_submenu($daftar_upah) }}" aria-haspopup="true">
+                                        <a href="{{ route('proses_gaji.ctkdaftarupah') }}" class="kt-menu__link">
+                                            <i class="kt-menu__link-bullet kt-menu__link-bullet--line">
+                                                <span></span>
+                                            </i>
+                                            <span class="kt-menu__link-text">Daftar Upah Kerja</span>
+                                        </a>
+                                    </li>
                                     <li class="kt-menu__item kt-menu__item{{ set_active_submenu($iuran_jamsostek) }}" aria-haspopup="true">
                                         <a href="{{ route('jamsostek.ctkiuranjs') }}" class="kt-menu__link">
                                             <i class="kt-menu__link-bullet kt-menu__link-bullet--line">
