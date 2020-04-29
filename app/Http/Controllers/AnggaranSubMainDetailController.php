@@ -5,6 +5,7 @@ namespace App\Http\Controllers;
 use Illuminate\Http\Request;
 
 // load model
+use App\Models\AnggaranMain;
 use App\Models\AnggaranDetail;
 
 //load form request (for validation)
@@ -24,9 +25,15 @@ class AnggaranSubMainDetailController extends Controller
      *
      * @return \Illuminate\Http\Response
      */
-    public function index($kode_main, $kode_submain)
+    public function index()
     {
-        return view('anggaran_submain_detail.index', compact('kode_main', 'kode_submain'));
+        $tahun = AnggaranMain::select('tahun')
+        ->whereNotNull('tahun')
+        ->distinct()
+        ->orderBy('tahun', 'DESC')
+        ->get();
+
+        return view('anggaran_submain_detail.index', compact('tahun'));
     }
 
     /**
@@ -34,15 +41,16 @@ class AnggaranSubMainDetailController extends Controller
      *
      * @return void
      */
-    public function indexJson($kode_submain)
+    public function indexJson()
     {
-        $anggaran_list = AnggaranDetail::where('kode_submain', $kode_submain)
-        ->orderBy('tahun', 'desc')
-        ->get();
+        $anggaran_list = AnggaranDetail::orderBy('tahun', 'desc');
 
         return datatables()->of($anggaran_list)
             ->addColumn('nilai', function ($row) {
                 return currency_idr($row->nilai);
+            })
+            ->addColumn('detail_anggaran', function ($row) {
+                return $row->kode.' - '.$row->nama;
             })
             ->addColumn('action', function ($row) {
                 $radio = '<label class="kt-radio kt-radio--bold kt-radio--brand"><input type="radio" name="radio1" value="'.$row->kode.'"><span></span></label>';

@@ -61,24 +61,13 @@
 							<div class="input-group">
 								<select class="form-control kt-select2" name="" id="">
 									<option value="">- Pilih Tahun -</option>
-									<option value="">2018</option>
-									<option value="">2018</option>
-									<option value="">2018</option>
-									<option value="">2018</option>
-									<option value="">2018</option>
-									<option value="">2018</option>
-									<option value="">2018</option>
-									<option value="">2018</option>
-									<option value="">2018</option>
-									<option value="">2018</option>
-									<option value="">2018</option>
-									<option value="">2018</option>
-									<option value="">2018</option>
-									<option value="">2018</option>
-									<option value="">2018</option>
-									<option value="">2018</option>
-									<option value="">2018</option>
-									<option value="">2018</option>
+									@foreach ($tahun as $key => $row)
+										<option value="{{ $row->tahun }}"
+											@if($key == 0)
+												selected
+											@endif
+										>{{ $row->tahun }}</option>
+									@endforeach
 								</select>
 								<div class="input-group-append">
 									<button class="btn btn-danger" type="submit">
@@ -93,7 +82,34 @@
 		</div>
 	</div>
 	<div class="kt-portlet__body">
-
+		<div class="col-12">
+			<form class="kt-form" id="search-form" method="POST">
+				<div class="form-group row">
+					<label for="" class="col-form-label">Kode Anggaran</label>
+					<div class="col-2">
+						<input class="form-control" type="text" name="kode_anggaran" id="kode_anggaran">
+					</div>
+	
+					<label for="" class="col-form-label">Tahun</label>
+					<div class="col-2">
+						<select class="form-control kt-select2" name="tahun" id="tahun">
+							<option value="">- Pilih Tahun -</option>
+							@foreach ($tahun as $key => $row)
+								<option value="{{ $row->tahun }}"
+									@if($key == 0)
+										selected
+									@endif
+								>{{ $row->tahun }}</option>
+							@endforeach
+						</select>
+					</div>
+	
+					<div class="col-2">
+						<button type="submit" class="btn btn-brand"><i class="fa fa-search" aria-hidden="true"></i> Cari</button>
+					</div>
+				</div>
+			</form>
+		</div>
 		<!--begin: Datatable -->
 		<table class="table table-striped table-bordered table-hover table-checkable" id="kt_table" width="100%">
 			<thead class="thead-light">
@@ -128,7 +144,13 @@
 			scrollX   : true,
 			processing: true,
 			serverSide: true,
-			ajax      : "{{ route('anggaran.index.json') }}",
+			ajax      : {
+				url: "{{ route('anggaran.index.json') }}",
+				data: function (d) {
+					d.kode_anggaran = $('input[name=kode_anggaran]').val();
+					d.tahun = $('select[name=tahun]').val();
+				}
+			},
 			columns: [
 				{data: 'action', name: 'aksi', orderable: false, searchable: false, class:'radio-button'},
 				{data: 'kode_main', name: 'kode_main', class:'no-wrap'},
@@ -140,7 +162,10 @@
 			]
 		});
 
-		
+		$('#search-form').on('submit', function(e) {
+			t.draw();
+			e.preventDefault();
+		});
 
 		$('#editRow').click(function(e) {
 			e.preventDefault();

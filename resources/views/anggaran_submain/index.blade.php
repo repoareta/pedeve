@@ -36,7 +36,7 @@
 			</h3>
 
 			<div class="kt-portlet__head-actions" style="font-size: 2rem">
-				<a href="{{ route('anggaran.submain.create', ['kode_main' => $kode_main]) }}">
+				<a href="{{ route('anggaran.submain.create') }}">
 					<span class="kt-font-success" data-toggle="kt-tooltip" data-placement="top" title="Tambah Data">
 						<i class="fas fa-plus-circle"></i>
 					</span>
@@ -64,17 +64,45 @@
 		</div>
 	</div>
 	<div class="kt-portlet__body">
-
+		<div class="col-12">
+			<form class="kt-form" id="search-form" method="POST">
+				<div class="form-group row">
+					<label for="" class="col-form-label">Kode Sub Anggaran</label>
+					<div class="col-2">
+						<input class="form-control" type="text" name="kode" id="kode">
+					</div>
+	
+					<label for="" class="col-form-label">Tahun</label>
+					<div class="col-2">
+						<select class="form-control kt-select2" name="tahun" id="tahun">
+							<option value="">- Pilih Tahun -</option>
+							@foreach ($tahun as $key => $row)
+								<option value="{{ $row->tahun }}"
+									@if($key == 0)
+										selected
+									@endif
+								>{{ $row->tahun }}</option>
+							@endforeach
+						</select>
+					</div>
+	
+					<div class="col-2">
+						<button type="submit" class="btn btn-brand"><i class="fa fa-search" aria-hidden="true"></i> Cari</button>
+					</div>
+				</div>
+			</form>
+		</div>
 		<!--begin: Datatable -->
 		<table class="table table-striped table-bordered table-hover table-checkable" id="kt_table" width="100%">
 			<thead class="thead-light">
 				<tr>
 					<th></th>
-					<th>Kode Submain</th>
-					<th>Nama</th>
+					<th>Main</th>
+					<th>Sub Anggaran</th>
 					<th>Tahun</th>
 					<th>Nilai</th>
 					<th>Realisasi</th>
+					<th>Sisa</th>
 				</tr>
 			</thead>
 			<tbody>
@@ -90,22 +118,36 @@
 @section('scripts')
 	<script type="text/javascript">
 	$(document).ready(function () {
+		$('.kt-select2').select2().on('change', function() {
+			$(this).valid();
+		});
+
 		var t = $('#kt_table').DataTable({
 			scrollX   : true,
 			processing: true,
 			serverSide: true,
-			ajax      : "{{ route('anggaran.submain.index.json', ['kode_main' => $kode_main]) }}",
+			ajax      : {
+				url: "{{ route('anggaran.submain.index.json') }}",
+				data: function (d) {
+					d.kode = $('input[name=kode]').val();
+					d.tahun = $('select[name=tahun]').val();
+				}
+			},
 			columns: [
 				{data: 'action', name: 'action', orderable: false, searchable: false, class:'radio-button'},
-				{data: 'kode_submain', name: 'kode_submain', class:'no-wrap'},
-				{data: 'nama_submain', name: 'nama_submain'},
+				{data: 'main', name: 'main', class:'no-wrap'},
+				{data: 'sub_anggaran', name: 'sub_anggaran', class:'no-wrap'},
 				{data: 'tahun', name: 'tahun'},
 				{data: 'nilai', name: 'nilai'},
-				{data: 'nilai_real', name: 'nilai_real'}
+				{data: 'nilai_real', name: 'nilai_real'},
+				{data: 'sisa', name: 'sisa'},
 			]
 		});
 
-		
+		$('#search-form').on('submit', function(e) {
+			t.draw();
+			e.preventDefault();
+		});
 
 		$('#editRow').click(function(e) {
 			e.preventDefault();
@@ -115,7 +157,7 @@
 					var url = '{{ route("anggaran.submain.edit", [":kode_main", ":kode_submain"]) }}';
 					// go to page edit
 					window.location.href = url
-					.replace(':kode_main', "{{ $kode_main }}")
+					.replace(':kode_main', "{{ 123 }}")
 					.replace(':kode_submain', id);
 				});
 			} else {
