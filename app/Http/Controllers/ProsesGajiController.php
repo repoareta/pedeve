@@ -274,6 +274,22 @@ class ProsesGajiController extends Controller
                                         'nilai' => $fassisapt,        
                                         'userid' => $request->userid,        
                                         ]); 
+                                        
+                                $data_hitung_koreksi = DB::select("select tahun,bulan,nopek,aard,jmlcc,ccl,nilai,userid from pay_koreksigaji where nopek='$datapt->nopeg' And bulan = '$data_bulan' AND tahun='$data_tahun'");
+                                foreach($data_hitung_koreksi as $data_hitung_kor)
+                                {
+                                    PayMasterUpah::insert([
+                                            'tahun' => $data_hitung_kor->tahun,
+                                            'bulan' => $data_hitung_kor->bulan,
+                                            'nopek' => $data_hitung_kor->nopek,
+                                            'aard' => $data_hitung_kor->aard,        
+                                            'jmlcc' => $data_hitung_kor->jmlcc,        
+                                            'ccl' =>  $data_hitung_kor->ccl,        
+                                            'nilai' => $data_hitung_kor->nilai*-1,        
+                                            'userid' => $request->userid,        
+                                            ]); 
+                                }
+                                        
 
                                 //7.CARI NILAI PERSENTASE DARI TABEL PAY_TABLE_JAMSOSTEK
                                 PayGapokBulanan::insert([
@@ -802,6 +818,22 @@ class ProsesGajiController extends Controller
                                     'nilai' => $fassisakt,        
                                     'userid' => $request->userid,        
                                     ]); 
+
+                            $data_hitung_koreksi = DB::select("select tahun,bulan,nopek,aard,jmlcc,ccl,nilai,userid from pay_koreksigaji where nopek='$datakt->nopeg' and bulan='$data_bulan' and tahun='$data_tahun'");
+                            foreach($data_hitung_koreksi as $data_hitung_kor)
+                            {
+                                PayMasterUpah::insert([
+                                        'tahun' => $data_hitung_kor->tahun,
+                                        'bulan' => $data_hitung_kor->bulan,
+                                        'nopek' => $data_hitung_kor->nopek,
+                                        'aard' => $data_hitung_kor->aard,        
+                                        'jmlcc' => $data_hitung_kor->jmlcc,        
+                                        'ccl' =>  $data_hitung_kor->ccl,        
+                                        'nilai' => $data_hitung_kor->nilai*-1,        
+                                        'userid' => $request->userid,        
+                                        ]); 
+                            }
+                            
                             // 9. POTONG KOPERASI
                             $data_potongankt = DB::select("select * from pay_potongan where bulan='$data_bulan' and tahun='$data_tahun' and nopek='$datakt->nopeg' and aard='28'");
                             if(!empty($data_potongankt)){
@@ -1173,6 +1205,21 @@ class ProsesGajiController extends Controller
                                     'nilai' => $fassisapb,        
                                     'userid' => $request->userid,        
                                     ]); 
+
+                            $data_hitung_koreksi = DB::select("select tahun,bulan,nopek,aard,jmlcc,ccl,nilai,userid from pay_koreksigaji where nopek='$datapb->nopeg' and bulan='$data_bulan' and tahun='$data_tahun'");
+                            foreach($data_hitung_koreksi as $data_hitung_kor)
+                            {
+                                PayMasterUpah::insert([
+                                        'tahun' => $data_hitung_kor->tahun,
+                                        'bulan' => $data_hitung_kor->bulan,
+                                        'nopek' => $data_hitung_kor->nopek,
+                                        'aard' => $data_hitung_kor->aard,        
+                                        'jmlcc' => $data_hitung_kor->jmlcc,        
+                                        'ccl' =>  $data_hitung_kor->ccl,        
+                                        'nilai' => $data_hitung_kor->nilai*-1,        
+                                        'userid' => $request->userid,        
+                                        ]); 
+                            }
 
                             // 8.CARI NILAI KOREKSI JAMSOSTEK PEKERJA 29
                             $data_koreksijamsostekpb = DB::select("select sum(nilai) as nilai from pay_koreksi where bulan='$data_bulan' and tahun='$data_tahun' and nopek='$datapb->nopeg' and aard='29'");
@@ -1752,6 +1799,21 @@ class ProsesGajiController extends Controller
                                                 'upah' => $upahallinps,
                                             ]);
 
+                                    $data_hitung_koreksi = DB::select("select tahun,bulan,nopek,aard,jmlcc,ccl,nilai,userid from pay_koreksigaji where bulan='$data_bulan' and tahun='$data_tahun' and nopek='$dataps->nopeg'");
+                                    foreach($data_hitung_koreksi as $data_hitung_kor)
+                                    {
+                                        PayMasterUpah::insert([
+                                                'tahun' => $data_hitung_kor->tahun,
+                                                'bulan' => $data_hitung_kor->bulan,
+                                                'nopek' => $data_hitung_kor->nopek,
+                                                'aard' => $data_hitung_kor->aard,        
+                                                'jmlcc' => $data_hitung_kor->jmlcc,        
+                                                'ccl' =>  $data_hitung_kor->ccl,        
+                                                'nilai' => $data_hitung_kor->nilai*-1,        
+                                                'userid' => $request->userid,        
+                                                ]); 
+                                    }
+
                                     // 2.CARI NILAI SISA BULAN LALU AARD 07
                                     $data_sisanilaips = DB::select("select nopek,aard,jmlcc,ccl,round(nilai) as nilai from pay_koreksi where bulan='$data_bulans' and tahun='$data_tahun' and nopek='$dataps->nopeg' and aard='07'");
                                     if(!empty($data_sisanilaips)){
@@ -1899,6 +1961,8 @@ class ProsesGajiController extends Controller
                                                 'nilai' => $potpajakps,        
                                                 'userid' => $request->userid,        
                                                 ]);
+
+                                    
                                 
 
                                     $data_caripajak1ps = DB::select("select round(nilai,-2) as pajaknya from pay_master_upah where tahun='$data_tahun' and bulan='$data_bulan' and nopek='$dataps->nopeg' and aard='27'");
@@ -2005,6 +2069,22 @@ class ProsesGajiController extends Controller
                                         ]); 
 
                         
+
+                            $data_hitung_koreksi = DB::select("select tahun,bulan,nopek,aard,jmlcc,ccl,nilai,userid from pay_koreksigaji where bulan='$data_bulan' and tahun='$data_tahun' and nopek='$datakm->nopeg'");
+                            foreach($data_hitung_koreksi as $data_hitung_kor)
+                            {
+                                PayMasterUpah::insert([
+                                        'tahun' => $data_hitung_kor->tahun,
+                                        'bulan' => $data_hitung_kor->bulan,
+                                        'nopek' => $data_hitung_kor->nopek,
+                                        'aard' => $data_hitung_kor->aard,        
+                                        'jmlcc' => $data_hitung_kor->jmlcc,        
+                                        'ccl' =>  $data_hitung_kor->ccl,        
+                                        'nilai' => $data_hitung_kor->nilai*-1,        
+                                        'userid' => $request->userid,        
+                                        ]); 
+                            }
+                            
                             $bulan2km = $data_bulan + 1;
                             if($bulan2km >12){
                                 $data_bulan2km = 1;
@@ -2161,6 +2241,22 @@ class ProsesGajiController extends Controller
                                         'nilai' => $tunjjabatanpj,        
                                         'userid' => $request->userid,        
                                         ]);
+
+                                $data_hitung_koreksi = DB::select("select tahun,bulan,nopek,aard,jmlcc,ccl,nilai,userid from pay_koreksigaji where nopek='$datapj->nopeg' and bulan='$data_bulan' and tahun='$data_tahun'");
+                                foreach($data_hitung_koreksi as $data_hitung_kor)
+                                {
+                                    PayMasterUpah::insert([
+                                            'tahun' => $data_hitung_kor->tahun,
+                                            'bulan' => $data_hitung_kor->bulan,
+                                            'nopek' => $data_hitung_kor->nopek,
+                                            'aard' => $data_hitung_kor->aard,        
+                                            'jmlcc' => $data_hitung_kor->jmlcc,        
+                                            'ccl' =>  $data_hitung_kor->ccl,        
+                                            'nilai' => $data_hitung_kor->nilai*-1,        
+                                            'userid' => $request->userid,        
+                                            ]); 
+                                }
+                                        
 
                                 // 3.CARI NILAI LEMBUR AARD 05
                                 $data_carinilailemburpj = DB::select("select sum(makanpg+makansg+makanml+transport+lembur) as totlembur from pay_lembur where nopek='$datapj->nopeg' and bulan='$data_bulan' and tahun='$data_tahun'");
@@ -2388,7 +2484,8 @@ class ProsesGajiController extends Controller
                                                 'ccl' => '0',        
                                                 'nilai' => $pajakbulanpj,        
                                                 'userid' => $request->userid,        
-                                                ]);                         
+                                                ]);     
+                                                        
                             }                     
                     
                     
@@ -2597,6 +2694,21 @@ class ProsesGajiController extends Controller
                                         'nilai' => $fassisapt,        
                                         'userid' => $request->userid,        
                                         ]); 
+
+                                $data_hitung_koreksi = DB::select("select tahun,bulan,nopek,aard,jmlcc,ccl,nilai,userid from pay_koreksigaji where nopek='$datapt->nopeg' And bulan = '$data_bulan' AND tahun='$data_tahun'");
+                                foreach($data_hitung_koreksi as $data_hitung_kor)
+                                {
+                                    PayMasterUpah::insert([
+                                            'tahun' => $data_hitung_kor->tahun,
+                                            'bulan' => $data_hitung_kor->bulan,
+                                            'nopek' => $data_hitung_kor->nopek,
+                                            'aard' => $data_hitung_kor->aard,        
+                                            'jmlcc' => $data_hitung_kor->jmlcc,        
+                                            'ccl' =>  $data_hitung_kor->ccl,        
+                                            'nilai' => $data_hitung_kor->nilai*-1,        
+                                            'userid' => $request->userid,        
+                                            ]); 
+                                }
 
                                 //7.CARI NILAI PERSENTASE DARI TABEL PAY_TABLE_JAMSOSTEK
                                 PayGapokBulanan::insert([
@@ -3129,7 +3241,24 @@ class ProsesGajiController extends Controller
                                     'ccl' => '0',        
                                     'nilai' => $fassisakt,        
                                     'userid' => $request->userid,        
-                                    ]); 
+                                    ]);
+                                    
+                            $data_hitung_koreksi = DB::select("select tahun,bulan,nopek,aard,jmlcc,ccl,nilai,userid from pay_koreksigaji where nopek='$datakt->nopeg' and bulan='$data_bulan' and tahun='$data_tahun'");
+                            foreach($data_hitung_koreksi as $data_hitung_kor)
+                            {
+                                PayMasterUpah::insert([
+                                        'tahun' => $data_hitung_kor->tahun,
+                                        'bulan' => $data_hitung_kor->bulan,
+                                        'nopek' => $data_hitung_kor->nopek,
+                                        'aard' => $data_hitung_kor->aard,        
+                                        'jmlcc' => $data_hitung_kor->jmlcc,        
+                                        'ccl' =>  $data_hitung_kor->ccl,        
+                                        'nilai' => $data_hitung_kor->nilai*-1,        
+                                        'userid' => $request->userid,        
+                                        ]); 
+                            }
+
+
                             // 9. POTONG KOPERASI
                             $data_potongankt = DB::select("select * from pay_potongan where bulan='$data_bulan' and tahun='$data_tahun' and nopek='$datakt->nopeg' and aard='28'");
                             if(!empty($data_potongankt)){
@@ -3504,6 +3633,21 @@ class ProsesGajiController extends Controller
                                     'nilai' => $fassisapb,        
                                     'userid' => $request->userid,        
                                     ]); 
+
+                            $data_hitung_koreksi = DB::select("select tahun,bulan,nopek,aard,jmlcc,ccl,nilai,userid from pay_koreksigaji where nopek='$datapb->nopeg' and bulan='$data_bulan' and tahun='$data_tahun'");
+                            foreach($data_hitung_koreksi as $data_hitung_kor)
+                            {
+                                PayMasterUpah::insert([
+                                        'tahun' => $data_hitung_kor->tahun,
+                                        'bulan' => $data_hitung_kor->bulan,
+                                        'nopek' => $data_hitung_kor->nopek,
+                                        'aard' => $data_hitung_kor->aard,        
+                                        'jmlcc' => $data_hitung_kor->jmlcc,        
+                                        'ccl' =>  $data_hitung_kor->ccl,        
+                                        'nilai' => $data_hitung_kor->nilai*-1,        
+                                        'userid' => $request->userid,        
+                                        ]); 
+                            }
 
                             // 8.CARI NILAI KOREKSI JAMSOSTEK PEKERJA 29
                             $data_koreksijamsostekpb = DB::select("select sum(nilai) as nilai from pay_koreksi where bulan='$data_bulan' and tahun='$data_tahun' and nopek='$datapb->nopeg' and aard='29'");
@@ -4155,6 +4299,21 @@ class ProsesGajiController extends Controller
                                     'userid' => $request->userid,        
                                     ]); 
 
+                            $data_hitung_koreksi = DB::select("select tahun,bulan,nopek,aard,jmlcc,ccl,nilai,userid from pay_koreksigaji where nopek='$datapj->nopeg' and bulan='$data_bulan' and tahun='$data_tahun'");
+                            foreach($data_hitung_koreksi as $data_hitung_kor)
+                            {
+                                PayMasterUpah::insert([
+                                        'tahun' => $data_hitung_kor->tahun,
+                                        'bulan' => $data_hitung_kor->bulan,
+                                        'nopek' => $data_hitung_kor->nopek,
+                                        'aard' => $data_hitung_kor->aard,        
+                                        'jmlcc' => $data_hitung_kor->jmlcc,        
+                                        'ccl' =>  $data_hitung_kor->ccl,        
+                                        'nilai' => $data_hitung_kor->nilai*-1,        
+                                        'userid' => $request->userid,        
+                                        ]); 
+                            }
+
                             // 5.CARI NILAI KOREKSI LAIN AARD 08
                             $data_carinilaikoreksipj = DB::select("select sum(nilai) as nilai from pay_koreksi where bulan='$data_bulan' and tahun='$data_tahun' and nopek='$datapj->nopeg' and aard='08'");
                                 if(!empty($data_carinilaikoreksipj)){
@@ -4407,6 +4566,21 @@ class ProsesGajiController extends Controller
                                         'userid' => $request->userid,        
                                         ]); 
 
+                                $data_hitung_koreksi = DB::select("select tahun,bulan,nopek,aard,jmlcc,ccl,nilai,userid from pay_koreksigaji where bulan='$data_bulan' and tahun='$data_tahun' and nopek='$dataps->nopeg'");
+                                foreach($data_hitung_koreksi as $data_hitung_kor)
+                                {
+                                    PayMasterUpah::insert([
+                                            'tahun' => $data_hitung_kor->tahun,
+                                            'bulan' => $data_hitung_kor->bulan,
+                                            'nopek' => $data_hitung_kor->nopek,
+                                            'aard' => $data_hitung_kor->aard,        
+                                            'jmlcc' => $data_hitung_kor->jmlcc,        
+                                            'ccl' =>  $data_hitung_kor->ccl,        
+                                            'nilai' => $data_hitung_kor->nilai*-1,        
+                                            'userid' => $request->userid,        
+                                            ]); 
+                                }
+
                                 // 3.CARI NILAI KOREKSI LAIN AARD 08
                                 $data_carinilaikoreksips = DB::select("select sum(nilai) as nilai from pay_koreksi where bulan='$data_bulan' and tahun='$data_tahun' and nopek='$dataps->nopeg' and aard='08'");
                                 if(!empty($data_carinilaikoreksips)){
@@ -4638,6 +4812,20 @@ class ProsesGajiController extends Controller
                                         'userid' => $request->userid,        
                                         ]); 
 
+                            $data_hitung_koreksi = DB::select("select tahun,bulan,nopek,aard,jmlcc,ccl,nilai,userid from pay_koreksigaji where bulan='$data_bulan' and tahun='$data_tahun' and nopek='$datakm->nopeg'");
+                            foreach($data_hitung_koreksi as $data_hitung_kor)
+                            {
+                                PayMasterUpah::insert([
+                                        'tahun' => $data_hitung_kor->tahun,
+                                        'bulan' => $data_hitung_kor->bulan,
+                                        'nopek' => $data_hitung_kor->nopek,
+                                        'aard' => $data_hitung_kor->aard,        
+                                        'jmlcc' => $data_hitung_kor->jmlcc,        
+                                        'ccl' =>  $data_hitung_kor->ccl,        
+                                        'nilai' => $data_hitung_kor->nilai*-1,        
+                                        'userid' => $request->userid,        
+                                        ]); 
+                            }
                         
                             $bulan2km = $data_bulan + 1;
                             if($bulan2km >12){
