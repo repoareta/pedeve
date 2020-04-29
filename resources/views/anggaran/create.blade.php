@@ -6,7 +6,7 @@
 	<div class="kt-container  kt-container--fluid ">
 		<div class="kt-subheader__main">
 			<h3 class="kt-subheader__title">
-				Panjar Dinas </h3>
+				Anggaran </h3>
 			<span class="kt-subheader__separator kt-hidden"></span>
 			<div class="kt-subheader__breadcrumbs">
 				<a href="#" class="kt-subheader__breadcrumbs-home"><i class="flaticon2-shelter"></i></a>
@@ -33,8 +33,8 @@
 					<i class="kt-font-brand flaticon2-plus-1"></i>
 				</span>
 				<h3 class="kt-portlet__head-title">
-					Tambah Anggaran
-				</h3>			
+					Tambah Anggaran Master
+				</h3>
 			</div>
 			<div class="kt-portlet__head-toolbar">
 				<div class="kt-portlet__head-wrapper">
@@ -44,29 +44,30 @@
 			<div class="kt-portlet__body">
 				<form class="kt-form kt-form--label-right" id="formAnggaran" action="{{ route('anggaran.store') }}" method="POST">
 					@csrf
-					<div class="form-group row">
-						<label for="kode" class="col-2 col-form-label">Kode Anggaran</label>
-						<div class="col-10">
-							<input class="form-control" type="text" name="kode" id="kode">
-						</div>
-					</div>
 
 					<div class="form-group row">
-						<label for="nama" class="col-2 col-form-label">Nama Anggaran</label>
-						<div class="col-10">
-							<input class="form-control" type="text" name="nama" id="nama">
-						</div>
-					</div>
-
-					<div class="form-group row">
-						<label for="tahun" class="col-2 col-form-label">Tahun Anggaran</label>
+						<label for="tahun" class="col-2 col-form-label">Tahun</label>
 						<div class="col-10">
 							<input class="form-control" type="text" name="tahun" id="tahun" value="{{ date('Y') }}">
 						</div>
 					</div>
 
 					<div class="form-group row">
-						<label for="nilai" class="col-2 col-form-label">Nilai Anggaran</label>
+						<label for="kode" class="col-2 col-form-label">Kode Master</label>
+						<div class="col-10">
+							<input class="form-control" type="text" name="kode" id="kode">
+						</div>
+					</div>
+
+					<div class="form-group row">
+						<label for="nama" class="col-2 col-form-label">Nama Master</label>
+						<div class="col-10">
+							<input class="form-control" type="text" name="nama" id="nama">
+						</div>
+					</div>
+
+					<div class="form-group row">
+						<label for="nilai" class="col-2 col-form-label">Nilai</label>
 						<div class="col-10">
 							<input class="form-control" type="text" name="nilai" id="nilai">
 						</div>

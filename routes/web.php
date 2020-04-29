@@ -151,7 +151,6 @@ Route::group(['middleware'=> ['auth','checkRole:1']], function () {
         });
         //END PERMINTAAN BAYAR
 
-        // ANGGARAN SUBMAIN START
         Route::name('anggaran.')->group(function () {
             // Anggaran
             Route::get('anggaran', 'AnggaranController@index')->name('index');
@@ -162,25 +161,29 @@ Route::group(['middleware'=> ['auth','checkRole:1']], function () {
             Route::post('anggaran/update/{kode_main}', 'AnggaranController@update')->name('update');
             Route::delete('anggaran/delete', 'AnggaranController@delete')->name('delete');
         
-            Route::get('anggaran/submain/{kode_main}', 'AnggaranSubMainController@index')->name('submain.index');
-            Route::get('anggaran/submain/index_json/{kode_main}', 'AnggaranSubMainController@indexJson')->name('submain.index.json');
-            Route::get('anggaran/submain/create/{kode_main}', 'AnggaranSubMainController@create')->name('submain.create');
-            Route::post('anggaran/submain/store/{kode_main}', 'AnggaranSubMainController@store')->name('submain.store');
-            Route::get('anggaran/submain/edit/{kode_main}/{kode_submain}', 'AnggaranSubMainController@edit')->name('submain.edit');
-            Route::post('anggaran/submain/update/{kode_main}/{kode_submain}', 'AnggaranSubMainController@update')->name('submain.update');
-            Route::delete('anggaran/submain/delete', 'AnggaranSubMainController@delete')->name('submain.delete');
+            // ANGGARAN SUBMAIN START
+            Route::name('submain.')->group(function () {
+                Route::get('anggaran/submain', 'AnggaranSubMainController@index')->name('index');
+                Route::get('anggaran/submain/index_json', 'AnggaranSubMainController@indexJson')->name('index.json');
+                Route::get('anggaran/submain/create', 'AnggaranSubMainController@create')->name('create');
+                Route::post('anggaran/submain/store', 'AnggaranSubMainController@store')->name('store');
+                Route::get('anggaran/submain/edit/{kode_main}/{kode_submain}', 'AnggaranSubMainController@edit')->name('edit');
+                Route::post('anggaran/submain/update/{kode_main}/{kode_submain}', 'AnggaranSubMainController@update')->name('update');
+                Route::delete('anggaran/submain/delete', 'AnggaranSubMainController@delete')->name('delete');
+                // ANGGARAN SUBMAIN END
 
-            // ANGGARAN SUBMAIN END
-
-            // ANGGARAN SUBMAIN DETAIL START
-            Route::get('anggaran/submain/detail/{kode_main}/{kode_submain}', 'AnggaranSubMainDetailController@index')->name('submain.detail.index');
-            Route::get('anggaran/submain/detail_json/{kode_submain}', 'AnggaranSubMainDetailController@indexJson')->name('submain.detail.index.json');
-            Route::get('anggaran/submain/detail/create/{kode_main}/{kode_submain}', 'AnggaranSubMainDetailController@create')->name('submain.detail.create');
-            Route::post('anggaran/submain/detail/store/{kode_main}/{kode_submain}', 'AnggaranSubMainDetailController@store')->name('submain.detail.store');
-            Route::get('anggaran/submain/detail/edit/{kode_main}/{kode_submain}/{kode}', 'AnggaranSubMainDetailController@edit')->name('submain.detail.edit');
-            Route::post('anggaran/submain/detail/update/{kode_main}/{kode_submain}/{kode}', 'AnggaranSubMainDetailController@update')->name('submain.detail.update');
-            Route::delete('anggaran/submain/detail/delete', 'AnggaranSubMainDetailController@delete')->name('submain.detail.delete');
-            // ANGGARAN SUBMAIN DETAIL END
+                // ANGGARAN SUBMAIN DETAIL START
+                Route::name('detail.')->group(function () {
+                    Route::get('anggaran/submain/detail', 'AnggaranSubMainDetailController@index')->name('index');
+                    Route::get('anggaran/submain/detail/index_json', 'AnggaranSubMainDetailController@indexJson')->name('index.json');
+                    Route::get('anggaran/submain/detail/create', 'AnggaranSubMainDetailController@create')->name('create');
+                    Route::post('anggaran/submain/detail/store', 'AnggaranSubMainDetailController@store')->name('store');
+                    Route::get('anggaran/submain/detail/edit/{kode}', 'AnggaranSubMainDetailController@edit')->name('edit');
+                    Route::post('anggaran/submain/detail/update/{kode}', 'AnggaranSubMainDetailController@update')->name('update');
+                    Route::delete('anggaran/submain/detail/delete', 'AnggaranSubMainDetailController@delete')->name('delete');
+                });
+                // ANGGARAN SUBMAIN DETAIL END
+            });
         });
         
         

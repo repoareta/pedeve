@@ -11,6 +11,11 @@ class AnggaranSubMain extends Model
     public $timestamps = false;
     public $incrementing = false;
 
+    public function anggaran_main()
+    {
+        return $this->belongsTo('App\Models\AnggaranMain', 'kode_main');
+    }
+
     public function anggaran_detail()
     {
         return $this->hasMany('App\Models\AnggaranDetail', 'kode_submain');

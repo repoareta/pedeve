@@ -65,6 +65,26 @@
                     'anggaran.submain.detail.edit',
                 ); // isi nama semua route anggaran
 
+                $anggaran_master = array(
+                    'anggaran.index',
+                    'anggaran.create',
+                    'anggaran.edit',
+                ); // isi nama semua route anggaran
+
+                $anggaran_submain = array(
+                    'anggaran.submain.index',
+                    'anggaran.submain.create',
+                    'anggaran.submain.edit',
+                ); // isi nama semua route anggaran
+
+                $anggaran_submain_detail = array(
+                    'anggaran.submain.detail.index',
+                    'anggaran.submain.detail.create',
+                    'anggaran.submain.detail.edit',
+                ); // isi nama semua route anggaran
+
+                $anggaran_umum = array_merge($anggaran_master, $anggaran_submain, $anggaran_submain_detail);
+
                 $vendor = array(
                     'vendor.index',
                     'vendor.create',
@@ -444,7 +464,7 @@
                             </a>
                         </li>
 
-                        <li class="kt-menu__item  kt-menu__item{{ set_active_submenu($anggaran) }}" aria-haspopup="true">
+                        {{-- <li class="kt-menu__item  kt-menu__item{{ set_active_submenu($anggaran) }}" aria-haspopup="true">
                             <a href="{{ route('anggaran.index') }}" class="kt-menu__link">
                                 <i class="kt-menu__link-bullet kt-menu__link-bullet--dot">
                                     <span></span>
@@ -453,6 +473,44 @@
                                     Anggaran
                                 </span>
                             </a>
+                        </li> --}}
+
+                        <li class="kt-menu__item kt-menu__item--submenu {{ set_active($anggaran_umum) }}" aria-haspopup="true" data-ktmenu-submenu-toggle="hover">
+                            <a href="javascript:;" class="kt-menu__link kt-menu__toggle">
+                                <i class="kt-menu__link-bullet kt-menu__link-bullet--dot">
+                                    <span></span>
+                                </i>
+                                <span class="kt-menu__link-text">Anggaran Umum</span>
+                                <i class="kt-menu__ver-arrow la la-angle-right"></i>
+                            </a>
+                            <div class="kt-menu__submenu "><span class="kt-menu__arrow"></span>
+                                <ul class="kt-menu__subnav">
+                                    <li class="kt-menu__item kt-menu__item{{ set_active_submenu($anggaran_master) }}" aria-haspopup="true">
+                                        <a href="{{ route('anggaran.index') }}" class="kt-menu__link">
+                                            <i class="kt-menu__link-bullet kt-menu__link-bullet--line">
+                                                <span></span>
+                                            </i>
+                                            <span class="kt-menu__link-text">Master Anggaran</span>
+                                        </a>
+                                    </li>
+                                    <li class="kt-menu__item kt-menu__item{{ set_active_submenu($anggaran_submain) }}" aria-haspopup="true">
+                                        <a href="{{route('anggaran.submain.index')}}" class="kt-menu__link">
+                                            <i class="kt-menu__link-bullet kt-menu__link-bullet--line">
+                                                <span></span>
+                                            </i>
+                                            <span class="kt-menu__link-text">Sub Anggaran</span>
+                                        </a>
+                                    </li>
+                                    <li class="kt-menu__item kt-menu__item{{ set_active_submenu($anggaran_submain_detail) }}" aria-haspopup="true">
+                                        <a href="{{route('anggaran.submain.detail.index')}}" class="kt-menu__link">
+                                            <i class="kt-menu__link-bullet kt-menu__link-bullet--line">
+                                                <span></span>
+                                            </i>
+                                            <span class="kt-menu__link-text">Detail Anggaran</span>
+                                        </a>
+                                    </li>
+                                </ul>
+                            </div>
                         </li>
 
                         <li class="kt-menu__item kt-menu__item--submenu {{ set_active($report_umum_menu) }}" aria-haspopup="true" data-ktmenu-submenu-toggle="hover">
