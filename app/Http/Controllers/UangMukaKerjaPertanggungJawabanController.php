@@ -19,6 +19,7 @@ use Session;
 use PDF;
 use DB;
 use Alert;
+use DataTables;
 
 class UangMukaKerjaPertanggungJawabanController extends Controller
 {
@@ -37,13 +38,28 @@ class UangMukaKerjaPertanggungJawabanController extends Controller
      *
      * @return void
      */
-    public function indexJson()
+    public function indexJson(Request $request)
     {
-        $pumk_list = PUmkHeader::orderBy('tgl_pumk', 'desc')
-        ->orderBy('no_pumk', 'desc')
-        ->get();
+        // dd($request->get('no_pumk'));
 
-        return datatables()->of($pumk_list)
+        $pumk_list = PUmkHeader::orderBy('tgl_pumk', 'desc')
+        ->orderBy('no_pumk', 'desc');
+
+        return DataTables::of($pumk_list)
+            ->filter(function ($query) use ($request) {
+                if ($request->has('no_pumk')) {
+                    $query->where('no_pumk', 'like', "%{$request->get('no_pumk')}%");
+                }
+
+                if ($request->has('bulan')) {
+                    $query->where('tgl_pumk', 'like', "%{$request->get('bulan')}%");
+                }
+
+                if ($request->has('tahun')) {
+                    $query->where('tgl_pumk', 'like', "%{$request->get('tahun')}%");
+                }
+            })
+
             ->addColumn('nama', function ($row) {
                 return $row->nopek." - ".$row->nama;
             })

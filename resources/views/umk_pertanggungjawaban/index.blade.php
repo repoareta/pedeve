@@ -58,7 +58,28 @@
 		</div>
 	</div>
 	<div class="kt-portlet__body">
+		<form class="kt-form kt-form--label-right" id="search-form" method="POST">
+			<div class="form-group row">
+				<label for="spd-input" class="col-1 col-form-label">No. PUMK</label>
+				<div class="col-3">
+					<input class="form-control" type="text" name="no_pumk" id="no_pumk">
+				</div>
 
+				<label for="spd-input" class="col-1 col-form-label">Bulan</label>
+				<div class="col-2">
+					<input class="form-control" type="text" name="bulan" id="bulan">
+				</div>
+
+				<label for="spd-input" class="col-1 col-form-label">Tahun</label>
+				<div class="col-2">
+					<input class="form-control" type="text" name="tahun" id="tahun">
+				</div>
+
+				<div class="col-2">
+					<button type="submit" class="btn btn-brand"><i class="fa fa-search" aria-hidden="true"></i> Cari</button>
+				</div>
+			</div>
+		</form>
 		<!--begin: Datatable -->
 		<table class="table table-striped table-bordered table-hover table-checkable" id="kt_table" width="100%">
 			<thead class="thead-light">
@@ -78,7 +99,7 @@
 		</table>
 
 		<!--end: Datatable -->
-	</div>
+	</>
 </div>
 </div>
 @endsection
@@ -90,7 +111,14 @@
 			scrollX   : true,
 			processing: true,
 			serverSide: true,
-			ajax      : "{{ route('uang_muka_kerja.pertanggungjawaban.index.json') }}",
+			ajax      : {
+				url: "{{ route('uang_muka_kerja.pertanggungjawaban.index.json') }}",
+				data: function (d) {
+					d.no_pumk = $('input[name=no_pumk]').val();
+					d.bulan = $('input[name=bulan]').val();
+					d.tahun = $('input[name=tahun]').val();
+				}
+			},
 			columns: [
 				{data: 'action', name: 'aksi', orderable: false, searchable: false, class:'radio-button'},
 				{data: 'no_pumk', name: 'no_pumk'},
@@ -101,6 +129,11 @@
 				{data: 'nilai', name: 'nilai', class:'text-right'},
 				{data: 'approval', name: 'approval', class:'text-center'}
 			]
+		});
+
+		$('#search-form').on('submit', function(e) {
+			t.draw();
+			e.preventDefault();
 		});
 
 		$('#editRow').click(function(e) {
