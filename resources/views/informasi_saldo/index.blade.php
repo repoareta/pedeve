@@ -34,32 +34,17 @@
 			<div class="kt-portlet__head-toolbar">
 				<div class="kt-portlet__head-wrapper">
 					<div class="kt-portlet__head-actions">
-						<a href="{{ route('penerimaan_kas.createmp') }}">
-							<span style="font-size: 2em;" class="kt-font-success" data-toggle="kt-tooltip" data-placement="top" title="Tambah Data">
-								<i class="fas fa-plus-circle"></i>
-							</span>
-						</a>
-		
-						<span style="font-size: 2em;" class="kt-font-warning pointer-link" data-toggle="kt-tooltip" data-placement="top" title="Ubah Data">
-							<i class="fas fa-edit" id="editRow"></i>
-						</span>
-		
-						<span style="font-size: 2em;" class="kt-font-danger pointer-link" id="deleteRow" data-toggle="kt-tooltip" data-placement="top" title="Hapus Data">
-							<i class="fas fa-times-circle"></i>
-						</span>
-
-						<!-- <span style="font-size: 2em;" class="kt-font-info pointer-link" id="exportRow" data-toggle="kt-tooltip" data-placement="top" title="Cetak Data">
-							<i class="fas fa-print"></i>
-						</span> -->
-						<span style="font-size: 2em;" class="kt-font-info pointer-link" data-toggle="kt-tooltip" data-placement="top" title="Refresh Ketampilan Tabel Awal">
-							<i class="fas fa-sync-alt" id="show-data"></i>
-						</span>
 					</div>
 				</div>
 			</div>
 		</div>
 	</div>
 	<div class="kt-portlet__body">
+	<form id="search-form">
+			Tanggal: 	<input style="width:10%;height:35px;border: 1px solid #DCDCDC;border-radius:5px;"  name="tanggal" id="tanggal" type="text"  value="" onkeypress="return hanyaAngka(event)" autocomplete='off'>  
+				<button type="submit" style="font-size: 20px;margin-left:5px;border-radius:10px;border-radius:10px;background-color:white;" class="kt-font-info pointer-link" data-toggle="kt-tooltip" data-placement="top" title="Cari Data"> <i class="fa fa-search"></i></button>  
+				
+		</form>
 		<!--begin: Datatable -->
 		<table class="table table-striped table-bordered table-hover table-checkable" id="kt_table" width="100%">
 			<thead class="thead-light">
@@ -86,15 +71,39 @@ var t = $('#kt_table').DataTable({
 	scrollX   : true,
 	processing: true,
 	serverSide: true,
+	searching: false,
+	lengthChange: false,
 	language: {
 		processing: '<i class="fa fa-spinner fa-spin fa-2x fa-fw"></i> <br> Loading...'
 	},
-	ajax      : "{{ route('informasi_saldo.index.json') }}",
+	ajax      : {
+				url: "{{ route('informasi_saldo.index.json') }}",
+				type : "POST",
+				dataType : "JSON",
+				headers: {
+				'X-CSRF-Token': '{{ csrf_token() }}',
+				},
+				data: function (d) {
+					d.tanggal = $('input[name=tanggal]').val();
+				}
+			},
 	columns: [
 		{data: 'action', name: 'action'},
-		{data: 'nama', name: 'nama'},
-		{data: 'norek', name: 'norek'},
+		{data: 'kodestore', name: 'kodestore'},
+		{data: 'ak', name: 'ak'},
 	]
+});
+$('#search-form').on('submit', function(e) {
+	t.draw();
+	e.preventDefault();
+});
+
+$('#tanggal').datepicker({
+	todayHighlight: true,
+	orientation: "bottom left",
+	autoclose: true,
+	// language : 'id',
+	format   : 'yyyy-mm-dd'
 });
 
 });

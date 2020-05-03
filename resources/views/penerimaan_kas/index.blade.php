@@ -47,20 +47,13 @@
 						<span style="font-size: 2em;" class="kt-font-danger pointer-link" id="deleteRow" data-toggle="kt-tooltip" data-placement="top" title="Hapus Data">
 							<i class="fas fa-times-circle"></i>
 						</span>
-
-						<!-- <span style="font-size: 2em;" class="kt-font-info pointer-link" id="exportRow" data-toggle="kt-tooltip" data-placement="top" title="Cetak Data">
-							<i class="fas fa-print"></i>
-						</span> -->
-						<span style="font-size: 2em;" class="kt-font-info pointer-link" data-toggle="kt-tooltip" data-placement="top" title="Refresh Ketampilan Tabel Awal">
-							<i class="fas fa-sync-alt" id="show-data"></i>
-						</span>
 					</div>
 				</div>
 			</div>
 		</div>
 	</div>
 	<div class="kt-portlet__body">
-			<form action="{{route('penerimaan_kas.search.index')}}" method="post">{{csrf_field()}}
+			<form id="search-form">
 			No. Bukti: 	<input  style="width:14em;height:35px;border: 1px solid #DCDCDC;border-radius:5px;"  name="bukti" type="text" size="18" maxlength="18" value="" autocomplete='off'> 
 
 				Bulan: 	<input  style="width:4em;height:35px;border: 1px solid #DCDCDC;border-radius:5px;"  name="bulan" type="text" size="2" maxlength="2" value="" onkeypress="return hanyaAngka(event)" autocomplete='off'>
@@ -86,37 +79,6 @@
 					<th>STATUS BYR</th>
 				</tr>
 			</thead>
-			@foreach($data_list as $data)
-				<tr>
-					<td>
-					<?php echo '<label class="kt-radio kt-radio--bold kt-radio--brand"><input type="radio" value="'.$data->docno.'" class="btn-radio" name="btn-radio"><span></span></label>'; ?>
-					</td>
-					<td>{{$data->docno}}</td>
-					<td>
-					<?php 
-						$tgl = date_create($data->originaldate);
-						echo date_format($tgl, 'd F Y') ?>
-					</td>
-					<td>{{$data->voucher}}</td>
-					<td>{{$data->kepada}}</td>
-					<td>{{$data->jk}}</td>
-					<td>{{$data->store}}-{{$data->namabank}}</td>
-					<td>{{$data->ci}}</td>
-					<td>{{number_format($data->rate,0,'.',',')}}</td>
-					<td>{{number_format($data->nilai_dok,2,'.',',')}}</td>					
-					<td>
-						<?php if($data->verified == 'Y'){
-							echo '<p align="center"><span style="font-size: 2em;" class="kt-font-success pointer-link" data-toggle="kt-tooltip" data-placement="top" title="Data Sudah Diverifikasi"><i class="fas fa-check-circle" ></i></span></p>';
-						}else{
-							if($data->paid == 'Y'){
-								echo '<p align="center"><a href="'. route('penerimaan_kas.approv',['id' => str_replace('/', '-', $data->docno),'status' => $data->paid]).'"><span style="font-size: 2em;" class="kt-font-warning pointer-link" data-toggle="kt-tooltip" data-placement="top"  title="Batalkan Pembayaran"><i class="fas fa-check-circle" ></i></span></a></p>';
-							}else{
-								echo '<p align="center"><a href="'. route('penerimaan_kas.approv',['id' => str_replace('/', '-', $data->docno),'status' => $data->paid]).'"><span style="font-size: 2em;" class="kt-font-danger pointer-link" data-toggle="kt-tooltip" data-placement="top" title="Klik Untuk Pembayaran"><i class="fas fa-ban" ></i></span></a></p>';
-							}
-						} ?>
-					</td>
-				</tr>
-			@endforeach
 			<tbody>
 			</tbody>
 		</table>
@@ -130,16 +92,47 @@
 @section('scripts')
 <script type="text/javascript">
 $(document).ready(function () {
-var t = $('#kt_table').DataTable({
-	scrollX   : true,
-	processing: true,
-	serverSide: false,
-	searching: false,
-	lengthChange: false,
-	language: {
-	processing: '<i class="fa fa-spinner fa-spin fa-2x fa-fw"></i> <br> Loading...'
-},
-});
+	var t = $('#kt_table').DataTable({
+			scrollX   : true,
+			processing: true,
+			serverSide: true,
+			searching: false,
+			lengthChange: false,
+			language: {
+			processing: '<i class="fa fa-spinner fa-spin fa-2x fa-fw"></i> <br> Loading...'
+			},
+			ajax      : {
+				url: "{{route('penerimaan_kas.search.index')}}",
+				type : "POST",
+				dataType : "JSON",
+				headers: {
+				'X-CSRF-Token': '{{ csrf_token() }}',
+				},
+				data: function (d) {
+					d.bukti = $('input[name=bukti]').val();
+					d.bulan = $('input[name=bulan]').val();
+					d.tahun = $('input[name=tahun]').val();
+				}
+			},
+			columns: [
+				{data: 'radio', name: 'radio'},
+				{data: 'docno', name: 'docno'},
+				{data: 'tanggal', name: 'tanggal'},
+				{data: 'voucher', name: 'voucher'},
+				{data: 'kepada', name: 'kepada'},
+				{data: 'jk', name: 'jk'},
+				{data: 'store', name: 'store'},
+				{data: 'ci', name: 'ci'},
+				{data: 'rate', name: 'rate'},
+				{data: 'nilai_dok', name: 'nilai_dok'},
+				{data: 'action', name: 'action'},
+			]
+			
+	});
+	$('#search-form').on('submit', function(e) {
+		t.draw();
+		e.preventDefault();
+	});
 
 // edit Kas/Bank Otomatis
 $('#editRow').click(function(e) {
@@ -197,15 +190,29 @@ if($('input[type=radio]').is(':checked')) {
 						"nodok": nodok,
 						"_token": "{{ csrf_token() }}",
 					},
-					success: function () {
-						Swal.fire({
-							type  : 'success',
-							title : "No Dokumen: "+nodok,
-							text  : 'Berhasil',
-							timer : 2000
-						}).then(function() {
-							location.reload();
-						});
+					success: function (data) {
+						if(data == 1){
+							Swal.fire({
+								type  : 'success',
+								title : "No Dokumen: "+nodok,
+								text  : 'Berhasil',
+								timer : 2000
+							}).then(function() {
+								location.reload();
+							});
+						}else if(data == 2){
+							Swal.fire({
+								type  : 'info',
+								title : 'Penghapusan gagal,data tidak dalam status Opening.',
+								text  : 'Failed',
+							});
+						}else{
+							Swal.fire({
+								type  : 'info',
+								title : 'Sebelum dihapus,status bayar harus dibatalkan dulu.',
+								text  : 'Failed',
+							});
+						}
 					},
 					error: function () {
 						alert("Terjadi kesalahan, coba lagi nanti");

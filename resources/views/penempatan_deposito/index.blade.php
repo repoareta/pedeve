@@ -54,16 +54,13 @@
 						<span style="font-size: 2em;" class="kt-font-info pointer-link" id="exportRow" data-toggle="kt-tooltip" data-placement="top" title="Cetak Data">
 							<i class="fas fa-print"></i>
 						</span>
-						<span style="font-size: 2em;" class="kt-font-info pointer-link" data-toggle="kt-tooltip" data-placement="top" title="Refresh Ketampilan Tabel Awal">
-							<i class="fas fa-sync-alt" id="show-data"></i>
-						</span>
 					</div>
 				</div>
 			</div>
 		</div>
 	</div>
 	<div class="kt-portlet__body">
-			<form action="{{route('penempatan_deposito.search.index')}}" method="post">{{csrf_field()}}
+			<form id="search-form">
 				Bulan: 	<input  style="width:4em;height:35px;border: 1px solid #DCDCDC;border-radius:5px;"  name="bulan" type="text" size="2" maxlength="2" value="" onkeypress="return hanyaAngka(event)" autocomplete='off'>
 
 				Tahun: 	<input style="width:10%;height:35px;border: 1px solid #DCDCDC;border-radius:5px;"  name="tahun"  type="text" size="4" maxlength="4" value="" onkeypress="return hanyaAngka(event)" autocomplete='off'>  
@@ -91,34 +88,6 @@
 				</tr>
 			</thead>
 			<tbody>
-			@foreach($data_list as $data)
-			<?php	
-			$tanggaltem = date_format(date_create($data->tgltempo),'d/m/Y');
-			$tanggalsekarang = date_format(date_create(date(now())),'d/m/Y');
-			if(($data->selhari <= 2) and ($data->selhari > 0) and ($data->selbulan == 0) and ($data->seltahun == 0)){
-					$warni = "#ff0000";
-				}elseif($tanggaltem <= $tanggalsekarang){
-					$warni = "#666666";
-				}else{ 
-					$warni = "000000";
-				} ?>
-			<tr>
-				<td><?php echo'<label class="kt-radio kt-radio--bold kt-radio--brand"><input type="radio" class="btn-radio" name="btn-radio" nodok="'.$data->docno.'" lineno="'.$data->lineno.'" pjg="'.$data->perpanjangan.'"><span></span></label>' ?></td>
-				<td><font color="{{$warni}}">{{$data->noseri}}</font></td>
-				<td><font color="{{$warni}}">{{$data->namabank}}</font></td>
-				<td><font color="{{$warni}}">{{$data->asal}}</font></td>
-				<td><font color="{{$warni}}">{{number_format($data->nominal,2,',','.')}}</font></td>
-				<td><font color="{{$warni}}"><?php echo date_format(date_create($data->tgldep),'d/m/Y') ?></font></td>
-				<td><font color="{{$warni}}"><?php echo date_format(date_create($data->tgltempo),'d/m/Y') ?></font></td>
-				<td><font color="{{$warni}}">{{$data->haribunga}}</font></td>
-				<td><font color="{{$warni}}">{{number_format($data->bungatahun,2,',','.')}}</font></td>
-				<td><font color="{{$warni}}">{{number_format($data->bungabulan,2,',','.')}}</font></td>
-				<td><font color="{{$warni}}">{{number_format($data->pph20,2,',','.')}}</font></td>
-				<td><font color="{{$warni}}">{{number_format($data->netbulan,2,',','.')}}</font></td>
-				<td><font color="{{$warni}}">{{$data->accharibunga}}</font></td>
-				<td><font color="{{$warni}}">{{number_format($data->accnetbulan,2,',','.')}}</font></td>
-            </tr>
-			@endforeach
 			</tbody>
 		</table>
 
@@ -131,16 +100,49 @@
 @section('scripts')
 	<script type="text/javascript">
 	$(document).ready(function () {
-		$('#kt_table').DataTable({
+		var t = $('#kt_table').DataTable({
 			scrollX   : true,
 			processing: true,
-			serverSide: false,
+			serverSide: true,
 			searching: false,
 			lengthChange: false,
 			language: {
-            	processing: '<i class="fa fa-spinner fa-spin fa-2x fa-fw"></i> <br> Loading...'
+			processing: '<i class="fa fa-spinner fa-spin fa-2x fa-fw"></i> <br> Loading...'
 			},
-		});
+			ajax      : {
+				url: "{{route('penempatan_deposito.search.index')}}",
+				type : "POST",
+				dataType : "JSON",
+				headers: {
+				'X-CSRF-Token': '{{ csrf_token() }}',
+				},
+				data: function (d) {
+					d.bulan = $('input[name=bulan]').val();
+					d.tahun = $('input[name=tahun]').val();
+				}
+			},
+			columns: [
+				{data: 'radio', name: 'radio'},
+				{data: 'noseri', name: 'noseri'},
+				{data: 'namabank', name: 'namabank'},
+				{data: 'asal', name: 'asal'},
+				{data: 'nominal', name: 'nominal'},
+				{data: 'tgldep', name: 'tgldep'},
+				{data: 'tgltempo', name: 'tgltempo'},
+				{data: 'haribunga', name: 'haribunga'},
+				{data: 'bungatahun', name: 'bungatahun'},
+				{data: 'bungabulan', name: 'bungabulan'},
+				{data: 'pph20', name: 'pph20'},
+				{data: 'netbulan', name: 'netbulan'},
+				{data: 'accharibunga', name: 'accharibunga'},
+				{data: 'accnetbulan', name: 'accnetbulan'},
+			]
+			
+	});
+	$('#search-form').on('submit', function(e) {
+		t.draw();
+		e.preventDefault();
+	});
 		
 
 //edit penempatan deposito

@@ -47,19 +47,13 @@
 							<span style="font-size: 2em;" class="kt-font-danger pointer-link" data-toggle="kt-tooltip" data-placement="top" title="Hapus data">
 								<i class="fas fa-times-circle" id="deleteRow"></i>
 							</span>
-							<!-- <span style="font-size: 2em;" class="kt-font-info pointer-link" data-toggle="kt-tooltip" data-placement="top" title="Cetak data">
-								<i class="fas fa-print"></i>
-							</span> -->
-							<span style="font-size: 2em;" class="kt-font-info pointer-link" data-toggle="kt-tooltip" data-placement="top" title="Refresh Ketampilan Tabel Awal">
-								<i class="fas fa-sync-alt" id="show-data"></i>
-							</span>
 					</div>
 				</div>
 			</div>
 		</div>
 	</div>
 	<div class="kt-portlet__body">
-		<form action="{{route('lembur.search.index')}}" method="post">{{csrf_field()}}
+		<form id="search-form">
 				Pegawai	<select style="width:25%;height:30px;box-radius:50%;border-radius:30px;" name="nopek" class="selectpicker" data-live-search="true">
 								<option value="">- Pilih -</option>
 								@foreach($data_pegawai as $data)
@@ -88,29 +82,6 @@
 				</tr>
 			</thead>
 			<tbody>
-			@foreach($data_list as $data)
-				<tr>
-					<td>
-					<?php 
-						$tgl = date_create($data->tanggal);
-						$tanggal = date_format($tgl, 'd-m-Y'); 
-					?>
-						<?php echo '<label class="kt-radio kt-radio--bold kt-radio--brand"><input type="radio" data-tanggal="'.$tanggal.'"  data-nopek="'.$data->nopek.'" class="btn-radio" name="btn-radio-rekap"><span></span></label>'; ?>
-					</td>
-					<td>
-					<?php 
-						$tgl = date_create($data->tanggal);
-					echo date_format($tgl, 'd F Y') ?>
-					</td>
-					<td>{{$data->nopek}}-{{$data->nama_nopek}}</td>
-					<td>Rp. <?php echo number_format($data->makanpg, 2, '.', ',') ?></td>
-					<td>Rp. <?php echo number_format($data->makansg, 2, '.', ',') ?></td>
-					<td>Rp. <?php echo number_format($data->makanml, 2, '.', ',') ?></td>
-					<td>Rp. <?php echo number_format($data->transport, 2, '.', ',') ?></td>
-					<td>Rp. <?php echo number_format($data->lembur, 2, '.', ',') ?></td>
-					<td>Rp. <?php echo number_format($data->total, 2, '.', ',') ?></td>
-				</tr>
-			@endforeach
 			</tbody>
 		</table>
 
@@ -123,15 +94,44 @@
 @section('scripts')
 <script type="text/javascript">
 $(document).ready(function () {
-	$('#kt_table').DataTable({
-		scrollX   : true,
-		processing: true,
-		serverSide: false,
-		searching: false,
-		lengthChange: false,
-		language: {
+	var t = $('#kt_table').DataTable({
+			scrollX   : true,
+			processing: true,
+			serverSide: true,
+			searching: false,
+			lengthChange: false,
+			language: {
 			processing: '<i class="fa fa-spinner fa-spin fa-2x fa-fw"></i> <br> Loading...'
-		},
+			},
+			ajax      : {
+				url: "{{route('lembur.search.index')}}",
+				type : "POST",
+				dataType : "JSON",
+				headers: {
+				'X-CSRF-Token': '{{ csrf_token() }}',
+				},
+				data: function (d) {
+					d.nopek = $('select[name=nopek]').val();
+					d.bulan = $('input[name=bulan]').val();
+					d.tahun = $('input[name=tahun]').val();
+				}
+			},
+			columns: [
+				{data: 'radio', name: 'radio'},
+				{data: 'tanggal', name: 'tanggal'},
+				{data: 'nopek', name: 'nopek'},
+				{data: 'makanpg', name: 'makanpg'},
+				{data: 'makansg', name: 'makansg'},
+				{data: 'makanml', name: 'makanml'},
+				{data: 'transport', name: 'transport'},
+				{data: 'lembur', name: 'lembur'},
+				{data: 'total', name: 'total'},
+			]
+			
+	});
+	$('#search-form').on('submit', function(e) {
+		t.draw();
+		e.preventDefault();
 	});
 
 //refresh data

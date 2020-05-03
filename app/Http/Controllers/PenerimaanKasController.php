@@ -11,6 +11,8 @@ use App\Models\Lokasi;
 use App\Models\JenisBiaya;
 use App\Models\Cashjudex;
 use App\Models\Mtrdeposito;
+use App\Models\Dtldepositotest;
+use App\Models\Saldostore;
 use DB;
 use PDF;
 use Excel;
@@ -25,18 +27,7 @@ class PenerimaanKasController extends Controller
      */
     public function index()
     {
-        $data_tahunbulan = DB::select("select max(thnbln) as bulan_buku from timetrans where status='1' and length(thnbln)='6'");
-        if(!empty($data_tahunbulan)){
-            foreach($data_tahunbulan as $data_bul)
-            {
-                $bulan_buku = $data_bul->bulan_buku;
-            }
-        }else{
-            $bulan_buku = '0';
-        }
-        $tahun = substr($bulan_buku,0,-2);
-        $data_list = DB::select("select a.docno,a.originaldate,a.thnbln,a.jk,a.store,a.ci,a.voucher,a.kepada,a.rate,a.nilai_dok as nilai_dok,a.paid,a.verified,b.namabank from kasdoc a join storejk b on a.store=b.kodestore where a.thnbln='$bulan_buku' and a.kd_kepada is null  order by a.store,a.voucher asc");
-        return view('penerimaan_kas.index',compact('data_list'));
+        return view('penerimaan_kas.index');
     }
 
     public function searchIndex(Request $request)
@@ -52,20 +43,66 @@ class PenerimaanKasController extends Controller
             $tahun = $request->tahun;
             $nodok = $request->bukti;
             if($nodok == null and $tahun == null and $bulan == null){
-                $data_list = DB::select("select a.docno,a.originaldate,a.thnbln,a.jk,a.store,a.ci,a.voucher,a.kepada,a.rate,a.nilai_dok as nilai_dok,a.paid,a.verified,b.namabank from kasdoc a join storejk b on a.store=b.kodestore where a.thnbln='$bulan_buku' and a.kd_kepada is null  order by a.store,a.voucher asc");
+                $data = DB::select("select a.docno,a.originaldate,a.thnbln,a.jk,a.store,a.ci,a.voucher,a.kepada,a.rate,a.nilai_dok as nilai_dok,a.paid,a.verified,b.namabank from kasdoc a join storejk b on a.store=b.kodestore where a.thnbln='$bulan_buku' and a.kd_kepada is null  order by a.store,a.voucher asc");
             }elseif($nodok == null and $tahun <> null and $bulan == null){
-                $data_list = DB::select("select a.docno,a.originaldate,a.thnbln,a.jk,a.store,a.ci,a.voucher,a.kepada,a.rate,a.nilai_dok as nilai_dok,a.paid,a.verified,b.namabank from kasdoc a join storejk b on a.store=b.kodestore where left(a.thnbln, 4)='$tahun' and a.kd_kepada is null  order by a.store,a.voucher asc");
+                $data = DB::select("select a.docno,a.originaldate,a.thnbln,a.jk,a.store,a.ci,a.voucher,a.kepada,a.rate,a.nilai_dok as nilai_dok,a.paid,a.verified,b.namabank from kasdoc a join storejk b on a.store=b.kodestore where left(a.thnbln, 4)='$tahun' and a.kd_kepada is null  order by a.store,a.voucher asc");
             }elseif($nodok <> null and $tahun == null and $bulan == null){
-                $data_list = DB::select("select a.docno,a.originaldate,a.thnbln,a.jk,a.store,a.ci,a.voucher,a.kepada,a.rate,a.nilai_dok as nilai_dok,a.paid,a.verified,b.namabank from kasdoc a join storejk b on a.store=b.kodestore where a.voucher='$nodok' and a.kd_kepada is null  order by a.store,a.voucher asc");
+                $data = DB::select("select a.docno,a.originaldate,a.thnbln,a.jk,a.store,a.ci,a.voucher,a.kepada,a.rate,a.nilai_dok as nilai_dok,a.paid,a.verified,b.namabank from kasdoc a join storejk b on a.store=b.kodestore where a.voucher='$nodok' and a.kd_kepada is null  order by a.store,a.voucher asc");
             }elseif($nodok <> null and $tahun <> null and $bulan == null){
-                $data_list = DB::select("select a.docno,a.originaldate,a.thnbln,a.jk,a.store,a.ci,a.voucher,a.kepada,a.rate,a.nilai_dok as nilai_dok,a.paid,a.verified,b.namabank from kasdoc a join storejk b on a.store=b.kodestore where a.voucher='$nodok' and left(a.thnbln, 4)='$tahun' and a.kd_kepada is null  order by a.store,a.voucher asc");
+                $data = DB::select("select a.docno,a.originaldate,a.thnbln,a.jk,a.store,a.ci,a.voucher,a.kepada,a.rate,a.nilai_dok as nilai_dok,a.paid,a.verified,b.namabank from kasdoc a join storejk b on a.store=b.kodestore where a.voucher='$nodok' and left(a.thnbln, 4)='$tahun' and a.kd_kepada is null  order by a.store,a.voucher asc");
             }elseif($nodok == null and $tahun <> null and $bulan <> null){
-                $data_list = DB::select("select a.docno,a.originaldate,a.thnbln,a.jk,a.store,a.ci,a.voucher,a.kepada,a.rate,a.nilai_dok as nilai_dok,a.paid,a.verified,b.namabank from kasdoc a join storejk b on a.store=b.kodestore where left(thnbln, 4)='$tahun' and right(thnbln,2)='$bulan' and a.kd_kepada is null  order by a.store,a.voucher asc");
+                $data = DB::select("select a.docno,a.originaldate,a.thnbln,a.jk,a.store,a.ci,a.voucher,a.kepada,a.rate,a.nilai_dok as nilai_dok,a.paid,a.verified,b.namabank from kasdoc a join storejk b on a.store=b.kodestore where left(thnbln, 4)='$tahun' and right(thnbln,2)='$bulan' and a.kd_kepada is null  order by a.store,a.voucher asc");
             }elseif($nodok <> null and $tahun <> null and $bulan <> null){
-                $data_list = DB::select("select a.docno,a.originaldate,a.thnbln,a.jk,a.store,a.ci,a.voucher,a.kepada,a.rate,a.nilai_dok as nilai_dok,a.paid,a.verified,b.namabank from kasdoc a join storejk b on a.store=b.kodestore where a.voucher='$nodok' and left(thnbln, 4)='$tahun' and right(thnbln, 2)='$bulan' and a.kd_kepada is null  order by a.store,a.voucher asc");
+                $data = DB::select("select a.docno,a.originaldate,a.thnbln,a.jk,a.store,a.ci,a.voucher,a.kepada,a.rate,a.nilai_dok as nilai_dok,a.paid,a.verified,b.namabank from kasdoc a join storejk b on a.store=b.kodestore where a.voucher='$nodok' and left(thnbln, 4)='$tahun' and right(thnbln, 2)='$bulan' and a.kd_kepada is null  order by a.store,a.voucher asc");
             }	
-        return view('penerimaan_kas.index',compact('data_list'));
-    }
+            return datatables()->of($data)
+            ->addColumn('docno', function ($data) {
+                return $data->docno;
+           })
+           ->addColumn('tanggal', function ($data) {
+               $tgl = date_create($data->originaldate);
+               return date_format($tgl, 'd F Y');
+            })
+            ->addColumn('voucher', function ($data) {
+                return $data->voucher;
+            })
+            ->addColumn('kepada', function ($data) {
+                return $data->kepada;
+            })
+            ->addColumn('jk', function ($data) {
+                return $data->jk;
+            })
+            ->addColumn('store', function ($data) {
+                return $data->store.' -- '.$data->namabank;
+           })
+            ->addColumn('ci', function ($data) {
+                return $data->ci;
+           })
+           ->addColumn('rate', function ($data) {
+               return 'Rp. '.number_format($data->rate,2,'.',',');
+            })
+           ->addColumn('nilai_dok', function ($data) {
+               return 'Rp. '.number_format($data->nilai_dok,2,'.',',');
+            })
+    
+            ->addColumn('radio', function ($data) {
+                $radio = '<label class="kt-radio kt-radio--bold kt-radio--brand"><input type="radio" value="'.$data->docno.'" class="btn-radio" name="btn-radio"><span></span></label>'; 
+                return $radio;
+            })
+            ->addColumn('action', function ($data) {
+                if($data->verified == 'Y'){
+                    $action = '<p align="center"><span style="font-size: 2em;" class="kt-font-success pointer-link" data-toggle="kt-tooltip" data-placement="top" title="Data Sudah Diverifikasi"><i class="fas fa-check-circle" ></i></span></p>';
+                }else{
+                    if($data->paid == 'Y'){
+                        $action = '<p align="center"><a href="'. route('penerimaan_kas.approv',['id' => str_replace('/', '-', $data->docno),'status' => $data->paid]).'"><span style="font-size: 2em;" class="kt-font-warning pointer-link" data-toggle="kt-tooltip" data-placement="top"  title="Batalkan Pembayaran"><i class="fas fa-check-circle" ></i></span></a></p>';
+                    }else{
+                        $action = '<p align="center"><a href="'. route('penerimaan_kas.approv',['id' => str_replace('/', '-', $data->docno),'status' => $data->paid]).'"><span style="font-size: 2em;" class="kt-font-danger pointer-link" data-toggle="kt-tooltip" data-placement="top" title="Klik Untuk Pembayaran"><i class="fas fa-ban" ></i></span></a></p>';
+                    }
+                }               
+                return $action;
+            })
+            ->rawColumns(['action','radio'])
+            ->make(true);    }
 
     /**
      * Show the form for creating a new resource.
@@ -421,10 +458,47 @@ class PenerimaanKasController extends Controller
      */
     public function delete(Request $request)
     {
-        Kasdoc::where('docno', $request->nodok)->delete();
-        Kasline::where('docno', $request->nodok)->delete();
-        Mtrdeposito::where('docno', $request->nodok)->delete();
-        return response()->json();
+        $data_rskas = DB::select("select thnbln from kasdoc a where a.docno='$request->nodok'");
+        foreach($data_rskas as $data_kas)
+        {
+            $data_rsbulan = DB::select("select * from timetrans where thnbln='$data_kas->thnbln' and suplesi='0'");
+            if(!empty($data_rsbulan)){
+                foreach($data_rsbulan as $data_bulan)
+                {
+                    if($data_bulan->status == '1'){
+                        $stbbuku = '1';//gtopening
+                    }elseif($data_bulan->status == '2'){
+                        $stbbuku = '2';//gtstopping
+                    }elseif($data_bulan->status == '3'){
+                        $stbbuku = '3';//gtclosing
+                    }else{
+                        $stbbuku = '4';//gtnone
+                    }
+                }
+            }else{
+                $stbbuku = 'gtnone';
+            }
+            if( $stbbuku > 1){
+                $data = 2;
+                return response()->json($data);
+            }else{
+                $data_rscekbayar = DB::select("select paid from kasdoc where docno='$request->nodok'");
+                foreach($data_rscekbayar as $data_cekbayar)
+                {
+                    if($data_cekbayar->paid == 'Y'){
+                        $data = 3;
+                        return response()->json($data);
+                    }else{
+                        Kasdoc::where('docno', $request->nodok)->delete();
+                        Kasline::where('docno', $request->nodok)->delete();
+                        Mtrdeposito::where('docno', $request->nodok)->delete();
+                        Dtldepositotest::where('docno', $request->nodok)->delete();
+                        $data = 1;
+                        return response()->json($data);
+                    }
+                }
+            }
+        }
     }
 
     public function deleteDetail(Request $request)
@@ -444,29 +518,136 @@ class PenerimaanKasController extends Controller
     public function storeApp(Request $request)
     {      
         $nodok=str_replace('-', '/', $request->nodok);
+        $i_bayar = 1; //i_Bayar = 1  : Membayar Kas/Bank
+        $bi_bayar = -1 ;  //Mengembalikan pembayaran
         $data_app = Kasdoc::where('docno',$nodok)->select('*')->get();
         foreach($data_app as $data)
         {
             $check_data = $data->paid;
         }
         if($check_data == 'Y'){
-            Kasdoc::where('docno', $nodok)
-            ->update([
-                'paid' => 'N',
-                'paidby' => $request->userid,
-                'paiddate' => $request->tgl_app,
-            ]);
-            Alert::success('No.Dokumen : '.$nodok.' Berhasil Dibatalkan Approval', 'Berhasil')->persistent(true);
-            return redirect()->route('penerimaan_kas.index');
+            $data_cr = DB::select("select * from kasdoc h where h.docno='$nodok'");
+            foreach($data_cr as $t)
+            {
+                $v_akhir = -9999999999999999;   
+                $data_tglrekap = DB::select("select max(tglrekap) as stglrekap from rekapkas where store = '$t->store' and jk =  '$t->jk'");
+                if(!empty($data_tglrekap)) {
+                    foreach($data_tglrekap as $data_tgl)
+                    {
+                        $stglrekap  = $data_tgl->stglrekap;
+                    }
+                }else{
+                    $stglrekap = date(now());
+                }
+                
+                $data_juml = DB::select("select count(*),sum(totprice) as jumlah from kasline where penutup='N' and docno = '$nodok'");
+                foreach($data_juml as $data_jum)
+                {
+                    $selisih = round($data_jum->jumlah,0) * $bi_bayar;
+                    if($selisih + $v_akhir > 0){
+                        Alert::info('Kas Tidak Mencukupi! Saldo yang tersedia = 9,999,999,999,990.00')->persistent(true);
+                        return redirect()->route('penerimaan_kas.index');                            
+                    }else{
+                        if($selisih >= 0){
+                            if($bi_bayar == 1){
+                                $v_debet  =  $selisih;
+                                $v_kredit =  0;
+                            }else{
+                                $v_debet  =  0;
+                                $v_kredit =  $selisih;
+                            }
+                        }else{
+                            if($bi_bayar == 1){
+                                $v_debet =  0;
+                                $v_kredit = $selisih;
+                            }else{
+                                $v_debet =  $selisih;
+                                $v_kredit = 0;
+                            }
+                        }
+                        $data_saldo = DB::select("select *  from saldostore where jk ='$t->jk' and nokas = '$t->store'");
+                        foreach($data_saldo as $data_sald)
+                        {
+                            Saldostore::where('jk',$t->jk)->where('nokas',$t->store)
+                            ->update([
+                                'saldoakhir' => round($data_sald->saldoakhir,0) + round($selisih,0),
+                                'debet' => round($data_sald->debet,0)+$v_debet,
+                                'kredit' => round($data_sald->kredit,0)+$v_kredit
+                            ]);
+                        }
+                        Kasdoc::where('docno', $nodok)
+                        ->update([
+                            'paid' => 'N',
+                            'paidby' => $request->userid,
+                            'paiddate' => $request->tgl_app,
+                        ]);
+                        Alert::success('No.Dokumen : '.$nodok.' Berhasil Dibatalkan Approval', 'Berhasil')->persistent(true);
+                        return redirect()->route('penerimaan_kas.index');
+                        
+                    }
+                }
+            }
         }else{
-            Kasdoc::where('docno', $nodok)
-            ->update([
-                'paid' => 'Y',
-                'paidby' => $request->userid,
-                'paiddate' => $request->tgl_app,
-            ]);
-            Alert::success('No.Dokumen : '.$nodok.' Berhasil Diapproval', 'Berhasil')->persistent(true);
-            return redirect()->route('penerimaan_kas.index');
+            $data_cr = DB::select("select * from kasdoc h where h.docno='$nodok'");
+            foreach($data_cr as $t)
+            {
+                $v_akhir = -9999999999999999;   
+                $data_tglrekap = DB::select("select max(tglrekap) as stglrekap from rekapkas where store = '$t->store' and jk =  '$t->jk'");
+                if(!empty($data_tglrekap)) {
+                    foreach($data_tglrekap as $data_tgl)
+                    {
+                        $stglrekap  = $data_tgl->stglrekap;
+                    }
+                }else{
+                    $stglrekap = date(now());
+                }
+                
+                $data_juml = DB::select("select count(*),sum(totprice) as jumlah from kasline where penutup='N' and docno = '$nodok'");
+                foreach($data_juml as $data_jum)
+                {
+                    $selisih = round($data_jum->jumlah,0) * $i_bayar;
+                    if($selisih + $v_akhir > 0){
+                        Alert::info('Kas Tidak Mencukupi! Saldo yang tersedia = 9,999,999,999,990.00')->persistent(true);
+                        return redirect()->route('penerimaan_kas.index');                            
+                    }else{
+                        if($selisih >= 0){
+                            if($i_bayar == 1){
+                                $v_debet  =  $selisih;
+                                $v_kredit =  0;
+                            }else{
+                                $v_debet  =  0;
+                                $v_kredit =  $selisih;
+                            }
+                        }else{
+                            if($i_bayar == 1){
+                                $v_debet =  0;
+                                $v_kredit = $selisih;
+                            }else{
+                                $v_debet =  $selisih;
+                                $v_kredit = 0;
+                            }
+                        }
+                        $data_saldo = DB::select("select *  from saldostore where jk ='$t->jk' and nokas = '$t->store'");
+                        foreach($data_saldo as $data_sald)
+                        {
+                            Saldostore::where('jk',$t->jk)->where('nokas',$t->store)
+                            ->update([
+                                'saldoakhir' => round($data_sald->saldoakhir,0) + round($selisih,0),
+                                'debet' => round($data_sald->debet,0)+$v_debet,
+                                'kredit' => round($data_sald->kredit,0)+$v_kredit
+                            ]);
+                        }
+                        Kasdoc::where('docno', $nodok)
+                        ->update([
+                            'paid' => 'Y',
+                            'paidby' => $request->userid,
+                            'paiddate' => $request->tgl_app,
+                        ]);
+                        Alert::success('No.Dokumen : '.$nodok.' Berhasil Diapproval', 'Berhasil')->persistent(true);
+                        return redirect()->route('penerimaan_kas.index');
+                    }
+                }
+            }
         }
     }
 }

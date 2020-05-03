@@ -48,21 +48,73 @@ class LemburController extends Controller
 
             if($nopek == null){
                 if($bulan == null and $tahun == null){
-                    $data_list = DB::select("select a.bulan,a.tahun, a.tanggal, a.nopek, a.libur, a.mulai, a.sampai, a.makanpg, a.makansg, a.makanml, a.transport,a.lembur,(a.makanpg+a.makansg+a.makanml+a.transport+a.lembur) as total, b.nama as nama_nopek from pay_lembur a join sdm_master_pegawai b on a.nopek=b.nopeg where a.tahun='$tahuns' order by a.tanggal desc");
+                    $data = DB::select("select a.bulan,a.tahun, a.tanggal, a.nopek, a.libur, a.mulai, a.sampai, a.makanpg, a.makansg, a.makanml, a.transport,a.lembur,(a.makanpg+a.makansg+a.makanml+a.transport+a.lembur) as total, b.nama as nama_nopek from pay_lembur a join sdm_master_pegawai b on a.nopek=b.nopeg where a.tahun='$tahuns' order by a.tanggal desc");
                 }elseif($bulan == null and $tahun <> null){
-                    $data_list = DB::select("select a.bulan,a.tahun, a.tanggal, a.nopek, a.libur, a.mulai, a.sampai, a.makanpg, a.makansg, a.makanml, a.transport,a.lembur,(a.makanpg+a.makansg+a.makanml+a.transport+a.lembur) as total, b.nama as nama_nopek from pay_lembur a join sdm_master_pegawai b on a.nopek=b.nopeg where a.tahun='$tahun' order by a.tanggal desc");
+                    $data = DB::select("select a.bulan,a.tahun, a.tanggal, a.nopek, a.libur, a.mulai, a.sampai, a.makanpg, a.makansg, a.makanml, a.transport,a.lembur,(a.makanpg+a.makansg+a.makanml+a.transport+a.lembur) as total, b.nama as nama_nopek from pay_lembur a join sdm_master_pegawai b on a.nopek=b.nopeg where a.tahun='$tahun' order by a.tanggal desc");
                 }else{
-                    $data_list = DB::select("select a.bulan,a.tahun, a.tanggal, a.nopek, a.libur, a.mulai, a.sampai, a.makanpg, a.makansg, a.makanml, a.transport,a.lembur,(a.makanpg+a.makansg+a.makanml+a.transport+a.lembur) as total, b.nama as nama_nopek from pay_lembur a join sdm_master_pegawai b on a.nopek=b.nopeg where a.bulan='$bulan' and a.tahun='$tahun' order by a.nopek asc");
+                    $data = DB::select("select a.bulan,a.tahun, a.tanggal, a.nopek, a.libur, a.mulai, a.sampai, a.makanpg, a.makansg, a.makanml, a.transport,a.lembur,(a.makanpg+a.makansg+a.makanml+a.transport+a.lembur) as total, b.nama as nama_nopek from pay_lembur a join sdm_master_pegawai b on a.nopek=b.nopeg where a.bulan='$bulan' and a.tahun='$tahun' order by a.nopek asc");
                 }
             }else{
                 if($bulan == null and $tahun == null){
-                    $data_list = DB::select("select a.bulan,a.tahun, a.tanggal, a.nopek, a.libur, a.mulai, a.sampai, a.makanpg, a.makansg, a.makanml, a.transport,a.lembur,(a.makanpg+a.makansg+a.makanml+a.transport+a.lembur) as total, b.nama as nama_nopek from pay_lembur a join sdm_master_pegawai b on a.nopek=b.nopeg where a.nopek='$nopek' order by a.tanggal desc");
+                    $data = DB::select("select a.bulan,a.tahun, a.tanggal, a.nopek, a.libur, a.mulai, a.sampai, a.makanpg, a.makansg, a.makanml, a.transport,a.lembur,(a.makanpg+a.makansg+a.makanml+a.transport+a.lembur) as total, b.nama as nama_nopek from pay_lembur a join sdm_master_pegawai b on a.nopek=b.nopeg where a.nopek='$nopek' order by a.tanggal desc");
                 }else{
-                    $data_list = DB::select("select a.bulan,a.tahun, a.tanggal, a.nopek, a.libur, a.mulai, a.sampai, a.makanpg, a.makansg, a.makanml, a.transport,a.lembur,(a.makanpg+a.makansg+a.makanml+a.transport+a.lembur) as total, b.nama as nama_nopek  from pay_lembur a join sdm_master_pegawai b on a.nopek=b.nopeg where a.bulan='$bulan' and a.tahun='$tahun' and a.nopek='$nopek' order by a.tanggal asc");
+                    $data = DB::select("select a.bulan,a.tahun, a.tanggal, a.nopek, a.libur, a.mulai, a.sampai, a.makanpg, a.makansg, a.makanml, a.transport,a.lembur,(a.makanpg+a.makansg+a.makanml+a.transport+a.lembur) as total, b.nama as nama_nopek  from pay_lembur a join sdm_master_pegawai b on a.nopek=b.nopeg where a.bulan='$bulan' and a.tahun='$tahun' and a.nopek='$nopek' order by a.tanggal asc");
                 }
             }
-        $data_pegawai = DB::select("select nopeg,nama,status,nama from sdm_master_pegawai where status <>'P' order by nopeg");	
-        return view('lembur.index',compact('data_list','data_pegawai'));
+            return datatables()->of($data)
+            ->addColumn('bulan', function ($data) {
+                $array_bln	 = array (
+                    1 =>   'Januari',
+                    'Februari',
+                    'Maret',
+                    'April',
+                    'Mei',
+                    'Juni',
+                    'Juli',
+                    'Agustus',
+                    'September',
+                    'Oktober',
+                    'November',
+                    'Desember'
+                  );
+                $bulan= strtoupper($array_bln[$data->bulan]);
+                return $bulan;
+           })
+            ->addColumn('nopek', function ($data) {
+                return $data->nopek.' -- '.$data->nama_nopek;
+           })
+            ->addColumn('tanggal', function ($data) {
+                $tgl = date_create($data->tanggal);
+				$tangg= date_format($tgl, 'd F Y');
+                return $tangg;
+           })
+            ->addColumn('makanpg', function ($data) {
+                 return 'Rp. '.number_format($data->makanpg,2,'.',',');
+           })
+            ->addColumn('makansg', function ($data) {
+                 return 'Rp. '.number_format($data->makansg,2,'.',',');
+           })
+            ->addColumn('makanml', function ($data) {
+                 return 'Rp. '.number_format($data->makanml,2,'.',',');
+           })
+            ->addColumn('transport', function ($data) {
+                 return 'Rp. '.number_format($data->transport,2,'.',',');
+           })
+            ->addColumn('lembur', function ($data) {
+                 return 'Rp. '.number_format($data->lembur,2,'.',',');
+           })
+            ->addColumn('total', function ($data) {
+                 return 'Rp. '.number_format($data->total,2,'.',',');
+           })
+    
+            ->addColumn('radio', function ($data) {
+                $tgl = date_create($data->tanggal);
+                $tanggal = date_format($tgl, 'd-m-Y');
+                $radio = '<label class="kt-radio kt-radio--bold kt-radio--brand"><input type="radio" data-tanggal="'.$tanggal.'"  data-nopek="'.$data->nopek.'" class="btn-radio" name="btn-radio-rekap"><span></span></label>';
+                return $radio;
+            })
+            ->rawColumns(['action','radio'])
+            ->make(true);
     }
 
     /**

@@ -52,16 +52,13 @@
 								<i class="fas fa-print"></i>
 							</span>
 						</a>
-						<span style="font-size: 2em;" class="kt-font-info pointer-link" data-toggle="kt-tooltip" data-placement="top" title="Refresh Ketampilan Tabel Awal">
-							<i class="fas fa-sync-alt" id="show-data"></i>
-						</span>
 					</div>
 				</div>
 			</div>
 		</div>
 	</div>
 	<div class="kt-portlet__body">
-		<form action="{{route('potongan_koreksi_gaji.search.index')}}" method="post">{{csrf_field()}}
+		<form id="search-form">
 		No. Pegawai	<select style="width:25%;height:30px;box-radius:50%;border-radius:30px;" name="nopek" id="nopek" class="selectpicker" data-live-search="true">
 							<option value="">- Pilih -</option>
 							@foreach($data_pegawai as $data)
@@ -86,36 +83,6 @@
 				</tr>
 			</thead>
 			<tbody>
-			@foreach($data_list as $data)
-				<tr>
-					<td>
-					<?php 
-						$array_bln	 = array (
-							        1 =>   'Januari',
-							        'Februari',
-							        'Maret',
-							        'April',
-							        'Mei',
-							        'Juni',
-							        'Juli',
-							        'Agustus',
-							        'September',
-							        'Oktober',
-							        'November',
-							        'Desember'
-							      );
-							    $bulan= strtoupper($array_bln[$data->bulan]);
-					?>
-						<?php echo '<label class="kt-radio kt-radio--bold kt-radio--brand"><input type="radio" tahun="'.$data->tahun.'" bulan="'.$data->bulan.'"  aard="'.$data->aard.'" nopek="'.$data->nopek.'" nama="'.$data->nama_nopek.'" data-nopek="" class="btn-radio" name="btn-radio-rekap"><span></span></label>'; ?>
-					</td>
-					<td>
-					<?php echo $bulan ?>
-					</td>
-					<td>{{$data->nopek}}-{{$data->nama_nopek}}</td>
-					<td>{{$data->aard}}-{{$data->nama_aard}}</td>
-					<td>Rp. <?php echo number_format($data->nilai, 2, '.', ',') ?></td>
-				</tr>
-			@endforeach
 			</tbody>
 		</table>
 
@@ -131,13 +98,38 @@
 		var t = $('#kt_table').DataTable({
 			scrollX   : true,
 			processing: true,
-			serverSide: false,
+			serverSide: true,
 			searching: false,
 			lengthChange: false,
 			language: {
 			processing: '<i class="fa fa-spinner fa-spin fa-2x fa-fw"></i> <br> Loading...'
 			},
-    	});	
+			ajax      : {
+				url: "{{route('potongan_koreksi_gaji.search.index')}}",
+				type : "POST",
+				dataType : "JSON",
+				headers: {
+				'X-CSRF-Token': '{{ csrf_token() }}',
+				},
+				data: function (d) {
+					d.nopek = $('select[name=nopek]').val();
+					d.bulan = $('input[name=bulan]').val();
+					d.tahun = $('input[name=tahun]').val();
+				}
+			},
+			columns: [
+				{data: 'radio', name: 'radio'},
+				{data: 'bulan', name: 'bulan'},
+				{data: 'nopek', name: 'nopek'},
+				{data: 'aard', name: 'aard'},
+				{data: 'nilai', name: 'nilai'},
+			]
+			
+	});
+	$('#search-form').on('submit', function(e) {
+		t.draw();
+		e.preventDefault();
+	});
 
 //refresh data
 $('#show-data').on('click', function(e) {
