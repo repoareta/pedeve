@@ -226,4 +226,19 @@ class PerjalananDinasPertanggungJawabanController extends Controller
 
         return response()->json();
     }
+
+    public function exportRow($no_ppanjar)
+    {
+        $no_ppanjar = str_replace('-', '/', $no_ppanjar);
+        
+        $ppanjar_header = PPanjarHeader::find($no_ppanjar);
+
+        $pekerja_jabatan = $ppanjar_header->pangkat;
+
+        $pdf = PDF::loadview('perjalanan_dinas_pertanggungjawaban.export_row', [
+            'ppanjar_header' => $ppanjar_header,
+            'pekerja_jabatan' => $pekerja_jabatan
+        ]);
+        return $pdf->stream('rekap_panjar_dinas_pertanggungjawaban_'.date('Y-m-d H:i:s').'.pdf');
+    }
 }

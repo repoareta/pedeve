@@ -118,6 +118,8 @@ Route::group(['middleware'=> ['auth','checkRole:1']], function () {
                 Route::post('perjalanan_dinas/pertanggungjawaban/update/{no_ppanjar}', 'PerjalananDinasPertanggungJawabanController@update')->name('update');
 
                 Route::delete('perjalanan_dinas/pertanggungjawaban/delete', 'PerjalananDinasPertanggungJawabanController@delete')->name('delete');
+
+                Route::get('perjalanan_dinas/pertanggungjawaban/export/{no_ppanjar}', 'PerjalananDinasPertanggungJawabanController@exportRow')->name('export');
                 // P PERJALANAN DINAS END
 
                 // P PERJALANAN DINAS DETAIL START
