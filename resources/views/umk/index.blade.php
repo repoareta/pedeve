@@ -50,16 +50,13 @@
 							<span style="font-size: 2em;" class="kt-font-info pointer-link" data-toggle="kt-tooltip" data-placement="top" title="Cetak Data">
 								<i class="fas fa-print" id="reportRow"></i>
 							</span>
-							<span style="font-size: 2em;" class="kt-font-info pointer-link" data-toggle="kt-tooltip" data-placement="top" title="Refresh Ketampilan Tabel Awal">
-								<i class="fas fa-sync-alt" id="show-data"></i>
-							</span>
 					</div>
 				</div>
 			</div>
 		</div>
 	</div>
 	<div class="kt-portlet__body">
-			<form action="{{route('uang_muka_kerja.search.index')}}" method="post">{{csrf_field()}}
+			<form id="search-form">
 			No. UMK: 	<input  style="width:14em;height:35px;border: 1px solid #DCDCDC;border-radius:5px;"  name="permintaan" type="text" size="18" maxlength="18" value="" autocomplete='off'> 
 
 				Bulan: 	<input  style="width:4em;height:35px;border: 1px solid #DCDCDC;border-radius:5px;"  name="bulan" type="text" size="2" maxlength="2" value="" onkeypress="return hanyaAngka(event)" autocomplete='off'>
@@ -83,46 +80,6 @@
 				</tr>
 			</thead>
 			<tbody>
-			@foreach($data_list as $data)
-				<tr>
-					<td>
-						<?php if($data->app_pbd == 'Y'){
-							echo '<label class="kt-radio kt-radio--bold kt-radio--brand"><input type="radio" data-s="Y" dataumk="'.$data->no_umk.'" data-id="'.str_replace('/', '-', $data->no_umk).'" class="btn-radio" name="btn-radio"><span></span></label>';
-						}else{
-							if($data->app_sdm == 'Y'){
-							echo '<label class="kt-radio kt-radio--bold kt-radio--brand"><input type="radio" data-s="N" dataumk="'.$data->no_umk.'" data-id="'.str_replace('/', '-', $data->no_umk).'" name="btn-radio" class="btn-radio" ><span></span></label>';
-							}else{
-								echo '<label class="kt-radio kt-radio--bold kt-radio--brand"><input type="radio" data-s="N" class="btn-radio" dataumk="'.$data->no_umk.'" data-id="'.str_replace('/', '-', $data->no_umk).'" name="btn-radio"><span></span></label>';
-							}
-						} ?>
-					</td>
-					<td><?php 
-						$tgl = date_create($data->tgl_panjar);
-					echo date_format($tgl, 'd F Y') ?></td>
-					<td>{{$data->no_umk}}</td>
-					<td>{{$data->no_kas}}</td>
-					<td>
-						<?php if($data->jenis_um == 'K'){
-							echo '<p align="center">UM Kerja</p>';
-						}else{
-							echo '<p align="center">UM Dinas</p>';
-						} ?>
-					</td>
-					<td>{{$data->keterangan}}</td>
-					<td>Rp. <?php echo number_format($data->jumlah, 2, '.', ',') ?></td>
-					<td>
-						<?php if($data->app_pbd == 'Y'){
-							echo '<p align="center"><span style="font-size: 2em;" class="kt-font-success pointer-link" data-toggle="kt-tooltip" data-placement="top" title="Data Sudah di proses perbendaharaan"><i class="fas fa-check-circle" ></i></span></p>';
-						}else{
-							if($data->app_sdm == 'Y'){
-								echo '<p align="center"><a href="'. route('uang_muka_kerja.approv',['id' => str_replace('/', '-', $data->no_umk)]).'"><span style="font-size: 2em;" class="kt-font-warning pointer-link" data-toggle="kt-tooltip" data-placement="top"  title="Batalkan Approval"><i class="fas fa-check-circle" ></i></span></a></p>';
-							}else{
-								echo '<p align="center"><a href="'. route('uang_muka_kerja.approv',['id' => str_replace('/', '-', $data->no_umk)]).'"><span style="font-size: 2em;" class="kt-font-danger pointer-link" data-toggle="kt-tooltip" data-placement="top" title="Klik untuk Approval"><i class="fas fa-ban" ></i></span></a></p>';
-							}
-						} ?>
-					</td>
-				</tr>
-				@endforeach
 			</tbody>
 		</table>
 
@@ -137,16 +94,43 @@
 @section('scripts')
 <script type="text/javascript">
 $(document).ready(function(){
-	$('#data-umk-table').DataTable({
+	var t =$('#data-umk-table').DataTable({
 			scrollX   : true,
 			processing: true,
-			serverSide: false,
+			serverSide: true,
 			searching: false,
 			lengthChange: false,
 			language: {
             	processing: '<i class="fa fa-spinner fa-spin fa-2x fa-fw"></i> <br> Loading...'
 			},
+			ajax      : {
+				url: "{{ route('uang_muka_kerja.search.index') }}",
+				type : "POST",
+				dataType : "JSON",
+				headers: {
+				'X-CSRF-Token': '{{ csrf_token() }}',
+				},
+				data: function (d) {
+					d.permintaan = $('input[name=permintaan]').val();
+					d.bulan = $('input[name=bulan]').val();
+					d.tahun = $('input[name=tahun]').val();
+				}
+			},
+	columns: [
+		{data: 'radio', name: 'radio'},
+		{data: 'tgl_panjar', name: 'tgl_panjar'},
+		{data: 'no_umk', name: 'no_umk'},
+		{data: 'no_kas', name: 'no_kas'},
+		{data: 'jenis_um', name: 'jenis_um'},
+		{data: 'keterangan', name: 'keterangan'},
+		{data: 'jumlah', name: 'jumlah'},
+		{data: 'action', name: 'action'},
+	]
 			
+		});
+		$('#search-form').on('submit', function(e) {
+			t.draw();
+			e.preventDefault();
 		});
 });
 

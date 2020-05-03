@@ -47,20 +47,13 @@
 						<span style="font-size: 2em;" class="kt-font-danger pointer-link" id="deleteRow" data-toggle="kt-tooltip" data-placement="top" title="Hapus Data">
 							<i class="fas fa-times-circle"></i>
 						</span>
-
-						<!-- <span style="font-size: 2em;" class="kt-font-info pointer-link" id="exportRow" data-toggle="kt-tooltip" data-placement="top" title="Cetak Data">
-							<i class="fas fa-print"></i>
-						</span> -->
-						<span style="font-size: 2em;" class="kt-font-info pointer-link" data-toggle="kt-tooltip" data-placement="top" title="Refresh Ketampilan Tabel Awal">
-							<i class="fas fa-sync-alt" id="show-data"></i>
-						</span>
 					</div>
 				</div>
 			</div>
 		</div>
 	</div>
 	<div class="kt-portlet__body">
-			<form action="{{route('potongan_otomatis.search.index')}}" method="post">{{csrf_field()}}
+			<form id="search-form">
 			Pegawai:	<select style="width:25%;height:30px;box-radius:50%;border-radius:30px;" name="nopek" class="selectpicker" data-live-search="true">
 								<option value="">- Pilih -</option>
 								@foreach($data_pegawai as $data)
@@ -96,42 +89,6 @@
 				</tr>
 			</thead>
 			<tbody>
-			@foreach($data_list as $data)
-
-			<tr>
-				<td><?php 
-               		 echo '<label  class="kt-radio kt-radio--bold kt-radio--brand"><input type="radio" class="btn-radio" tahun="'.$data->tahun.'" bulan="'.$data->bulan.'" nopek="'.$data->nopek.'" aard="'.$data->aardpot.'" nama="'.$data->nama_nopek.'" name="btn-radio"><span></span></label>';
-					?></td>
-				<td align="center">{{$data->tahun}}</td>
-				<td align="center">
-					<?php 
-						$array_bln	 = array (
-							1 =>   'Januari',
-							'Februari',
-							'Maret',
-							'April',
-							'Mei',
-							'Juni',
-							'Juli',
-							'Agustus',
-							'September',
-							'Oktober',
-							'November',
-							'Desember'
-						  );
-						echo strtoupper($array_bln[$data->bulan]);
-					?>
-				</td>
-				<td>{{$data->nopek}} - {{$data->nama_nopek}}</td>
-				<td>{{$data->aardpot}} - {{$data->nama_aardpot}}</td>
-				<td align="center"><?php echo number_format($data->jmlcc, 0, '', '') ?></td>
-				<td align="center"><?php echo number_format($data->ccl, 0, '', '') ?></td>
-				<td>Rp. <?php echo number_format($data->nilai, 2, '.', ',') ?></td>
-				<td>Rp. <?php echo number_format($data->akhir, 2, '.', ',') ?></td>
-				<td>Rp. <?php echo number_format($data->totalhut, 2, '.', ',') ?></td>
-				
-			</tr>
-			@endforeach
 			</tbody>
 		</table>
 
@@ -147,13 +104,44 @@
 		var t = $('#kt_table').DataTable({
 			scrollX   : true,
 			processing: true,
-			serverSide: false,
+			serverSide: true,
 			searching: false,
 			lengthChange: false,
 			language: {
-            	processing: '<i class="fa fa-spinner fa-spin fa-2x fa-fw"></i> <br> Loading...'
+			processing: '<i class="fa fa-spinner fa-spin fa-2x fa-fw"></i> <br> Loading...'
 			},
-		});
+			ajax      : {
+				url: "{{route('potongan_otomatis.search.index')}}",
+				type : "POST",
+				dataType : "JSON",
+				headers: {
+				'X-CSRF-Token': '{{ csrf_token() }}',
+				},
+				data: function (d) {
+					d.nopek = $('select[name=nopek]').val();
+					d.aard = $('select[name=aard]').val();
+					d.bulan = $('input[name=bulan]').val();
+					d.tahun = $('input[name=tahun]').val();
+				}
+			},
+			columns: [
+				{data: 'radio', name: 'radio'},
+				{data: 'tahun', name: 'tahun'},
+				{data: 'bulan', name: 'bulan'},
+				{data: 'nopek', name: 'nopek'},
+				{data: 'aardpot', name: 'aardpot'},
+				{data: 'jmlcc', name: 'jmlcc'},
+				{data: 'ccl', name: 'ccl'},
+				{data: 'nilai', name: 'nilai'},
+				{data: 'akhir', name: 'akhir'},
+				{data: 'totalhut', name: 'totalhut'},
+			]
+			
+	});
+	$('#search-form').on('submit', function(e) {
+		t.draw();
+		e.preventDefault();
+	});
 //refresh data
 $('#show-data').on('click', function(e) {
 	e.preventDefault();

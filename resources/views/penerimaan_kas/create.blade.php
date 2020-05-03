@@ -243,7 +243,29 @@
 	<script type="text/javascript">
 	$(document).ready(function () {
 
+		$("#jk").on("change", function(){ 
+		var ci = $(this).val();
+		console.log(ci);
+		if(ci != 13)
+		{
+			$('#kurs').val(1);
+			$('#simbol-kurs').hide();
+			$( "#kurs" ).prop( "required", false );
+			$( "#kurs" ).prop( "readonly", true );
+			$('#kurs').css("background-color","#DCDCDC");
+			$('#kurs').css("cursor","not-allowed");
 
+		}else{
+			var kurs1 = $('#data-kurs').val();
+			$('#kurs').val(kurs1);
+			$('#simbol-kurs').show();
+			$( "#kurs" ).prop( "required", true );
+			$( "#kurs" ).prop( "readonly", false );
+			$('#kurs').css("background-color","#ffffff");
+			$('#kurs').css("cursor","text");
+		}
+			
+	});
 
 $('#form-create').submit(function(){
 	var mp = $("#mp").val();

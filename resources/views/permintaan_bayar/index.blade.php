@@ -51,17 +51,14 @@
 							<span style="font-size: 2em;" class="kt-font-info pointer-link" data-toggle="kt-tooltip" data-placement="top" title="Cetak Data">
 								<i class="fas fa-print" id="reportRow"></i>
 							</span>
-							<span style="font-size: 2em;" class="kt-font-info pointer-link" data-toggle="kt-tooltip" data-placement="top" title="Refresh Ketampilan Tabel Awal">
-								<i class="fas fa-sync-alt" id="show-data"></i>
-							</span>
 					</div>
 				</div>
 			</div>
 		</div>
 	</div>
 	<div class="kt-portlet__body">
-			<form action="{{route('permintaan_bayar.search.index')}}" method="post">{{csrf_field()}}
-			No. UMK: 	<input  style="width:14em;height:35px;border: 1px solid #DCDCDC;border-radius:5px;"  name="permintaan" type="text" size="18" maxlength="18" value="" autocomplete='off'> 
+			<form id="search-form">{{csrf_field()}}
+			No. Permintaan: 	<input  style="width:14em;height:35px;border: 1px solid #DCDCDC;border-radius:5px;"  name="permintaan" type="text" size="18" maxlength="18" value="" autocomplete='off'> 
 
 				Bulan: 	<input  style="width:4em;height:35px;border: 1px solid #DCDCDC;border-radius:5px;"  name="bulan" type="text" size="2" maxlength="2" value="" onkeypress="return hanyaAngka(event)" autocomplete='off'>
 
@@ -85,38 +82,6 @@
 				</tr>
 			</thead>
 			<tbody class="thead-light">
-				@foreach($bayar_list as $data)
-				<tr>
-					<td>
-						<?php if($data->app_pbd == 'Y'){
-							 echo'<label class="kt-radio kt-radio--bold kt-radio--brand"><input type="radio" class="btn-radio" data-s="Y" databayar="'.$data->no_bayar.'" data-id="'.str_replace('/', '-', $data->no_bayar).'" name="btn-radio" ><span></span></label>';
-						}else{
-							if($data->app_sdm == 'Y'){
-							echo '<label class="kt-radio kt-radio--bold kt-radio--brand"><input type="radio" class="btn-radio" data-s="N" databayar="'.$data->no_bayar.'" data-id="'.str_replace('/', '-', $data->no_bayar).'" name="btn-radio"><span></span></label>';
-							}else{
-							 echo '<label  class="kt-radio kt-radio--bold kt-radio--brand"><input type="radio" class="btn-radio" data-s="N" databayar="'.$data->no_bayar.'" data-id="'.str_replace('/', '-', $data->no_bayar).'" name="btn-radio"><span></span></label>';
-							}
-						} ?>
-					</td>
-					<td>{{$data->no_bayar}}</td>
-					<td>{{$data->no_kas}}</td>
-					<td>{{$data->kepada}}</td>
-					<td>{{$data->keterangan}}</td>
-					<td>{{$data->lampiran}}</td>
-					<td>Rp. <?php echo number_format($data->nilai, 2, '.', ',') ?></td>
-					<td>
-						<?php if($data->app_pbd == 'Y'){
-							echo '<p align="center"><span style="font-size: 2em;" class="kt-font-success pointer-link" data-toggle="kt-tooltip" data-placement="top" title="Data Sudah di proses perbendaharaan"><i class="fas fa-check-circle" ></i></span></p>';
-						}else{
-							if($data->app_sdm == 'Y'){
-								echo '<p align="center"><a href="'. route('permintaan_bayar.approv',['id' => str_replace('/', '-', $data->no_bayar)]).'"><span style="font-size: 2em;" class="kt-font-warning pointer-link" data-toggle="kt-tooltip" data-placement="top" title="Batalkan Approval"><i class="fas fa-check-circle" ></i></span></a></p>';
-							}else{
-								echo '<p align="center"><a href="'. route('permintaan_bayar.approv',['id' => str_replace('/', '-', $data->no_bayar)]).'"><span style="font-size: 2em;" class="kt-font-danger pointer-link" data-toggle="kt-tooltip" data-placement="top" title="Klik untuk Approval"><i class="fas fa-ban" ></i></span></a></p>';
-							}
-						} ?>
-					</td>
-				</tr>
-				@endforeach
 			</tbody>
 		</table>
 
@@ -130,16 +95,44 @@
 	<script type="text/javascript">
 	$(document).ready(function () {
 		
-		$('#table-permintaan').DataTable({
+		var t = $('#table-permintaan').DataTable({
 			scrollX   : true,
 			processing: true,
-			serverSide: false,
+			serverSide: true,
 			searching: false,
 			lengthChange: false,
 			language: {
             	processing: '<i class="fa fa-spinner fa-spin fa-2x fa-fw"></i> <br> Loading...'
 			},
+			ajax      : {
+					url: "{{route('permintaan_bayar.search.index')}}",
+					type : "POST",
+					dataType : "JSON",
+					headers: {
+					'X-CSRF-Token': '{{ csrf_token() }}',
+					},
+					data: function (d) {
+						d.permintaan = $('input[name=permintaan]').val();
+						d.bulan = $('input[name=bulan]').val();
+						d.tahun = $('input[name=tahun]').val();
+					}
+				},
+			columns: [
+				{data: 'radio', name: 'radio'},
+				{data: 'no_bayar', name: 'no_bayar'},
+				{data: 'no_kas', name: 'no_kas'},
+				{data: 'kepada', name: 'kepada'},
+				{data: 'keterangan', name: 'keterangan'},
+				{data: 'lampiran', name: 'lampiran'},
+				{data: 'nilai', name: 'nilai'},
+				{data: 'action', name: 'action'},
+			]
+				
 			
+		});
+		$('#search-form').on('submit', function(e) {
+			t.draw();
+			e.preventDefault();
 		});
 		
 	$('#show-data').on('click', function(e) {
@@ -223,7 +216,7 @@ $('#reportRow').on('click', function(e) {
 									success: function () {
 										Swal.fire({
 											type  : 'success',
-											title : 'Hapus No. UMK ' + id,
+											title : 'Hapus No. Bayar ' + id,
 											text  : 'Berhasil',
 											timer : 2000
 										}).then(function() {

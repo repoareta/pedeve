@@ -56,12 +56,13 @@
 						<div class="form-group row">
 							<label for="jenis-dinas-input" class="col-2 col-form-label">No. Dokumen<span style="color:red;">*</span></label>
 							<div class="col-10">
-								<select name="nodok" id="nodok" class="form-control selectpicker" data-live-search="true" required oninvalid="this.setCustomValidity('Bagian Harus Diisi..')" onchange="setCustomValidity('')">
+								<select name="nodok" id="nodok" class="form-control selectpicker" data-live-search="true" required oninvalid="this.setCustomValidity('No. Dokumen Harus Diisi..')" onchange="setCustomValidity('')">
 									<option value="">- Pilih -</option>
 									@foreach($data_dok as $data)
 									<option data-lineno="{{$data->lineno}}" value="{{$data->docno}}">{{$data->docno}} - {{$data->keterangan}}</option>
 									@endforeach
 								</select>
+									<input class="form-control" type="hidden" value="0"   name="perpanjangan" id="perpanjangan" size="6" maxlength="6" readonly style="background-color:#DCDCDC; cursor:not-allowed">
 									<input class="form-control" type="hidden" value=""   name="kurs" id="kurs" size="6" maxlength="6" readonly style="background-color:#DCDCDC; cursor:not-allowed">
 									<input class="form-control" type="hidden" value=""   name="lineno" id="lineno" size="6" maxlength="6" readonly style="background-color:#DCDCDC; cursor:not-allowed">
 									<input class="form-control" type="hidden" value=""   name="keterangan" id="keterangan" size="50" maxlength="50" readonly style="background-color:#DCDCDC; cursor:not-allowed">
@@ -135,14 +136,15 @@
 	$(document).ready(function () {
 
 		$("#nodok").on("change", function(){
-			var lineno = $(this).val();
-
+			var nodok = $(this).val();
+			var lineno =$("#nodok option:selected").attr('data-lineno');
 			$.ajax({
 				url : "{{route('penempatan_deposito.linenoJson')}}",
 				type : "POST",
 				dataType: 'json',
 				data : {
-					lineno:lineno
+					nodok:nodok,
+					lineno:lineno,
 					},
 				headers: {
 					'X-CSRF-Token': '{{ csrf_token() }}',

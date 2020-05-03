@@ -107,7 +107,7 @@ $(document).ready(function () {
             rtl: KTUtil.isRTL(),
             todayHighlight: true,
             templates: arrows,
-            // autoclose: true,
+            autoclose: true,
             // language : 'id',
             format   : 'yyyy-mm-dd',
             orientation: 'bottom'

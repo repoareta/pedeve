@@ -91,3 +91,13 @@ function pajak($nilai)
         return   $pajakbulan = ($pph21ok/12);
     }
 }
+
+function hitunghari($awal,$akhir)
+{
+    $tglsekarang = strtotime($awal); 
+    $jatuhtempo = strtotime($akhir);
+    // hitung perbedaan  jatuh tempo dengan sekarang 
+    $beda = $jatuhtempo - $tglsekarang; // unix time
+    // konversi $beda kedalam hari
+    return $bedahari = ($beda/24/60/60);
+}

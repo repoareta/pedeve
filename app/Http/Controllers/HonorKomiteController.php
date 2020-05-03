@@ -20,15 +20,8 @@ class HonorKomiteController extends Controller
      */
     public function index()
     {
-        $data_tahunbulan = DB::select("select max(thnbln) as bulan_buku from timetrans where status='1' and length(thnbln)='6'");
-        foreach($data_tahunbulan as $data_bul)
-        {
-            $bulan_buku = $data_bul->bulan_buku;
-        }
-        $tahun = substr($bulan_buku,0,-2);
-        $data_list = DB::select("select a.tahun, a.bulan, a.nopek, a.aard, a.jmlcc, a.ccl, a.nilai, a.userid,a.pajak, b.nama as nama_nopek from pay_honorarium a join sdm_master_pegawai b on a.nopek=b.nopeg where a.tahun ='$tahun' order by a.tahun,a.bulan,a.nopek");
         $data_pegawai = DB::select("select nopeg,nama,status,nama from sdm_master_pegawai where status <>'P' order by nopeg");	
-        return view('honor_komite.index',compact('data_list','data_pegawai'));
+        return view('honor_komite.index',compact('data_pegawai'));
     }
 
     public function searchIndex(Request $request)
@@ -44,21 +37,57 @@ class HonorKomiteController extends Controller
         $nopek = $request->nopek;
         if($nopek == null ){
             if($bulan == null and $tahun == null){
-                $data_list = DB::select("select a.tahun, a.bulan, a.nopek, a.aard, a.jmlcc, a.ccl, a.nilai, a.userid,a.pajak, b.nama as nama_nopek from pay_honorarium a join sdm_master_pegawai b on a.nopek=b.nopeg where a.tahun ='$tahuns' order by a.tahun,a.bulan,a.nopek");	
+                $data = DB::select("select a.tahun, a.bulan, a.nopek, a.aard, a.jmlcc, a.ccl, a.nilai, a.userid,a.pajak, b.nama as nama_nopek from pay_honorarium a join sdm_master_pegawai b on a.nopek=b.nopeg where a.tahun ='$tahuns' order by a.tahun,a.bulan,a.nopek");	
             }elseif($bulan == null and $tahun <> null){
-                $data_list = DB::select("select a.tahun, a.bulan, a.nopek, a.aard, a.jmlcc, a.ccl, a.nilai, a.userid,a.pajak, b.nama as nama_nopek from pay_honorarium a join sdm_master_pegawai b on a.nopek=b.nopeg where a.tahun ='$tahun' order by a.tahun,a.bulan,a.nopek");	
+                $data = DB::select("select a.tahun, a.bulan, a.nopek, a.aard, a.jmlcc, a.ccl, a.nilai, a.userid,a.pajak, b.nama as nama_nopek from pay_honorarium a join sdm_master_pegawai b on a.nopek=b.nopeg where a.tahun ='$tahun' order by a.tahun,a.bulan,a.nopek");	
             }else{
-                $data_list = DB::select("select a.tahun, a.bulan, a.nopek, a.aard, a.jmlcc, a.ccl, a.nilai, a.userid,a.pajak, b.nama as nama_nopek from pay_honorarium a join sdm_master_pegawai b on a.nopek=b.nopeg where a.bulan='$bulan' and a.tahun='$tahun' order by a.tahun,a.bulan,a.nopek");
+                $data = DB::select("select a.tahun, a.bulan, a.nopek, a.aard, a.jmlcc, a.ccl, a.nilai, a.userid,a.pajak, b.nama as nama_nopek from pay_honorarium a join sdm_master_pegawai b on a.nopek=b.nopeg where a.bulan='$bulan' and a.tahun='$tahun' order by a.tahun,a.bulan,a.nopek");
             }
         }else{
             if($bulan == null and $tahun == null){
-                $data_list = DB::select("select a.tahun, a.bulan, a.nopek, a.aard, a.jmlcc, a.ccl, a.nilai, a.userid,a.pajak, b.nama as nama_nopek from pay_honorarium a join sdm_master_pegawai b on a.nopek=b.nopeg where a.nopek='$nopek' order by a.tahun,a.bulan,a.nopek");	
+                $data = DB::select("select a.tahun, a.bulan, a.nopek, a.aard, a.jmlcc, a.ccl, a.nilai, a.userid,a.pajak, b.nama as nama_nopek from pay_honorarium a join sdm_master_pegawai b on a.nopek=b.nopeg where a.nopek='$nopek' order by a.tahun,a.bulan,a.nopek");	
             }else{
-                $data_list = DB::select("select a.tahun, a.bulan, a.nopek, a.aard, a.jmlcc, a.ccl, a.nilai, a.userid,a.pajak, b.nama as nama_nopek from pay_honorarium a join sdm_master_pegawai b on a.nopek=b.nopeg where a.bulan='$bulan' and a.tahun='$tahun' and a.nopek='$nopek' order by a.tahun,a.bulan,a.nopek");
+                $data = DB::select("select a.tahun, a.bulan, a.nopek, a.aard, a.jmlcc, a.ccl, a.nilai, a.userid,a.pajak, b.nama as nama_nopek from pay_honorarium a join sdm_master_pegawai b on a.nopek=b.nopeg where a.bulan='$bulan' and a.tahun='$tahun' and a.nopek='$nopek' order by a.tahun,a.bulan,a.nopek");
             }
         }
-        $data_pegawai = DB::select("select nopeg,nama,status,nama from sdm_master_pegawai where status <>'P' order by nopeg");	
-        return view('honor_komite.index',compact('data_list','data_pegawai'));
+        return datatables()->of($data)
+        ->addColumn('bulan', function ($data) {
+            $array_bln	 = array (
+                1 =>   'Januari',
+                'Februari',
+                'Maret',
+                'April',
+                'Mei',
+                'Juni',
+                'Juli',
+                'Agustus',
+                'September',
+                'Oktober',
+                'November',
+                'Desember'
+              );
+            $bulan= strtoupper($array_bln[$data->bulan]);
+            return $bulan;
+       })
+        ->addColumn('tahun', function ($data) {
+            return $data->tahun;
+       })
+        ->addColumn('nopek', function ($data) {
+            return $data->nopek.' -- '.$data->nama_nopek;
+       })
+        ->addColumn('nilai', function ($data) {
+             return 'Rp. '.number_format($data->nilai,2,'.',',');
+       })
+        ->addColumn('pajak', function ($data) {
+             return 'Rp. '.number_format($data->pajak,2,'.',',');
+       })
+
+        ->addColumn('radio', function ($data) {
+            $radio = '<label class="kt-radio kt-radio--bold kt-radio--brand"><input type="radio" tahun="'.$data->tahun.'" bulan="'.$data->bulan.'"  aard="'.$data->aard.'" nopek="'.$data->nopek.'" nama="'.$data->nama_nopek.'" data-nopek="" class="btn-radio" name="btn-radio-rekap"><span></span></label>';
+            return $radio;
+        })
+        ->rawColumns(['action','radio'])
+        ->make(true);
     }
 
     /**

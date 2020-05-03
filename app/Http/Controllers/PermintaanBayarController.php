@@ -24,28 +24,20 @@ class PermintaanBayarController extends Controller
      */
     public function index(Request $request)
     {
-        
-             $data_tahunbulan = DB::select("select max(thnbln) as bulan_buku from timetrans where status='1' and length(thnbln)='6'");
-             foreach($data_tahunbulan as $data_bul)
-             {
-                 $bulan_buku = $data_bul->bulan_buku;
-             }
-             $bayar_list = DB::select("select  a.no_bayar,a.kepada,a.bulan_buku,a.keterangan,a.lampiran,a.no_kas,a.app_pbd as app_pbd,a.app_sdm as app_sdm,(select sum(nilai) from umu_bayar_detail where no_bayar=a.no_bayar) as nilai from umu_bayar_header a where a.bulan_buku ='$bulan_buku' order by a.bulan_buku desc,a.no_bayar desc");
-
-            return view('permintaan_bayar.index',compact('bayar_list'));
+        return view('permintaan_bayar.index');
     }
 
     public function searchIndex(Request $request)
     {
         if($request->permintaan <>  null and $request->tahun == null and $request->bulan == null){
-            $bayar_list = DB::select("select a.no_bayar,a.kepada,a.bulan_buku,a.keterangan,a.lampiran,a.no_kas,a.app_pbd as app_pbd,a.app_sdm as app_sdm,(select sum(nilai) from umu_bayar_detail where no_bayar=a.no_bayar) as nilai from umu_bayar_header a where a.no_bayar like '$request->permintaan%' order by a.bulan_buku desc,a.no_bayar desc");
+            $data = DB::select("select a.no_bayar,a.kepada,a.bulan_buku,a.keterangan,a.lampiran,a.no_kas,a.app_pbd as app_pbd,a.app_sdm as app_sdm,(select sum(nilai) from umu_bayar_detail where no_bayar=a.no_bayar) as nilai from umu_bayar_header a where a.no_bayar like '$request->permintaan%' order by a.no_bayar desc");
          }elseif($request->permintaan <>  null and $request->tahun <>  null and $request->bulan ==  null){
-            $bayar_list = DB::select("select  a.no_bayar,a.kepada,a.bulan_buku,a.keterangan,a.lampiran,a.no_kas,a.app_pbd as app_pbd,a.app_sdm as app_sdm,(select sum(nilai) from umu_bayar_detail where no_bayar=a.no_bayar) as nilai from umu_bayar_header a where a.no_bayar like '$request->permintaan%' and left(a.bulan_buku,4)='$request->tahun' order by a.bulan_buku desc,a.no_bayar desc");
+            $data = DB::select("select  a.no_bayar,a.kepada,a.bulan_buku,a.keterangan,a.lampiran,a.no_kas,a.app_pbd as app_pbd,a.app_sdm as app_sdm,(select sum(nilai) from umu_bayar_detail where no_bayar=a.no_bayar) as nilai from umu_bayar_header a where a.no_bayar like '$request->permintaan%' and left(a.bulan_buku,4)='$request->tahun' order by a.no_bayar desc");
          }elseif($request->permintaan ==  null and $request->tahun <>  null and $request->bulan <>  null){
-            $bayar_list = DB::select("select a.no_bayar,a.kepada,a.bulan_buku,a.keterangan,a.lampiran,a.no_kas,a.app_pbd as app_pbd,a.app_sdm as app_sdm,(select sum(nilai) from umu_bayar_detail where no_bayar=a.no_bayar) as nilai from umu_bayar_header a where right(a.no_bayar,4)='$request->tahun' and SUBSTRING(a.no_bayar,11,2) ='$request->bulan' order by a.bulan_buku desc,a.no_bayar desc");
+            $data = DB::select("select a.no_bayar,a.kepada,a.bulan_buku,a.keterangan,a.lampiran,a.no_kas,a.app_pbd as app_pbd,a.app_sdm as app_sdm,(select sum(nilai) from umu_bayar_detail where no_bayar=a.no_bayar) as nilai from umu_bayar_header a where right(a.no_bayar,4)='$request->tahun' and SUBSTRING(a.no_bayar,11,2) ='$request->bulan' order by a.no_bayar desc");
             
          }elseif($request->permintaan <>  null and $request->tahun <>  null and $request->bulan <>  null){
-            $bayar_list = DB::select("select a.no_bayar,a.kepada,a.bulan_buku,a.keterangan,a.lampiran,a.no_kas,a.app_pbd as app_pbd,a.app_sdm as app_sdm,(select sum(nilai) from umu_bayar_detail where no_bayar=a.no_bayar) as nilai from umu_bayar_header a where a.no_bayar like '$request->permintaan%' and right(a.no_bayar,4)='$request->tahun' and SUBSTRING(a.no_bayar,11,2) ='$request->bulan' order by a.bulan_buku desc,a.no_bayar desc");
+            $data = DB::select("select a.no_bayar,a.kepada,a.bulan_buku,a.keterangan,a.lampiran,a.no_kas,a.app_pbd as app_pbd,a.app_sdm as app_sdm,(select sum(nilai) from umu_bayar_detail where no_bayar=a.no_bayar) as nilai from umu_bayar_header a where a.no_bayar like '$request->permintaan%' and right(a.no_bayar,4)='$request->tahun' and SUBSTRING(a.no_bayar,11,2) ='$request->bulan' order by a.no_bayar desc");
          }else{
              $data_tahunbulan = DB::select("select max(thnbln) as bulan_buku from timetrans where status='1' and length(thnbln)='6'");
              foreach($data_tahunbulan as $data_bul)
@@ -53,9 +45,55 @@ class PermintaanBayarController extends Controller
                  $bulan_buku = $data_bul->bulan_buku;
              }
              
-             $bayar_list = DB::select("select  a.no_bayar,a.kepada,a.bulan_buku,a.keterangan,a.lampiran,a.no_kas,a.app_pbd as app_pbd,a.app_sdm as app_sdm,(select sum(nilai) from umu_bayar_detail where no_bayar=a.no_bayar) as nilai from umu_bayar_header a where a.bulan_buku ='$bulan_buku' order by a.bulan_buku desc,a.no_bayar desc");
+             $data = DB::select("select  a.no_bayar,a.kepada,a.bulan_buku,a.keterangan,a.lampiran,a.no_kas,a.app_pbd as app_pbd,a.app_sdm as app_sdm,(select sum(nilai) from umu_bayar_detail where no_bayar=a.no_bayar) as nilai from umu_bayar_header a where a.bulan_buku ='$bulan_buku' order by a.no_bayar desc");
         }
-        return view('permintaan_bayar.index',compact('bayar_list'));
+
+        return datatables()->of($data)
+        ->addColumn('no_bayar', function ($data) {
+            return $data->no_bayar;
+       })
+        ->addColumn('no_kas', function ($data) {
+            return $data->no_kas;
+       })
+        ->addColumn('kepada', function ($data) {
+            return $data->kepada;
+       })
+        ->addColumn('keterangan', function ($data) {
+            return $data->keterangan;
+       })
+        ->addColumn('lampiran', function ($data) {
+            return $data->lampiran;
+       })
+       ->addColumn('nilai', function ($data) {
+            return 'Rp. '.number_format($data->nilai,2,'.',',');
+      })
+        ->addColumn('radio', function ($data) {
+            if($data->app_pbd == 'Y'){
+                $radio = '<label class="kt-radio kt-radio--bold kt-radio--brand"><input type="radio" class="btn-radio" data-s="Y" databayar="'.$data->no_bayar.'" data-id="'.str_replace('/', '-', $data->no_bayar).'" name="btn-radio" ><span></span></label>';
+           }else{
+               if($data->app_sdm == 'Y'){
+               $radio =  '<label class="kt-radio kt-radio--bold kt-radio--brand"><input type="radio" class="btn-radio" data-s="N" databayar="'.$data->no_bayar.'" data-id="'.str_replace('/', '-', $data->no_bayar).'" name="btn-radio"><span></span></label>';
+               }else{
+                $radio =  '<label  class="kt-radio kt-radio--bold kt-radio--brand"><input type="radio" class="btn-radio" data-s="N" databayar="'.$data->no_bayar.'" data-id="'.str_replace('/', '-', $data->no_bayar).'" name="btn-radio"><span></span></label>';
+               }
+           }
+            return $radio;
+        })
+        ->addColumn('action', function ($data) {
+            if($data->app_pbd == 'Y'){
+                $action = '<p align="center"><span style="font-size: 2em;" class="kt-font-success pointer-link" data-toggle="kt-tooltip" data-placement="top" title="Data Sudah di proses perbendaharaan"><i class="fas fa-check-circle" ></i></span></p>';
+            }else{
+                if($data->app_sdm == 'Y'){
+                    $action = '<p align="center"><a href="'. route('permintaan_bayar.approv',['id' => str_replace('/', '-', $data->no_bayar)]).'"><span style="font-size: 2em;" class="kt-font-warning pointer-link" data-toggle="kt-tooltip" data-placement="top" title="Batalkan Approval"><i class="fas fa-check-circle" ></i></span></a></p>';
+                }else{
+                    $action = '<p align="center"><a href="'. route('permintaan_bayar.approv',['id' => str_replace('/', '-', $data->no_bayar)]).'"><span style="font-size: 2em;" class="kt-font-danger pointer-link" data-toggle="kt-tooltip" data-placement="top" title="Klik untuk Approval"><i class="fas fa-ban" ></i></span></a></p>';
+                }
+            }
+            return $action;
+        })
+        ->rawColumns(['action','radio'])
+        ->make(true);
+
     }
     
     /**
