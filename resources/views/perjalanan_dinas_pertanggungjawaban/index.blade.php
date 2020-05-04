@@ -177,6 +177,43 @@
 			}
 		});
 
+		$('#exportRow').click(function(e) {
+			e.preventDefault();
+			if($('input[type=radio]').is(':checked')) { 
+				$("input[type=radio]:checked").each(function() {
+					var id = $(this).val();
+					
+					const swalWithBootstrapButtons = Swal.mixin({
+					customClass: {
+						confirmButton: 'btn btn-primary',
+						cancelButton: 'btn btn-danger'
+					},
+						buttonsStyling: false
+					})
+
+					swalWithBootstrapButtons.fire({
+						title: "Data yang akan dicetak?",
+						text: "No. PPanjar : " + id,
+						type: 'warning',
+						showCancelButton: true,
+						reverseButtons: true,
+						confirmButtonText: 'Cetak',
+						cancelButtonText: 'Batalkan'
+					})
+					.then((result) => {
+						if (result.value) {
+							var id = $(this).val().split("/").join("-");
+							// go to page edit
+							var url = "{{ url('umum/perjalanan_dinas/pertanggungjawaban/export') }}" + '/' + id;
+							window.open(url, '_blank');
+						}
+					});
+				});
+			} else {
+				swalAlertInit('cetak');
+			}
+		});
+
 	});
 	</script>
 @endsection
