@@ -1,5 +1,6 @@
 <?php
 
+
 /**
  * membuat set active di tiap class yang diisi route
  * @param [type] $uri    [description]
@@ -84,6 +85,7 @@ function pajak($nilai)
                 $pph21r = 0;
             }
         } else {
+            $sisapokok1 = $sisapokok;
             $pph21r = 0;
         }
         $pph21ok =  $pph21r;
@@ -101,3 +103,35 @@ function hitunghari($awal,$akhir)
     // konversi $beda kedalam hari
     return $bedahari = ($beda/24/60/60);
 }
+
+function stbbuku($sthnbln, $ssup)
+{
+    $data_rsbulan = DB::select("select * from timetrans where thnbln='$sthnbln' and suplesi='$ssup'");
+    if(!empty($data_rsbulan)){
+       return $stbbuku = 0;
+    }else{
+        foreach($data_rsbulan as $data_rs)
+        {
+            if($data_rs->status == 1){
+               return $stbbuku = 1;
+            }elseif($data_rs->status == 2){
+               return $stbbuku = 1;
+            }elseif($data_rs->status == 3){
+               return $stbbuku = 1;
+            }else{
+               return $stbbuku = 0;
+            }
+        }
+    }
+}
+
+function vbildb($vvals)
+{
+    if(isnull($vvals) or $vvals == 0){
+        return $vbildb = 0;
+    }else{
+        $src = $vvals;
+        return $vbildb = $src;
+    }
+}
+    

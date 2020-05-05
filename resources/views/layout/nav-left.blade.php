@@ -367,10 +367,22 @@
                     'penempatan_deposito.edit',
                 ); // isi nama semua route penempatan deposito
 
+
+                $rekaphariankas = array(
+                    'rekap_harian_kas.index',
+                    'rekap_harian_kas.search.index',
+                    'rekap_harian_kas.create',
+                    'rekap_harian_kas.edit',
+                ); // isi nama semua route penempatan deposito
+
+                $rekap_perbendaharaan = array_merge(
+                    $rekaphariankas
+                ); //isi nama Subdomain saldo
                 $perbendaharaan = array_merge(
                     $penerimaan_kas,
                     $saldo,
-                    $deposito
+                    $deposito,
+                    $rekap_perbendaharaan
                 ); // array merge semua submenu
             @endphp
 
@@ -1022,7 +1034,7 @@
                                 </span>
                             </a>
                         </li>
-                        <li class="kt-menu__item  kt-menu__item--submenu" aria-haspopup="true" data-ktmenu-submenu-toggle="hover">
+                        <li class="kt-menu__item kt-menu__item--submenu {{ set_active($rekap_perbendaharaan) }}" aria-haspopup="true" data-ktmenu-submenu-toggle="hover">
                             <a href="javascript:;" class="kt-menu__link kt-menu__toggle">
                                 <i class="kt-menu__link-bullet kt-menu__link-bullet--dot">
                                     <span></span>
@@ -1032,12 +1044,12 @@
                             </a>
                             <div class="kt-menu__submenu "><span class="kt-menu__arrow"></span>
                                 <ul class="kt-menu__subnav">
-                                    <li class="kt-menu__item " aria-haspopup="true">
-                                        <a href="custom/apps/user/list-default.html" class="kt-menu__link">
+                                    <li class="kt-menu__item kt-menu__item{{ set_active_submenu($rekaphariankas) }}" aria-haspopup="true">
+                                        <a href="{{ route('rekap_harian_kas.index') }}" class="kt-menu__link">
                                             <i class="kt-menu__link-bullet kt-menu__link-bullet--line">
                                                 <span></span>
                                             </i>
-                                            <span class="kt-menu__link-text">Rekap Harian</span>
+                                            <span class="kt-menu__link-text">Rekap Harian Kas</span>
                                         </a>
                                     </li>
                                     <li class="kt-menu__item " aria-haspopup="true">

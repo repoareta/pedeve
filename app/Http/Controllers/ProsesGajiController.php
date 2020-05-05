@@ -68,7 +68,7 @@ class ProsesGajiController extends Controller
             ->where('bulan',$data_bulan)->count();
 
             if($data >= 1 ){
-                Alert::error("Bulan $data_bulan dan tahun $data_tahun yang dimasukan sudah pernah di proses", 'Error')->persistent(true);
+                Alert::Info("Bulan $data_bulan dan tahun $data_tahun yang dimasukan sudah pernah di proses", 'Info')->persistent(true);
                 return redirect()->route('proses_gaji.index')->with(['proses' => 'proses']);
             }else{
                     if($request->prosesupah == 'A'){
@@ -4951,56 +4951,19 @@ class ProsesGajiController extends Controller
                         Alert::success('Proses pembatalan proses Upah selesai', 'Berhasil')->persistent(true);
                         return redirect()->route('proses_gaji.index');
                     }else {
-                        Alert::error('Tidak bisa dibatalkan, Data Upah sudah di proses perbendaharaan', 'Error')->persistent(true);
+                        Alert::Info('Tidak bisa dibatalkan, Data Upah sudah di proses perbendaharaan', 'Info')->persistent(true);
                         return redirect()->route('proses_gaji.index');
                     }
                 }
             }else {
-                Alert::error("Tidak ditemukan data upah bulan $data_bulan dan tahun $data_tahun ", 'Error')->persistent(true);
+                Alert::Info("Tidak ditemukan data upah bulan $data_bulan dan tahun $data_tahun ", 'Info')->persistent(true);
                 return redirect()->route('proses_gaji.index');
             }
         }
 
     } 
 
-    /**
-     * Display the specified resource.
-     *
-     * @param  int  $id
-     * @return \Illuminate\Http\Response
-     */
     
-    /**
-     * Show the form for editing the specified resource.
-     *
-     * @param  int  $id
-     * @return \Illuminate\Http\Response
-     */
-    
-    /**
-     * Update the specified resource in storage.
-     *
-     * @param  \Illuminate\Http\Request  $request
-     * @param  int  $id
-     * @return \Illuminate\Http\Response
-     */
-    public function update(Request $request, $id)
-    {
-        //
-    }
-
-    /**
-     * Remove the specified resource from storage.
-     *
-     * @param  int  $id
-     * @return \Illuminate\Http\Response
-     */
-    public function destroy($id)
-    {
-        //
-    }
-
-
     public function slipGaji()
     {
         $data_pegawai = DB::select("select nopeg,nama,status,nama from sdm_master_pegawai where status <>'P' order by nopeg");	
@@ -5046,7 +5009,7 @@ class ProsesGajiController extends Controller
             sum(CASE WHEN a.aard ='06'  THEN round(a.nilai,0) ELSE '0' END) as a_fc,
             sum(CASE WHEN a.aard ='05'  THEN round(a.nilai,0) ELSE '0' END) as a_lem,
             sum(CASE WHEN a.aard ='07'  THEN round(a.nilai,0) ELSE '0' END) as a_sbl,
-            sum(CASE WHEN a.aard in ('32','34','35','37','38')  THEN round(a.nilai,0) ELSE '0' END) as a_koreksi,
+            sum(CASE WHEN a.aard in ('32','34','35','37','38')  THEN round(a.nilai,0)*-1 ELSE '0' END) as a_koreksi,
             (case when b.KODEKELUARGA ='201' THEN 'K/1' when b.KODEKELUARGA ='202' THEN 'K/2' when b.KODEKELUARGA ='203' THEN 'K/3' when b.KODEKELUARGA ='200' THEN 'K/0' when b.KODEKELUARGA ='100' THEN '-/-' else '-/-' end) as a_kdkeluarga,
             sum(CASE WHEN a.aard ='27'  THEN round(a.nilai,0) ELSE '0' END) as a_tunpj,
             sum(CASE WHEN a.aard ='09'  THEN round(a.nilai,0) ELSE '0' END) as iuranjm,
@@ -5079,7 +5042,7 @@ class ProsesGajiController extends Controller
             sum(CASE WHEN a.aard ='06'  THEN round(a.nilai,0) ELSE '0' END) as a_fc,
             sum(CASE WHEN a.aard ='05'  THEN round(a.nilai,0) ELSE '0' END) as a_lem,
             sum(CASE WHEN a.aard ='07'  THEN round(a.nilai,0) ELSE '0' END) as a_sbl,
-            sum(CASE WHEN a.aard in ('32','34','35','38')  THEN round(a.nilai,0) ELSE '0' END) as a_koreksi,
+            sum(CASE WHEN a.aard in ('32','34','35','38')  THEN round(a.nilai,0)*-1 ELSE '0' END) as a_koreksi,
             (case when b.KODEKELUARGA ='201' THEN 'K/1' when b.KODEKELUARGA ='202' THEN 'K/2' when b.KODEKELUARGA ='203' THEN 'K/3' when b.KODEKELUARGA ='200' THEN 'K/0' when b.KODEKELUARGA ='100' THEN '-/-' else '-/-' end) as a_kdkeluarga,
             sum(CASE WHEN a.aard ='27'  THEN round(a.nilai,0) ELSE '0' END) as tunpj,
             sum(CASE WHEN a.aard ='09'  THEN round(a.nilai,0) ELSE '0' END) as iuranjm,
@@ -5112,7 +5075,7 @@ class ProsesGajiController extends Controller
             sum(CASE WHEN a.aard ='06'  THEN round(a.nilai,0) ELSE '0' END) as a_fc,
             sum(CASE WHEN a.aard ='05'  THEN round(a.nilai,0) ELSE '0' END) as a_lem,
             sum(CASE WHEN a.aard ='07'  THEN round(a.nilai,0) ELSE '0' END) as a_sbl,
-            sum(CASE WHEN a.aard in ('32','34','35','45')  THEN round(a.nilai,0) ELSE '0' END) as a_koreksi,
+            sum(CASE WHEN a.aard in ('32','34','35','45')  THEN round(a.nilai,0)*-1 ELSE '0' END) as a_koreksi,
             (case when b.KODEKELUARGA ='201' THEN 'K/1' when b.KODEKELUARGA ='202' THEN 'K/2' when b.KODEKELUARGA ='203' THEN 'K/3' when b.KODEKELUARGA ='200' THEN 'K/0' when b.KODEKELUARGA ='100' THEN '-/-' else '-/-' end) as a_kdkeluarga,
             sum(CASE WHEN a.aard ='27'  THEN round(a.nilai,0) ELSE '0' END) as tunpj,
             sum(CASE WHEN a.aard ='09'  THEN round(a.nilai,0) ELSE '0' END) as iuranjm,
@@ -5143,7 +5106,7 @@ class ProsesGajiController extends Controller
         }elseif ($request->prosesupah == 'U') {
             $data_list = db::select("select a.nopek,b.nama,d.nama as nmbag,d.kode ,
             sum(CASE WHEN a.aard ='02'  THEN round(a.nilai,0) ELSE '0' END) as a_upah,
-            sum(CASE WHEN a.aard in ('32')  THEN round(a.nilai,0) ELSE '0' END) as a_koreksi,
+            sum(CASE WHEN a.aard in ('32')  THEN round(a.nilai,0)*-1 ELSE '0' END) as a_koreksi,
             (case when b.KODEKELUARGA ='201' THEN 'K/1' when b.KODEKELUARGA ='202' THEN 'K/2' when b.KODEKELUARGA ='203' THEN 'K/3' when b.KODEKELUARGA ='200' THEN 'K/0' when b.KODEKELUARGA ='100' THEN '-/-' else '-/-' end) as a_kdkeluarga,
             sum(CASE WHEN a.aard ='27'  THEN round(a.nilai,0) ELSE '0' END) as tunpj,
             sum(CASE WHEN a.aard ='26'  THEN round(a.nilai,0) ELSE '0' END) as pot_pajak,
@@ -5165,7 +5128,7 @@ class ProsesGajiController extends Controller
         }else{
             $data_list = db::select("select a.nopek,b.nama,d.nama as nmbag,d.kode ,
             sum(CASE WHEN a.aard ='02'  THEN round(a.nilai,0) ELSE '0' END) as a_upah,
-            sum(CASE WHEN a.aard in ('32')  THEN round(a.nilai,0) ELSE '0' END) as a_koreksi,
+            sum(CASE WHEN a.aard in ('32')  THEN round(a.nilai,0)*-1 ELSE '0' END) as a_koreksi,
             (case when b.KODEKELUARGA ='201' THEN 'K/1' when b.KODEKELUARGA ='202' THEN 'K/2' when b.KODEKELUARGA ='203' THEN 'K/3' when b.KODEKELUARGA ='200' THEN 'K/0' when b.KODEKELUARGA ='100' THEN '-/-' else '-/-' end) as a_kdkeluarga,
             sum(CASE WHEN a.aard ='27'  THEN round(a.nilai,0) ELSE '0' END) as tunpj,
             sum(CASE WHEN a.aard ='26'  THEN round(a.nilai,0) ELSE '0' END) as pot_pajak,

@@ -477,7 +477,7 @@ class UangMukaKerjaController extends Controller
 
     public function rekapExportRange(Request $request)
     {
-        $data_cek = Umk::whereBetween('tgl_panjar', [$request->mulai, $request->sampai]) ->where('app_pbd', 'Y')->count();
+        $data_cek = Umk::whereBetween('tgl_panjar', [$request->mulai, $request->sampai])->count();
         if ($data_cek == 0) {
             Alert::error('Tidak Ada Data Pada Tanggal Mulai: '.$request->mulai.' Sampai Tanggal: '.$request->sampai.'', 'Failed')->persistent(true);
             return redirect()->route('permintaan_bayar.rekap.range');
@@ -503,11 +503,11 @@ class UangMukaKerjaController extends Controller
                 
                 $bulan= strtoupper($array_bln[ (int)$pecahkan[1] ]);
                 $tahun=$pecahkan[0];
-                $umk_header_list = Umk::whereBetween('tgl_panjar', [$mulai, $sampai])->where('app_pbd', 'Y')
+                $umk_header_list = Umk::whereBetween('tgl_panjar', [$mulai, $sampai])
                 ->get();
                 // dd($umk_header_list);
                 $list_acount =Umk::whereBetween('tgl_panjar', [$mulai, $sampai])
-                ->where('app_pbd', 'Y')->select('jumlah')->sum('jumlah');
+                ->select('jumlah')->sum('jumlah');
                 $pdf = PDF::loadview('umk.exportrange', compact('umk_header_list', 'list_acount', 'bulan', 'tahun'))->setPaper('a4', 'landscape');
                 $pdf->output();
                 $dom_pdf = $pdf->getDomPDF();
@@ -537,10 +537,10 @@ class UangMukaKerjaController extends Controller
                 
                 $bulan= strtoupper($array_bln[ (int)$pecahkan[1] ]);
                 $tahun=$pecahkan[0];
-                $umk_header_list = Umk::whereBetween('tgl_panjar', [$mulai, $sampai])->where('app_pbd', 'Y')
+                $umk_header_list = Umk::whereBetween('tgl_panjar', [$mulai, $sampai])
                 ->get();
                 $list_acount =Umk::whereBetween('tgl_panjar', [$mulai, $sampai])
-                ->where('app_pbd', 'Y')->select('jumlah')->sum('jumlah');
+                ->select('jumlah')->sum('jumlah');
                 $excel=new Spreadsheet;
                 return view('umk.exportexcel', compact('umk_header_list', 'list_acount', 'excel', 'bulan', 'tahun'));
             } else {
@@ -564,10 +564,10 @@ class UangMukaKerjaController extends Controller
                 
                 $bulan= strtoupper($array_bln[ (int)$pecahkan[1] ]);
                 $tahun=$pecahkan[0];
-                $umk_header_list = Umk::whereBetween('tgl_panjar', [$mulai, $sampai])->where('app_pbd', 'Y')
+                $umk_header_list = Umk::whereBetween('tgl_panjar', [$mulai, $sampai])
                 ->get();
                 $list_acount =Umk::whereBetween('tgl_panjar', [$mulai, $sampai])
-                ->where('app_pbd', 'Y')->select('jumlah')->sum('jumlah');
+                ->select('jumlah')->sum('jumlah');
                 $excel=new Spreadsheet;
                 return view('umk.exportcsv', compact('umk_header_list', 'list_acount', 'excel', 'bulan', 'tahun'));
             }

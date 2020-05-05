@@ -45,8 +45,22 @@
         <!-- pegawai tetap -->
             <table width="100%" >
                 <?php 
-                    $tgl = date_create("$request->tahun-$request->bulan-01");
-                    $bulan =  date_format($tgl, 'F');
+                    $array_bln	 = array (
+                        1 =>   'Januari',
+                        'Februari',
+                        'Maret',
+                        'April',
+                        'Mei',
+                        'Juni',
+                        'Juli',
+                        'Agustus',
+                        'September',
+                        'Oktober',
+                        'November',
+                        'Desember'
+                    );
+                    
+                    $bulan= strtoupper($array_bln[$request->bulan]);
                 ?>
                 <tr>
                     <td align="left" style="padding-left:100px;font-family: sans-serif">

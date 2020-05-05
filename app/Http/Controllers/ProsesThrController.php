@@ -63,18 +63,10 @@ class ProsesThrController extends Controller
             }else{
                 $data_Cekthr = DB::select("select * from pay_master_thr where tahun='$tahun' and bulan='$bulan' and status='$prosesupah'");
             }
-            if(!empty($data_Cekthr)){
-                foreach($data_Cekthr as $data_cek)
-                {
-                    $cek = 1;
-                }
-            }else {
-                $cek = 0;
-            }
 
             // Cek THR
-            if($cek == 1){
-                Alert::error("Data THR bulan $bulan dan tahun $tahun sudah pernah di proses", 'Error')->persistent(true);
+            if(!empty($data_Cekthr)){
+                Alert::Info("Data THR bulan $bulan dan tahun $tahun sudah pernah di proses", 'Info')->persistent(true);
                 return redirect()->route('proses_thr.index');
             }else {
                
@@ -258,6 +250,7 @@ class ProsesThrController extends Controller
                             }else {
                                 $pph21rpt = 0;
                             }
+                                $sisapokok1pt = $sisapokokpt;
                                 $sisapokokpt = $sisapokok1pt - $rangept;
                                 $pph21okpt =  $pph21rpt;
                                 $pajakbulanpt = pajak($nilaikenapajakapt);
@@ -1721,15 +1714,7 @@ class ProsesThrController extends Controller
                         }else{
                             $data_Cekbatal = DB::select("select * from pay_master_thr where tahun='$tahun' and bulan='$bulan' and status='$prosesupah'");
                         }
-                        if(!empty($data_Cekbatal)){
-                            foreach($data_Cekbatal as $data_cek)
-                            {
-                                $cek = 1;
-                            }
-                        }else {
-                            $cek = 0;
-                        }
-                            if($cek == 1){
+                            if(!empty($data_Cekbatal)){
                                     if($prosesupah == 'A'){
                                         PayMasterThr::where('tahun', $tahun)->where('bulan',$bulan)->delete();
                                         StatBayarThr::where('tahun', $tahun)->where('bulan',$bulan)->delete();
@@ -1743,71 +1728,20 @@ class ProsesThrController extends Controller
                                     Alert::success("Proses pembatalan proses THR selesai", 'Berhasil')->persistent(true);
                                     return redirect()->route('proses_thr.index');
                             }else {
-                                    Alert::error("Tidak ditemukan data THR bulan $bulan dan tahun $tahun", 'Error')->persistent(true);
+                                    Alert::Info("Tidak ditemukan data THR bulan $bulan dan tahun $tahun", 'Info')->persistent(true);
                                     return redirect()->route('proses_thr.index');
                             }
 
                     }else {
-                        Alert::error("Tidak bisa dibatalkan Data THR bulan $bulan tahun $tahun sudah di proses perbendaharaan", 'Error')->persistent(true);
+                        Alert::Info("Tidak bisa dibatalkan Data THR bulan $bulan tahun $tahun sudah di proses perbendaharaan", 'Info')->persistent(true);
                         return redirect()->route('proses_thr.index');
                     }
             }else{
-                    Alert::error("Tidak ditemukan data THR bulan $bulan dan tahun $tahun", 'Error')->persistent(true);
+                    Alert::Info("Tidak ditemukan data THR bulan $bulan dan tahun $tahun", 'Info')->persistent(true);
                     return redirect()->route('proses_thr.index');
             }
 
         }
-
-
-
-
-
-
-    }
-
-    /**
-     * Display the specified resource.
-     *
-     * @param  int  $id
-     * @return \Illuminate\Http\Response
-     */
-    public function show($id)
-    {
-        //
-    }
-
-    /**
-     * Show the form for editing the specified resource.
-     *
-     * @param  int  $id
-     * @return \Illuminate\Http\Response
-     */
-    public function edit($id)
-    {
-        //
-    }
-
-    /**
-     * Update the specified resource in storage.
-     *
-     * @param  \Illuminate\Http\Request  $request
-     * @param  int  $id
-     * @return \Illuminate\Http\Response
-     */
-    public function update(Request $request, $id)
-    {
-        //
-    }
-
-    /**
-     * Remove the specified resource from storage.
-     *
-     * @param  int  $id
-     * @return \Illuminate\Http\Response
-     */
-    public function destroy($id)
-    {
-        //
     }
 
 

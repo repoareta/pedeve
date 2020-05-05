@@ -656,5 +656,21 @@ Route::group(['middleware'=> ['auth','checkRole:1']], function () {
             Route::post('penempatan_deposito/updatedepopjg', 'PenempatanDepositoController@updatedepopjg')->name('updatedepopjg');
         });
         //end penempatan_deposito
+
+
+        //Rekap Harian Kas
+        // Route assigned name "rekap_harian_kas.index"...
+        Route::name('rekap_harian_kas.')->group(function () {
+            Route::get('rekap_harian_kas', 'RekapHarianKasController@index')->name('index');
+            Route::post('rekap_harian_kas/search', 'RekapHarianKasController@searchIndex')->name('search.index');
+            Route::post('rekap_harian_kas/jeniskartu/json', 'RekapHarianKasController@JeniskaruJson')->name('jenis.kartu.json');
+            Route::post('rekap_harian_kas/nokas/json', 'RekapHarianKasController@NokasJson')->name('nokas.json');
+            Route::get('rekap_harian_kas/create', 'RekapHarianKasController@create')->name('create');
+            Route::post('rekap_harian_kas/store', 'RekapHarianKasController@store')->name('store');
+            Route::get('rekap_harian_kas/edit/{nodok}/{lineno}/{pjg}', 'RekapHarianKasController@edit')->name('edit');
+            Route::post('rekap_harian_kas/update', 'RekapHarianKasController@update')->name('update');
+            Route::delete('rekap_harian_kas/delete', 'RekapHarianKasController@delete')->name('delete');
+        });
+        //end rekap_harian_kas
     });
 });
