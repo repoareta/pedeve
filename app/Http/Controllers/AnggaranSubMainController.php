@@ -73,7 +73,7 @@ class AnggaranSubMainController extends Controller
                 return currency_idr($row->nilai_real);
             })
             ->addColumn('action', function ($row) {
-                $radio = '<label class="kt-radio kt-radio--bold kt-radio--brand"><input type="radio" name="radio1" value="'.$row->kode_submain.'"><span></span></label>';
+                $radio = '<label class="kt-radio kt-radio--bold kt-radio--brand"><input type="radio" name="radio1" value="'.$row->kode_main.'-'.$row->kode_submain.'"><span></span></label>';
                 return $radio;
             })
             ->rawColumns(['action', 'sub_anggaran'])
@@ -85,9 +85,10 @@ class AnggaranSubMainController extends Controller
      *
      * @return \Illuminate\Http\Response
      */
-    public function create($kode_main)
+    public function create()
     {
-        return view('anggaran_submain.create', compact('kode_main'));
+        $anggaran_main_list = AnggaranMain::all();
+        return view('anggaran_submain.create', compact('anggaran_main_list'));
     }
 
     /**
@@ -123,8 +124,9 @@ class AnggaranSubMainController extends Controller
      */
     public function edit($kode_main, $kode_submain)
     {
+        $anggaran_main_list = AnggaranMain::all();
         $anggaran = AnggaranSubMain::find($kode_submain);
-        return view('anggaran_submain.edit', compact('anggaran', 'kode_main', 'kode_submain'));
+        return view('anggaran_submain.edit', compact('anggaran', 'kode_main', 'kode_submain', 'anggaran_main_list'));
     }
 
     /**
@@ -144,8 +146,8 @@ class AnggaranSubMainController extends Controller
         $anggaran->kode_submain = $request->kode;
         $anggaran->nama_submain = $request->nama;
         $anggaran->nilai = $request->nilai;
-        $anggaran->nilai_real = $request->nilai_real;
-        $anggaran->inputdate = date('Y-m-d H:i:s');
+        // $anggaran->nilai_real = $request->nilai_real;
+        // $anggaran->inputdate = date('Y-m-d H:i:s');
         $anggaran->inputuser = Auth::user()->userid;
         $anggaran->tahun = $request->tahun;
 
@@ -171,7 +173,5 @@ class AnggaranSubMainController extends Controller
         if ($anggaran) {
             return response()->json();
         }
-
-        dd($anggaran);
     }
 }

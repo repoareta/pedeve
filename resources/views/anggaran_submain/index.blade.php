@@ -153,12 +153,13 @@
 			e.preventDefault();
 			if($('input[type=radio]').is(':checked')) { 
 				$("input[type=radio]:checked").each(function() {
-					var id = $(this).val().split("/").join("-");
+					var kode_main = $(this).val().split("-")[0];
+					var kode_submain = $(this).val().split("-")[1];
 					var url = '{{ route("anggaran.submain.edit", [":kode_main", ":kode_submain"]) }}';
 					// go to page edit
 					window.location.href = url
-					.replace(':kode_main', "{{ 123 }}")
-					.replace(':kode_submain', id);
+					.replace(':kode_main', kode_main)
+					.replace(':kode_submain', kode_submain);
 				});
 			} else {
 				swalAlertInit('ubah');
