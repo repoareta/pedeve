@@ -63,19 +63,8 @@ class ProsesInsentifController extends Controller
                 }else{
                     $data_Cekinsentif = DB::select("select * from pay_master_insentif where tahun='$data_tahun' and bulan='$data_bulan' and status='$prosesupah'");
                 }
-                if(!empty($data_Cekinsentif)){
-                    foreach($data_Cekinsentif as $data_cek)
-                    {
-                        $cek = 1;
-                    }
-                }else {
-                    $cek = 0;
-                }
-                
-
-
-                if($cek == 1){ //di rubah !
-                        Alert::error("Data Insentif bulan $data_bulan dan tahun $data_tahun sudah pernah di proses", 'Error')->persistent(true);
+                if(!empty($data_Cekinsentif)){ //di rubah !
+                        Alert::Info("Data Insentif bulan $data_bulan dan tahun $data_tahun sudah pernah di proses", 'Info')->persistent(true);
                         return redirect()->route('proses_insentif.index');
                 }else{
                         if($request->prosesupah == 'A'){
@@ -167,7 +156,7 @@ class ProsesInsentifController extends Controller
                                             foreach($data_koreksigajipt as $data_koreksigpt)
                                             {
                                                 if($data_koreksigpt->kortam <> ""){
-                                                    $kortampt = $data_koreksigpt->kortampt;
+                                                    $kortampt = $data_koreksigpt->kortam;
                                                 }else {
                                                     $kortampt = '0';
                                                 }
@@ -299,7 +288,7 @@ class ProsesInsentifController extends Controller
                                             'tahun' => $data_tahun,
                                             'bulan' => $data_bulan,
                                             'nopek' => $nopegpt,
-                                            'aard' => 24,
+                                            'aard' => 19,
                                             'nilai' => $potonganinsentifpt,
                                             'tahunins' => $tahuns,
                                             'status' => 'C',
@@ -310,7 +299,7 @@ class ProsesInsentifController extends Controller
                                             'tahun' => $data_tahun,
                                             'bulan' => $data_bulan,
                                             'nopek' => $nopegpt,
-                                            'aard' => 19,
+                                            'aard' => 24,
                                             'nilai' => $insentifpt,
                                             'tahunins' => $tahuns,
                                             'status' => 'C',
@@ -609,7 +598,7 @@ class ProsesInsentifController extends Controller
                                              foreach($data_koreksigajipt as $data_koreksigpt)
                                              {
                                                  if($data_koreksigpt->kortam <> ""){
-                                                     $kortampt = $data_koreksigpt->kortampt;
+                                                     $kortampt = $data_koreksigpt->kortam;
                                                  }else {
                                                      $kortampt = '0';
                                                  }
@@ -741,7 +730,7 @@ class ProsesInsentifController extends Controller
                                              'tahun' => $data_tahun,
                                              'bulan' => $data_bulan,
                                              'nopek' => $nopegpt,
-                                             'aard' => 24,
+                                             'aard' => 19,
                                              'nilai' => $potonganinsentifpt,
                                              'tahunins' => $tahuns,
                                              'status' => 'C',
@@ -752,7 +741,7 @@ class ProsesInsentifController extends Controller
                                              'tahun' => $data_tahun,
                                              'bulan' => $data_bulan,
                                              'nopek' => $nopegpt,
-                                             'aard' => 19,
+                                             'aard' => 24,
                                              'nilai' => $insentifpt,
                                              'tahunins' => $tahuns,
                                              'status' => 'C',
@@ -999,15 +988,7 @@ class ProsesInsentifController extends Controller
                         }else{
                             $data_Cekinsentif = DB::select("select * from pay_master_insentif where tahun='$data_tahun' and bulan='$data_bulan' and status='$prosesupah'");
                         }
-                        if(!empty($data_Cekinsentif)){
-                            foreach($data_Cekinsentif as $data_cek)
-                            {
-                                $cek = 1;
-                            }
-                        }else {
-                            $cek = 0;
-                        }
-                            if($cek == 1){
+                            if(!empty($data_Cekinsentif)){
                                     if($request->prosesupah == 'A'){
                                         PayMasterInsentif::where('tahun', $data_tahun)->where('bulan',$data_bulan)->delete();
                                         StatBayarInsentif::where('tahun', $data_tahun)->where('bulan',$data_bulan)->delete();
@@ -1019,66 +1000,20 @@ class ProsesInsentifController extends Controller
                                     Alert::success("Proses pembatalan proses Insentif selesai", 'Berhasil')->persistent(true);
                                     return redirect()->route('proses_insentif.index');
                             }else {
-                                    Alert::error("Tidak ditemukan data insentif bulan $data_bulan dan tahun $data_tahun", 'Error')->persistent(true);
+                                    Alert::info("Tidak ditemukan data insentif bulan $data_bulan dan tahun $data_tahun", 'Info')->persistent(true);
                                     return redirect()->route('proses_insentif.index');
                             }
 
                     }else {
-                        Alert::error("Tidak bisa dibatalkan Data Insentif bulan $data_bulan tahun $data_tahun sudah di proses perbendaharaan", 'Error')->persistent(true);
+                        Alert::info("Tidak bisa dibatalkan Data Insentif bulan $data_bulan tahun $data_tahun sudah di proses perbendaharaan", 'Info')->persistent(true);
                         return redirect()->route('proses_insentif.index');
                     }
             }else{
-                    Alert::error("Tidak ditemukan data insentif bulan $data_bulan dan tahun $data_tahun", 'Error')->persistent(true);
+                    Alert::Info("Tidak ditemukan data insentif bulan $data_bulan dan tahun $data_tahun", 'Info')->persistent(true);
                     return redirect()->route('proses_insentif.index');
             }
         }
     }
-
-    /**
-     * Display the specified resource.
-     *
-     * @param  int  $id
-     * @return \Illuminate\Http\Response
-     */
-    public function show($id)
-    {
-        //
-    }
-
-    /**
-     * Show the form for editing the specified resource.
-     *
-     * @param  int  $id
-     * @return \Illuminate\Http\Response
-     */
-    public function edit($id)
-    {
-        //
-    }
-
-    /**
-     * Update the specified resource in storage.
-     *
-     * @param  \Illuminate\Http\Request  $request
-     * @param  int  $id
-     * @return \Illuminate\Http\Response
-     */
-    public function update(Request $request, $id)
-    {
-        //
-    }
-
-    /**
-     * Remove the specified resource from storage.
-     *
-     * @param  int  $id
-     * @return \Illuminate\Http\Response
-     */
-    public function destroy($id)
-    {
-        //
-    }
-
 
     public function ctkslipinsentif()
     {

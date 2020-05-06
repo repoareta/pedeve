@@ -29,21 +29,21 @@ class InformasiSaldoController extends Controller
             {
                 $maxtglrek = $data_s->maxtglrek;
                 $tglnow = $data_s->tglnow;
-    
-            }
-            if(!empty($request->tanggal)){
-                if($request->tanggal < $tglnow){  //kalo melihat saldo di tanggal sebelumnya
-                    $data =  DB::select("select a.saldoawal as sa,a.debet as db,a.kredit as kr,a.saldoakhir as ak, b.kodestore,b.jeniskartu from rekapkas a,storejk b where a.store=b.kodestore and a.jk=b.jeniskartu  and a.tglrekap = (select max(c.tglrekap) from rekapkas c,storejk d where to_char( a.tglrekap,'yyyy-mm-dd') < '$request->tanggal' and c.store=d.kodestore and c.jk=d.jeniskartu )");
+                if(!empty($request->tanggal)){
+                    if($request->tanggal < $tglnow){  //kalo melihat saldo di tanggal sebelumnya
+                        $data =  DB::select("select a.saldoawal as sa,a.debet as db,a.kredit as kr,a.saldoakhir as ak, b.kodestore,b.jeniskartu from rekapkas a,storejk b where a.store=b.kodestore and a.jk=b.jeniskartu  and a.tglrekap = (select max(c.tglrekap) from rekapkas c,storejk d where to_char( a.tglrekap,'yyyy-mm-dd') < '$request->tanggal' and c.store=d.kodestore and c.jk=d.jeniskartu )");
+                    }else{
+                        if($maxtglrek == $tglnow){  //kalo pada hari ini udah direkap
+                            $data =   DB::select("select a.saldoawal as sa,a.debet as db,a.kredit as kr,a.saldoakhir as ak, b.kodestore,b.jeniskartu from rekapkas a,storejk b where a.store=b.kodestore and a.jk=b.jeniskartu  and a.tglrekap ='$maxtglrek')");
+                        }else{    //kalo belum direkap
+                            $data =   DB::select("select a.saldoawal as sa,a.debet as db,a.kredit as kr,a.saldoakhir as ak, b.kodestore,b.jeniskartu from rekapkas a,storejk b where a.store=b.kodestore and a.jk=b.jeniskartu ");
+                        }
+                    }  
                 }else{
-                    if($maxtglrek == $tglnow){  //kalo pada hari ini udah direkap
-                        $data =   DB::select("select a.saldoawal as sa,a.debet as db,a.kredit as kr,a.saldoakhir as ak, b.kodestore,b.jeniskartu from rekapkas a,storejk b where a.store=b.kodestore and a.jk=b.jeniskartu  and a.tglrekap ='$maxtglrek')");
-                    }else{    //kalo belum direkap
-                        $data =   DB::select("select a.saldoawal as sa,a.debet as db,a.kredit as kr,a.saldoakhir as ak, b.kodestore,b.jeniskartu from rekapkas a,storejk b where a.store=b.kodestore and a.jk=b.jeniskartu ");
-                    }
-                }  
-            }else{
-                $data =  DB::select("select a.saldoawal as sa,a.debet as db,a.kredit as kr,a.saldoakhir as ak, b.kodestore,b.jeniskartu from rekapkas a,storejk b where a.store=b.kodestore and a.jk=b.jeniskartu  and a.tglrekap = (select max(c.tglrekap) from rekapkas c,storejk d where to_char( a.tglrekap,'yyyy-mm-dd') = '$maxtglrek' and c.store=d.kodestore and c.jk=d.jeniskartu )");
-
+                    $data =  DB::select("select a.saldoawal as sa,a.debet as db,a.kredit as kr,a.saldoakhir as ak, b.kodestore,b.jeniskartu from rekapkas a,storejk b where a.store=b.kodestore and a.jk=b.jeniskartu  and a.tglrekap = (select max(c.tglrekap) from rekapkas c,storejk d where to_char( a.tglrekap,'yyyy-mm-dd') = '$maxtglrek' and c.store=d.kodestore and c.jk=d.jeniskartu )");
+    
+                }
+    
             }
      
                 return datatables()->of($data)

@@ -60,7 +60,7 @@
         </header>
         <!-- Wrap the content of your PDF inside a main tag -->
         <main>
-            <table width="100%"  border="1" style="margin-top:30px;width:100%;border-collapse: collapse;" class="table">
+            <table width="100%"  border="1" style="margin-top:30px;width:100%;border-collapse: collapse;font-size: 10pt;" class="table">
             <thead>
                 <tr>
                     <th>NO</th>
@@ -88,7 +88,7 @@
             </tbody>
             </table>
         </main>
-        <table  width="100%" style="font-weight: bold">
+        <table  width="100%" style="font-weight: bold;font-size: 10pt;">
             <thead>
                 <tr>
                     <td align="right">TOTAL : Rp. </td>

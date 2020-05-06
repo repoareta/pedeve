@@ -62,21 +62,26 @@
 					</div>
 				</div>
 				<div class="form-group row">
+					<?php 
+						$tgl = date_create(now());
+						$bulantahun = date_format($tgl, 'm/Y'); 
+						$tahun = date_format($tgl, 'Y'); 
+					?>
 					<label for="nopek-input" class="col-2 col-form-label">Bulan/Tahun<span style="color:red;">*</span></label>
 					<div class="col-10">
-						<input class="form-control" type="text" name="tanggal" value="" id="tanggal" size="7" maxlength="7" required  autocomplete='off' oninvalid="this.setCustomValidity('Bulan/Tahun Harus Diisi..')" onchange="setCustomValidity('')">
+						<input class="form-control" type="text" name="tanggal" value="{{$bulantahun}}" id="tanggal" size="7" maxlength="7" required  autocomplete='off' oninvalid="this.setCustomValidity('Bulan/Tahun Harus Diisi..')" onchange="setCustomValidity('')">
 					</div>
 				</div>
 				<div class="form-group row">
-					<label for="nopek-input" class="col-2 col-form-label">Tahun Insentif</label>
+					<label for="nopek-input" class="col-2 col-form-label">Tahun Insentif<span style="color:red;">*</span></label>
 					<div class="col-10">
-						<input class="form-control" type="text" name="tahun" value=""  size="4" maxlength="4"  autocomplete='off' onkeypress="return hanyaAngka(event)">
+						<input class="form-control" type="text" name="tahun" value="{{$tahun}}"  size="4" maxlength="4"  autocomplete='off' required onkeypress="return hanyaAngka(event)" oninvalid="this.setCustomValidity('Tahun Insentif Harus Diisi..')" oninput="setCustomValidity('')">
 					</div>
 				</div>
 				<div class="form-group row">
-					<label for="nopek-input" class="col-2 col-form-label">Upah Tetap/All In</label>
+					<label for="nopek-input" class="col-2 col-form-label">Upah Tetap/All In<span style="color:red;">*</span></label>
 					<div class="col-10">
-						<input class="form-control" type="text" name="upah" value=""  size="4" maxlength="4"   autocomplete='off' onkeypress="return hanyaAngka(event)">
+						<input class="form-control" type="text" name="upah" value=""  size="4" maxlength="4"   autocomplete='off' required onkeypress="return hanyaAngka(event)" oninvalid="this.setCustomValidity('Upah Tetap/All In Harus Diisi..')" oninput="setCustomValidity('')">
 					</div>
 				</div>
 				<div class="form-group row">
@@ -86,12 +91,19 @@
 					</div>
 				</div>
 
-
 				<div class="form-group row">
-					<label for="spd-input" class="col-2 col-form-label"></label>
-					<div class="col-5">
-						<input id="ci"   style=" width: 26px;height: 26px;margin-left:50px;" value="proses" type="radio"  name="radioupah"  checked />  <label style="font-size:14px; margin-left:10px;">Proses</label>
-						<input  id="ci" style=" width: 26px;height: 26px;margin-left:50px;" value="batal" type="radio"    name="radioupah"  /><label style="font-size:14px; margin-left:10px;"> Batalkan</label>
+					<label for="" class="col-2 col-form-label"></label>
+					<div class="col-8">
+						<div class="kt-radio-inline">
+							<label class="kt-radio kt-radio--solid">
+								<input value="proses" type="radio"  name="radioupah" checked> PROSES
+								<span></span>
+							</label>
+							<label class="kt-radio kt-radio--solid">
+								<input value="batal" type="radio"    name="radioupah"> BATALKAN
+								<span></span>
+							</label>
+						</div>
 					</div>
 				</div>
 				<div class="kt-form__actions">

@@ -66,19 +66,31 @@
 					</div>
 				</div>
 				<div class="form-group row">
+					<?php 
+						$tgl = date_create(now());
+						$bulantahun = date_format($tgl, 'm/Y'); 
+					?>
 					<label for="nopek-input" class="col-2 col-form-label">Bulan/Tahun<span style="color:red;">*</span></label>
 					<div class="col-10">
-						<input class="form-control" type="text" name="tanggalupah" value="" id="tanggal" size="7" maxlength="7" required  autocomplete='off' oninvalid="this.setCustomValidity('Bulan/Tahun Harus Diisi..')" onchange="setCustomValidity('')">
+						<input class="form-control" type="text" name="tanggalupah" value="{{$bulantahun}}" id="tanggal" size="7" maxlength="7" required  autocomplete='off' oninvalid="this.setCustomValidity('Bulan/Tahun Harus Diisi..')" onchange="setCustomValidity('')">
 						@if (session('proses'))
 						<small style="color: red;" id="att-kode-proses-upah">Bulan dan tahun yang dimasukan sudah pernah di proses.</small>
                         @endif
 					</div>
 				</div>
 				<div class="form-group row">
-					<label for="spd-input" class="col-2 col-form-label"></label>
-					<div class="col-5">
-						<input id="ci"   style=" width: 26px;height: 26px;margin-left:50px;" value="proses" type="radio"  name="radioupah"  checked />  <label style="font-size:14px; margin-left:10px;">Proses</label>
-						<input  id="ci" style=" width: 26px;height: 26px;margin-left:50px;" value="batal" type="radio"    name="radioupah"  /><label style="font-size:14px; margin-left:10px;"> Batalkan</label>
+					<label for="" class="col-2 col-form-label"></label>
+					<div class="col-8">
+						<div class="kt-radio-inline">
+							<label class="kt-radio kt-radio--solid">
+								<input value="proses" type="radio"  name="radioupah" checked> PROSES
+								<span></span>
+							</label>
+							<label class="kt-radio kt-radio--solid">
+								<input value="batal" type="radio"    name="radioupah"> BATALKAN
+								<span></span>
+							</label>
+						</div>
 					</div>
 				</div>
 				<div class="kt-form__actions">

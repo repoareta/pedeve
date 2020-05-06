@@ -43,7 +43,7 @@
         <!-- Define header and footer blocks before your content -->
         <header>
             <table width="100%" >
-            <?php 
+                <?php 
                     $array_bln	 = array (
                         1 =>   'Januari',
                         'Februari',
