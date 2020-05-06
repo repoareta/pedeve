@@ -52,9 +52,25 @@
 				<form class="kt-form kt-form--label-right" id="formAnggaranSubmain" action="{{ route('anggaran.submain.update', ['kode_main' => $kode_main, 'kode_submain' => $kode_submain]) }}" method="POST">
 					@csrf
 					<div class="form-group row">
-						<label for="kode_main" class="col-2 col-form-label">Kode Anggaran</label>
+						<label for="tahun" class="col-2 col-form-label">Tahun</label>
 						<div class="col-10">
-							<input class="form-control" type="text" readonly name="kode_main" id="kode_main" value="{{ $kode_main }}">
+							<input class="form-control" type="text" name="tahun" id="tahun" value="{{ $anggaran->tahun }}">
+						</div>
+					</div>
+
+					<div class="form-group row">
+						<label for="kode_main" class="col-2 col-form-label">Master Anggaran</label>
+						<div class="col-10">
+							<select class="form-control kt-select2" name="kode_main" id="kode_main">
+								<option value="">- Pilih Master Anggaran -</option>
+								@foreach ($anggaran_main_list as $anggaran_main)
+									<option value="{{ $anggaran_main->kode_main }}"
+										@if ($anggaran_main->kode_main == $kode_main)
+											selected
+										@endif>{{ $anggaran_main->kode_main.' - '.$anggaran_main->nama_main }}</option>
+								@endforeach
+							</select>
+							<div id="kode_main-nya"></div>
 						</div>
 					</div>
 
@@ -73,23 +89,9 @@
 					</div>
 
 					<div class="form-group row">
-						<label for="tahun" class="col-2 col-form-label">Tahun Submain</label>
-						<div class="col-10">
-							<input class="form-control" type="text" name="tahun" id="tahun" value="{{ $anggaran->tahun }}">
-						</div>
-					</div>
-
-					<div class="form-group row">
 						<label for="nilai" class="col-2 col-form-label">Nilai Submain</label>
 						<div class="col-10">
 							<input class="form-control" type="text" name="nilai" id="nilai" value="{{ abs($anggaran->nilai) }}">
-						</div>
-					</div>
-
-					<div class="form-group row">
-						<label for="nilai_real" class="col-2 col-form-label">Nilai Real Submain</label>
-						<div class="col-10">
-							<input class="form-control" type="text" name="nilai_real" id="nilai_real" value="{{ abs($anggaran->nilai_real) }}">
 						</div>
 					</div>
 
@@ -101,7 +103,7 @@
 								<button type="submit" class="btn btn-brand"><i class="fa fa-check" aria-hidden="true"></i> Simpan</button>
 							</div>
 						</div>
-					</div>
+					</>
 				</form>
 		</div>
 		{{-- END BODY --}}		
@@ -112,5 +114,19 @@
 @endsection
 
 @section('scripts')
-{!! JsValidator::formRequest('App\Http\Requests\AnggaranSubmainStore', '#formAnggaranSubmain') !!}
+{!! JsValidator::formRequest('App\Http\Requests\AnggaranSubmainUpdate', '#formAnggaranSubmain') !!}
+
+<script>
+	$(document).ready(function () {
+		$('.kt-select2').select2().on('change', function() {
+			$(this).valid();
+		});
+
+		$("#formAnggaranSubmain").on('submit', function(){
+			if ($('#kode_main-error').length){
+				$("#kode_main-error").insertAfter("#kode_main-nya");
+			}
+		});
+	});
+</script>
 @endsection
