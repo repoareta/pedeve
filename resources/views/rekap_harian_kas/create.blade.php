@@ -57,7 +57,7 @@
 						<div class="form-group row">
 							<label class="col-2 col-form-label">Tanggal Rekap</label>
 							<div class="col-10">
-								<input class="form-control" type="text" name="tanggal" id="tanggal" value="" size="11" maxlength="11"  autocomplete='off' required oninvalid="this.setCustomValidity('Tanggal Rekap Harus Diisi..')" onchange="setCustomValidity('')">
+								<input class="form-control" type="text" name="tanggal" id="tanggal" value="{{(date('Y-m-d'))}}" size="11" maxlength="11"  autocomplete='off' required oninvalid="this.setCustomValidity('Tanggal Rekap Harus Diisi..')" onchange="setCustomValidity('')">
 							</div>
 						</div>
 						<div class="form-group row">
@@ -80,7 +80,7 @@
 									
 									
 								</select>
-									<input class="form-control" type="hidden" value=""   name="nomor" id="nomor" size="6" maxlength="6" readonly style="background-color:#DCDCDC; cursor:not-allowed">
+								<input class="form-control" type="hidden" value="{{Auth::user()->userid}}"  name="userid" autocomplete='off'>
 							</div>
 						</div>
 						<div class="kt-form__actions">
@@ -114,7 +114,7 @@ $('#form-create').submit(function(){
 	var scurrdoc = mp+'-'+bagian+'-'+nomor;
 
 	$.ajax({
-		url  : "{{route('penerimaan_kas.store')}}",
+		url  : "{{route('rekap_harian_kas.store')}}",
 		type : "POST",
 		data : $('#form-create').serialize(),
 		dataType : "JSON",
@@ -130,19 +130,25 @@ $('#form-create').submit(function(){
 				text  : 'Berhasil',
 				timer : 2000
 			}).then(function() {
-				location.replace("{{url('perbendaharaan/penerimaan_kas/edit')}}"+ '/' +scurrdoc);
+				location.replace("{{route('rekap_harian_kas.index')}}");
 				});
-		}else if(data = 2){
+		}else if(data == 2){
 			Swal.fire({
 				type  : 'info',
-				title : 'Bulan Buku Tidak Ada Atau Sudah Di Posting.',
-				text  : 'Failed',
+				title : 'rekap gagal !',
+				text  : 'Info',
+			});
+		}else if(data == 3){
+			Swal.fire({
+				type  : 'info',
+				title : 'rekap harian sudah dilakukan sebelumnya, rekap gagal!',
+				text  : 'Info',
 			});
 		}else{
 			Swal.fire({
 				type  : 'info',
-				title : 'Data Yang Diinput Sudah Ada.',
-				text  : 'Failed',
+				title : 'rekap kas sudah dilakukan!',
+				text  : 'Info',
 			});
 		}
 		}, 

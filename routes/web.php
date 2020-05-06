@@ -475,10 +475,13 @@ Route::group(['middleware'=> ['auth','checkRole:1']], function () {
         //end lembur
 
         //pinjaman pekerja
-        Route::get('pinjaman_pekerja', 'PinjamanPekerjaController@index')->name('pinjaman_pekerja.index');
-        Route::get('pinjaman_pekerja/create', 'PinjamanPekerjaController@create')->name('pinjaman_pekerja.create');
-        Route::get('pinjaman_pekerja/edit', 'PinjamanPekerjaController@edit')->name('pinjaman_pekerja.edit');
-        
+        Route::name('pinjaman_pekerja.')->group(function () {
+            Route::get('pinjaman_pekerja', 'PinjamanPekerjaController@index')->name('index');
+            Route::post('pinjaman_pekerja/search', 'PinjamanPekerjaController@searchIndex')->name('search.index');
+            Route::get('pinjaman_pekerja/create', 'PinjamanPekerjaController@create')->name('create');
+            Route::get('pinjaman_pekerja/edit', 'PinjamanPekerjaController@edit')->name('edit');
+        });
+            
         //proses gaji
         // Route assigned name "proses_gaji.index"...
         Route::name('proses_gaji.')->group(function () {
