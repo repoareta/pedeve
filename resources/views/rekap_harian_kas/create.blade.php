@@ -109,11 +109,6 @@
 
 
 $('#form-create').submit(function(){
-	var mp = $("#mp").val();
-	var bagian = $("#bagian").val();
-	var nomor = $("#nomor").val();
-	var scurrdoc = mp+'-'+bagian+'-'+nomor;
-
 	$.ajax({
 		url  : "{{route('rekap_harian_kas.store')}}",
 		type : "POST",

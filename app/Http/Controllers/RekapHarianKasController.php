@@ -7,6 +7,7 @@ use App\Models\SdmMasterPegawai;
 use App\Models\Ttable;
 use App\Models\Rekapkas;
 use App\Models\Kasdoc;
+use App\Models\Kasline;
 use DB;
 use PDF;
 use Excel;
@@ -258,7 +259,13 @@ class RekapHarianKasController extends Controller
         }
     }
 
-    public function update()
+    public function edit($id,$no,$tgl)
+    {
+        $data_list = DB::select("select * from rekapkas where jk='$id' and store='$no' and tglrekap='$tgl'");
+        return view('rekap_harian_kas.edit',compact('data_list'));
+    }
+
+    public function update(Request $request)
     {
         $jk = $request->jk;
         $nokas = $request->nokas;
@@ -266,7 +273,7 @@ class RekapHarianKasController extends Controller
         $data_tabl = DB::select("select * from t_table");
         foreach($data_tabl as $data_tab)
         {
-            Ttable::where("to_char(t_date,'yyyy-mm-dd')", $tanggal)->update([
+            Ttable::where('t_date', $data_tab->t_date)->update([
                 't_date' => $tanggal
             ]);        
         }
@@ -274,7 +281,7 @@ class RekapHarianKasController extends Controller
         $data_srekapkas = DB::select("select * from rekapkas where store='$nokas' and jk='$jk' and to_char(tglrekap,'yyyy-mm-dd')='$tanggal'");
         
         if(!empty($data_srekapkas)){
-            $data = 1 ;
+            $data = 2 ;
             return response()->json();
             // response.write("<script>alert('belum dilakukan rekap')</script>")  
         }
@@ -285,7 +292,7 @@ class RekapHarianKasController extends Controller
                 {
                     if($data_cekbul->thnbln <> "") {
                         if(stbbuku($data_cekbul->thnbln, "0") > 1){
-                            $data =2 ;
+                            $data =3 ;
                             return response()->json($data);
                             // response.write("<script>alert('pembatalan rekap gagal')</script>")  
                         }
@@ -293,14 +300,14 @@ class RekapHarianKasController extends Controller
                 }
             }
         
-        $data_rs = DB::select("select tglrekap from rekapkas where tglrekap > (select t_date from t_table) and store='$nokas' and jk='$jk'");
+        $data_rs = DB::select("select tglrekap from rekapkas where (tglrekap > (select t_date from t_table)) and store='$nokas' and jk='$jk'");
         if(!empty($data_rs)){
-            $data=3;
+            $data=4;
             return response()->json($data);
             // response.write("<script>alert('sudah ada rekap harian pada tanggal $rs("tglrekap"), cancel rekap tanggal tersebut terlebih dahulu')</script>")  
         }
         
-        $data_cr1 = DB::select("select left(docno,1) dok,docno from kasdoc where paiddate=(select t_date from t_table) and store='$store' and jk='$jk'");
+        $data_cr1 = DB::select("select left(docno,1) dok,docno from kasdoc where paiddate=(select t_date from t_table) and store='$nokas' and jk='$jk'");
             $data_tdate = DB::select("select t_date as vdate from t_table");
             foreach($data_cr1 as $t)
             {
@@ -330,10 +337,10 @@ class RekapHarianKasController extends Controller
             }
             foreach($data_tdate as $data_tdat)
             {
-                Rekapkas::where('store', $nokas)->where('jk',$jk)->where('tglrekap', $vdate)->delete();
-                Kasdoc::where('dok_penutup', 'Y')->where('store', $nokas)->where('jk',$jk)->where('tglrekap', $vdate)->delete();
+                Rekapkas::where('store', $nokas)->where('jk',$jk)->where('tglrekap', $data_tdat->vdate)->delete();
+                Kasdoc::where('dok_penutup', 'Y')->where('store', $nokas)->where('jk',$jk)->where('paiddate', $data_tdat->vdate)->delete();
             }
-            $data=4;
+            $data=1;
             return response()->json($data);
             // response.write("<script>alert('pembatalan rekap selesai')</script>")  
         

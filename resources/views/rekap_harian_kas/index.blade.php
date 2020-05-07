@@ -40,7 +40,7 @@
 							</span>
 						</a>
 						<span style="font-size: 2em;" class="kt-font-warning pointer-link" data-toggle="kt-tooltip" data-placement="top" title="Ubah Data">
-							<i class="fas fa-edit" id="btn-edit-umk"></i>
+							<i class="fas fa-edit" id="editRow"></i>
 						</span>
 
 						<span style="font-size: 2em;"  class="kt-font-danger pointer-link" data-toggle="kt-tooltip" data-placement="top" title="Hapus Data">
@@ -181,6 +181,22 @@ $(document).ready(function () {
 				});
 			} else {
 				swalAlertInit('hapus');
+			}
+		});
+
+		//edit 
+		$('#editRow').click(function(e) {
+			e.preventDefault();
+
+			if($('input[class=btn-radio]').is(':checked')) { 
+				$("input[class=btn-radio]:checked").each(function(){
+					var tgl = $(this).attr('tanggal');
+					var id = $(this).attr('jk');
+					var no = $(this).attr('nokas');
+					location.replace("{{url('perbendaharaan/rekap_harian_kas/edit')}}"+ '/' +id+'/'+no+'/'+tgl);
+				});
+			} else {
+				swalAlertInit('ubah');
 			}
 		});
 
