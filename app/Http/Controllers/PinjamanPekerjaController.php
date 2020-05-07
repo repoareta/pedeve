@@ -152,7 +152,7 @@ class PinjamanPekerjaController extends Controller
     }
     public function delete(Request $request)
     {
-        PayMtrpkpp::where('id_pinjaman', $request->pinjaman)->delete();
+        PayMtrpkpp::where('id_pinjaman', $request->id_pinjaman)->delete();
         return response()->json();
 
     }

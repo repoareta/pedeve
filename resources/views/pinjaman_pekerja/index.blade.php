@@ -189,7 +189,7 @@
 									type: 'DELETE',
 									dataType: 'json',
 									data: {
-										"id": id,
+										"id_pinjaman": id_pinjaman,
 										"_token": "{{ csrf_token() }}",
 									},
 									success: function () {
