@@ -3,7 +3,7 @@
 namespace App\Http\Controllers;
 
 use Illuminate\Http\Request;
-use App\Models\Kasdoc;
+use App\Models\PayMtrpkpp;
 use DB;
 use PDF;
 use Excel;
@@ -26,7 +26,7 @@ class PinjamanPekerjaController extends Controller
         if($request->nopek == ""){
             $data = DB::select("select a.id_pinjaman,a.nopek,a.jml_pinjaman,a.tenor,a.mulai,a.sampai,a.angsuran,a.cair,a.lunas,a.no_kontrak,b.nama as namapegawai,c.curramount from pay_mtrpkpp a join sdm_master_pegawai b on a.nopek=b.nopeg join pay_master_hutang c on b.nopeg=c.nopek where c.aard='20' and c.tahun||c.bulan = (select trim(max(tahun||bulan)) as bultah from pay_master_hutang where aard='20') and a.lunas='N' order by a.id_pinjaman asc");
         }else{
-            $data = DB::select("select a.id_pinjaman,a.nopek,a.jml_pinjaman,a.tenor,a.mulai,a.sampai,a.angsuran,a.cair,a.lunas,a.no_kontrak,b.nama as namapegawai,c.curramount from pay_mtrpkpp a join sdm_master_pegawai b on a.nopek=b.nopeg join pay_master_hutang c on b.nopeg=c.nopek where c.aard='20' and c.tahun||c.bulan = (select trim(max(tahun||bulan)) as bultah from pay_master_hutang where aard='20') and a.lunas='N' order by a.id_pinjaman asc");
+            $data = DB::select("select a.id_pinjaman,a.nopek,a.jml_pinjaman,a.tenor,a.mulai,a.sampai,a.angsuran,a.cair,a.lunas,a.no_kontrak,b.nama as namapegawai,c.curramount from pay_mtrpkpp a join sdm_master_pegawai b on a.nopek=b.nopeg join pay_master_hutang c on b.nopeg=c.nopek where c.aard='20' and c.tahun||c.bulan = (select trim(max(tahun||bulan)) as bultah from pay_master_hutang where aard='20' and a.nopek='$request->nopek') and a.lunas='N' and a.nopek='$request->nopek' order by a.id_pinjaman asc");
         }
         
             return datatables()->of($data)
@@ -64,7 +64,7 @@ class PinjamanPekerjaController extends Controller
            })
     
             ->addColumn('radio', function ($data) {
-                $radio = '<label class="kt-radio kt-radio--bold kt-radio--brand"><input type="radio" jk="" nokas=""  tanggal="" class="btn-radio" name="btn-radio-rekap"><span></span></label>'; 
+                $radio = '<label class="kt-radio kt-radio--bold kt-radio--brand"><input type="radio" id_pinjaman="'.$data->id_pinjaman.'" cair="'.$data->cair.'" class="btn-radio" name="id_pinjaman"><span></span></label>'; 
                 return $radio;
             })
             ->addColumn('cair', function ($data) {
@@ -87,71 +87,74 @@ class PinjamanPekerjaController extends Controller
             ->make(true);
     }
 
-    
-
-    /**
-     * Show the form for creating a new resource.
-     *
-     * @return \Illuminate\Http\Response
-     */
     public function create()
     {
-        //
+        $data_pegawai = DB::select("select nopeg,nama,status,nama from sdm_master_pegawai where status<>'P' order by nopeg");
+        return view('pinjaman_pekerja.create',compact('data_pegawai'));
     }
 
-    /**
-     * Store a newly created resource in storage.
-     *
-     * @param  \Illuminate\Http\Request  $request
-     * @return \Illuminate\Http\Response
-     */
+    public function IdpinjamanJson(Request $request)
+    {
+        $data = DB::select("select right(max(id_pinjaman),2) as idpinjaman from pay_mtrpkpp where nopek='$request->nopek'");
+        if(!empty($data)){
+            foreach($data as $data_p)
+            {
+                if($data_p->idpinjaman <> null){
+                    $idpinjaman = sprintf("%02s", abs($data_p->idpinjaman + 1));
+                    return response()->json($request->nopek.$idpinjaman);
+                }else{
+                    $idpinjaman = sprintf("%02s", 1);
+                    return response()->json($request->nopek.$idpinjaman);
+                }
+            }
+        }else{
+            $idpinjaman = sprintf("%02s", 1);
+            return response()->json($request->nopek.$idpinjaman);
+        }
+    }
+
     public function store(Request $request)
     {
-        //
+            PayMtrpkpp::insert([
+            'id_pinjaman' => $request->id_pinjaman,
+            'nopek' => $request->nopek,
+            'jml_pinjaman' => $request->pinjaman,
+            'tenor' => $request->tenor,
+            'mulai' => $request->mulai,
+            'sampai' => $request->sampai,
+            'angsuran' => $request->angsuran,
+            'cair' => 'N',
+            'lunas' => 'N',
+            'no_kontrak' => $request->no_kontrak
+            ]);
+            return response()->json();
+    }
+    
+    public function edit($no)
+    {
+        $data_list = DB::select("select a.*,b.nama as namapegawai from pay_mtrpkpp a join sdm_master_pegawai b on a.nopek=b.nopeg where a.id_pinjaman='$no'");
+        $data_detail = DB::select("select id_pinjaman,nopek,tahun,bulan,pokok,bunga,realpokok,realbunga,(realpokok+realbunga) as jumlah2,(pokok+bunga) as jumlah,tahun||bulan as thnbln,nodoc from pay_skdpkpp where id_pinjaman='$no' order by tahun||bulan");
+        $count = DB::select("select sum(pokok) jml,sum(bunga) bunga,sum(realpokok) realpokok,sum(realbunga) realbunga  from pay_skdpkpp where id_pinjaman='$no'");
+        return view('pinjaman_pekerja.edit',compact('data_list','data_detail','count'));
+    }
+    public function update(Request $request)
+    {
+        PayMtrpkpp::where('id_pinjaman', $request->id_pinjaman)
+        ->update([
+            'jml_pinjaman' => $request->pinjaman,
+            'tenor' => $request->tenor,
+            'mulai' => $request->mulai,
+            'sampai' => $request->sampai,
+            'angsuran' => $request->angsuran,
+            'no_kontrak' => $request->no_kontrak
+        ]);
+            return response()->json();
+    }
+    public function delete(Request $request)
+    {
+        PayMtrpkpp::where('id_pinjaman', $request->pinjaman)->delete();
+        return response()->json();
+
     }
 
-    /**
-     * Display the specified resource.
-     *
-     * @param  int  $id
-     * @return \Illuminate\Http\Response
-     */
-    public function show($id)
-    {
-        //
-    }
-
-    /**
-     * Show the form for editing the specified resource.
-     *
-     * @param  int  $id
-     * @return \Illuminate\Http\Response
-     */
-    public function edit($id)
-    {
-        //
-    }
-
-    /**
-     * Update the specified resource in storage.
-     *
-     * @param  \Illuminate\Http\Request  $request
-     * @param  int  $id
-     * @return \Illuminate\Http\Response
-     */
-    public function update(Request $request, $id)
-    {
-        //
-    }
-
-    /**
-     * Remove the specified resource from storage.
-     *
-     * @param  int  $id
-     * @return \Illuminate\Http\Response
-     */
-    public function destroy($id)
-    {
-        //
-    }
 }

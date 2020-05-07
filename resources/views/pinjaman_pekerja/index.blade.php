@@ -29,34 +29,27 @@
 				<i class="kt-font-brand flaticon2-line-chart"></i>
 			</span>
 			<h3 class="kt-portlet__head-title">
-				Tabel Umum Pinjamana Pekerja
+				Tabel Pinjamana Pekerja
 			</h3>			
 			<div class="kt-portlet__head-toolbar">
 				<div class="kt-portlet__head-wrapper">
 					<div class="kt-portlet__head-actions">
-						<a href="{{ route('perjalanan_dinas.create') }}">
-							<span style="font-size: 2em;" class="kt-font-success">
+						<a href="{{ route('pinjaman_pekerja.create') }}">
+							<span style="font-size: 2em;" class="kt-font-success" data-toggle="kt-tooltip" data-placement="top" title="Tambah Data">
 								<i class="fas fa-plus-circle"></i>
 							</span>
 						</a>
-		
-						<a href="#">
-							<span style="font-size: 2em;" class="kt-font-warning">
-								<i class="fas fa-edit"></i>
-							</span>
-						</a>
-		
-						<a href="#">
-							<span style="font-size: 2em;" class="kt-font-danger">
-								<i class="fas fa-times-circle"></i>
-							</span>
-						</a>
+						<span style="font-size: 2em;" class="kt-font-warning pointer-link" data-toggle="kt-tooltip" data-placement="top" title="Ubah Data">
+							<i class="fas fa-edit" id="editRow"></i>
+						</span>
 
-						<a href="#">
-							<span style="font-size: 2em;" class="kt-font-info">
-								<i class="fas fa-file-export"></i>
-							</span>
-						</a>
+						<span style="font-size: 2em;"  class="kt-font-danger pointer-link" data-toggle="kt-tooltip" data-placement="top" title="Hapus Data">
+							<i class="fas fa-times-circle" id="deleteRow"></i>
+						</span>
+
+						<span style="font-size: 2em;" class="kt-font-info pointer-link" data-toggle="kt-tooltip" data-placement="top" title="Cetak Data">
+							<i class="fas fa-print" id="reportRow"></i>
+						</span>
 					</div>
 				</div>
 			</div>
@@ -143,6 +136,87 @@
 		t.draw();
 		e.preventDefault();
 	});
+
+	//edit 
+	$('#editRow').click(function(e) {
+		e.preventDefault();
+
+		if($('input[class=btn-radio]').is(':checked')) { 
+			$("input[class=btn-radio]:checked").each(function(){
+				var id = $(this).attr('id_pinjaman');
+				location.replace("{{url('sdm/pinjaman_pekerja/edit')}}"+ '/' +id);
+			});
+		} else {
+			swalAlertInit('ubah');
+		}
 	});
-	</script>
+
+	//delete
+	$('#deleteRow').click(function(e) {
+			e.preventDefault();
+			if($('input[class=btn-radio]').is(':checked')) { 
+				$("input[class=btn-radio]:checked").each(function() {
+					var id_pinjaman = $(this).attr('id_pinjaman');
+					var cair = $(this).attr('cair');
+					// delete stuff
+					if(cair == 'Y'){
+						Swal.fire({
+									type  : 'info',
+									title : 'Status cair tidak bisa dihapus.',
+									text  : 'Info',
+								});
+					}else{
+						const swalWithBootstrapButtons = Swal.mixin({
+							customClass: {
+								confirmButton: 'btn btn-primary',
+								cancelButton: 'btn btn-danger'
+							},
+								buttonsStyling: false
+							})
+							swalWithBootstrapButtons.fire({
+								title: "Data yang akan dihapus?",
+								text: "ID Pinjaman : " + id_pinjaman,
+								type: 'warning',
+								showCancelButton: true,
+								reverseButtons: true,
+								confirmButtonText: 'Ya, hapus',
+								cancelButtonText: 'Batalkan'
+							})
+							.then((result) => {
+							if (result.value) {
+								$.ajax({
+									url: "{{ route('pinjaman_pekerja.delete') }}",
+									type: 'DELETE',
+									dataType: 'json',
+									data: {
+										"id": id,
+										"_token": "{{ csrf_token() }}",
+									},
+									success: function () {
+										Swal.fire({
+											type  : 'success',
+											title : 'Hapus ID Pinjaman ' + id_pinjaman,
+											text  : 'Berhasil',
+											timer : 2000
+										}).then(function() {
+											location.reload();
+										});
+									},
+									error: function () {
+										alert("Terjadi kesalahan, coba lagi nanti");
+									}
+								});
+							}
+						});
+					}
+				});
+			} else {
+				swalAlertInit('hapus');
+			}
+			
+		});
+
+
+});
+</script>
 @endsection

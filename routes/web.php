@@ -478,8 +478,13 @@ Route::group(['middleware'=> ['auth','checkRole:1']], function () {
         Route::name('pinjaman_pekerja.')->group(function () {
             Route::get('pinjaman_pekerja', 'PinjamanPekerjaController@index')->name('index');
             Route::post('pinjaman_pekerja/search', 'PinjamanPekerjaController@searchIndex')->name('search.index');
+            Route::post('pinjaman_pekerja/idpinjaman/json', 'PinjamanPekerjaController@IdpinjamanJson')->name('idpinjaman.json');
+            Route::get('pinjaman_pekerja/detail/json', 'PinjamanPekerjaController@detailJson')->name('detail.json');
             Route::get('pinjaman_pekerja/create', 'PinjamanPekerjaController@create')->name('create');
-            Route::get('pinjaman_pekerja/edit', 'PinjamanPekerjaController@edit')->name('edit');
+            Route::post('pinjaman_pekerja/store', 'PinjamanPekerjaController@store')->name('store');
+            Route::get('pinjaman_pekerja/edit/{no}', 'PinjamanPekerjaController@edit')->name('edit');
+            Route::post('pinjaman_pekerja/update', 'PinjamanPekerjaController@update')->name('update');
+            Route::delete('pinjaman_pekerja/delete', 'PinjamanPekerjaController@delete')->name('delete');
         });
             
         //proses gaji
