@@ -64,7 +64,7 @@
 				<div class="form-group row">
 					<label for="" class="col-form-label">No. Pegawai</label>
 					<div class="col-2">
-						<input class="form-control" type="text" name="kode_anggaran" id="kode_anggaran">
+						<input class="form-control" type="text" name="no_pekerja" id="no_pekerja">
 					</div>
 
 					<label for="spd-input" class="col-form-label">Bulan</label>
@@ -141,20 +141,21 @@
 			processing: true,
 			serverSide: true,
 			ajax      : {
-				url: "{{ route('anggaran.index.json') }}",
+				url: "{{ route('upah.index.json') }}",
 				data: function (d) {
-					d.kode_anggaran = $('input[name=kode_anggaran]').val();
+					d.nopek = $('input[name=nopek]').val();
+					d.bulan = $('select[name=bulan]').val();
 					d.tahun = $('select[name=tahun]').val();
 				}
 			},
 			columns: [
 				{data: 'action', name: 'aksi', orderable: false, searchable: false, class:'radio-button'},
-				{data: 'kode_main', name: 'kode_main', class:'no-wrap'},
-				{data: 'nama_main', name: 'nama_main'},
-				{data: 'tahun', name: 'tahun'},
-				{data: 'nilai_real', name: 'nilai_real'},
-				{data: 'realisasi', name: 'realisasi', class:'no-wrap'},
-				{data: 'sisa', name: 'sisa', class:'no-wrap'}
+				{data: 'bulan_tahun', name: 'bulan_tahun', class:'no-wrap'},
+				{data: 'pekerja', name: 'pekerja'},
+				{data: 'aard', name: 'aard'},
+				{data: 'ccl', name: 'ccl'},
+				{data: 'jmlcc', name: 'jmlcc', class:'no-wrap'},
+				{data: 'nilai', name: 'nilai', class:'no-wrap'}
 			]
 		});
 
