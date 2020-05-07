@@ -158,6 +158,45 @@
                     'pekerja.create',
                     'pekerja.edit'
                 ); // isi nama semua route master pekerja
+
+                $master_upah = array(
+                    'upah.index',
+                    'upah.create',
+                    'upah.edit'
+                ); // isi nama semua route master updah
+
+                $master_insentif = array(
+                    'insentif.index',
+                    'insentif.create',
+                    'insentif.edit'
+                ); // isi nama semua route master insentif
+
+                $master_hutang = array(
+                    'hutang.index',
+                    'hutang.create',
+                    'hutang.edit'
+                ); // isi nama semua route master hutang
+
+                $master_beban_perusahaan = array(
+                    'beban_perusahaan.index',
+                    'beban_perusahaan.create',
+                    'beban_perusahaan.edit'
+                ); // isi nama semua route master beban_perusahaan
+
+                $master_thr = array(
+                    'thr.index',
+                    'thr.create',
+                    'thr.edit'
+                ); // isi nama semua route master thr
+
+                $master_payroll_menu = array_merge(
+                    $master_upah, 
+                    $master_insentif, 
+                    $master_hutang, 
+                    $master_beban_perusahaan, 
+                    $master_thr
+                );
+
                 $potongan_manual = array(
                     'potongan_manual.index',
                     'potongan_manual.search.index',
@@ -316,6 +355,7 @@
                 $sdm_payroll = array_merge(
                     $master_data_menu,
                     $pekerja,
+                    $master_payroll_menu,
                     $potongan_koreksi_gaji,
                     $lembur,
                     $pinjaman_pekerja,
@@ -656,6 +696,59 @@
                                     Master Pegawai
                                 </span>
                             </a>
+                        </li>
+                        <li class="kt-menu__item kt-menu__item--submenu {{ set_active($master_payroll_menu) }}" aria-haspopup="true" data-ktmenu-submenu-toggle="hover">
+                            <a href="javascript:;" class="kt-menu__link kt-menu__toggle">
+                                <i class="kt-menu__link-bullet kt-menu__link-bullet--dot">
+                                    <span></span>
+                                </i>
+                                <span class="kt-menu__link-text">Master Payroll</span>
+                                <i class="kt-menu__ver-arrow la la-angle-right"></i>
+                            </a>
+                            <div class="kt-menu__submenu "><span class="kt-menu__arrow"></span>
+                                <ul class="kt-menu__subnav">
+                                    <li class="kt-menu__item kt-menu__item{{ set_active_submenu($master_upah) }}" aria-haspopup="true">
+                                        <a href="{{ route('upah.index') }}" class="kt-menu__link">
+                                            <i class="kt-menu__link-bullet kt-menu__link-bullet--line">
+                                                <span></span>
+                                            </i>
+                                            <span class="kt-menu__link-text">Master Upah</span>
+                                        </a>
+                                    </li>
+                                    <li class="kt-menu__item kt-menu__item{{ set_active_submenu($master_insentif) }}" aria-haspopup="true">
+                                        <a href="{{route('insentif.index')}}" class="kt-menu__link">
+                                            <i class="kt-menu__link-bullet kt-menu__link-bullet--line">
+                                                <span></span>
+                                            </i>
+                                            <span class="kt-menu__link-text">Master Insentif</span>
+                                        </a>
+                                    </li>
+                                    <li class="kt-menu__item kt-menu__item{{ set_active_submenu($master_hutang) }}" aria-haspopup="true">
+                                        <a href="{{route('hutang.index')}}" class="kt-menu__link">
+                                            <i class="kt-menu__link-bullet kt-menu__link-bullet--line">
+                                                <span></span>
+                                            </i>
+                                            <span class="kt-menu__link-text">Master Hutang</span>
+                                        </a>
+                                    </li>
+                                    <li class="kt-menu__item kt-menu__item{{ set_active_submenu($master_beban_perusahaan) }}" aria-haspopup="true">
+                                        <a href="{{route('beban_perusahaan.index')}}" class="kt-menu__link">
+                                            <i class="kt-menu__link-bullet kt-menu__link-bullet--line">
+                                                <span></span>
+                                            </i>
+                                            <span class="kt-menu__link-text">Beban Perusahaan</span>
+                                        </a>
+                                    </li>
+                                    <li class="kt-menu__item kt-menu__item{{ set_active_submenu($master_thr) }}" aria-haspopup="true">
+                                        <a href="{{route('thr.index')}}" class="kt-menu__link">
+                                            <i class="kt-menu__link-bullet kt-menu__link-bullet--line">
+                                                <span></span>
+                                            </i>
+                                            <span class="kt-menu__link-text">Master THR</span>
+                                        </a>
+                                    </li>
+                                </ul>
+                            </div>
                         </li>
                         <li class="kt-menu__item kt-menu__item--submenu {{ set_active($potongan_koreksi_gaji) }}" aria-haspopup="true" data-ktmenu-submenu-toggle="hover">
                             <a href="javascript:;" class="kt-menu__link kt-menu__toggle">
