@@ -24,9 +24,9 @@ class PinjamanPekerjaController extends Controller
     public function searchIndex(Request $request)
     {
         if($request->nopek == ""){
-            $data = DB::select("select a.id_pinjaman,a.nopek,a.jml_pinjaman,a.tenor,a.mulai,a.sampai,a.angsuran,a.cair,a.lunas,a.no_kontrak,b.nama as namapegawai,c.curramount from pay_mtrpkpp a join sdm_master_pegawai b on a.nopek=b.nopeg join pay_master_hutang c on b.nopeg=c.nopek where c.aard='20' and c.tahun||c.bulan = (select trim(max(tahun||bulan)) as bultah from pay_master_hutang where aard='20') and a.lunas='N' order by a.id_pinjaman asc");
+            $data = DB::select("select a.id_pinjaman,a.nopek,a.jml_pinjaman,a.tenor,a.mulai,a.sampai,a.angsuran,a.cair,a.lunas,a.no_kontrak,b.nama as namapegawai,(select c.curramount from pay_master_hutang c where c.nopek=b.nopeg and c.aard='20' and c.tahun||c.bulan = (select trim(max(tahun||bulan)) as bultah from pay_master_hutang where aard='20')) as curramount from pay_mtrpkpp a join sdm_master_pegawai b on a.nopek=b.nopeg  where  a.lunas='N' order by a.id_pinjaman asc");
         }else{
-            $data = DB::select("select a.id_pinjaman,a.nopek,a.jml_pinjaman,a.tenor,a.mulai,a.sampai,a.angsuran,a.cair,a.lunas,a.no_kontrak,b.nama as namapegawai,c.curramount from pay_mtrpkpp a join sdm_master_pegawai b on a.nopek=b.nopeg join pay_master_hutang c on b.nopeg=c.nopek where c.aard='20' and c.tahun||c.bulan = (select trim(max(tahun||bulan)) as bultah from pay_master_hutang where aard='20' and a.nopek='$request->nopek') and a.lunas='N' and a.nopek='$request->nopek' order by a.id_pinjaman asc");
+            $data = DB::select("select a.id_pinjaman,a.nopek,a.jml_pinjaman,a.tenor,a.mulai,a.sampai,a.angsuran,a.cair,a.lunas,a.no_kontrak,b.nama as namapegawai,(select c.curramount from pay_master_hutang c where c.nopek=b.nopeg and c.aard='20' and c.tahun||c.bulan = (select trim(max(tahun||bulan)) as bultah from pay_master_hutang where aard='20')) as curramount from pay_mtrpkpp a join sdm_master_pegawai b on a.nopek=b.nopeg  where  a.lunas='N' and a.id_pinjaman='$request->nopek' order by a.id_pinjaman asc");
         }
         
             return datatables()->of($data)
