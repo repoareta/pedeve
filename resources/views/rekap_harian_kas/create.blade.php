@@ -57,6 +57,7 @@
 						<div class="form-group row">
 							<label class="col-2 col-form-label">Tanggal Rekap</label>
 							<div class="col-10">
+								<input class="form-control" type="hidden" name="add" value="add">
 								<input class="form-control" type="text" name="tanggal" id="tanggal" value="{{(date('Y-m-d'))}}" size="11" maxlength="11"  autocomplete='off' required oninvalid="this.setCustomValidity('Tanggal Rekap Harus Diisi..')" onchange="setCustomValidity('')">
 							</div>
 						</div>
@@ -88,7 +89,7 @@
 								<div class="col-2"></div>
 								<div class="col-10">
 									<a  href="{{route('rekap_harian_kas.index')}}" class="btn btn-warning"><i class="fa fa-reply" aria-hidden="true"></i>Cancel</a>
-									<button type="submit" class="btn btn-brand"><i class="fa fa-check" aria-hidden="true"></i>Save</button>
+									<button type="submit" class="btn btn-brand" name="submit" ><i class="fa fa-check" aria-hidden="true"></i>Save</button>
 								</div>
 							</div>
 						</div>
@@ -142,6 +143,12 @@ $('#form-create').submit(function(){
 			Swal.fire({
 				type  : 'info',
 				title : 'rekap harian sudah dilakukan sebelumnya, rekap gagal!',
+				text  : 'Info',
+			});
+		}else if(data == 4){
+			Swal.fire({
+				type  : 'info',
+				title : 'rekap harian ini sudah ada!',
 				text  : 'Info',
 			});
 		}else{

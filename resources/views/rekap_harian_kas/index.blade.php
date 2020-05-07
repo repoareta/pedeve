@@ -89,42 +89,100 @@
 @section('scripts')
 <script type="text/javascript">
 $(document).ready(function () {
-var t = $('#kt_table').DataTable({
-	scrollX   : true,
-	processing: true,
-	serverSide: true,
-	searching: false,
-	lengthChange: false,
-	language: {
-		processing: '<i class="fa fa-spinner fa-spin fa-2x fa-fw"></i> <br> Loading...'
-	},
-	ajax      : {
-				url: "{{ route('rekap_harian_kas.search.index') }}",
-				type : "POST",
-				dataType : "JSON",
-				headers: {
-				'X-CSRF-Token': '{{ csrf_token() }}',
-				},
-				data: function (d) {
-					d.nama = $('input[name=nama]').val();
-				}
+		var t = $('#kt_table').DataTable({
+			scrollX   : true,
+			processing: true,
+			serverSide: true,
+			searching: false,
+			lengthChange: false,
+			language: {
+				processing: '<i class="fa fa-spinner fa-spin fa-2x fa-fw"></i> <br> Loading...'
 			},
-	columns: [
-		{data: 'radio', name: 'radio'},
-		{data: 'jk', name: 'jk'},
-		{data: 'store', name: 'store'},
-		{data: 'no', name: 'no'},
-		{data: 'tglrekap', name: 'tglrekap'},
-		{data: 'saldoawal', name: 'saldoawal'},
-		{data: 'debet', name: 'debet'},
-		{data: 'kredit', name: 'kredit'},
-		{data: 'saldoakhir', name: 'saldoakhir'},
-	]
-});
-$('#search-form').on('submit', function(e) {
-	t.draw();
-	e.preventDefault();
-});
+			ajax      : {
+						url: "{{ route('rekap_harian_kas.search.index') }}",
+						type : "POST",
+						dataType : "JSON",
+						headers: {
+						'X-CSRF-Token': '{{ csrf_token() }}',
+						},
+						data: function (d) {
+							d.nama = $('input[name=nama]').val();
+						}
+					},
+			columns: [
+				{data: 'radio', name: 'radio'},
+				{data: 'jk', name: 'jk'},
+				{data: 'store', name: 'store'},
+				{data: 'no', name: 'no'},
+				{data: 'tglrekap', name: 'tglrekap'},
+				{data: 'saldoawal', name: 'saldoawal'},
+				{data: 'debet', name: 'debet'},
+				{data: 'kredit', name: 'kredit'},
+				{data: 'saldoakhir', name: 'saldoakhir'},
+			]
+		});
+		$('#search-form').on('submit', function(e) {
+			t.draw();
+			e.preventDefault();
+		});
+
+		$('#deleteRow').click(function(e) {
+			e.preventDefault();
+			if($('input[class=btn-radio]').is(':checked')) { 
+				$("input[class=btn-radio]:checked").each(function() {
+					var tanggal = $(this).attr('tanggal');
+					var jk = $(this).attr('jk');
+					var nokas = $(this).attr('nokas');
+					// delete stuff
+					const swalWithBootstrapButtons = Swal.mixin({
+						customClass: {
+							confirmButton: 'btn btn-primary',
+							cancelButton: 'btn btn-danger'
+						},
+							buttonsStyling: false
+						})
+						swalWithBootstrapButtons.fire({
+							title: "Data yang akan dihapus?",
+							text: "Tanggal  : " +tanggal+ " Nokas : " +nokas,
+							type: 'warning',
+							showCancelButton: true,
+							reverseButtons: true,
+							confirmButtonText: 'Ya, hapus',
+							cancelButtonText: 'Batalkan'
+						})
+						.then((result) => {
+						if (result.value) {
+							$.ajax({
+								url: "{{ route('rekap_harian_kas.delete') }}",
+								type: 'DELETE',
+								dataType: 'json',
+								data: {
+									"tanggal": tanggal,
+									"jk": jk,
+									"nokas": nokas,
+									"_token": "{{ csrf_token() }}",
+								},
+								success: function () {
+									Swal.fire({
+										type  : 'success',
+										title : "Data Kas Bank Tanggal  : " +tanggal+ " Nokas : " +nokas+ " Berhasil Dihapus.",
+										text  : 'Berhasil',
+										
+									}).then(function() {
+										location.reload();
+									});
+								},
+								error: function () {
+									alert("Terjadi kesalahan, coba lagi nanti");
+								}
+							});
+						}
+					});
+				});
+			} else {
+				swalAlertInit('hapus');
+			}
+		});
 
 });
 

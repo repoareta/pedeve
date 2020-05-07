@@ -47,9 +47,9 @@
 							<i class="fas fa-times-circle" id="deleteRow"></i>
 						</span>
 
-						<span style="font-size: 2em;" class="kt-font-info pointer-link" data-toggle="kt-tooltip" data-placement="top" title="Cetak Data">
+						<!-- <span style="font-size: 2em;" class="kt-font-info pointer-link" data-toggle="kt-tooltip" data-placement="top" title="Cetak Data">
 							<i class="fas fa-print" id="reportRow"></i>
-						</span>
+						</span> -->
 					</div>
 				</div>
 			</div>
