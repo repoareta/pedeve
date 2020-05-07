@@ -278,8 +278,7 @@ Route::group(['middleware'=> ['auth','checkRole:1']], function () {
         
         // Agama END
 
-        // master pekerja
-        // Kode Jabatan START
+        // master pekerja START
         // Route assigned name "pekerja.index"...
         Route::name('pekerja.')->group(function () {
             Route::get('pekerja', 'PekerjaController@index')->name('index');
@@ -390,7 +389,70 @@ Route::group(['middleware'=> ['auth','checkRole:1']], function () {
                 Route::delete('pekerja/upah_all_in/delete', 'UpahAllInController@delete')->name('delete');
             });
         });
-        // Kode Jabatan END
+        // Master Pekerja END
+
+        // Master Payroll START
+        // Master Upah START
+        // Route assigned name "upah.index"...
+        Route::name('upah.')->group(function () {
+            Route::get('upah', 'UpahMasterController@index')->name('index');
+            Route::get('upah/index_json', 'UpahMasterController@indexJson')->name('index.json');
+            Route::get('upah/create', 'UpahMasterController@create')->name('create');
+            Route::post('upah/store', 'UpahMasterController@store')->name('store');
+            Route::get('upah/edit/{kode_bagian}', 'UpahMasterController@edit')->name('edit');
+            Route::post('upah/update/{kode_bagian}', 'UpahMasterController@update')->name('update');
+            Route::delete('upah/delete', 'UpahMasterController@delete')->name('delete');
+        });
+        // Master Upah END
+        
+        // Master Insentif START
+        Route::name('insentif.')->group(function () {
+            Route::get('insentif', 'InsentifMasterController@index')->name('index');
+            Route::get('insentif/index_json', 'InsentifMasterController@indexJson')->name('index.json');
+            Route::get('insentif/create', 'InsentifMasterController@create')->name('create');
+            Route::post('insentif/store', 'InsentifMasterController@store')->name('store');
+            Route::get('insentif/edit/{kode_bagian}', 'InsentifMasterController@edit')->name('edit');
+            Route::post('insentif/update/{kode_bagian}', 'InsentifMasterController@update')->name('update');
+            Route::delete('insentif/delete', 'InsentifMasterController@delete')->name('delete');
+        });
+        // Master Insentif END
+
+        // Master Hutang START
+        Route::name('hutang.')->group(function () {
+            Route::get('hutang', 'HutangMasterController@index')->name('index');
+            Route::get('hutang/index_json', 'HutangMasterController@indexJson')->name('index.json');
+            Route::get('hutang/create', 'HutangMasterController@create')->name('create');
+            Route::post('hutang/store', 'HutangMasterController@store')->name('store');
+            Route::get('hutang/edit/{kode_bagian}', 'HutangMasterController@edit')->name('edit');
+            Route::post('hutang/update/{kode_bagian}', 'HutangMasterController@update')->name('update');
+            Route::delete('hutang/delete', 'HutangMasterController@delete')->name('delete');
+        });
+        // Master Hutang END
+
+        // Master Beban Perusahaan START
+        Route::name('beban_perusahaan.')->group(function () {
+            Route::get('beban_perusahaan', 'BebanPerusahaanMasterController@index')->name('index');
+            Route::get('beban_perusahaan/index_json', 'BebanPerusahaanMasterController@indexJson')->name('index.json');
+            Route::get('beban_perusahaan/create', 'BebanPerusahaanMasterController@create')->name('create');
+            Route::post('beban_perusahaan/store', 'BebanPerusahaanMasterController@store')->name('store');
+            Route::get('beban_perusahaan/edit/{kode_bagian}', 'BebanPerusahaanMasterController@edit')->name('edit');
+            Route::post('beban_perusahaan/update/{kode_bagian}', 'BebanPerusahaanMasterController@update')->name('update');
+            Route::delete('beban_perusahaan/delete', 'BebanPerusahaanMasterController@delete')->name('delete');
+        });
+        // Master Beban Perusahaan END
+
+        // Master THR START
+        Route::name('thr.')->group(function () {
+            Route::get('thr', 'ThrMasterController@index')->name('index');
+            Route::get('thr/index_json', 'ThrMasterController@indexJson')->name('index.json');
+            Route::get('thr/create', 'ThrMasterController@create')->name('create');
+            Route::post('thr/store', 'ThrMasterController@store')->name('store');
+            Route::get('thr/edit/{kode_bagian}', 'ThrMasterController@edit')->name('edit');
+            Route::post('thr/update/{kode_bagian}', 'ThrMasterController@update')->name('update');
+            Route::delete('thr/delete', 'ThrMasterController@delete')->name('delete');
+        });
+        // Master THR END
+        // Master Payroll END
         
         //potongan koreksi gaji
         // Route assigned name "potongan_koreksi_gaji.index"...
