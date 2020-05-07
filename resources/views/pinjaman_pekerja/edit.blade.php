@@ -133,7 +133,7 @@
 					<div class="kt-portlet__head-toolbar">
 						<div class="kt-portlet__head-wrapper">
 							<div class="kt-portlet__head-actions">
-								<span style="font-size: 2em;cursor:not-allowed" class="kt-font-success">
+								<!-- <span style="font-size: 2em;cursor:not-allowed" class="kt-font-success">
 									<i class="fas fa-plus-circle"></i>
 								</span>
 			
@@ -143,7 +143,7 @@
 			
 								<span style="font-size: 2em;cursor:not-allowed" class="kt-font-danger">
 									<i class="fas fa-times-circle"></i>
-								</span>
+								</span> -->
 							</div>
 						</div>
 					</div>
@@ -193,7 +193,7 @@
                             <td ></td>
                             <td >Rp. <?php echo number_format($data_c->realpokok, 0, ',', '.'); ?></td>
                             <td >Rp. <?php echo number_format($data_c->realbunga, 0, ',', '.'); ?></td>
-                            <td ></td>
+                            <td colspan="2" ></td>
                         </tr>
 					@endforeach
 					</tbody>

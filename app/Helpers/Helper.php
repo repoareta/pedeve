@@ -126,7 +126,7 @@ function stbbuku($sthnbln, $ssup)
 
 function vbildb($vvals)
 {
-    if (isnull($vvals) or $vvals == 0) {
+    if(is_null($vvals) or $vvals == 0){
         return $vbildb = 0;
     } else {
         $src = $vvals;
