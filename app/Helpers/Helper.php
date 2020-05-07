@@ -94,11 +94,11 @@ function pajak($nilai)
     }
 }
 
-function hitunghari($awal,$akhir)
+function hitunghari($awal, $akhir)
 {
-    $tglsekarang = strtotime($awal); 
+    $tglsekarang = strtotime($awal);
     $jatuhtempo = strtotime($akhir);
-    // hitung perbedaan  jatuh tempo dengan sekarang 
+    // hitung perbedaan  jatuh tempo dengan sekarang
     $beda = $jatuhtempo - $tglsekarang; // unix time
     // konversi $beda kedalam hari
     return $bedahari = ($beda/24/60/60);
@@ -107,19 +107,18 @@ function hitunghari($awal,$akhir)
 function stbbuku($sthnbln, $ssup)
 {
     $data_rsbulan = DB::select("select * from timetrans where thnbln='$sthnbln' and suplesi='$ssup'");
-    if(!empty($data_rsbulan)){
-       return $stbbuku = 0;
-    }else{
-        foreach($data_rsbulan as $data_rs)
-        {
-            if($data_rs->status == 1){
-               return $stbbuku = 1;
-            }elseif($data_rs->status == 2){
-               return $stbbuku = 2;
-            }elseif($data_rs->status == 3){
-               return $stbbuku = 3;
-            }else{
-               return $stbbuku = 0;
+    if (!empty($data_rsbulan)) {
+        return $stbbuku = 0;
+    } else {
+        foreach ($data_rsbulan as $data_rs) {
+            if ($data_rs->status == 1) {
+                return $stbbuku = 1;
+            } elseif ($data_rs->status == 2) {
+                return $stbbuku = 2;
+            } elseif ($data_rs->status == 3) {
+                return $stbbuku = 3;
+            } else {
+                return $stbbuku = 0;
             }
         }
     }
@@ -127,11 +126,52 @@ function stbbuku($sthnbln, $ssup)
 
 function vbildb($vvals)
 {
-    if(isnull($vvals) or $vvals == 0){
+    if (isnull($vvals) or $vvals == 0) {
         return $vbildb = 0;
-    }else{
+    } else {
         $src = $vvals;
         return $vbildb = $src;
     }
 }
-    
+
+function bulan($bln)
+{
+    switch ($bln) {
+        case 1:
+            return "Januari";
+            break;
+        case 2:
+            return "Februari";
+            break;
+        case 3:
+            return "Maret";
+            break;
+        case 4:
+            return "April";
+            break;
+        case 5:
+            return "Mei";
+            break;
+        case 6:
+            return "Juni";
+            break;
+        case 7:
+            return "Juli";
+            break;
+        case 8:
+            return "Agustus";
+            break;
+        case 9:
+            return "September";
+            break;
+        case 10:
+            return "Oktober";
+            break;
+        case 11:
+            return "November";
+            break;
+        case 12:
+            return "Desember";
+            break;
+    }
+}
