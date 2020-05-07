@@ -52,7 +52,7 @@
 				<div class="form-group row">
 					<label for="example-email-input" class="col-2 col-form-label">Tgl. Lembur<span style="color:red;">*</span></label>
 					<div class="col-10">
-						<input class="form-control" type="text" value="{{ date('Y-m-d') }}" id="tanggal" name="tanggal" autocomplete='off' required>
+						<input class="form-control" type="text" value="{{ date('Y-m-d') }}" id="tanggal" name="tanggal" autocomplete='off' required oninvalid="this.setCustomValidity('Tgl. Lembur Harus Diisi..')" onchange="setCustomValidity('')">
 						<input class="form-control" type="hidden" value="{{Auth::user()->userid}}"  name="userid" autocomplete='off'>
 					</div>
 				</div>

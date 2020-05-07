@@ -5,6 +5,8 @@ namespace App\Http\Controllers;
 use Illuminate\Http\Request;
 use App\Models\SdmMasterPegawai;
 use App\Models\Ttable;
+use App\Models\Rekapkas;
+use App\Models\Kasdoc;
 use DB;
 use PDF;
 use Excel;
@@ -110,39 +112,30 @@ class RekapHarianKasController extends Controller
         $nokas = $request->nokas;
         $tanggal = $request->tanggal;
 	
-    
-        Ttable::update([
+        Ttable::where( 't_date', $tanggal)->update([
                 't_date' => $tanggal
             ]);
         
-	    $data_rsrekapkas = DB::select("select * from rekapkas where jk='$jk' and store='$okas' and to_char(tglrekap,'yyyy-mm-dd')='$tanggal'");
+	    $data_rsrekapkas = DB::select("select * from rekapkas where jk='$jk' and store='$nokas' and to_char(tglrekap,'yyyy-mm-dd')='$tanggal'");
         if(!empty($data_rsrekapkas)){
             $data_cekbulbuk = DB::select("select h.docno,to_char(h.paiddate,'yyyy-mm-dd') as stglrekap,h.voucher,h.thnbln,h.paiddate, h.store, d.keterangan, d.cj , -d.totprice totprice,posted,rate, h.jk from kasdoc h, kasline d where h.docno=d.docno and h.store='$nokas' and h.jk='$jk' and to_char(h.paiddate,'yyyy-mm-dd')='$tanggal' and d.penutup<>'Y' and h.paid ='Y' order by h.voucher");
             foreach($data_cekbulbuk as $data_cek)
             {
-                if($data_cek->thnbln <> "" ){
                    if(stbbuku("$data_cek->thnbln","0") > 1){
-                    $data = 1;
-                    return response()->json($data);//rekap gagal !
+                    $data2 = 2;
+                    return response()->json($data2);//rekap gagal !
                    }
-                }
             }
          
             $data_rsdatemin = DB::select("select min(paiddate) as datemin from kasdoc h where paiddate not in (select tglrekap from rekapkas where store='$nokas' and jk='$jk') and store='$nokas' and jk='$jk'");
             foreach($data_rsdatemin as $data_rsdat)
             {
                 if($data_rsdat->datemin <> "" ){
-                    $data = 2;
-                    return response()->json($data);//rekap harian sudah dilakukan sebelumnya, rekap gagal!
+                    $data3 = 3;
+                    return response()->json($data3);//rekap harian sudah dilakukan sebelumnya, rekap gagal!
                 }
             }
-        }else{
-            $data = 3;
-            return response()->json($data);//rekap kas sudah dilakukan!
-        }
-
-	    
-		$datars = DB::select("select tglrekap as datemax, rekap as norekap from rekapkas where store='$nokas' and jk='$jk' order by tglrekap desc");
+            $datars = DB::select("select tglrekap as datemax, rekap as norekap from rekapkas where store='$nokas' and jk='$jk' order by tglrekap desc");
         if(!empty($datars)){
             foreach($datars as $datar)
             {
@@ -179,38 +172,47 @@ class RekapHarianKasController extends Controller
                   $saldoawal = round(vbildb($storeak));
               }
             }		
-		$data_jumlah = DB::select("select sum(d.totprice) as jumlah from kasdoc h, kasline d where h.docno=d.docno and h.store='$nokas' and h.jk='$jk' and to_char(h.paiddate,'yyyy-mm-dd')=to_char($tanggal,'yyyy-mm-dd') and d.penutup<>'Y' and h.paid='Y' group by d.docno,h.ci,d.totprice");
-        rs.movefirst
-        do while not rs.eof
-                if cdbl(rs("jumlah")) <= 0 then
-                    debet = debet + cdbl(rs("jumlah"))
-                else
-                    kredit = kredit + cdbl(rs("jumlah"))
-                end if
-        rs.movenext
-        loop
-        
-		set objrs = cn.execute("insert into rekapkas(jk,tglrekap,store,saldoawal,saldoakhir,debet,kredit,userid,password,rekap,tahun_rekap)values "&_
-		"('"& jk &"',to_date('" & formattanggal(tanggal) & "', 'dd-mon-yyyy'),'"& nokas &"','"& cdbl(saldoawal) &"','"& cdbl(saldoawal + debet + kredit) &"','"& cdbl(debet) &"','"& cdbl(kredit) &"','"& userid &"','"& userid &"','"& angka3digit(cdbl(norekap) + 1) &"','"& tahunonly(tanggal) &"')")
-        
-		set rsrekapkas = cn.execute("select * from rekapkas where store='" & nokas & "' and jk='" & jk & "' and tglrekap=to_date('" & formattanggal(tanggal) & "', 'dd-mon-yyyy')")
-        
-        set rskasdoc = cn.execute("select docno, rekap, rekapdate from kasdoc where paiddate=to_date('" & formattanggal(tanggal) & "', 'dd-mon-yyyy')")
-        if not rskasdoc.eof then
-            rskasdoc.movefirst
-            while not rskasdoc.eof
-			    set updkasdoc = cn.execute("update kasdoc set rekap='"&angka3digit(cdbl(norekap) + 1)&"',rekapdate=to_date('" & formattanggal(tanggal) & "', 'dd-mon-yyyy') where docno='"&rskasdoc("docno")&"'")
-                rskasdoc.movenext
-            wend
-        end if        
-		response.write("<script>alert('rekap harian sukses!')</script>")  
-        response.write("<script>window.location('default.asp?body=pbd_rekhar').reload()</script>")
-    else
-	    response.write("<script>alert('rekap harian ini sudah ada!')</script>")  
-        response.write("<script>window.location('default.asp?body=pbd_rekhar').reload()</script>")
-    end if
-  end if	
-end if
+            $data_jumlah = DB::select("select sum(d.totprice) as jumlah from kasdoc h, kasline d where h.docno=d.docno and h.store='$nokas' and h.jk='$jk' and to_char(h.paiddate,'yyyy-mm-dd')='$tanggal' and d.penutup<>'Y' and h.paid='Y' group by d.docno,h.ci,d.totprice");
+            foreach($data_jumlah as $data_jum)
+            {
+                if($data_jum->jumlah <= 0){
+                    $debet = $data_jum->jumlah;
+                }else{
+                    $kredit = $data_jum->jumlah;
+                }
+
+            }
+            $tglrekap = date_create($tanggal);
+            $rekapyear = date_format($tglrekap, 'Y');
+            Rekapkas::insert([
+                'jk' => $jk,
+                'tglrekap' => $tanggal,
+                'store' => $nokas,
+                'saldoawal' => $saldoawal,
+                'saldoakhir' => $saldoawal + $debet + $kredit,
+                'debet' => $debet,
+                'kredit' => $kredit,
+                'userid' => $request->userid,
+                'password' => $request->userid,
+                'rekap' => $norekap+1,
+                'tahun_rekap' => $rekapyear
+                ]);
+            
+            $datarskasdoc = DB::select("select docno, rekap, rekapdate from kasdoc where to_char(paiddate,'yyyy-mm-dd')='$tanggal'");
+            foreach($datarskasdoc as $datarskas)
+            {
+                Kasdoc::where('docno', $datarskas->docno)
+                ->update([
+                'rekap' => $norekap+1,
+                'rekapdate' => $tanggal
+                ]);
+            }
+            $data = 1;
+            return response()->json($data); 
+        }else{
+            $data4 = 4;
+            return response()->json($data4);//rekap kas sudah dilakukan!
+        }
     }
 
 }

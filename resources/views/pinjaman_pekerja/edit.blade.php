@@ -32,12 +32,12 @@
 					<i class="kt-font-brand flaticon2-line-chart"></i>
 				</span>
 				<h3 class="kt-portlet__head-title">
-					Tambah Pinjaman Pekerja
+					Data Pinjaman Pekerja
 				</h3>
 			</div>
 		</div>
 		<!--begin: Datatable -->
-		<form  class="kt-form kt-form--label-right" id="form-create">
+		<form  class="kt-form kt-form--label-right" id="form-update">
 			{{csrf_field()}}
 			<div class="kt-portlet__body">
 				<div class="form-group form-group-last">
@@ -48,40 +48,42 @@
 							</h5>	
 						</div>
 					</div>
-				
+				@foreach($data_list as $data)
 					<div class="form-group row">
 						<label for="spd-input" class="col-2 col-form-label">ID Pinjaman<span style="color:red;">*</span></label>
 						<div class="col-10">
-							<input  class="form-control" type="text" value=""  name="id_pinjaman" id="id_pinjaman" size="8" maxlength="8" autocomplete='off' readonly style="background-color:#DCDCDC; cursor:not-allowed">
+							<input  class="form-control" type="text" value="{{$data->id_pinjaman}}"  name="id_pinjaman" id="id_pinjaman" size="8" maxlength="8" autocomplete='off' readonly style="background-color:#DCDCDC; cursor:not-allowed">
 							<input class="form-control" type="hidden" value="{{Auth::user()->userid}}"  name="userid" autocomplete='off'>
 						</div>
 					</div>
 					<div class="form-group row">
 						<label for="dari-input" class="col-2 col-form-label">NO. Pekerja<span style="color:red;">*</span></label>
 						<div class="col-10">
-							<select name="nopek" id="nopekerja" class="form-control selectpicker" data-live-search="true" required oninvalid="this.setCustomValidity('No. Pekerja Harus Diisi..')" onchange="setCustomValidity('')">
-								<option value="">- Pilih -</option>
-								@foreach($data_pegawai as $data)
-								<option value="{{$data->nopeg}}">{{$data->nopeg}} - {{$data->nama}}</option>
-								@endforeach
-							</select>								
+							<input  class="form-control" type="text" value="{{$data->nopek}} -- {{$data->namapegawai}}"   size="8" maxlength="8" autocomplete='off' readonly style="background-color:#DCDCDC; cursor:not-allowed">					
+							<input  class="form-control" type="hidden" value="{{$data->nopek}}"  name="nopek"  size="8" maxlength="8" autocomplete='off' readonly style="background-color:#DCDCDC; cursor:not-allowed">					
 						</div>
 					</div>
 					<div class="form-group row">
 						<label for="spd-input" class="col-2 col-form-label">NO. Kontrak<span style="color:red;">*</span></label>
 						<div class="col-10">
-							<input  class="form-control" type="text" value=""  name="no_kontrak" size="16" maxlength="16" autocomplete='off' required oninvalid="this.setCustomValidity('No Kontrak Harus Diisi..')" oninput="setCustomValidity('')">
+							<input  class="form-control" type="text" value="{{$data->no_kontrak}}"  name="no_kontrak" size="16" maxlength="16" autocomplete='off' required oninvalid="this.setCustomValidity('No Kontrak Harus Diisi..')" oninput="setCustomValidity('')">
 						</div>
 					</div>
 					<div class="form-group row">
 						<label for="mulai-input" class="col-2 col-form-label">Mulai</label>
 						<div class="col-10">
 							<div class="input-daterange input-group" id="date_range_picker">
-								<input type="text" class="form-control" name="mulai" autocomplete="off" required oninvalid="this.setCustomValidity('Mulai Harus Diisi..')" onchange="setCustomValidity('')" />
+							<?php 
+								$tglmulai = date_create($data->mulai);
+								$mulai = date_format($tglmulai, 'Y-m-d'); 
+								$tglsampai = date_create($data->sampai);
+								$sampai = date_format($tglsampai, 'Y-m-d'); 
+							?>
+								<input type="text" class="form-control" name="mulai" autocomplete="off" value="{{$mulai}}" required oninvalid="this.setCustomValidity('Mulai Harus Diisi..')" onchange="setCustomValidity('')" />
 								<div class="input-group-append">
 									<span class="input-group-text">Sampai</span>
 								</div>
-								<input type="text" class="form-control" name="sampai" autocomplete="off" required oninvalid="this.setCustomValidity('Sampai Harus Diisi..')" onchange="setCustomValidity('')"/>
+								<input type="text" class="form-control" name="sampai" value="{{$sampai}}" autocomplete="off" required oninvalid="this.setCustomValidity('Sampai Harus Diisi..')" onchange="setCustomValidity('')"/>
 							</div>
 							<span class="form-text text-muted">Pilih rentang waktu Pinjaman</span>
 						</div>
@@ -89,21 +91,22 @@
 					<div class="form-group row">
 						<label for="spd-input" class="col-2 col-form-label">Tenor<span style="color:red;">*</span></label>
 						<div class="col-10">
-							<input  class="form-control" type="text" value=""  name="tenor" size="4" maxlength="4" autocomplete='off' required oninvalid="this.setCustomValidity('Tenor Harus Diisi..')" onchange="setCustomValidity('')"  onkeypress="return hanyaAngka(event)">
+							<input  class="form-control" type="text" value="{{$data->tenor}}"  name="tenor" size="4" maxlength="4" autocomplete='off' required oninvalid="this.setCustomValidity('Tenor Harus Diisi..')" onchange="setCustomValidity('')"  onkeypress="return hanyaAngka(event)">
 						</div>
 					</div>
 					<div class="form-group row">
 						<label for="spd-input" class="col-2 col-form-label">Angsuran<span style="color:red;">*</span></label>
 						<div class="col-10">
-							<input  class="form-control" type="text" value=""  name="angsuran" size="16" maxlength="16" autocomplete='off' required oninvalid="this.setCustomValidity('Angsuran Harus Diisi..')" oninput="setCustomValidity('')"  onkeypress="return hanyaAngka(event)">
+							<input  class="form-control" type="text" value="{{round($data->angsuran,0)}}"  name="angsuran" size="16" maxlength="16" autocomplete='off' required oninvalid="this.setCustomValidity('Angsuran Harus Diisi..')" oninput="setCustomValidity('')"  onkeypress="return hanyaAngka(event)">
 						</div>
 					</div>
 					<div class="form-group row">
 						<label for="spd-input" class="col-2 col-form-label">Pinjaman<span style="color:red;">*</span></label>
 						<div class="col-10">
-							<input  class="form-control" type="text" value=""  name="pinjaman" size="35" maxlength="35" autocomplete='off' required oninvalid="this.setCustomValidity('Pinjaman Harus Diisi..')" oninput="setCustomValidity('')"  onkeypress="return hanyaAngka(event)">
+							<input  class="form-control" type="text" value="{{round($data->jml_pinjaman,0)}}"  name="pinjaman" size="35" maxlength="35" autocomplete='off' required oninvalid="this.setCustomValidity('Pinjaman Harus Diisi..')" oninput="setCustomValidity('')"  onkeypress="return hanyaAngka(event)">
 						</div>
 					</div>
+					@endforeach
 					<div class="kt-form__actions">
 						<div class="row">
 							<div class="col-2"></div>
@@ -151,15 +154,48 @@
 					<thead class="thead-light">
 						<tr>
 						<th></th>
-						<th>No</th>
-						<th>Tahun</th>	
-						<th>Bulan</th>
-						<th>Pokok</th>
-						<th>Bunga</th>
+						<th>No</th>	
+						<th>TAHUN</th>	
+						<th>BULAN</th>
+						<th>SKED POKOK</th>
+						<th>SKED BUNGA</th>
+						<th>SKED JUMLAH</th>
+						<th>REAL POKOK</th>
+						<th>REAL BUNGA</th>
+						<th>REAL JUMLAH</th>
+						<th>NO BUKTI</th>
 						</tr>
 					</thead>
 					<tbody>
-						
+                    <?php $no=0; ?>
+					@foreach($data_detail as $data_d)
+					<?php $no++; ?>
+						<tr class="table-info">
+							<td scope="row" align="center"><label class="kt-radio kt-radio--bold kt-radio--brand"><input type="radio" name="btn-radio" data-no="" class="btn-radio" ><span></span></label></td>
+							<td scope="row" align="center">{{$no}}</td>
+							<td align="center">{{$data_d->tahun}}</td>
+							<td align="center">{{$data_d->bulan}}</td>
+							<td>Rp. <?php echo number_format($data_d->pokok, 0, ',', '.'); ?></td>
+							<td>Rp. <?php echo number_format($data_d->bunga, 0, ',', '.'); ?></td>
+							<td>Rp. <?php echo number_format($data_d->jumlah, 0, ',', '.'); ?></td>
+							<td>Rp. <?php echo number_format($data_d->realpokok, 0, ',', '.'); ?></td>
+							<td>Rp. <?php echo number_format($data_d->realbunga, 0, ',', '.'); ?></td>
+							<td>Rp. <?php echo number_format($data_d->jumlah2, 0, ',', '.'); ?></td>
+							<td align="center">{{$data_d->nodoc}}</td>
+						</tr>
+					@endforeach
+					</tbody>
+					@foreach($count as $data_c)
+                        <tr>
+                            <td colspan="4" align="right">Jumlah Total : </td>
+                            <td >Rp. <?php echo number_format($data_c->jml, 0, ',', '.'); ?></td>
+                            <td >Rp. <?php echo number_format($data_c->bunga, 0, ',', '.'); ?></td>
+                            <td ></td>
+                            <td >Rp. <?php echo number_format($data_c->realpokok, 0, ',', '.'); ?></td>
+                            <td >Rp. <?php echo number_format($data_c->realbunga, 0, ',', '.'); ?></td>
+                            <td ></td>
+                        </tr>
+					@endforeach
 					</tbody>
 				</table>
 			</div>
@@ -172,6 +208,12 @@
 @section('scripts')
 	<script type="text/javascript">
 	$(document).ready(function () {
+		$('#kt_table').DataTable({
+			scrollX   : true,
+			processing: true,
+			serverSide: false,
+		});
+
 		$('#tanggal').datepicker({
 			todayHighlight: true,
 			orientation: "bottom left",
@@ -185,35 +227,14 @@
 			format   : 'yyyy-mm-dd',
 		});
 
-		$("#nopekerja").on("change", function(){
-			var nopek = $(this).val();
-			console.log(nopek);
+		
+		
 
+		$('#form-update').submit(function(){
 			$.ajax({
-				url : "{{route('pinjaman_pekerja.idpinjaman.json')}}",
-				type : "POST",
-				dataType: 'json',
-				data : {
-					nopek:nopek
-					},
-				headers: {
-					'X-CSRF-Token': '{{ csrf_token() }}',
-					},
-				success : function(data){
-					$('#id_pinjaman').val(data);
-				},
-				error : function(){
-					alert("Ada kesalahan controller!");
-				}
-			})
-		});
-
-		$('#form-create').submit(function(){
-			var id_pinjaman = $("#id_pinjaman").val();
-			$.ajax({
-			url  : "{{route('pinjaman_pekerja.store')}}",
+			url  : "{{route('pinjaman_pekerja.update')}}",
 			type : "POST",
-			data : $('#form-create').serialize(),
+			data : $('#form-update').serialize(),
 			dataType : "JSON",
 			headers: {
 			'X-CSRF-Token': '{{ csrf_token() }}',
@@ -222,11 +243,11 @@
 				console.log(data);
 					Swal.fire({
 						type  : 'success',
-						title : 'Data Berhasil Ditambah',
+						title : 'Data Berhasil Disimpan',
 						text  : 'Berhasil',
 						timer : 2000
 					}).then(function() {
-						window.location.replace("{{ url('sdm/pinjaman_pekerja/edit') }}" + '/' +id_pinjaman,);
+						window.location.replace("{{ route('pinjaman_pekerja.index') }}");
 					});
 				}, 
 				error : function(){

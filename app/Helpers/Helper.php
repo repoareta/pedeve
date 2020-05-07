@@ -115,9 +115,9 @@ function stbbuku($sthnbln, $ssup)
             if($data_rs->status == 1){
                return $stbbuku = 1;
             }elseif($data_rs->status == 2){
-               return $stbbuku = 1;
+               return $stbbuku = 2;
             }elseif($data_rs->status == 3){
-               return $stbbuku = 1;
+               return $stbbuku = 3;
             }else{
                return $stbbuku = 0;
             }
