@@ -26,7 +26,10 @@ class UpahMasterController extends Controller
      */
     public function index()
     {
-        $tahun = UpahMaster::distinct('tahun')->orderBy('tahun', 'desc')->orderBy('bulan', 'desc')->get();
+        $tahun = UpahMaster::distinct('tahun')
+        ->orderBy('tahun', 'desc')
+        ->get();
+
         return view('upah_master.index', compact('tahun'));
     }
 
@@ -37,7 +40,9 @@ class UpahMasterController extends Controller
      */
     public function indexJson(Request $request)
     {
-        $upah_master_list = UpahMaster::orderBy('tahun', 'desc');
+        $upah_master_list = UpahMaster::orderByRaw('tahun::int DESC')
+        ->orderByRaw('bulan::int DESC')
+        ->orderBy('nopek', 'DESC');
 
         return DataTables::of($upah_master_list)
             ->filter(function ($query) use ($request) {
@@ -45,26 +50,26 @@ class UpahMasterController extends Controller
                     $query->where('nopek', 'like', "%{$request->get('no_pekerja')}%");
                 }
 
-                if ($request->has('bulan')) {
-                    $query->where('bulan', 'like', "%{$request->get('bulan')}%");
+                if ($request->get('bulan')) {
+                    $query->where('bulan', '=', $request->get('bulan'));
                 }
 
-                if ($request->has('tahun')) {
-                    $query->where('tahun', 'like', "%{$request->get('tahun')}%");
+                if ($request->get('tahun')) {
+                    $query->where('tahun', '=', $request->get('tahun'));
                 }
             })
             ->addColumn('action', function ($row) {
-                $radio = '<label class="kt-radio kt-radio--bold kt-radio--brand"><input type="radio" name="radio_upah_all_in" value="'.$row->tahun.'-'.$row->bulan.'-'.$row->nopek.'"><span></span></label>';
+                $radio = '<label class="kt-radio kt-radio--bold kt-radio--brand"><input type="radio" name="radio_upah_all_in" value="'.$row->tahun.'-'.$row->bulan.'-'.$row->nopek.'-'.$row->aard.'"><span></span></label>';
                 return $radio;
             })
             ->addColumn('bulan_tahun', function ($row) {
-                return $row->bulan.' - '.$row->tahun;
+                return bulan($row->bulan).' '.$row->tahun;
             })
             ->addColumn('pekerja', function ($row) {
-                return $row->nopek.' - '.$row->pekerja->nama;
+                return $row->nopek.' - '.optional($row->pekerja)->nama;
             })
             ->addColumn('aard', function ($row) {
-                return $row->aard.' - '.$row->aard_payroll->nama;
+                return $row->aard.' - '.optional($row->aard_payroll)->nama;
             })
             ->addColumn('ccl', function ($row) {
                 return abs($row->ccl);
