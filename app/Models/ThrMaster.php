@@ -5,11 +5,11 @@ namespace App\Models;
 use Illuminate\Database\Eloquent\Model;
 use App\Traits\CompositeKey;
 
-class InsentifMaster extends Model
+class ThrMaster extends Model
 {
     use CompositeKey;
     
-    protected $table = "pay_master_insentif";
+    protected $table = "pay_master_thr";
     protected $primaryKey = ['tahun', 'bulan', 'nopek', 'aard'];
     protected $keyType = 'string';
     public $timestamps = false;

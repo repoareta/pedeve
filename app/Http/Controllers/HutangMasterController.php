@@ -28,7 +28,6 @@ class HutangMasterController extends Controller
     {
         $tahun = HutangMaster::distinct('tahun')
         ->orderBy('tahun', 'desc')
-        ->orderBy('bulan', 'desc')
         ->get();
         return view('hutang_master.index', compact('tahun'));
     }
@@ -40,8 +39,8 @@ class HutangMasterController extends Controller
      */
     public function indexJson(Request $request)
     {
-        $hutang_master_list = HutangMaster::orderBy('tahun', 'desc')
-        ->orderBy('bulan', 'desc')
+        $hutang_master_list = HutangMaster::orderByRaw('tahun::int DESC')
+        ->orderByRaw('bulan::int DESC')
         ->orderBy('nopek', 'desc');
 
         return DataTables::of($hutang_master_list)
@@ -50,26 +49,26 @@ class HutangMasterController extends Controller
                     $query->where('nopek', 'like', "%{$request->get('no_pekerja')}%");
                 }
 
-                if ($request->has('bulan')) {
-                    $query->where('bulan', 'like', "%{$request->get('bulan')}%");
+                if ($request->get('bulan')) {
+                    $query->where('bulan', '=', $request->get('bulan'));
                 }
 
-                if ($request->has('tahun')) {
-                    $query->where('tahun', 'like', "%{$request->get('tahun')}%");
+                if ($request->get('tahun')) {
+                    $query->where('tahun', '=', $request->get('tahun'));
                 }
             })
             ->addColumn('action', function ($row) {
-                $radio = '<label class="kt-radio kt-radio--bold kt-radio--brand"><input type="radio" name="radio_upah_all_in" value="'.$row->tahun.'-'.$row->bulan.'-'.$row->nopek.'"><span></span></label>';
+                $radio = '<label class="kt-radio kt-radio--bold kt-radio--brand"><input type="radio" name="radio_upah_all_in" value="'.$row->tahun.'-'.$row->bulan.'-'.$row->nopek.'-'.$row->aard.'"><span></span></label>';
                 return $radio;
             })
             ->addColumn('bulan_tahun', function ($row) {
                 return bulan($row->bulan).' '.$row->tahun;
             })
             ->addColumn('pekerja', function ($row) {
-                return $row->nopek.' - '.$row->pekerja->nama;
+                return $row->nopek.' - '.optional($row->pekerja)->nama;
             })
             ->addColumn('aard', function ($row) {
-                return $row->aard.' - '.$row->aard_payroll->nama;
+                return $row->aard.' - '.optional($row->aard_payroll)->nama;
             })
             ->addColumn('lastamount', function ($row) {
                 return currency_idr($row->aard);

@@ -6,7 +6,7 @@
 	<div class="kt-container  kt-container--fluid ">
 		<div class="kt-subheader__main">
 			<h3 class="kt-subheader__title">
-				Master Upah </h3>
+				Master THR </h3>
 			<span class="kt-subheader__separator kt-hidden"></span>
 			<div class="kt-subheader__breadcrumbs">
 				<a href="#" class="kt-subheader__breadcrumbs-home"><i class="flaticon2-shelter"></i></a>
@@ -15,7 +15,7 @@
 					SDM & Payroll 
 				</a>
 				<span class="kt-subheader__breadcrumbs-separator"></span>
-				<span class="kt-subheader__breadcrumbs-link kt-subheader__breadcrumbs-link--active">Master Upah</span>
+				<span class="kt-subheader__breadcrumbs-link kt-subheader__breadcrumbs-link--active">Master THR</span>
 			</div>
 		</div>
 	</div>
@@ -30,11 +30,11 @@
 				<i class="kt-font-brand flaticon2-line-chart"></i>
 			</span>
 			<h3 class="kt-portlet__head-title">
-				Tabel Master Upah
+				Tabel Master THR
 			</h3>
 
 			<div class="kt-portlet__head-actions" style="font-size: 2rem">
-				<a href="{{ route('upah.create') }}">
+				<a href="{{ route('thr.create') }}">
 					<span class="kt-font-success" data-toggle="kt-tooltip" data-placement="top" title="Tambah Data">
 						<i class="fas fa-plus-circle"></i>
 					</span>
@@ -47,10 +47,6 @@
 				<span class="kt-font-danger pointer-link" id="deleteRow" data-toggle="kt-tooltip" data-placement="top" title="Hapus Data">
 					<i class="fas fa-times-circle"></i>
 				</span>
-
-				{{-- <span class="kt-font-info pointer-link" id="exportRow" data-toggle="kt-tooltip" data-placement="top" title="Cetak Data">
-					<i class="fas fa-print"></i>
-				</span> --}}
 			</div>
 		</div>
 		<div class="kt-portlet__head-toolbar">
@@ -111,11 +107,12 @@
 			<thead class="thead-light">
 				<tr>
 					<th></th>
+					<th>Tahun</th>
 					<th>Bulan</th>
 					<th>Pegawai</th>
 					<th>AARD</th>
-					<th>Cicilan Ke</th>
 					<th>Jumlah Cicilan</th>
+					<th>Cicilan</th>
 					<th>Nilai</th>
 				</tr>
 			</thead>
@@ -141,7 +138,7 @@
 			processing: true,
 			serverSide: true,
 			ajax      : {
-				url: "{{ route('upah.index.json') }}",
+				url: "{{ route('thr.index.json') }}",
 				data: function (d) {
 					d.no_pekerja = $('input[name=no_pekerja]').val();
 					d.bulan = $('select[name=bulan]').val();
@@ -150,12 +147,13 @@
 			},
 			columns: [
 				{data: 'action', name: 'aksi', orderable: false, searchable: false, class:'radio-button'},
-				{data: 'bulan_tahun', name: 'bulan_tahun', class:'no-wrap'},
+				{data: 'tahun', name: 'tahun'},
+				{data: 'bulan', name: 'bulan'},
 				{data: 'pekerja', name: 'pekerja'},
 				{data: 'aard', name: 'aard'},
+				{data: 'jmlcc', name: 'jmlcc'},
 				{data: 'ccl', name: 'ccl'},
-				{data: 'jmlcc', name: 'jmlcc', class:'no-wrap'},
-				{data: 'nilai', name: 'nilai', class:'no-wrap'}
+				{data: 'nilai', name: 'nilai'}
 			]
 		});
 

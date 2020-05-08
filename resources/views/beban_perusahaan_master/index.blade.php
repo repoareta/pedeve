@@ -6,7 +6,7 @@
 	<div class="kt-container  kt-container--fluid ">
 		<div class="kt-subheader__main">
 			<h3 class="kt-subheader__title">
-				Master Upah </h3>
+				Master Beban Perusahaan </h3>
 			<span class="kt-subheader__separator kt-hidden"></span>
 			<div class="kt-subheader__breadcrumbs">
 				<a href="#" class="kt-subheader__breadcrumbs-home"><i class="flaticon2-shelter"></i></a>
@@ -15,7 +15,7 @@
 					SDM & Payroll 
 				</a>
 				<span class="kt-subheader__breadcrumbs-separator"></span>
-				<span class="kt-subheader__breadcrumbs-link kt-subheader__breadcrumbs-link--active">Master Upah</span>
+				<span class="kt-subheader__breadcrumbs-link kt-subheader__breadcrumbs-link--active">Master Beban Perusahaan</span>
 			</div>
 		</div>
 	</div>
@@ -30,11 +30,11 @@
 				<i class="kt-font-brand flaticon2-line-chart"></i>
 			</span>
 			<h3 class="kt-portlet__head-title">
-				Tabel Master Upah
+				Tabel Master Beban Perusahaan
 			</h3>
 
 			<div class="kt-portlet__head-actions" style="font-size: 2rem">
-				<a href="{{ route('upah.create') }}">
+				<a href="{{ route('hutang.create') }}">
 					<span class="kt-font-success" data-toggle="kt-tooltip" data-placement="top" title="Tambah Data">
 						<i class="fas fa-plus-circle"></i>
 					</span>
@@ -47,10 +47,6 @@
 				<span class="kt-font-danger pointer-link" id="deleteRow" data-toggle="kt-tooltip" data-placement="top" title="Hapus Data">
 					<i class="fas fa-times-circle"></i>
 				</span>
-
-				{{-- <span class="kt-font-info pointer-link" id="exportRow" data-toggle="kt-tooltip" data-placement="top" title="Cetak Data">
-					<i class="fas fa-print"></i>
-				</span> --}}
 			</div>
 		</div>
 		<div class="kt-portlet__head-toolbar">
@@ -113,9 +109,7 @@
 					<th></th>
 					<th>Bulan</th>
 					<th>Pegawai</th>
-					<th>AARD</th>
-					<th>Cicilan Ke</th>
-					<th>Jumlah Cicilan</th>
+					<th>Aard</th>
 					<th>Nilai</th>
 				</tr>
 			</thead>
@@ -141,7 +135,7 @@
 			processing: true,
 			serverSide: true,
 			ajax      : {
-				url: "{{ route('upah.index.json') }}",
+				url: "{{ route('beban_perusahaan.index.json') }}",
 				data: function (d) {
 					d.no_pekerja = $('input[name=no_pekerja]').val();
 					d.bulan = $('select[name=bulan]').val();
@@ -150,12 +144,10 @@
 			},
 			columns: [
 				{data: 'action', name: 'aksi', orderable: false, searchable: false, class:'radio-button'},
-				{data: 'bulan_tahun', name: 'bulan_tahun', class:'no-wrap'},
+				{data: 'bulan_tahun', name: 'bulan_tahun'},
 				{data: 'pekerja', name: 'pekerja'},
 				{data: 'aard', name: 'aard'},
-				{data: 'ccl', name: 'ccl'},
-				{data: 'jmlcc', name: 'jmlcc', class:'no-wrap'},
-				{data: 'nilai', name: 'nilai', class:'no-wrap'}
+				{data: 'nilai', name: 'nilai'}
 			]
 		});
 

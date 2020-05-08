@@ -10,7 +10,7 @@ class UpahMaster extends Model
     use CompositeKey;
     
     protected $table = "pay_master_upah";
-    protected $primaryKey = ['tahun', 'bulan', 'nopek'];
+    protected $primaryKey = ['tahun', 'bulan', 'nopek', 'aard'];
     protected $keyType = 'string';
     public $timestamps = false;
     public $incrementing = false;
