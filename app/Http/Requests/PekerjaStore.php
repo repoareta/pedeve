@@ -26,6 +26,7 @@ class PekerjaStore extends FormRequest
         return [
             'nomor'               => "required|alpha_num|size:6|unique:App\Models\Pekerja,nopeg",
             'nama'                => "required|string",
+            'ktp'                 => "required",
             'status'              => "required",
             'tanggal_lahir'       => "required|date_format:Y-m-d|before:today",
             'tempat_lahir'        => "required",

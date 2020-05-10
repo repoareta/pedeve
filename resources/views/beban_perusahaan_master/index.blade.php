@@ -109,7 +109,7 @@
 					<th></th>
 					<th>Bulan</th>
 					<th>Pegawai</th>
-					<th>Aard</th>
+					<th>AARD</th>
 					<th>Nilai</th>
 				</tr>
 			</thead>
@@ -174,7 +174,10 @@
 			e.preventDefault();
 			if($('input[type=radio]').is(':checked')) { 
 				$("input[type=radio]:checked").each(function() {
-					var id = $(this).val();
+					var tahun = $(this).val().split("-")[0];
+					var bulan = $(this).val().split("-")[1];
+					var nopek = $(this).val().split("-")[2];
+					var aard = $(this).val().split("-")[3];
 					// delete stuff
 					const swalWithBootstrapButtons = Swal.mixin({
 					customClass: {
@@ -186,7 +189,7 @@
 
 					swalWithBootstrapButtons.fire({
 						title: "Data yang akan dihapus?",
-						text: "Kode : " + id,
+						text: "Nopek : " + nopek + " AARD : " + aard,
 						type: 'warning',
 						showCancelButton: true,
 						reverseButtons: true,
@@ -196,17 +199,20 @@
 					.then((result) => {
 						if (result.value) {
 							$.ajax({
-								url: "{{ route('anggaran.delete') }}",
+								url: "{{ route('beban_perusahaan.delete') }}",
 								type: 'DELETE',
 								dataType: 'json',
 								data: {
-									"id": id,
+									"tahun": tahun,
+									"bulan": bulan,
+									"nopek": nopek,
+									"aard" : aard,
 									"_token": "{{ csrf_token() }}",
 								},
 								success: function () {
 									Swal.fire({
 										type  : 'success',
-										title : 'Hapus Anggaran ' + id,
+										title : "Hapus Nopek : " + nopek + " AARD : " + aard,
 										text  : 'Berhasil',
 										timer : 2000
 									}).then(function() {
@@ -222,43 +228,6 @@
 				});
 			} else {
 				swalAlertInit('hapus');
-			}
-		});
-
-		$('#exportRow').click(function(e) {
-			e.preventDefault();
-			if($('input[type=radio]').is(':checked')) { 
-				$("input[type=radio]:checked").each(function() {
-					var id = $(this).val();
-					
-					const swalWithBootstrapButtons = Swal.mixin({
-					customClass: {
-						confirmButton: 'btn btn-primary',
-						cancelButton: 'btn btn-danger'
-					},
-						buttonsStyling: false
-					})
-
-					swalWithBootstrapButtons.fire({
-						title: "Data yang akan dicetak?",
-						text: "No. Panjar : " + id,
-						type: 'warning',
-						showCancelButton: true,
-						reverseButtons: true,
-						confirmButtonText: 'Cetak',
-						cancelButtonText: 'Batalkan'
-					})
-					.then((result) => {
-						if (result.value) {
-							var id = $(this).val().split("/").join("-");
-							// go to page edit
-							var url = "{{ url('umum/perjalanan_dinas/export') }}" + '/' + id;
-							window.open(url, '_blank');
-						}
-					});
-				});
-			} else {
-				swalAlertInit('cetak');
 			}
 		});
 

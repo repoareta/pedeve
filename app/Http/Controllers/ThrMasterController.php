@@ -59,7 +59,7 @@ class ThrMasterController extends Controller
                 }
             })
             ->addColumn('action', function ($row) {
-                $radio = '<label class="kt-radio kt-radio--bold kt-radio--brand"><input type="radio" name="radio_upah_all_in" value="'.$row->tahun.'-'.$row->bulan.'-'.$row->nopek.'"><span></span></label>';
+                $radio = '<label class="kt-radio kt-radio--bold kt-radio--brand"><input type="radio" name="radio_upah_all_in" value="'.$row->tahun.'-'.$row->bulan.'-'.$row->nopek.'-'.$row->aard.'"><span></span></label>';
                 return $radio;
             })
             ->addColumn('bulan', function ($row) {
@@ -145,8 +145,14 @@ class ThrMasterController extends Controller
      * @param  int  $id
      * @return \Illuminate\Http\Response
      */
-    public function destroy($id)
+    public function delete(Request $request)
     {
-        //
+        $insentif = ThrMaster::where('tahun', $request->tahun)
+        ->where('bulan', $request->bulan)
+        ->where('nopek', $request->nopek)
+        ->where('aard', $request->aard)
+        ->delete();
+
+        return response()->json(['delete' => true], 200);
     }
 }

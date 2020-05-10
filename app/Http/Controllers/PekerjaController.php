@@ -128,6 +128,7 @@ class PekerjaController extends Controller
         $pekerja->userid       = Auth::user()->userid;
         $pekerja->tglentry     = Carbon::now();
         $pekerja->fasilitas    = null;
+        $pekerja->noktp        = $request->ktp;
 
         if ($request->file('photo')) {
             $photo = $request->file('photo')->getClientOriginalName();
@@ -229,6 +230,7 @@ class PekerjaController extends Controller
         $pekerja->userid       = Auth::user()->userid;
         $pekerja->tglentry     = Carbon::now();
         $pekerja->fasilitas    = null;
+        $pekerja->noktp        = $request->ktp;
 
         if ($request->file('photo')) {
             // Value is not URL but directory file path
