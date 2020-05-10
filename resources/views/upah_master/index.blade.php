@@ -182,7 +182,10 @@
 			e.preventDefault();
 			if($('input[type=radio]').is(':checked')) { 
 				$("input[type=radio]:checked").each(function() {
-					var id = $(this).val();
+					var tahun = $(this).val().split("-")[0];
+					var bulan = $(this).val().split("-")[1];
+					var nopek = $(this).val().split("-")[2];
+					var aard = $(this).val().split("-")[3];
 					// delete stuff
 					const swalWithBootstrapButtons = Swal.mixin({
 					customClass: {
@@ -194,7 +197,7 @@
 
 					swalWithBootstrapButtons.fire({
 						title: "Data yang akan dihapus?",
-						text: "Kode : " + id,
+						text: nopek + " " + aard,
 						type: 'warning',
 						showCancelButton: true,
 						reverseButtons: true,
@@ -204,17 +207,20 @@
 					.then((result) => {
 						if (result.value) {
 							$.ajax({
-								url: "{{ route('anggaran.delete') }}",
+								url: "{{ route('upah.delete') }}",
 								type: 'DELETE',
 								dataType: 'json',
 								data: {
-									"id": id,
+									"tahun": tahun,
+									"bulan": bulan,
+									"nopek": nopek,
+									"aard": aard,
 									"_token": "{{ csrf_token() }}",
 								},
 								success: function () {
 									Swal.fire({
 										type  : 'success',
-										title : 'Hapus Anggaran ' + id,
+										title : 'Hapus Upah Master ' + nopek + " " + aard,
 										text  : 'Berhasil',
 										timer : 2000
 									}).then(function() {
