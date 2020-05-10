@@ -168,10 +168,18 @@
 			e.preventDefault();
 			if($('input[type=radio]').is(':checked')) { 
 				$("input[type=radio]:checked").each(function() {
-					var id = $(this).val().split("/").join("-");
-					var url = '{{ route("anggaran.edit", ":kode_main") }}';
+					var tahun = $(this).val().split("-")[0];
+					var bulan = $(this).val().split("-")[1];
+					var nopek = $(this).val().split("-")[2];
+					var aard = $(this).val().split("-")[3];
+
+					var url = '{{ route("upah.edit", [":tahun", ":bulan", ":nopek", ":aard"]) }}';
 					// go to page edit
-					window.location.href = url.replace(':kode_main',id);
+					window.location.href = url
+					.replace(':tahun', tahun)
+					.replace(':bulan', bulan)
+					.replace(':nopek', nopek)
+					.replace(':aard', aard);
 				});
 			} else {
 				swalAlertInit('ubah');
@@ -182,7 +190,10 @@
 			e.preventDefault();
 			if($('input[type=radio]').is(':checked')) { 
 				$("input[type=radio]:checked").each(function() {
-					var id = $(this).val();
+					var tahun = $(this).val().split("-")[0];
+					var bulan = $(this).val().split("-")[1];
+					var nopek = $(this).val().split("-")[2];
+					var aard = $(this).val().split("-")[3];
 					// delete stuff
 					const swalWithBootstrapButtons = Swal.mixin({
 					customClass: {
@@ -194,7 +205,7 @@
 
 					swalWithBootstrapButtons.fire({
 						title: "Data yang akan dihapus?",
-						text: "Kode : " + id,
+						text: nopek + " " + aard,
 						type: 'warning',
 						showCancelButton: true,
 						reverseButtons: true,
@@ -204,17 +215,20 @@
 					.then((result) => {
 						if (result.value) {
 							$.ajax({
-								url: "{{ route('anggaran.delete') }}",
+								url: "{{ route('upah.delete') }}",
 								type: 'DELETE',
 								dataType: 'json',
 								data: {
-									"id": id,
+									"tahun": tahun,
+									"bulan": bulan,
+									"nopek": nopek,
+									"aard": aard,
 									"_token": "{{ csrf_token() }}",
 								},
 								success: function () {
 									Swal.fire({
 										type  : 'success',
-										title : 'Hapus Anggaran ' + id,
+										title : 'Hapus Upah Master ' + nopek + " " + aard,
 										text  : 'Berhasil',
 										timer : 2000
 									}).then(function() {
@@ -232,44 +246,6 @@
 				swalAlertInit('hapus');
 			}
 		});
-
-		$('#exportRow').click(function(e) {
-			e.preventDefault();
-			if($('input[type=radio]').is(':checked')) { 
-				$("input[type=radio]:checked").each(function() {
-					var id = $(this).val();
-					
-					const swalWithBootstrapButtons = Swal.mixin({
-					customClass: {
-						confirmButton: 'btn btn-primary',
-						cancelButton: 'btn btn-danger'
-					},
-						buttonsStyling: false
-					})
-
-					swalWithBootstrapButtons.fire({
-						title: "Data yang akan dicetak?",
-						text: "No. Panjar : " + id,
-						type: 'warning',
-						showCancelButton: true,
-						reverseButtons: true,
-						confirmButtonText: 'Cetak',
-						cancelButtonText: 'Batalkan'
-					})
-					.then((result) => {
-						if (result.value) {
-							var id = $(this).val().split("/").join("-");
-							// go to page edit
-							var url = "{{ url('umum/perjalanan_dinas/export') }}" + '/' + id;
-							window.open(url, '_blank');
-						}
-					});
-				});
-			} else {
-				swalAlertInit('cetak');
-			}
-		});
-
 	});
 	</script>
 @endsection

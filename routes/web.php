@@ -399,7 +399,7 @@ Route::group(['middleware'=> ['auth','checkRole:1']], function () {
             Route::get('upah/index_json', 'UpahMasterController@indexJson')->name('index.json');
             Route::get('upah/create', 'UpahMasterController@create')->name('create');
             Route::post('upah/store', 'UpahMasterController@store')->name('store');
-            Route::get('upah/edit/{kode_bagian}', 'UpahMasterController@edit')->name('edit');
+            Route::get('upah/edit/{tahun}/{bulan}/{nopek}/{aard}', 'UpahMasterController@edit')->name('edit');
             Route::post('upah/update/{kode_bagian}', 'UpahMasterController@update')->name('update');
             Route::delete('upah/delete', 'UpahMasterController@delete')->name('delete');
         });

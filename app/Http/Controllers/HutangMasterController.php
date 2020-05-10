@@ -14,7 +14,6 @@ use App\Http\Requests\UpahAllInUpdate;
 // Load Plugin
 use Carbon\Carbon;
 use Auth;
-use DB;
 use DataTables;
 
 class HutangMasterController extends Controller
@@ -102,17 +101,6 @@ class HutangMasterController extends Controller
     }
 
     /**
-     * Display the specified resource.
-     *
-     * @param  int  $id
-     * @return \Illuminate\Http\Response
-     */
-    public function show($id)
-    {
-        //
-    }
-
-    /**
      * Show the form for editing the specified resource.
      *
      * @param  int  $id
@@ -141,8 +129,14 @@ class HutangMasterController extends Controller
      * @param  int  $id
      * @return \Illuminate\Http\Response
      */
-    public function destroy($id)
+    public function delete(Request $request)
     {
-        //
+        $insentif = HutangMaster::where('tahun', $request->tahun)
+        ->where('bulan', $request->bulan)
+        ->where('nopek', $request->nopek)
+        ->where('aard', $request->aard)
+        ->delete();
+
+        return response()->json(['delete' => true], 200);
     }
 }

@@ -206,6 +206,13 @@
 								<input class="form-control" type="text" name="nama" id="nama" value="{{ $pekerja->nama }}">
 							</div>
 						</div>
+
+						<div class="form-group row">
+							<label for="kode" class="col-4 col-form-label">Nomor KTP</label>
+							<div class="col-8">
+								<input class="form-control" type="text" name="ktp" id="ktp" value="{{ $pekerja->noktp }}">
+							</div>
+						</div>
 		
 						<div class="form-group row">
 							<label for="nama" class="col-4 col-form-label">Tempat Lahir</label>
