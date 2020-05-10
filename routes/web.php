@@ -742,5 +742,24 @@ Route::group(['middleware'=> ['auth','checkRole:1']], function () {
             Route::delete('rekap_harian_kas/delete', 'RekapHarianKasController@delete')->name('delete');
         });
         //end rekap_harian_kas
+
+
+        //Report Kas Kas Bank
+        // Route assigned name "report_kas_bank.index"...
+        Route::name('kas_bank.')->group(function () {
+            Route::get('kas_bank/create1', 'KasCashJudexController@create1')->name('create1');
+            Route::post('kas_bank/cetak1', 'KasCashJudexController@cetak1')->name('cetak1');
+            Route::get('kas_bank/create2', 'KasCashJudexController@create2')->name('create2');
+            Route::post('kas_bank/cetak2', 'KasCashJudexController@cetak2')->name('cetak2');
+            Route::get('kas_bank/create3', 'KasCashJudexController@create3')->name('create3');
+            Route::post('kas_bank/cetak3', 'KasCashJudexController@cetak3')->name('cetak3');
+            Route::get('kas_bank/create4', 'KasCashJudexController@create4')->name('create4');
+            Route::post('kas_bank/cetak4', 'KasCashJudexController@cetak4')->name('cetak4');
+            Route::get('kas_bank/create5', 'KasCashJudexController@create5')->name('create5');
+            Route::post('kas_bank/cetak5', 'KasCashJudexController@cetak5')->name('cetak5');
+            Route::get('kas_bank/create6', 'KasCashJudexController@create6')->name('create6');
+            Route::post('kas_bank/cetak6', 'KasCashJudexController@cetak6')->name('cetak6');
+        });
+        //end report_kas_bank
     });
 });
