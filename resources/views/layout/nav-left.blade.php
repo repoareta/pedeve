@@ -413,16 +413,44 @@
                     'rekap_harian_kas.search.index',
                     'rekap_harian_kas.create',
                     'rekap_harian_kas.edit',
-                ); // isi nama semua route penempatan deposito
+                ); // isi nama semua route rekap harian
 
                 $rekap_perbendaharaan = array_merge(
                     $rekaphariankas
-                ); //isi nama Subdomain saldo
+                ); //isi nama Subdomain rekap perbendaharaan
+
+                $kas_bank = array(
+                    'kas_bank.create1',
+                ); // isi nama semua route kas_bank
+                $kas_balancing = array(
+                    'kas_bank.create2',
+                ); // isi nama semua route kas_balancing
+                $kas_judex = array(
+                    'kas_bank.create3',
+                ); // isi nama semua route kas_judex
+                $kas_bagian = array(
+                    'kas_bank.create4',
+                ); // isi nama semua route kas_bagian
+                $kas_biaya = array(
+                    'kas_bank.create5',
+                ); // isi nama semua route kas_biaya
+                $kas_sandi = array(
+                    'kas_bank.create6',
+                ); // isi nama semua route kas_sandi
+                $report_perbendaharaan = array_merge(
+                    $kas_bank,
+                    $kas_balancing,
+                    $kas_judex,
+                    $kas_bagian,
+                    $kas_biaya,
+                    $kas_sandi
+                ); //isi nama Subdomain report perbendaharaan
                 $perbendaharaan = array_merge(
                     $penerimaan_kas,
                     $saldo,
                     $deposito,
-                    $rekap_perbendaharaan
+                    $rekap_perbendaharaan,
+                    $report_perbendaharaan
                 ); // array merge semua submenu
             @endphp
 
@@ -1156,7 +1184,7 @@
                                 </ul>
                             </div>
                         </li>
-                        <li class="kt-menu__item kt-menu__item--submenu {{ set_active($report_sdm_payroll) }}" aria-haspopup="true" data-ktmenu-submenu-toggle="hover">
+                        <li class="kt-menu__item kt-menu__item--submenu {{ set_active($report_perbendaharaan) }}" aria-haspopup="true" data-ktmenu-submenu-toggle="hover">
                             <a href="javascript:;" class="kt-menu__link kt-menu__toggle">
                                 <i class="kt-menu__link-bullet kt-menu__link-bullet--dot">
                                     <span></span>
@@ -1166,12 +1194,52 @@
                             </a>
                             <div class="kt-menu__submenu "><span class="kt-menu__arrow"></span>
                                 <ul class="kt-menu__subnav">
-                                    <li class="kt-menu__item kt-menu__item{{ set_active_submenu($daftar_upah) }}" aria-haspopup="true">
-                                        <a href="{{ route('proses_gaji.ctkdaftarupah') }}" class="kt-menu__link">
+                                    <li class="kt-menu__item kt-menu__item{{ set_active_submenu($kas_bank) }}" aria-haspopup="true">
+                                        <a href="{{ route('kas_bank.create1') }}" class="kt-menu__link">
                                             <i class="kt-menu__link-bullet kt-menu__link-bullet--line">
                                                 <span></span>
                                             </i>
-                                            <span class="kt-menu__link-text">Daftar Upah Kerja</span>
+                                            <span class="kt-menu__link-text">D2 Kas Bank</span>
+                                        </a>
+                                    </li>
+                                    <li class="kt-menu__item kt-menu__item{{ set_active_submenu($kas_balancing) }}" aria-haspopup="true">
+                                        <a href="{{ route('kas_bank.create2') }}" class="kt-menu__link">
+                                            <i class="kt-menu__link-bullet kt-menu__link-bullet--line">
+                                                <span></span>
+                                            </i>
+                                            <span class="kt-menu__link-text">Balancing Kas/Bank</span>
+                                        </a>
+                                    </li>
+                                    <li class="kt-menu__item kt-menu__item{{ set_active_submenu($kas_judex) }}" aria-haspopup="true">
+                                        <a href="{{ route('kas_bank.create3') }}" class="kt-menu__link">
+                                            <i class="kt-menu__link-bullet kt-menu__link-bullet--line">
+                                                <span></span>
+                                            </i>
+                                            <span class="kt-menu__link-text">Kas/Bank Per Cash Judex</span>
+                                        </a>
+                                    </li>
+                                    <li class="kt-menu__item kt-menu__item{{ set_active_submenu($kas_bagian) }}" aria-haspopup="true">
+                                        <a href="{{ route('kas_bank.create4') }}" class="kt-menu__link">
+                                            <i class="kt-menu__link-bullet kt-menu__link-bullet--line">
+                                                <span></span>
+                                            </i>
+                                            <span class="kt-menu__link-text">Cash Judex Per Bagian</span>
+                                        </a>
+                                    </li>
+                                    <li class="kt-menu__item kt-menu__item{{ set_active_submenu($kas_biaya) }}" aria-haspopup="true">
+                                        <a href="{{ route('kas_bank.create5') }}" class="kt-menu__link">
+                                            <i class="kt-menu__link-bullet kt-menu__link-bullet--line">
+                                                <span></span>
+                                            </i>
+                                            <span class="kt-menu__link-text">Cash Judex Per Jenis Biaya</span>
+                                        </a>
+                                    </li>
+                                    <li class="kt-menu__item kt-menu__item{{ set_active_submenu($kas_sandi) }}" aria-haspopup="true">
+                                        <a href="{{ route('kas_bank.create6') }}" class="kt-menu__link">
+                                            <i class="kt-menu__link-bullet kt-menu__link-bullet--line">
+                                                <span></span>
+                                            </i>
+                                            <span class="kt-menu__link-text">Per Cash Judex Per Sandi</span>
                                         </a>
                                     </li>
                                 </ul>
