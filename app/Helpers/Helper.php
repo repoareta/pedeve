@@ -126,7 +126,7 @@ function stbbuku($sthnbln, $ssup)
 
 function vbildb($vvals)
 {
-    if(is_null($vvals) or $vvals == 0){
+    if (is_null($vvals) or $vvals == 0) {
         return $vbildb = 0;
     } else {
         $src = $vvals;
@@ -172,6 +172,33 @@ function bulan($bln)
             break;
         case 12:
             return "Desember";
+            break;
+    }
+}
+
+function pekerja_status($status)
+{
+    switch ($status) {
+        case "P":
+            return "Pensiun";
+            break;
+        case "C":
+            return "Aktif";
+            break;
+        case "K":
+            return "Kontrak";
+            break;
+        case "B":
+            return "Perbantuan";
+            break;
+        case "D":
+            return "Direksi";
+            break;
+        case "N":
+            return "Pekerja Baru";
+            break;
+        case "U":
+            return "Komisaris";
             break;
     }
 }
