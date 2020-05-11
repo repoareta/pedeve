@@ -6,15 +6,18 @@ use Illuminate\Http\Request;
 
 // Load Model
 use App\Models\InsentifMaster;
+use App\Models\Pekerja;
+use App\Models\AardPayroll;
 
 //load form request (for validation)
-use App\Http\Requests\UpahAllInStore;
-use App\Http\Requests\UpahAllInUpdate;
+use App\Http\Requests\InsentifMasterStore;
+use App\Http\Requests\InsentifMasterUpdate;
 
 // Load Plugin
 use Carbon\Carbon;
 use Auth;
 use DataTables;
+use Alert;
 
 class InsentifMasterController extends Controller
 {
@@ -28,7 +31,10 @@ class InsentifMasterController extends Controller
         $tahun = InsentifMaster::distinct('tahun')
         ->orderBy('tahun', 'desc')
         ->get();
-        return view('insentif_master.index', compact('tahun'));
+
+        $pekerja_list = Pekerja::all();
+
+        return view('insentif_master.index', compact('tahun', 'pekerja_list'));
     }
 
     /**
@@ -83,7 +89,10 @@ class InsentifMasterController extends Controller
      */
     public function create()
     {
-        //
+        $pekerja_list = Pekerja::where('status', '<>', 'P')->get();
+        $aard_list = AardPayroll::all();
+
+        return view('insentif_master.create', compact('pekerja_list', 'aard_list'));
     }
 
     /**
@@ -92,9 +101,29 @@ class InsentifMasterController extends Controller
      * @param  \Illuminate\Http\Request  $request
      * @return \Illuminate\Http\Response
      */
-    public function store(Request $request)
+    public function store(InsentifMasterStore $request, InsentifMaster $insentif)
     {
-        //
+        $insentif->tahun      = $request->tahun;
+        $insentif->bulan      = $request->bulan;
+        $insentif->nopek      = $request->pegawai;
+        $insentif->aard       = $request->aard;
+        $insentif->jmlcc      = 0;
+        $insentif->ccl        = 0;
+        $insentif->nilai      = $request->nilai;
+        $insentif->userid     = Auth::user()->userid;
+        $insentif->status     = Pekerja::find($request->pegawai)->status;
+        $insentif->tahunins   = $request->tahun_insentif;
+        $insentif->pajakins   = null;
+        $insentif->pajakgaji  = null;
+        $insentif->pengali    = null;
+        $insentif->ut         = null;
+        $insentif->keterangan = null;
+        $insentif->potongan   = null;
+
+        $insentif->save();
+
+        Alert::success('Tambah Master Insentif', 'Berhasil')->persistent(true)->autoClose(2000);
+        return redirect()->route('insentif.index');
     }
 
     /**
@@ -103,9 +132,21 @@ class InsentifMasterController extends Controller
      * @param  int  $id
      * @return \Illuminate\Http\Response
      */
-    public function edit($id)
+    public function edit($tahun, $bulan, $nopek, $aard)
     {
-        //
+        $insentif = InsentifMaster::where('tahun', $tahun)
+        ->where('bulan', $bulan)
+        ->where('nopek', $nopek)
+        ->where('aard', $aard)
+        ->first();
+
+        $pekerja_list = Pekerja::where('status', '<>', 'P')
+        ->orWhere('nopeg', $nopek)
+        ->get();
+
+        $aard_list = AardPayroll::all();
+
+        return view('insentif_master.edit', compact('pekerja_list', 'aard_list', 'insentif'));
     }
 
     /**
@@ -115,9 +156,35 @@ class InsentifMasterController extends Controller
      * @param  int  $id
      * @return \Illuminate\Http\Response
      */
-    public function update(Request $request, $id)
+    public function update(InsentifMasterUpdate $request, $tahun, $bulan, $nopek, $aard)
     {
-        //
+        $insentif = InsentifMaster::where('tahun', $tahun)
+        ->where('bulan', $bulan)
+        ->where('nopek', $nopek)
+        ->where('aard', $aard)
+        ->first();
+
+        $insentif->tahun      = $request->tahun;
+        $insentif->bulan      = $request->bulan;
+        $insentif->nopek      = $request->pegawai;
+        $insentif->aard       = $request->aard;
+        $insentif->jmlcc      = 0;
+        $insentif->ccl        = 0;
+        $insentif->nilai      = $request->nilai;
+        $insentif->userid     = Auth::user()->userid;
+        $insentif->status     = Pekerja::find($request->pegawai)->status;
+        $insentif->tahunins   = $request->tahun_insentif;
+        $insentif->pajakins   = null;
+        $insentif->pajakgaji  = null;
+        $insentif->pengali    = null;
+        $insentif->ut         = null;
+        $insentif->keterangan = null;
+        $insentif->potongan   = null;
+
+        $insentif->save();
+
+        Alert::success('Ubah Master Insentif', 'Berhasil')->persistent(true)->autoClose(2000);
+        return redirect()->route('insentif.index');
     }
 
     /**
