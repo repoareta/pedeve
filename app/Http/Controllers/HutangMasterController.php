@@ -6,15 +6,18 @@ use Illuminate\Http\Request;
 
 // Load Model
 use App\Models\HutangMaster;
+use App\Models\Pekerja;
+use App\Models\AardPayroll;
 
 //load form request (for validation)
-use App\Http\Requests\UpahAllInStore;
-use App\Http\Requests\UpahAllInUpdate;
+use App\Http\Requests\HutangMasterStore;
+use App\Http\Requests\HutangMasterUpdate;
 
 // Load Plugin
 use Carbon\Carbon;
 use Auth;
 use DataTables;
+use Alert;
 
 class HutangMasterController extends Controller
 {
@@ -28,7 +31,10 @@ class HutangMasterController extends Controller
         $tahun = HutangMaster::distinct('tahun')
         ->orderBy('tahun', 'desc')
         ->get();
-        return view('hutang_master.index', compact('tahun'));
+
+        $pekerja_list = Pekerja::all();
+
+        return view('hutang_master.index', compact('tahun', 'pekerja_list'));
     }
 
     /**
@@ -70,7 +76,7 @@ class HutangMasterController extends Controller
                 return $row->aard.' - '.optional($row->aard_payroll)->nama;
             })
             ->addColumn('lastamount', function ($row) {
-                return currency_idr($row->aard);
+                return currency_idr($row->lastamount);
             })
             ->addColumn('curramount', function ($row) {
                 return currency_idr($row->curramount);
@@ -86,7 +92,10 @@ class HutangMasterController extends Controller
      */
     public function create()
     {
-        //
+        $pekerja_list = Pekerja::where('status', '<>', 'P')->get();
+        $aard_list = AardPayroll::all();
+
+        return view('hutang_master.create', compact('pekerja_list', 'aard_list'));
     }
 
     /**
@@ -95,9 +104,20 @@ class HutangMasterController extends Controller
      * @param  \Illuminate\Http\Request  $request
      * @return \Illuminate\Http\Response
      */
-    public function store(Request $request)
+    public function store(HutangMasterStore $request, HutangMaster $hutang)
     {
-        //
+        $hutang->tahun      = $request->tahun;
+        $hutang->bulan      = $request->bulan;
+        $hutang->nopek      = $request->pegawai;
+        $hutang->aard       = $request->aard;
+        $hutang->lastamount = $request->last_amount;
+        $hutang->curramount = $request->current_amount;
+        $hutang->userid     = Auth::user()->userid;
+
+        $hutang->save();
+
+        Alert::success('Tambah Master Hutang', 'Berhasil')->persistent(true)->autoClose(2000);
+        return redirect()->route('hutang.index');
     }
 
     /**
@@ -106,9 +126,21 @@ class HutangMasterController extends Controller
      * @param  int  $id
      * @return \Illuminate\Http\Response
      */
-    public function edit($id)
+    public function edit($tahun, $bulan, $nopek, $aard)
     {
-        //
+        $hutang = HutangMaster::where('tahun', $tahun)
+        ->where('bulan', $bulan)
+        ->where('nopek', $nopek)
+        ->where('aard', $aard)
+        ->first();
+
+        $pekerja_list = Pekerja::where('status', '<>', 'P')
+        ->orWhere('nopeg', $nopek)
+        ->get();
+
+        $aard_list = AardPayroll::all();
+
+        return view('hutang_master.edit', compact('pekerja_list', 'aard_list', 'hutang'));
     }
 
     /**
@@ -118,9 +150,26 @@ class HutangMasterController extends Controller
      * @param  int  $id
      * @return \Illuminate\Http\Response
      */
-    public function update(Request $request, $id)
+    public function update(HutangMasterUpdate $request, $tahun, $bulan, $nopek, $aard)
     {
-        //
+        $hutang = HutangMaster::where('tahun', $tahun)
+        ->where('bulan', $bulan)
+        ->where('nopek', $nopek)
+        ->where('aard', $aard)
+        ->first();
+
+        $hutang->tahun      = $request->tahun;
+        $hutang->bulan      = $request->bulan;
+        $hutang->nopek      = $request->pegawai;
+        $hutang->aard       = $request->aard;
+        $hutang->lastamount = $request->last_amount;
+        $hutang->curramount = $request->current_amount;
+        $hutang->userid     = Auth::user()->userid;
+
+        $hutang->save();
+
+        Alert::success('Ubah Master Hutang', 'Berhasil')->persistent(true)->autoClose(2000);
+        return redirect()->route('hutang.index');
     }
 
     /**
@@ -131,7 +180,7 @@ class HutangMasterController extends Controller
      */
     public function delete(Request $request)
     {
-        $insentif = HutangMaster::where('tahun', $request->tahun)
+        $hutang = HutangMaster::where('tahun', $request->tahun)
         ->where('bulan', $request->bulan)
         ->where('nopek', $request->nopek)
         ->where('aard', $request->aard)

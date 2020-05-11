@@ -6,7 +6,7 @@
 	<div class="kt-container  kt-container--fluid ">
 		<div class="kt-subheader__main">
 			<h3 class="kt-subheader__title">
-				Master Insentif </h3>
+				Master Hutang </h3>
 			<span class="kt-subheader__separator kt-hidden"></span>
 			<div class="kt-subheader__breadcrumbs">
 				<a href="#" class="kt-subheader__breadcrumbs-home"><i class="flaticon2-shelter"></i></a>
@@ -16,7 +16,7 @@
 				</a>
 				<span class="kt-subheader__breadcrumbs-separator"></span>
 				<a href="" class="kt-subheader__breadcrumbs-link">
-					Master Insentif </a>
+					Master Hutang </a>
 				<span class="kt-subheader__breadcrumbs-separator"></span>
 				<span class="kt-subheader__breadcrumbs-link kt-subheader__breadcrumbs-link--active">Ubah</span>
 			</div>
@@ -33,7 +33,7 @@
 					<i class="kt-font-brand flaticon2-plus-1"></i>
 				</span>
 				<h3 class="kt-portlet__head-title">
-					Ubah Master Insentif
+					Ubah Master Hutang
 				</h3>
 			</div>
 			<div class="kt-portlet__head-toolbar">
@@ -42,11 +42,11 @@
 			</div>
 		</div>
 			<div class="kt-portlet__body">
-				<form class="kt-form kt-form--label-right" id="formInsentifMaster" action="{{ route('insentif.update', [
-					'tahun' => $insentif->tahun,
-					'bulan' => $insentif->bulan,
-					'nopek' => $insentif->nopek,
-					'aard' => $insentif->aard
+				<form class="kt-form kt-form--label-right" id="formHutangMaster" action="{{ route('hutang.update', [
+					'tahun' => $hutang->tahun,
+					'bulan' => $hutang->bulan,
+					'nopek' => $hutang->nopek,
+					'aard'  => $hutang->aard
 				]) }}" method="POST">
 					@csrf
 
@@ -55,25 +55,25 @@
 						<div class="col-4">
 							<select class="form-control kt-select2" name="bulan" id="bulan">
 								<option value="">- Pilih Bulan -</option>
-								<option value="1" @if($insentif->bulan == '1') selected @endif>Januari</option>
-								<option value="2" @if($insentif->bulan == '2') selected @endif>Februari</option>
-								<option value="3" @if($insentif->bulan == '3') selected @endif>Maret</option>
-								<option value="4" @if($insentif->bulan == '4') selected @endif>April</option>
-								<option value="5" @if($insentif->bulan == '5') selected @endif>Mei</option>
-								<option value="6" @if($insentif->bulan == '6') selected @endif>Juni</option>
-								<option value="7" @if($insentif->bulan == '7') selected @endif>Juli</option>
-								<option value="8" @if($insentif->bulan == '8') selected @endif>Agustus</option>
-								<option value="9" @if($insentif->bulan == '9') selected @endif>September</option>
-								<option value="10" @if($insentif->bulan == '10') selected @endif>Oktober</option>
-								<option value="11" @if($insentif->bulan == '11') selected @endif>November</option>
-								<option value="12" @if($insentif->bulan == '12') selected @endif>Desember</option>
+								<option value="1" @if($hutang->bulan == '1') selected @endif>Januari</option>
+								<option value="2" @if($hutang->bulan == '2') selected @endif>Februari</option>
+								<option value="3" @if($hutang->bulan == '3') selected @endif>Maret</option>
+								<option value="4" @if($hutang->bulan == '4') selected @endif>April</option>
+								<option value="5" @if($hutang->bulan == '5') selected @endif>Mei</option>
+								<option value="6" @if($hutang->bulan == '6') selected @endif>Juni</option>
+								<option value="7" @if($hutang->bulan == '7') selected @endif>Juli</option>
+								<option value="8" @if($hutang->bulan == '8') selected @endif>Agustus</option>
+								<option value="9" @if($hutang->bulan == '9') selected @endif>September</option>
+								<option value="10" @if($hutang->bulan == '10') selected @endif>Oktober</option>
+								<option value="11" @if($hutang->bulan == '11') selected @endif>November</option>
+								<option value="12" @if($hutang->bulan == '12') selected @endif>Desember</option>
 							</select>
 							<div id="bulan-nya"></div>
 						</div>
 
 						<label for="tahun" class="col-2 col-form-label">Tahun</label>
 						<div class="col-4">
-							<input class="form-control" type="text" name="tahun" id="tahun" value="{{ $insentif->tahun }}">
+							<input class="form-control" type="text" name="tahun" id="tahun" value="{{ $hutang->tahun }}">
 						</div>
 					</div>
 
@@ -83,7 +83,7 @@
 							<select class="form-control kt-select2" name="pegawai" id="pegawai">
 								<option value="">- Pilih Pegawai -</option>
 								@foreach ($pekerja_list as $pekerja)
-									<option value="{{ $pekerja->nopeg }}" @if($pekerja->nopeg == $insentif->nopek) selected @endif>{{ $pekerja->nopeg.' - '.$pekerja->nama.' - '.pekerja_status($pekerja->status) }}</option>
+									<option value="{{ $pekerja->nopeg }}" @if($pekerja->nopeg == $hutang->nopek) selected @endif>{{ $pekerja->nopeg.' - '.$pekerja->nama.' - '.pekerja_status($pekerja->status) }}</option>
 								@endforeach
 							</select>
 							<div id="pegawai-nya"></div>
@@ -96,7 +96,7 @@
 							<select class="form-control kt-select2" name="aard" id="aard">
 								<option value="">- Pilih AARD -</option>
 								@foreach ($aard_list as $aard)
-									<option value="{{ $aard->kode }}" @if($aard->kode == $insentif->aard) selected @endif>{{ $aard->kode.' - '.$aard->nama }}</option>
+									<option value="{{ $aard->kode }}" @if($aard->kode == $hutang->aard) selected @endif>{{ $aard->kode.' - '.$aard->nama }}</option>
 								@endforeach
 							</select>
 							<div id="aard-nya"></div>
@@ -104,16 +104,16 @@
 					</div>
 
 					<div class="form-group row">
-						<label for="nilai" class="col-2 col-form-label">Tahun Insentif</label>
+						<label for="nilai" class="col-2 col-form-label">Last Amount</label>
 						<div class="col-10">
-							<input class="form-control" type="text" name="tahun_insentif" id="tahun_insentif" value="{{ $insentif->tahunins }}">
+							<input class="form-control" type="number" name="last_amount" id="last_amount" value="{{ float_two($hutang->lastamount) }}">
 						</div>
 					</div>
 
 					<div class="form-group row">
-						<label for="nilai" class="col-2 col-form-label">Nilai</label>
+						<label for="nilai" class="col-2 col-form-label">Current Amount</label>
 						<div class="col-10">
-							<input class="form-control" type="text" name="nilai" id="nilai" value="{{ $insentif->nilai }}">
+							<input class="form-control" type="number" name="current_amount" id="current_amount" value="{{ float_two($hutang->curramount) }}">
 						</div>
 					</div>
 
@@ -136,7 +136,7 @@
 @endsection
 
 @section('scripts')
-{!! JsValidator::formRequest('App\Http\Requests\InsentifMasterUpdate', '#formInsentifMaster') !!}
+{!! JsValidator::formRequest('App\Http\Requests\HutangMasterStore', '#formHutangMaster') !!}
 
 <script type="text/javascript">
 	$(document).ready(function () {
@@ -144,7 +144,7 @@
 			$(this).valid();
 		});
 
-		$("#formInsentifMaster").on('submit', function(){
+		$("#formHutangMaster").on('submit', function(){
 			if ($('#bulan-error').length){
 				$("#bulan-error").insertAfter("#bulan-nya");
 			}
