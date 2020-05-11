@@ -400,7 +400,7 @@ Route::group(['middleware'=> ['auth','checkRole:1']], function () {
             Route::get('upah/create', 'UpahMasterController@create')->name('create');
             Route::post('upah/store', 'UpahMasterController@store')->name('store');
             Route::get('upah/edit/{tahun}/{bulan}/{nopek}/{aard}', 'UpahMasterController@edit')->name('edit');
-            Route::post('upah/update/{kode_bagian}', 'UpahMasterController@update')->name('update');
+            Route::post('upah/update/{tahun}/{bulan}/{nopek}/{aard}', 'UpahMasterController@update')->name('update');
             Route::delete('upah/delete', 'UpahMasterController@delete')->name('delete');
         });
         // Master Upah END
@@ -411,8 +411,8 @@ Route::group(['middleware'=> ['auth','checkRole:1']], function () {
             Route::get('insentif/index_json', 'InsentifMasterController@indexJson')->name('index.json');
             Route::get('insentif/create', 'InsentifMasterController@create')->name('create');
             Route::post('insentif/store', 'InsentifMasterController@store')->name('store');
-            Route::get('insentif/edit/{kode_bagian}', 'InsentifMasterController@edit')->name('edit');
-            Route::post('insentif/update/{kode_bagian}', 'InsentifMasterController@update')->name('update');
+            Route::get('insentif/edit/{tahun}/{bulan}/{nopek}/{aard}', 'InsentifMasterController@edit')->name('edit');
+            Route::post('insentif/update/{tahun}/{bulan}/{nopek}/{aard}', 'InsentifMasterController@update')->name('update');
             Route::delete('insentif/delete', 'InsentifMasterController@delete')->name('delete');
         });
         // Master Insentif END
@@ -423,8 +423,8 @@ Route::group(['middleware'=> ['auth','checkRole:1']], function () {
             Route::get('hutang/index_json', 'HutangMasterController@indexJson')->name('index.json');
             Route::get('hutang/create', 'HutangMasterController@create')->name('create');
             Route::post('hutang/store', 'HutangMasterController@store')->name('store');
-            Route::get('hutang/edit/{kode_bagian}', 'HutangMasterController@edit')->name('edit');
-            Route::post('hutang/update/{kode_bagian}', 'HutangMasterController@update')->name('update');
+            Route::get('hutang/edit/{tahun}/{bulan}/{nopek}/{aard}', 'HutangMasterController@edit')->name('edit');
+            Route::post('hutang/update/{tahun}/{bulan}/{nopek}/{aard}', 'HutangMasterController@update')->name('update');
             Route::delete('hutang/delete', 'HutangMasterController@delete')->name('delete');
         });
         // Master Hutang END
@@ -435,8 +435,8 @@ Route::group(['middleware'=> ['auth','checkRole:1']], function () {
             Route::get('beban_perusahaan/index_json', 'BebanPerusahaanMasterController@indexJson')->name('index.json');
             Route::get('beban_perusahaan/create', 'BebanPerusahaanMasterController@create')->name('create');
             Route::post('beban_perusahaan/store', 'BebanPerusahaanMasterController@store')->name('store');
-            Route::get('beban_perusahaan/edit/{kode_bagian}', 'BebanPerusahaanMasterController@edit')->name('edit');
-            Route::post('beban_perusahaan/update/{kode_bagian}', 'BebanPerusahaanMasterController@update')->name('update');
+            Route::get('beban_perusahaan/edit/{tahun}/{bulan}/{nopek}/{aard}', 'BebanPerusahaanMasterController@edit')->name('edit');
+            Route::post('beban_perusahaan/update/{tahun}/{bulan}/{nopek}/{aard}', 'BebanPerusahaanMasterController@update')->name('update');
             Route::delete('beban_perusahaan/delete', 'BebanPerusahaanMasterController@delete')->name('delete');
         });
         // Master Beban Perusahaan END
@@ -447,8 +447,8 @@ Route::group(['middleware'=> ['auth','checkRole:1']], function () {
             Route::get('thr/index_json', 'ThrMasterController@indexJson')->name('index.json');
             Route::get('thr/create', 'ThrMasterController@create')->name('create');
             Route::post('thr/store', 'ThrMasterController@store')->name('store');
-            Route::get('thr/edit/{kode_bagian}', 'ThrMasterController@edit')->name('edit');
-            Route::post('thr/update/{kode_bagian}', 'ThrMasterController@update')->name('update');
+            Route::get('thr/edit/{tahun}/{bulan}/{nopek}/{aard}', 'ThrMasterController@edit')->name('edit');
+            Route::post('thr/update/{tahun}/{bulan}/{nopek}/{aard}', 'ThrMasterController@update')->name('update');
             Route::delete('thr/delete', 'ThrMasterController@delete')->name('delete');
         });
         // Master THR END

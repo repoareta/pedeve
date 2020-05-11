@@ -6,7 +6,7 @@
 	<div class="kt-container  kt-container--fluid ">
 		<div class="kt-subheader__main">
 			<h3 class="kt-subheader__title">
-				Master Upah </h3>
+				Master Insentif </h3>
 			<span class="kt-subheader__separator kt-hidden"></span>
 			<div class="kt-subheader__breadcrumbs">
 				<a href="#" class="kt-subheader__breadcrumbs-home"><i class="flaticon2-shelter"></i></a>
@@ -16,7 +16,7 @@
 				</a>
 				<span class="kt-subheader__breadcrumbs-separator"></span>
 				<a href="" class="kt-subheader__breadcrumbs-link">
-					Master Upah </a>
+					Master Insentif </a>
 				<span class="kt-subheader__breadcrumbs-separator"></span>
 				<span class="kt-subheader__breadcrumbs-link kt-subheader__breadcrumbs-link--active">Tambah</span>
 			</div>
@@ -33,7 +33,7 @@
 					<i class="kt-font-brand flaticon2-plus-1"></i>
 				</span>
 				<h3 class="kt-portlet__head-title">
-					Tambah Master Upah
+					Tambah Master Insentif
 				</h3>
 			</div>
 			<div class="kt-portlet__head-toolbar">
@@ -42,7 +42,7 @@
 			</div>
 		</div>
 			<div class="kt-portlet__body">
-				<form class="kt-form kt-form--label-right" id="formUpahMaster" action="{{ route('upah.store') }}" method="POST">
+				<form class="kt-form kt-form--label-right" id="formInsentifMaster" action="{{ route('insentif.store') }}" method="POST">
 					@csrf
 
 					<div class="form-group row">
@@ -99,16 +99,9 @@
 					</div>
 
 					<div class="form-group row">
-						<label for="nilai" class="col-2 col-form-label">Jumlah Cicilan</label>
+						<label for="nilai" class="col-2 col-form-label">Tahun Insentif</label>
 						<div class="col-10">
-							<input class="form-control" type="text" name="jumlah_cicilan" id="jumlah_cicilan">
-						</div>
-					</div>
-
-					<div class="form-group row">
-						<label for="nilai" class="col-2 col-form-label">Cicilan</label>
-						<div class="col-10">
-							<input class="form-control" type="text" name="cicilan" id="cicilan">
+							<input class="form-control" type="text" name="tahun_insentif" id="tahun_insentif">
 						</div>
 					</div>
 
@@ -138,7 +131,7 @@
 @endsection
 
 @section('scripts')
-{!! JsValidator::formRequest('App\Http\Requests\UpahMasterStore', '#formUpahMaster') !!}
+{!! JsValidator::formRequest('App\Http\Requests\InsentifMasterStore', '#formInsentifMaster') !!}
 
 <script type="text/javascript">
 	$(document).ready(function () {
@@ -146,7 +139,7 @@
 			$(this).valid();
 		});
 
-		$("#formUpahMaster").on('submit', function(){
+		$("#formInsentifMaster").on('submit', function(){
 			if ($('#bulan-error').length){
 				$("#bulan-error").insertAfter("#bulan-nya");
 			}
