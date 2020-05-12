@@ -59,8 +59,13 @@
 			<form class="kt-form" id="search-form" method="POST">
 				<div class="form-group row">
 					<label for="" class="col-form-label">No. Pegawai</label>
-					<div class="col-2">
-						<input class="form-control" type="text" name="no_pekerja" id="no_pekerja">
+					<div class="col-3">
+						<select class="form-control kt-select2" name="no_pekerja" id="no_pekerja">
+							<option value="">- Pilih Pegawai -</option>
+							@foreach ($pekerja_list as $pekerja)
+								<option value="{{ $pekerja->nopeg }}">{{ $pekerja->nopeg.' - '.$pekerja->nama }}</option>
+							@endforeach
+						</select>
 					</div>
 
 					<label for="spd-input" class="col-form-label">Bulan</label>
@@ -140,7 +145,7 @@
 			ajax      : {
 				url: "{{ route('thr.index.json') }}",
 				data: function (d) {
-					d.no_pekerja = $('input[name=no_pekerja]').val();
+					d.no_pekerja = $('select[name=no_pekerja]').val();
 					d.bulan = $('select[name=bulan]').val();
 					d.tahun = $('select[name=tahun]').val();
 				}
@@ -166,10 +171,18 @@
 			e.preventDefault();
 			if($('input[type=radio]').is(':checked')) { 
 				$("input[type=radio]:checked").each(function() {
-					var id = $(this).val().split("/").join("-");
-					var url = '{{ route("anggaran.edit", ":kode_main") }}';
+					var tahun = $(this).val().split("-")[0];
+					var bulan = $(this).val().split("-")[1];
+					var nopek = $(this).val().split("-")[2];
+					var aard = $(this).val().split("-")[3];
+
+					var url = '{{ route("thr.edit", [":tahun", ":bulan", ":nopek", ":aard"]) }}';
 					// go to page edit
-					window.location.href = url.replace(':kode_main',id);
+					window.location.href = url
+					.replace(':tahun', tahun)
+					.replace(':bulan', bulan)
+					.replace(':nopek', nopek)
+					.replace(':aard', aard);
 				});
 			} else {
 				swalAlertInit('ubah');
@@ -236,44 +249,6 @@
 				swalAlertInit('hapus');
 			}
 		});
-
-		$('#exportRow').click(function(e) {
-			e.preventDefault();
-			if($('input[type=radio]').is(':checked')) { 
-				$("input[type=radio]:checked").each(function() {
-					var id = $(this).val();
-					
-					const swalWithBootstrapButtons = Swal.mixin({
-					customClass: {
-						confirmButton: 'btn btn-primary',
-						cancelButton: 'btn btn-danger'
-					},
-						buttonsStyling: false
-					})
-
-					swalWithBootstrapButtons.fire({
-						title: "Data yang akan dicetak?",
-						text: "No. Panjar : " + id,
-						type: 'warning',
-						showCancelButton: true,
-						reverseButtons: true,
-						confirmButtonText: 'Cetak',
-						cancelButtonText: 'Batalkan'
-					})
-					.then((result) => {
-						if (result.value) {
-							var id = $(this).val().split("/").join("-");
-							// go to page edit
-							var url = "{{ url('umum/perjalanan_dinas/export') }}" + '/' + id;
-							window.open(url, '_blank');
-						}
-					});
-				});
-			} else {
-				swalAlertInit('cetak');
-			}
-		});
-
 	});
 	</script>
 @endsection
