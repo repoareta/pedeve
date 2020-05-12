@@ -6,15 +6,18 @@ use Illuminate\Http\Request;
 
 // Load Model
 use App\Models\BebanPerusahaanMaster;
+use App\Models\Pekerja;
+use App\Models\AardPayroll;
 
 //load form request (for validation)
-use App\Http\Requests\UpahAllInStore;
-use App\Http\Requests\UpahAllInUpdate;
+use App\Http\Requests\BebanPerusahaanMasterStore;
+use App\Http\Requests\BebanPerusahaanMasterUpdate;
 
 // Load Plugin
 use Carbon\Carbon;
 use Auth;
 use DataTables;
+use Alert;
 
 class BebanPerusahaanMasterController extends Controller
 {
@@ -29,7 +32,9 @@ class BebanPerusahaanMasterController extends Controller
         ->orderBy('tahun', 'desc')
         ->get();
 
-        return view('beban_perusahaan_master.index', compact('tahun'));
+        $pekerja_list = Pekerja::all();
+
+        return view('beban_perusahaan_master.index', compact('tahun', 'pekerja_list'));
     }
 
     /**
@@ -71,7 +76,7 @@ class BebanPerusahaanMasterController extends Controller
                 return $row->aard.' - '.$row->aard_payroll->nama;
             })
             ->addColumn('nilai', function ($row) {
-                return currency_idr($row->nilai);
+                return currency_idr($row->curramount);
             })
             ->rawColumns(['action'])
             ->make(true);
@@ -84,7 +89,10 @@ class BebanPerusahaanMasterController extends Controller
      */
     public function create()
     {
-        //
+        $pekerja_list = Pekerja::where('status', '<>', 'P')->get();
+        $aard_list = AardPayroll::all();
+
+        return view('beban_perusahaan_master.create', compact('pekerja_list', 'aard_list'));
     }
 
     /**
@@ -93,9 +101,20 @@ class BebanPerusahaanMasterController extends Controller
      * @param  \Illuminate\Http\Request  $request
      * @return \Illuminate\Http\Response
      */
-    public function store(Request $request)
+    public function store(BebanPerusahaanMasterStore $request, BebanPerusahaanMaster $beban_perusahaan)
     {
-        //
+        $beban_perusahaan->tahun      = $request->tahun;
+        $beban_perusahaan->bulan      = $request->bulan;
+        $beban_perusahaan->nopek      = $request->pegawai;
+        $beban_perusahaan->aard       = $request->aard;
+        $beban_perusahaan->lastamount = $request->last_amount;
+        $beban_perusahaan->curramount = $request->current_amount;
+        $beban_perusahaan->userid     = Auth::user()->userid;
+
+        $beban_perusahaan->save();
+
+        Alert::success('Tambah Master Beban Perusahaan', 'Berhasil')->persistent(true)->autoClose(2000);
+        return redirect()->route('beban_perusahaan.index');
     }
 
     /**
@@ -104,9 +123,21 @@ class BebanPerusahaanMasterController extends Controller
      * @param  int  $id
      * @return \Illuminate\Http\Response
      */
-    public function edit($id)
+    public function edit($tahun, $bulan, $nopek, $aard)
     {
-        //
+        $beban_perusahaan = BebanPerusahaanMaster::where('tahun', $tahun)
+        ->where('bulan', $bulan)
+        ->where('nopek', $nopek)
+        ->where('aard', $aard)
+        ->first();
+
+        $pekerja_list = Pekerja::where('status', '<>', 'P')
+        ->orWhere('nopeg', $nopek)
+        ->get();
+
+        $aard_list = AardPayroll::all();
+
+        return view('beban_perusahaan_master.edit', compact('pekerja_list', 'aard_list', 'beban_perusahaan'));
     }
 
     /**
@@ -116,9 +147,26 @@ class BebanPerusahaanMasterController extends Controller
      * @param  int  $id
      * @return \Illuminate\Http\Response
      */
-    public function update(Request $request, $id)
+    public function update(BebanPerusahaanMasterUpdate $request, $tahun, $bulan, $nopek, $aard)
     {
-        //
+        $beban_perusahaan = BebanPerusahaanMaster::where('tahun', $tahun)
+        ->where('bulan', $bulan)
+        ->where('nopek', $nopek)
+        ->where('aard', $aard)
+        ->first();
+
+        $beban_perusahaan->tahun      = $request->tahun;
+        $beban_perusahaan->bulan      = $request->bulan;
+        $beban_perusahaan->nopek      = $request->pegawai;
+        $beban_perusahaan->aard       = $request->aard;
+        $beban_perusahaan->lastamount = $request->last_amount;
+        $beban_perusahaan->curramount = $request->current_amount;
+        $beban_perusahaan->userid     = Auth::user()->userid;
+
+        $beban_perusahaan->save();
+
+        Alert::success('Ubah Master Beban Perusahaan', 'Berhasil')->persistent(true)->autoClose(2000);
+        return redirect()->route('beban_perusahaan.index');
     }
 
     /**
@@ -129,7 +177,7 @@ class BebanPerusahaanMasterController extends Controller
      */
     public function delete(Request $request)
     {
-        $insentif = BebanPerusahaanMaster::where('tahun', $request->tahun)
+        $beban_perusahaan = BebanPerusahaanMaster::where('tahun', $request->tahun)
         ->where('bulan', $request->bulan)
         ->where('nopek', $request->nopek)
         ->where('aard', $request->aard)

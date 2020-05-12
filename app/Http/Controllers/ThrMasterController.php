@@ -6,16 +6,18 @@ use Illuminate\Http\Request;
 
 // Load Model
 use App\Models\ThrMaster;
+use App\Models\Pekerja;
+use App\Models\AardPayroll;
 
 //load form request (for validation)
-use App\Http\Requests\UpahAllInStore;
-use App\Http\Requests\UpahAllInUpdate;
+use App\Http\Requests\ThrMasterStore;
+use App\Http\Requests\ThrMasterUpdate;
 
 // Load Plugin
 use Carbon\Carbon;
 use Auth;
-use DB;
 use DataTables;
+use Alert;
 
 class ThrMasterController extends Controller
 {
@@ -30,7 +32,9 @@ class ThrMasterController extends Controller
         ->orderBy('tahun', 'desc')
         ->get();
 
-        return view('thr_master.index', compact('tahun'));
+        $pekerja_list = Pekerja::all();
+
+        return view('thr_master.index', compact('tahun', 'pekerja_list'));
     }
 
     /**
@@ -91,7 +95,10 @@ class ThrMasterController extends Controller
      */
     public function create()
     {
-        //
+        $pekerja_list = Pekerja::where('status', '<>', 'P')->get();
+        $aard_list = AardPayroll::all();
+
+        return view('thr_master.create', compact('pekerja_list', 'aard_list'));
     }
 
     /**
@@ -100,20 +107,21 @@ class ThrMasterController extends Controller
      * @param  \Illuminate\Http\Request  $request
      * @return \Illuminate\Http\Response
      */
-    public function store(Request $request)
+    public function store(ThrMasterStore $request, ThrMaster $thr)
     {
-        //
-    }
+        $thr->tahun  = $request->tahun;
+        $thr->bulan  = $request->bulan;
+        $thr->nopek  = $request->pegawai;
+        $thr->aard   = $request->aard;
+        $thr->jmlcc  = $request->jumlah_cicilan;
+        $thr->ccl    = $request->cicilan;
+        $thr->nilai  = $request->nilai;
+        $thr->userid = Auth::user()->userid;
 
-    /**
-     * Display the specified resource.
-     *
-     * @param  int  $id
-     * @return \Illuminate\Http\Response
-     */
-    public function show($id)
-    {
-        //
+        $thr->save();
+
+        Alert::success('Tambah Master THR', 'Berhasil')->persistent(true)->autoClose(2000);
+        return redirect()->route('thr.index');
     }
 
     /**
@@ -122,9 +130,21 @@ class ThrMasterController extends Controller
      * @param  int  $id
      * @return \Illuminate\Http\Response
      */
-    public function edit($id)
+    public function edit($tahun, $bulan, $nopek, $aard)
     {
-        //
+        $thr = ThrMaster::where('tahun', $tahun)
+        ->where('bulan', $bulan)
+        ->where('nopek', $nopek)
+        ->where('aard', $aard)
+        ->first();
+
+        $pekerja_list = Pekerja::where('status', '<>', 'P')
+        ->orWhere('nopeg', $nopek)
+        ->get();
+
+        $aard_list = AardPayroll::all();
+
+        return view('thr_master.edit', compact('pekerja_list', 'aard_list', 'thr'));
     }
 
     /**
@@ -134,9 +154,27 @@ class ThrMasterController extends Controller
      * @param  int  $id
      * @return \Illuminate\Http\Response
      */
-    public function update(Request $request, $id)
+    public function update(ThrMasterUpdate $request, $tahun, $bulan, $nopek, $aard)
     {
-        //
+        $thr = ThrMaster::where('tahun', $tahun)
+        ->where('bulan', $bulan)
+        ->where('nopek', $nopek)
+        ->where('aard', $aard)
+        ->first();
+
+        $thr->tahun  = $request->tahun;
+        $thr->bulan  = $request->bulan;
+        $thr->nopek  = $request->pegawai;
+        $thr->aard   = $request->aard;
+        $thr->jmlcc  = $request->jumlah_cicilan;
+        $thr->ccl    = $request->cicilan;
+        $thr->nilai  = $request->nilai;
+        $thr->userid = Auth::user()->userid;
+
+        $thr->save();
+
+        Alert::success('Ubah Master THR', 'Berhasil')->persistent(true)->autoClose(2000);
+        return redirect()->route('thr.index');
     }
 
     /**
@@ -147,7 +185,7 @@ class ThrMasterController extends Controller
      */
     public function delete(Request $request)
     {
-        $insentif = ThrMaster::where('tahun', $request->tahun)
+        $thr = ThrMaster::where('tahun', $request->tahun)
         ->where('bulan', $request->bulan)
         ->where('nopek', $request->nopek)
         ->where('aard', $request->aard)

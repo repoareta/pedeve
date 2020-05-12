@@ -6,7 +6,7 @@
 	<div class="kt-container  kt-container--fluid ">
 		<div class="kt-subheader__main">
 			<h3 class="kt-subheader__title">
-				Master Upah </h3>
+				Master THR </h3>
 			<span class="kt-subheader__separator kt-hidden"></span>
 			<div class="kt-subheader__breadcrumbs">
 				<a href="#" class="kt-subheader__breadcrumbs-home"><i class="flaticon2-shelter"></i></a>
@@ -16,7 +16,7 @@
 				</a>
 				<span class="kt-subheader__breadcrumbs-separator"></span>
 				<a href="" class="kt-subheader__breadcrumbs-link">
-					Master Upah </a>
+					Master THR </a>
 				<span class="kt-subheader__breadcrumbs-separator"></span>
 				<span class="kt-subheader__breadcrumbs-link kt-subheader__breadcrumbs-link--active">Tambah</span>
 			</div>
@@ -33,7 +33,7 @@
 					<i class="kt-font-brand flaticon2-plus-1"></i>
 				</span>
 				<h3 class="kt-portlet__head-title">
-					Tambah Master Upah
+					Tambah Master THR
 				</h3>
 			</div>
 			<div class="kt-portlet__head-toolbar">
@@ -42,7 +42,7 @@
 			</div>
 		</div>
 			<div class="kt-portlet__body">
-				<form class="kt-form kt-form--label-right" id="formUpahMaster" action="{{ route('upah.store') }}" method="POST">
+				<form class="kt-form kt-form--label-right" id="formThrMaster" action="{{ route('thr.store') }}" method="POST">
 					@csrf
 
 					<div class="form-group row">
@@ -138,7 +138,7 @@
 @endsection
 
 @section('scripts')
-{!! JsValidator::formRequest('App\Http\Requests\UpahMasterStore', '#formUpahMaster') !!}
+{!! JsValidator::formRequest('App\Http\Requests\ThrMasterStore', '#formThrMaster') !!}
 
 <script type="text/javascript">
 	$(document).ready(function () {
@@ -146,7 +146,7 @@
 			$(this).valid();
 		});
 
-		$("#formUpahMaster").on('submit', function(){
+		$("#formThrMaster").on('submit', function(){
 			if ($('#bulan-error').length){
 				$("#bulan-error").insertAfter("#bulan-nya");
 			}

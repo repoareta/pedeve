@@ -6,16 +6,18 @@ use Illuminate\Http\Request;
 
 // Load Model
 use App\Models\UpahMaster;
+use App\Models\Pekerja;
+use App\Models\AardPayroll;
 
 //load form request (for validation)
-use App\Http\Requests\UpahAllInStore;
-use App\Http\Requests\UpahAllInUpdate;
+use App\Http\Requests\UpahMasterStore;
+use App\Http\Requests\UpahMasterUpdate;
 
 // Load Plugin
 use Carbon\Carbon;
 use Auth;
-use DB;
 use DataTables;
+use Alert;
 
 class UpahMasterController extends Controller
 {
@@ -30,7 +32,9 @@ class UpahMasterController extends Controller
         ->orderBy('tahun', 'desc')
         ->get();
 
-        return view('upah_master.index', compact('tahun'));
+        $pekerja_list = Pekerja::all();
+
+        return view('upah_master.index', compact('tahun', 'pekerja_list'));
     }
 
     /**
@@ -91,7 +95,10 @@ class UpahMasterController extends Controller
      */
     public function create()
     {
-        //
+        $pekerja_list = Pekerja::where('status', '<>', 'P')->get();
+        $aard_list = AardPayroll::all();
+
+        return view('upah_master.create', compact('pekerja_list', 'aard_list'));
     }
 
     /**
@@ -100,9 +107,21 @@ class UpahMasterController extends Controller
      * @param  \Illuminate\Http\Request  $request
      * @return \Illuminate\Http\Response
      */
-    public function store(Request $request)
+    public function store(UpahMasterStore $request, UpahMaster $upah)
     {
-        //
+        $upah->tahun  = $request->tahun;
+        $upah->bulan  = $request->bulan;
+        $upah->nopek  = $request->pegawai;
+        $upah->aard   = $request->aard;
+        $upah->jmlcc  = $request->jumlah_cicilan;
+        $upah->ccl    = $request->cicilan;
+        $upah->nilai  = $request->nilai;
+        $upah->userid = Auth::user()->userid;
+
+        $upah->save();
+
+        Alert::success('Tambah Upah Master', 'Berhasil')->persistent(true)->autoClose(2000);
+        return redirect()->route('upah.index');
     }
 
     /**
@@ -111,9 +130,21 @@ class UpahMasterController extends Controller
      * @param  int  $id
      * @return \Illuminate\Http\Response
      */
-    public function edit($id)
+    public function edit($tahun, $bulan, $nopek, $aard)
     {
-        //
+        $upah = UpahMaster::where('tahun', $tahun)
+        ->where('bulan', $bulan)
+        ->where('nopek', $nopek)
+        ->where('aard', $aard)
+        ->first();
+
+        $pekerja_list = Pekerja::where('status', '<>', 'P')
+        ->orWhere('nopeg', $nopek)
+        ->get();
+
+        $aard_list = AardPayroll::all();
+
+        return view('upah_master.edit', compact('pekerja_list', 'aard_list', 'upah'));
     }
 
     /**
@@ -123,9 +154,27 @@ class UpahMasterController extends Controller
      * @param  int  $id
      * @return \Illuminate\Http\Response
      */
-    public function update(Request $request, $id)
+    public function update(UpahMasterUpdate $request, $tahun, $bulan, $nopek, $aard)
     {
-        //
+        $upah = UpahMaster::where('tahun', $tahun)
+        ->where('bulan', $bulan)
+        ->where('nopek', $nopek)
+        ->where('aard', $aard)
+        ->first();
+
+        $upah->tahun  = $request->tahun;
+        $upah->bulan  = $request->bulan;
+        $upah->nopek  = $request->pegawai;
+        $upah->aard   = $request->aard;
+        $upah->jmlcc  = $request->jumlah_cicilan;
+        $upah->ccl    = $request->cicilan;
+        $upah->nilai  = $request->nilai;
+        $upah->userid = Auth::user()->userid;
+
+        $upah->save();
+
+        Alert::success('Ubah Upah Master', 'Berhasil')->persistent(true)->autoClose(2000);
+        return redirect()->route('upah.index');
     }
 
     /**

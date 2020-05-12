@@ -34,7 +34,7 @@
 			</h3>
 
 			<div class="kt-portlet__head-actions" style="font-size: 2rem">
-				<a href="{{ route('hutang.create') }}">
+				<a href="{{ route('beban_perusahaan.create') }}">
 					<span class="kt-font-success" data-toggle="kt-tooltip" data-placement="top" title="Tambah Data">
 						<i class="fas fa-plus-circle"></i>
 					</span>
@@ -59,8 +59,13 @@
 			<form class="kt-form" id="search-form" method="POST">
 				<div class="form-group row">
 					<label for="" class="col-form-label">No. Pegawai</label>
-					<div class="col-2">
-						<input class="form-control" type="text" name="no_pekerja" id="no_pekerja">
+					<div class="col-3">
+						<select class="form-control kt-select2" name="no_pekerja" id="no_pekerja">
+							<option value="">- Pilih Pegawai -</option>
+							@foreach ($pekerja_list as $pekerja)
+								<option value="{{ $pekerja->nopeg }}">{{ $pekerja->nopeg.' - '.$pekerja->nama }}</option>
+							@endforeach
+						</select>
 					</div>
 
 					<label for="spd-input" class="col-form-label">Bulan</label>
@@ -137,7 +142,7 @@
 			ajax      : {
 				url: "{{ route('beban_perusahaan.index.json') }}",
 				data: function (d) {
-					d.no_pekerja = $('input[name=no_pekerja]').val();
+					d.no_pekerja = $('select[name=no_pekerja]').val();
 					d.bulan = $('select[name=bulan]').val();
 					d.tahun = $('select[name=tahun]').val();
 				}
@@ -160,10 +165,23 @@
 			e.preventDefault();
 			if($('input[type=radio]').is(':checked')) { 
 				$("input[type=radio]:checked").each(function() {
-					var id = $(this).val().split("/").join("-");
-					var url = '{{ route("anggaran.edit", ":kode_main") }}';
+					var tahun = $(this).val().split("-")[0];
+					var bulan = $(this).val().split("-")[1];
+					var nopek = $(this).val().split("-")[2];
+					var aard = $(this).val().split("-")[3];
+
+					var url = '{{ route("beban_perusahaan.edit", [
+						":tahun",
+						":bulan",
+						":nopek",
+						":aard"
+					]) }}';
 					// go to page edit
-					window.location.href = url.replace(':kode_main',id);
+					window.location.href = url
+					.replace(':tahun', tahun)
+					.replace(':bulan', bulan)
+					.replace(':nopek', nopek)
+					.replace(':aard', aard);
 				});
 			} else {
 				swalAlertInit('ubah');
