@@ -53,47 +53,40 @@
 			</div>
 		</div>
 			<div class="kt-portlet__body">
-				<form class="kt-form kt-form--label-right" id="formAnggaranSubmainDetail" action="{{ route('anggaran.submain.detail.store', ['kode_main' => $kode_main, 'kode_submain' => $kode_submain]) }}" method="POST">
+				<form class="kt-form kt-form--label-right" id="formAnggaranSubmainDetail" action="{{ route('anggaran.submain.detail.store') }}" method="POST">
 					@csrf
-					<div class="form-group row">
-						<label for="kode_main" class="col-2 col-form-label">Kode Anggaran</label>
-						<div class="col-10">
-							<input class="form-control" type="text" readonly name="kode_main" id="kode_main" value="{{ $kode_main }}">
-						</div>
-					</div>
 
 					<div class="form-group row">
-						<label for="kode_submain" class="col-2 col-form-label">Kode Submain</label>
-						<div class="col-10">
-							<input class="form-control" type="text" readonly name="kode_submain" id="kode_submain" value="{{ $kode_submain }}">
-						</div>
-					</div>
-
-					<div class="form-group row">
-						<label for="kode" class="col-2 col-form-label">Kode Detail</label>
-						<div class="col-10">
-							<input class="form-control" type="text" name="kode" id="kode">
-						</div>
-					</div>
-
-					<div class="form-group row">
-						<label for="nama" class="col-2 col-form-label">Nama Detail</label>
-						<div class="col-10">
-							<input class="form-control" type="text" name="nama" id="nama">
-						</div>
-					</div>
-
-					<div class="form-group row">
-						<label for="tahun" class="col-2 col-form-label">Tahun Detail</label>
+						<label for="tahun" class="col-2 col-form-label">Tahun</label>
 						<div class="col-10">
 							<input class="form-control" type="text" name="tahun" id="tahun" value="{{ date('Y') }}">
 						</div>
 					</div>
 
 					<div class="form-group row">
-						<label for="nilai" class="col-2 col-form-label">Nilai Detail</label>
+						<label for="kode_main" class="col-2 col-form-label">Sub Anggaran</label>
 						<div class="col-10">
-							<input class="form-control" type="text" name="nilai" id="nilai">
+							<select class="form-control kt-select2" name="kode_submain" id="kode_submain">
+								<option value="">- Pilih Sub Anggaran -</option>
+								@foreach ($anggaran_submain_list as $anggaran)
+									<option value="{{ $anggaran->kode_submain }}">{{ $anggaran->kode_submain.' - '.$anggaran->nama_submain }}</option>
+								@endforeach
+							</select>
+							<div id="kode_submain-nya"></div>
+						</div>
+					</div>
+
+					<div class="form-group row">
+						<label for="kode" class="col-2 col-form-label">Kode</label>
+						<div class="col-10">
+							<input class="form-control" type="text" name="kode" id="kode">
+						</div>
+					</div>
+
+					<div class="form-group row">
+						<label for="nama" class="col-2 col-form-label">Nama</label>
+						<div class="col-10">
+							<input class="form-control" type="text" name="nama" id="nama">
 						</div>
 					</div>
 
@@ -105,7 +98,7 @@
 								<button type="submit" class="btn btn-brand"><i class="fa fa-check" aria-hidden="true"></i> Simpan</button>
 							</div>
 						</div>
-					</div>
+					</>
 				</form>
 		</div>
 		{{-- END BODY --}}		
@@ -117,4 +110,26 @@
 
 @section('scripts')
 {!! JsValidator::formRequest('App\Http\Requests\AnggaranSubmainDetailStore', '#formAnggaranSubmainDetail') !!}
+
+<script>
+	$(document).ready(function () {
+		$('.kt-select2').select2().on('change', function() {
+			$(this).valid();
+		});
+
+		$("#formAnggaranSubmainDetail").on('submit', function(){
+			if ($('#kode_main-error').length){
+				$("#kode_main-error").insertAfter("#kode_main-nya");
+			}
+
+			if ($('#kode_submain-error').length){
+				$("#kode_submain-error").insertAfter("#kode_submain-nya");
+			}
+		});
+
+		$('#kode_main').select2().on('change', function() {
+			alert('halo');
+		});
+	});
+</script>
 @endsection
