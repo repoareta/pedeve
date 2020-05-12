@@ -49,15 +49,15 @@
 					<div class="col-10">
 						<div class="kt-radio-inline">
 							<label class="kt-radio kt-radio--solid">
-								<input value="1" type="radio"  name="status" >[10,11,13]
+								<input value="1" type="radio"  name="jk" >[10,11,13]
 								<span></span>
 							</label>
 							<label class="kt-radio kt-radio--solid">
-								<input value="2" type="radio"    name="status">[15,18]
+								<input value="2" type="radio"    name="jk">[15,18]
 								<span></span>
 							</label>
 							<label class="kt-radio kt-radio--solid">
-								<input value="3" type="radio"    name="status" checked>All
+								<input value="3" type="radio"    name="jk" checked>All
 								<span></span>
 							</label>
 						</div>
@@ -76,32 +76,34 @@
 							$lapangan = "KL";
 						}
 						?>
-						<select class="form-control" name="bulan" required>
-							<option value="1" <?php if($bulan  == '01' ) echo 'selected' ; ?>>Januari</option>
-							<option value="2" <?php if($bulan  == '02' ) echo 'selected' ; ?>>Februari</option>
-							<option value="3" <?php if($bulan  == '03' ) echo 'selected' ; ?>>Maret</option>
-							<option value="4" <?php if($bulan  == '04' ) echo 'selected' ; ?>>April</option>
-							<option value="5" <?php if($bulan  == '05' ) echo 'selected' ; ?>>Mei</option>
-							<option value="6" <?php if($bulan  == '06' ) echo 'selected' ; ?>>Juni</option>
-							<option value="7" <?php if($bulan  == '07' ) echo 'selected' ; ?>>Juli</option>
-							<option value="8" <?php if($bulan  == '08' ) echo 'selected' ; ?>>Agustus</option>
-							<option value="9" <?php if($bulan  == '09' ) echo 'selected' ; ?>>September</option>
+						<select class="form-control" name="bulan">
+							<option value="">-- All --</option>
+							<option value="01" <?php if($bulan  == '01' ) echo 'selected' ; ?>>Januari</option>
+							<option value="02" <?php if($bulan  == '02' ) echo 'selected' ; ?>>Februari</option>
+							<option value="03" <?php if($bulan  == '03' ) echo 'selected' ; ?>>Maret</option>
+							<option value="04" <?php if($bulan  == '04' ) echo 'selected' ; ?>>April</option>
+							<option value="05" <?php if($bulan  == '05' ) echo 'selected' ; ?>>Mei</option>
+							<option value="06" <?php if($bulan  == '06' ) echo 'selected' ; ?>>Juni</option>
+							<option value="07" <?php if($bulan  == '07' ) echo 'selected' ; ?>>Juli</option>
+							<option value="08" <?php if($bulan  == '08' ) echo 'selected' ; ?>>Agustus</option>
+							<option value="09" <?php if($bulan  == '09' ) echo 'selected' ; ?>>September</option>
 							<option value="10" <?php if($bulan  =='10'  ) echo 'selected' ; ?>>Oktober</option>
 							<option value="11" <?php if($bulan  == '11' ) echo 'selected' ; ?>>November</option>
 							<option value="12" <?php if($bulan  == '12' ) echo 'selected' ; ?>>Desember</option>
 						</select>
 				</div>
-					<div class="col-4" >
+					<div class="col-5" >
 						<input class="form-control" type="text" value="{{$tahun}}"   name="tahun" size="4" maxlength="4" onkeypress="return hanyaAngka(event)" autocomplete='off' required> 
 					</div>
 					<div class="col-2" >
-						<input class="form-control" type="text" value="{{$suplesi}}"   name="tahun" size="4" maxlength="4" onkeypress="return hanyaAngka(event)" autocomplete='off' required>
+						<input class="form-control" type="hidden" name="tanggal" value="{{ date('d-m-Y') }}" size="15" maxlength="15" autocomplete='off'>
+						<input class="form-control" type="hidden" value=""   name="suplesi" size="4" maxlength="4" onkeypress="return hanyaAngka(event)" autocomplete='off' required>
 					</div>
 				</div>
 				<div class="form-group row">
 					<label for="dari-input" class="col-2 col-form-label">Lapangan<span style="color:red;">*</span></label>
 					<div class="col-10">
-						<select name="nopek" id="select-debetdari" class="form-control selectpicker" data-live-search="true" required oninvalid="this.setCustomValidity('Lapangan Harus Diisi..')" onchange="setCustomValidity('')">
+						<select name="lp" id="select-debetdari" class="form-control selectpicker" data-live-search="true" required oninvalid="this.setCustomValidity('Lapangan Harus Diisi..')" onchange="setCustomValidity('')">
 							<option value="">- Pilih -</option>
 							@foreach($data_kodelok as $data_kode)
 							<option value="{{$data_kode->kodelokasi}}" <?php if($lapangan  == $data_kode->kodelokasi ) echo 'selected' ; ?>>{{$data_kode->kodelokasi}} -- {{$data_kode->nama}}</option>
@@ -110,9 +112,9 @@
 					</div>
 				</div>
 				<div class="form-group row">
-					<label for="dari-input" class="col-2 col-form-label">Sandi Perkiraan<span style="color:red;">*</span></label>
+					<label for="dari-input" class="col-2 col-form-label">Sandi Perkiraan</label>
 					<div class="col-10">
-						<select name="nopek" id="select-debetdari" class="form-control selectpicker" data-live-search="true" required oninvalid="this.setCustomValidity('Sandi Perkiraan Harus Diisi..')" onchange="setCustomValidity('')">
+						<select name="sanper" id="select-debetdari" class="form-control selectpicker" data-live-search="true" oninvalid="this.setCustomValidity('Sandi Perkiraan Harus Diisi..')" onchange="setCustomValidity('')">
 							<option value="">- Pilih -</option>
 							@foreach($data_sanper as $data_san)
 							<option value="{{$data_san->kodeacct}}">{{$data_san->kodeacct}} -- {{$data_san->descacct}}</option>
