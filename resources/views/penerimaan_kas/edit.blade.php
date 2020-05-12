@@ -534,10 +534,60 @@
 @section('scripts')
 	<script type="text/javascript">
 	$(document).ready(function () {
+
+		var jk = $('#jk').val();
+	if(jk == '13'){
+		$("#ci").val('2');
+		$("#kurs").val('0');
+		$( "#kurs" ).prop( "required", true );
+		$( "#kurs" ).prop( "readonly", false );
+		$('#kurs').css("background-color","#ffffff");
+		$('#kurs').css("cursor","text");
+		$("#jnskas").val('2');
+		$("#nokas").val("");
+		$("#nobukti1").val("");
+		$("#nama_kas").val("");
+	} else if (jk == '11'){
+		$("#ci").val('1');
+		$("#kurs").val('1');
+		$( "#kurs" ).prop( "required", false );
+		$( "#kurs" ).prop( "readonly", true );
+		$('#kurs').css("background-color","#DCDCDC");
+		$('#kurs').css("cursor","not-allowed");
+		$("#jnskas").val('2');
+		$("#nokas").val("");
+		$("#nobukti1").val("");
+		$("#nama_kas").val("");
+	}else if (jk == '10'){
+		$("#ci").val('1');
+		$("#kurs").val('1');
+		$( "#kurs" ).prop( "required", false );
+		$( "#kurs" ).prop( "readonly", true );
+		$('#kurs').css("background-color","#DCDCDC");
+		$('#kurs').css("cursor","not-allowed");
+		$("#jnskas").val('1');
+		$("#nokas").val("");
+		$("#nobukti1").val("");
+		$("#nama_kas").val("");
+	}else{
+		$("#ci").val("");
+		$("#kurs").val("");
+		$( "#kurs" ).prop( "required", true );
+		$( "#kurs" ).prop( "readonly", false );
+		$('#kurs').css("background-color","#ffffff");
+		$('#kurs').css("cursor","text");
+		$("#jnskas").val("");
+		$("#nokas").val("");
+		$("#nobukti1").val("");
+		$("#nama_kas").val("");
+	}	
+
 var jk = $('#jk').val();
 var ci = $('#ci').val();
 var lokasi1 = $('#lokasi1').val();
 var lokasi2 = $('#lokasi2').val();
+
+
 
 
 $.ajax({
@@ -623,11 +673,16 @@ var bulanbuku = $('#bulanbuku').val();
 	})
 });
 
+
 $("#jk").on("change", function(){
 var jk = $('#jk').val();
 	if(jk == '13'){
 		$("#ci").val('2');
 		$("#kurs").val('0');
+		$( "#kurs" ).prop( "required", true );
+		$( "#kurs" ).prop( "readonly", false );
+		$('#kurs').css("background-color","#ffffff");
+		$('#kurs').css("cursor","text");
 		$("#jnskas").val('2');
 		$("#nokas").val("");
 		$("#nobukti1").val("");
@@ -635,6 +690,10 @@ var jk = $('#jk').val();
 	} else if (jk == '11'){
 		$("#ci").val('1');
 		$("#kurs").val('1');
+		$( "#kurs" ).prop( "required", false );
+		$( "#kurs" ).prop( "readonly", true );
+		$('#kurs').css("background-color","#DCDCDC");
+		$('#kurs').css("cursor","not-allowed");
 		$("#jnskas").val('2');
 		$("#nokas").val("");
 		$("#nobukti1").val("");
@@ -642,6 +701,10 @@ var jk = $('#jk').val();
 	}else if (jk == '10'){
 		$("#ci").val('1');
 		$("#kurs").val('1');
+		$( "#kurs" ).prop( "required", false );
+		$( "#kurs" ).prop( "readonly", true );
+		$('#kurs').css("background-color","#DCDCDC");
+		$('#kurs').css("cursor","not-allowed");
 		$("#jnskas").val('1');
 		$("#nokas").val("");
 		$("#nobukti1").val("");
@@ -649,6 +712,10 @@ var jk = $('#jk').val();
 	}else{
 		$("#ci").val("");
 		$("#kurs").val("");
+		$( "#kurs" ).prop( "required", true );
+		$( "#kurs" ).prop( "readonly", false );
+		$('#kurs').css("background-color","#ffffff");
+		$('#kurs').css("cursor","text");
 		$("#jnskas").val("");
 		$("#nokas").val("");
 		$("#nobukti1").val("");
