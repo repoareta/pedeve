@@ -162,6 +162,7 @@ Route::group(['middleware'=> ['auth','checkRole:1']], function () {
             Route::get('anggaran/edit/{kode_main}', 'AnggaranController@edit')->name('edit');
             Route::post('anggaran/update/{kode_main}', 'AnggaranController@update')->name('update');
             Route::delete('anggaran/delete', 'AnggaranController@delete')->name('delete');
+            Route::post('anggaran/rekap/export', 'AnggaranController@rekapExport')->name('rekap.export');
         
             // ANGGARAN SUBMAIN START
             Route::name('submain.')->group(function () {

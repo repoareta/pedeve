@@ -56,10 +56,11 @@
 		<div class="kt-portlet__head-toolbar">
 			<div class="kt-portlet__head-wrapper">
 				<div class="kt-portlet__head-actions">
-					<form action="" class="form-inline kt-form">
+					<form action="{{ route('anggaran.rekap.export') }}" class="form-inline kt-form" method="POST" target="_blank">
+						@csrf
 						<div class="form-group">
 							<div class="input-group">
-								<select class="form-control kt-select2" name="" id="">
+								<select class="form-control kt-select2" name="tahun_cetak" id="tahun_cetak">
 									<option value="">- Pilih Tahun -</option>
 									@foreach ($tahun as $key => $row)
 										<option value="{{ $row->tahun }}"
