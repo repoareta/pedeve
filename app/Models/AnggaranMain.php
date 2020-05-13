@@ -8,6 +8,7 @@ class AnggaranMain extends Model
 {
     protected $table = "anggaran_main";
     protected $primaryKey = 'kode_main'; // or null
+    protected $keyType = 'string';
     public $timestamps = false;
     public $incrementing = false;
 

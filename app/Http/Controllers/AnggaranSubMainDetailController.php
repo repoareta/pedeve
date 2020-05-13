@@ -5,8 +5,9 @@ namespace App\Http\Controllers;
 use Illuminate\Http\Request;
 
 // load model
-use App\Models\AnggaranMain;
 use App\Models\AnggaranDetail;
+use App\Models\AnggaranMain;
+use App\Models\AnggaranSubMain;
 
 //load form request (for validation)
 use App\Http\Requests\AnggaranSubmainDetailStore;
@@ -65,9 +66,15 @@ class AnggaranSubMainDetailController extends Controller
      *
      * @return \Illuminate\Http\Response
      */
-    public function create($kode_main, $kode_submain)
+    public function create()
     {
-        return view('anggaran_submain_detail.create', compact('kode_main', 'kode_submain'));
+        $anggaran_main_list = AnggaranMain::all();
+        $anggaran_submain_list = AnggaranSubMain::all();
+        
+        return view('anggaran_submain_detail.create', compact(
+            'anggaran_main_list',
+            'anggaran_submain_list',
+        ));
     }
 
     /**
@@ -76,7 +83,7 @@ class AnggaranSubMainDetailController extends Controller
      * @param  \Illuminate\Http\Request  $request
      * @return \Illuminate\Http\Response
      */
-    public function store(AnggaranSubmainDetailStore $request, $kode_main, $kode_submain)
+    public function store(AnggaranSubmainDetailStore $request)
     {
         $anggaran = new AnggaranDetail;
 
@@ -91,7 +98,7 @@ class AnggaranSubMainDetailController extends Controller
         $anggaran->save();
 
         Alert::success('Simpan Anggaran Submain Detail', 'Berhasil')->persistent(true)->autoClose(2000);
-        return redirect()->route('anggaran.submain.detail.index', ['kode_main' => $kode_main, 'kode_submain' => $kode_submain]);
+        return redirect()->route('anggaran.submain.detail.index');
     }
 
     /**
