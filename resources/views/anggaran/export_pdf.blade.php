@@ -1,8 +1,9 @@
+<?php ini_set('memory_limit', '2048M'); ?>
 <!DOCTYPE html>
 <html lang="en">
 <head>
     <title>
-        Rekap Panjar Dinas
+        Rekap Anggaran Umum {{ $tahun }}
     </title>
 </head>
 <style media="screen">
@@ -120,10 +121,10 @@ header {
                     <br>
                     PT. PERTAMINA PEDEVE INDONESIA
                     <br>
-                    Tahun: 2016
+                    Tahun: {{ $tahun }}
                     </b>
                     <br>
-                    Tanggal Cetak: 1 Mei 2016
+                    Tanggal Cetak: {{ date('d F Y') }}
                 </p>
             </div>
     
@@ -140,25 +141,45 @@ header {
                     @foreach ($anggaran_list as $anggaran)
                         <tr>
                             <td>{{ $anggaran->kode_main }}</td>
-                            <td>{{ $anggaran->nama_main }}</td>
-                            <td>{{ currency_idr($anggaran->nilai_real) }}</td>
+                            <td colspan="4">{{ $anggaran->nama_main }}</td>
+                            <td class="text-right">{{ float_two($anggaran->nilai_real) }}</td>
                         </tr>
                         @foreach ($anggaran->anggaran_submain as $anggaran_submain)
                             <tr>
                                 <td>{{ $anggaran_submain->kode_submain }}</td>
-                                <td>{{ $anggaran_submain->nama_submain }}</td>
-                                <td>{{ $anggaran_submain->nama_submain }}</td>
+                                <td colspan="4">{{ $anggaran_submain->nama_submain }}</td>
+                                <td class="text-right">{{ float_two($anggaran_submain->nilai) }}</td>
                             </tr>
                             @foreach ($anggaran_submain->anggaran_detail as $anggaran_detail)
                                 <tr>
-                                    <td>{{ $anggaran_detail->kode }}</td>
-                                    <td>{{ $anggaran_detail->nama }}</td>
-                                    <td>{{ $anggaran_detail->nilai }}</td>
+                                    <td>{{ substr($anggaran_detail->kode, 0, 5) }}</td>
+                                    <td colspan="5">{{ $anggaran_detail->nama }}</td>
                                 </tr>
+                                @php
+                                    $v_anggaran = DB::table('kasdoc AS kas')
+                                        ->select(DB::raw("substr(kas.thnbln,1,4)"), 'kas.docno', 'kas.rate', 'k.totprice', 'k.account', DB::raw("substr(k.keterangan,1,48) AS keterangan"), 'k.jb', 'k.cj')
+                                        ->join('kasline AS k', 'k.docno', 'kas.docno')
+                                        ->where('k.account', 'like', '5%')
+                                        ->where('k.account', $anggaran_detail->kode)
+                                        ->groupBy('kas.thnbln', 'kas.docno', 'kas.rate', 'k.totprice', 'k.account', 'k.keterangan', 'k.jb', 'k.cj')
+                                        ->having(DB::raw("substr(kas.thnbln,1,4)"), '=', $tahun)
+                                        ->get();
+                                @endphp
+                                @if ($v_anggaran)
+                                    @foreach ($v_anggaran as $item)
+                                        <tr>
+                                            <td>{{ $item->account }}</td>
+                                            <td>{{ $item->docno }}</td>
+                                            <td>{{ $item->account }}</td>
+                                            <td>{{ $item->jb }}</td>
+                                            <td>{{ $item->keterangan }}</td>
+                                            <td class="text-right">{{ float_two($item->totprice) }}</td>
+                                        </tr>
+                                    @endforeach
+                                @endif
                             @endforeach
                         @endforeach
                     @endforeach
-                    
                 </tbody>
             </table>
         </div>
