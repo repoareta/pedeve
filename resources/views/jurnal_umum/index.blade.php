@@ -57,8 +57,21 @@
 	</div>
 	<div class="kt-portlet__body">
 		<form id="search-form">
-			Bulan: 	<input  style="width:4em;height:35px;border: 1px solid #DCDCDC;border-radius:5px;"  name="bulan" type="text" size="2" maxlength="2" value="" onkeypress="return hanyaAngka(event)" autocomplete='off'>
-
+			Bulan: 	<select style="width:15%;height:35px;border: 1px solid #DCDCDC;border-radius:5px;"  name="bulan" id="bulan">
+						<option value="">- Pilih Bulan -</option>
+						<option value="01">Januari</option>
+						<option value="02">Februari</option>
+						<option value="03">Maret</option>
+						<option value="04">April</option>
+						<option value="05">Mei</option>
+						<option value="06">Juni</option>
+						<option value="07">Juli</option>
+						<option value="08">Agustus</option>
+						<option value="09">September</option>
+						<option value="10">Oktober</option>
+						<option value="11">November</option>
+						<option value="12">Desember</option>
+					</select>
 			Tahun: 	<input style="width:10%;height:35px;border: 1px solid #DCDCDC;border-radius:5px;"  name="tahun"  type="text" size="4" maxlength="4" value="" onkeypress="return hanyaAngka(event)" autocomplete='off'>  
 				<button type="submit" style="font-size: 20px;margin-left:5px;border-radius:10px;border-radius:10px;background-color:white;" class="kt-font-info pointer-link" data-toggle="kt-tooltip" data-placement="top" title="Cari Data"> <i class="fa fa-search"></i></button>  
 				
@@ -107,7 +120,8 @@ $(document).ready(function () {
 						'X-CSRF-Token': '{{ csrf_token() }}',
 						},
 						data: function (d) {
-							d.nama = $('input[name=nama]').val();
+							d.tahun = $('input[name=tahun]').val();
+							d.bulan = $('input[name=bulan]').val();
 						}
 					},
 			columns: [

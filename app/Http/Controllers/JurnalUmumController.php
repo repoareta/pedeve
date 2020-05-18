@@ -33,7 +33,7 @@ class JurnalUmumController extends Controller
             $thnblopen2 = "";
         }
         if($request->bulan <> "" and $request->tahun <> ""){
-            $data = DB::select("select  docno, keterangan, jk, store, voucher, posted from jurumdoc  where thnbln ='$request->tahun'.'$request->bulan' order by voucher");
+            $data = DB::select("select  docno, keterangan, jk, store, voucher, posted from jurumdoc  where thnbln ='$request->tahun$request->bulan' order by voucher");
         }elseif($request->bulan == "" and $request->tahun == ""){
             $data = DB::select("select  docno, keterangan, jk, store, voucher, posted from jurumdoc  where thnbln ='$thnblopen2' order by voucher");
         }	
