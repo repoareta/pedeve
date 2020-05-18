@@ -725,6 +725,9 @@ Route::group(['middleware'=> ['auth','checkRole:1']], function () {
             Route::delete('penempatan_deposito/delete', 'PenempatanDepositoController@delete')->name('delete');
             Route::get('penempatan_deposito/depopjg/{nodok}/{lineno}/{pjg}', 'PenempatanDepositoController@depopjg')->name('depopjg');
             Route::post('penempatan_deposito/updatedepopjg', 'PenempatanDepositoController@updatedepopjg')->name('updatedepopjg');
+            Route::get('penempatan_deposito/rekap', 'PenempatanDepositoController@rekap')->name('rekap');
+            Route::post('penempatan_deposito/ctkdepo', 'PenempatanDepositoController@ctkdepo')->name('ctkdepo');
+            Route::get('penempatan_deposito/rekaprc/{no}/{id}', 'PenempatanDepositoController@rekaprc')->name('rekaprc');
         });
         //end penempatan_deposito
 
@@ -738,9 +741,11 @@ Route::group(['middleware'=> ['auth','checkRole:1']], function () {
             Route::post('rekap_harian_kas/nokas/json', 'RekapHarianKasController@NokasJson')->name('nokas.json');
             Route::get('rekap_harian_kas/create', 'RekapHarianKasController@create')->name('create');
             Route::post('rekap_harian_kas/store', 'RekapHarianKasController@store')->name('store');
-            Route::get('rekap_harian_kas/edit/{id}/{no}/{tgl}', 'RekapHarianKasController@edit')->name('edit');
+            Route::get('rekap_harian_kas/edit/{no}/{id}/{tgl}', 'RekapHarianKasController@edit')->name('edit');
             Route::post('rekap_harian_kas/update', 'RekapHarianKasController@update')->name('update');
             Route::delete('rekap_harian_kas/delete', 'RekapHarianKasController@delete')->name('delete');
+            Route::get('rekap_harian_kas/rekap/{no}/{id}/{tanggal}', 'RekapHarianKasController@RekapHarian')->name('rekap');
+            Route::post('rekap_harian_kas/ctkharian', 'RekapHarianKasController@CtkHarian')->name('ctkharian');
         });
         //end rekap_harian_kas
 
@@ -749,7 +754,7 @@ Route::group(['middleware'=> ['auth','checkRole:1']], function () {
         // Route assigned name "report_kas_bank.index"...
         Route::name('kas_bank.')->group(function () {
             Route::get('kas_bank/report/create1', 'KasCashJudexController@Create1')->name('create1');
-            Route::post('kas_bank/report/cetak1', 'KasCashJudexController@Cetak1')->name('cetak1');
+            Route::post('kas_bank/report/cetak1', 'KasCashJudexController@cetak1')->name('cetak1');
             Route::get('kas_bank/report/create2', 'KasCashJudexController@Create2')->name('create2');
             Route::post('kas_bank/report/cetak2', 'KasCashJudexController@Cetak2')->name('cetak2');
             Route::get('kas_bank/report/create3', 'KasCashJudexController@Create3')->name('create3');
@@ -763,4 +768,23 @@ Route::group(['middleware'=> ['auth','checkRole:1']], function () {
         });
         //end report_kas_bank
     });
+
+    //PERBENDAHARAAN
+    Route::prefix('kontroler')->group(function () {
+
+        //jurnam_umum
+        // Route assigned name "jurnal_umum.index"...
+        Route::name('jurnal_umum.')->group(function () {
+            Route::get('jurnal_umum', 'JurnalUmumController@index')->name('index');
+            Route::post('jurnal_umum/search', 'JurnalUmumController@searchIndex')->name('search.index');
+            Route::get('jurnal_umum/create', 'JurnalUmumController@create')->name('create');
+            Route::get('jurnal_umum/create', 'JurnalUmumController@create')->name('create');
+            Route::get('jurnal_umum/edit', 'JurnalUmumController@edit')->name('edit');
+            Route::delete('jurnal_umum/delete', 'JurnalUmumController@delete')->name('delete');
+            Route::get('jurnal_umum/copy', 'JurnalUmumController@cpyjurnalumum')->name('cpyjurnalumum');
+        });
+        //end jurnam_umum
+    });
+
+
 });

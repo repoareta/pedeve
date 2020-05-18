@@ -51,9 +51,9 @@
 						<i class="fas fa-dollar-sign"></i>
 						</span>
 
-						<span style="font-size: 2em;" class="kt-font-info pointer-link" id="exportRow" data-toggle="kt-tooltip" data-placement="top" title="Cetak Data">
+						<!-- <span style="font-size: 2em;" class="kt-font-info pointer-link" id="exportRow" data-toggle="kt-tooltip" data-placement="top" title="Cetak Data">
 							<i class="fas fa-print"></i>
-						</span>
+						</span> -->
 					</div>
 				</div>
 			</div>
@@ -160,6 +160,23 @@ $('#editRow').click(function(e) {
 		swalAlertInit('ubah');
 	}
 });
+//exportRow penempatan deposito
+$('#exportRow').on('click', function(e) {
+	e.preventDefault();
+
+	if($('input[class=btn-radio]').is(':checked')) { 
+		$("input[class=btn-radio]:checked").each(function() {  
+			e.preventDefault();
+			var no = $(this).attr('nodok').split("/").join("-");
+			var id = $(this).attr('lineno');
+				location.replace("{{url('perbendaharaan/penempatan_deposito/rekaprc')}}"+ '/' +no+'/'+id);
+		});
+	} else{
+		swalAlertInit('cetak');
+	}
+	
+});
+
 
 //perpanjang deposito
 $('#dolarRow').click(function(e) {

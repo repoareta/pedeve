@@ -405,6 +405,7 @@
                     'penempatan_deposito.search.index',
                     'penempatan_deposito.create',
                     'penempatan_deposito.edit',
+                    'penempatan_deposito.rekaprc',
                 ); // isi nama semua route penempatan deposito
 
 
@@ -413,10 +414,15 @@
                     'rekap_harian_kas.search.index',
                     'rekap_harian_kas.create',
                     'rekap_harian_kas.edit',
+                    'rekap_harian_kas.rekap',
                 ); // isi nama semua route rekap harian
+                $rekapdeposito = array(
+                    'penempatan_deposito.rekap',
+                ); // isi nama semua route rekap deposito
 
                 $rekap_perbendaharaan = array_merge(
-                    $rekaphariankas
+                    $rekaphariankas,
+                    $rekapdeposito
                 ); //isi nama Subdomain rekap perbendaharaan
 
                 $kas_bank = array(
@@ -451,6 +457,15 @@
                     $deposito,
                     $rekap_perbendaharaan,
                     $report_perbendaharaan
+                ); // array merge semua submenu
+                
+                $jurnal_umum = array(
+                    'jurnal_umum.index',
+                    'jurnal_umum.create',
+                    'jurnal_umum.edit',
+                ); // isi nama semua route jurnal_umum
+                $kontroler = array_merge(
+                    $jurnal_umum
                 ); // array merge semua submenu
             @endphp
 
@@ -1181,6 +1196,14 @@
                                             <span class="kt-menu__link-text">Rekap Periode</span>
                                         </a>
                                     </li>
+                                    <li class="kt-menu__item kt-menu__item{{ set_active_submenu($rekapdeposito) }}" aria-haspopup="true">
+                                        <a href="{{ route('penempatan_deposito.rekap') }}" class="kt-menu__link">
+                                            <i class="kt-menu__link-bullet kt-menu__link-bullet--line">
+                                                <span></span>
+                                            </i>
+                                            <span class="kt-menu__link-text">Rekap Penempatan Deposito</span>
+                                        </a>
+                                    </li>
                                 </ul>
                             </div>
                         </li>
@@ -1249,7 +1272,7 @@
                 </div>
             </li>
 
-            <li class="kt-menu__item  kt-menu__item--submenu" aria-haspopup="true" data-ktmenu-submenu-toggle="hover">
+            <li class="kt-menu__item  kt-menu__item--submenu {{ set_active($kontroler) }}" aria-haspopup="true" data-ktmenu-submenu-toggle="hover">
                 <a href="javascript:;" class="kt-menu__link kt-menu__toggle">
                     <span class="kt-menu__link-icon">
                         <i class="fa fa-crosshairs"></i>
@@ -1267,8 +1290,8 @@
                                 </span>
                             </span>
                         </li>
-                        <li class="kt-menu__item " aria-haspopup="true">
-                            <a href="{{ route('perjalanan_dinas.index') }}" class="kt-menu__link">
+                        <li class="kt-menu__item kt-menu__item{{ set_active_submenu($jurnal_umum) }}" aria-haspopup="true">
+                            <a href="{{ route('jurnal_umum.index') }}" class="kt-menu__link">
                                 <i class="kt-menu__link-bullet kt-menu__link-bullet--dot">
                                     <span></span>
                                 </i>
