@@ -6,15 +6,15 @@
 	<div class="kt-container  kt-container--fluid ">
 		<div class="kt-subheader__main">
 			<h3 class="kt-subheader__title">
-				Rekap Harian Kas/Bank </h3>
+				Jurnal Umum </h3>
 			<span class="kt-subheader__separator kt-hidden"></span>
 			<div class="kt-subheader__breadcrumbs">
 				<a href="#" class="kt-subheader__breadcrumbs-home"><i class="flaticon2-shelter"></i></a>
 				<span class="kt-subheader__breadcrumbs-separator"></span>
 				<a href="" class="kt-subheader__breadcrumbs-link">
-					Perbendaharaan </a>
+					Kontroler </a>
 				<span class="kt-subheader__breadcrumbs-separator"></span>
-				<span class="kt-subheader__breadcrumbs-link kt-subheader__breadcrumbs-link--active">Rekap Harian Kas/Bank</span>
+				<span class="kt-subheader__breadcrumbs-link kt-subheader__breadcrumbs-link--active">Jurnal Umum</span>
 			</div>
 		</div>
 	</div>
@@ -29,12 +29,12 @@
 				<i class="kt-font-brand flaticon2-line-chart"></i>
 			</span>
 			<h3 class="kt-portlet__head-title">
-				Tabel Rekap Harian Kas/Bank
+				Tabel Jurnal Umum
 			</h3>			
 			<div class="kt-portlet__head-toolbar">
 				<div class="kt-portlet__head-wrapper">
 					<div class="kt-portlet__head-actions">
-						<a href="{{ route('rekap_harian_kas.create') }}">
+						<a href="{{ route('jurnal_umum.create') }}">
 							<span style="font-size: 2em;" class="kt-font-success" data-toggle="kt-tooltip" data-placement="top" title="Tambah Data">
 								<i class="fas fa-plus-circle"></i>
 							</span>
@@ -56,8 +56,23 @@
 		</div>
 	</div>
 	<div class="kt-portlet__body">
-	<form id="search-form">
-			No. Kas: 	<input style="width:10%;height:35px;border: 1px solid #DCDCDC;border-radius:5px;"  name="nama" id="nama" type="text"  value=""  autocomplete='off'>  
+		<form id="search-form">
+			Bulan: 	<select style="width:15%;height:35px;border: 1px solid #DCDCDC;border-radius:5px;"  name="bulan" id="bulan">
+						<option value="">- Pilih Bulan -</option>
+						<option value="01">Januari</option>
+						<option value="02">Februari</option>
+						<option value="03">Maret</option>
+						<option value="04">April</option>
+						<option value="05">Mei</option>
+						<option value="06">Juni</option>
+						<option value="07">Juli</option>
+						<option value="08">Agustus</option>
+						<option value="09">September</option>
+						<option value="10">Oktober</option>
+						<option value="11">November</option>
+						<option value="12">Desember</option>
+					</select>
+			Tahun: 	<input style="width:10%;height:35px;border: 1px solid #DCDCDC;border-radius:5px;"  name="tahun"  type="text" size="4" maxlength="4" value="" onkeypress="return hanyaAngka(event)" autocomplete='off'>  
 				<button type="submit" style="font-size: 20px;margin-left:5px;border-radius:10px;border-radius:10px;background-color:white;" class="kt-font-info pointer-link" data-toggle="kt-tooltip" data-placement="top" title="Cari Data"> <i class="fa fa-search"></i></button>  
 				
 		</form>
@@ -65,15 +80,14 @@
 		<table class="table table-striped table-bordered table-hover table-checkable" id="kt_table" width="100%">
 			<thead class="thead-light">
 				<tr>
-				<th></th>
-				<th>JK</th>
-				<th>NO.KAS</th>
-				<th>NO</th>
-				<th>TGL.REKAP</th>
-				<th>SALDO AWAL</th>
-				<th>DEBET</th>
-				<th>KREDIT</th>
-				<th>SALDO AKHIR</th>
+					<th></th>
+					<th>DOC.NO</th>
+					<th>KETERANGAN</th>
+					<th>JK</th>
+					<th>STORE</th>
+					<th>NOBUKTI</th>
+					<th>POSTED</th>	
+					<th>COPY</th>
 				</tr>
 			</thead>
 			<tbody>
@@ -99,26 +113,26 @@ $(document).ready(function () {
 				processing: '<i class="fa fa-spinner fa-spin fa-2x fa-fw"></i> <br> Loading...'
 			},
 			ajax      : {
-						url: "{{ route('rekap_harian_kas.search.index') }}",
+						url: "{{ route('jurnal_umum.search.index') }}",
 						type : "POST",
 						dataType : "JSON",
 						headers: {
 						'X-CSRF-Token': '{{ csrf_token() }}',
 						},
 						data: function (d) {
-							d.nama = $('input[name=nama]').val();
+							d.tahun = $('input[name=tahun]').val();
+							d.bulan = $('input[name=bulan]').val();
 						}
 					},
 			columns: [
 				{data: 'radio', name: 'radio'},
+				{data: 'docno', name: 'docno'},
+				{data: 'keterangan', name: 'keterangan'},
 				{data: 'jk', name: 'jk'},
 				{data: 'store', name: 'store'},
-				{data: 'no', name: 'no'},
-				{data: 'tglrekap', name: 'tglrekap'},
-				{data: 'saldoawal', name: 'saldoawal'},
-				{data: 'debet', name: 'debet'},
-				{data: 'kredit', name: 'kredit'},
-				{data: 'saldoakhir', name: 'saldoakhir'},
+				{data: 'voucher', name: 'voucher'},
+				{data: 'posted', name: 'posted'},
+				{data: 'action', name: 'action'},
 			]
 		});
 		$('#search-form').on('submit', function(e) {
@@ -153,7 +167,7 @@ $(document).ready(function () {
 						.then((result) => {
 						if (result.value) {
 							$.ajax({
-								url: "{{ route('rekap_harian_kas.delete') }}",
+								url: "{{ route('jurnal_umum.delete') }}",
 								type: 'DELETE',
 								dataType: 'json',
 								data: {
@@ -193,7 +207,7 @@ $(document).ready(function () {
 					var tgl = $(this).attr('tanggal');
 					var id = $(this).attr('jk');
 					var no = $(this).attr('nokas');
-					location.replace("{{url('perbendaharaan/rekap_harian_kas/edit')}}"+ '/' +no+'/'+id+'/'+tgl);
+					location.replace("{{url('kontroler/jurnal_umum/edit')}}"+ '/' +no+'/'+id+'/'+tgl);
 				});
 			} else {
 				swalAlertInit('ubah');
@@ -208,7 +222,7 @@ $(document).ready(function () {
 					var id = $(this).attr('jk');
 					var no = $(this).attr('nokas');
 					var tanggal = $(this).attr('tanggal');
-					location.replace("{{url('perbendaharaan/rekap_harian_kas/rekap')}}"+ '/' +no+'/'+id+'/'+tanggal);
+					location.replace("{{url('kontroler/jurnal_umum/rekap')}}"+ '/' +no+'/'+id+'/'+tanggal);
 				});
 			} else {
 				swalAlertInit('cetak');

@@ -18,7 +18,7 @@ class KasCashJudexController extends Controller
         $data_sanper = DB::select("select kodeacct,descacct from account where length(kodeacct)=6 and kodeacct not like '%x%' order by kodeacct desc");
         return view('kas_bank.report1',compact('data_kodelok','data_sanper','data_tahun'));
     }
-    public function cetak1(Request $request)
+    public function Cetak1(Request $request)
     {
         $thnbln = $request->tahun.''.$request->bulan;
         if($request->jk == "1"){
@@ -68,7 +68,10 @@ class KasCashJudexController extends Controller
                                         where b.jk $jk and substring(b.thnbln from 1 for 4)='$tahun' and substring(b.thnbln from 5 for 2) $bulan and a.account $sanper and a.lokasi='$lp' and a.keterangan <> 'penutup'");
             }
         }
+        // dd($data_list);
         if(!empty($data_list)){
+            set_time_limit(1200);
+            // return view('kas_bank.export_report1',compact('request','data_list'));
             $pdf = PDF::loadview('kas_bank.export_report1',compact('request','data_list'))->setPaper('a4', 'Portrait');
             $pdf->output();
             $dom_pdf = $pdf->getDomPDF();
@@ -88,7 +91,7 @@ class KasCashJudexController extends Controller
         $data_tahun = DB::select("select max(tahun||bulan) as thnbln from fiosd201");
         return view('kas_bank.report2',compact('data_tahun'));
     }
-    public function cetak2(Request $request)
+    public function Cetak2(Request $request)
     {
         $data_list = DB::select("select a.docno ,a.voucher ,a.rekapdate ,substring(a.thnbln from 1  for 4 ) as tahun,substring(a.thnbln  from 5  for 2 ) as bulan,b.lineno ,b.keterangan ,a.jk ,a.store ,a.ci ,a.rate ,a.voucher ,b.account ,coalesce(b.totprice,1)*CASE WHEN a.rate=0 THEN 1 WHEN a.rate IS NULL THEN 1  ELSE a.rate END as totprice ,b.area,b.lokasi ,b.bagian ,b.jb ,b.pk ,b.cj,a.rekap from kasdoc a join kasline b on a.docno=b.docno where  a.thnbln='202001' AND (coalesce(a.paid,'N') = 'Y' ) and coalesce(b.penutup,'N')<>'Y'");
         if(!empty($data_list)){
@@ -102,7 +105,7 @@ class KasCashJudexController extends Controller
             return $pdf->stream();
         }else{
             Alert::info("Tidak ditemukan data dengan Nopeg: $request->nopek Bulan/Tahun: $request->bulan/$request->tahun ", 'Failed')->persistent(true);
-            return redirect()->route('kas_bank.cetak2');
+            return redirect()->route('kas_bank.Cetak2');
         }
     }
     
@@ -111,7 +114,7 @@ class KasCashJudexController extends Controller
         $data_tahun = DB::select("Select max(tahun||bulan) as thnbln from fiosd201");
         return view('kas_bank.report3',compact('data_tahun'));
     }
-    public function cetak3(Request $request)
+    public function Cetak3(Request $request)
     {
         $thnbln = $request->tahun.''.$request->bulan;
         $data_list = DB::select("select a.docno ,a.voucher ,a.rekapdate ,substring(a.thnbln from 1  for 4 ) as tahun,substring(a.thnbln  from 5  for 2 ) as bulan,b.lineno ,b.keterangan ,a.jk ,a.store ,a.ci ,a.rate ,a.voucher ,b.account ,coalesce(b.totprice,1)*CASE WHEN a.rate=0 THEN 1 WHEN a.rate IS NULL THEN 1  ELSE a.rate END as totprice ,b.area,b.lokasi ,b.bagian ,b.jb ,b.pk ,b.cj,a.rekap from kasdoc a join kasline b on a.docno=b.docno where  a.thnbln='$thnbln' AND (coalesce(a.paid,'N') = 'Y' ) and coalesce(b.penutup,'N')<>'Y'");
@@ -123,10 +126,10 @@ class KasCashJudexController extends Controller
             $canvas = $dom_pdf ->get_canvas();
             $canvas->page_text(485, 100, "Halaman {PAGE_NUM} Dari {PAGE_COUNT}", null, 10, array(0, 0, 0)); //lembur landscape
             // return $pdf->download('rekap_umk_'.date('Y-m-d H:i:s').'.pdf');
-            return $pdf->stream();
+            return $pdf->stream('message-'.time());
         }else{
             Alert::info("Tidak ditemukan data dengan Bulan/Tahun: $request->bulan/$request->tahun ", 'Failed')->persistent(true);
-            return redirect()->route('kas_bank.cetak3');
+            return redirect()->route('kas_bank.Cetak3');
         }
     }
     
@@ -136,7 +139,7 @@ class KasCashJudexController extends Controller
         $data_judex = DB::select("select kode,nama from cashjudex");
         return view('kas_bank.report4',compact('data_judex'));
     }
-    public function cetak4(Request $request)
+    public function Cetak4(Request $request)
     {
         $thnbln = $request->tahun.''.$request->bulan;
         $data_list = DB::select("select a.docno ,a.voucher ,a.rekapdate ,substring(a.thnbln from 1  for 4 ) as tahun,substring(a.thnbln  from 5  for 2 ) as bulan,b.lineno ,b.keterangan ,a.jk ,a.store ,a.ci ,a.rate ,a.voucher ,b.account ,coalesce(b.totprice,1)*CASE WHEN a.rate=0 THEN 1 WHEN a.rate IS NULL THEN 1  ELSE a.rate END as totprice ,b.area,b.lokasi ,b.bagian ,b.jb ,b.pk ,b.cj,a.rekap from kasdoc a join kasline b on a.docno=b.docno where  a.thnbln='$thnbln' and b.cj='$request->cj' AND (coalesce(a.paid,'N') = 'Y' ) and coalesce(b.penutup,'N')<>'Y'");
@@ -161,7 +164,7 @@ class KasCashJudexController extends Controller
         $data_judex = DB::select("select kode,nama from cashjudex");
         return view('kas_bank.report5',compact('data_judex'));
     }
-    public function cetak5(Request $request)
+    public function Cetak5(Request $request)
     {
         $thnbln = $request->tahun.''.$request->bulan;
         $data_list = DB::select("select a.docno ,a.voucher ,a.rekapdate ,substring(a.thnbln from 1  for 4 ) as tahun,substring(a.thnbln  from 5  for 2 ) as bulan,b.lineno ,b.keterangan ,a.jk ,a.store ,a.ci ,a.rate ,a.voucher ,b.account ,coalesce(b.totprice,1)*CASE WHEN a.rate=0 THEN 1 WHEN a.rate IS NULL THEN 1  ELSE a.rate END as totprice ,b.area,b.lokasi ,b.bagian ,b.jb ,b.pk ,b.cj,a.rekap from kasdoc a join kasline b on a.docno=b.docno where  a.thnbln='$thnbln' and b.cj='$request->cj' AND (coalesce(a.paid,'N') = 'Y' ) and coalesce(b.penutup,'N')<>'Y'");
@@ -185,7 +188,7 @@ class KasCashJudexController extends Controller
         $data_judex = DB::select("select kode,nama from cashjudex");
         return view('kas_bank.report6',compact('data_judex'));
     }
-    public function cetak6(Request $request)
+    public function Cetak6(Request $request)
     {
         $thnbln = $request->tahun.''.$request->bulan;
         $data_list = DB::select("select a.docno ,a.voucher ,a.rekapdate ,substring(a.thnbln from 1  for 4 ) as tahun,substring(a.thnbln  from 5  for 2 ) as bulan,b.lineno ,b.keterangan ,a.jk ,a.store ,a.ci ,a.rate ,a.voucher ,b.account ,coalesce(b.totprice,1)*CASE WHEN a.rate=0 THEN 1 WHEN a.rate IS NULL THEN 1  ELSE a.rate END as totprice ,b.area,b.lokasi ,b.bagian ,b.jb ,b.pk ,b.cj,a.rekap from kasdoc a join kasline b on a.docno=b.docno where  a.thnbln='$thnbln' and b.cj='$request->cj' AND (coalesce(a.paid,'N') = 'Y' ) and coalesce(b.penutup,'N')<>'Y'");

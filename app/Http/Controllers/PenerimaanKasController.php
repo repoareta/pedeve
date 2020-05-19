@@ -102,7 +102,8 @@ class PenerimaanKasController extends Controller
                 return $action;
             })
             ->rawColumns(['action','radio'])
-            ->make(true);    }
+            ->make(true);   
+    }
 
     /**
      * Show the form for creating a new resource.

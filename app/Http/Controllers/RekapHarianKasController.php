@@ -354,4 +354,31 @@ class RekapHarianKasController extends Controller
         return response()->json();
     }
 
+    public function RekapHarian($jk, $nokas, $tanggal)
+    {
+        return view('rekap_harian_kas.rekaphari',compact('jk','nokas','tanggal'));
+    }
+    public function CtkHarian(Request $request)
+    {
+        $data_list = DB::select("select ltrim(to_char(rk.rekap,'000')) No_Rekap, to_char(rk.tglrekap,'dd/mm/yyyy') Tanggal_Rekap, rk.jk Jenis_Kartu, (rk.store||' ('||s.namabank||')') Lokasi_Kas_Bank, s.norekening No_Rekening, (d.ci||' ('||mu.namamu||')') Mata_Uang, 
+        l.docno as No_Dokumen, d.voucher as No_Bukti, l.keterangan as uraian_penjelasan, CASE WHEN sign(l.totprice)=-1  THEN l.totprice ELSE 0 END Debet, 
+        CASE WHEN -sign(l.totprice)=1  THEN 0 ELSE l.totprice END Kredit, -rk.saldoawal Saldo_Awal, -rk.saldoakhir Saldo_Akir from rekapkas rk, kasdoc d, kasline l, 
+        storejk s, matauang mu where to_char(rk.tglrekap,'dd/mm/yyyy') = to_char(d.paiddate,'dd/mm/yyyy') and rk.store=s.kodestore and rk.store=d.store and 
+        rk.jk=d.jk and d.docno=l.docno and coalesce(l.penutup,'N')='N' and d.ci=mu.kodemu and coalesce(d.paid,'N')='Y' and rk.store='21' and to_char(rk.tglrekap,'dd/mm/yyyy')='09/01/2009' order by d.voucher, l.lineno;
+        ");
+        if(!empty($data_list)){
+            $pdf = PDF::loadview('rekap_harian_kas.export_hariankas',compact('request','data_list'))->setPaper('a4', 'Portrait');
+            $pdf->output();
+            $dom_pdf = $pdf->getDomPDF();
+
+            $canvas = $dom_pdf ->get_canvas();
+            $canvas->page_text(740, 115, "Halaman {PAGE_NUM} Dari {PAGE_COUNT}", null, 10, array(0, 0, 0)); //lembur landscape
+            // return $pdf->download('rekap_umk_'.date('Y-m-d H:i:s').'.pdf');
+            return $pdf->stream();
+        }else{
+            Alert::info("Data Tidak Ditemukan", 'Failed')->persistent(true);
+            return redirect()->route('rekap_harian_kas.RekapHarian');
+        }
+    }
+
 }
