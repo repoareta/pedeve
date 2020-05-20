@@ -654,7 +654,7 @@ if (KTUtil.isRTL()) {
 //tampil edit detail
 $('#editRow').on('click', function(e) {
 	e.preventDefault();
-var allVals = [];  
+	var allVals = [];  
 $(".btn-radio:checked").each(function() {  
 	var dataid = $(this).attr('data-id');
 	var datano = $(this).attr('data-no');

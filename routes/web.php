@@ -778,8 +778,8 @@ Route::group(['middleware'=> ['auth','checkRole:1']], function () {
             Route::get('jurnal_umum', 'JurnalUmumController@index')->name('index');
             Route::post('jurnal_umum/search', 'JurnalUmumController@searchIndex')->name('search.index');
             Route::get('jurnal_umum/create', 'JurnalUmumController@create')->name('create');
-            Route::get('jurnal_umum/create', 'JurnalUmumController@create')->name('create');
-            Route::get('jurnal_umum/edit', 'JurnalUmumController@edit')->name('edit');
+            Route::post('jurnal_umum/store', 'JurnalUmumController@store')->name('store');
+            Route::get('jurnal_umum/edit/{no}', 'JurnalUmumController@edit')->name('edit');
             Route::delete('jurnal_umum/delete', 'JurnalUmumController@delete')->name('delete');
             Route::get('jurnal_umum/copy', 'JurnalUmumController@cpyjurnalumum')->name('cpyjurnalumum');
         });

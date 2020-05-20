@@ -121,7 +121,7 @@ $(document).ready(function () {
 						},
 						data: function (d) {
 							d.tahun = $('input[name=tahun]').val();
-							d.bulan = $('input[name=bulan]').val();
+							d.bulan = $('select[name=bulan]').val();
 						}
 					},
 			columns: [

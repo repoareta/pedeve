@@ -202,3 +202,11 @@ function pekerja_status($status)
             break;
     }
 }
+
+function vf($tf){
+    if(is_null($tf)){
+         return   $vf = "";
+    }else{
+        return $vf = trim($tf);
+    }
+}

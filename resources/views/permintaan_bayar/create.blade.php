@@ -280,7 +280,7 @@
 					text  : 'Berhasil',
 					timer : 2000
 				}).then(function() {
-						window.location.replace("{{ route('permintaan_bayar.edit', ['no' => $data_no_bayar] ) }}");;
+						window.location.replace("{{ route('permintaan_bayar.edit', ['no' => $data_no_bayar] ) }}");
 					});
 				}, 
 				error : function(){
