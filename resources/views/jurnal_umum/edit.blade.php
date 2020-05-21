@@ -41,7 +41,7 @@
 			</div>
 		</div>
 			<!--begin: Datatable -->
-			<form  class="kt-form kt-form--label-right" id="form-create">
+			<form  class="kt-form kt-form--label-right" id="form-edit">
 				{{csrf_field()}}
 				<div class="kt-portlet__body">
 					<div class="form-group form-group-last">
@@ -55,6 +55,7 @@
 						@foreach($data_jur as $data)
 						<?php 
 							$docno = $data->docno;
+							$nodok = str_replace('/', '-', $docno);
 							$mp = $data->mp;
 							$bagian = $data->bagian;
 							$nomor = $data->nomor;
@@ -77,6 +78,7 @@
 							<label for="spd-input" class="col-2 col-form-label">No.Dokumen</label>
 							<div class="col-5">
 								<input style="background-color:#DCDCDC; cursor:not-allowed" class="form-control" type="text" name="mp" value="{{$mp}}" id="mp" readonly>
+								<input  type="hidden" name="docno" value="{{$docno}}" >
 							</div>
 							<div class="col-5">
 								<input style="background-color:#DCDCDC; cursor:not-allowed" class="form-control" type="text" name="nomor" value="{{$nomor}}" id="nomor" readonly>
@@ -100,7 +102,7 @@
 						<div class="form-group row">
 							<label for="spd-input" class="col-2 col-form-label">Bagian</label>
 							<div class="col-5">
-								<input class="form-control" type="text" name="bagian" value="{{$bagian}}" id="bagian" readonly style="background-color:#DCDCDC; cursor:not-allowed">
+								<input class="form-control" type="text" name="bagian" value="{{$bagian}}" readonly style="background-color:#DCDCDC; cursor:not-allowed">
 							</div>
 							<div class="col-5">
 								<input class="form-control" type="text" name="nama_bagian" value="{{$nama_bagian}}" id="nama_bagian" readonly readonly style="background-color:#DCDCDC; cursor:not-allowed">
@@ -110,16 +112,15 @@
 							<label for="" class="col-2 col-form-label">Jenis Kartu</label>
 							<div class="col-5">
 								<select name="jk" id="jk" class="form-control selectpicker" data-live-search="true">
-									<option value="15">Rupiah</option>
-									<option value="18">Dollar</option>
+									<option value="15" <?php if($jk  == '15' ) echo 'selected' ; ?>>Rupiah</option>
+									<option value="18" <?php if($jk  == '18' ) echo 'selected' ; ?>>Dollar</option>
 
 								</select>
 								<input name="kurs" type="hidden" value="{{$rate}}"></td>
 							</div>
 							<label for="nopek-input" class="col-2 col-form-label">Currency Index</label>
 							<div class="col-3">
-								<input class="form-control" type="hidden" name="ci" value="1"  id="ci"  readonly style="background-color:#DCDCDC; cursor:not-allowed">
-								<input class="form-control" type="text" value="1.RP"    readonly style="background-color:#DCDCDC; cursor:not-allowed">
+								<input class="form-control" type="text" name="ci" value="{{$ci}}"  id="ci" <?php if($ci == 1){ ?> readonly style="background-color:#DCDCDC; cursor:not-allowed" <?php }else{ }?>>
 							</div>
 						</div>
 						<div class="form-group row">
@@ -140,7 +141,7 @@
 						<div class="form-group row">
 							<label for="id-pekerja;-input" class="col-2 col-form-label">Keterangan<span style="color:red;">*</span></label>
 							<div class="col-10">
-								<textarea class="form-control" type="text" value=""  id="kepada" name="kepada" size="50" maxlength="200" required oninvalid="this.setCustomValidity('Keterangan Harus Diisi..')" oninput="setCustomValidity('')"></textarea>
+								<textarea class="form-control" type="text" value=""  id="kepada" name="kepada" size="50" maxlength="200" required oninvalid="this.setCustomValidity('Keterangan Harus Diisi..')" oninput="setCustomValidity('')">{{$keterangan}}</textarea>
 								<input class="form-control" type="hidden" name="tanggal" value="{{ date('Y-m-d') }}" size="15" maxlength="15">
 							</div>
 						</div>
@@ -150,9 +151,11 @@
 								<div class="col-2"></div>
 								<div class="col-10">
 									<a  href="{{route('jurnal_umum.index')}}" class="btn btn-warning"><i class="fa fa-reply" aria-hidden="true"></i>Cancel</a>
-									<?php if($status2 <> "Y"){ ?> 
+									@if($status2 <> "Y")
 									<button type="submit" class="btn btn-brand"><i class="fa fa-check" aria-hidden="true"></i>Save</button>
-									<?php } ?>
+									@else
+									<button type="submit" disabled style="cursor:not-allowed" class="btn btn-brand"><i class="fa fa-check" aria-hidden="true"></i>Save</button>
+									@endif
 								</div>
 							</div>
 						</div>
@@ -173,23 +176,37 @@
 						<div class="kt-portlet__head-toolbar">
 							<div class="kt-portlet__head-wrapper">
 								<div class="kt-portlet__head-actions">
-								<a href="#" data-toggle="modal" data-target="#kt_modal_4">
-									<span style="font-size: 2em;" class="kt-font-success">
+								@if($status2 <> "Y")
+									<a href="#" data-toggle="modal" data-target="#kt_modal_4">
+										<span style="font-size: 2em;" class="kt-font-success">
+											<i class="fas fa-plus-circle"></i>
+										</span>
+									</a>
+					
+									<a href="#" id="editRow">
+										<span style="font-size: 2em;" class="kt-font-warning">
+											<i class="fas fa-edit"></i>
+										</span>
+									</a>
+					
+									<a href="#" id="deleteRow">
+										<span style="font-size: 2em;" class="kt-font-danger">
+											<i class="fas fa-times-circle"></i>
+										</span>
+									</a>
+								@else
+									<span style="font-size: 2em;cursor:not-allowed" class="kt-font-success">
 										<i class="fas fa-plus-circle"></i>
 									</span>
-								</a>
 				
-								<a href="#" id="editRow">
-									<span style="font-size: 2em;" class="kt-font-warning">
+									<span style="font-size: 2em;cursor:not-allowed" class="kt-font-warning">
 										<i class="fas fa-edit"></i>
 									</span>
-								</a>
 				
-								<a href="#" id="deleteRow">
-									<span style="font-size: 2em;" class="kt-font-danger">
+									<span style="font-size: 2em;cursor:not-allowed" class="kt-font-danger">
 										<i class="fas fa-times-circle"></i>
 									</span>
-								</a>
+								@endif
 								</div>
 							</div>
 						</div>
@@ -199,7 +216,7 @@
 					<table class="table table-striped table-bordered table-hover table-checkable" id="tabel-detail">
 						<thead class="thead-light">
 							<tr>
-								<th ><input type="radio" hidden name="btn-radio"  data-id="1" class="btn-radio" checked ></th>
+								<th ></th>
 								<th>NO</th>
 								<th>LP</th>	
 								<th>SANPER</th>
@@ -215,22 +232,25 @@
 						<tbody>
 						@foreach($data_detail as $data_d)
 							<tr>
-								<td>c</td>
-								<td>c</td>
-								<td>c</td>
-								<td>c</td>
-								<td>c</td>
-								<td>c</td>
-								<td>c</td>
-								<td>c</td>
-								<td>c</td>
-								<td>c</td>
-								<td>c</td>
+								<td scope="row" align="center"><label class="kt-radio kt-radio--bold kt-radio--brand"><input type="radio" name="btn-radio" docno="{{str_replace('/', '-', $data_d->docno)}}" lineno="{{$data_d->lineno}}" class="btn-radio" ><span></span></label></td>
+								<td>{{$data_d->lineno}}</td>
+								<td>{{$data_d->lokasi}}</td>
+								<td>{{$data_d->account}}</td>
+								<td>{{$data_d->bagian}}</td>
+								<td>{{$data_d->pk}}</td>
+								<td>{{$data_d->jb}}</td>
+								<td>{{number_format($data_d->debet,2,'.',',')}}</td>
+								<td>{{number_format($data_d->kredit,2,'.',',')}}</td>
+								<td>{{number_format($data_d->rate,0)}}</td>
+								<td>{{$data_d->keterangan}}</td>
 							</tr>
 						@endforeach
-
-							
 						</tbody>
+						<tr>
+							<td colspan="2" align="left"><input id="status2" name="status2" type="checkbox" <?php if($status2  == 'Y' ) echo 'checked' ; ?>> Posting</td>
+							<td colspan="6" align="right">Out of Balance : </td>
+							<td colspan="3" ><?php echo number_format($jumlahnya, 2, ',', '.').' '.$lab2; ?></td>
+						</tr>
 					</table>
 				</div>
 			</form>
@@ -240,42 +260,218 @@
 
 
 <!--begin::Modal-->
-<div class="modal fade modal-create-detail-umk" id="kt_modal_4"  tabindex="-1" role="dialog" aria-labelledby="exampleModalLabel" aria-hidden="true">
+<div class="modal fade" id="kt_modal_4"  tabindex="-1" role="dialog" aria-labelledby="exampleModalLabel" aria-hidden="true">
 	<div class="modal-dialog modal-lg" role="document">
 		<div class="modal-content">
 			<div class="modal-header">
-				<h5 class="modal-title" id="title-detail">Tambah Menu Rincian Minta Bayar</h5>
+				<h5 class="modal-title" id="title-detail">Tambah Detail Transaksi</h5>
 			</div>
 			<div class="modal-body">
 			<span id="form_result"></span>
-                <form  class="kt-form " id="form-tambah-bayar-detail"  enctype="multipart/form-data">
+                <form  class="kt-form " id="form-tambah-detail"  enctype="multipart/form-data">
 					{{csrf_field()}}
-                        
+					<input  class="form-control" hidden type="text" value="{{$docno}}"  name="kode">
                     <div class="form-group row">
 						<label for="example-text-input" class="col-2 col-form-label">No. Urut</label>
-						<label for="example-text-input" class=" col-form-label">:</label>
 						<div class="col-8">
-							<input style="background-color:#DCDCDC; cursor:not-allowed"  class="form-control" type="text" value=""  name="no" readonly>
+							<input class="form-control" type="hidden" name="tanggal" value="{{ date('Y-m-d') }}" size="15" maxlength="15">
+							<input style="background-color:#DCDCDC; cursor:not-allowed"  class="form-control" type="text" value="{{$nu}}"  name="nourut" readonly>
 						</div>
 					</div>
 
 					<div class="form-group row">
-						<label for="example-text-input" class="col-2 col-form-label">Keterangan<span style="color:red;">*</span></label>
-						<label for="example-text-input" class=" col-form-label">:</label>
+						<label for="example-text-input" class="col-2 col-form-label">Rincian<span style="color:red;">*</span></label>
 						<div class="col-8">
-							<textarea  class="form-control" type="text" value=""  name="keterangan" required oninvalid="this.setCustomValidity('Keterangan Harus Diisi..')" oninput="setCustomValidity('')"></textarea>
+							<input  class="form-control" type="text" value=""  name="rincian" autocomplete='off' required oninvalid="this.setCustomValidity('Rincian Harus Diisi..')" oninput="setCustomValidity('')">
 						</div>
 					</div>
 									
-					
-
-									
+																					
+					<div class="form-group row">
+						<label for="example-text-input" class="col-2 col-form-label">Kd.Lapangan<span style="color:red;">*</span></label>
+						<div  class="col-8" >
+							<select name="lapangan"  class="form-control selectpicker" data-live-search="true" required oninvalid="this.setCustomValidity('Kd.Lapangan Harus Diisi..')" onchange="setCustomValidity('')">
+								<option value="">-Pilih-</option>
+									@foreach($data_lapang as $data_lap)
+								<option value="{{$data_lap->kodelokasi}}">{{$data_lap->kodelokasi}} - {{$data_lap->nama}}</option>
+									@endforeach
+							</select>
+						</div>
+					</div>			
+					<div class="form-group row">
+						<label for="example-text-input" class="col-2 col-form-label">Sandi Perkiraan<span style="color:red;">*</span></label>
+						<div  class="col-8" >
+							<select name="sanper"  class="form-control selectpicker" data-live-search="true" required oninvalid="this.setCustomValidity('Sandi Perkiraan Harus Diisi..')" onchange="setCustomValidity('')">
+								<option value="">-Pilih-</option>
+									@foreach($data_sandi as $data_san)
+								<option value="{{$data_san->kodeacct}}">{{$data_san->kodeacct}} - {{$data_san->descacct}}</option>
+									@endforeach
+							</select>
+						</div>
+					</div>			
+					<div class="form-group row">
+						<label for="example-text-input" class="col-2 col-form-label">Kode Bagian<span style="color:red;">*</span></label>
+						<div  class="col-8" >
+							<select name="bagian"  class="form-control selectpicker" data-live-search="true" required oninvalid="this.setCustomValidity('Kode Bagian Harus Diisi..')" onchange="setCustomValidity('')">
+								<option value="">-Pilih-</option>
+									@foreach($data_bagian as $data_bag)
+								<option value="{{$data_bag->kode}}">{{$data_bag->kode}} - {{$data_bag->nama}}</option>
+									@endforeach
+							</select>
+						</div>
+					</div>		
 
 					<div class="form-group row">
-						<label for="example-text-input" class="col-2 col-form-label">Jumlah<span style="color:red;">*</span></label>
-						<label for="example-text-input" class=" col-form-label">:</label>
+						<label for="example-text-input" class="col-2 col-form-label">Perintah Kerja<span style="color:red;">*</span></label>
 						<div class="col-8">
-							<input  class="form-control" type="text" value="" name="nilai" onkeypress="return hanyaAngka(event)" required oninvalid="this.setCustomValidity('Jumlah Harus Diisi..')" oninput="setCustomValidity('')" autocomplete='off'>
+							<input  class="form-control" type="text" value="000000"  name="wo" required oninvalid="this.setCustomValidity('Wo Harus Diisi..')" oninput="setCustomValidity('')">
+						</div>
+					</div>	
+					<div class="form-group row">
+						<label for="example-text-input" class="col-2 col-form-label">Jenis Biaya<span style="color:red;">*</span></label>
+						<div  class="col-8" >
+							<select name="jnsbiaya" class="form-control selectpicker" data-live-search="true" required oninvalid="this.setCustomValidity('Jenis Biaya Harus Diisi..')" onchange="setCustomValidity('')">
+								<option value="">-Pilih-</option>
+									@foreach($data_jenis as $data_jen)
+								<option value="{{$data_jen->kode}}" <?php if($data_jen->kode  == '000000' ) echo 'selected' ; ?>>{{$data_jen->kode}} - {{$data_jen->keterangan}}</option>
+									@endforeach
+							</select>
+						</div>
+					</div>		
+
+					<div class="form-group row">
+						<label for="example-text-input" class="col-2 col-form-label">Debet</label>
+						<div class="col-8">
+							<input  class="form-control" type="text" value="" name="debet" size="16" maxlength="16" onkeypress="return hanyaAngka(event)" autocomplete='off'>
+						</div>
+					</div>
+					<div class="form-group row">
+						<label for="example-text-input" class="col-2 col-form-label">Kredit</label>
+						<div class="col-8">
+							<input  class="form-control" type="text" value="" name="kredit" size="16" maxlength="16" onkeypress="return hanyaAngka(event)"  autocomplete='off'>
+						</div>
+					</div>
+					<div class="form-group row">
+						<label for="example-text-input" class="col-2 col-form-label">Kurs</label>
+						<div class="col-8">
+							<input  class="form-control" type="text" value="" name="rate" size="16" maxlength="16" autocomplete='off' onkeypress="return hanyaAngka(event)" >
+						</div>
+					</div>
+
+																					
+					<div class="kt-form__actions">
+						<div class="row">
+							<div class="col-2"></div>
+							<div class="col-10">
+								<button type="reset"  class="btn btn-warning"  data-dismiss="modal"><i class="fa fa-reply" aria-hidden="true"></i>Cancel</button>
+								<button type="submit" class="btn btn-brand"><i class="fa fa-reply" aria-hidden="true"></i>Save</button>
+							</div>
+						</div>
+					</div>
+				</form>
+			</div>
+		</div>
+	</div>
+</div>
+
+
+<!--begin::Modal Edit-->
+<!--end::Modal-->
+<div class="modal fade modal-edit-detail" id="kt_modal_4"  tabindex="-1" role="dialog" aria-labelledby="exampleModalLabel" aria-hidden="true">
+	<div class="modal-dialog modal-lg" role="document">
+		<div class="modal-content">
+			<div class="modal-header">
+				<h5 class="modal-title" id="title-detail">Edit Detail Transaksi</h5>
+			</div>
+			<div class="modal-body">
+			<span id="form_result"></span>
+			<form  class="kt-form " id="form-edit-detail"  enctype="multipart/form-data">
+					{{csrf_field()}}
+					<input  class="form-control" hidden type="text" value="{{$docno}}"  name="kode">
+                    <div class="form-group row">
+						<label for="example-text-input" class="col-2 col-form-label">No. Urut</label>
+						<div class="col-8">
+							<input class="form-control" type="hidden" name="tanggal" value="{{ date('Y-m-d') }}" size="15" maxlength="15">
+							<input style="background-color:#DCDCDC; cursor:not-allowed"  class="form-control" type="text" value=""  name="nourut" id="nourut" readonly>
+						</div>
+					</div>
+
+					<div class="form-group row">
+						<label for="example-text-input" class="col-2 col-form-label">Rincian<span style="color:red;">*</span></label>
+						<div class="col-8">
+							<input  class="form-control" type="text" value=""  name="rincian" id="rincian" autocomplete='off' required oninvalid="this.setCustomValidity('Rincian Harus Diisi..')" oninput="setCustomValidity('')">
+						</div>
+					</div>
+									
+																					
+					<div class="form-group row">
+						<label for="example-text-input" class="col-2 col-form-label">Kd.Lapangan<span style="color:red;">*</span></label>
+						<div  class="col-8" >
+							<select name="lapangan" id="lapangan"  class="form-control selectpicker" data-live-search="true" required oninvalid="this.setCustomValidity('Kd.Lapangan Harus Diisi..')" onchange="setCustomValidity('')">
+								<option value="">-Pilih-</option>
+									@foreach($data_lapang as $data_lap)
+								<option value="{{$data_lap->kodelokasi}}">{{$data_lap->kodelokasi}} - {{$data_lap->nama}}</option>
+									@endforeach
+							</select>
+						</div>
+					</div>			
+					<div class="form-group row">
+						<label for="example-text-input" class="col-2 col-form-label">Sandi Perkiraan<span style="color:red;">*</span></label>
+						<div  class="col-8" >
+							<select name="sanper" id="sanper" class="form-control selectpicker" data-live-search="true" required oninvalid="this.setCustomValidity('Sandi Perkiraan Harus Diisi..')" onchange="setCustomValidity('')">
+								<option value="">-Pilih-</option>
+									@foreach($data_sandi as $data_san)
+								<option value="{{$data_san->kodeacct}}">{{$data_san->kodeacct}} - {{$data_san->descacct}}</option>
+									@endforeach
+							</select>
+						</div>
+					</div>			
+					<div class="form-group row">
+						<label for="example-text-input" class="col-2 col-form-label">Kode Bagian<span style="color:red;">*</span></label>
+						<div  class="col-8" >
+							<select name="bagian" id="bagian" class="form-control selectpicker" data-live-search="true" required oninvalid="this.setCustomValidity('Kode Bagian Harus Diisi..')" onchange="setCustomValidity('')">
+								<option value="">-Pilih-</option>
+									@foreach($data_bagian as $data_bag)
+								<option value="{{$data_bag->kode}}">{{$data_bag->kode}} - {{$data_bag->nama}}</option>
+									@endforeach
+							</select>
+						</div>
+					</div>		
+
+					<div class="form-group row">
+						<label for="example-text-input" class="col-2 col-form-label">Perintah Kerja<span style="color:red;">*</span></label>
+						<div class="col-8">
+							<input  class="form-control" type="text" value="" id="wo"  name="wo" required oninvalid="this.setCustomValidity('Wo Harus Diisi..')" oninput="setCustomValidity('')">
+						</div>
+					</div>	
+					<div class="form-group row">
+						<label for="example-text-input" class="col-2 col-form-label">Jenis Biaya<span style="color:red;">*</span></label>
+						<div  class="col-8" >
+							<select name="jnsbiaya" id="jnsbiaya" class="form-control selectpicker" data-live-search="true" required oninvalid="this.setCustomValidity('Jenis Biaya Harus Diisi..')" onchange="setCustomValidity('')">
+								<option value="">-Pilih-</option>
+									@foreach($data_jenis as $data_jen)
+								<option value="{{$data_jen->kode}}">{{$data_jen->kode}} - {{$data_jen->keterangan}}</option>
+									@endforeach
+							</select>
+						</div>
+					</div>		
+
+					<div class="form-group row">
+						<label for="example-text-input" class="col-2 col-form-label">Debet</label>
+						<div class="col-8">
+							<input  class="form-control" type="text" value="" name="debet" id="debet" size="16" maxlength="16" onkeypress="return hanyaAngka(event)" autocomplete='off'>
+						</div>
+					</div>
+					<div class="form-group row">
+						<label for="example-text-input" class="col-2 col-form-label">Kredit</label>
+						<div class="col-8">
+							<input  class="form-control" type="text" value="" name="kredit" id="kredit" size="16" maxlength="16" onkeypress="return hanyaAngka(event)"  autocomplete='off'>
+						</div>
+					</div>
+					<div class="form-group row">
+						<label for="example-text-input" class="col-2 col-form-label">Kurs</label>
+						<div class="col-8">
+							<input  class="form-control" type="text" value="" name="rate" id="rate" size="16" maxlength="16" autocomplete='off' onkeypress="return hanyaAngka(event)" >
 						</div>
 					</div>
 
@@ -305,39 +501,242 @@
 			serverSide: false,
 		});
 
-		$("#jk").on("change", function(){
-		var jk = $('#jk').val();
-		if(jk == '18'){
-			$("#ci").val('2');
-			$("#kurs").val('');
-			$("#kurspjk").val('2');
-			$("#kurs" ).prop( "readonly", false );
-			$("#kurspjk" ).prop( "readonly", false );
-			$("#jnskas").val("2");
-		} else if (jk == '15'){
-			$("#ci").val('1');
-			$("#kurs").val('1');
-			$("#kurspjk").val('0');
-			$("#kurs" ).prop( "required", true );
-			$("#kurspjk" ).prop( "required", true );
-			$("#jnskas").val("1");
-		}else{
-			$("#ci").val('');
-			$("#kurs").val('');
-			$("#kurspjk").val('');
-			$("#kurs" ).prop( "readonly", false );
-			$("#kurspjk" ).prop( "readonly", false );
-			$("#jnskas").val("");
-		}	
+$("#status2").on("change", function(){
+	window.location.replace("{{ route('jurnal_umum.posting', ['no' => $nodok, 'status' =>$status2] ) }}");
+});
+$("#jk").on("change", function(){
+	var jk = $("#jk").val();
+	if(jk == 15){
+		$('#ci').val(1);
+		$( "#ci" ).prop( "required", false );
+		$( "#ci" ).prop( "readonly", true );
+		$('#ci').css("background-color","#DCDCDC");
+		$('#ci').css("cursor","not-allowed");
+	}else{
+		$('#ci').val(2);
+		$( "#ci" ).prop( "required", true );
+		$( "#ci" ).prop( "readonly", false );
+		$('#ci').css("background-color","#ffffff");
+		$('#ci').css("cursor","text");
+	}
+
+});
+
+$('#form-edit').submit(function(){
+			$.ajax({
+				url  : "{{route('jurnal_umum.update')}}",
+				type : "POST",
+				data : $('#form-edit').serialize(),
+				dataType : "JSON",
+				headers: {
+				'X-CSRF-Token': '{{ csrf_token() }}',
+				},
+				success : function(data){
+					if(data == 1){
+						Swal.fire({
+							type  : 'success',
+							title : 'Data Berhasil Diedit',
+							text  : 'Berhasil',
+							timer : 2000
+						}).then(function(data) {
+							window.location.replace("{{ route('jurnal_umum.index') }}");
+							});
+					}else if(data == 2){
+						Swal.fire({
+						type  : 'info',
+						title : 'Status Harus None, Opening Atau Data Sudah Diposting.',
+						text  : 'Info',
+						timer : 2000
+						});
+					}else{
+						Swal.fire({
+						type  : 'info',
+						title : 'Data Sudah Di Posting, Tidak Bisa Di Update/Hapus.',
+						text  : 'Info',
+						timer : 2000
+						});
+					}
+				}, 
+				error : function(){
+					alert("Terjadi kesalahan, coba lagi nanti");
+				}
+			});	
+			return false;
+		});
 	});
-		
 
-
-		
+//prosess create detail
+ $('#form-tambah-detail').submit(function(){
+		$.ajax({
+			url  : "{{route('jurnal_umum.store.detail')}}",
+			type : "POST",
+			data : $('#form-tambah-detail').serialize(),
+			dataType : "JSON",
+            headers: {
+            'X-CSRF-Token': '{{ csrf_token() }}',
+            },
+			success : function(data){
+                if(data == 1){
+					Swal.fire({
+						type  : 'success',
+						title : 'Data Detail Berhasil Ditambah',
+						text  : 'Berhasil',
+						timer : 2000
+					}).then(function() {
+						location.reload();
+					});
+				}else if(data == 2){
+					Swal.fire({
+						type  : 'info',
+						title : 'duplikasi data dokumen detail, entri dibatalkan.',
+						text  : 'Info',
+						timer : 2000
+						}).then(function() {
+							location.reload();
+						});
+				}else{
+					Swal.fire({
+						type  : 'info',
+						title : 'Sandi Perkiraan Salah/Tidak Ditemukan.',
+						text  : 'Info',
+						timer : 2000
+						}).then(function() {
+							location.reload();
+						});
+				}	
+			}, 
+			error : function(){
+				alert("Terjadi kesalahan, coba lagi nanti");
+			}
+		});	
+		return false;
 	});
-	
 
-  
+
+//tampil edit detail
+$('#editRow').on('click', function(e) {
+	e.preventDefault();
+	if($('input[class=btn-radio]').is(':checked')) { 
+		$("input[class=btn-radio]:checked").each(function(){
+			var no = $(this).attr('docno');
+			var id = $(this).attr('lineno');
+			$.ajax({
+				url :"{{('kontroler/jurnal_umum/editdetail')}}"+ '/' +no+'/'+id,
+				type : 'get',
+				dataType:"json",
+				headers: {
+					'X-CSRF-Token': '{{ csrf_token() }}',
+					},
+				success:function(data)
+				{
+					$('#nourut').val(data.lineno);
+					$('#rincian').val(data.keterangan);
+					var debet=parseInt(data.debet);
+					$('#debet').val(debet);
+					var kredit=parseInt(data.kredit);
+					$('#kredit').val(kredit);
+					var rate=parseInt(data.rate);
+					$('#rate').val(rate);
+					$('#wo').val(data.pk);
+					$('.modal-edit-detail').modal('show');
+					$('#sanper').val(data.account).trigger('change');
+					$('#lapangan').val(data.lokasi).trigger('change');
+					$('#jnsbiaya').val(data.jb).trigger('change');
+					$('#bagian').val(data.bagian).trigger('change');
+
+				}
+			})
+		});
+	} else {
+		swalAlertInit('ubah');
+	}
+});
+
+
+	//prosess create detail
+	$('#form-edit-detail').submit(function(){
+		$.ajax({
+			url  : "{{route('jurnal_umum.update.detail')}}",
+			type : "POST",
+			data : $('#form-edit-detail').serialize(),
+			dataType : "JSON",
+            headers: {
+            'X-CSRF-Token': '{{ csrf_token() }}',
+            },
+			success : function(data){
+					Swal.fire({
+						type  : 'success',
+						title : 'Data Detail Berhasil Diedit',
+						text  : 'Berhasil',
+						timer : 2000
+					}).then(function() {
+						location.reload();
+					});	
+			}, 
+			error : function(){
+				alert("Terjadi kesalahan, coba lagi nanti");
+			}
+		});	
+		return false;
+	});
+
+
+	$('#deleteRow').click(function(e) {
+		e.preventDefault();
+		if($('input[class=btn-radio]').is(':checked')) { 
+			$("input[class=btn-radio]:checked").each(function() {
+				var no = $(this).attr('docno');
+				var id = $(this).attr('lineno');
+				// delete stuff
+				const swalWithBootstrapButtons = Swal.mixin({
+					customClass: {
+						confirmButton: 'btn btn-primary',
+						cancelButton: 'btn btn-danger'
+					},
+						buttonsStyling: false
+					})
+					swalWithBootstrapButtons.fire({
+						title: "Data yang akan dihapus?",
+						text: "Nourut  : " +id,
+						type: 'warning',
+						showCancelButton: true,
+						reverseButtons: true,
+						confirmButtonText: 'Ya, hapus',
+						cancelButtonText: 'Batalkan'
+					})
+					.then((result) => {
+					if (result.value) {
+						$.ajax({
+							url: "{{ route('jurnal_umum.delete.detail') }}",
+							type: 'DELETE',
+							dataType: 'json',
+							data: {
+								"no": no,
+								"id": id,
+								"_token": "{{ csrf_token() }}",
+							},
+							success: function () {
+								Swal.fire({
+									type  : 'success',
+									title : "Detail Jurnal Umum Dengan Nourut : " +id+" Berhasil Dihapus.",
+									text  : 'Berhasil',
+									
+								}).then(function() {
+									location.reload();
+								});
+							},
+							error: function () {
+								alert("Terjadi kesalahan, coba lagi nanti");
+							}
+						});
+					}
+				});
+			});
+		} else {
+			swalAlertInit('hapus');
+		}
+	});
+
 
 		
 		function hanyaAngka(evt) {

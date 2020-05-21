@@ -144,9 +144,7 @@ $(document).ready(function () {
 			e.preventDefault();
 			if($('input[class=btn-radio]').is(':checked')) { 
 				$("input[class=btn-radio]:checked").each(function() {
-					var tanggal = $(this).attr('tanggal');
-					var jk = $(this).attr('jk');
-					var nokas = $(this).attr('nokas');
+					var docno = $(this).attr('docno');
 					// delete stuff
 					const swalWithBootstrapButtons = Swal.mixin({
 						customClass: {
@@ -157,7 +155,7 @@ $(document).ready(function () {
 						})
 						swalWithBootstrapButtons.fire({
 							title: "Data yang akan dihapus?",
-							text: "Tanggal  : " +tanggal+ " Nokas : " +nokas,
+							text: "No Dokumen  : " +docno,
 							type: 'warning',
 							showCancelButton: true,
 							reverseButtons: true,
@@ -171,20 +169,33 @@ $(document).ready(function () {
 								type: 'DELETE',
 								dataType: 'json',
 								data: {
-									"tanggal": tanggal,
-									"jk": jk,
-									"nokas": nokas,
+									"docno": docno,
 									"_token": "{{ csrf_token() }}",
 								},
-								success: function () {
-									Swal.fire({
-										type  : 'success',
-										title : "Data Kas Bank Tanggal  : " +tanggal+ " Nokas : " +nokas+ " Berhasil Dihapus.",
-										text  : 'Berhasil',
+								success: function (data) {
+									if(data == 1){
+										Swal.fire({
+											type  : 'success',
+											title : "Data Jurnal Umum dengan No Dokumen  : " +docno+" Berhasil Dihapus.",
+											text  : 'Berhasil',
+											
+										}).then(function() {
+											location.reload();
+										});
+									}else if(data == 2){
+										Swal.fire({
+										type  : 'info',
+										title : 'Penghapusan Gagal, Data Tidak Dalam Status Opening.',
+										text  : 'Info',
+										});
+									}else{
+										Swal.fire({
+										type  : 'info',
+										title : 'Data Sudah Di Posting, Tidak Bisa Di Update/Hapus.',
+										text  : 'Info',
+										});
 										
-									}).then(function() {
-										location.reload();
-									});
+									}
 								},
 								error: function () {
 									alert("Terjadi kesalahan, coba lagi nanti");
@@ -204,10 +215,8 @@ $(document).ready(function () {
 
 			if($('input[class=btn-radio]').is(':checked')) { 
 				$("input[class=btn-radio]:checked").each(function(){
-					var tgl = $(this).attr('tanggal');
-					var id = $(this).attr('jk');
-					var no = $(this).attr('nokas');
-					location.replace("{{url('kontroler/jurnal_umum/edit')}}"+ '/' +no+'/'+id+'/'+tgl);
+					var no = $(this).attr('docno');
+					location.replace("{{url('kontroler/jurnal_umum/edit')}}"+ '/' +no);
 				});
 			} else {
 				swalAlertInit('ubah');

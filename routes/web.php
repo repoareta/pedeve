@@ -780,8 +780,17 @@ Route::group(['middleware'=> ['auth','checkRole:1']], function () {
             Route::get('jurnal_umum/create', 'JurnalUmumController@create')->name('create');
             Route::post('jurnal_umum/store', 'JurnalUmumController@store')->name('store');
             Route::get('jurnal_umum/edit/{no}', 'JurnalUmumController@edit')->name('edit');
+            Route::post('jurnal_umum/update', 'JurnalUmumController@update')->name('update');
             Route::delete('jurnal_umum/delete', 'JurnalUmumController@delete')->name('delete');
+            Route::get('jurnal_umum/editdetail/{no}/{id}', 'JurnalUmumController@editDetail')->name('editdetail');
+            Route::post('jurnal_umum/update/detail', 'JurnalUmumController@updateDetail')->name('update.detail');
+            Route::delete('jurnal_umum/delete/detail', 'JurnalUmumController@deleteDetail')->name('delete.detail');
             Route::get('jurnal_umum/copy', 'JurnalUmumController@cpyjurnalumum')->name('cpyjurnalumum');
+            Route::post('jurnal_umum/store/detail', 'JurnalUmumController@storeDetail')->name('store.detail');
+            Route::get('jurnal_umum/posting/{no}/{status}', 'JurnalUmumController@posting')->name('posting');
+            Route::post('jurnal_umum/store/posting', 'JurnalUmumController@storePosting')->name('store.posting');
+            Route::get('jurnal_umum/copy/{no}', 'JurnalUmumController@copy')->name('copy');
+            Route::post('jurnal_umum/store/copy', 'JurnalUmumController@storeCopy')->name('store.copy');
         });
         //end jurnam_umum
     });

@@ -463,6 +463,7 @@
                     'jurnal_umum.index',
                     'jurnal_umum.create',
                     'jurnal_umum.edit',
+                    'jurnal_umum.posting',
                 ); // isi nama semua route jurnal_umum
                 $kontroler = array_merge(
                     $jurnal_umum

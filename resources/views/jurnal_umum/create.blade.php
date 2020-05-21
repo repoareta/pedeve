@@ -118,8 +118,7 @@
 							</div>
 							<label for="nopek-input" class="col-2 col-form-label">Currency Index</label>
 							<div class="col-3">
-								<input class="form-control" type="hidden" name="ci" value="1"  id="ci"  readonly style="background-color:#DCDCDC; cursor:not-allowed">
-								<input class="form-control" type="text" value="1.RP"    readonly style="background-color:#DCDCDC; cursor:not-allowed">
+								<input class="form-control" type="text" name="ci" value="1"  id="ci"  readonly style="background-color:#DCDCDC; cursor:not-allowed">
 							</div>
 						</div>
 						<div class="form-group row">
@@ -225,30 +224,22 @@
 		});
 
 		$("#jk").on("change", function(){
-		var jk = $('#jk').val();
-		if(jk == '18'){
-			$("#ci").val('2');
-			$("#kurs").val('');
-			$("#kurspjk").val('2');
-			$("#kurs" ).prop( "readonly", false );
-			$("#kurspjk" ).prop( "readonly", false );
-			$("#jnskas").val("2");
-		} else if (jk == '15'){
-			$("#ci").val('1');
-			$("#kurs").val('1');
-			$("#kurspjk").val('0');
-			$("#kurs" ).prop( "required", true );
-			$("#kurspjk" ).prop( "required", true );
-			$("#jnskas").val("1");
-		}else{
-			$("#ci").val('');
-			$("#kurs").val('');
-			$("#kurspjk").val('');
-			$("#kurs" ).prop( "readonly", false );
-			$("#kurspjk" ).prop( "readonly", false );
-			$("#jnskas").val("");
-		}	
-	});
+			var jk = $("#jk").val();
+			if(jk == 15){
+				$('#ci').val(1);
+				$( "#ci" ).prop( "required", false );
+				$( "#ci" ).prop( "readonly", true );
+				$('#ci').css("background-color","#DCDCDC");
+				$('#ci').css("cursor","not-allowed");
+			}else{
+				$('#ci').val(2);
+				$( "#ci" ).prop( "required", true );
+				$( "#ci" ).prop( "readonly", false );
+				$('#ci').css("background-color","#ffffff");
+				$('#ci').css("cursor","text");
+			}
+
+		});
 		
 
 
