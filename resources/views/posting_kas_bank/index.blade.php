@@ -34,7 +34,7 @@
 			<div class="kt-portlet__head-toolbar">
 				<div class="kt-portlet__head-wrapper">
 					<div class="kt-portlet__head-actions">
-						<span style="font-size: 2em;" class="kt-font-warning pointer-link" data-toggle="kt-tooltip" data-placement="top" title="Ubah Data">
+						<!-- <span style="font-size: 2em;" class="kt-font-warning pointer-link" data-toggle="kt-tooltip" data-placement="top" title="Ubah Data">
 							<i class="fas fa-edit" id="editRow"></i>
 						</span>
 
@@ -44,7 +44,7 @@
 
 						<span style="font-size: 2em;" class="kt-font-info pointer-link" data-toggle="kt-tooltip" data-placement="top" title="Cetak Data">
 							<i class="fas fa-print" id="exportRow"></i>
-						</span>
+						</span> -->
 					</div>
 				</div>
 			</div>
