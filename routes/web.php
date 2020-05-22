@@ -813,6 +813,20 @@ Route::group(['middleware'=> ['auth','checkRole:1']], function () {
         //end postingan Kas Bank
 
 
+        //Master Perusahaan
+        // Route assigned name "master_perusahaan.index"...
+        Route::name('master_perusahaan.')->group(function () {
+            Route::get('master_perusahaan', 'MasterPerusahaanController@index')->name('index');
+            Route::get('master_perusahaan/index/json', 'MasterPerusahaanController@indexJson')->name('index.json');
+            Route::get('master_perusahaan/create', 'MasterPerusahaanController@create')->name('create');
+            Route::post('master_perusahaan/store', 'MasterPerusahaanController@store')->name('store');
+            Route::get('master_perusahaan/edit/{kode}', 'MasterPerusahaanController@edit')->name('edit');
+            Route::post('master_perusahaan/update', 'MasterPerusahaanController@update')->name('update');
+            Route::delete('master_perusahaan/delete', 'MasterPerusahaanController@delete')->name('delete');
+        });
+        //end Master Perusahaan
+
+
     });
 
 
