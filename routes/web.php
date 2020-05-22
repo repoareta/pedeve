@@ -793,6 +793,26 @@ Route::group(['middleware'=> ['auth','checkRole:1']], function () {
             Route::post('jurnal_umum/store/copy', 'JurnalUmumController@storeCopy')->name('store.copy');
         });
         //end jurnam_umum
+
+
+        //postingan Kas Bank
+        // Route assigned name "postingan_kas_bank.index"...
+        Route::name('postingan_kas_bank.')->group(function () {
+            Route::get('postingan_kas_bank', 'PostingKasBankController@index')->name('index');
+            Route::post('postingan_kas_bank/search', 'PostingKasBankController@searchIndex')->name('search.index');
+            Route::get('postingan_kas_bank/verkas/{no}/{id}', 'PostingKasBankController@verkas')->name('verkas');
+            Route::get('postingan_kas_bank/verkass', 'PostingKasBankController@verkass')->name('verkass');
+            Route::post('postingan_kas_bank/store/verkas', 'PostingKasBankController@store')->name('store.verkas');
+            Route::get('postingan_kas_bank/verkas/json', 'PostingKasBankController@verkasJson')->name('verkasjson');
+            Route::get('postingan_kas_bank/editdetail/{no}/{id}', 'PostingKasBankController@editdetail')->name('editdetail');
+            Route::post('postingan_kas_bank/store/detail', 'PostingKasBankController@storeDetail')->name('store.detail');
+            Route::post('postingan_kas_bank/update/detail', 'PostingKasBankController@updateDetail')->name('update.detail');
+            Route::delete('postingan_kas_bank/delete/detail', 'PostingKasBankController@deleteDetail')->name('delete.detail');
+            Route::post('postingan_kas_bank/verifikasi', 'PostingKasBankController@verifikasi')->name('verifikasi');
+        });
+        //end postingan Kas Bank
+
+
     });
 
 

@@ -465,8 +465,17 @@
                     'jurnal_umum.edit',
                     'jurnal_umum.posting',
                 ); // isi nama semua route jurnal_umum
+                $postingan_kas_bank = array(
+                    'postingan_kas_bank.index',
+                ); // isi nama semua route postingan_kas_bank
+                $verifikasi_kas_bank = array(
+                    'postingan_kas_bank.verkas',
+                    'postingan_kas_bank.verkass',
+                ); // isi nama semua route postingan_kas_bank
                 $kontroler = array_merge(
-                    $jurnal_umum
+                    $jurnal_umum,
+                    $postingan_kas_bank,
+                    $verifikasi_kas_bank
                 ); // array merge semua submenu
             @endphp
 
@@ -1131,16 +1140,6 @@
                                 </ul>
                             </div>
                         </li>
-                        <li class="kt-menu__item " aria-haspopup="true">
-                            <a href="{{ route('perjalanan_dinas.index') }}" class="kt-menu__link">
-                                <i class="kt-menu__link-bullet kt-menu__link-bullet--dot">
-                                    <span></span>
-                                </i>
-                                <span class="kt-menu__link-text">
-                                    Saldo Kas/Bank
-                                </span>
-                            </a>
-                        </li>
                         <li class="kt-menu__item kt-menu__item--submenu {{ set_active($deposito) }}" aria-haspopup="true" data-ktmenu-submenu-toggle="hover">
                             <a href="{{ route('penempatan_deposito.index') }}" class="kt-menu__link">
                                 <i class="kt-menu__link-bullet kt-menu__link-bullet--dot">
@@ -1301,13 +1300,23 @@
                                 </span>
                             </a>
                         </li>
-                        <li class="kt-menu__item " aria-haspopup="true">
-                            <a href="{{ route('perjalanan_dinas.index') }}" class="kt-menu__link">
+                        <li class="kt-menu__item kt-menu__item{{ set_active_submenu($postingan_kas_bank) }}" aria-haspopup="true">
+                            <a href="{{ route('postingan_kas_bank.index') }}" class="kt-menu__link">
                                 <i class="kt-menu__link-bullet kt-menu__link-bullet--dot">
                                     <span></span>
                                 </i>
                                 <span class="kt-menu__link-text">
-                                    Verivikasi Kas/Bank
+                                    Posting Kas Bank
+                                </span>
+                            </a>
+                        </li>
+                        <li class="kt-menu__item kt-menu__item{{ set_active_submenu($verifikasi_kas_bank) }}" aria-haspopup="true">
+                            <a href="{{route('postingan_kas_bank.verkass')}}" class="kt-menu__link">
+                                <i class="kt-menu__link-bullet kt-menu__link-bullet--dot">
+                                    <span></span>
+                                </i>
+                                <span class="kt-menu__link-text">
+                                    Verifikasi Kas Bank
                                 </span>
                             </a>
                         </li>
