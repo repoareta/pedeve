@@ -827,6 +827,34 @@ Route::group(['middleware'=> ['auth','checkRole:1']], function () {
         //end Master Perusahaan
 
 
+        //Master unit
+        // Route assigned name "master_unit.index"...
+        Route::name('master_unit.')->group(function () {
+            Route::get('master_unit', 'MasterUnitController@index')->name('index');
+            Route::get('master_unit/index/json', 'MasterUnitController@indexJson')->name('index.json');
+            Route::get('master_unit/create', 'MasterUnitController@create')->name('create');
+            Route::post('master_unit/store', 'MasterUnitController@store')->name('store');
+            Route::get('master_unit/edit/{kode}', 'MasterUnitController@edit')->name('edit');
+            Route::post('master_unit/update', 'MasterUnitController@update')->name('update');
+            Route::delete('master_unit/delete', 'MasterUnitController@delete')->name('delete');
+        });
+        //end Master unit
+
+
+        //Master Pekerja
+        // Route assigned name "master_pekerja.index"...
+        Route::name('master_pekerja.')->group(function () {
+            Route::get('master_pekerja', 'MasterPekerjaController@index')->name('index');
+            Route::get('master_pekerja/index/json', 'MasterPekerjaController@indexJson')->name('index.json');
+            Route::get('master_pekerja/create', 'MasterPekerjaController@create')->name('create');
+            Route::post('master_pekerja/store', 'MasterPekerjaController@store')->name('store');
+            Route::get('master_pekerja/edit/{kode}', 'MasterPekerjaController@edit')->name('edit');
+            Route::post('master_pekerja/update', 'MasterPekerjaController@update')->name('update');
+            Route::delete('master_pekerja/delete', 'MasterPekerjaController@delete')->name('delete');
+        });
+        //end Master Pekerja
+
+
     });
 
 

@@ -477,11 +477,23 @@
                     'master_perusahaan.create',
                     'master_perusahaan.edit',
                 ); // isi nama semua route master_perusahaan
+                $master_unit = array(
+                    'master_unit.index',
+                    'master_unit.create',
+                    'master_unit.edit',
+                ); // isi nama semua route master_unit
+                $master_pekerja = array(
+                    'master_pekerja.index',
+                    'master_pekerja.create',
+                    'master_pekerja.edit',
+                ); // isi nama semua route master_pekerja
                 $kontroler = array_merge(
                     $jurnal_umum,
                     $postingan_kas_bank,
                     $verifikasi_kas_bank,
-                    $master_perusahaan
+                    $master_perusahaan,
+                    $master_unit,
+                    $master_pekerja
                 ); // array merge semua submenu
             @endphp
 
@@ -1333,6 +1345,26 @@
                                 </i>
                                 <span class="kt-menu__link-text">
                                     Master Perusahaan
+                                </span>
+                            </a>
+                        </li>
+                        <li class="kt-menu__item kt-menu__item{{ set_active_submenu($master_unit) }}" aria-haspopup="true">
+                            <a href="{{route('master_unit.index')}}" class="kt-menu__link">
+                                <i class="kt-menu__link-bullet kt-menu__link-bullet--dot">
+                                    <span></span>
+                                </i>
+                                <span class="kt-menu__link-text">
+                                    Master Unit
+                                </span>
+                            </a>
+                        </li>
+                        <li class="kt-menu__item kt-menu__item{{ set_active_submenu($master_pekerja) }}" aria-haspopup="true">
+                            <a href="{{route('master_pekerja.index')}}" class="kt-menu__link">
+                                <i class="kt-menu__link-bullet kt-menu__link-bullet--dot">
+                                    <span></span>
+                                </i>
+                                <span class="kt-menu__link-text">
+                                    Master Pekerja
                                 </span>
                             </a>
                         </li>
