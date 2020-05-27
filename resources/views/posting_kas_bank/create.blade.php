@@ -103,7 +103,7 @@
 								<input class="form-control" type="text" name="bagian" value="{{$bagian}}" id="bagian" required>
 							</div>
 							<div class="col-5">
-								<input class="form-control" type="text" name="nama_bagian" value="{{$nama_bagian}}" id="nama_bagian" readonly style="background-color:#DCDCDC; cursor:not-allowed">
+								<input class="form-control" type="text" name="nama_bagian" value="{{$nama_bagian}}" id="nama_bagian" readonly readonly style="background-color:#DCDCDC; cursor:not-allowed">
 							</div>
 						</div>
 						<div class="form-group row">

@@ -778,12 +778,83 @@ Route::group(['middleware'=> ['auth','checkRole:1']], function () {
             Route::get('jurnal_umum', 'JurnalUmumController@index')->name('index');
             Route::post('jurnal_umum/search', 'JurnalUmumController@searchIndex')->name('search.index');
             Route::get('jurnal_umum/create', 'JurnalUmumController@create')->name('create');
-            Route::get('jurnal_umum/create', 'JurnalUmumController@create')->name('create');
-            Route::get('jurnal_umum/edit', 'JurnalUmumController@edit')->name('edit');
+            Route::post('jurnal_umum/store', 'JurnalUmumController@store')->name('store');
+            Route::get('jurnal_umum/edit/{no}', 'JurnalUmumController@edit')->name('edit');
+            Route::post('jurnal_umum/update', 'JurnalUmumController@update')->name('update');
             Route::delete('jurnal_umum/delete', 'JurnalUmumController@delete')->name('delete');
+            Route::get('jurnal_umum/editdetail/{no}/{id}', 'JurnalUmumController@editDetail')->name('editdetail');
+            Route::post('jurnal_umum/update/detail', 'JurnalUmumController@updateDetail')->name('update.detail');
+            Route::delete('jurnal_umum/delete/detail', 'JurnalUmumController@deleteDetail')->name('delete.detail');
             Route::get('jurnal_umum/copy', 'JurnalUmumController@cpyjurnalumum')->name('cpyjurnalumum');
+            Route::post('jurnal_umum/store/detail', 'JurnalUmumController@storeDetail')->name('store.detail');
+            Route::get('jurnal_umum/posting/{no}/{status}', 'JurnalUmumController@posting')->name('posting');
+            Route::post('jurnal_umum/store/posting', 'JurnalUmumController@storePosting')->name('store.posting');
+            Route::get('jurnal_umum/copy/{no}', 'JurnalUmumController@copy')->name('copy');
+            Route::post('jurnal_umum/store/copy', 'JurnalUmumController@storeCopy')->name('store.copy');
         });
         //end jurnam_umum
+
+
+        //postingan Kas Bank
+        // Route assigned name "postingan_kas_bank.index"...
+        Route::name('postingan_kas_bank.')->group(function () {
+            Route::get('postingan_kas_bank', 'PostingKasBankController@index')->name('index');
+            Route::post('postingan_kas_bank/search', 'PostingKasBankController@searchIndex')->name('search.index');
+            Route::get('postingan_kas_bank/verkas/{no}/{id}', 'PostingKasBankController@verkas')->name('verkas');
+            Route::get('postingan_kas_bank/verkass', 'PostingKasBankController@verkass')->name('verkass');
+            Route::post('postingan_kas_bank/store/verkas', 'PostingKasBankController@store')->name('store.verkas');
+            Route::get('postingan_kas_bank/verkas/json', 'PostingKasBankController@verkasJson')->name('verkasjson');
+            Route::get('postingan_kas_bank/editdetail/{no}/{id}', 'PostingKasBankController@editdetail')->name('editdetail');
+            Route::post('postingan_kas_bank/store/detail', 'PostingKasBankController@storeDetail')->name('store.detail');
+            Route::post('postingan_kas_bank/update/detail', 'PostingKasBankController@updateDetail')->name('update.detail');
+            Route::delete('postingan_kas_bank/delete/detail', 'PostingKasBankController@deleteDetail')->name('delete.detail');
+            Route::post('postingan_kas_bank/verifikasi', 'PostingKasBankController@verifikasi')->name('verifikasi');
+        });
+        //end postingan Kas Bank
+
+
+        //Master Perusahaan
+        // Route assigned name "master_perusahaan.index"...
+        Route::name('master_perusahaan.')->group(function () {
+            Route::get('master_perusahaan', 'MasterPerusahaanController@index')->name('index');
+            Route::get('master_perusahaan/index/json', 'MasterPerusahaanController@indexJson')->name('index.json');
+            Route::get('master_perusahaan/create', 'MasterPerusahaanController@create')->name('create');
+            Route::post('master_perusahaan/store', 'MasterPerusahaanController@store')->name('store');
+            Route::get('master_perusahaan/edit/{kode}', 'MasterPerusahaanController@edit')->name('edit');
+            Route::post('master_perusahaan/update', 'MasterPerusahaanController@update')->name('update');
+            Route::delete('master_perusahaan/delete', 'MasterPerusahaanController@delete')->name('delete');
+        });
+        //end Master Perusahaan
+
+
+        //Master unit
+        // Route assigned name "master_unit.index"...
+        Route::name('master_unit.')->group(function () {
+            Route::get('master_unit', 'MasterUnitController@index')->name('index');
+            Route::get('master_unit/index/json', 'MasterUnitController@indexJson')->name('index.json');
+            Route::get('master_unit/create', 'MasterUnitController@create')->name('create');
+            Route::post('master_unit/store', 'MasterUnitController@store')->name('store');
+            Route::get('master_unit/edit/{kode}', 'MasterUnitController@edit')->name('edit');
+            Route::post('master_unit/update', 'MasterUnitController@update')->name('update');
+            Route::delete('master_unit/delete', 'MasterUnitController@delete')->name('delete');
+        });
+        //end Master unit
+
+
+        //Master Pekerja
+        // Route assigned name "master_pekerja.index"...
+        Route::name('master_pekerja.')->group(function () {
+            Route::get('master_pekerja', 'MasterPekerjaController@index')->name('index');
+            Route::get('master_pekerja/index/json', 'MasterPekerjaController@indexJson')->name('index.json');
+            Route::get('master_pekerja/create', 'MasterPekerjaController@create')->name('create');
+            Route::post('master_pekerja/store', 'MasterPekerjaController@store')->name('store');
+            Route::get('master_pekerja/edit/{kode}', 'MasterPekerjaController@edit')->name('edit');
+            Route::post('master_pekerja/update', 'MasterPekerjaController@update')->name('update');
+            Route::delete('master_pekerja/delete', 'MasterPekerjaController@delete')->name('delete');
+        });
+        //end Master Pekerja
+
+
     });
 
 
