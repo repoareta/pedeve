@@ -487,13 +487,19 @@
                     'master_pekerja.create',
                     'master_pekerja.edit',
                 ); // isi nama semua route master_pekerja
+                $master_phk = array(
+                    'master_phk.index',
+                    'master_phk.create',
+                    'master_phk.edit',
+                ); // isi nama semua route master_phk
                 $kontroler = array_merge(
                     $jurnal_umum,
                     $postingan_kas_bank,
                     $verifikasi_kas_bank,
                     $master_perusahaan,
                     $master_unit,
-                    $master_pekerja
+                    $master_pekerja,
+                    $master_phk
                 ); // array merge semua submenu
             @endphp
 
@@ -1365,6 +1371,16 @@
                                 </i>
                                 <span class="kt-menu__link-text">
                                     Master Pekerja
+                                </span>
+                            </a>
+                        </li>
+                        <li class="kt-menu__item kt-menu__item{{ set_active_submenu($master_phk) }}" aria-haspopup="true">
+                            <a href="{{route('master_phk.index')}}" class="kt-menu__link">
+                                <i class="kt-menu__link-bullet kt-menu__link-bullet--dot">
+                                    <span></span>
+                                </i>
+                                <span class="kt-menu__link-text">
+                                    Master PHK
                                 </span>
                             </a>
                         </li>

@@ -397,7 +397,7 @@ class PostingKasBankController extends Controller
 
     public function verifikasi(Request $request)
     {
-        if($request->status1 <>""){
+        if($request->status1 <>"N"){
             $status1 = $request->status1;
             $docno = $request->mp.'/'.$request->bagian.'/'.$request->nomor;
 
@@ -408,8 +408,7 @@ class PostingKasBankController extends Controller
                     ]);
                     $data = 1;
                     return response()->json($data);
-        }
-        if($request->status1 == ""){
+        }else{
             $status1 = $request->status1;
             $docno = $request->mp.'/'.$request->bagian.'/'.$request->nomor;
         

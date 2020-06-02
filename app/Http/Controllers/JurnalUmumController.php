@@ -216,7 +216,7 @@ class JurnalUmumController extends Controller
                         $jumlahnya = 0;
                    }
 
-           return view('jurnal_umum.edit',compact('data_jur','data_detail','nu','data_lapang','data_sandi','data_bagian','data_jenis','jumlahnya','lab2','status2'));
+           return view('jurnal_umum.edit',compact('data_jur','data_detail','nu','data_lapang','data_sandi','data_bagian','data_jenis','jumlahnya','lab2'));
     }
     public function update(Request $request)
     {

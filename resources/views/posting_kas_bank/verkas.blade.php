@@ -221,7 +221,13 @@
 						</tbody>
 						<tr>
 							@if($docno<>"")
-							<td colspan="2" align="left"><input id="status1" name="status1" value="Y"  type="checkbox" <?php if($status1  == 'Y' ) echo 'checked' ; ?> > Verifikasi</td>
+							<td colspan="2" align="left">
+								@if($status1 == 'Y')
+								<input id="status1" name="status1" value="N"  type="checkbox" <?php if($status1  == 'Y' ) echo 'checked' ; ?> > Verifikasi
+								@else
+								<input id="status1" name="status1" value="Y"  type="checkbox" > Verifikasi
+								@endif
+							</td>
 							<td colspan="6" align="right">Jumlah Total : </td>
 							<td colspan="2" ><?php echo number_format($jumlahnya, 2, ',', '.'); ?></td>
 							@endif
@@ -593,9 +599,9 @@
 							});
 					}else{
 						Swal.fire({
-							type  : 'info',
+							type  : 'success',
 							title : 'Verifikasi Berhasil Dibatalkan.',
-							text  : 'Info',
+							text  : 'Berhasil',
 							timer : 2000
 							}).then(function() {
 								location.reload();
