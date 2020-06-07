@@ -6,7 +6,7 @@
 	<div class="kt-container  kt-container--fluid ">
 		<div class="kt-subheader__main">
 			<h3 class="kt-subheader__title">
-				Postingan Kas Bank </h3>
+				Tabel Deposito </h3>
 			<span class="kt-subheader__separator kt-hidden"></span>
 			<div class="kt-subheader__breadcrumbs">
 				<a href="#" class="kt-subheader__breadcrumbs-home"><i class="flaticon2-shelter"></i></a>
@@ -14,7 +14,7 @@
 				<a href="" class="kt-subheader__breadcrumbs-link">
 					Kontroler </a>
 				<span class="kt-subheader__breadcrumbs-separator"></span>
-				<span class="kt-subheader__breadcrumbs-link kt-subheader__breadcrumbs-link--active">Postingan Kas Bank</span>
+				<span class="kt-subheader__breadcrumbs-link kt-subheader__breadcrumbs-link--active">Tabel Deposito</span>
 			</div>
 		</div>
 	</div>
@@ -29,17 +29,13 @@
 				<i class="kt-font-brand flaticon2-line-chart"></i>
 			</span>
 			<h3 class="kt-portlet__head-title">
-				Tabel Postingan Kas Bank
+				Tabel Deposito
 			</h3>			
 			<div class="kt-portlet__head-toolbar">
 				<div class="kt-portlet__head-wrapper">
 					<div class="kt-portlet__head-actions">
-						<span style="font-size: 2em;" class="kt-font-success pointer-link" data-toggle="kt-tooltip" data-placement="top" title="Proses Posting">
-							<i class="fas fa-database" id="prsposting"></i>
-						</span>
-
-						<span style="font-size: 2em;"  class="kt-font-warning pointer-link" data-toggle="kt-tooltip" data-placement="top" title="Batal Posting">
-							<i class="fas fa-reply" id="btlposting"></i>
+						<span style="font-size: 2em;" class="kt-font-info pointer-link" data-toggle="kt-tooltip" data-placement="top" title="Cetak Data">
+							<i class="fas fa-print" id="exportRow"></i>
 						</span>
 					</div>
 				</div>
@@ -71,15 +67,20 @@
 		<table class="table table-striped table-bordered table-hover table-checkable" id="kt_table" width="100%">
 			<thead class="thead-light">
 				<tr>
-					<th>TANGGAL</th>
-					<th>NO.DOKUMEN</th>
-					<th>THN-BLN</th>
-					<th>KETERANGAN</th>
-					<th>JK</th>
-					<th>STORE</th>
-					<th>NOBUKTI</th>
-					<th>JUMLAH</th>
-					<th>VERIFIKASI</th>
+					<th></th>
+					<th>NO.SERI</th>
+					<th>NAMA BANK</th>
+					<th>ASAL DANA</th>
+					<th>NOMINAL</th>
+					<th>TGL.DEPOSITO</th>
+					<th>TGL.JTH TEMPO</th>
+					<th>HARI BUNGA</th>
+					<th>BUNGA %/THN</th>
+					<th>BUNGA/BULAN</th>
+					<th>PPH 20%/BLN</th>
+					<th>NET/BULAN</th>
+					<th>ACCRUE HARI</th>
+					<th>ACCRUE NOMINAL</th>
 				</tr>
 			</thead>
 			<tbody>
@@ -105,7 +106,7 @@ $(document).ready(function () {
 				processing: '<i class="fa fa-spinner fa-spin fa-2x fa-fw"></i> <br> Loading...'
 			},
 			ajax      : {
-						url: "{{ route('postingan_kas_bank.search.index') }}",
+						url: "{{ route('tabel_deposito.search.index') }}",
 						type : "POST",
 						dataType : "JSON",
 						headers: {
@@ -117,32 +118,26 @@ $(document).ready(function () {
 						}
 					},
 			columns: [
-				{data: 'paiddate', name: 'paiddate'},
-				{data: 'docno', name: 'docno'},
-				{data: 'thnbln', name: 'thnbln'},
-				{data: 'keterangan', name: 'keterangan'},
-				{data: 'jk', name: 'jk'},
-				{data: 'store', name: 'store'},
-				{data: 'voucher', name: 'voucher'},
-				{data: 'nilai', name: 'nilai'},
-				{data: 'action', name: 'action'},
+				{data: 'radio', name: 'radio'},
+				{data: 'noseri', name: 'noseri'},
+				{data: 'namabank', name: 'namabank'},
+				{data: 'asal', name: 'asal'},
+				{data: 'nominal', name: 'nominal'},
+				{data: 'tgldep', name: 'tgldep'},
+				{data: 'tgltempo', name: 'tgltempo'},
+				{data: 'haribunga', name: 'haribunga'},
+				{data: 'bungatahun', name: 'bungatahun'},
+				{data: 'bungabulan', name: 'bungabulan'},
+				{data: 'pph20', name: 'pph20'},
+				{data: 'netbulan', name: 'netbulan'},
+				{data: 'accharibunga', name: 'accharibunga'},
+				{data: 'accnetbulan', name: 'accnetbulan'},
 			]
 		});
 		$('#search-form').on('submit', function(e) {
 			t.draw();
 			e.preventDefault();
 		});
-
-		$('#prsposting').on('click', function(e) {
-			e.preventDefault();
-			location.replace("{{ route('postingan_kas_bank.prsposting') }}");
-		});
-		$('#btlposting').on('click', function(e) {
-			e.preventDefault();
-			location.replace("{{ route('postingan_kas_bank.btlposting') }}");
-		});
-
-
 });
 
 function hanyaAngka(evt) {

@@ -228,7 +228,7 @@
 			<span id="form_result"></span>
                 <form  class="kt-form " id="form-tambah-detail"  enctype="multipart/form-data">
 					{{csrf_field()}}
-					<input  class="form-control" hidden type="text" value=""  name="kode">
+					<input  class="form-control" hidden type="text" value="{{$no_serah}}"  name="kode">
                     <div class="form-group row">
 						<label for="example-text-input" class="col-2 col-form-label">No. Urut</label>
 						<div class="col-8">
@@ -362,42 +362,6 @@
 		format   : 'yyyy-mm-dd'
 		});
 
-		$('#form-create').submit(function(){
-			var nosurat = $("#no_serah").val();
-			$.ajax({
-			url  : "{{route('master_phk.store')}}",
-			type : "POST",
-			data : $('#form-create').serialize(),
-			dataType : "JSON",
-			headers: {
-			'X-CSRF-Token': '{{ csrf_token() }}',
-			},
-				success : function(data){
-					if(data == 1){
-						Swal.fire({
-						type  : 'success',
-						title : 'Data Berhasil Ditambah',
-						text  : 'Berhasil',
-						timer : 2000
-						}).then(function(data) {
-							window.location.replace("{{ route('master_phk.edit', ['kode' => ":nosurat"] ) }}");
-							});
-					}else{
-						Swal.fire({
-							type  : 'info',
-							title : 'Kode Unit Sudah Di Gunakan.',
-							text  : 'Info',
-							timer : 2000
-						})
-					}
-				}, 
-				error : function(){
-					alert("Terjadi kesalahan, coba lagi nanti");
-				}
-			});	
-			return false;
-		});
-
 		$("#unitkrm").on("change", function(){
 		var unit = $('#unitkrm').val();
 		var perusahaan = $('#perusahaan').val();
@@ -426,6 +390,53 @@
 			}
 			})
 		})
+
+		//prosess create detail
+		$('#form-tambah-detail').submit(function(){
+			$.ajax({
+				url  : "{{route('master_phk.store.detail')}}",
+				type : "POST",
+				data : $('#form-tambah-detail').serialize(),
+				dataType : "JSON",
+				headers: {
+				'X-CSRF-Token': '{{ csrf_token() }}',
+				},
+				success : function(data){
+					if(data == 1){
+						Swal.fire({
+							type  : 'success',
+							title : 'Data Detail Berhasil Ditambah',
+							text  : 'Berhasil',
+							timer : 2000
+						}).then(function() {
+							location.reload();
+						});
+					}else if(data == 2){
+						Swal.fire({
+							type  : 'info',
+							title : 'duplikasi data dokumen detail, entri dibatalkan.',
+							text  : 'Info',
+							timer : 2000
+							}).then(function() {
+								location.reload();
+							});
+					}else{
+						Swal.fire({
+							type  : 'info',
+							title : 'Sandi Perkiraan Salah/Tidak Ditemukan.',
+							text  : 'Info',
+							timer : 2000
+							}).then(function() {
+								location.reload();
+							});
+					}	
+				}, 
+				error : function(){
+					alert("Terjadi kesalahan, coba lagi nanti");
+				}
+			});	
+			return false;
+		});
 		
 	});
 

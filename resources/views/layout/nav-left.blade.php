@@ -225,7 +225,8 @@
                     'potongan_koreksi_gaji.index',
                     'potongan_koreksi_gaji.search.index',
                     'potongan_koreksi_gaji.create',
-                    'potongan_koreksi_gaji.edit'
+                    'potongan_koreksi_gaji.edit',
+                    'potongan_koreksi_gaji.ctkkoreksi'
                 ); // isi nama semua route potongan manual
                 $potongan_koreksi_gaji = array_merge(
                     $koreksi_gaji,
@@ -464,42 +465,74 @@
                     'jurnal_umum.create',
                     'jurnal_umum.edit',
                     'jurnal_umum.posting',
+                    'jurnal_umum.cpyjurnalumum',
+                    'jurnal_umum.copy',
                 ); // isi nama semua route jurnal_umum
                 $postingan_kas_bank = array(
                     'postingan_kas_bank.index',
+                    'postingan_kas_bank.prsposting',
+                    'postingan_kas_bank.btlposting',
                 ); // isi nama semua route postingan_kas_bank
                 $verifikasi_kas_bank = array(
                     'postingan_kas_bank.verkas',
                     'postingan_kas_bank.verkass',
                 ); // isi nama semua route postingan_kas_bank
-                $master_perusahaan = array(
-                    'master_perusahaan.index',
-                    'master_perusahaan.create',
-                    'master_perusahaan.edit',
-                ); // isi nama semua route master_perusahaan
-                $master_unit = array(
-                    'master_unit.index',
-                    'master_unit.create',
-                    'master_unit.edit',
-                ); // isi nama semua route master_unit
-                $master_pekerja = array(
-                    'master_pekerja.index',
-                    'master_pekerja.create',
-                    'master_pekerja.edit',
-                ); // isi nama semua route master_pekerja
-                $master_phk = array(
-                    'master_phk.index',
-                    'master_phk.create',
-                    'master_phk.edit',
-                ); // isi nama semua route master_phk
+                $cetak_kas_bank = array(
+                
+                ); // isi nama semua route cetak_kas_bank
+                $tabel_deposito = array(
+                    'tabel_deposito.index',
+                    'tabel_deposito.create',
+                    'tabel_deposito.edit'
+                ); // isi nama semua route tabel_deposito
+                
+                $treassury = array_merge(
+                    $cetak_kas_bank,
+                    $tabel_deposito
+                ); // array merge semua submenu treassury
+
+                $cash_judex = array(
+                    'cash_judex.index',
+                    'cash_judex.create',
+                    'cash_judex.edit'
+                ); // isi nama semua route cash_judex
+                $jenis_biaya = array(
+                    
+                ); // isi nama semua route jenis_biaya
+                $kas_bank_kontroler = array(
+                    
+                ); // isi nama semua route kas_bank_kontroler
+                $lokasi_kontroler = array(
+                    
+                ); // isi nama semua route lokasi_kontroler
+                $sandi_perkiraan = array(
+                    
+                ); // isi nama semua route sandi_perkiraan
+                $sandi_perkiraan = array(
+                    
+                ); // isi nama semua route sandi_perkiraan
+                $setting_bulan_buku_kontroler = array(
+                    
+                ); // isi nama semua route setting_bulan_buku_kontroler
+                $main_account = array(
+                    
+                ); // isi nama semua route main_account
+                $tabel = array_merge(
+                    $cash_judex,
+                    $jenis_biaya,
+                    $kas_bank_kontroler,
+                    $lokasi_kontroler,
+                    $sandi_perkiraan,
+                    $setting_bulan_buku_kontroler,
+                    $main_account
+                ); // array merge semua submenu tabel
+
                 $kontroler = array_merge(
                     $jurnal_umum,
                     $postingan_kas_bank,
                     $verifikasi_kas_bank,
-                    $master_perusahaan,
-                    $master_unit,
-                    $master_pekerja,
-                    $master_phk
+                    $treassury,
+                    $tabel
                 ); // array merge semua submenu
             @endphp
 
@@ -1324,16 +1357,6 @@
                                 </span>
                             </a>
                         </li>
-                        <li class="kt-menu__item kt-menu__item{{ set_active_submenu($postingan_kas_bank) }}" aria-haspopup="true">
-                            <a href="{{ route('postingan_kas_bank.index') }}" class="kt-menu__link">
-                                <i class="kt-menu__link-bullet kt-menu__link-bullet--dot">
-                                    <span></span>
-                                </i>
-                                <span class="kt-menu__link-text">
-                                    Posting Kas Bank
-                                </span>
-                            </a>
-                        </li>
                         <li class="kt-menu__item kt-menu__item{{ set_active_submenu($verifikasi_kas_bank) }}" aria-haspopup="true">
                             <a href="{{route('postingan_kas_bank.verkass')}}" class="kt-menu__link">
                                 <i class="kt-menu__link-bullet kt-menu__link-bullet--dot">
@@ -1344,45 +1367,142 @@
                                 </span>
                             </a>
                         </li>
-                        <li class="kt-menu__item kt-menu__item{{ set_active_submenu($master_perusahaan) }}" aria-haspopup="true">
-                            <a href="{{route('master_perusahaan.index')}}" class="kt-menu__link">
+                        <li class="kt-menu__item kt-menu__item{{ set_active_submenu($postingan_kas_bank) }}" aria-haspopup="true">
+                            <a href="{{ route('postingan_kas_bank.index') }}" class="kt-menu__link">
                                 <i class="kt-menu__link-bullet kt-menu__link-bullet--dot">
                                     <span></span>
                                 </i>
                                 <span class="kt-menu__link-text">
-                                    Master Perusahaan
+                                    Posting Kas Bank
                                 </span>
                             </a>
                         </li>
-                        <li class="kt-menu__item kt-menu__item{{ set_active_submenu($master_unit) }}" aria-haspopup="true">
-                            <a href="{{route('master_unit.index')}}" class="kt-menu__link">
+                        <li class="kt-menu__item kt-menu__item--submenu {{ set_active($treassury) }}" aria-haspopup="true" data-ktmenu-submenu-toggle="hover">
+                            <a href="javascript:;" class="kt-menu__link kt-menu__toggle">
                                 <i class="kt-menu__link-bullet kt-menu__link-bullet--dot">
                                     <span></span>
                                 </i>
-                                <span class="kt-menu__link-text">
-                                    Master Unit
-                                </span>
+                                <span class="kt-menu__link-text">Treassury</span>
+                                <i class="kt-menu__ver-arrow la la-angle-right"></i>
                             </a>
+                            <div class="kt-menu__submenu "><span class="kt-menu__arrow"></span>
+                                <ul class="kt-menu__subnav">
+                                    <li class="kt-menu__item kt-menu__item{{ set_active_submenu($cetak_kas_bank) }}" aria-haspopup="true">
+                                        <a href="{{ route('uang_muka_kerja.index') }}" class="kt-menu__link">
+                                            <i class="kt-menu__link-bullet kt-menu__link-bullet--line">
+                                                <span></span>
+                                            </i>
+                                            <span class="kt-menu__link-text">Cetak Kas Bank</span>
+                                        </a>
+                                    </li>
+                                    <li class="kt-menu__item kt-menu__item{{ set_active_submenu($tabel_deposito) }}" aria-haspopup="true">
+                                        <a href="{{route('tabel_deposito.index')}}" class="kt-menu__link">
+                                            <i class="kt-menu__link-bullet kt-menu__link-bullet--line">
+                                                <span></span>
+                                            </i>
+                                            <span class="kt-menu__link-text">Tabel Deposito</span>
+                                        </a>
+                                    </li>
+                                </ul>
+                            </div>
                         </li>
-                        <li class="kt-menu__item kt-menu__item{{ set_active_submenu($master_pekerja) }}" aria-haspopup="true">
-                            <a href="{{route('master_pekerja.index')}}" class="kt-menu__link">
+                        <li class="kt-menu__item kt-menu__item--submenu {{ set_active($treassury) }}" aria-haspopup="true" data-ktmenu-submenu-toggle="hover">
+                            <a href="javascript:;" class="kt-menu__link kt-menu__toggle">
                                 <i class="kt-menu__link-bullet kt-menu__link-bullet--dot">
                                     <span></span>
                                 </i>
-                                <span class="kt-menu__link-text">
-                                    Master Pekerja
-                                </span>
+                                <span class="kt-menu__link-text">Report</span>
+                                <i class="kt-menu__ver-arrow la la-angle-right"></i>
                             </a>
+                            <div class="kt-menu__submenu "><span class="kt-menu__arrow"></span>
+                                <ul class="kt-menu__subnav">
+                                    <li class="kt-menu__item kt-menu__item{{ set_active_submenu($cetak_kas_bank) }}" aria-haspopup="true">
+                                        <a href="{{ route('uang_muka_kerja.index') }}" class="kt-menu__link">
+                                            <i class="kt-menu__link-bullet kt-menu__link-bullet--line">
+                                                <span></span>
+                                            </i>
+                                            <span class="kt-menu__link-text">Cetak Kas Bank</span>
+                                        </a>
+                                    </li>
+                                    <li class="kt-menu__item kt-menu__item{{ set_active_submenu($tabel_deposito) }}" aria-haspopup="true">
+                                        <a href="{{route('tabel_deposito.index')}}" class="kt-menu__link">
+                                            <i class="kt-menu__link-bullet kt-menu__link-bullet--line">
+                                                <span></span>
+                                            </i>
+                                            <span class="kt-menu__link-text">Tabel Deposito</span>
+                                        </a>
+                                    </li>
+                                </ul>
+                            </div>
                         </li>
-                        <li class="kt-menu__item kt-menu__item{{ set_active_submenu($master_phk) }}" aria-haspopup="true">
-                            <a href="{{route('master_phk.index')}}" class="kt-menu__link">
+                        <li class="kt-menu__item kt-menu__item--submenu {{ set_active($tabel) }}" aria-haspopup="true" data-ktmenu-submenu-toggle="hover">
+                            <a href="javascript:;" class="kt-menu__link kt-menu__toggle">
                                 <i class="kt-menu__link-bullet kt-menu__link-bullet--dot">
                                     <span></span>
                                 </i>
-                                <span class="kt-menu__link-text">
-                                    Master PHK
-                                </span>
+                                <span class="kt-menu__link-text">Tabel</span>
+                                <i class="kt-menu__ver-arrow la la-angle-right"></i>
                             </a>
+                            <div class="kt-menu__submenu "><span class="kt-menu__arrow"></span>
+                                <ul class="kt-menu__subnav">
+                                    <li class="kt-menu__item kt-menu__item{{ set_active_submenu($cash_judex) }}" aria-haspopup="true">
+                                        <a href="{{ route('cash_judex.index') }}" class="kt-menu__link">
+                                            <i class="kt-menu__link-bullet kt-menu__link-bullet--line">
+                                                <span></span>
+                                            </i>
+                                            <span class="kt-menu__link-text">Cash Judex</span>
+                                        </a>
+                                    </li>
+                                    <li class="kt-menu__item kt-menu__item{{ set_active_submenu($jenis_biaya) }}" aria-haspopup="true">
+                                        <a href="{{route('tabel_deposito.index')}}" class="kt-menu__link">
+                                            <i class="kt-menu__link-bullet kt-menu__link-bullet--line">
+                                                <span></span>
+                                            </i>
+                                            <span class="kt-menu__link-text">Jenis Biaya</span>
+                                        </a>
+                                    </li>
+                                    <li class="kt-menu__item kt-menu__item{{ set_active_submenu($kas_bank_kontroler) }}" aria-haspopup="true">
+                                        <a href="{{route('tabel_deposito.index')}}" class="kt-menu__link">
+                                            <i class="kt-menu__link-bullet kt-menu__link-bullet--line">
+                                                <span></span>
+                                            </i>
+                                            <span class="kt-menu__link-text">Kas Bank</span>
+                                        </a>
+                                    </li>
+                                    <li class="kt-menu__item kt-menu__item{{ set_active_submenu($lokasi_kontroler) }}" aria-haspopup="true">
+                                        <a href="{{route('tabel_deposito.index')}}" class="kt-menu__link">
+                                            <i class="kt-menu__link-bullet kt-menu__link-bullet--line">
+                                                <span></span>
+                                            </i>
+                                            <span class="kt-menu__link-text">Lokasi</span>
+                                        </a>
+                                    </li>
+                                    <li class="kt-menu__item kt-menu__item{{ set_active_submenu($sandi_perkiraan) }}" aria-haspopup="true">
+                                        <a href="{{route('tabel_deposito.index')}}" class="kt-menu__link">
+                                            <i class="kt-menu__link-bullet kt-menu__link-bullet--line">
+                                                <span></span>
+                                            </i>
+                                            <span class="kt-menu__link-text">Sandi Perkiraan</span>
+                                        </a>
+                                    </li>
+                                    <li class="kt-menu__item kt-menu__item{{ set_active_submenu($setting_bulan_buku_kontroler) }}" aria-haspopup="true">
+                                        <a href="{{route('tabel_deposito.index')}}" class="kt-menu__link">
+                                            <i class="kt-menu__link-bullet kt-menu__link-bullet--line">
+                                                <span></span>
+                                            </i>
+                                            <span class="kt-menu__link-text">Setting Bulan Buku</span>
+                                        </a>
+                                    </li>
+                                    <li class="kt-menu__item kt-menu__item{{ set_active_submenu($main_account) }}" aria-haspopup="true">
+                                        <a href="{{route('tabel_deposito.index')}}" class="kt-menu__link">
+                                            <i class="kt-menu__link-bullet kt-menu__link-bullet--line">
+                                                <span></span>
+                                            </i>
+                                            <span class="kt-menu__link-text">Main Account</span>
+                                        </a>
+                                    </li>
+                                </ul>
+                            </div>
                         </li>
                     </ul>
                 </div>

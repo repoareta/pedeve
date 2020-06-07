@@ -5,6 +5,7 @@ namespace App\Http\Controllers;
 use Illuminate\Http\Request;
 use App\Models\Kasline;
 use App\Models\Kasdoc;
+use App\Models\Fiosd201;
 use Auth;
 use DB;
 use Session;
@@ -40,7 +41,8 @@ class PostingKasBankController extends Controller
         return datatables()->of($data)
         ->addColumn('paiddate', function ($data) {
             if($data->paiddate <>""){
-                return $data->paiddate;
+                $tgl = date_create($data->paiddate);
+                return date_format($tgl, 'd/m/Y');
             }else{
                 return '0';
             }
@@ -224,10 +226,10 @@ class PostingKasBankController extends Controller
                 $status1='';
                 $paiddate = '';
                 $darkep = "";
-                    $namajk = "";
-                    $namaci = "";
-                        $nama_bagian = "";
-                        $nama_kas = "-";
+                $namajk = "";
+                $namaci = "";
+                $nama_bagian = "";
+                $nama_kas = "-";
                 $nu='';
             $data_detail = DB::select("select a.* from kasline a where a.docno='$docno' order by a.lineno");
             $data_lapang = DB::select("select kodelokasi,nama from lokasi");
@@ -392,6 +394,236 @@ class PostingKasBankController extends Controller
         $docno=str_replace('-', '/', $request->no);
         Kasline::where('docno', $docno)->where('lineno', $request->id)->delete();
         return response()->json();
+    }
+
+    public function prsposting()
+    {
+        $data_kas = DB::select("select distinct(store) as store,(select namabank from storejk where kodestore=store) as bank,(select jeniskartu from storejk where kodestore=store) as jk from kasdoc where verified='Y' and posted='N'");
+        return view('posting_kas_bank.prsposting',compact('data_kas'));
+    }
+    public function storePrsposting(Request $request)
+    {
+        $data_rsbulan = DB::select("select max(thnbln) as thnbln from bulankontroller where status='1' and length(thnbln)=6");
+        if(!empty($data_rsbulan)){
+            foreach($data_rsbulan as $data)
+            {
+                $thnblopen3 = vf($data->thnbln);
+            }
+        }else{
+            $thnblopen3 = "";
+        }
+        $nokas = $request->nokas;
+        $tanggal = $request->tanggal;
+        $tanggal2 = $request->tanggal2;
+        $tgl = date_create($request->tanggal);
+        $tahunbulan1 = date_format($tgl, 'Ym');
+        $tgl2 = date_create($request->tanggal2);
+        $tahunbulan2 = date_format($tgl2, 'Ym');
+        $tabulasli = $thnblopen3;
+        
+        if(($tahunbulan1 <> $tabulasli) or ($tahunbulan1 <> $tabulasli)){
+            $data = 2;
+            return response()->json($data);
+        }else{
+            $data_cekposting = DB::select("select * from kasdoc where paiddate between '$tanggal' and '$tanggal2' and posted <>'Y' and verified='Y' and store='$nokas'");
+            if(!empty($data_cekposting)){
+                $data_kitaposting = DB::select("select * from kasdoc where store='$nokas' and verified='Y' and posted <> 'Y' and paiddate between '$tanggal' and '$tanggal2'");
+                foreach($data_kitaposting as $data_kit)
+                { 
+                    $docno = $data_kit->docno;
+                    $verifieddate = date('Y-m-d H:i:s');
+                    $pk = date('mY');
+                    $data_kas = DB::select("select ltrim(to_char(paiddate,'yyyymm')) as v_thnbln,thnbln as v_thnbln_b from kasdoc where docno='$docno'");
+                    foreach($data_kas as $data_ka)
+                    {
+                        if($data_ka->v_thnbln<>$data_ka->v_thnbln_b){
+                            $data = 3;
+                            return response()->json($data);
+                        }else{
+                            
+                            $data_crdoc = DB::select("select * from kasdoc where docno='$docno'");
+                            $ada = false;
+                            foreach($data_crdoc as $d)
+                            {
+                                $crstore_jk = DB::select("select * from storejk s where s.kodestore='$d->store' and  s.jeniskartu='$d->jk'");
+                                foreach($crstore_jk as $j)
+                                {
+                                    $ada = true;
+                                    $data_crline = DB::select("select max(lineno) as jum,coalesce(sum(totprice),0) as total from kasline where docno='$docno'");
+                                    if(!empty($data_crline)){
+                                        foreach($data_crline as $n)
+                                        {
+                                            $sno = $n->jum+1;
+                                            $nilaitot = -$n->total;
+                                        }
+                                    }else{
+                                            $sno = 1;
+                                            $nilaitot = 0;
+                                    }
+                                    Kasline::where('docno', $docno)
+                                    ->where('penutup', 'Y')->delete();
+                                    Kasline::insert([
+                                        'docno' => $docno ,
+                                        'totprice' => $nilaitot ,
+                                        'voucher' => $d->voucher,
+                                        'lineno' => $sno ,
+                                        'account' => $j->account , 
+                                        'area' => $j->area , 
+                                        'lokasi' => $j->lokasi , 
+                                        'bagian' => $j->bagian ,
+                                        'verified' => 'Y',
+                                        'verifieddate' => $verifieddate ,
+                                        'pk' => $pk ,
+                                        'jb' => $j->jenisbiaya , 
+                                        'keterangan' => 'PENUTUP' ,
+                                        'cj' => '99' ,
+                                        'penutup' => 'Y' ,
+                                        'pau' => 'N' 
+                                    ]);
+                                }
+                            }
+                            if(!($ada)){
+                                $data = 4;
+                                return response()->json($data);
+                                // raise exception '~~lokasi jk dan bank tidak sesuai';
+                            }
+
+
+                        $dat_crdoc = DB::select("select * from kasdoc where docno='$docno'");
+                            foreach($dat_crdoc as $dd)
+                            {
+                                $tahun = substr($dd->thnbln,0,4);
+                                $bulan = substr($dd->thnbln,4); 
+                                Fiosd201::where('docno', $docno)
+                                ->where('jk', $dd->jk)
+                                ->where('tahun',$tahun)
+                                ->where('bulan', $bulan)->delete();
+                                
+                                $dat_crline = DB::select("select * from kasline where docno='$docno'");
+                                foreach($dat_crline as $ll)
+                                {
+                                    $account = substr($ll->account,0,3);
+                                    if($dd->ci == '2'){
+                                        if($account == '178'){ //--- item transaksi dengan rate pajak
+                                            $vrate = $dd->rate_pajak;
+                                        }else{
+                                            $vrate = $dd->rate;
+                                        }
+                                            $v_rp = $ll->totprice*$vrate;
+                                            $v_dl = $ll->totprice;
+                                    }else{
+                                        $vrate = 1;               //--- item transaksi dengan rate transaksi biasa
+                                        $v_rp  = $ll->totprice;
+                                        $v_dl  = 0;
+                                    }
+                                    Fiosd201::insert([
+                                        'tahun' => $tahun, 
+                                        'bulan' => $bulan , 
+                                        'supbln' => '0',  
+                                        'jk' => $dd->jk,  
+                                        'vc' => $dd->voucher, 
+                                        'store' => $dd->store, 
+                                        'docno' => $ll->docno , 
+                                        'lineno' => $ll->lineno, 
+                                        'account' => $ll->account, 
+                                        'area' => $ll->area, 
+                                        'lokasi' => $ll->lokasi, 
+                                        'bagian' => $ll->bagian, 
+                                        'wono' => $ll->pk, 
+                                        'jb' => $ll->jb, 
+                                        'totprice' => $ll->totprice, 
+                                        'keterangan' => $ll->keterangan, 
+                                        'ci' => $dd->ci, 
+                                        'rate' => $vrate, 
+                                        'rate_pajak' => round($dd->rate_pajak),
+                                        'rate_trans' => round($dd->rate),
+                                        'cj' => $ll->cj,
+                                        'totpricerp' => $v_rp,
+                                        'totpricedl' => $v_dl 
+                                    ]);
+                                }
+                            }
+                        }
+                    }
+                    $userid = Auth::user()->userid;
+                    $posteddate = date('Y-m-d H:i:s');
+                    Kasdoc::where('docno', $docno)
+                    ->update([
+                        'posted' => 'Y',
+                        'postedby' => $userid,
+                        'posteddate' => $posteddate
+                    ]);	
+                }
+                $data = 1;
+                return response()->json($data);
+            }else{ 
+                $data = 5;
+                return response()->json($data);
+            }
+        }
+    }
+
+    public function btlposting()
+    {
+        $data_kas = DB::select("select distinct(store),(select namabank from storejk where kodestore=store) as bank,(select jeniskartu from storejk where kodestore = store) as jk from kasdoc where verified='Y' and posted='Y'");
+        return view('posting_kas_bank.btlposting',compact('data_kas'));
+    }
+    public function storeBtlposting(Request $request)
+    {
+        $data_rsbulan = DB::select("select max(thnbln) as thnbln from bulankontroller where status='1' and length(thnbln)=6");
+        if(!empty($data_rsbulan)){
+            foreach($data_rsbulan as $data)
+            {
+                $thnblopen3 = vf($data->thnbln);
+            }
+        }else{
+            $thnblopen3 = "";
+        }
+        $nokas = $request->nokas;
+        $tanggal = $request->tanggal;
+        $tanggal2 = $request->tanggal2;
+        $tgl = date_create($request->tanggal);
+        $tahunbulan1 = date_format($tgl, 'Ym');
+        $tgl2 = date_create($request->tanggal2);
+        $tahunbulan2 = date_format($tgl2, 'Ym');
+        $tabulasli = $thnblopen3;
+
+        if(($tahunbulan1 <> $tabulasli) or ($tahunbulan1 <> $tabulasli)){
+            $data = 2;
+            return response()->json($data);
+        }else{
+            $data_kitabatal = DB::select("select * from kasdoc where store='$nokas' and posted='Y' and paiddate between '$tanggal' and '$tanggal2'");
+            if(!empty($data_kitabatal)){ 
+                foreach($data_kitabatal as $kitabatal)
+                {
+                    $docno = $kitabatal->docno;
+                    $data_cr = DB::select("select thnbln from kasdoc where docno='$docno'");
+                        foreach($data_cr as $t)
+                        {
+                            $tahun = substr($t->thnbln,0,4);
+                            $bulan = substr($t->thnbln,4); 
+                            Fiosd201::where('docno', $docno)
+                                ->where('tahun',$tahun)
+                                ->where('bulan', $bulan)->delete();
+                            Kasline::where('docno', $docno)
+                                ->where('penutup', 'Y')->delete();
+                        }
+                    $userid = Auth::user()->userid;
+                    $posteddate = date('Y-m-d H:i:s');
+                    Kasdoc::where('docno', $docno)
+                    ->update([
+                        'posted' => 'N',
+                        'postedby' => $userid,
+                        'posteddate' => $posteddate
+                    ]);	
+                }
+                $data = 1;
+                return response()->json($data);
+            }else{
+                $data = 3;
+                return response()->json($data);
+            }
+        }
     }
 
 

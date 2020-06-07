@@ -799,16 +799,20 @@ Route::group(['middleware'=> ['auth','checkRole:1']], function () {
         // Route assigned name "postingan_kas_bank.index"...
         Route::name('postingan_kas_bank.')->group(function () {
             Route::get('postingan_kas_bank', 'PostingKasBankController@index')->name('index');
-            Route::post('postingan_kas_bank/search', 'PostingKasBankController@searchIndex')->name('search.index');
             Route::get('postingan_kas_bank/verkas/{no}/{id}', 'PostingKasBankController@verkas')->name('verkas');
             Route::get('postingan_kas_bank/verkass', 'PostingKasBankController@verkass')->name('verkass');
-            Route::post('postingan_kas_bank/store/verkas', 'PostingKasBankController@store')->name('store.verkas');
             Route::get('postingan_kas_bank/verkas/json', 'PostingKasBankController@verkasJson')->name('verkasjson');
             Route::get('postingan_kas_bank/editdetail/{no}/{id}', 'PostingKasBankController@editdetail')->name('editdetail');
+            Route::get('postingan_kas_bank/prsposting', 'PostingKasBankController@prsposting')->name('prsposting');
+            Route::get('postingan_kas_bank/btlposting', 'PostingKasBankController@btlposting')->name('btlposting');
+            Route::post('postingan_kas_bank/search', 'PostingKasBankController@searchIndex')->name('search.index');
+            Route::post('postingan_kas_bank/store/verkas', 'PostingKasBankController@store')->name('store.verkas');
+            Route::post('postingan_kas_bank/verifikasi', 'PostingKasBankController@verifikasi')->name('verifikasi');
             Route::post('postingan_kas_bank/store/detail', 'PostingKasBankController@storeDetail')->name('store.detail');
             Route::post('postingan_kas_bank/update/detail', 'PostingKasBankController@updateDetail')->name('update.detail');
+            Route::post('postingan_kas_bank/store/prsposting', 'PostingKasBankController@storePrsposting')->name('store.prsposting');
+            Route::post('postingan_kas_bank/store/btlposting', 'PostingKasBankController@storeBtlposting')->name('store.btlposting');
             Route::delete('postingan_kas_bank/delete/detail', 'PostingKasBankController@deleteDetail')->name('delete.detail');
-            Route::post('postingan_kas_bank/verifikasi', 'PostingKasBankController@verifikasi')->name('verifikasi');
         });
         //end postingan Kas Bank
 
@@ -862,6 +866,7 @@ Route::group(['middleware'=> ['auth','checkRole:1']], function () {
             Route::post('master_phk/nopek/json', 'MasterPhkController@nopekJson')->name('nopek.json');
             Route::get('master_phk/create', 'MasterPhkController@create')->name('create');
             Route::post('master_phk/store', 'MasterPhkController@store')->name('store');
+            Route::post('master_phk/store/detail', 'MasterPhkController@deteilStore')->name('store.detail');
             Route::get('master_phk/edit/{kode}', 'MasterPhkController@edit')->name('edit');
             Route::post('master_phk/update', 'MasterPhkController@update')->name('update');
             Route::delete('master_phk/delete', 'MasterPhkController@delete')->name('delete');
@@ -869,6 +874,29 @@ Route::group(['middleware'=> ['auth','checkRole:1']], function () {
             Route::get('master_phk/serah/{no}/{tahun}/{bulan}', 'MasterPhkController@serah')->name('serah');
         });
         //end Master PHK
+
+
+        //tabel_deposito
+        // Route assigned name "tabel_deposito.index"...
+        Route::name('tabel_deposito.')->group(function () {
+            Route::get('tabel_deposito', 'TabelDepositoController@index')->name('index');
+            Route::post('tabel_deposito/index/search', 'TabelDepositoController@searchIndex')->name('search.index');
+        });
+        //end tabel_deposito
+
+
+        //cash_judex
+        // Route assigned name "cash_judex.index"...
+        Route::name('cash_judex.')->group(function () {
+            Route::get('cash_judex', 'CashJudexController@index')->name('index');
+            Route::post('cash_judex/index/search', 'CashJudexController@searchIndex')->name('search.index');
+            Route::get('cash_judex/create', 'CashJudexController@create')->name('create');
+            Route::post('cash_judex/store', 'CashJudexController@store')->name('store');
+            Route::get('cash_judex/edit/{no}', 'CashJudexController@edit')->name('edit');
+            Route::post('cash_judex/update', 'CashJudexController@update')->name('update');
+            Route::delete('cash_judex/delete', 'CashJudexController@delete')->name('delete');
+        });
+        //end cash_judex
 
 
     });
