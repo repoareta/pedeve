@@ -769,7 +769,7 @@ Route::group(['middleware'=> ['auth','checkRole:1']], function () {
         //end report_kas_bank
     });
 
-    //PERBENDAHARAAN
+    //Kontroler
     Route::prefix('kontroler')->group(function () {
 
         //jurnam_umum
@@ -911,7 +911,32 @@ Route::group(['middleware'=> ['auth','checkRole:1']], function () {
             Route::delete('jenis_biaya/delete', 'JenisBiayaController@delete')->name('delete');
         });
         //end jenis_biaya
-
+        
+        //kas_bank_kontroler
+        // Route assigned name "kas_bank_kontroler.index"...
+        Route::name('kas_bank_kontroler.')->group(function () {
+            Route::get('kas_bank_kontroler', 'KasBankKontrolerController@index')->name('index');
+            Route::post('kas_bank_kontroler/index/search', 'KasBankKontrolerController@searchIndex')->name('search.index');
+            Route::get('kas_bank_kontroler/create', 'KasBankKontrolerController@create')->name('create');
+            Route::post('kas_bank_kontroler/store', 'KasBankKontrolerController@store')->name('store');
+            Route::get('kas_bank_kontroler/edit/{no}', 'KasBankKontrolerController@edit')->name('edit');
+            Route::post('kas_bank_kontroler/update', 'KasBankKontrolerController@update')->name('update');
+            Route::delete('kas_bank_kontroler/delete', 'KasBankKontrolerController@delete')->name('delete');
+        });
+        //end kas_bank_kontroler
+        
+        //lokasi_kontroler
+        // Route assigned name "lokasi_kontroler.index"...
+        Route::name('lokasi_kontroler.')->group(function () {
+            Route::get('lokasi_kontroler', 'LokasiKontrolerController@index')->name('index');
+            Route::post('lokasi_kontroler/index/search', 'LokasiKontrolerController@searchIndex')->name('search.index');
+            Route::get('lokasi_kontroler/create', 'LokasiKontrolerController@create')->name('create');
+            Route::post('lokasi_kontroler/store', 'LokasiKontrolerController@store')->name('store');
+            Route::get('lokasi_kontroler/edit/{no}', 'LokasiKontrolerController@edit')->name('edit');
+            Route::post('lokasi_kontroler/update', 'LokasiKontrolerController@update')->name('update');
+            Route::delete('lokasi_kontroler/delete', 'LokasiKontrolerController@delete')->name('delete');
+        });
+        //end lokasi_kontroler
 
     });
 

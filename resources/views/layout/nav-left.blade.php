@@ -502,10 +502,14 @@
                     'jenis_biaya.edit'
                 ); // isi nama semua route jenis_biaya
                 $kas_bank_kontroler = array(
-                    
+                    'kas_bank_kontroler.index',
+                    'kas_bank_kontroler.create',
+                    'kas_bank_kontroler.edit'
                 ); // isi nama semua route kas_bank_kontroler
                 $lokasi_kontroler = array(
-                    
+                    'lokasi_kontroler.index',
+                    'lokasi_kontroler.create',
+                    'lokasi_kontroler.edit'
                 ); // isi nama semua route lokasi_kontroler
                 $sandi_perkiraan = array(
                     
@@ -1464,7 +1468,7 @@
                                         </a>
                                     </li>
                                     <li class="kt-menu__item kt-menu__item{{ set_active_submenu($kas_bank_kontroler) }}" aria-haspopup="true">
-                                        <a href="{{route('tabel_deposito.index')}}" class="kt-menu__link">
+                                        <a href="{{route('kas_bank_kontroler.index')}}" class="kt-menu__link">
                                             <i class="kt-menu__link-bullet kt-menu__link-bullet--line">
                                                 <span></span>
                                             </i>
@@ -1472,7 +1476,7 @@
                                         </a>
                                     </li>
                                     <li class="kt-menu__item kt-menu__item{{ set_active_submenu($lokasi_kontroler) }}" aria-haspopup="true">
-                                        <a href="{{route('tabel_deposito.index')}}" class="kt-menu__link">
+                                        <a href="{{route('lokasi_kontroler.index')}}" class="kt-menu__link">
                                             <i class="kt-menu__link-bullet kt-menu__link-bullet--line">
                                                 <span></span>
                                             </i>
