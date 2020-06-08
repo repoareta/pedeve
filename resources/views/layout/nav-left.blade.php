@@ -497,7 +497,9 @@
                     'cash_judex.edit'
                 ); // isi nama semua route cash_judex
                 $jenis_biaya = array(
-                    
+                    'jenis_biaya.index',
+                    'jenis_biaya.create',
+                    'jenis_biaya.edit'
                 ); // isi nama semua route jenis_biaya
                 $kas_bank_kontroler = array(
                     
@@ -1454,7 +1456,7 @@
                                         </a>
                                     </li>
                                     <li class="kt-menu__item kt-menu__item{{ set_active_submenu($jenis_biaya) }}" aria-haspopup="true">
-                                        <a href="{{route('tabel_deposito.index')}}" class="kt-menu__link">
+                                        <a href="{{route('jenis_biaya.index')}}" class="kt-menu__link">
                                             <i class="kt-menu__link-bullet kt-menu__link-bullet--line">
                                                 <span></span>
                                             </i>

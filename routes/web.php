@@ -899,6 +899,20 @@ Route::group(['middleware'=> ['auth','checkRole:1']], function () {
         //end cash_judex
 
 
+        //jenis_biaya
+        // Route assigned name "jenis_biaya.index"...
+        Route::name('jenis_biaya.')->group(function () {
+            Route::get('jenis_biaya', 'JenisBiayaController@index')->name('index');
+            Route::post('jenis_biaya/index/search', 'JenisBiayaController@searchIndex')->name('search.index');
+            Route::get('jenis_biaya/create', 'JenisBiayaController@create')->name('create');
+            Route::post('jenis_biaya/store', 'JenisBiayaController@store')->name('store');
+            Route::get('jenis_biaya/edit/{no}', 'JenisBiayaController@edit')->name('edit');
+            Route::post('jenis_biaya/update', 'JenisBiayaController@update')->name('update');
+            Route::delete('jenis_biaya/delete', 'JenisBiayaController@delete')->name('delete');
+        });
+        //end jenis_biaya
+
+
     });
 
 

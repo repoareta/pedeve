@@ -6,7 +6,7 @@
 	<div class="kt-container  kt-container--fluid ">
 		<div class="kt-subheader__main">
 			<h3 class="kt-subheader__title">
-				Cash Judex </h3>
+				Jenis Biaya </h3>
 			<span class="kt-subheader__separator kt-hidden"></span>
 			<div class="kt-subheader__breadcrumbs">
 				<a href="#" class="kt-subheader__breadcrumbs-home"><i class="flaticon2-shelter"></i></a>
@@ -14,7 +14,7 @@
 				<a href="" class="kt-subheader__breadcrumbs-link">
 					Kontroler </a>
 				<span class="kt-subheader__breadcrumbs-separator"></span>
-				<span class="kt-subheader__breadcrumbs-link kt-subheader__breadcrumbs-link--active">Cash Judex</span>
+				<span class="kt-subheader__breadcrumbs-link kt-subheader__breadcrumbs-link--active">Jenis Biaya</span>
 			</div>
 		</div>
 	</div>
@@ -29,12 +29,12 @@
 				<i class="kt-font-brand flaticon2-line-chart"></i>
 			</span>
 			<h3 class="kt-portlet__head-title">
-				Tabel Cash Judex
+				Tabel Jenis Biaya
 			</h3>			
 			<div class="kt-portlet__head-toolbar">
 				<div class="kt-portlet__head-wrapper">
 					<div class="kt-portlet__head-actions">
-						<a href="{{ route('cash_judex.create') }}">
+						<a href="{{ route('jenis_biaya.create') }}">
 							<span style="font-size: 2em;" class="kt-font-success" data-toggle="kt-tooltip" data-placement="top" title="Tambah Data">
 								<i class="fas fa-plus-circle"></i>
 							</span>
@@ -62,7 +62,7 @@
 			<thead class="thead-light">
 				<tr>
 					<th></th>
-					<th>KODE</th>
+					<th>KODE JENIS</th>
 					<th>KETERANGAN</th>
 				</tr>
 			</thead>
@@ -89,7 +89,7 @@ $(document).ready(function () {
 				processing: '<i class="fa fa-spinner fa-spin fa-2x fa-fw"></i> <br> Loading...'
 			},
 			ajax      : {
-						url: "{{ route('cash_judex.search.index') }}",
+						url: "{{ route('jenis_biaya.search.index') }}",
 						type : "POST",
 						dataType : "JSON",
 						headers: {
@@ -135,7 +135,7 @@ $(document).ready(function () {
 						.then((result) => {
 						if (result.value) {
 							$.ajax({
-								url: "{{ route('cash_judex.delete') }}",
+								url: "{{ route('jenis_biaya.delete') }}",
 								type: 'DELETE',
 								dataType: 'json',
 								data: {
@@ -145,7 +145,7 @@ $(document).ready(function () {
 								success: function (data) {
 									Swal.fire({
 										type  : 'success',
-										title : "Data cash judex dengan kode  : " +kode+" Berhasil Dihapus.",
+										title : "Data Jenis Biaya dengan kode  : " +kode+" Berhasil Dihapus.",
 										text  : 'Berhasil',
 										
 									}).then(function() {
@@ -171,7 +171,7 @@ $(document).ready(function () {
 			if($('input[class=btn-radio]').is(':checked')) { 
 				$("input[class=btn-radio]:checked").each(function(){
 					var no = $(this).attr('kode');
-					location.replace("{{url('kontroler/cash_judex/edit')}}"+ '/' +no);
+					location.replace("{{url('kontroler/jenis_biaya/edit')}}"+ '/' +no);
 				});
 			} else {
 				swalAlertInit('ubah');

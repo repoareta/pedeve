@@ -6,7 +6,7 @@
 	<div class="kt-container  kt-container--fluid ">
 		<div class="kt-subheader__main">
 			<h3 class="kt-subheader__title">
-				Cash Judex </h3>
+				Jenis Biaya </h3>
 			<span class="kt-subheader__separator kt-hidden"></span>
 			<div class="kt-subheader__breadcrumbs">
 				<a href="#" class="kt-subheader__breadcrumbs-home"><i class="flaticon2-shelter"></i></a>
@@ -15,9 +15,9 @@
 					Kontroler </a>
 				<span class="kt-subheader__breadcrumbs-separator"></span>
 				<a href="" class="kt-subheader__breadcrumbs-link">
-					Cash Judex </a>
+					Jenis Biaya </a>
 				<span class="kt-subheader__breadcrumbs-separator"></span>
-				<span class="kt-subheader__breadcrumbs-link kt-subheader__breadcrumbs-link--active">Edit</span>
+				<span class="kt-subheader__breadcrumbs-link kt-subheader__breadcrumbs-link--active">Tambah</span>
 			</div>
 		</div>
 	</div>
@@ -32,7 +32,7 @@
 					<i class="kt-font-brand flaticon2-plus-1"></i>
 				</span>
 				<h3 class="kt-portlet__head-title">
-					Edit Cash Judex
+					Tambah Jenis Biaya
 				</h3>			
 			</div>
 			<div class="kt-portlet__head-toolbar">
@@ -47,21 +47,21 @@
 						<div class="alert alert-secondary" role="alert">
 							<div class="alert-text">
 								<h5 class="kt-portlet__head-title">
-									Header Cash Judex
+									Header Jenis Biaya
 								</h5>	
 							</div>
 						</div>
 					
 						<div class="form-group row">
-							<label for="" class="col-2 col-form-label">Kode</label>
+							<label for="" class="col-2 col-form-label">Kode<span style="color:red;">*</span></label>
 							<div class="col-10">
-								<input class="form-control" type="text" value="{{$kode}}" name="kode"  size="2" maxlength="2" title="Kode" style="background-color:#DCDCDC; cursor:not-allowed" readonly>
+								<input class="form-control" type="text" value="" name="kode" size="6" maxlength="6" title="Kode" onkeyup="this.value = this.value.toUpperCase()" autocomplete='off' required oninvalid="this.setCustomValidity('Kode Harus Diisi...')" oninput="setCustomValidity('')">
 							</div>
 						</div>
 						<div class="form-group row">
-							<label for="" class="col-2 col-form-label">Nama</label>
+							<label for="" class="col-2 col-form-label">Nama JB<span style="color:red;">*</span></label>
 							<div class="col-10">
-								<input class="form-control" type="text" value="{{$nama}}" name="nama"  size="30" maxlength="30" title="Nama" onkeyup="this.value = this.value.toUpperCase()" autocomplete='off' required oninvalid="this.setCustomValidity('Nama Harus Diisi...')" oninput="setCustomValidity('')">
+								<input class="form-control" type="text" value="" name="nama"  size="30" maxlength="30" title="Nama" onkeyup="this.value = this.value.toUpperCase()" autocomplete='off' required oninvalid="this.setCustomValidity('Nama Harus Diisi...')" oninput="setCustomValidity('')">
 							</div>
 						</div>
 						
@@ -69,7 +69,7 @@
 							<div class="row">
 								<div class="col-2"></div>
 								<div class="col-10">
-									<a  href="{{route('cash_judex.index')}}" class="btn btn-warning"><i class="fa fa-reply" aria-hidden="true"></i>Cancel</a>
+									<a  href="{{route('jenis_biaya.index')}}" class="btn btn-warning"><i class="fa fa-reply" aria-hidden="true"></i>Cancel</a>
 									<button type="submit" class="btn btn-brand"><i class="fa fa-check" aria-hidden="true"></i>Save</button>
 								</div>
 							</div>
@@ -84,9 +84,15 @@
 @section('scripts')
 	<script type="text/javascript">
 	$(document).ready(function () {
+		$('#tabel-detail-permintaan').DataTable({
+			scrollX   : true,
+			processing: true,
+			serverSide: false,
+		});
+
 		$('#form-create').submit(function(){
 			$.ajax({
-				url  : "{{route('cash_judex.update')}}",
+				url  : "{{route('jenis_biaya.store')}}",
 				type : "POST",
 				data : $('#form-create').serialize(),
 				dataType : "JSON",
@@ -94,14 +100,23 @@
 				'X-CSRF-Token': '{{ csrf_token() }}',
 				},
 				success : function(data){
+				if(data == 1){
 					Swal.fire({
 						type  : 'success',
-						title : 'Data Berhasil Ubah',
+						title : 'Data Berhasil Ditambah',
 						text  : 'Berhasil',
 						timer : 2000
 					}).then(function(data) {
-						window.location.replace("{{ route('cash_judex.index') }}");
+						window.location.replace("{{ route('jenis_biaya.index') }}");
 						});
+				}else{
+					Swal.fire({
+						type  : 'info',
+						title : 'Duplikasi data dokumen, entri dibatalkan.',
+						text  : 'Info',
+					});
+				}
+
 				}, 
 				error : function(){
 					alert("Terjadi kesalahan, coba lagi nanti");
