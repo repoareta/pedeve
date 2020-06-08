@@ -3,82 +3,85 @@
 namespace App\Http\Controllers;
 
 use Illuminate\Http\Request;
+use App\Models\Cashjudex;
+use Auth;
+use DB;
+use Session;
+use PDF;
+use Alert;
 
 class CashJudexController extends Controller
 {
-    /**
-     * Display a listing of the resource.
-     *
-     * @return \Illuminate\Http\Response
-     */
     public function index()
     {
-        //
+        return view('cash_judex.index');
     }
 
-    /**
-     * Show the form for creating a new resource.
-     *
-     * @return \Illuminate\Http\Response
-     */
+    public function searchIndex(Request $request)
+    {
+        if($request->pencarian <> ""){
+            $data = DB::select("select a.* from cashjudex a where a.kode like '%$request->pencarian%' or a.nama like '%$request->pencarian%'");
+        }else{
+            $data = DB::select("select a.* from cashjudex a order by a.kode");
+        }	
+        return datatables()->of($data)
+        ->addColumn('kode', function ($data) {
+            return $data->kode;
+       })
+        ->addColumn('nama', function ($data) {
+            return $data->nama;
+       })
+        ->addColumn('radio', function ($data) {
+            $radio = '<label class="kt-radio kt-radio--bold kt-radio--brand"><input type="radio" kode="'.$data->kode.'" class="btn-radio" name="btn-radio"><span></span></label>'; 
+            return $radio;
+        })
+        ->rawColumns(['radio'])
+        ->make(true); 
+    }
+
     public function create()
     {
-        //
+        return view('cash_judex.create');
     }
-
-    /**
-     * Store a newly created resource in storage.
-     *
-     * @param  \Illuminate\Http\Request  $request
-     * @return \Illuminate\Http\Response
-     */
     public function store(Request $request)
     {
-        //
+        $data_objRs = DB::select("select kode from cashjudex where kode='$request->kode'");
+        if(!empty($data_objRs)){
+            $data = 2;
+            return response()->json($data);
+        }else{
+            Cashjudex::insert([
+                'kode' => $request->kode,
+                'nama' => $request->nama
+            ]);
+            $data = 1;
+            return response()->json($data);
+        }
+
     }
 
-    /**
-     * Display the specified resource.
-     *
-     * @param  int  $id
-     * @return \Illuminate\Http\Response
-     */
-    public function show($id)
+    public function edit($no)
     {
-        //
+        $data_cash = DB::select("select * from cashjudex where kode='$no'");
+        foreach($data_cash as $data)
+        {
+            $kode = $data->kode;
+            $nama = $data->nama;
+        }
+        return view('cash_judex.edit',compact('kode','nama'));
+    }
+    public function update(Request $request)
+    {
+        Cashjudex::where('kode',$request->kode)
+        ->update([
+            'nama' => $request->nama
+        ]);
+        return response()->json();
     }
 
-    /**
-     * Show the form for editing the specified resource.
-     *
-     * @param  int  $id
-     * @return \Illuminate\Http\Response
-     */
-    public function edit($id)
+    public function delete(Request $request)
     {
-        //
-    }
-
-    /**
-     * Update the specified resource in storage.
-     *
-     * @param  \Illuminate\Http\Request  $request
-     * @param  int  $id
-     * @return \Illuminate\Http\Response
-     */
-    public function update(Request $request, $id)
-    {
-        //
-    }
-
-    /**
-     * Remove the specified resource from storage.
-     *
-     * @param  int  $id
-     * @return \Illuminate\Http\Response
-     */
-    public function destroy($id)
-    {
-        //
+        Cashjudex::where('kode',$request->kode)->delete();
+        return response()->json();
     }
 }
