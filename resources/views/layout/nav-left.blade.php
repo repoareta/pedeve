@@ -512,16 +512,19 @@
                     'lokasi_kontroler.edit'
                 ); // isi nama semua route lokasi_kontroler
                 $sandi_perkiraan = array(
-                    
+                    'sandi_perkiraan.index',
+                    'sandi_perkiraan.create',
+                    'sandi_perkiraan.edit'
                 ); // isi nama semua route sandi_perkiraan
-                $sandi_perkiraan = array(
-                    
-                ); // isi nama semua route sandi_perkiraan
-                $setting_bulan_buku_kontroler = array(
-                    
-                ); // isi nama semua route setting_bulan_buku_kontroler
+                $bulan_kontroler = array(
+                    'bulan_kontroler.index',
+                    'bulan_kontroler.create',
+                    'bulan_kontroler.edit'                    
+                ); // isi nama semua route bulan_kontroler
                 $main_account = array(
-                    
+                    'main_account.index',
+                    'main_account.create',
+                    'main_account.edit'                    
                 ); // isi nama semua route main_account
                 $tabel = array_merge(
                     $cash_judex,
@@ -529,7 +532,7 @@
                     $kas_bank_kontroler,
                     $lokasi_kontroler,
                     $sandi_perkiraan,
-                    $setting_bulan_buku_kontroler,
+                    $bulan_kontroler,
                     $main_account
                 ); // array merge semua submenu tabel
 
@@ -1484,15 +1487,15 @@
                                         </a>
                                     </li>
                                     <li class="kt-menu__item kt-menu__item{{ set_active_submenu($sandi_perkiraan) }}" aria-haspopup="true">
-                                        <a href="{{route('tabel_deposito.index')}}" class="kt-menu__link">
+                                        <a href="{{route('sandi_perkiraan.index')}}" class="kt-menu__link">
                                             <i class="kt-menu__link-bullet kt-menu__link-bullet--line">
                                                 <span></span>
                                             </i>
                                             <span class="kt-menu__link-text">Sandi Perkiraan</span>
                                         </a>
                                     </li>
-                                    <li class="kt-menu__item kt-menu__item{{ set_active_submenu($setting_bulan_buku_kontroler) }}" aria-haspopup="true">
-                                        <a href="{{route('tabel_deposito.index')}}" class="kt-menu__link">
+                                    <li class="kt-menu__item kt-menu__item{{ set_active_submenu($bulan_kontroler) }}" aria-haspopup="true">
+                                        <a href="{{route('bulan_kontroler.index')}}" class="kt-menu__link">
                                             <i class="kt-menu__link-bullet kt-menu__link-bullet--line">
                                                 <span></span>
                                             </i>
@@ -1500,7 +1503,7 @@
                                         </a>
                                     </li>
                                     <li class="kt-menu__item kt-menu__item{{ set_active_submenu($main_account) }}" aria-haspopup="true">
-                                        <a href="{{route('tabel_deposito.index')}}" class="kt-menu__link">
+                                        <a href="{{route('main_account.index')}}" class="kt-menu__link">
                                             <i class="kt-menu__link-bullet kt-menu__link-bullet--line">
                                                 <span></span>
                                             </i>

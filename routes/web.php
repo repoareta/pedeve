@@ -938,6 +938,47 @@ Route::group(['middleware'=> ['auth','checkRole:1']], function () {
         });
         //end lokasi_kontroler
 
+
+        //sandi_perkiraan
+        // Route assigned name "sandi_perkiraan.index"...
+        Route::name('sandi_perkiraan.')->group(function () {
+            Route::get('sandi_perkiraan', 'SandiPerkiraanController@index')->name('index');
+            Route::post('sandi_perkiraan/index/search', 'SandiPerkiraanController@searchIndex')->name('search.index');
+            Route::get('sandi_perkiraan/create', 'SandiPerkiraanController@create')->name('create');
+            Route::post('sandi_perkiraan/store', 'SandiPerkiraanController@store')->name('store');
+            Route::get('sandi_perkiraan/edit/{no}', 'SandiPerkiraanController@edit')->name('edit');
+            Route::post('sandi_perkiraan/update', 'SandiPerkiraanController@update')->name('update');
+            Route::delete('sandi_perkiraan/delete', 'SandiPerkiraanController@delete')->name('delete');
+        });
+        //end sandi_perkiraan
+
+        //bulan_kontroler
+        // Route assigned name "bulan_kontroler.index"...
+        Route::name('bulan_kontroler.')->group(function () {
+            Route::get('bulan_kontroler', 'BulanKontrolerController@index')->name('index');
+            Route::post('bulan_kontroler/index/search', 'BulanKontrolerController@searchIndex')->name('search.index');
+            Route::get('bulan_kontroler/create', 'BulanKontrolerController@create')->name('create');
+            Route::post('bulan_kontroler/store', 'BulanKontrolerController@store')->name('store');
+            Route::get('bulan_kontroler/edit/{no}', 'BulanKontrolerController@edit')->name('edit');
+            Route::post('bulan_kontroler/update', 'BulanKontrolerController@update')->name('update');
+            Route::delete('bulan_kontroler/delete', 'BulanKontrolerController@delete')->name('delete');
+        });
+        //end bulan_kontroler
+
+
+        //main_account
+        // Route assigned name "main_account.index"...
+        Route::name('main_account.')->group(function () {
+            Route::get('main_account', 'MainAccountController@index')->name('index');
+            Route::post('main_account/index/search', 'MainAccountController@searchIndex')->name('search.index');
+            Route::get('main_account/create', 'MainAccountController@create')->name('create');
+            Route::post('main_account/store', 'MainAccountController@store')->name('store');
+            Route::get('main_account/edit/{no}', 'MainAccountController@edit')->name('edit');
+            Route::post('main_account/update', 'MainAccountController@update')->name('update');
+            Route::delete('main_account/delete', 'MainAccountController@delete')->name('delete');
+        });
+        //end main_account
+
     });
 
 
