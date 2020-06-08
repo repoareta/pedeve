@@ -6,7 +6,7 @@
 	<div class="kt-container  kt-container--fluid ">
 		<div class="kt-subheader__main">
 			<h3 class="kt-subheader__title">
-				Jenis Biaya </h3>
+				Main Account </h3>
 			<span class="kt-subheader__separator kt-hidden"></span>
 			<div class="kt-subheader__breadcrumbs">
 				<a href="#" class="kt-subheader__breadcrumbs-home"><i class="flaticon2-shelter"></i></a>
@@ -14,7 +14,7 @@
 				<a href="" class="kt-subheader__breadcrumbs-link">
 					Kontroler </a>
 				<span class="kt-subheader__breadcrumbs-separator"></span>
-				<span class="kt-subheader__breadcrumbs-link kt-subheader__breadcrumbs-link--active">Jenis Biaya</span>
+				<span class="kt-subheader__breadcrumbs-link kt-subheader__breadcrumbs-link--active">Main Account</span>
 			</div>
 		</div>
 	</div>
@@ -29,12 +29,12 @@
 				<i class="kt-font-brand flaticon2-line-chart"></i>
 			</span>
 			<h3 class="kt-portlet__head-title">
-				Tabel Jenis Biaya
+				Tabel Main Account
 			</h3>			
 			<div class="kt-portlet__head-toolbar">
 				<div class="kt-portlet__head-wrapper">
 					<div class="kt-portlet__head-actions">
-						<a href="{{ route('jenis_biaya.create') }}">
+						<a href="{{ route('main_account.create') }}">
 							<span style="font-size: 2em;" class="kt-font-success" data-toggle="kt-tooltip" data-placement="top" title="Tambah Data">
 								<i class="fas fa-plus-circle"></i>
 							</span>
@@ -52,18 +52,19 @@
 		</div>
 	</div>
 	<div class="kt-portlet__body">
-		<form id="search-form">
-		Pencarian: 	<input style="width:20%;height:35px;border: 1px solid #DCDCDC;border-radius:5px;"  name="pencarian"  type="text"  value="" onkeyup="this.value = this.value.toUpperCase()" autocomplete='off'>  
-				<button type="submit" style="font-size: 20px;margin-left:5px;border-radius:10px;border-radius:10px;background-color:white;" class="kt-font-info pointer-link" data-toggle="kt-tooltip" data-placement="top" title="Cari Data"> <i class="fa fa-search"></i></button>  
-				
-		</form>
 		<!--begin: Datatable -->
 		<table class="table table-striped table-bordered table-hover table-checkable" id="kt_table" width="100%">
 			<thead class="thead-light">
 				<tr>
 					<th></th>
-					<th>KODE JENIS</th>
-					<th>KETERANGAN</th>
+					<th>JENIS</th>
+					<th>AWAL</th>
+					<th>AKHIR</th>
+					<th>URUTAN</th>
+					<th>PENGALI</th>
+					<th>P.TAMPIL</th>
+					<th>SUB.AKUN</th>
+					<th>LOKASI</th>
 				</tr>
 			</thead>
 			<tbody>
@@ -83,13 +84,13 @@ $(document).ready(function () {
 			scrollX   : true,
 			processing: true,
 			serverSide: true,
-			searching: false,
-			lengthChange: false,
+			searching: true,
+			lengthChange: true,
 			language: {
 				processing: '<i class="fa fa-spinner fa-spin fa-2x fa-fw"></i> <br> Loading...'
 			},
 			ajax      : {
-						url: "{{ route('jenis_biaya.search.index') }}",
+						url: "{{ route('main_account.search.index') }}",
 						type : "POST",
 						dataType : "JSON",
 						headers: {
@@ -101,8 +102,14 @@ $(document).ready(function () {
 					},
 			columns: [
 				{data: 'radio', name: 'radio'},
-				{data: 'kode', name: 'kode'},
-				{data: 'nama', name: 'nama'},
+				{data: 'jenis', name: 'jenis'},
+				{data: 'batas_awal', name: 'batas_awal'},
+				{data: 'batas_akhir', name: 'batas_akhir'},
+				{data: 'urutan', name: 'urutan'},
+				{data: 'pengali', name: 'pengali'},
+				{data: 'pengali_tampil', name: 'pengali_tampil'},
+				{data: 'sub_akun', name: 'sub_akun'},
+				{data: 'lokasi', name: 'lokasi'},
 			]
 		});
 		$('#search-form').on('submit', function(e) {
@@ -125,7 +132,7 @@ $(document).ready(function () {
 						})
 						swalWithBootstrapButtons.fire({
 							title: "Data yang akan dihapus?",
-							text: "Kode  : " +kode,
+							text: "Jenis  : " +kode,
 							type: 'warning',
 							showCancelButton: true,
 							reverseButtons: true,
@@ -135,7 +142,7 @@ $(document).ready(function () {
 						.then((result) => {
 						if (result.value) {
 							$.ajax({
-								url: "{{ route('jenis_biaya.delete') }}",
+								url: "{{ route('main_account.delete') }}",
 								type: 'DELETE',
 								dataType: 'json',
 								data: {
@@ -145,7 +152,7 @@ $(document).ready(function () {
 								success: function (data) {
 									Swal.fire({
 										type  : 'success',
-										title : "Data Jenis Biaya dengan kode  : " +kode+" Berhasil Dihapus.",
+										title : "Data Main Account dengan jenis  : " +kode+" Berhasil Dihapus.",
 										text  : 'Berhasil',
 										
 									}).then(function() {
@@ -171,7 +178,7 @@ $(document).ready(function () {
 			if($('input[class=btn-radio]').is(':checked')) { 
 				$("input[class=btn-radio]:checked").each(function(){
 					var no = $(this).attr('kode');
-					location.replace("{{url('kontroler/jenis_biaya/edit')}}"+ '/' +no);
+					location.replace("{{url('kontroler/main_account/edit')}}"+ '/' +no);
 				});
 			} else {
 				swalAlertInit('ubah');
