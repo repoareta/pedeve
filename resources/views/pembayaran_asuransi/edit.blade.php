@@ -6,7 +6,7 @@
 	<div class="kt-container  kt-container--fluid ">
 		<div class="kt-subheader__main">
 			<h3 class="kt-subheader__title">
-				Perbendaharaan - Kas/Bank </h3>
+				Kas/Bank Pencairan Asuransi </h3>
 			<span class="kt-subheader__separator kt-hidden"></span>
 			<div class="kt-subheader__breadcrumbs">
 				<a href="#" class="kt-subheader__breadcrumbs-home"><i class="flaticon2-shelter"></i></a>
@@ -15,7 +15,7 @@
 				Perbendaharaan </a>
 				<span class="kt-subheader__breadcrumbs-separator"></span>
 				<a href="" class="kt-subheader__breadcrumbs-link">
-					Perbendaharaan - Kas/Bank </a>
+					Kas/Bank Pencairan Asuransi </a>
 				<span class="kt-subheader__breadcrumbs-separator"></span>
 				<span class="kt-subheader__breadcrumbs-link kt-subheader__breadcrumbs-link--active">Edit</span>
 			</div>
@@ -32,7 +32,7 @@
 					<i class="kt-font-brand flaticon2-plus-1"></i>
 				</span>
 				<h3 class="kt-portlet__head-title">
-					Menu Edit Perbendaharaan - Kas/Bank
+					Menu Edit Kas/Bank Pencairan Asuransi
 				</h3>			
 			</div>
 			<div class="kt-portlet__head-toolbar">
@@ -49,7 +49,7 @@
 						<div class="alert alert-secondary" role="alert">
 							<div class="alert-text">
 								<h5 class="kt-portlet__head-title">
-									Header Menu Edit Perbendaharaan - Kas/Bank
+									Header Menu Edit Kas/Bank Pencairan Asuransi
 								</h5>	
 							</div>
 						</div>
@@ -187,7 +187,7 @@
 							<div class="row">
 								<div class="col-2"></div>
 								<div class="col-10">
-									<a  href="{{route('penerimaan_kas.index')}}" class="btn btn-warning"><i class="fa fa-reply" aria-hidden="true"></i>Cancel</a>
+									<a  href="{{route('pembayaran_asuransi.index')}}" class="btn btn-warning"><i class="fa fa-reply" aria-hidden="true"></i>Cancel</a>
 									<button type="submit" class="btn btn-brand"><i class="fa fa-check" aria-hidden="true"></i>Save</button>
 								</div>
 							</div>
@@ -204,7 +204,7 @@
 							<i class="kt-font-brand flaticon2-line-chart"></i>
 						</span>
 						<h3 class="kt-portlet__head-title">
-							Detail Perbendaharaan - Kas/Bank
+							Detail Kas/Bank Pencairan Asuransi
 						</h3>			
 						<div class="kt-portlet__head-toolbar">
 							<div class="kt-portlet__head-wrapper">
@@ -295,10 +295,15 @@
 					</div>
 
 					<div class="form-group row">
-						<label for="example-text-input" class="col-2 col-form-label">Rincian<span style="color:red;">*</span></label>
+						<label for="example-text-input" class="col-2 col-form-label">Rincian</label>
 						<label for="example-text-input" class=" col-form-label">:</label>
-						<div class="col-8">
-							<textarea  class="form-control" type="text" value=""  name="rincian" size="50" maxlength="250" required oninvalid="this.setCustomValidity('Rincian Harus Diisi..')" oninput="setCustomValidity('')"></textarea>
+						<div class="col-8" >
+							<select name="rincian"  class="form-control selectpicker" data-live-search="true" >
+								<option value="">-Pilih-</option>
+								@foreach($rincian as $data_rin)
+								<option value="{{$data_rin->no_mintabayar}}">{{$data_rin->no_mintabayar}} - {{$data_rin->jml_pencairan}}</option>
+								@endforeach
+							</select>
 						</div>
 					</div>
 					<div class="form-group row">
@@ -421,12 +426,16 @@
 							<input style="background-color:#DCDCDC; cursor:not-allowed"  class="form-control" type="hidden" value=""  name="nodok" id="nodok" readonly>
 						</div>
 					</div>
-
 					<div class="form-group row">
-						<label for="example-text-input" class="col-2 col-form-label">Rincian<span style="color:red;">*</span></label>
+						<label for="example-text-input" class="col-2 col-form-label">Rincian</label>
 						<label for="example-text-input" class=" col-form-label">:</label>
-						<div class="col-8">
-							<textarea  class="form-control" type="text" value=""  name="rincian" id="rincian" size="50" maxlength="250" required oninvalid="this.setCustomValidity('Rincian Harus Diisi..')" oninput="setCustomValidity('')"></textarea>
+						<div class="col-8" >
+							<select name="rincian"  id="rincian" class="form-control selectpicker" data-live-search="true" >
+								<option value="">-Pilih-</option>
+								@foreach($rincian as $data_rin)
+								<option value="{{$data_rin->no_mintabayar}}">{{$data_rin->no_mintabayar}} - {{$data_rin->jml_pencairan}}</option>
+								@endforeach
+							</select>
 						</div>
 					</div>
 					<div class="form-group row">
@@ -438,9 +447,7 @@
 								@foreach($lokasi as $data_lok)
 								<option value="{{$data_lok->kodelokasi}}">{{$data_lok->kodelokasi}} - {{$data_lok->nama}}</option>
 								@endforeach
-							</select>	
-							<div id="lapangan"></div>
-
+							</select>
 						</div>
 					</div>
 					<div class="form-group row">
@@ -534,11 +541,6 @@
 @section('scripts')
 	<script type="text/javascript">
 	$(document).ready(function () {
-		$('#tabel-detail-permintaan').DataTable({
-			scrollX   : true,
-			processing: true,
-			serverSide: false,
-		});
 
 		var jk = $('#jk').val();
 	if(jk == '13'){
@@ -596,7 +598,7 @@ var lokasi2 = $('#lokasi2').val();
 
 
 $.ajax({
-	url : "{{route('penerimaan_kas.lokasiJson')}}",
+	url : "{{route('pembayaran_asuransi.lokasiJson')}}",
 	type : "POST",
 	dataType: 'json',
 	data : {
@@ -623,7 +625,7 @@ $.ajax({
 
 $('#form-edit').submit(function(){
 	$.ajax({
-		url  : "{{route('penerimaan_kas.update')}}",
+		url  : "{{route('pembayaran_asuransi.update')}}",
 		type : "POST",
 		data : $('#form-edit').serialize(),
 		dataType : "JSON",
@@ -638,7 +640,7 @@ $('#form-edit').submit(function(){
 			text  : 'Berhasil',
 			timer : 2000
 		}).then(function() {
-				window.location.replace("{{ route('penerimaan_kas.index') }}");;
+				window.location.replace("{{ route('pembayaran_asuransi.index') }}");;
 			});
 		}, 
 		error : function(){
@@ -655,7 +657,7 @@ var mp = $('#mp').val();
 var bulan = $('#bulan').val();
 var bulanbuku = $('#bulanbuku').val();
 	$.ajax({
-		url : "{{route('penerimaan_kas.createJson')}}",
+		url : "{{route('pembayaran_asuransi.createJson')}}",
 		type : "POST",
 		dataType: 'json',
 		data : {
@@ -730,7 +732,7 @@ var jk = $('#jk').val();
 	var ci = $('#ci').val();
 
 	$.ajax({
-		url : "{{route('penerimaan_kas.lokasiJson')}}",
+		url : "{{route('pembayaran_asuransi.lokasiJson')}}",
 		type : "POST",
 		dataType: 'json',
 		data : {
@@ -763,7 +765,7 @@ $("#lokasi").on("click", function(){
 	var tahun = $('#tahun').val();
 
 		$.ajax({
-			url : "{{route('penerimaan_kas.nobuktiJson')}}",
+			url : "{{route('pembayaran_asuransi.nobuktiJson')}}",
 			type : "POST",
 			dataType: 'json',
 			data : {
@@ -802,14 +804,14 @@ $('#nilai').keyup(function(){
 
 $('#btn-create').on('click', function(e) {
 	e.preventDefault();
-	$('#title-detail').html("Tambah Detail Perbendaharaan - Kas/Bank");
+	$('#title-detail').html("Tambah Detail Kas/Bank Pencairan Asuransi");
 	$('.modal-create').modal('show');
 });
 
 //prosess create detail
 $('#form-create-detail').submit(function(){
 		$.ajax({
-			url  : "{{route('penerimaan_kas.store.detail')}}",
+			url  : "{{route('pembayaran_asuransi.store.detail')}}",
 			type : "POST",
 			data : $('#form-create-detail').serialize(),
 			dataType : "JSON",
@@ -842,7 +844,7 @@ if($('input[type=radio]').is(':checked')) {
 		var nodok = $(this).attr('nodok').split("/").join("-");
 		var nourut = $(this).attr('nourut');
 			$.ajax({
-				url :"{{('perbendaharaan/penerimaan_kas/editdetail')}}"+ '/' +nodok+ '/' +nourut,
+				url :"{{('perbendaharaan/pembayaran_asuransi/editdetail')}}"+ '/' +nodok+ '/' +nourut,
 				type : 'get',
 				dataType:"json",
 				headers: {
@@ -856,7 +858,7 @@ if($('input[type=radio]').is(':checked')) {
 					$('#pk').val(data.pk);
 					var output=parseInt(data.totprice);
 					$('#nilai1').val(output);
-					$('#title-edit-detail').html("Edit Detail Perbendaharaan - Kas/Bank");
+					$('#title-edit-detail').html("Edit Detail Kas/Bank Pencairan Asuransi");
 					$('#select-lapangan').val(data.lokasi).trigger('change');
 					$('#select-sanper').val(data.account).trigger('change');
 					$('#select-bagian').val(data.bagian).trigger('change');
@@ -875,7 +877,7 @@ if($('input[type=radio]').is(':checked')) {
 
 $('#form-edit-detail').submit(function(){
 		$.ajax({
-			url  : "{{route('penerimaan_kas.store.detail')}}",
+			url  : "{{route('pembayaran_asuransi.store.detail')}}",
 			type : "POST",
 			data : $('#form-edit-detail').serialize(),
 			dataType : "JSON",
@@ -927,7 +929,7 @@ $('#form-edit-detail').submit(function(){
 					.then((result) => {
 						if (result.value) {
 							$.ajax({
-								url: "{{ route('penerimaan_kas.delete.detail') }}",
+								url: "{{ route('pembayaran_asuransi.delete.detail') }}",
 								type: 'DELETE',
 								dataType: 'json',
 								data: {

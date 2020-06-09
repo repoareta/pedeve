@@ -731,6 +731,51 @@ Route::group(['middleware'=> ['auth','checkRole:1']], function () {
         });
         //end penempatan_deposito
 
+         //pembayaran_asuransi
+        // Route assigned name "pembayaran_asuransi.index"...
+        Route::name('pembayaran_asuransi.')->group(function () {
+            Route::get('pembayaran_asuransi', 'PembayaranAsuransiController@index')->name('index');
+            Route::post('pembayaran_asuransi/search', 'PembayaranAsuransiController@searchIndex')->name('search.index');
+            Route::get('pembayaran_asuransi/create', 'PembayaranAsuransiController@create')->name('create');
+            Route::post('pembayaran_asuransi/create/json', 'PembayaranAsuransiController@createJson')->name('createJson');
+            Route::post('pembayaran_asuransi/lokasi/json', 'PembayaranAsuransiController@lokasiJson')->name('lokasiJson');
+            Route::post('pembayaran_asuransi/nobukti/json', 'PembayaranAsuransiController@nobuktiJson')->name('nobuktiJson');
+            Route::post('pembayaran_asuransi/store', 'PembayaranAsuransiController@store')->name('store');
+            Route::post('pembayaran_asuransi/store_detail', 'PembayaranAsuransiController@storeDetail')->name('store.detail');
+            Route::post('pembayaran_asuransi/store_app', 'PembayaranAsuransiController@storeApp')->name('store.app');
+            Route::get('pembayaran_asuransi/edit/{no}', 'PembayaranAsuransiController@edit')->name('edit');
+            Route::get('pembayaran_asuransi/editdetail/{id}/{no}', 'PembayaranAsuransiController@editDetail')->name('edit.detail');
+            Route::post('pembayaran_asuransi/update', 'PembayaranAsuransiController@update')->name('update');
+            Route::delete('pembayaran_asuransi/delete', 'PembayaranAsuransiController@delete')->name('delete');
+            Route::delete('pembayaran_asuransi/deletedetail', 'PembayaranAsuransiController@deleteDetail')->name('delete.detail');
+            Route::get('pembayaran_asuransi/approv/{id}/{status}', 'PembayaranAsuransiController@approv')->name('approv');
+        });
+        //end pembayaran_asuransi
+
+
+         //pembayaran_gaji
+        // Route assigned name "pembayaran_gaji.index"...
+        Route::name('pembayaran_gaji.')->group(function () {
+            Route::get('pembayaran_gaji', 'PembayaranGajiController@index')->name('index');
+            Route::post('pembayaran_gaji/search', 'PembayaranGajiController@searchIndex')->name('search.index');
+            Route::get('pembayaran_gaji/create', 'PembayaranGajiController@create')->name('create');
+            Route::post('pembayaran_gaji/create/json', 'PembayaranGajiController@createJson')->name('createJson');
+            Route::post('pembayaran_gaji/lokasi/json', 'PembayaranGajiController@lokasiJson')->name('lokasiJson');
+            Route::post('pembayaran_gaji/nobukti/json', 'PembayaranGajiController@nobuktiJson')->name('nobuktiJson');
+            Route::post('pembayaran_gaji/store', 'PembayaranGajiController@store')->name('store');
+            Route::post('pembayaran_gaji/store_detail', 'PembayaranGajiController@storeDetail')->name('store.detail');
+            Route::post('pembayaran_gaji/store_app', 'PembayaranGajiController@storeApp')->name('store.app');
+            Route::get('pembayaran_gaji/edit/{no}', 'PembayaranGajiController@edit')->name('edit');
+            Route::get('pembayaran_gaji/editdetail/{id}/{no}', 'PembayaranGajiController@editDetail')->name('edit.detail');
+            Route::post('pembayaran_gaji/update', 'PembayaranGajiController@update')->name('update');
+            Route::post('pembayaran_gaji/update/detail', 'PembayaranGajiController@updateDetail')->name('update.detail');
+            Route::delete('pembayaran_gaji/delete', 'PembayaranGajiController@delete')->name('delete');
+            Route::delete('pembayaran_gaji/deletedetail', 'PembayaranGajiController@deleteDetail')->name('delete.detail');
+            Route::delete('pembayaran_gaji/deletedetail/all', 'PembayaranGajiController@deleteDetailall')->name('delete.detail.all');
+            Route::get('pembayaran_gaji/approv/{id}/{status}', 'PembayaranGajiController@approv')->name('approv');
+        });
+        //end pembayaran_gaji
+
 
         //Rekap Harian Kas
         // Route assigned name "rekap_harian_kas.index"...

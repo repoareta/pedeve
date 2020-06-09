@@ -400,6 +400,19 @@
                     $informasi_saldo,
                     $inisialisasi_saldo
                 ); //isi nama Subdomain saldo
+
+                $pembayaran_gaji = array(
+                    'pembayaran_gaji.index',
+                    'pembayaran_gaji.search.index',
+                    'pembayaran_gaji.createmp',
+                    'pembayaran_gaji.create',
+                    'pembayaran_gaji.edit',
+                    'pembayaran_gaji.edit.detail',
+                    'pembayaran_gaji.approv'
+                ); // isi nama semua route Informasi saldo
+                $pembayaran = array_merge(
+                    $pembayaran_gaji
+                ); //isi nama Subdomain pembayaran
                 
                 $deposito = array(
                     'penempatan_deposito.index',
@@ -456,6 +469,7 @@
                     $penerimaan_kas,
                     $saldo,
                     $deposito,
+                    $pembayaran,
                     $rekap_perbendaharaan,
                     $report_perbendaharaan
                 ); // array merge semua submenu
@@ -1177,6 +1191,85 @@
                                 </span>
                             </a>
                         </li>
+                        <li class="kt-menu__item kt-menu__item--submenu {{ set_active($deposito) }}" aria-haspopup="true" data-ktmenu-submenu-toggle="hover">
+                            <a href="{{ route('penempatan_deposito.index') }}" class="kt-menu__link">
+                                <i class="kt-menu__link-bullet kt-menu__link-bullet--dot">
+                                    <span></span>
+                                </i>
+                                <span class="kt-menu__link-text">
+                                    Penempatan Deposito
+                                </span>
+                            </a>
+                        </li>
+                        <li class="kt-menu__item kt-menu__item--submenu {{ set_active($pembayaran) }}" aria-haspopup="true" data-ktmenu-submenu-toggle="hover">
+                            <a href="javascript:;" class="kt-menu__link kt-menu__toggle">
+                                <i class="kt-menu__link-bullet kt-menu__link-bullet--dot">
+                                    <span></span>
+                                </i>
+                                <span class="kt-menu__link-text">Pembayaran</span>
+                                <i class="kt-menu__ver-arrow la la-angle-right"></i>
+                            </a>
+                            <div class="kt-menu__submenu "><span class="kt-menu__arrow"></span>
+                                <ul class="kt-menu__subnav">
+                                    <li class="kt-menu__item kt-menu__item{{ set_active_submenu($pembayaran_gaji) }}" aria-haspopup="true">
+                                        <a href="{{route('pembayaran_gaji.index')}}" class="kt-menu__link">
+                                            <i class="kt-menu__link-bullet kt-menu__link-bullet--line">
+                                                <span></span>
+                                            </i>
+                                            <span class="kt-menu__link-text">Pembayaran Gaji</span>
+                                        </a>
+                                    </li>
+                                    <li class="kt-menu__item kt-menu__item{{ set_active_submenu($inisialisasi_saldo) }}" aria-haspopup="true">
+                                        <a href="{{route('inisialisasi_saldo.index')}}" class="kt-menu__link">
+                                            <i class="kt-menu__link-bullet kt-menu__link-bullet--line">
+                                                <span></span>
+                                            </i>
+                                            <span class="kt-menu__link-text">Pembayaran Insentif</span>
+                                        </a>
+                                    </li>
+                                    <li class="kt-menu__item kt-menu__item{{ set_active_submenu($inisialisasi_saldo) }}" aria-haspopup="true">
+                                        <a href="{{route('inisialisasi_saldo.index')}}" class="kt-menu__link">
+                                            <i class="kt-menu__link-bullet kt-menu__link-bullet--line">
+                                                <span></span>
+                                            </i>
+                                            <span class="kt-menu__link-text">Pembayaran THR</span>
+                                        </a>
+                                    </li>
+                                    <li class="kt-menu__item kt-menu__item{{ set_active_submenu($inisialisasi_saldo) }}" aria-haspopup="true">
+                                        <a href="{{route('inisialisasi_saldo.index')}}" class="kt-menu__link">
+                                            <i class="kt-menu__link-bullet kt-menu__link-bullet--line">
+                                                <span></span>
+                                            </i>
+                                            <span class="kt-menu__link-text">Bagian Umum</span>
+                                        </a>
+                                    </li>
+                                    <li class="kt-menu__item kt-menu__item{{ set_active_submenu($inisialisasi_saldo) }}" aria-haspopup="true">
+                                        <a href="{{route('inisialisasi_saldo.index')}}" class="kt-menu__link">
+                                            <i class="kt-menu__link-bullet kt-menu__link-bullet--line">
+                                                <span></span>
+                                            </i>
+                                            <span class="kt-menu__link-text">Uang Muka Kerja</span>
+                                        </a>
+                                    </li>
+                                    <li class="kt-menu__item kt-menu__item{{ set_active_submenu($inisialisasi_saldo) }}" aria-haspopup="true">
+                                        <a href="{{route('inisialisasi_saldo.index')}}" class="kt-menu__link">
+                                            <i class="kt-menu__link-bullet kt-menu__link-bullet--line">
+                                                <span></span>
+                                            </i>
+                                            <span class="kt-menu__link-text">PertanggungJawaban UMK</span>
+                                        </a>
+                                    </li>
+                                    <li class="kt-menu__item kt-menu__item{{ set_active_submenu($inisialisasi_saldo) }}" aria-haspopup="true">
+                                        <a href="{{route('inisialisasi_saldo.index')}}" class="kt-menu__link">
+                                            <i class="kt-menu__link-bullet kt-menu__link-bullet--line">
+                                                <span></span>
+                                            </i>
+                                            <span class="kt-menu__link-text">Permintaan Bayar</span>
+                                        </a>
+                                    </li>
+                                </ul>
+                            </div>
+                        </li>
                         <li class="kt-menu__item kt-menu__item--submenu {{ set_active($saldo) }}" aria-haspopup="true" data-ktmenu-submenu-toggle="hover">
                             <a href="javascript:;" class="kt-menu__link kt-menu__toggle">
                                 <i class="kt-menu__link-bullet kt-menu__link-bullet--dot">
@@ -1205,16 +1298,6 @@
                                     </li>
                                 </ul>
                             </div>
-                        </li>
-                        <li class="kt-menu__item kt-menu__item--submenu {{ set_active($deposito) }}" aria-haspopup="true" data-ktmenu-submenu-toggle="hover">
-                            <a href="{{ route('penempatan_deposito.index') }}" class="kt-menu__link">
-                                <i class="kt-menu__link-bullet kt-menu__link-bullet--dot">
-                                    <span></span>
-                                </i>
-                                <span class="kt-menu__link-text">
-                                    Penempatan Deposito
-                                </span>
-                            </a>
                         </li>
                         <li class="kt-menu__item " aria-haspopup="true">
                             <a href="{{ route('perjalanan_dinas.index') }}" class="kt-menu__link">
@@ -1431,14 +1514,6 @@
                                                 <span></span>
                                             </i>
                                             <span class="kt-menu__link-text">Cetak Kas Bank</span>
-                                        </a>
-                                    </li>
-                                    <li class="kt-menu__item kt-menu__item{{ set_active_submenu($tabel_deposito) }}" aria-haspopup="true">
-                                        <a href="{{route('tabel_deposito.index')}}" class="kt-menu__link">
-                                            <i class="kt-menu__link-bullet kt-menu__link-bullet--line">
-                                                <span></span>
-                                            </i>
-                                            <span class="kt-menu__link-text">Tabel Deposito</span>
                                         </a>
                                     </li>
                                 </ul>
