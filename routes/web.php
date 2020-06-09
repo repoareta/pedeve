@@ -777,6 +777,78 @@ Route::group(['middleware'=> ['auth','checkRole:1']], function () {
         //end pembayaran_gaji
 
 
+         //pembayaran_insentif
+        // Route assigned name "pembayaran_insentif.index"...
+        Route::name('pembayaran_insentif.')->group(function () {
+            Route::get('pembayaran_insentif', 'PembayaranInsentifController@index')->name('index');
+            Route::post('pembayaran_insentif/search', 'PembayaranInsentifController@searchIndex')->name('search.index');
+            Route::get('pembayaran_insentif/create', 'PembayaranInsentifController@create')->name('create');
+            Route::post('pembayaran_insentif/create/json', 'PembayaranInsentifController@createJson')->name('createJson');
+            Route::post('pembayaran_insentif/lokasi/json', 'PembayaranInsentifController@lokasiJson')->name('lokasiJson');
+            Route::post('pembayaran_insentif/nobukti/json', 'PembayaranInsentifController@nobuktiJson')->name('nobuktiJson');
+            Route::post('pembayaran_insentif/store', 'PembayaranInsentifController@store')->name('store');
+            Route::post('pembayaran_insentif/store_detail', 'PembayaranInsentifController@storeDetail')->name('store.detail');
+            Route::post('pembayaran_insentif/store_app', 'PembayaranInsentifController@storeApp')->name('store.app');
+            Route::get('pembayaran_insentif/edit/{no}', 'PembayaranInsentifController@edit')->name('edit');
+            Route::get('pembayaran_insentif/editdetail/{id}/{no}', 'PembayaranInsentifController@editDetail')->name('edit.detail');
+            Route::post('pembayaran_insentif/update', 'PembayaranInsentifController@update')->name('update');
+            Route::post('pembayaran_insentif/update/detail', 'PembayaranInsentifController@updateDetail')->name('update.detail');
+            Route::delete('pembayaran_insentif/delete', 'PembayaranInsentifController@delete')->name('delete');
+            Route::delete('pembayaran_insentif/deletedetail', 'PembayaranInsentifController@deleteDetail')->name('delete.detail');
+            Route::delete('pembayaran_insentif/deletedetail/all', 'PembayaranInsentifController@deleteDetailall')->name('delete.detail.all');
+            Route::get('pembayaran_insentif/approv/{id}/{status}', 'PembayaranInsentifController@approv')->name('approv');
+        });
+        //end pembayaran_insentif
+
+
+         //pembayaran_thr
+        // Route assigned name "pembayaran_thr.index"...
+        Route::name('pembayaran_thr.')->group(function () {
+            Route::get('pembayaran_thr', 'PembayaranThrController@index')->name('index');
+            Route::post('pembayaran_thr/search', 'PembayaranThrController@searchIndex')->name('search.index');
+            Route::get('pembayaran_thr/create', 'PembayaranThrController@create')->name('create');
+            Route::post('pembayaran_thr/create/json', 'PembayaranThrController@createJson')->name('createJson');
+            Route::post('pembayaran_thr/lokasi/json', 'PembayaranThrController@lokasiJson')->name('lokasiJson');
+            Route::post('pembayaran_thr/nobukti/json', 'PembayaranThrController@nobuktiJson')->name('nobuktiJson');
+            Route::post('pembayaran_thr/store', 'PembayaranThrController@store')->name('store');
+            Route::post('pembayaran_thr/store_detail', 'PembayaranThrController@storeDetail')->name('store.detail');
+            Route::post('pembayaran_thr/store_app', 'PembayaranThrController@storeApp')->name('store.app');
+            Route::get('pembayaran_thr/edit/{no}', 'PembayaranThrController@edit')->name('edit');
+            Route::get('pembayaran_thr/editdetail/{id}/{no}', 'PembayaranThrController@editDetail')->name('edit.detail');
+            Route::post('pembayaran_thr/update', 'PembayaranThrController@update')->name('update');
+            Route::post('pembayaran_thr/update/detail', 'PembayaranThrController@updateDetail')->name('update.detail');
+            Route::delete('pembayaran_thr/delete', 'PembayaranThrController@delete')->name('delete');
+            Route::delete('pembayaran_thr/deletedetail', 'PembayaranThrController@deleteDetail')->name('delete.detail');
+            Route::delete('pembayaran_thr/deletedetail/all', 'PembayaranThrController@deleteDetailall')->name('delete.detail.all');
+            Route::get('pembayaran_thr/approv/{id}/{status}', 'PembayaranThrController@approv')->name('approv');
+        });
+        //end pembayaran_thr
+
+
+         //pembayaran_umk
+        // Route assigned name "pembayaran_umk.index"...
+        Route::name('pembayaran_umk.')->group(function () {
+            Route::get('pembayaran_umk', 'PembayaranUmkController@index')->name('index');
+            Route::post('pembayaran_umk/search', 'PembayaranUmkController@searchIndex')->name('search.index');
+            Route::get('pembayaran_umk/create', 'PembayaranUmkController@create')->name('create');
+            Route::post('pembayaran_umk/create/json', 'PembayaranUmkController@createJson')->name('createJson');
+            Route::post('pembayaran_umk/lokasi/json', 'PembayaranUmkController@lokasiJson')->name('lokasiJson');
+            Route::post('pembayaran_umk/nobukti/json', 'PembayaranUmkController@nobuktiJson')->name('nobuktiJson');
+            Route::post('pembayaran_umk/store', 'PembayaranUmkController@store')->name('store');
+            Route::post('pembayaran_umk/store_detail', 'PembayaranUmkController@storeDetail')->name('store.detail');
+            Route::post('pembayaran_umk/store_app', 'PembayaranUmkController@storeApp')->name('store.app');
+            Route::get('pembayaran_umk/edit/{no}', 'PembayaranUmkController@edit')->name('edit');
+            Route::get('pembayaran_umk/editdetail/{id}/{no}', 'PembayaranUmkController@editDetail')->name('edit.detail');
+            Route::post('pembayaran_umk/update', 'PembayaranUmkController@update')->name('update');
+            Route::post('pembayaran_umk/update/detail', 'PembayaranUmkController@updateDetail')->name('update.detail');
+            Route::delete('pembayaran_umk/delete', 'PembayaranUmkController@delete')->name('delete');
+            Route::delete('pembayaran_umk/deletedetail', 'PembayaranUmkController@deleteDetail')->name('delete.detail');
+            Route::delete('pembayaran_umk/deletedetail/all', 'PembayaranUmkController@deleteDetailall')->name('delete.detail.all');
+            Route::get('pembayaran_umk/approv/{id}/{status}', 'PembayaranUmkController@approv')->name('approv');
+        });
+        //end pembayaran_thr
+
+
         //Rekap Harian Kas
         // Route assigned name "rekap_harian_kas.index"...
         Route::name('rekap_harian_kas.')->group(function () {

@@ -6,7 +6,7 @@
 	<div class="kt-container  kt-container--fluid ">
 		<div class="kt-subheader__main">
 			<h3 class="kt-subheader__title">
-				Pembayaran Gaji </h3>
+				Pembayaran UMK </h3>
 			<span class="kt-subheader__separator kt-hidden"></span>
 			<div class="kt-subheader__breadcrumbs">
 				<a href="#" class="kt-subheader__breadcrumbs-home"><i class="flaticon2-shelter"></i></a>
@@ -15,7 +15,7 @@
 				Perbendaharaan </a>
 				<span class="kt-subheader__breadcrumbs-separator"></span>
 				<a href="" class="kt-subheader__breadcrumbs-link">
-					Pembayaran Gaji </a>
+					Pembayaran UMK </a>
 				<span class="kt-subheader__breadcrumbs-separator"></span>
 				<span class="kt-subheader__breadcrumbs-link kt-subheader__breadcrumbs-link--active">Edit</span>
 			</div>
@@ -32,7 +32,7 @@
 					<i class="kt-font-brand flaticon2-plus-1"></i>
 				</span>
 				<h3 class="kt-portlet__head-title">
-					Menu Edit Pembayaran Gaji
+					Menu Edit Pembayaran UMK
 				</h3>			
 			</div>
 			<div class="kt-portlet__head-toolbar">
@@ -49,7 +49,7 @@
 						<div class="alert alert-secondary" role="alert">
 							<div class="alert-text">
 								<h5 class="kt-portlet__head-title">
-									Header Menu Edit Pembayaran Gaji
+									Header Menu Edit Pembayaran UMK
 								</h5>	
 							</div>
 						</div>
@@ -187,7 +187,7 @@
 							<div class="row">
 								<div class="col-2"></div>
 								<div class="col-10">
-									<a  href="{{route('pembayaran_gaji.index')}}" class="btn btn-warning"><i class="fa fa-reply" aria-hidden="true"></i>Cancel</a>
+									<a  href="{{route('pembayaran_umk.index')}}" class="btn btn-warning"><i class="fa fa-reply" aria-hidden="true"></i>Cancel</a>
 									<button type="submit" class="btn btn-brand"><i class="fa fa-check" aria-hidden="true"></i>Save</button>
 								</div>
 							</div>
@@ -204,24 +204,24 @@
 							<i class="kt-font-brand flaticon2-line-chart"></i>
 						</span>
 						<h3 class="kt-portlet__head-title">
-							Detail Pembayaran Gaji
+							Detail Pembayaran UMK
 						</h3>			
 						<div class="kt-portlet__head-toolbar">
 							<div class="kt-portlet__head-wrapper">
 								<div class="kt-portlet__head-actions">
-									<a href="#" id="btn-create" data-target="#kt_modal_4">
-										<span style="font-size: 2em;" class="kt-font-success" data-toggle="kt-tooltip" data-placement="top" title="Tambah Data">
-											<i class="fas fa-plus-circle"></i>
-										</span>
-									</a>
-					
-									<span style="font-size: 2em;" class="kt-font-warning pointer-link" data-toggle="kt-tooltip" data-placement="top" title="Ubah Data">
-										<i class="fas fa-edit" id="btn-edit"></i>
+								<a href="#" id="btn-create" data-target="#kt_modal_4">
+									<span style="font-size: 2em;" class="kt-font-success" data-toggle="kt-tooltip" data-placement="top" title="Tambah Data">
+										<i class="fas fa-plus-circle"></i>
 									</span>
-					
-									<span style="font-size: 2em;" class="kt-font-danger pointer-link" data-toggle="kt-tooltip" data-placement="top" title="Hapus Data Detail All">
-										<i class="fas fa-trash" id="btn-delete-all"></i>
-									</span>
+								</a>
+				
+								<span style="font-size: 2em;" class="kt-font-warning pointer-link" data-toggle="kt-tooltip" data-placement="top" title="Ubah Data">
+									<i class="fas fa-edit" id="btn-edit"></i>
+								</span>
+				
+								<span style="font-size: 2em;" class="kt-font-danger pointer-link" data-toggle="kt-tooltip" data-placement="top" title="Hapus Data">
+									<i class="fas fa-times-circle" id="btn-delete"></i>
+								</span>
 								</div>
 							</div>
 						</div>
@@ -282,7 +282,7 @@
 			</div>
 			<div class="modal-body">
 			<span id="form_result"></span>
-                <form  class="kt-form " id="form-create-detail"  enctype="multipart/form-data">
+				<form  class="kt-form " id="form-create-detail"  enctype="multipart/form-data">
 					{{csrf_field()}}
                         
                     <div class="form-group row ">
@@ -297,19 +297,94 @@
 					<div class="form-group row">
 						<label for="example-text-input" class="col-2 col-form-label">Rincian<span style="color:red;">*</span></label>
 						<label for="example-text-input" class=" col-form-label">:</label>
-						<div class="col-8" >
-							<select name="status"  class="form-control selectpicker" data-live-search="true" required oninvalid="this.setCustomValidity('Rincian Harus Diisi..')" onchange="setCustomValidity('')">
-								<option value="">-Pilih-</option>
-								<option value="tetap">Pekerja Tetap</option>
-								<option value="kontrak">Kontrak</option>
-								<option value="perbantuan">Perbantuan</option>
-								<option value="komisaris">Komisaris</option>
-								<option value="komite">Komite</option>
-							</select>
-							<input type="hidden" name="tahun" value="{{$tahuns}}">
-							<input type="hidden" name="bulan" value="{{$bulans}}">
+						<div class="col-8">
+							<textarea  class="form-control" type="text" value=""  name="rincian" size="50" maxlength="250" required oninvalid="this.setCustomValidity('Rincian Harus Diisi..')" oninput="setCustomValidity('')"></textarea>
 						</div>
-					</div>														
+					</div>
+					<div class="form-group row">
+						<label for="example-text-input" class="col-2 col-form-label">KD. Lapang<span style="color:red;">*</span></label>
+						<label for="example-text-input" class=" col-form-label">:</label>
+						<div class="col-8">
+							<select name="lapangan"  class="form-control selectpicker" data-live-search="true" required oninvalid="this.setCustomValidity('KD. Lapang Harus Diisi..')" onchange="setCustomValidity('')">
+								<option value="">-Pilih-</option>
+								@foreach($lokasi as $data_lok)
+								<option value="{{$data_lok->kodelokasi}}">{{$data_lok->kodelokasi}} - {{$data_lok->nama}}</option>
+								@endforeach
+							</select>						
+						</div>
+					</div>
+					<div class="form-group row">
+						<label for="example-text-input" class="col-2 col-form-label">Sandi Perkiraan<span style="color:red;">*</span></label>
+						<label for="example-text-input" class=" col-form-label">:</label>
+						<div class="col-8">
+							<select name="sanper"  class="form-control selectpicker" data-live-search="true" required oninvalid="this.setCustomValidity('Sandi Perkiraan Harus Diisi..')" onchange="setCustomValidity('')">
+								<option value="">-Pilih-</option>
+								@foreach($data_account as $data_acc)
+								<option value="{{$data_acc->kodeacct}}">{{$data_acc->kodeacct}} - {{$data_acc->descacct}}</option>
+								@endforeach
+								
+							</select>
+						</div>
+					</div>
+					<div class="form-group row">
+						<label for="example-text-input" class="col-2 col-form-label">Kode Bagian<span style="color:red;">*</span></label>
+						<label for="example-text-input" class=" col-form-label">:</label>
+						<div  class="col-8">
+							<select name="bagian"  class="form-control selectpicker" data-live-search="true" required oninvalid="this.setCustomValidity('Kode Bagian Harus Diisi..')" onchange="setCustomValidity('')">
+								<option value="">-Pilih-</option>
+								@foreach($data_bagian as $data_bag)
+								<option value="{{$data_bag->kode}}">{{$data_bag->kode}} - {{$data_bag->nama}}</option>
+								@endforeach
+								
+							</select>
+						</div>
+					</div>
+	
+					<div class="form-group row">
+						<label for="example-text-input" class="col-2 col-form-label">Perintah Kerja</label>
+						<label for="example-text-input" class=" col-form-label">:</label>
+						<div class="col-8">
+							<input  class="form-control" type="text" value="000000"  name="pk" size="6" maxlength="6">
+						</div>
+					</div>
+
+					<div class="form-group row">
+						<label for="example-text-input" class="col-2 col-form-label">Jenis Biaya<span style="color:red;">*</span></label>
+						<label for="example-text-input" class=" col-form-label">:</label>
+						<div  class="col-8">
+							<select name="jb"  class="form-control selectpicker" data-live-search="true" required oninvalid="this.setCustomValidity('Jenis Biaya Harus Diisi..')" onchange="setCustomValidity('')">
+								<option value="">-Pilih-</option>
+								@foreach($data_jenis as $data_jen)
+								<option value="{{$data_jen->kode}}">{{$data_jen->kode}} - {{$data_jen->keterangan}}</option>
+								@endforeach
+							
+							</select>
+						</div>
+					</div>
+									
+					<div class="form-group row">
+						<label for="example-text-input" class="col-2 col-form-label">C. Judex<span style="color:red;">*</span></label>
+						<label for="example-text-input" class=" col-form-label">:</label>
+						<div class="col-8">
+							<select name="cj" class="form-control selectpicker" data-live-search="true" required oninvalid="this.setCustomValidity('C. Judex Harus Diisi..')" onchange="setCustomValidity('')">
+								<option value="">-Pilih-</option>
+								@foreach($data_casj as $data_cas)
+								<option value="{{$data_cas->kode}}">{{$data_cas->kode}} - {{$data_cas->nama}}</option>
+								@endforeach
+							</select>
+						</div>
+					</div>
+									
+
+					<div class="form-group row">
+						<label for="example-text-input" class="col-2 col-form-label">Jumlah<span style="color:red;">*</span></label>
+						<label for="example-text-input" class=" col-form-label">:</label>
+						<div class="col-8">
+							<input  class="form-control" type="number" value="" name="nilai" size="16" maxlength="16"  required oninvalid="this.setCustomValidity('Jumlah Harus Diisi..')" oninput="setCustomValidity('')" autocomplete='off'>
+						</div>
+					</div>
+
+																					
 					<div class="kt-form__actions">
 						<div class="row">
 							<div class="col-2"></div>
@@ -325,41 +400,6 @@
 	</div>
 </div>
 
-<!--begin::Modal Delete--> 
-<div class="modal fade modal-delete-all"   tabindex="-1" role="dialog" aria-labelledby="exampleModalLabel" aria-hidden="true">
-	<div class="modal-dialog modal-lg" role="document">
-		<div class="modal-content">
-			<div class="modal-header">
-				<h5 class="modal-title" id="title-delete-detail"></h5>
-			</div>
-			<div class="modal-body">
-			<span id="form_result"></span>
-                <form  class="kt-form " id="form-delete-all"  enctype="multipart/form-data">
-					{{csrf_field()}}
-                        
-                    <div class="form-group row ">
-						<label for="example-text-input" class="col-2 col-form-label">No. Dokumen<span style="color:red;">*</span></label>
-						<label for="example-text-input" class=" col-form-label">:</label>
-						<div class="col-8">
-							<input style="background-color:#DCDCDC; cursor:not-allowed"  class="form-control" type="text" value="{{$nodok}}"  name="nodok" readonly>
-							<input type="hidden" name="tahun" value="{{$tahuns}}">
-							<input type="hidden" name="bulan" value="{{$bulans}}">
-						</div>
-					</div>												
-					<div class="kt-form__actions">
-						<div class="row">
-							<div class="col-2"></div>
-							<div class="col-10">
-								<button type="reset"  class="btn btn-warning"  data-dismiss="modal"><i class="fa fa-reply" aria-hidden="true"></i>Cancel</button>
-								<button type="submit" class="btn btn-brand"><i class="fa fa-check" aria-hidden="true"></i>Save</button>
-							</div>
-						</div>
-					</div>
-				</form>
-			</div>
-		</div>
-	</div>
-</div>
 
 
 <!--begin::Modal Edit--> 
@@ -554,7 +594,7 @@ var lokasi2 = $('#lokasi2').val();
 
 
 $.ajax({
-	url : "{{route('pembayaran_gaji.lokasiJson')}}",
+	url : "{{route('pembayaran_umk.lokasiJson')}}",
 	type : "POST",
 	dataType: 'json',
 	data : {
@@ -581,7 +621,7 @@ $.ajax({
 
 $('#form-edit').submit(function(){
 	$.ajax({
-		url  : "{{route('pembayaran_gaji.update')}}",
+		url  : "{{route('pembayaran_umk.update')}}",
 		type : "POST",
 		data : $('#form-edit').serialize(),
 		dataType : "JSON",
@@ -595,7 +635,7 @@ $('#form-edit').submit(function(){
 			text  : 'Berhasil',
 			timer : 2000
 		}).then(function() {
-				window.location.replace("{{ route('pembayaran_gaji.index') }}");;
+				window.location.replace("{{ route('pembayaran_umk.index') }}");;
 			});
 		}, 
 		error : function(){
@@ -612,7 +652,7 @@ var mp = $('#mp').val();
 var bulan = $('#bulan').val();
 var bulanbuku = $('#bulanbuku').val();
 	$.ajax({
-		url : "{{route('pembayaran_gaji.createJson')}}",
+		url : "{{route('pembayaran_umk.createJson')}}",
 		type : "POST",
 		dataType: 'json',
 		data : {
@@ -687,7 +727,7 @@ var jk = $('#jk').val();
 	var ci = $('#ci').val();
 
 	$.ajax({
-		url : "{{route('pembayaran_gaji.lokasiJson')}}",
+		url : "{{route('pembayaran_umk.lokasiJson')}}",
 		type : "POST",
 		dataType: 'json',
 		data : {
@@ -720,7 +760,7 @@ $("#lokasi").on("click", function(){
 	var tahun = $('#tahun').val();
 
 		$.ajax({
-			url : "{{route('pembayaran_gaji.nobuktiJson')}}",
+			url : "{{route('pembayaran_umk.nobuktiJson')}}",
 			type : "POST",
 			dataType: 'json',
 			data : {
@@ -759,19 +799,19 @@ $('#nilai').keyup(function(){
 
 $('#btn-create').on('click', function(e) {
 	e.preventDefault();
-	$('#title-detail').html("Tambah Detail Pembayaran Gaji");
+	$('#title-detail').html("Tambah Detail Pembayaran UMK");
 	$('.modal-create').modal('show');
 });
 $('#btn-delete-all').on('click', function(e) {
 	e.preventDefault();
-	$('#title-delete-detail').html("Hapus Detail Pembayaran Gaji All");
+	$('#title-delete-detail').html("Hapus Detail Pembayaran UMK All");
 	$('.modal-delete-all').modal('show');
 });
 
 	//prosess create detail
 	$('#form-create-detail').submit(function(){
 		$.ajax({
-			url  : "{{route('pembayaran_gaji.store.detail')}}",
+			url  : "{{route('pembayaran_umk.store.detail')}}",
 			type : "POST",
 			data : $('#form-create-detail').serialize(),
 			dataType : "JSON",
@@ -808,7 +848,7 @@ $('#btn-delete-all').on('click', function(e) {
 	//prosess delete all detail
 	$('#form-delete-all').submit(function(){
 		$.ajax({
-			url  : "{{route('pembayaran_gaji.delete.detail.all')}}",
+			url  : "{{route('pembayaran_umk.delete.detail.all')}}",
 			type : "delete",
 			data : $('#form-delete-all').serialize(),
 			dataType : "JSON",
@@ -841,7 +881,7 @@ if($('input[type=radio]').is(':checked')) {
 		var nodok = $(this).attr('nodok').split("/").join("-");
 		var nourut = $(this).attr('nourut');
 			$.ajax({
-				url :"{{('perbendaharaan/pembayaran_gaji/editdetail')}}"+ '/' +nodok+ '/' +nourut,
+				url :"{{('perbendaharaan/pembayaran_umk/editdetail')}}"+ '/' +nodok+ '/' +nourut,
 				type : 'get',
 				dataType:"json",
 				headers: {
@@ -855,7 +895,7 @@ if($('input[type=radio]').is(':checked')) {
 					$('#pk').val(data.pk);
 					var output=parseInt(data.totprice);
 					$('#nilai1').val(output);
-					$('#title-edit-detail').html("Edit Detail Pembayaran Gaji");
+					$('#title-edit-detail').html("Edit Detail Pembayaran UMK");
 					$('#select-lapangan').val(data.lokasi).trigger('change');
 					$('#select-sanper').val(data.account).trigger('change');
 					$('#select-bagian').val(data.bagian).trigger('change');
@@ -874,7 +914,7 @@ if($('input[type=radio]').is(':checked')) {
 
 $('#form-edit-detail').submit(function(){
 		$.ajax({
-			url  : "{{route('pembayaran_gaji.update.detail')}}",
+			url  : "{{route('pembayaran_umk.update.detail')}}",
 			type : "POST",
 			data : $('#form-edit-detail').serialize(),
 			dataType : "JSON",
@@ -926,7 +966,7 @@ $('#form-edit-detail').submit(function(){
 					.then((result) => {
 						if (result.value) {
 							$.ajax({
-								url: "{{ route('pembayaran_gaji.delete.detail') }}",
+								url: "{{ route('pembayaran_umk.delete.detail') }}",
 								type: 'DELETE',
 								dataType: 'json',
 								data: {

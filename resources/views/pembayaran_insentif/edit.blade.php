@@ -6,7 +6,7 @@
 	<div class="kt-container  kt-container--fluid ">
 		<div class="kt-subheader__main">
 			<h3 class="kt-subheader__title">
-				Pembayaran Gaji </h3>
+				Pembayaran Insentif </h3>
 			<span class="kt-subheader__separator kt-hidden"></span>
 			<div class="kt-subheader__breadcrumbs">
 				<a href="#" class="kt-subheader__breadcrumbs-home"><i class="flaticon2-shelter"></i></a>
@@ -15,7 +15,7 @@
 				Perbendaharaan </a>
 				<span class="kt-subheader__breadcrumbs-separator"></span>
 				<a href="" class="kt-subheader__breadcrumbs-link">
-					Pembayaran Gaji </a>
+					Pembayaran Insentif </a>
 				<span class="kt-subheader__breadcrumbs-separator"></span>
 				<span class="kt-subheader__breadcrumbs-link kt-subheader__breadcrumbs-link--active">Edit</span>
 			</div>
@@ -32,7 +32,7 @@
 					<i class="kt-font-brand flaticon2-plus-1"></i>
 				</span>
 				<h3 class="kt-portlet__head-title">
-					Menu Edit Pembayaran Gaji
+					Menu Edit Pembayaran Insentif
 				</h3>			
 			</div>
 			<div class="kt-portlet__head-toolbar">
@@ -49,7 +49,7 @@
 						<div class="alert alert-secondary" role="alert">
 							<div class="alert-text">
 								<h5 class="kt-portlet__head-title">
-									Header Menu Edit Pembayaran Gaji
+									Header Menu Edit Pembayaran Insentif
 								</h5>	
 							</div>
 						</div>
@@ -187,7 +187,7 @@
 							<div class="row">
 								<div class="col-2"></div>
 								<div class="col-10">
-									<a  href="{{route('pembayaran_gaji.index')}}" class="btn btn-warning"><i class="fa fa-reply" aria-hidden="true"></i>Cancel</a>
+									<a  href="{{route('pembayaran_insentif.index')}}" class="btn btn-warning"><i class="fa fa-reply" aria-hidden="true"></i>Cancel</a>
 									<button type="submit" class="btn btn-brand"><i class="fa fa-check" aria-hidden="true"></i>Save</button>
 								</div>
 							</div>
@@ -204,24 +204,24 @@
 							<i class="kt-font-brand flaticon2-line-chart"></i>
 						</span>
 						<h3 class="kt-portlet__head-title">
-							Detail Pembayaran Gaji
+							Detail Pembayaran Insentif
 						</h3>			
 						<div class="kt-portlet__head-toolbar">
 							<div class="kt-portlet__head-wrapper">
 								<div class="kt-portlet__head-actions">
-									<a href="#" id="btn-create" data-target="#kt_modal_4">
-										<span style="font-size: 2em;" class="kt-font-success" data-toggle="kt-tooltip" data-placement="top" title="Tambah Data">
-											<i class="fas fa-plus-circle"></i>
-										</span>
-									</a>
-					
-									<span style="font-size: 2em;" class="kt-font-warning pointer-link" data-toggle="kt-tooltip" data-placement="top" title="Ubah Data">
-										<i class="fas fa-edit" id="btn-edit"></i>
+								<a href="#" id="btn-create" data-target="#kt_modal_4">
+									<span style="font-size: 2em;" class="kt-font-success" data-toggle="kt-tooltip" data-placement="top" title="Tambah Data">
+										<i class="fas fa-plus-circle"></i>
 									</span>
-					
-									<span style="font-size: 2em;" class="kt-font-danger pointer-link" data-toggle="kt-tooltip" data-placement="top" title="Hapus Data Detail All">
-										<i class="fas fa-trash" id="btn-delete-all"></i>
-									</span>
+								</a>
+				
+								<span style="font-size: 2em;" class="kt-font-warning pointer-link" data-toggle="kt-tooltip" data-placement="top" title="Ubah Data">
+									<i class="fas fa-edit" id="btn-edit"></i>
+								</span>
+				
+								<span style="font-size: 2em;" class="kt-font-danger pointer-link" data-toggle="kt-tooltip" data-placement="top" title="Hapus Data Detail All">
+									<i class="fas fa-trash" id="btn-delete-all"></i>
+								</span>
 								</div>
 							</div>
 						</div>
@@ -300,11 +300,9 @@
 						<div class="col-8" >
 							<select name="status"  class="form-control selectpicker" data-live-search="true" required oninvalid="this.setCustomValidity('Rincian Harus Diisi..')" onchange="setCustomValidity('')">
 								<option value="">-Pilih-</option>
-								<option value="tetap">Pekerja Tetap</option>
-								<option value="kontrak">Kontrak</option>
-								<option value="perbantuan">Perbantuan</option>
-								<option value="komisaris">Komisaris</option>
-								<option value="komite">Komite</option>
+								@foreach($data_rincian as $rincian)
+								<option value="{{$rincian->namastatus}}">{{$rincian->namastatus}}</option>
+								@endforeach
 							</select>
 							<input type="hidden" name="tahun" value="{{$tahuns}}">
 							<input type="hidden" name="bulan" value="{{$bulans}}">
@@ -554,7 +552,7 @@ var lokasi2 = $('#lokasi2').val();
 
 
 $.ajax({
-	url : "{{route('pembayaran_gaji.lokasiJson')}}",
+	url : "{{route('pembayaran_insentif.lokasiJson')}}",
 	type : "POST",
 	dataType: 'json',
 	data : {
@@ -581,7 +579,7 @@ $.ajax({
 
 $('#form-edit').submit(function(){
 	$.ajax({
-		url  : "{{route('pembayaran_gaji.update')}}",
+		url  : "{{route('pembayaran_insentif.update')}}",
 		type : "POST",
 		data : $('#form-edit').serialize(),
 		dataType : "JSON",
@@ -595,7 +593,7 @@ $('#form-edit').submit(function(){
 			text  : 'Berhasil',
 			timer : 2000
 		}).then(function() {
-				window.location.replace("{{ route('pembayaran_gaji.index') }}");;
+				window.location.replace("{{ route('pembayaran_insentif.index') }}");;
 			});
 		}, 
 		error : function(){
@@ -612,7 +610,7 @@ var mp = $('#mp').val();
 var bulan = $('#bulan').val();
 var bulanbuku = $('#bulanbuku').val();
 	$.ajax({
-		url : "{{route('pembayaran_gaji.createJson')}}",
+		url : "{{route('pembayaran_insentif.createJson')}}",
 		type : "POST",
 		dataType: 'json',
 		data : {
@@ -687,7 +685,7 @@ var jk = $('#jk').val();
 	var ci = $('#ci').val();
 
 	$.ajax({
-		url : "{{route('pembayaran_gaji.lokasiJson')}}",
+		url : "{{route('pembayaran_insentif.lokasiJson')}}",
 		type : "POST",
 		dataType: 'json',
 		data : {
@@ -720,7 +718,7 @@ $("#lokasi").on("click", function(){
 	var tahun = $('#tahun').val();
 
 		$.ajax({
-			url : "{{route('pembayaran_gaji.nobuktiJson')}}",
+			url : "{{route('pembayaran_insentif.nobuktiJson')}}",
 			type : "POST",
 			dataType: 'json',
 			data : {
@@ -759,19 +757,19 @@ $('#nilai').keyup(function(){
 
 $('#btn-create').on('click', function(e) {
 	e.preventDefault();
-	$('#title-detail').html("Tambah Detail Pembayaran Gaji");
+	$('#title-detail').html("Tambah Detail Pembayaran Insentif");
 	$('.modal-create').modal('show');
 });
 $('#btn-delete-all').on('click', function(e) {
 	e.preventDefault();
-	$('#title-delete-detail').html("Hapus Detail Pembayaran Gaji All");
+	$('#title-delete-detail').html("Hapus Detail Pembayaran Insentif All");
 	$('.modal-delete-all').modal('show');
 });
 
 	//prosess create detail
 	$('#form-create-detail').submit(function(){
 		$.ajax({
-			url  : "{{route('pembayaran_gaji.store.detail')}}",
+			url  : "{{route('pembayaran_insentif.store.detail')}}",
 			type : "POST",
 			data : $('#form-create-detail').serialize(),
 			dataType : "JSON",
@@ -808,7 +806,7 @@ $('#btn-delete-all').on('click', function(e) {
 	//prosess delete all detail
 	$('#form-delete-all').submit(function(){
 		$.ajax({
-			url  : "{{route('pembayaran_gaji.delete.detail.all')}}",
+			url  : "{{route('pembayaran_insentif.delete.detail.all')}}",
 			type : "delete",
 			data : $('#form-delete-all').serialize(),
 			dataType : "JSON",
@@ -841,7 +839,7 @@ if($('input[type=radio]').is(':checked')) {
 		var nodok = $(this).attr('nodok').split("/").join("-");
 		var nourut = $(this).attr('nourut');
 			$.ajax({
-				url :"{{('perbendaharaan/pembayaran_gaji/editdetail')}}"+ '/' +nodok+ '/' +nourut,
+				url :"{{('perbendaharaan/pembayaran_insentif/editdetail')}}"+ '/' +nodok+ '/' +nourut,
 				type : 'get',
 				dataType:"json",
 				headers: {
@@ -855,7 +853,7 @@ if($('input[type=radio]').is(':checked')) {
 					$('#pk').val(data.pk);
 					var output=parseInt(data.totprice);
 					$('#nilai1').val(output);
-					$('#title-edit-detail').html("Edit Detail Pembayaran Gaji");
+					$('#title-edit-detail').html("Edit Detail Pembayaran Insentif");
 					$('#select-lapangan').val(data.lokasi).trigger('change');
 					$('#select-sanper').val(data.account).trigger('change');
 					$('#select-bagian').val(data.bagian).trigger('change');
@@ -874,7 +872,7 @@ if($('input[type=radio]').is(':checked')) {
 
 $('#form-edit-detail').submit(function(){
 		$.ajax({
-			url  : "{{route('pembayaran_gaji.update.detail')}}",
+			url  : "{{route('pembayaran_insentif.update.detail')}}",
 			type : "POST",
 			data : $('#form-edit-detail').serialize(),
 			dataType : "JSON",
@@ -926,7 +924,7 @@ $('#form-edit-detail').submit(function(){
 					.then((result) => {
 						if (result.value) {
 							$.ajax({
-								url: "{{ route('pembayaran_gaji.delete.detail') }}",
+								url: "{{ route('pembayaran_insentif.delete.detail') }}",
 								type: 'DELETE',
 								dataType: 'json',
 								data: {

@@ -13,109 +13,174 @@ use App\Models\Cashjudex;
 use App\Models\Mtrdeposito;
 use App\Models\Dtldepositotest;
 use App\Models\Saldostore;
+use App\Models\StatBayarThr;
+use Auth;
 use DB;
+use Session;
 use PDF;
-use Excel;
 use Alert;
 
-class PenerimaanKasController extends Controller
+class PembayaranUmkController extends Controller
 {
-    /**
-     * Display a listing of the resource.
-     *
-     * @return \Illuminate\Http\Response
-     */
     public function index()
     {
-        return view('penerimaan_kas.index');
+        return view('pembayaran_umk.index');
     }
 
     public function searchIndex(Request $request)
     {
-            $data_tahunbulan = DB::select("select max(thnbln) as bulan_buku from timetrans where status='1' and length(thnbln)='6'");
-            foreach($data_tahunbulan as $data_bul)
+        $data_rsbulan = DB::select("select max(thnbln) as thnbln from timetrans where status='1' and length(thnbln)=6");
+        if(!empty($data_rsbulan)){
+            foreach($data_rsbulan as $rsbulan)
             {
-                $bulan_buku = $data_bul->bulan_buku;
-            }
-            $tahuns = substr($bulan_buku,0,-2);
-        
-            $bulan = $request->bulan;
-            $tahun = $request->tahun;
-            $nodok = $request->bukti;
-            if($nodok == null and $tahun == null and $bulan == null){
-                $data = DB::select("select a.docno,a.originaldate,a.thnbln,a.jk,a.store,a.ci,a.voucher,a.kepada,a.rate,a.nilai_dok as nilai_dok,a.paid,a.verified,b.namabank from kasdoc a join storejk b on a.store=b.kodestore where a.thnbln='$bulan_buku' and a.kd_kepada is null  order by a.store,a.voucher asc");
-            }elseif($nodok == null and $tahun <> null and $bulan == null){
-                $data = DB::select("select a.docno,a.originaldate,a.thnbln,a.jk,a.store,a.ci,a.voucher,a.kepada,a.rate,a.nilai_dok as nilai_dok,a.paid,a.verified,b.namabank from kasdoc a join storejk b on a.store=b.kodestore where left(a.thnbln, 4)='$tahun' and a.kd_kepada is null  order by a.store,a.voucher asc");
-            }elseif($nodok <> null and $tahun == null and $bulan == null){
-                $data = DB::select("select a.docno,a.originaldate,a.thnbln,a.jk,a.store,a.ci,a.voucher,a.kepada,a.rate,a.nilai_dok as nilai_dok,a.paid,a.verified,b.namabank from kasdoc a join storejk b on a.store=b.kodestore where a.voucher='$nodok' and a.kd_kepada is null  order by a.store,a.voucher asc");
-            }elseif($nodok <> null and $tahun <> null and $bulan == null){
-                $data = DB::select("select a.docno,a.originaldate,a.thnbln,a.jk,a.store,a.ci,a.voucher,a.kepada,a.rate,a.nilai_dok as nilai_dok,a.paid,a.verified,b.namabank from kasdoc a join storejk b on a.store=b.kodestore where a.voucher='$nodok' and left(a.thnbln, 4)='$tahun' and a.kd_kepada is null  order by a.store,a.voucher asc");
-            }elseif($nodok == null and $tahun <> null and $bulan <> null){
-                $data = DB::select("select a.docno,a.originaldate,a.thnbln,a.jk,a.store,a.ci,a.voucher,a.kepada,a.rate,a.nilai_dok as nilai_dok,a.paid,a.verified,b.namabank from kasdoc a join storejk b on a.store=b.kodestore where left(thnbln, 4)='$tahun' and right(thnbln,2)='$bulan' and a.kd_kepada is null  order by a.store,a.voucher asc");
-            }elseif($nodok <> null and $tahun <> null and $bulan <> null){
-                $data = DB::select("select a.docno,a.originaldate,a.thnbln,a.jk,a.store,a.ci,a.voucher,a.kepada,a.rate,a.nilai_dok as nilai_dok,a.paid,a.verified,b.namabank from kasdoc a join storejk b on a.store=b.kodestore where a.voucher='$nodok' and left(thnbln, 4)='$tahun' and right(thnbln, 2)='$bulan' and a.kd_kepada is null  order by a.store,a.voucher asc");
-            }	
-            return datatables()->of($data)
-            ->addColumn('docno', function ($data) {
-                return $data->docno;
-           })
-           ->addColumn('tanggal', function ($data) {
-               $tgl = date_create($data->originaldate);
-               return date_format($tgl, 'd F Y');
-            })
-            ->addColumn('voucher', function ($data) {
-                return $data->voucher;
-            })
-            ->addColumn('kepada', function ($data) {
-                return $data->kepada;
-            })
-            ->addColumn('jk', function ($data) {
-                return $data->jk;
-            })
-            ->addColumn('store', function ($data) {
-                return $data->store.' -- '.$data->namabank;
-           })
-            ->addColumn('ci', function ($data) {
-                return $data->ci;
-           })
-           ->addColumn('rate', function ($data) {
-               return number_format($data->rate,2,'.',',');
-            })
-           ->addColumn('nilai_dok', function ($data) {
-               return 'Rp. '.number_format($data->nilai_dok,2,'.',',');
-            })
-    
-            ->addColumn('radio', function ($data) {
-                $radio = '<label class="kt-radio kt-radio--bold kt-radio--brand"><input type="radio" value="'.$data->docno.'" class="btn-radio" name="btn-radio"><span></span></label>'; 
-                return $radio;
-            })
-            ->addColumn('action', function ($data) {
-                if($data->verified == 'Y'){
-                    $action = '<p align="center"><span style="font-size: 2em;" class="kt-font-success pointer-link" data-toggle="kt-tooltip" data-placement="top" title="Data Sudah Diverifikasi"><i class="fas fa-check-circle" ></i></span></p>';
+                if(is_null($rsbulan->thnbln)){
+                    $thnblopen = "";
                 }else{
-                    if($data->paid == 'Y'){
-                        $action = '<p align="center"><a href="'. route('penerimaan_kas.approv',['id' => str_replace('/', '-', $data->docno),'status' => $data->paid]).'"><span style="font-size: 2em;" class="kt-font-warning pointer-link" data-toggle="kt-tooltip" data-placement="top"  title="Batalkan Pembayaran"><i class="fas fa-check-circle" ></i></span></a></p>';
-                    }else{
-                        $action = '<p align="center"><a href="'. route('penerimaan_kas.approv',['id' => str_replace('/', '-', $data->docno),'status' => $data->paid]).'"><span style="font-size: 2em;" class="kt-font-danger pointer-link" data-toggle="kt-tooltip" data-placement="top" title="Klik Untuk Pembayaran"><i class="fas fa-ban" ></i></span></a></p>';
-                    }
-                }               
-                return $action;
-            })
-            ->rawColumns(['action','radio'])
-            ->make(true);   
+                    $thnblopen = $rsbulan->thnbln;
+                }
+            }
+        }else{
+            $thnblopen = "";
         }
-
-    /**
-     * Show the form for creating a new resource.
-     *
-     * @return \Illuminate\Http\Response
-     */
-    public function createmp()
-    {
-        return view('penerimaan_kas.createmp');
+        $s = $thnblopen;
+        $nodok = $request->nodok;
+        $tahun = $request->tahun;
+        $bulan = $request->bulan;
+        if($nodok == "" and $tahun=="" and $bulan==""){
+            $data = DB::select("select (select namabank from storejk where kodestore=a.store and ci=a.ci) as namastore, a.docno,a.originaldate,a.thnbln,a.jk,a.store,a.ci,a.voucher,a.kepada,a.rate,a.verified,a.nilai_dok,a.paid from kasdoc a where thnbln='$s' and a.kd_kepada LIKE 'PUMK%' order by a.store,a.voucher asc");
+            $data_objrs2 = DB::select("select sum(nilai_dok) as jml from kasdoc where thnbln='$s' and kd_kepada='PG'");
+            if(!empty($data_objrs2)){
+             foreach($data_objrs2 as $objrs2)
+             {
+                 $jumlahnya =$objrs2->jml;
+             }
+            }else{
+                $jumlahnya = 0;
+            }
+        }elseif($nodok <> "" and $tahun=="" and $bulan==""){
+            $data = DB::select("select (select namabank from storejk where kodestore=a.store and ci=a.ci) as namastore, a.docno,a.originaldate,a.thnbln,a.jk,a.store,a.ci,a.voucher,a.kepada,a.rate,a.verified,a.nilai_dok,a.paid from kasdoc a where a.voucher='$nodok' and a.kd_kepada LIKE 'PUMK%' order by a.store,a.voucher asc");
+            $data_objrs2 = DB::select("select sum(nilai_dok) as jml from kasdoc where voucher='$nodok' and kd_kepada='PG'");
+            if(!empty($data_objrs2)){
+             foreach($data_objrs2 as $objrs2)
+             {
+                 $jumlahnya =$objrs2->jml;
+             }
+            }else{
+                $jumlahnya = 0;
+            }
+        
+        }elseif($nodok <> "" and $tahun <> "" and $bulan == ""){
+            $data = DB::select("select (select namabank from storejk where kodestore=a.store and ci=a.ci) as namastore, a.docno,a.originaldate,a.thnbln,a.jk,a.store,a.ci,a.voucher,a.kepada,a.rate,a.verified,a.nilai_dok,a.paid from kasdoc a where a.voucher='$nodok' and left(a.thnbln, 4)='$tahun' and a.kd_kepada LIKE 'PUMK%' order by a.store,a.voucher asc");
+            $data_objrs2 = DB::select("select sum(nilai_dok) as jml from kasdoc where voucher='$nodok' and left(thnbln, 4)='$tahun' and kd_kepada='PG'");
+            if(!empty($data_objrs2)){
+             foreach($data_objrs2 as $objrs2)
+             {
+                 $jumlahnya =$objrs2->jml;
+             }
+            }else{
+                $jumlahnya = 0;
+            }
+        }elseif($nodok == "" and $tahun <> "" and $bulan == ""){
+            $data = DB::select("select (select namabank from storejk where kodestore=a.store and ci=a.ci) as namastore, a.docno,a.originaldate,a.thnbln,a.jk,a.store,a.ci,a.voucher,a.kepada,a.rate,a.nilai_dok as nilai_dok,a.verified,a.paid from kasdoc a where left(thnbln, 4)='$tahun'  and a.kd_kepada LIKE 'PUMK%' order by a.store,a.voucher asc ");
+            $data_objrs2 = DB::select("select sum(nilai_dok) as jml from kasdoc where left(thnbln, 4)='$tahun' and kd_kepada='PG'");
+            if(!empty($data_objrs2)){
+             foreach($data_objrs2 as $objrs2)
+             {
+                 $jumlahnya =$objrs2->jml;
+             }
+            }else{
+                $jumlahnya = 0;
+            }
+        }elseif($nodok == "" and $tahun <> "" and $bulan <> ""){
+            $data = DB::select("select (select namabank from storejk where kodestore=a.store and ci=a.ci) as namastore, a.docno,a.originaldate,a.thnbln,a.jk,a.store,a.ci,a.voucher,a.kepada,a.rate,a.nilai_dok as nilai_dok,a.verified,a.paid from kasdoc a where left(thnbln, 4)='$tahun' and SUBSTRING(thnbln, 5, 2)='$bulan' and a.kd_kepada LIKE 'PUMK%' order by a.store,a.voucher asc ");
+            $data_objrs2 = DB::select("select sum(nilai_dok) as jml from kasdoc where left(thnbln, 4)='$tahun' and SUBSTRING(thnbln, 5, 2)='$bulan' and kd_kepada='PG'");
+            if(!empty($data_objrs2)){
+             foreach($data_objrs2 as $objrs2)
+             {
+                 $jumlahnya =$objrs2->jml;
+             }
+            }else{
+                $jumlahnya = 0;
+            }
+        }elseif($nodok == "" and $tahun == "" and $bulan <> ""){
+            $data = DB::select("select (select namabank from storejk where kodestore=a.store and ci=a.ci) as namastore, a.docno,a.originaldate,a.thnbln,a.jk,a.store,a.ci,a.voucher,a.kepada,a.rate,a.nilai_dok as nilai_dok,a.verified,a.paid from kasdoc a where SUBSTRING(thnbln, 5, 2)='$bulan' and a.kd_kepada LIKE 'PUMK%' order by a.store,a.voucher asc ");
+            $data_objrs2 = DB::select("select sum(nilai_dok) as jml from kasdoc where  SUBSTRING(thnbln, 5, 2)='$bulan' and kd_kepada='PG'");
+            if(!empty($data_objrs2)){
+             foreach($data_objrs2 as $objrs2)
+             {
+                 $jumlahnya =$objrs2->jml;
+             }
+            }else{
+                $jumlahnya = 0;
+            }
+        }else{
+            $data = DB::select("select (select namabank from storejk where kodestore=a.store and ci=a.ci) as namastore, a.docno,a.originaldate,a.thnbln,a.jk,a.store,a.ci,a.voucher,a.kepada,a.rate,a.verified,a.nilai_dok as nilai_dok,a.paid from kasdoc a where a.voucher='$nodok' and left(thnbln, 4)='$tahun' and SUBSTRING(thnbln, 5, 2)='$bulan' and a.kd_kepada LIKE 'PUMK%' order by a.store,a.voucher asc");
+            $data_objrs2 = DB::select("select sum(nilai_dok) as jml from kasdoc where voucher='$nodok' and left(thnbln, 4)='$tahun' and SUBSTRING(thnbln, 5, 2)='$bulan' and a.kd_kepada LIKE 'PUMK%'");
+            if(!empty($data_objrs2)){
+             foreach($data_objrs2 as $objrs2)
+             {
+                 $jumlahnya =$objrs2->jml;
+             }
+            }else{
+                $jumlahnya = 0;
+            }   
+        }	
+        return datatables()->of($data)
+        ->addColumn('docno', function ($data) {
+            return $data->docno;
+       })
+        ->addColumn('tanggalinput', function ($data) {
+            $tgl = date_create($data->originaldate);
+            return date_format($tgl, 'd/m/Y');
+       })
+        ->addColumn('nobukti', function ($data) {
+            return $data->voucher;
+       })
+        ->addColumn('kepada', function ($data) {
+            return $data->kepada;
+       })
+        ->addColumn('jk', function ($data) {
+            return $data->jk;
+       })
+        ->addColumn('nokas', function ($data) {
+            return $data->store.' -- '.$data->namastore;
+       })
+        ->addColumn('ci', function ($data) {
+            return $data->ci;
+       })
+        ->addColumn('kurs', function ($data) {
+            return $data->rate;
+       })
+        ->addColumn('nilai', function ($data) {
+            if($data->nilai_dok  == ""){
+                $nilai = 0;
+            }else{
+                $nilai = number_format($data->nilai_dok,2,'.',',');
+            }
+            return $nilai;
+       })
+        ->addColumn('radio', function ($data) {
+            $radio = '<center><label class="kt-radio kt-radio--bold kt-radio--brand"><input type="radio" value="'.$data->docno.'" class="btn-radio" name="btn-radio"><span></span></label></center>'; 
+            return $radio;
+        })
+        ->addColumn('action', function ($data) {
+            if($data->verified == 'Y'){
+                $action = '<p align="center"><span style="font-size: 2em;" class="kt-font-success pointer-link" data-toggle="kt-tooltip" data-placement="top" title="Data Sudah DiVerifikasi"><i class="fas fa-check-circle" ></i></span></p>';
+            }else{
+                if($data->paid == 'Y'){
+                    $action = '<p align="center"><a href="'. route('pembayaran_umk.approv',['id' => str_replace('/', '-', $data->docno),'status' => $data->paid]).'"><span style="font-size: 2em;" class="kt-font-warning pointer-link" data-toggle="kt-tooltip" data-placement="top"  title="Batalkan Pembayaran"><i class="fas fa-check-circle" ></i></span></a></p>';
+                }else{
+                    $action = '<p align="center"><a href="'. route('pembayaran_umk.approv',['id' => str_replace('/', '-', $data->docno),'status' => $data->paid]).'"><span style="font-size: 2em;" class="kt-font-danger pointer-link" data-toggle="kt-tooltip" data-placement="top" title="Klik untuk Pembayaran"><i class="fas fa-ban" ></i></span></a></p>';
+                }
+            }
+            return $action;
+        })
+        ->rawColumns(['radio','action'])
+        ->make(true); 
     }
-    public function create(Request $request)
-    {        
+
+    public function create()
+    {
         $data_tahunbulan = DB::select("select max(thnbln) as bulan_buku from timetrans where status='1' and length(thnbln)='6'");
         if(!empty($data_tahunbulan)){
             foreach($data_tahunbulan as $data_bul)
@@ -129,7 +194,8 @@ class PenerimaanKasController extends Controller
         }else {
             $bulan_buku = date_format( date_create(now()), 'Ym');
         }
-        if($request->mp == "P"){
+        $mp = 'P';
+        if($mp == "P"){
             $darkep = "Kepada";
             $datas = DB::select("Select Max(left(mrs_no,4)) as nover from Kasdoc Where substr(DocNo,1,1)='P' and left(THNBLN,4)='$bulan_buku'");
             foreach($datas as $data)
@@ -145,11 +211,23 @@ class PenerimaanKasController extends Controller
             $darkep = "Dari";
             $nover = '0';
         }
-        
+        $data_tahunbulan = DB::select("select max(thnbln) as bulan_buku from timetrans where status='1' and length(thnbln)='6'");
+        if(!empty($data_tahunbulan)){
+            foreach($data_tahunbulan as $data_bul)
+            {   if($data_bul->bulan_buku <> null){
+                $bulan_buku = $data_bul->bulan_buku;
+
+                }else{
+                    $bulan_buku = date_format( date_create(now()), 'Ym');
+                }
+            }
+        }else {
+            $bulan_buku = date_format( date_create(now()), 'Ym');
+        }
         $bulan = substr($bulan_buku,4);
         $tahun = substr($bulan_buku,0,-2);
         $data_bagian = SdmKdbag::all();
-        return view('penerimaan_kas.create',compact('request','data_bagian','tahun','bulan','bulan_buku','darkep','nover'));
+        return view('pembayaran_umk.create',compact('mp','data_bagian','tahun','bulan','bulan_buku','darkep','nover'));
     }
 
     public function createJson(Request $request)
@@ -194,12 +272,6 @@ class PenerimaanKasController extends Controller
         return response()->json($data);
     }
 
-    /**
-     * Store a newly created resource in storage.
-     *
-     * @param  \Illuminate\Http\Request  $request
-     * @return \Illuminate\Http\Response
-     */
     public function store(Request $request)
     {
         $data_tahunbulan = DB::select("select max(thnbln) as bulan_buku from timetrans where status='1' and length(thnbln)='6'");
@@ -260,6 +332,7 @@ class PenerimaanKasController extends Controller
         $ket1 = $request->ket1;
         $ket2 = $request->ket2;
         $ket3 = $request->ket3;
+        $kodekepada = 'PUMK';
         $nover = $request->nover;
         if($stbbuku == 'gtopening'){ 
             
@@ -293,7 +366,8 @@ class PenerimaanKasController extends Controller
                 'ket1' =>  $ket1,
                 'ket2' =>  $ket2,
                 'ket3' =>  $ket3,
-                'mrs_no' =>  $nover ,           
+                'kd_kepada' =>  $kodekepada,
+                'mrs_no' =>  $nover 
                 ]);
                 $data = 1;
                 return response()->json($data);
@@ -305,23 +379,6 @@ class PenerimaanKasController extends Controller
 
     }
 
-    /**
-     * Display the specified resource.
-     *
-     * @param  int  $id
-     * @return \Illuminate\Http\Response
-     */
-    public function show($id)
-    {
-        //
-    }
-
-    /**
-     * Show the form for editing the specified resource.
-     *
-     * @param  int  $id
-     * @return \Illuminate\Http\Response
-     */
     public function edit($id)
     {
         $nodoc=str_replace('-', '/', $id);
@@ -330,11 +387,16 @@ class PenerimaanKasController extends Controller
         ->select('kasdoc.*', 'storejk.*')
         ->where('kasdoc.docno',$nodoc)
         ->get();
+        $datenew = date('Y-m-d');
+        $tgl = date_create($datenew);
+        $tahuns = date_format($tgl, 'Y');
+        $bulans = date_format($tgl, 'n');
         $lokasi = Lokasi::all();
         $data_jenis = JenisBiaya::all();
         $data_casj = Cashjudex::all();
         $data_bagian = SdmKdbag::all();
-        $data_account = DB::select("select kodeacct,descacct from account where length(kodeacct)=6 and kodeacct not like '%x%'");
+        $data_rincian = DB::select("select tahun,bulan,tahunthr,case when status = 'C' then 'THR PEKERJA PWTT' when status = 'K' then 'THR PEKERJA PWT' else 'THR PEKERJA PERBANTUAN' end as namastatus, status,sum(nilai) as nilai from pay_master_thr p where tahun='$tahuns' and bulan='$bulans' group by tahun,bulan,tahunthr,status");
+        $data_account = DB::select("select kodeacct,descacct from account where length(kodeacct)=6 and kodeacct not like '%X%'");
         $count= Kasline::where('docno',$nodoc)->sum('totprice');
         $data_detail = Kasline::where('docno',$nodoc)->get();
         $no_detail = Kasline::where('docno',$nodoc)->max('lineno');
@@ -343,7 +405,8 @@ class PenerimaanKasController extends Controller
         }else {
             $no_urut = 1;
         }
-        return view('penerimaan_kas.edit',compact(
+        return view('pembayaran_umk.edit',compact(
+            'data_rincian',
             'data_list',
             'data_bagian',
             'data_detail',
@@ -352,17 +415,11 @@ class PenerimaanKasController extends Controller
             'lokasi',
             'data_account',
             'data_jenis',
-            'data_casj'
+            'data_casj',
+            'tahuns',
+            'bulans'
         ));
     }
-
-    /**
-     * Update the specified resource in storage.
-     *
-     * @param  \Illuminate\Http\Request  $request
-     * @param  int  $id
-     * @return \Illuminate\Http\Response
-     */
     public function update(Request $request)
     {
         Kasdoc::where('docno', $request->nodok)
@@ -383,33 +440,24 @@ class PenerimaanKasController extends Controller
             return response()->json();
     }
 
-    
     public function storeDetail(Request $request)
     {
+        $tahun = $request->tahun;
+        $bulans = $request->bulan;
+        $bulan = ltrim($request->bulan,0);
+        $thnbln = $tahun.''.$bulans;
+        $docno = $request->nodok;
         $data_cek = DB::select("select * from kasline where docno='$request->nodok' and lineno='$request->nourut'");
         if(!empty($data_cek)){
             $data = 2;
             return response()->json($data);
         }else{
-
-                if($request->cj = '50' and $request->mp){
-                    Mtrdeposito::insert([
-                        'docno' =>  $request->nodok,
-                        'lineno' =>  $request->nourut,
-                        'kdbank' =>  $request->sanper,
-                        'nominal' =>  $request->nilai,
-                        'asal' =>  $request->lapangan,
-                        'keterangan' =>  $request->rincian,
-                        'proses' =>  'N',          
-                        ]);
-                }
-
             Kasline::insert([
                 'docno' =>  $request->nodok,
                 'lineno' =>  $request->nourut,
                 'account' =>  $request->sanper,
                 'area' =>  '0',
-                'lokasi'  =>  $request->lapangan,
+                'lokasi'  => $request->lapangan,
                 'bagian' =>  $request->bagian,
                 'pk' =>  $request->pk,
                 'jb' =>  $request->jb,
@@ -417,26 +465,51 @@ class PenerimaanKasController extends Controller
                 'totprice'  =>  $request->nilai,
                 'keterangan'  =>  $request->rincian
                 ]);
+                $data_sum = DB::select("select sum(totprice) as v_total from kasline where docno='$docno'");
+                foreach($data_sum as $data_s)
+                {
+                    Kasdoc::where('docno', $docno)
+                    ->update([
+                        'nilai_dok' =>  $data_s->v_total
+                    ]);
+                }   
                 $data = 1;
-                return response()->json($data);    
+                return response()->json($data);
         }
     }
-
     public function editDetail($nodok, $nourut)
     {
         $no=str_replace('-', '/', $nodok);
         $data = Kasline::where('docno', $no)->where('lineno', $nourut)->distinct()->get();
         return response()->json($data[0]);
     }
+    public function updateDetail(Request $request)
+    {
+        Kasline::where('docno', $request->nodok)
+                ->where('lineno',$request->nourut)
+                ->update([
+                    'account' =>  $request->sanper,
+                    'area' =>  '0',
+                    'lokasi' =>  $request->lapangan,
+                    'bagian' =>  $request->bagian,
+                    'pk' =>  $request->pk,
+                    'jb' =>  $request->jb,
+                    'totprice' =>  $request->nilai,
+                    'cj' =>  $request->cj,
+                    'keterangan' =>  $request->rincian,
+                ]);
+                
+        $data_sum = DB::select("select sum(totprice) as total from kasline where docno='$request->nodok'");
+        foreach($data_sum as $data_s)
+        {
+            Kasdoc::where('docno',$request->nodok)
+            ->update([
+                'nilai_dok' =>  $data_s->total
+            ]);
+        }   
+        return response()->json();
+    }
 
-    
-
-    /**
-     * Remove the specified resource from storage.
-     *
-     * @param  int  $id
-     * @return \Illuminate\Http\Response
-     */
     public function delete(Request $request)
     {
         $data_rskas = DB::select("select thnbln from kasdoc a where a.docno='$request->nodok'");
@@ -472,8 +545,6 @@ class PenerimaanKasController extends Controller
                     }else{
                         Kasdoc::where('docno', $request->nodok)->delete();
                         Kasline::where('docno', $request->nodok)->delete();
-                        Mtrdeposito::where('docno', $request->nodok)->delete();
-                        Dtldepositotest::where('docno', $request->nodok)->delete();
                         $data = 1;
                         return response()->json($data);
                     }
@@ -485,7 +556,22 @@ class PenerimaanKasController extends Controller
     public function deleteDetail(Request $request)
     {
         Kasline::where('docno', $request->nodok)->where('lineno',$request->nourut)->delete();
-        Mtrdeposito::where('docno', $request->nodok)->where('lineno',$request->nourut)->delete();
+        return response()->json();
+    }
+    public function deleteDetailall(Request $request)
+    {
+        $tahun = $request->tahun;
+        $bulan = ltrim($request->bulan,0);
+        Kasline::where('docno', $request->nodok)->delete();
+        Kasdoc::where('docno', $request->nodok)
+            ->update([
+                'nilai_dok' => '0'
+            ]);
+        StatBayarThr::where('tahun', $tahun)
+            ->where('bulan',$bulan)
+            ->update([
+                'status' =>  'N'
+            ]);
         return response()->json();
     }
 
@@ -493,11 +579,11 @@ class PenerimaanKasController extends Controller
     {
         $nodok=str_replace('-', '/', $id);
         $data_app = Kasdoc::where('docno',$nodok)->select('*')->get();
-        return view('penerimaan_kas.approv',compact('data_app','status'));
+        return view('pembayaran_umk.approv',compact('data_app','status'));
     }
 
     public function storeApp(Request $request)
-    {      
+    {   
         $nodok=str_replace('-', '/', $request->nodok);
         $data_app = Kasdoc::where('docno',$nodok)->select('*')->get();
         foreach($data_app as $data)
@@ -526,7 +612,7 @@ class PenerimaanKasController extends Controller
                     $selisih = round($data_jum->jumlah,0) * $bi_bayar;
                     if($selisih + $v_akhir > 0){
                         Alert::info('Kas Tidak Mencukupi! Saldo yang tersedia = 9,999,999,999,990.00')->persistent(true);
-                        return redirect()->route('penerimaan_kas.index');                            
+                        return redirect()->route('pembayaran_umk.index');                            
                     }else{
                         if($selisih >= 0){
                             if($bi_bayar == 1){
@@ -562,7 +648,7 @@ class PenerimaanKasController extends Controller
                             'paiddate' => $request->tgl_app,
                         ]);
                         Alert::success('No.Dokumen : '.$nodok.' Berhasil Dibatalkan Approval', 'Berhasil')->persistent(true);
-                        return redirect()->route('penerimaan_kas.index');
+                        return redirect()->route('pembayaran_umk.index');
                         
                     }
                 }
@@ -589,7 +675,7 @@ class PenerimaanKasController extends Controller
                     $selisih = round($data_jum->jumlah,0) * $i_bayar;
                     if($selisih + $v_akhir > 0){
                         Alert::info('Kas Tidak Mencukupi! Saldo yang tersedia = 9,999,999,999,990.00')->persistent(true);
-                        return redirect()->route('penerimaan_kas.index');                            
+                        return redirect()->route('pembayaran_umk.index');                            
                     }else{
                         if($selisih >= 0){
                             if($i_bayar == 1){
@@ -625,7 +711,7 @@ class PenerimaanKasController extends Controller
                             'paiddate' => $request->tgl_app,
                         ]);
                         Alert::success('No.Dokumen : '.$nodok.' Berhasil Diapproval', 'Berhasil')->persistent(true);
-                        return redirect()->route('penerimaan_kas.index');
+                        return redirect()->route('pembayaran_umk.index');
                     }
                 }
             }

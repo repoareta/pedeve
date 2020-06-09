@@ -6,7 +6,7 @@
 	<div class="kt-container  kt-container--fluid ">
 		<div class="kt-subheader__main">
 			<h3 class="kt-subheader__title">
-				Pemabayaran Gaji Pekerja </h3>
+				Pemabayaran THR Pekerja </h3>
 			<span class="kt-subheader__separator kt-hidden"></span>
 			<div class="kt-subheader__breadcrumbs">
 				<a href="#" class="kt-subheader__breadcrumbs-home"><i class="flaticon2-shelter"></i></a>
@@ -14,7 +14,7 @@
 				<a href="" class="kt-subheader__breadcrumbs-link">
 					Perbendaharaan </a>
 				<span class="kt-subheader__breadcrumbs-separator"></span>
-				<span class="kt-subheader__breadcrumbs-link kt-subheader__breadcrumbs-link--active">Pemabayaran Gaji Pekerja</span>
+				<span class="kt-subheader__breadcrumbs-link kt-subheader__breadcrumbs-link--active">Pemabayaran THR Pekerja</span>
 			</div>
 		</div>
 	</div>
@@ -31,9 +31,9 @@
 			<h3 class="kt-portlet__head-title">
             @foreach($data_app as $data)
                 @if($status == 'Y')
-				Tabel <span style="color:blue;">Pembatalan</span> Approval Pemabayaran Gaji Pekerja
+				Tabel <span style="color:blue;">Pembatalan</span> Approval Pemabayaran THR Pekerja
                 @elseif($status == 'N')
-				Tabel <span style="color:blue;">Eksekusi</span> Approval Pemabayaran Gaji Pekerja
+				Tabel <span style="color:blue;">Eksekusi</span> Approval Pemabayaran THR Pekerja
                 @endif
             @endforeach
 			</h3>			
@@ -46,7 +46,7 @@
 		</div>
 	</div>
 	<div class="kt-portlet__body">
-        <form class="kt-form kt-form--label-right" action="{{ route('pembayaran_gaji.store.app') }}" method="post">
+        <form class="kt-form kt-form--label-right" action="{{ route('pembayaran_thr.store.app') }}" method="post">
             @csrf
             @foreach($data_app as $data)
             <div class="form-group row">
@@ -69,7 +69,7 @@
                 <div class="row">
                     <div class="col-2"></div>
                     <div class="col-10">
-                        <a  href="{{ route('pembayaran_gaji.index') }}" class="btn btn-warning"><i class="fa fa-reply" aria-hidden="true"></i> Batal</a>
+                        <a  href="{{ route('pembayaran_thr.index') }}" class="btn btn-warning"><i class="fa fa-reply" aria-hidden="true"></i> Batal</a>
                         <button type="submit" class="btn btn-brand"><i class="fa fa-check" aria-hidden="true"></i> Submit</button>
                     </div>
                 </div>

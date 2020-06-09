@@ -339,7 +339,7 @@ class MasterPhkController extends Controller
                 {
                  DB::table('phk_header')->where('no_serah', $docno)
                 ->update([
-                    'no_urut' => $nourut->no 
+                    'no_urut' => $nourut->no; 
                     ]);
                 }
                     $data = 1;
