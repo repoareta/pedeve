@@ -135,9 +135,9 @@
 							</div>
 						</div>
 						<div class="form-group row">
-							<label class="col-2 col-form-label">Sejumlah<span style="color:red;">*</span></label>
+							<label class="col-2 col-form-label">Sejumlah</label>
 							<div class="col-10">
-								<input class="form-control" type="text" name="nilai" id="nilai" value="" size="16" maxlength="16" required oninvalid="this.setCustomValidity('Sejumlah Harus Diisi..')" oninput="setCustomValidity('')" autocomplete='off' onkeypress="return hanyaAngka(event)">
+								<input class="form-control" type="text" name="nilai" id="nilai" value="" size="16" maxlength="16" >
 								<input class="form-control" type="hidden" name="iklan" value=""  id="iklan" size="4" maxlength="4" readonly style="background-color:#DCDCDC; cursor:not-allowed">
 							</div>
 						</div>

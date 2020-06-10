@@ -709,6 +709,19 @@ Route::group(['middleware'=> ['auth','checkRole:1']], function () {
         });
         //end inisialisasi_saldo
 
+        //bulan_perbendaharaan
+        // Route assigned name "bulan_perbendaharaan.index"...
+        Route::name('bulan_perbendaharaan.')->group(function () {
+            Route::get('bulan_perbendaharaan', 'BulanPerbendaharaanController@index')->name('index');
+            Route::post('bulan_perbendaharaan/index/search', 'BulanPerbendaharaanController@searchIndex')->name('search.index');
+            Route::get('bulan_perbendaharaan/create', 'BulanPerbendaharaanController@create')->name('create');
+            Route::post('bulan_perbendaharaan/store', 'BulanPerbendaharaanController@store')->name('store');
+            Route::get('bulan_perbendaharaan/edit/{no}', 'BulanPerbendaharaanController@edit')->name('edit');
+            Route::post('bulan_perbendaharaan/update', 'BulanPerbendaharaanController@update')->name('update');
+            Route::delete('bulan_perbendaharaan/delete', 'BulanPerbendaharaanController@delete')->name('delete');
+        });
+        //end bulan_perbendaharaan
+
         //Penempatan deposito
         // Route assigned name "penempatan_deposito.index"...
         Route::name('penempatan_deposito.')->group(function () {

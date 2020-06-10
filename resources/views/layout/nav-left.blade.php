@@ -395,6 +395,16 @@
                     'inisialisasi_saldo.create',
                     'inisialisasi_saldo.edit',
                 ); // isi nama semua route inisialisasi saldo
+                $bulan_perbendaharaan = array(
+                    'bulan_perbendaharaan.index',
+                    'bulan_perbendaharaan.search.index',
+                    'bulan_perbendaharaan.create',
+                    'bulan_perbendaharaan.edit',
+                ); // isi nama semua route setting bulan buku bulan_perbendaharaan
+
+                $tool = array_merge(
+                    $bulan_perbendaharaan
+                ); //isi nama Subdomain Tool
 
                 $saldo = array_merge(
                     $informasi_saldo,
@@ -521,7 +531,8 @@
                     $deposito,
                     $pembayaran,
                     $rekap_perbendaharaan,
-                    $report_perbendaharaan
+                    $report_perbendaharaan,
+                    $tool
                 ); // array merge semua submenu
                 
                 $jurnal_umum = array(
@@ -1351,15 +1362,26 @@
                                 </span>
                             </a>
                         </li>
-                        <li class="kt-menu__item " aria-haspopup="true">
-                            <a href="{{ route('perjalanan_dinas.index') }}" class="kt-menu__link">
+                        <li class="kt-menu__item kt-menu__item--submenu {{ set_active($tool) }}" aria-haspopup="true" data-ktmenu-submenu-toggle="hover">
+                            <a href="javascript:;" class="kt-menu__link kt-menu__toggle">
                                 <i class="kt-menu__link-bullet kt-menu__link-bullet--dot">
                                     <span></span>
                                 </i>
-                                <span class="kt-menu__link-text">
-                                    Setting Bulan Buku
-                                </span>
+                                <span class="kt-menu__link-text">Tool</span>
+                                <i class="kt-menu__ver-arrow la la-angle-right"></i>
                             </a>
+                            <div class="kt-menu__submenu "><span class="kt-menu__arrow"></span>
+                                <ul class="kt-menu__subnav">
+                                    <li class="kt-menu__item kt-menu__item{{ set_active_submenu($bulan_perbendaharaan) }}" aria-haspopup="true">
+                                        <a href="{{route('bulan_perbendaharaan.index')}}" class="kt-menu__link">
+                                            <i class="kt-menu__link-bullet kt-menu__link-bullet--line">
+                                                <span></span>
+                                            </i>
+                                            <span class="kt-menu__link-text">Setting Bulan Buku</span>
+                                        </a>
+                                    </li>
+                                </ul>
+                            </div>
                         </li>
                         <li class="kt-menu__item kt-menu__item--submenu {{ set_active($rekap_perbendaharaan) }}" aria-haspopup="true" data-ktmenu-submenu-toggle="hover">
                             <a href="javascript:;" class="kt-menu__link kt-menu__toggle">
