@@ -13,7 +13,7 @@ use App\Models\Cashjudex;
 use App\Models\Mtrdeposito;
 use App\Models\Dtldepositotest;
 use App\Models\Saldostore;
-use App\Models\StatBayarThr;
+use App\Models\Umk;
 use Auth;
 use DB;
 use Session;
@@ -567,11 +567,6 @@ class PembayaranUmkController extends Controller
             ->update([
                 'nilai_dok' => '0'
             ]);
-        StatBayarThr::where('tahun', $tahun)
-            ->where('bulan',$bulan)
-            ->update([
-                'status' =>  'N'
-            ]);
         return response()->json();
     }
 
@@ -647,6 +642,12 @@ class PembayaranUmkController extends Controller
                             'paidby' => $request->userid,
                             'paiddate' => $request->tgl_app,
                         ]);
+                        Umk::where('no_kas', $nodok)
+                        ->update([
+                            'app_pbd' => 'N',
+                            'app_pbd_oleh' => $request->userid,
+                            'app_pbd_tgl' => $request->tgl_app,
+                        ]);
                         Alert::success('No.Dokumen : '.$nodok.' Berhasil Dibatalkan Approval', 'Berhasil')->persistent(true);
                         return redirect()->route('pembayaran_umk.index');
                         
@@ -709,6 +710,12 @@ class PembayaranUmkController extends Controller
                             'paid' => 'Y',
                             'paidby' => $request->userid,
                             'paiddate' => $request->tgl_app,
+                        ]);
+                        Umk::where('no_kas', $nodok)
+                        ->update([
+                            'app_pbd' => 'Y',
+                            'app_pbd_oleh' => $request->userid,
+                            'app_pbd_tgl' => $request->tgl_app,
                         ]);
                         Alert::success('No.Dokumen : '.$nodok.' Berhasil Diapproval', 'Berhasil')->persistent(true);
                         return redirect()->route('pembayaran_umk.index');
