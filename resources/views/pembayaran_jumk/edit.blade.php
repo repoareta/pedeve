@@ -6,7 +6,7 @@
 	<div class="kt-container  kt-container--fluid ">
 		<div class="kt-subheader__main">
 			<h3 class="kt-subheader__title">
-				Perbendaharaan - Kas/Bank </h3>
+				Pembayaran Pertanggungjawaban UMK </h3>
 			<span class="kt-subheader__separator kt-hidden"></span>
 			<div class="kt-subheader__breadcrumbs">
 				<a href="#" class="kt-subheader__breadcrumbs-home"><i class="flaticon2-shelter"></i></a>
@@ -15,7 +15,7 @@
 				Perbendaharaan </a>
 				<span class="kt-subheader__breadcrumbs-separator"></span>
 				<a href="" class="kt-subheader__breadcrumbs-link">
-					Perbendaharaan - Kas/Bank </a>
+					Pembayaran Pertanggungjawaban UMK </a>
 				<span class="kt-subheader__breadcrumbs-separator"></span>
 				<span class="kt-subheader__breadcrumbs-link kt-subheader__breadcrumbs-link--active">Edit</span>
 			</div>
@@ -32,7 +32,7 @@
 					<i class="kt-font-brand flaticon2-plus-1"></i>
 				</span>
 				<h3 class="kt-portlet__head-title">
-					Menu Edit Perbendaharaan - Kas/Bank
+					Menu Edit Pembayaran Pertanggungjawaban UMK
 				</h3>			
 			</div>
 			<div class="kt-portlet__head-toolbar">
@@ -49,7 +49,7 @@
 						<div class="alert alert-secondary" role="alert">
 							<div class="alert-text">
 								<h5 class="kt-portlet__head-title">
-									Header Menu Edit Perbendaharaan - Kas/Bank
+									Header Menu Edit Pembayaran Pertanggungjawaban UMK
 								</h5>	
 							</div>
 						</div>
@@ -187,7 +187,7 @@
 							<div class="row">
 								<div class="col-2"></div>
 								<div class="col-10">
-									<a  href="{{route('penerimaan_kas.index')}}" class="btn btn-warning"><i class="fa fa-reply" aria-hidden="true"></i>Cancel</a>
+									<a  href="{{route('pembayaran_jumk.index')}}" class="btn btn-warning"><i class="fa fa-reply" aria-hidden="true"></i>Cancel</a>
 									<button type="submit" class="btn btn-brand"><i class="fa fa-check" aria-hidden="true"></i>Save</button>
 								</div>
 							</div>
@@ -204,7 +204,7 @@
 							<i class="kt-font-brand flaticon2-line-chart"></i>
 						</span>
 						<h3 class="kt-portlet__head-title">
-							Detail Perbendaharaan - Kas/Bank
+							Detail Pembayaran Pertanggungjawaban UMK
 						</h3>			
 						<div class="kt-portlet__head-toolbar">
 							<div class="kt-portlet__head-wrapper">
@@ -282,7 +282,7 @@
 			</div>
 			<div class="modal-body">
 			<span id="form_result"></span>
-                <form  class="kt-form " id="form-create-detail"  enctype="multipart/form-data">
+				<form  class="kt-form " id="form-create-detail"  enctype="multipart/form-data">
 					{{csrf_field()}}
                         
                     <div class="form-group row ">
@@ -401,6 +401,7 @@
 </div>
 
 
+
 <!--begin::Modal Edit--> 
 <div class="modal fade modal-edit" id="kt_modal_4"  tabindex="-1" role="dialog" aria-labelledby="exampleModalLabel" aria-hidden="true">
 	<div class="modal-dialog modal-lg" role="document">
@@ -421,7 +422,6 @@
 							<input style="background-color:#DCDCDC; cursor:not-allowed"  class="form-control" type="hidden" value=""  name="nodok" id="nodok" readonly>
 						</div>
 					</div>
-
 					<div class="form-group row">
 						<label for="example-text-input" class="col-2 col-form-label">Rincian<span style="color:red;">*</span></label>
 						<label for="example-text-input" class=" col-form-label">:</label>
@@ -438,9 +438,7 @@
 								@foreach($lokasi as $data_lok)
 								<option value="{{$data_lok->kodelokasi}}">{{$data_lok->kodelokasi}} - {{$data_lok->nama}}</option>
 								@endforeach
-							</select>	
-							<div id="lapangan"></div>
-
+							</select>
 						</div>
 					</div>
 					<div class="form-group row">
@@ -474,7 +472,7 @@
 						<label for="example-text-input" class="col-2 col-form-label">Perintah Kerja</label>
 						<label for="example-text-input" class=" col-form-label">:</label>
 						<div class="col-8">
-							<input  class="form-control" type="text" value="000000"  name="pk" id="pk" size="6" maxlength="6">
+							<input  class="form-control" type="text"   name="pk" id="pk" size="6" maxlength="6">
 						</div>
 					</div>
 
@@ -596,7 +594,7 @@ var lokasi2 = $('#lokasi2').val();
 
 
 $.ajax({
-	url : "{{route('penerimaan_kas.lokasiJson')}}",
+	url : "{{route('pembayaran_jumk.lokasiJson')}}",
 	type : "POST",
 	dataType: 'json',
 	data : {
@@ -623,7 +621,7 @@ $.ajax({
 
 $('#form-edit').submit(function(){
 	$.ajax({
-		url  : "{{route('penerimaan_kas.update')}}",
+		url  : "{{route('pembayaran_jumk.update')}}",
 		type : "POST",
 		data : $('#form-edit').serialize(),
 		dataType : "JSON",
@@ -631,14 +629,13 @@ $('#form-edit').submit(function(){
 		'X-CSRF-Token': '{{ csrf_token() }}',
 		},
 		success : function(data){
-		console.log(data);
 		Swal.fire({
 			type  : 'success',
 			title : 'Data Berhasil Diproses',
 			text  : 'Berhasil',
 			timer : 2000
 		}).then(function() {
-				window.location.replace("{{ route('penerimaan_kas.index') }}");;
+				window.location.replace("{{ route('pembayaran_jumk.index') }}");;
 			});
 		}, 
 		error : function(){
@@ -655,7 +652,7 @@ var mp = $('#mp').val();
 var bulan = $('#bulan').val();
 var bulanbuku = $('#bulanbuku').val();
 	$.ajax({
-		url : "{{route('penerimaan_kas.createJson')}}",
+		url : "{{route('pembayaran_jumk.createJson')}}",
 		type : "POST",
 		dataType: 'json',
 		data : {
@@ -730,7 +727,7 @@ var jk = $('#jk').val();
 	var ci = $('#ci').val();
 
 	$.ajax({
-		url : "{{route('penerimaan_kas.lokasiJson')}}",
+		url : "{{route('pembayaran_jumk.lokasiJson')}}",
 		type : "POST",
 		dataType: 'json',
 		data : {
@@ -763,7 +760,7 @@ $("#lokasi").on("click", function(){
 	var tahun = $('#tahun').val();
 
 		$.ajax({
-			url : "{{route('penerimaan_kas.nobuktiJson')}}",
+			url : "{{route('pembayaran_jumk.nobuktiJson')}}",
 			type : "POST",
 			dataType: 'json',
 			data : {
@@ -802,14 +799,19 @@ $('#nilai').keyup(function(){
 
 $('#btn-create').on('click', function(e) {
 	e.preventDefault();
-	$('#title-detail').html("Tambah Detail Perbendaharaan - Kas/Bank");
+	$('#title-detail').html("Tambah Detail Pembayaran Pertanggungjawaban UMK");
 	$('.modal-create').modal('show');
 });
+$('#btn-delete-all').on('click', function(e) {
+	e.preventDefault();
+	$('#title-delete-detail').html("Hapus Detail Pembayaran Pertanggungjawaban UMK All");
+	$('.modal-delete-all').modal('show');
+});
 
-//prosess create detail
-$('#form-create-detail').submit(function(){
+	//prosess create detail
+	$('#form-create-detail').submit(function(){
 		$.ajax({
-			url  : "{{route('penerimaan_kas.store.detail')}}",
+			url  : "{{route('pembayaran_jumk.store.detail')}}",
 			type : "POST",
 			data : $('#form-create-detail').serialize(),
 			dataType : "JSON",
@@ -817,9 +819,46 @@ $('#form-create-detail').submit(function(){
             'X-CSRF-Token': '{{ csrf_token() }}',
             },
 			success : function(data){
+		console.log(data);
+
+				if(data == 1){
+					Swal.fire({
+						type  : 'success',
+						title : 'Data Berhasil Ditambah',
+						text  : 'Berhasil',
+						timer : 2000
+					}).then(function() {
+						location.reload();
+						});
+				}else{
+					Swal.fire({
+						type  : 'info',
+						title : 'Duplikasi data dokumen detail, entri dibatalkan',
+						text  : 'Failed',
+						timer : 2000
+					});
+				}
+			}, 
+			error : function(){
+				alert("Terjadi kesalahan, coba lagi nanti");
+			}
+		});	
+		return false;
+	});
+	//prosess delete all detail
+	$('#form-delete-all').submit(function(){
+		$.ajax({
+			url  : "{{route('pembayaran_jumk.delete.detail.all')}}",
+			type : "delete",
+			data : $('#form-delete-all').serialize(),
+			dataType : "JSON",
+            headers: {
+            'X-CSRF-Token': '{{ csrf_token() }}',
+            },
+			success : function(data){
 				Swal.fire({
 					type  : 'success',
-					title : 'Data Berhasil Ditambah',
+					title : 'Data Berhasil Dihapus',
 					text  : 'Berhasil',
 					timer : 2000
 				}).then(function() {
@@ -842,7 +881,7 @@ if($('input[type=radio]').is(':checked')) {
 		var nodok = $(this).attr('nodok').split("/").join("-");
 		var nourut = $(this).attr('nourut');
 			$.ajax({
-				url :"{{('perbendaharaan/penerimaan_kas/editdetail')}}"+ '/' +nodok+ '/' +nourut,
+				url :"{{('perbendaharaan/pembayaran_jumk/editdetail')}}"+ '/' +nodok+ '/' +nourut,
 				type : 'get',
 				dataType:"json",
 				headers: {
@@ -856,7 +895,7 @@ if($('input[type=radio]').is(':checked')) {
 					$('#pk').val(data.pk);
 					var output=parseInt(data.totprice);
 					$('#nilai1').val(output);
-					$('#title-edit-detail').html("Edit Detail Perbendaharaan - Kas/Bank");
+					$('#title-edit-detail').html("Edit Detail Pembayaran Pertanggungjawaban UMK");
 					$('#select-lapangan').val(data.lokasi).trigger('change');
 					$('#select-sanper').val(data.account).trigger('change');
 					$('#select-bagian').val(data.bagian).trigger('change');
@@ -875,7 +914,7 @@ if($('input[type=radio]').is(':checked')) {
 
 $('#form-edit-detail').submit(function(){
 		$.ajax({
-			url  : "{{route('penerimaan_kas.store.detail')}}",
+			url  : "{{route('pembayaran_jumk.update.detail')}}",
 			type : "POST",
 			data : $('#form-edit-detail').serialize(),
 			dataType : "JSON",
@@ -927,7 +966,7 @@ $('#form-edit-detail').submit(function(){
 					.then((result) => {
 						if (result.value) {
 							$.ajax({
-								url: "{{ route('penerimaan_kas.delete.detail') }}",
+								url: "{{ route('pembayaran_jumk.delete.detail') }}",
 								type: 'DELETE',
 								dataType: 'json',
 								data: {

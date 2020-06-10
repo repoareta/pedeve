@@ -543,6 +543,19 @@ class PembayaranUmkController extends Controller
                         $data = 3;
                         return response()->json($data);
                     }else{
+                        $data_cekumum = DB::select("select distinct(ref_no) as nomor from kasdoc where docno='$request->nodok'");
+                        foreach($data_cekumum as $cekumum)
+                        {
+                            $tgl_app = date('Y-m-d');
+                            $userid = Auth::user()->userid;
+                            Umk::where('no_umk', $cekumum->nomor)
+                                ->update([
+                                    'app_pbd' => 'N',
+                                    'no_kas' => '-',
+                                    'app_pbd_oleh' => $userid,
+                                    'app_pbd_tgl' => $tgl_app,
+                                ]);
+                        }
                         Kasdoc::where('docno', $request->nodok)->delete();
                         Kasline::where('docno', $request->nodok)->delete();
                         $data = 1;
@@ -556,6 +569,14 @@ class PembayaranUmkController extends Controller
     public function deleteDetail(Request $request)
     {
         Kasline::where('docno', $request->nodok)->where('lineno',$request->nourut)->delete();
+        $data_sum = DB::select("select sum(totprice) as total from kasline where docno='$request->nodok'");
+        foreach($data_sum as $data_s)
+        {
+            Kasdoc::where('docno',$request->nodok)
+            ->update([
+                'nilai_dok' =>  $data_s->total
+            ]);
+        }
         return response()->json();
     }
     public function deleteDetailall(Request $request)

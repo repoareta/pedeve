@@ -465,7 +465,7 @@ class PembayaranInsentifController extends Controller
                                 $v_nomor = $no->v_no+1;
                             }
                         }else{
-                            $v_no =1;
+                            $v_nomor =1;
                         }
                         $data_aard = DB::select("select * from pay_tbl_aard where kode='$t->aard'");
                         if(!empty($data_aard)){
@@ -509,7 +509,7 @@ class PembayaranInsentifController extends Controller
                                 $v_nomor = $no->v_no+1;
                             }
                         }else{
-                            $v_no =1;
+                            $v_nomor =1;
                         }
                        
                         $data_aard = DB::select("select * from pay_tbl_aard where kode='$t->aard'");

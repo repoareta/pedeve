@@ -437,11 +437,31 @@
                     'pembayaran_umk.edit.detail',
                     'pembayaran_umk.approv'
                 ); // isi nama semua route pembayaran umk
+                $pembayaran_jumk = array(
+                    'pembayaran_jumk.index',
+                    'pembayaran_jumk.search.index',
+                    'pembayaran_jumk.createmp',
+                    'pembayaran_jumk.create',
+                    'pembayaran_jumk.edit',
+                    'pembayaran_jumk.edit.detail',
+                    'pembayaran_jumk.approv'
+                ); // isi nama semua route pembayaran jumk
+                $pembayaran_pbayar = array(
+                    'pembayaran_pbayar.index',
+                    'pembayaran_pbayar.search.index',
+                    'pembayaran_pbayar.createmp',
+                    'pembayaran_pbayar.create',
+                    'pembayaran_pbayar.edit',
+                    'pembayaran_pbayar.edit.detail',
+                    'pembayaran_pbayar.approv'
+                ); // isi nama semua route pembayaran pbayar
                 $pembayaran = array_merge(
                     $pembayaran_gaji,
                     $pembayaran_insentif,
                     $pembayaran_thr,
-                    $pembayaran_umk
+                    $pembayaran_umk,
+                    $pembayaran_jumk,
+                    $pembayaran_pbayar
                 ); //isi nama Subdomain pembayaran
                 
                 $deposito = array(
@@ -1273,16 +1293,16 @@
                                             <span class="kt-menu__link-text">Uang Muka Kerja</span>
                                         </a>
                                     </li>
-                                    <li class="kt-menu__item kt-menu__item{{ set_active_submenu($inisialisasi_saldo) }}" aria-haspopup="true">
-                                        <a href="{{route('inisialisasi_saldo.index')}}" class="kt-menu__link">
+                                    <li class="kt-menu__item kt-menu__item{{ set_active_submenu($pembayaran_jumk) }}" aria-haspopup="true">
+                                        <a href="{{route('pembayaran_jumk.index')}}" class="kt-menu__link">
                                             <i class="kt-menu__link-bullet kt-menu__link-bullet--line">
                                                 <span></span>
                                             </i>
                                             <span class="kt-menu__link-text">PertanggungJawaban UMK</span>
                                         </a>
                                     </li>
-                                    <li class="kt-menu__item kt-menu__item{{ set_active_submenu($inisialisasi_saldo) }}" aria-haspopup="true">
-                                        <a href="{{route('inisialisasi_saldo.index')}}" class="kt-menu__link">
+                                    <li class="kt-menu__item kt-menu__item{{ set_active_submenu($pembayaran_pbayar) }}" aria-haspopup="true">
+                                        <a href="{{route('pembayaran_pbayar.index')}}" class="kt-menu__link">
                                             <i class="kt-menu__link-bullet kt-menu__link-bullet--line">
                                                 <span></span>
                                             </i>

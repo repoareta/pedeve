@@ -209,11 +209,11 @@
 						<div class="kt-portlet__head-toolbar">
 							<div class="kt-portlet__head-wrapper">
 								<div class="kt-portlet__head-actions">
-								<a href="#" id="btn-create" data-target="#kt_modal_4">
+								<!-- <a href="#" id="btn-create" data-target="#kt_modal_4">
 									<span style="font-size: 2em;" class="kt-font-success" data-toggle="kt-tooltip" data-placement="top" title="Tambah Data">
 										<i class="fas fa-plus-circle"></i>
 									</span>
-								</a>
+								</a> -->
 				
 								<span style="font-size: 2em;" class="kt-font-warning pointer-link" data-toggle="kt-tooltip" data-placement="top" title="Ubah Data">
 									<i class="fas fa-edit" id="btn-edit"></i>
