@@ -205,7 +205,7 @@ function pekerja_status($status)
 
 function vf($tf){
     if(is_null($tf)){
-         return   $vf = "";
+         return   $vf = "0";
     }else{
         return $vf = trim($tf);
     }
