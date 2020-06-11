@@ -34,17 +34,13 @@
 			<div class="kt-portlet__head-toolbar">
 				<div class="kt-portlet__head-wrapper">
 					<div class="kt-portlet__head-actions">
-						<!-- <span style="font-size: 2em;" class="kt-font-warning pointer-link" data-toggle="kt-tooltip" data-placement="top" title="Ubah Data">
-							<i class="fas fa-edit" id="editRow"></i>
+						<span style="font-size: 2em;" class="kt-font-success pointer-link" data-toggle="kt-tooltip" data-placement="top" title="Proses Posting">
+							<i class="fas fa-database" id="prsposting"></i>
 						</span>
 
-						<span style="font-size: 2em;"  class="kt-font-danger pointer-link" data-toggle="kt-tooltip" data-placement="top" title="Hapus Data">
-							<i class="fas fa-times-circle" id="deleteRow"></i>
+						<span style="font-size: 2em;"  class="kt-font-warning pointer-link" data-toggle="kt-tooltip" data-placement="top" title="Batal Posting">
+							<i class="fas fa-reply" id="btlposting"></i>
 						</span>
-
-						<span style="font-size: 2em;" class="kt-font-info pointer-link" data-toggle="kt-tooltip" data-placement="top" title="Cetak Data">
-							<i class="fas fa-print" id="exportRow"></i>
-						</span> -->
 					</div>
 				</div>
 			</div>
@@ -135,6 +131,15 @@ $(document).ready(function () {
 		$('#search-form').on('submit', function(e) {
 			t.draw();
 			e.preventDefault();
+		});
+
+		$('#prsposting').on('click', function(e) {
+			e.preventDefault();
+			location.replace("{{ route('postingan_kas_bank.prsposting') }}");
+		});
+		$('#btlposting').on('click', function(e) {
+			e.preventDefault();
+			location.replace("{{ route('postingan_kas_bank.btlposting') }}");
 		});
 
 

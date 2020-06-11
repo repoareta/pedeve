@@ -150,13 +150,6 @@ $('#editRow').click(function(e) {
 	}
 });
 
-//refresh data
-$('#show-data').on('click', function(e) {
-	e.preventDefault();
-		location.replace("{{ route('penerimaan_kas.index') }}");
-
-});
-
 // delete Kas/Bank otomatis
 $('#deleteRow').click(function(e) {
 e.preventDefault();

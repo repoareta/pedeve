@@ -222,7 +222,7 @@ $(document).ready(function () {
 				swalAlertInit('ubah');
 			}
 		});
-		//edit 
+		//export 
 		$('#exportRow').click(function(e) {
 			e.preventDefault();
 

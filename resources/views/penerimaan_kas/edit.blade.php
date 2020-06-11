@@ -288,7 +288,7 @@
                     <div class="form-group row ">
 						<label for="example-text-input" class="col-2 col-form-label">No. Urut<span style="color:red;">*</span></label>
 						<label for="example-text-input" class=" col-form-label">:</label>
-						<div class="col-2">
+						<div class="col-8">
 							<input style="background-color:#DCDCDC; cursor:not-allowed"  class="form-control" type="text" value="{{$no_urut}}"  name="nourut" readonly>
 							<input style="background-color:#DCDCDC; cursor:not-allowed"  class="form-control" type="hidden" value="{{$nodok}}"  name="nodok" readonly>
 						</div>
@@ -302,7 +302,7 @@
 						</div>
 					</div>
 					<div class="form-group row">
-						<label for="example-text-input" class="col-2 col-form-label">KD. Lapang</label>
+						<label for="example-text-input" class="col-2 col-form-label">KD. Lapang<span style="color:red;">*</span></label>
 						<label for="example-text-input" class=" col-form-label">:</label>
 						<div class="col-8">
 							<select name="lapangan"  class="form-control selectpicker" data-live-search="true" required oninvalid="this.setCustomValidity('KD. Lapang Harus Diisi..')" onchange="setCustomValidity('')">
@@ -314,7 +314,7 @@
 						</div>
 					</div>
 					<div class="form-group row">
-						<label for="example-text-input" class="col-2 col-form-label">Sandi Perkiraan</label>
+						<label for="example-text-input" class="col-2 col-form-label">Sandi Perkiraan<span style="color:red;">*</span></label>
 						<label for="example-text-input" class=" col-form-label">:</label>
 						<div class="col-8">
 							<select name="sanper"  class="form-control selectpicker" data-live-search="true" required oninvalid="this.setCustomValidity('Sandi Perkiraan Harus Diisi..')" onchange="setCustomValidity('')">
@@ -327,7 +327,7 @@
 						</div>
 					</div>
 					<div class="form-group row">
-						<label for="example-text-input" class="col-2 col-form-label">Kode Bagian</label>
+						<label for="example-text-input" class="col-2 col-form-label">Kode Bagian<span style="color:red;">*</span></label>
 						<label for="example-text-input" class=" col-form-label">:</label>
 						<div  class="col-8">
 							<select name="bagian"  class="form-control selectpicker" data-live-search="true" required oninvalid="this.setCustomValidity('Kode Bagian Harus Diisi..')" onchange="setCustomValidity('')">
@@ -349,7 +349,7 @@
 					</div>
 
 					<div class="form-group row">
-						<label for="example-text-input" class="col-2 col-form-label">Jenis Biaya</label>
+						<label for="example-text-input" class="col-2 col-form-label">Jenis Biaya<span style="color:red;">*</span></label>
 						<label for="example-text-input" class=" col-form-label">:</label>
 						<div  class="col-8">
 							<select name="jb"  class="form-control selectpicker" data-live-search="true" required oninvalid="this.setCustomValidity('Jenis Biaya Harus Diisi..')" onchange="setCustomValidity('')">
@@ -363,7 +363,7 @@
 					</div>
 									
 					<div class="form-group row">
-						<label for="example-text-input" class="col-2 col-form-label">C. Judex</label>
+						<label for="example-text-input" class="col-2 col-form-label">C. Judex<span style="color:red;">*</span></label>
 						<label for="example-text-input" class=" col-form-label">:</label>
 						<div class="col-8">
 							<select name="cj" class="form-control selectpicker" data-live-search="true" required oninvalid="this.setCustomValidity('C. Judex Harus Diisi..')" onchange="setCustomValidity('')">
@@ -416,7 +416,7 @@
                     <div class="form-group row ">
 						<label for="example-text-input" class="col-2 col-form-label">No. Urut<span style="color:red;">*</span></label>
 						<label for="example-text-input" class=" col-form-label">:</label>
-						<div class="col-2">
+						<div class="col-8">
 							<input style="background-color:#DCDCDC; cursor:not-allowed"  class="form-control" type="text" value=""  name="nourut" id="nourut" readonly>
 							<input style="background-color:#DCDCDC; cursor:not-allowed"  class="form-control" type="hidden" value=""  name="nodok" id="nodok" readonly>
 						</div>
@@ -534,6 +534,11 @@
 @section('scripts')
 	<script type="text/javascript">
 	$(document).ready(function () {
+		$('#tabel-detail-permintaan').DataTable({
+			scrollX   : true,
+			processing: true,
+			serverSide: false,
+		});
 
 		var jk = $('#jk').val();
 	if(jk == '13'){
