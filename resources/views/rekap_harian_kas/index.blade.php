@@ -48,7 +48,7 @@
 						</span>
 
 						<span style="font-size: 2em;" class="kt-font-info pointer-link" data-toggle="kt-tooltip" data-placement="top" title="Cetak Data">
-							<i class="fas fa-print" id="reportRow"></i>
+							<i class="fas fa-print" id="exportRow"></i>
 						</span>
 					</div>
 				</div>
@@ -193,10 +193,25 @@ $(document).ready(function () {
 					var tgl = $(this).attr('tanggal');
 					var id = $(this).attr('jk');
 					var no = $(this).attr('nokas');
-					location.replace("{{url('perbendaharaan/rekap_harian_kas/edit')}}"+ '/' +id+'/'+no+'/'+tgl);
+					location.replace("{{url('perbendaharaan/rekap_harian_kas/edit')}}"+ '/' +no+'/'+id+'/'+tgl);
 				});
 			} else {
 				swalAlertInit('ubah');
+			}
+		});
+		//edit 
+		$('#exportRow').click(function(e) {
+			e.preventDefault();
+
+			if($('input[class=btn-radio]').is(':checked')) { 
+				$("input[class=btn-radio]:checked").each(function(){
+					var id = $(this).attr('jk');
+					var no = $(this).attr('nokas');
+					var tanggal = $(this).attr('tanggal');
+					location.replace("{{url('perbendaharaan/rekap_harian_kas/rekap')}}"+ '/' +no+'/'+id+'/'+tanggal);
+				});
+			} else {
+				swalAlertInit('cetak');
 			}
 		});
 

@@ -691,7 +691,6 @@ $(".btn-radio:checked").each(function() {
 
 
 //delete permintaan bayar detail
-//delete
 $('#deleteRow').click(function(e) {
 			e.preventDefault();
 			$(".btn-radio:checked").each(function() {  

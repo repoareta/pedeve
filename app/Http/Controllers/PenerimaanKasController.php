@@ -79,7 +79,7 @@ class PenerimaanKasController extends Controller
                 return $data->ci;
            })
            ->addColumn('rate', function ($data) {
-               return 'Rp. '.number_format($data->rate,2,'.',',');
+               return number_format($data->rate,2,'.',',');
             })
            ->addColumn('nilai_dok', function ($data) {
                return 'Rp. '.number_format($data->nilai_dok,2,'.',',');
@@ -102,7 +102,8 @@ class PenerimaanKasController extends Controller
                 return $action;
             })
             ->rawColumns(['action','radio'])
-            ->make(true);    }
+            ->make(true);   
+        }
 
     /**
      * Show the form for creating a new resource.
@@ -115,22 +116,6 @@ class PenerimaanKasController extends Controller
     }
     public function create(Request $request)
     {        
-        If($request->mp == "P"){
-            $darkep = "Kepada";
-            $datas = DB::select("Select Max(left(mrs_no,4)) as nover from Kasdoc Where substr(DocNo,1,1)='P' and left(THNBLN,4)='2020'");
-            foreach($datas as $data)
-            {
-                if($data->nover <> null){
-                    $da = '2'.$data->nover+1;
-                    $nover = substr($da,1,4);
-                }else {
-                    $nover = '0001';
-                }
-            }
-        }else{
-            $darkep = "Dari";
-            $nover = '0';
-        }
         $data_tahunbulan = DB::select("select max(thnbln) as bulan_buku from timetrans where status='1' and length(thnbln)='6'");
         if(!empty($data_tahunbulan)){
             foreach($data_tahunbulan as $data_bul)
@@ -144,6 +129,23 @@ class PenerimaanKasController extends Controller
         }else {
             $bulan_buku = date_format( date_create(now()), 'Ym');
         }
+        if($request->mp == "P"){
+            $darkep = "Kepada";
+            $datas = DB::select("Select Max(left(mrs_no,4)) as nover from Kasdoc Where substr(DocNo,1,1)='P' and left(THNBLN,4)='$bulan_buku'");
+            foreach($datas as $data)
+            {
+                if($data->nover <> null){
+                    $da = '2'.$data->nover+1;
+                    $nover = substr($da,1,4);
+                }else {
+                    $nover = '0001';
+                }
+            }
+        }else{
+            $darkep = "Dari";
+            $nover = '0';
+        }
+        
         $bulan = substr($bulan_buku,4);
         $tahun = substr($bulan_buku,0,-2);
         $data_bagian = SdmKdbag::all();
@@ -385,60 +387,39 @@ class PenerimaanKasController extends Controller
     public function storeDetail(Request $request)
     {
         $data_cek = DB::select("select * from kasline where docno='$request->nodok' and lineno='$request->nourut'");
-    if(!empty($data_cek)){
-        if($request->cj = '50' and $request->mp){
-            Mtrdeposito::where('docno', $request->nodok)
-            ->where('lineno',$request->nourut)
-            ->update([
-               'kdbank' =>  $request->sanper,
-               'nominal' =>  $request->nilai,
-               'asal' =>  $request->lapangan,
-               'keterangan' =>  $request->rincian,
-               'proses' =>  'N',          
-               ]);
+        if(!empty($data_cek)){
+            $data = 2;
+            return response()->json($data);
+        }else{
+
+                if($request->cj = '50' and $request->mp){
+                    Mtrdeposito::insert([
+                        'docno' =>  $request->nodok,
+                        'lineno' =>  $request->nourut,
+                        'kdbank' =>  $request->sanper,
+                        'nominal' =>  $request->nilai,
+                        'asal' =>  $request->lapangan,
+                        'keterangan' =>  $request->rincian,
+                        'proses' =>  'N',          
+                        ]);
+                }
+
+            Kasline::insert([
+                'docno' =>  $request->nodok,
+                'lineno' =>  $request->nourut,
+                'account' =>  $request->sanper,
+                'area' =>  '0',
+                'lokasi'  =>  $request->lapangan,
+                'bagian' =>  $request->bagian,
+                'pk' =>  $request->pk,
+                'jb' =>  $request->jb,
+                'cj' =>  $request->cj,
+                'totprice'  =>  $request->nilai,
+                'keterangan'  =>  $request->rincian
+                ]);
+                $data = 1;
+                return response()->json($data);    
         }
-        Kasline::where('docno', $request->nodok)
-            ->where('lineno',$request->nourut)
-            ->update([
-            'account' =>  $request->sanper,
-            'lokasi'  =>  $request->lapangan,
-            'bagian' =>  $request->bagian,
-            'pk' =>  $request->pk,
-            'jb' =>  $request->jb,
-            'cj' =>  $request->cj,
-            'totprice'  =>  $request->nilai,
-            'keterangan'  =>  $request->rincian
-            ]);
-            return response()->json();
-    }else{
-
-             if($request->cj = '50' and $request->mp){
-                 Mtrdeposito::insert([
-                    'docno' =>  $request->nodok,
-                    'lineno' =>  $request->nourut,
-                    'kdbank' =>  $request->sanper,
-                    'nominal' =>  $request->nilai,
-                    'asal' =>  $request->lapangan,
-                    'keterangan' =>  $request->rincian,
-                    'proses' =>  'N',          
-                    ]);
-             }
-
-        Kasline::insert([
-            'docno' =>  $request->nodok,
-            'lineno' =>  $request->nourut,
-            'account' =>  $request->sanper,
-            'area' =>  '0',
-            'lokasi'  =>  $request->lapangan,
-            'bagian' =>  $request->bagian,
-            'pk' =>  $request->pk,
-            'jb' =>  $request->jb,
-            'cj' =>  $request->cj,
-            'totprice'  =>  $request->nilai,
-            'keterangan'  =>  $request->rincian
-            ]);
-            return response()->json();    
-    }
     }
 
     public function editDetail($nodok, $nourut)
@@ -518,14 +499,13 @@ class PenerimaanKasController extends Controller
     public function storeApp(Request $request)
     {      
         $nodok=str_replace('-', '/', $request->nodok);
-        $i_bayar = 1; //i_Bayar = 1  : Membayar Kas/Bank
-        $bi_bayar = -1 ;  //Mengembalikan pembayaran
         $data_app = Kasdoc::where('docno',$nodok)->select('*')->get();
         foreach($data_app as $data)
         {
             $check_data = $data->paid;
         }
         if($check_data == 'Y'){
+            $bi_bayar = -1 ;  //Mengembalikan pembayaran
             $data_cr = DB::select("select * from kasdoc h where h.docno='$nodok'");
             foreach($data_cr as $t)
             {
@@ -588,6 +568,7 @@ class PenerimaanKasController extends Controller
                 }
             }
         }else{
+            $i_bayar = 1; //i_Bayar = 1  : Membayar Kas/Bank
             $data_cr = DB::select("select * from kasdoc h where h.docno='$nodok'");
             foreach($data_cr as $t)
             {

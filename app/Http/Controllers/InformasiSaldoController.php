@@ -23,27 +23,39 @@ class InformasiSaldoController extends Controller
 
     public function indexJson(Request $request)
     {
-
+        if($request->tanggal <> ""){
+            $tanggal = $request->tanggal;
+        }else{
+            $tanggal=date('Y-m-d');
+        }
+        
             $data_set = DB::select("select max(to_char(a.tglrekap,'yyyy-mm-dd')) as maxtglrek, max(to_char(now(),'yyyy-mm-dd')) as tglnow from rekapkas a,storejk b where a.store=b.kodestore and a.jk=b.jeniskartu");
             foreach($data_set as $data_s)
             {
                 $maxtglrek = $data_s->maxtglrek;
                 $tglnow = $data_s->tglnow;
-                if(!empty($request->tanggal)){
-                    if($request->tanggal < $tglnow){  //kalo melihat saldo di tanggal sebelumnya
-                        $data =  DB::select("select a.saldoawal as sa,a.debet as db,a.kredit as kr,a.saldoakhir as ak, b.kodestore,b.jeniskartu from rekapkas a,storejk b where a.store=b.kodestore and a.jk=b.jeniskartu  and a.tglrekap = (select max(c.tglrekap) from rekapkas c,storejk d where to_char( a.tglrekap,'yyyy-mm-dd') < '$request->tanggal' and c.store=d.kodestore and c.jk=d.jeniskartu )");
+                if($tanggal < $tglnow){  //kalo melihat saldo di tanggal sebelumnya
+                    $data =  DB::select("select a.saldoawal as sa,a.debet as db,a.kredit as kr,a.saldoakhir as ak, b.kodestore,b.jeniskartu 
+                                        from rekapkas a,storejk b 
+                                        where a.store=b.kodestore and a.jk=b.jeniskartu  and a.tglrekap = (select max(c.tglrekap) from rekapkas c,storejk d where to_char( c.tglrekap,'yyyy-mm-dd') = '$request->tanggal' and c.store=d.kodestore and c.jk=d.jeniskartu )");
+                    if(!empty($data)){
                     }else{
-                        if($maxtglrek == $tglnow){  //kalo pada hari ini udah direkap
-                            $data =   DB::select("select a.saldoawal as sa,a.debet as db,a.kredit as kr,a.saldoakhir as ak, b.kodestore,b.jeniskartu from rekapkas a,storejk b where a.store=b.kodestore and a.jk=b.jeniskartu  and a.tglrekap ='$maxtglrek')");
-                        }else{    //kalo belum direkap
-                            $data =   DB::select("select a.saldoawal as sa,a.debet as db,a.kredit as kr,a.saldoakhir as ak, b.kodestore,b.jeniskartu from rekapkas a,storejk b where a.store=b.kodestore and a.jk=b.jeniskartu ");
-                        }
-                    }  
+                        $data =  DB::select("select a.saldoawal as sa,a.debet as db,a.kredit as kr,a.saldoakhir as ak, b.kodestore,b.jeniskartu 
+                                        from rekapkas a,storejk b 
+                                        where a.store=b.kodestore and a.jk=b.jeniskartu  and a.tglrekap = (select max(c.tglrekap) from rekapkas c,storejk d where to_char( c.tglrekap,'yyyy-mm-dd') < '$request->tanggal' and c.store=d.kodestore and c.jk=d.jeniskartu )");
+
+                    }
                 }else{
-                    $data =  DB::select("select a.saldoawal as sa,a.debet as db,a.kredit as kr,a.saldoakhir as ak, b.kodestore,b.jeniskartu from rekapkas a,storejk b where a.store=b.kodestore and a.jk=b.jeniskartu  and a.tglrekap = (select max(c.tglrekap) from rekapkas c,storejk d where to_char( a.tglrekap,'yyyy-mm-dd') = '$maxtglrek' and c.store=d.kodestore and c.jk=d.jeniskartu )");
-    
-                }
-    
+                    if($maxtglrek == $tglnow){  //kalo pada hari ini udah direkap
+                        $data =   DB::select("select a.saldoawal as sa,a.debet as db,a.kredit as kr,a.saldoakhir as ak, b.kodestore,b.jeniskartu 
+                                        from rekapkas a,storejk b
+                                        where a.store=b.kodestore and a.jk=b.jeniskartu  and a.tglrekap ='$maxtglrek'");
+                    }else{    //kalo belum direkap
+                        $data =   DB::select("select a.saldoawal as sa,a.debet as db,a.kredit as kr,a.saldoakhir as ak, b.kodestore,b.jeniskartu 
+                                                from saldostore a,storejk b 
+                                                where a.nokas=b.kodestore and a.jk=b.jeniskartu ");
+                    }
+                }     
             }
      
                 return datatables()->of($data)

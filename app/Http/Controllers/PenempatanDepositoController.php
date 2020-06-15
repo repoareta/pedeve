@@ -702,4 +702,69 @@ class PenempatanDepositoController extends Controller
                 return response()->json();
             }
     }
+
+    public function rekap()
+    {
+        $data_bank = DB::select("select distinct(a.kdbank),b.descacct from mtrdeposito a, account b where b.kodeacct=a.kdbank");
+        $data_lapang = DB::select("select kodelokasi,nama from lokasi");
+        return view('penempatan_deposito.rekap',compact('data_bank','data_lapang'));
+    }
+    public function ctkdepo(Request $request)
+    {
+            if($request->sanper <> ""){
+                $sanper = $request->sanper;
+                $bulan = ltrim($request->bulan,0);
+                $tahun = $request->tahun;
+                $lp = $request->lp;
+                $data_list = DB::select("select a.docno,a.lineno,a.noseri,a.nominal,
+                                            a.tgldep,a.tgltempo,a.perpanjangan,
+                                            EXTRACT(day from tgltempo)-EXTRACT(day from date(now())) selhari,
+                                            EXTRACT(month from tgltempo)-EXTRACT(month from date(now())) selbulan,
+                                            EXTRACT(year from tgltempo)-EXTRACT(year from date(now())) seltahun,
+                                            b.haribunga,a.bungatahun,b.bungabulan,b.pph20,b.netbulan,a.asal,a.kdbank,
+                                            a.keterangan,b.accharibunga,b.accbungabulan,b.accpph20,b.accnetbulan,b.bulan,
+                                            b.tahun,c.descacct as namabank 
+                                        from mtrdeposito a join account c on a.kdbank=c.kodeacct,dtldepositotest b 
+                                        where a.proses = 'Y' and b.docno=a.docno and a.lineno=b.lineno and a.perpanjangan=b.perpanjangan 
+                                            and b.bulan='$bulan' and b.tahun='$tahun' and a.kdbank='$sanper' and a.asal='$lp' order by a.tgltempo asc");
+            }else{
+                $sanper ="like '%'";
+                $bulan = ltrim($request->bulan,0);
+                $tahun = $request->tahun;
+                $lp = $request->lp;
+                $data_list = DB::select("select a.docno,a.lineno,a.noseri,a.nominal,
+                                            a.tgldep,a.tgltempo,a.perpanjangan,
+                                            EXTRACT(day from tgltempo)-EXTRACT(day from date(now())) selhari,
+                                            EXTRACT(month from tgltempo)-EXTRACT(month from date(now())) selbulan,
+                                            EXTRACT(year from tgltempo)-EXTRACT(year from date(now())) seltahun,
+                                            b.haribunga,a.bungatahun,b.bungabulan,b.pph20,b.netbulan,a.asal,a.kdbank,
+                                            a.keterangan,b.accharibunga,b.accbungabulan,b.accpph20,b.accnetbulan,b.bulan,
+                                            b.tahun,c.descacct as namabank 
+                                        from mtrdeposito a join account c on a.kdbank=c.kodeacct,dtldepositotest b 
+                                        where a.proses = 'Y' and b.docno=a.docno and a.lineno=b.lineno and a.perpanjangan=b.perpanjangan 
+                                            and b.bulan='$bulan' and b.tahun='$tahun' and a.kdbank $sanper and a.asal='$lp' order by a.tgltempo asc");
+            }
+        if(!empty($data_list)){
+            $pdf = PDF::loadview('penempatan_deposito.export_depo',compact('request','data_list'))->setPaper('a4', 'landscape');
+            $pdf->output();
+            $dom_pdf = $pdf->getDomPDF();
+
+            $canvas = $dom_pdf ->get_canvas();
+            $canvas->page_text(725, 100, "Halaman {PAGE_NUM} Dari {PAGE_COUNT}", null, 10, array(0, 0, 0)); //lembur landscape
+            // return $pdf->download('rekap_umk_'.date('Y-m-d H:i:s').'.pdf');
+            return $pdf->stream();
+        }else{
+            Alert::info("Tidak ditemukan data dengan Bulan/Tahun: $request->bulan/$request->tahun ", 'Failed')->persistent(true);
+            return redirect()->route('penempatan_deposito.rekap');
+        }
+    }
+
+    public function rekaprc($no,$id)
+    {
+        $nodok=str_replace('-', '/', $no);
+        $lineno=$id;
+        $data_bank = DB::select("select distinct(a.kdbank),b.descacct from mtrdeposito a, account b where b.kodeacct=a.kdbank");
+        $data_lapang = DB::select("select kodelokasi,nama from lokasi");
+        return view('penempatan_deposito.rekaprc',compact('data_bank','data_lapang'));
+    }
 }
