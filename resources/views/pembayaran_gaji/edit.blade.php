@@ -300,11 +300,9 @@
 						<div class="col-8" >
 							<select name="status"  class="form-control selectpicker" data-live-search="true" required oninvalid="this.setCustomValidity('Rincian Harus Diisi..')" onchange="setCustomValidity('')">
 								<option value="">-Pilih-</option>
-								<option value="tetap">Pekerja Tetap</option>
-								<option value="kontrak">Kontrak</option>
-								<option value="perbantuan">Perbantuan</option>
-								<option value="komisaris">Komisaris</option>
-								<option value="komite">Komite</option>
+								@foreach($data_rincian as $rincian)
+								<option value="{{$rincian->status}}">{{$rincian->status}}</option>
+								@endforeach
 							</select>
 							<input type="hidden" name="tahun" value="{{$tahuns}}">
 							<input type="hidden" name="bulan" value="{{$bulans}}">

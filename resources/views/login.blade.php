@@ -59,7 +59,7 @@
 							<div class="login-top">
                                <form action="{{ route('login_user.postlogin') }}" method="post">
                                 {{csrf_field()}}
-									<input type="text" name="usernm" class="email" placeholder="Username" title="Username Harus Diisi.." required oninvalid="this.setCustomValidity('Username Harus Diisi..')" oninput="setCustomValidity('')" autocomplete='off'/>
+									<input type="text" name="usernm" class="email" placeholder="Username" title="Username Harus Diisi.." required oninvalid="this.setCustomValidity('Username Harus Diisi..')" oninput="setCustomValidity('')" autocomplete='on'/>
 									<input type="password" name="userpw" class="password" placeholder="Password" title="Password Harus Diisi.." required oninvalid="this.setCustomValidity('Password Harus Diisi..')" oninput="setCustomValidity('')"/>		
 									<div class="login-bottom">
 										<div class="text-center">

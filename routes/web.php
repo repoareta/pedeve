@@ -715,12 +715,24 @@ Route::group(['middleware'=> ['auth','checkRole:1']], function () {
             Route::get('bulan_perbendaharaan', 'BulanPerbendaharaanController@index')->name('index');
             Route::post('bulan_perbendaharaan/index/search', 'BulanPerbendaharaanController@searchIndex')->name('search.index');
             Route::get('bulan_perbendaharaan/create', 'BulanPerbendaharaanController@create')->name('create');
-            Route::post('bulan_perbendaharaan/store', 'BulanPerbendaharaanController@store')->name('store');
+            Route::get('bulan_perbendaharaan/store', 'BulanPerbendaharaanController@store')->name('store');
             Route::get('bulan_perbendaharaan/edit/{no}', 'BulanPerbendaharaanController@edit')->name('edit');
             Route::post('bulan_perbendaharaan/update', 'BulanPerbendaharaanController@update')->name('update');
             Route::delete('bulan_perbendaharaan/delete', 'BulanPerbendaharaanController@delete')->name('delete');
         });
         //end bulan_perbendaharaan
+
+        //opening_balance
+        // Route assigned name "opening_balance.index"...
+        Route::name('opening_balance.')->group(function () {
+            Route::get('opening_balance', 'OpeningBalanceController@index')->name('index');
+            Route::post('opening_balance/index/search', 'OpeningBalanceController@searchIndex')->name('search.index');
+            Route::get('opening_balance/create', 'OpeningBalanceController@create')->name('create');
+            Route::post('opening_balance/store', 'OpeningBalanceController@store')->name('store');
+            Route::get('opening_balance/edit/{no}', 'OpeningBalanceController@edit')->name('edit');
+            Route::post('opening_balance/update', 'OpeningBalanceController@update')->name('update');
+        });
+        //end opening_balance
 
         //Penempatan deposito
         // Route assigned name "penempatan_deposito.index"...

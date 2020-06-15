@@ -401,9 +401,16 @@
                     'bulan_perbendaharaan.create',
                     'bulan_perbendaharaan.edit',
                 ); // isi nama semua route setting bulan buku bulan_perbendaharaan
+                $opening_balance = array(
+                    'opening_balance.index',
+                    'opening_balance.search.index',
+                    'opening_balance.create',
+                    'opening_balance.edit',
+                ); // isi nama semua route setting bulan buku opening_balance
 
                 $tool = array_merge(
-                    $bulan_perbendaharaan
+                    $bulan_perbendaharaan,
+                    $opening_balance
                 ); //isi nama Subdomain Tool
 
                 $saldo = array_merge(
@@ -1378,6 +1385,14 @@
                                                 <span></span>
                                             </i>
                                             <span class="kt-menu__link-text">Setting Bulan Buku</span>
+                                        </a>
+                                    </li>
+                                    <li class="kt-menu__item kt-menu__item{{ set_active_submenu($opening_balance) }}" aria-haspopup="true">
+                                        <a href="{{route('opening_balance.index')}}" class="kt-menu__link">
+                                            <i class="kt-menu__link-bullet kt-menu__link-bullet--line">
+                                                <span></span>
+                                            </i>
+                                            <span class="kt-menu__link-text">Opening Balance</span>
                                         </a>
                                     </li>
                                 </ul>
