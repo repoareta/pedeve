@@ -8,31 +8,14 @@
 </head>
 <style media="screen">
 
-.table {
-    font: normal 12px Verdana, Arial, sans-serif;
+table {
+    font: normal 10px Verdana, Arial, sans-serif;
     border-collapse: collapse;
-    border: 1px solid black;
-}
-
-th, td {
-    border: 1px solid black;
-    padding: 5px;
 }
 
 .table-no-border-all td {
-    font: normal 12px Verdana, Arial, sans-serif;
     border: 0px;
     padding: 0px;
-}
-
-.table-no-border td, .table-no-border tr {
-    font: normal 12px Verdana, Arial, sans-serif;
-    border:0px;
-    padding: 0px;
-}
-
-h4 {
-    font-size: 15px;
 }
 
 .row {
@@ -44,31 +27,6 @@ h4 {
     margin-left: -5px;
 }
 
-.content {
-    width: 100%;
-    padding: 0px;
-    overflow: hidden;
-}
-
-.content img {
-    margin-right: 15px;
-    float: left;
-}
-
-.content h4 {
-    margin-left: 15px;
-    display: block;
-    margin: 2px 0 15px 0;
-}
-
-.content p {
-    margin-left: 15px;
-    display: block;
-    margin: 0px 0 10px 0;
-    font-size: 12px;
-    padding-bottom: 10px;
-}
-
 .text-center {
     text-align: center;
 }
@@ -77,25 +35,8 @@ h4 {
     text-align: right;
 }
 
-th {
+th, tr {
     white-space: nowrap;
-}
-
-footer .pagenum:before {
-    content: counter(page);
-}
-
-#container {
-    position: relative;
-    font: normal 12px Verdana, Arial, sans-serif;
-}
-#bottom-right {
-    position: absolute;
-    bottom: 0;
-}
-
-.pagecount:before {
-content: counter(pages);
 }
 
 header { 
@@ -139,21 +80,22 @@ header {
             <table style="width:100%;" class="table">
                 <tbody>
                     @foreach ($anggaran_list as $anggaran)
-                        <tr>
-                            <td>{{ $anggaran->kode_main }}</td>
-                            <td colspan="4">{{ $anggaran->nama_main }}</td>
-                            <td class="text-right">{{ float_two($anggaran->nilai_real) }}</td>
+                        <tr style="outline: thin solid">
+                            <td><b>{{ $anggaran->kode_main }}</b></td>
+                            <td colspan="5"><b>{{ $anggaran->nama_main }}</b></td>
+                            <td class="text-right"><b>{{ float_two($anggaran->nilai_real) }}</b></td>
                         </tr>
                         @foreach ($anggaran->anggaran_submain as $anggaran_submain)
-                            <tr>
-                                <td>{{ $anggaran_submain->kode_submain }}</td>
-                                <td colspan="4">{{ $anggaran_submain->nama_submain }}</td>
-                                <td class="text-right">{{ float_two($anggaran_submain->nilai) }}</td>
+                            <tr style="outline: thin solid">
+                                <td><b>{{ $anggaran_submain->kode_submain }}</b></td>
+                                <td colspan="5"><b>{{ $anggaran_submain->nama_submain }}</b></td>
+                                <td class="text-right"><b>{{ float_two($anggaran_submain->nilai) }}</b></td>
                             </tr>
                             @foreach ($anggaran_submain->anggaran_detail as $anggaran_detail)
                                 <tr>
-                                    <td>{{ substr($anggaran_detail->kode, 0, 5) }}</td>
-                                    <td colspan="5">{{ $anggaran_detail->nama }}</td>
+                                    <td></td>
+                                    <td><b>{{ substr($anggaran_detail->kode, 0, 5) }}</b></td>
+                                    <td colspan="5"><b>{{ $anggaran_detail->nama }}</b></td>
                                 </tr>
                                 @php
                                     $v_anggaran = DB::table('kasdoc AS kas')
@@ -163,18 +105,23 @@ header {
                                         ->where('k.account', $anggaran_detail->kode)
                                         ->groupBy('kas.thnbln', 'kas.docno', 'kas.rate', 'k.totprice', 'k.account', 'k.keterangan', 'k.jb', 'k.cj')
                                         ->having(DB::raw("substr(kas.thnbln,1,4)"), '=', $tahun)
-                                        ->get();
+                                        ->get()
+                                        ->take(1)
+                                        ->chunk(50);
                                 @endphp
                                 @if ($v_anggaran)
-                                    @foreach ($v_anggaran as $item)
-                                        <tr>
-                                            <td>{{ $item->account }}</td>
-                                            <td>{{ $item->docno }}</td>
-                                            <td>{{ $item->account }}</td>
-                                            <td>{{ $item->jb }}</td>
-                                            <td>{{ $item->keterangan }}</td>
-                                            <td class="text-right">{{ float_two($item->totprice) }}</td>
-                                        </tr>
+                                    @foreach ($v_anggaran as $new_anggaran)
+                                        @foreach ($new_anggaran as $item)
+                                            <tr>
+                                                <td></td>
+                                                <td>{{ $item->account }}</td>
+                                                <td>{{ $item->docno }}</td>
+                                                <td>{{ $item->account }}</td>
+                                                <td>{{ $item->jb }}</td>
+                                                <td>{{ $item->keterangan }}</td>
+                                                <td class="text-right">{{ float_two($item->totprice) }}</td>
+                                            </tr>
+                                        @endforeach
                                     @endforeach
                                 @endif
                             @endforeach
