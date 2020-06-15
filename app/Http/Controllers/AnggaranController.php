@@ -168,35 +168,39 @@ class AnggaranController extends Controller
     {
         $tahun = $request->tahun_cetak;
         $anggaran_list = AnggaranMain::where('tahun', $tahun)
-        ->with('anggaran_submain')
-        ->with('anggaran_submain.anggaran_detail')
-        ->join(
-            DB::raw("
-                (SELECT
-                    (SELECT substr(thnbln,1,4) FROM kasdoc kas WHERE kas.docno = K.docno) AS tahun_anggaran,
-                    (SELECT rate FROM kasdoc kas WHERE kas.docno = K.docno) AS kurs,
-                    K.docno, 
-                    K.lineno, 
-                    K.account, 
-                    K.area, 
-                    K.lokasi, 
-                    K.bagian,
-                    K.pk, 
-                    K.jb, 
-                    K.cj, 
-                    K.totprice,
-                    K.keterangan
-                FROM kasline K
-                WHERE K.account like '5%') v_anggaran
-            "),
-            'v_anggaran.tahun_anggaran',
-            '=',
-            'anggaran_main.tahun'
-        )
+        ->with(['anggaran_submain.anggaran_detail' => function ($query) {
+            $query->orderBy('kode', 'ASC');
+        }])
         ->orderBy('kode_main', 'ASC')
         ->get();
 
-        // dd($anggaran_list);
+        // $v_anggaran = AnggaranMain::where('tahun', $tahun)
+        // ->join(
+        //     DB::raw("
+        //     (SELECT
+        //         (SELECT substr(thnbln,1,4) FROM kasdoc kas WHERE kas.docno = K.docno) AS tahun_anggaran,
+        //         (SELECT rate FROM kasdoc kas WHERE kas.docno = K.docno) AS kurs,
+        //         K.docno,
+        //         K.lineno,
+        //         K.account,
+        //         K.area,
+        //         K.lokasi,
+        //         K.bagian,
+        //         K.pk,
+        //         K.jb,
+        //         K.cj,
+        //         K.totprice,
+        //         K.keterangan
+        //     FROM kasline K
+        //     WHERE K.account like '5%') AS v_anggaran
+        // "),
+        //     'v_anggaran.tahun_anggaran',
+        //     'anggaran_main.tahun'
+        // )
+        // ->get()
+        // ->toArray();
+    
+        // dd($v_anggaran);
 
         // return default PDF
         $pdf = PDF::loadview('anggaran.export_pdf', compact('anggaran_list', 'tahun'))
