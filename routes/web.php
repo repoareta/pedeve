@@ -605,6 +605,49 @@ Route::group(['middleware'=> ['auth','checkRole:1']], function () {
         });
         //end tunjangan_golongan
 
+        //Jenis Upah
+        // Route assigned name "jenis_upah.index"...
+        Route::name('jenis_upah.')->group(function () {
+            Route::get('jenis_upah', 'JenisUpahController@index')->name('index');
+            Route::get('jenis_upah/index_json', 'JenisUpahController@indexJson')->name('index.json');
+            Route::get('jenis_upah/create', 'JenisUpahController@create')->name('create');
+            Route::post('jenis_upah/cek_golongan/json', 'JenisUpahController@cekGolonganJson')->name('golongan.json');
+            Route::post('jenis_upah/store', 'JenisUpahController@store')->name('store');
+            Route::get('jenis_upah/edit/{id}', 'JenisUpahController@edit')->name('edit');
+            Route::post('jenis_upah/update', 'JenisUpahController@update')->name('update');
+            Route::delete('jenis_upah/delete', 'JenisUpahController@delete')->name('delete');
+        });
+        //end jenis_upah
+
+
+        //Rekening Pekerja
+        // Route assigned name "rekening_pekerja.index"...
+        Route::name('rekening_pekerja.')->group(function () {
+            Route::get('rekening_pekerja', 'RekeningPekerjaController@index')->name('index');
+            Route::get('rekening_pekerja/index_json', 'RekeningPekerjaController@indexJson')->name('index.json');
+            Route::get('rekening_pekerja/create', 'RekeningPekerjaController@create')->name('create');
+            Route::post('rekening_pekerja/cek_golongan/json', 'RekeningPekerjaController@cekGolonganJson')->name('golongan.json');
+            Route::post('rekening_pekerja/store', 'RekeningPekerjaController@store')->name('store');
+            Route::get('rekening_pekerja/edit/{id}', 'RekeningPekerjaController@edit')->name('edit');
+            Route::post('rekening_pekerja/update', 'RekeningPekerjaController@update')->name('update');
+            Route::delete('rekening_pekerja/delete', 'RekeningPekerjaController@delete')->name('delete');
+        });
+        //end rekening_pekerja
+
+        //Tabel AARD
+        // Route assigned name "tabel_aard.index"...
+        Route::name('tabel_aard.')->group(function () {
+            Route::get('tabel_aard', 'TabelAardController@index')->name('index');
+            Route::get('tabel_aard/index_json', 'TabelAardController@indexJson')->name('index.json');
+            Route::get('tabel_aard/create', 'TabelAardController@create')->name('create');
+            Route::post('tabel_aard/cek_golongan/json', 'TabelAardController@cekGolonganJson')->name('golongan.json');
+            Route::post('tabel_aard/store', 'TabelAardController@store')->name('store');
+            Route::get('tabel_aard/edit/{id}', 'TabelAardController@edit')->name('edit');
+            Route::post('tabel_aard/update', 'TabelAardController@update')->name('update');
+            Route::delete('tabel_aard/delete', 'TabelAardController@delete')->name('delete');
+        });
+        //end tabel_aard
+
         //jamsostek
         // Route assigned name "jamsostek.index"...
         Route::name('jamsostek.')->group(function () {
