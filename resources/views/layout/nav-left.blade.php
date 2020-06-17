@@ -625,6 +625,22 @@
                     $treassury,
                     $tabel
                 ); // array merge semua submenu
+
+
+                $set_user = array(
+                    'set_user.index',
+                    'set_user.create',
+                    'set_user.edit'                    
+                ); // isi nama semua route set_user
+                $set_menu = array(
+                    'set_menu.index',
+                    'set_menu.create',
+                    'set_menu.edit'                    
+                ); // isi nama semua route set_user
+                $administrator = array_merge(
+                    $set_user,
+                    $set_menu
+                ); // array merge semua submenu
             @endphp
 
             <li class="kt-menu__item  kt-menu__item--submenu {{ set_active($umum) }}" aria-haspopup="true" data-ktmenu-submenu-toggle="hover">
@@ -1743,7 +1759,7 @@
                 </div>
             </li>
 
-            <li class="kt-menu__item  kt-menu__item--submenu" aria-haspopup="true" data-ktmenu-submenu-toggle="hover">
+            <li class="kt-menu__item  kt-menu__item--submenu {{ set_active($administrator) }}" aria-haspopup="true" data-ktmenu-submenu-toggle="hover">
                 <a href="javascript:;" class="kt-menu__link kt-menu__toggle">
                     <span class="kt-menu__link-icon">
                         <i class="fa fa-users"></i>
@@ -1761,24 +1777,20 @@
                                 </span>
                             </span>
                         </li>
-                        <li class="kt-menu__item " aria-haspopup="true">
-                            <a href="{{ route('perjalanan_dinas.index') }}" class="kt-menu__link">
+                        <li class="kt-menu__item kt-menu__item{{ set_active_submenu($set_user) }}" aria-haspopup="true">
+                            <a href="{{route('set_user.index')}}" class="kt-menu__link">
                                 <i class="kt-menu__link-bullet kt-menu__link-bullet--dot">
                                     <span></span>
                                 </i>
-                                <span class="kt-menu__link-text">
-                                    Setting User & Password
-                                </span>
+                                <span class="kt-menu__link-text">Set User</span>
                             </a>
                         </li>
-                        <li class="kt-menu__item " aria-haspopup="true">
-                            <a href="{{ route('perjalanan_dinas.index') }}" class="kt-menu__link">
+                        <li class="kt-menu__item kt-menu__item{{ set_active_submenu($set_menu) }}" aria-haspopup="true">
+                            <a href="{{route('set_menu.index')}}" class="kt-menu__link">
                                 <i class="kt-menu__link-bullet kt-menu__link-bullet--dot">
                                     <span></span>
                                 </i>
-                                <span class="kt-menu__link-text">
-                                    Setting Akses Menu
-                                </span>
+                                <span class="kt-menu__link-text">Set Menu</span>
                             </a>
                         </li>
                     </ul>

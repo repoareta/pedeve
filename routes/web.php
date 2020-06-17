@@ -1166,6 +1166,39 @@ Route::group(['middleware'=> ['auth','checkRole:1']], function () {
             Route::delete('main_account/delete', 'MainAccountController@delete')->name('delete');
         });
         //end main_account
+        
+    });
+    
+    
+    //Administrator
+    Route::prefix('administrator')->group(function () {
+
+        //set_user
+        // Route assigned name "set_user.index"...
+        Route::name('set_user.')->group(function () {
+            Route::get('set_user', 'SetUserController@index')->name('index');
+            Route::post('set_user/index/search', 'SetUserController@searchIndex')->name('search.index');
+            Route::get('set_user/create', 'SetUserController@create')->name('create');
+            Route::post('set_user/store', 'SetUserController@store')->name('store');
+            Route::get('set_user/edit/{no}', 'SetUserController@edit')->name('edit');
+            Route::post('set_user/update', 'SetUserController@update')->name('update');
+            Route::delete('set_user/delete', 'SetUserController@delete')->name('delete');
+        });
+        //end set_user
+
+        //set_menu
+        // Route assigned name "set_menu.index"...
+        Route::name('set_menu.')->group(function () {
+            Route::get('set_menu', 'SetMenuController@index')->name('index');
+            Route::post('set_menu/index/search', 'SetMenuController@searchIndex')->name('search.index');
+            Route::get('set_menu/create', 'SetMenuController@create')->name('create');
+            Route::post('set_menu/store', 'SetMenuController@store')->name('store');
+            Route::get('set_menu/edit/{no}', 'SetMenuController@edit')->name('edit');
+            Route::post('set_menu/update', 'SetMenuController@update')->name('update');
+            Route::delete('set_menu/delete', 'SetMenuController@delete')->name('delete');
+        });
+        //end set_menu
+
 
     });
 
