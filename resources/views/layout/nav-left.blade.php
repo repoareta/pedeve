@@ -288,6 +288,16 @@
                     'tabel_aard.create',
                     'tabel_aard.edit'
                 ); // isi nama semua route tabel_aard
+                $master_bank = array(
+                    'master_bank.index',
+                    'master_bank.create',
+                    'master_bank.edit'
+                ); // isi nama semua route master_bank
+                $master_ptkp = array(
+                    'master_ptkp.index',
+                    'master_ptkp.create',
+                    'master_ptkp.edit'
+                ); // isi nama semua route master_ptkp
                 $jamsostek = array(
                     'jamsostek.index',
                     'jamsostek.create',
@@ -298,13 +308,21 @@
                     'pensiun.create',
                     'pensiun.edit',
                 );
+                $master_tabungan = array(
+                    'master_tabungan.index',
+                    'master_tabungan.create',
+                    'master_tabungan.edit'
+                ); // isi nama semua route master_tabungan
                 $tabel_payroll = array_merge(
                     $tunjangan_golongan,
                     $jenis_upah,
                     $rekening_pekerja,
                     $tabel_aard,
+                    $master_bank,
+                    $master_ptkp,
                     $jamsostek,
-                    $pensiun
+                    $pensiun,
+                    $master_tabungan
                 ); //isi nama Subdomain jamsostek pensiun
 
 
@@ -1142,6 +1160,22 @@
                                             <span class="kt-menu__link-text">AARD</span>
                                         </a>
                                     </li>
+                                    <li class="kt-menu__item kt-menu__item{{ set_active_submenu($master_bank) }}" aria-haspopup="true">
+                                        <a href="{{route('master_bank.index')}}" class="kt-menu__link">
+                                            <i class="kt-menu__link-bullet kt-menu__link-bullet--line">
+                                                <span></span>
+                                            </i>
+                                            <span class="kt-menu__link-text">BANK</span>
+                                        </a>
+                                    </li>
+                                    <li class="kt-menu__item kt-menu__item{{ set_active_submenu($master_ptkp) }}" aria-haspopup="true">
+                                        <a href="{{route('master_ptkp.index')}}" class="kt-menu__link">
+                                            <i class="kt-menu__link-bullet kt-menu__link-bullet--line">
+                                                <span></span>
+                                            </i>
+                                            <span class="kt-menu__link-text">PTKP</span>
+                                        </a>
+                                    </li>
                                     <li class="kt-menu__item kt-menu__item{{ set_active_submenu($jamsostek) }}" aria-haspopup="true">
                                         <a href="{{ route('jamsostek.index') }}" class="kt-menu__link ">
                                             <i class="kt-menu__link-bullet kt-menu__link-bullet--line">
@@ -1155,7 +1189,15 @@
                                             <i class="kt-menu__link-bullet kt-menu__link-bullet--line">
                                                 <span></span>
                                             </i>
-                                            <span class="kt-menu__link-text">Pensiun</span>
+                                            <span class="kt-menu__link-text">Dana Pensiun</span>
+                                        </a>
+                                    </li>
+                                    <li class="kt-menu__item kt-menu__item{{ set_active_submenu($master_tabungan) }}" aria-haspopup="true">
+                                        <a href="{{route('master_tabungan.index')}}" class="kt-menu__link ">
+                                            <i class="kt-menu__link-bullet kt-menu__link-bullet--line">
+                                                <span></span>
+                                            </i>
+                                            <span class="kt-menu__link-text">Tabungan</span>
                                         </a>
                                     </li>
                                 </ul>

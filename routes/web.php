@@ -648,6 +648,48 @@ Route::group(['middleware'=> ['auth','checkRole:1']], function () {
         });
         //end tabel_aard
 
+        //Master Bank
+        // Route assigned name "master_bank.index"...
+        Route::name('master_bank.')->group(function () {
+            Route::get('master_bank', 'MasterBankController@index')->name('index');
+            Route::get('master_bank/index_json', 'MasterBankController@indexJson')->name('index.json');
+            Route::get('master_bank/create', 'MasterBankController@create')->name('create');
+            Route::post('master_bank/cek_golongan/json', 'MasterBankController@cekGolonganJson')->name('golongan.json');
+            Route::post('master_bank/store', 'MasterBankController@store')->name('store');
+            Route::get('master_bank/edit/{id}', 'MasterBankController@edit')->name('edit');
+            Route::post('master_bank/update', 'MasterBankController@update')->name('update');
+            Route::delete('master_bank/delete', 'MasterBankController@delete')->name('delete');
+        });
+        //end master_bank
+
+        //Master ptkp
+        // Route assigned name "master_ptkp.index"...
+        Route::name('master_ptkp.')->group(function () {
+            Route::get('master_ptkp', 'MasterPtkpController@index')->name('index');
+            Route::get('master_ptkp/index_json', 'MasterPtkpController@indexJson')->name('index.json');
+            Route::get('master_ptkp/create', 'MasterPtkpController@create')->name('create');
+            Route::post('master_ptkp/cek_golongan/json', 'MasterPtkpController@cekGolonganJson')->name('golongan.json');
+            Route::post('master_ptkp/store', 'MasterPtkpController@store')->name('store');
+            Route::get('master_ptkp/edit/{id}', 'MasterPtkpController@edit')->name('edit');
+            Route::post('master_ptkp/update', 'MasterPtkpController@update')->name('update');
+            Route::delete('master_ptkp/delete', 'MasterPtkpController@delete')->name('delete');
+        });
+        //end master_ptkp
+
+        //Master Tabungan
+        // Route assigned name "master_tabungan.index"...
+        Route::name('master_tabungan.')->group(function () {
+            Route::get('master_tabungan', 'MasterTabunganController@index')->name('index');
+            Route::get('master_tabungan/index_json', 'MasterTabunganController@indexJson')->name('index.json');
+            Route::get('master_tabungan/create', 'MasterTabunganController@create')->name('create');
+            Route::post('master_tabungan/cek_golongan/json', 'MasterTabunganController@cekGolonganJson')->name('golongan.json');
+            Route::post('master_tabungan/store', 'MasterTabunganController@store')->name('store');
+            Route::get('master_tabungan/edit/{id}', 'MasterTabunganController@edit')->name('edit');
+            Route::post('master_tabungan/update', 'MasterTabunganController@update')->name('update');
+            Route::delete('master_tabungan/delete', 'MasterTabunganController@delete')->name('delete');
+        });
+        //end master_ptkp
+
         //jamsostek
         // Route assigned name "jamsostek.index"...
         Route::name('jamsostek.')->group(function () {
