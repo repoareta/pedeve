@@ -32,6 +32,12 @@ class UpahTetapController extends Controller
                 $radio = '<label class="kt-radio kt-radio--bold kt-radio--brand"><input type="radio" name="radio_upah_tetap" value="'.$row->nopeg.'-'.$row->ut.'"><span></span></label>';
                 return $radio;
             })
+            ->addColumn('mulai', function ($row) {
+                return Carbon::parse($row->mulai)->translatedFormat('d F Y');
+            })
+            ->addColumn('sampai', function ($row) {
+                return Carbon::parse($row->sampai)->translatedFormat('d F Y');
+            })
             ->rawColumns(['action'])
             ->make(true);
     }
