@@ -1019,11 +1019,11 @@
                                             <i class="kt-menu__link-bullet kt-menu__link-bullet--line">
                                                 <span></span>
                                             </i>
-                                            <span class="kt-menu__link-text">Potongan Manual</span>
+                                            <span class="kt-menu__link-text">Manual Gaji</span>
                                         </a>
                                     </li>
                                     <li class="kt-menu__item kt-menu__item{{ set_active_submenu($potongan_otomatis) }}" aria-haspopup="true">
-                                        <a href="{{route('potongan_otomatis.index')}}" class="kt-menu__link">
+                                        <a href="{{route('potongan_otomatis.create')}}" class="kt-menu__link">
                                             <i class="kt-menu__link-bullet kt-menu__link-bullet--line">
                                                 <span></span>
                                             </i>

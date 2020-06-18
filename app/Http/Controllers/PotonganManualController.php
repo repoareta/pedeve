@@ -45,7 +45,7 @@ class PotonganManualController extends Controller
                 $data = DB::select("select a.tahun, a.bulan, a.nopek, a.aard, a.jmlcc, a.ccl, a.nilai, a.userid, b.nama as nama_nopek,c.nama as nama_aard from pay_potongan a join sdm_master_pegawai b on a.nopek=b.nopeg join pay_tbl_aard c on a.aard=c.kode where a.bulan='$bulan' and a.tahun='$tahun' order by a.nopek asc");
                 }
             }else{
-                if($bulan == null and $tahun == null){
+                if($bulan == null and $tahun == null and $nopek <> ""){
                 $data = DB::select("select a.tahun, a.bulan, a.nopek, a.aard, a.jmlcc, a.ccl, a.nilai, a.userid, b.nama as nama_nopek,c.nama as nama_aard from pay_potongan a join sdm_master_pegawai b on a.nopek=b.nopeg join pay_tbl_aard c on a.aard=c.kode where a.nopek='$nopek' order by a.tahun, a.bulan desc");
                 }else{
                 $data = DB::select("select a.tahun, a.bulan, a.nopek, a.aard, a.jmlcc, a.ccl, a.nilai, a.userid, b.nama as nama_nopek,c.nama as nama_aard from pay_potongan a join sdm_master_pegawai b on a.nopek=b.nopeg join pay_tbl_aard c on a.aard=c.kode  where a.nopek='$nopek' and a.bulan='$bulan' and a.tahun='$tahun'" ); 			
@@ -69,6 +69,9 @@ class PotonganManualController extends Controller
                   );
                 $bulan= strtoupper($array_bln[$data->bulan]);
                 return $bulan;
+           })
+            ->addColumn('tahun', function ($data) {
+                return $data->tahun;
            })
             ->addColumn('nopek', function ($data) {
                 return $data->nopek.' -- '.$data->nama_nopek;
