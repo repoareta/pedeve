@@ -104,7 +104,7 @@
 					<div class="form-group row">
 						<label for="example-datetime-local-input" class="col-2 col-form-label">Untuk<span style="color:red;">*</span></label>
 						<div class="col-10">
-							<textarea  class="form-control" type="text" value="" name="untuk" id="untuk" size="70" maxlength="200" required oninvalid="this.setCustomValidity('Untuk Harus Diisi..')" oninput="setCustomValidity('')"></textarea>
+							<textarea  class="form-control" type="text" value="" name="untuk" id="untuk" size="70" maxlength="200" onkeyup="this.value = this.value.toUpperCase()" required oninvalid="this.setCustomValidity('Untuk Harus Diisi..')" oninput="setCustomValidity('')"></textarea>
 						</div>
 					</div>
 					<div class="form-group row">

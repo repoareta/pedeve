@@ -3,7 +3,7 @@
 namespace App\Http\Controllers;
 
 use Illuminate\Http\Request;
-use App\Models\PayPotonganRevo;
+use App\Models\PayPotongan;
 use App\Models\PayAard;
 use App\Models\SdmMasterPegawai;
 use DB;
@@ -111,11 +111,6 @@ class PotonganOtomatisController extends Controller
         ->make(true);
     }
 
-    /**
-     * Show the form for creating a new resource.
-     *
-     * @return \Illuminate\Http\Response
-     */
     public function create()
     {
         $data_pegawai = SdmMasterPegawai::whereNotIn('status',['P'])->get();
@@ -123,12 +118,6 @@ class PotonganOtomatisController extends Controller
         return view('potongan_otomatis.create', compact('data_pegawai','pay_aard'));
     }
 
-    /**
-     * Store a newly created resource in storage.
-     *
-     * @param  \Illuminate\Http\Request  $request
-     * @return \Illuminate\Http\Response
-     */
     public function store(Request $request)
     {
         $data_cek = DB::select("select * from pay_potongan_revo   where nopek='$request->nopek' and aardpot='$request->aard' and bulan='$request->bulan' and tahun='$request->tahun'" ); 			
@@ -136,19 +125,36 @@ class PotonganOtomatisController extends Controller
             $data=0;
             return response()->json($data);
         }else {
-        $data_tahun = $request->tahun;
-        $data_bulan = $request->bulan;
-        PayPotonganRevo::insert([
-            'tahun' => $data_tahun,
-            'bulan' => $data_bulan,
-            'nopek' => $request->nopek,
-            'aardpot' => $request->aard,
-            'jmlcc' => $request->jmlcc,
-            'ccl' => $request->ccl,
-            'nilai' => $request->nilai,
-            'userid' => $request->userid,            
-            'aardhut' => 21,            
-            ]);
+        $tahunnext = $request->tahun;
+        $bulannext = $request->bulan;
+        $nopek = $request->nopek;
+        $aard = $request->aard;
+        $ccl = $request->ccl;
+        $jmlcc = $request->jmlcc;
+        $akhir = $request->ccl + ($request->jmlcc-1);
+        if($request->nilai == 0){
+            DB::delete("delete from pay_potongan where (tahun||bulan >= '$tahunnext||$bulannext') and nopek='$nopek' and aard='$aard'");
+        }else{
+            DB::delete("delete from pay_potongan where (tahun||bulan >= '$tahunnext||$bulannext') and nopek='$nopek' and aard='$aard'");
+            for($col=$ccl;$col<=$akhir;$col++){
+          
+                PayPotongan::insert([
+                    'tahun' => $tahunnext,
+                    'bulan' => $bulannext,
+                    'nopek' => $nopek,
+                    'aard' => $aard,
+                    'jmlcc' => $jmlcc,
+                    'ccl' => $col,
+                    'nilai' => $request->nilai,
+                    'userid' => $request->userid,            
+                    ]);
+                $bulannext = $bulannext + 1;
+                if($bulannext == 13){
+                    $tahunnext = $tahunnext + 1;
+                    $bulannext = 1;
+                }
+            }
+        }
             $data = 1;
             return response()->json($data);
         }
@@ -199,7 +205,7 @@ class PotonganOtomatisController extends Controller
      */
     public function update(Request $request)
     {
-        PayPotonganRevo::where('tahun', $request->tahun)
+        PayPotongan::where('tahun', $request->tahun)
             ->where('bulan',$request->bulan)
             ->where('nopek',$request->nopek)
             ->where('aardpot',$request->aard)
@@ -223,7 +229,7 @@ class PotonganOtomatisController extends Controller
      */
     public function delete(Request $request)
     {
-        PayPotonganRevo::where('tahun', $request->tahun)
+        PayPotongan::where('tahun', $request->tahun)
         ->where('bulan',$request->bulan)
         ->where('nopek',$request->nopek)
         ->where('aardpot',$request->aard)

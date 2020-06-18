@@ -69,13 +69,13 @@
 						<div class="form-group row">
 							<label for="nopek-input" class="col-2 col-form-label">Terlampir<span style="color:red;">*</span></label>
 							<div class="col-10">
-								<textarea class="form-control" type="text" name="lampiran" value=""  id="lampiran"  required oninvalid="this.setCustomValidity('Terlampir Harus Diisi..')" oninput="setCustomValidity('')"></textarea>
+								<textarea class="form-control" type="text" name="lampiran" value=""  id="lampiran" onkeyup="this.value = this.value.toUpperCase()"  required oninvalid="this.setCustomValidity('Terlampir Harus Diisi..')" oninput="setCustomValidity('')"></textarea>
 							</div>
 						</div>
 						<div class="form-group row">
 							<label for="id-pekerja;-input" class="col-2 col-form-label">Keterangan<span style="color:red;">*</span></label>
 							<div class="col-10">
-								<textarea class="form-control" type="text" value=""  id="keterangan" name="keterangan" size="50" maxlength="200" required oninvalid="this.setCustomValidity('Keterangan Harus Diisi..')" oninput="setCustomValidity('')"></textarea>
+								<textarea class="form-control" type="text" value=""  id="keterangan" name="keterangan" size="50" maxlength="200" onkeyup="this.value = this.value.toUpperCase()" required oninvalid="this.setCustomValidity('Keterangan Harus Diisi..')" oninput="setCustomValidity('')"></textarea>
 							</div>
 						</div>
 						<div class="form-group row">
@@ -111,7 +111,7 @@
 						<div class="form-group row">
 							<label class="col-2 col-form-label">No. Debet<span style="color:red;">*</span></label>
 							<div class="col-5">
-								<input class="form-control" type="text" name="nodebet" id="nodebet" value="" size="15" maxlength="15" required oninvalid="this.setCustomValidity('No. Debet Harus Diisi..')" oninput="setCustomValidity('')" autocomplete='off'>
+								<input class="form-control" type="text" name="nodebet" id="nodebet" value="" size="15" maxlength="15" onkeyup="this.value = this.value.toUpperCase()" required oninvalid="this.setCustomValidity('No. Debet Harus Diisi..')" oninput="setCustomValidity('')" autocomplete='off'>
 							</div>
 							<label class="col-2 col-form-label">Tgl Debet<span style="color:red;">*</span></label>
 							<div class="col-3" >

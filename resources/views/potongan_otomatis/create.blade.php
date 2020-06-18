@@ -118,9 +118,9 @@
 									</div>
 								</div>
 								<div class="form-group row">
-									<label class="col-2 col-form-label">Nilai Cicilan<span style="color:red;">*</span></label>
+									<label class="col-2 col-form-label">Cicilan/Bulan<span style="color:red;">*</span></label>
 									<div class="col-10">
-										<input class="form-control" name="nilai" type="text" value="" id="nilai" size="17" maxlength="17" required oninvalid="this.setCustomValidity('Jml Cicilan Harus Diisi..')" oninput="setCustomValidity('')" autocomplete='off' onkeypress="return hanyaAngka(event)">
+										<input class="form-control" name="nilai" type="text" value="0" id="nilai" size="17" maxlength="17" required oninvalid="this.setCustomValidity('Jml Cicilan Harus Diisi..')" oninput="setCustomValidity('')" autocomplete='off' onkeypress="return hanyaAngka(event)">
 									</div>
 								</div>						
 						<div class="kt-form__actions">
@@ -163,7 +163,7 @@ $('#form-create').submit(function(){
 			text  : 'Berhasil',
 			timer : 2000
 		}).then(function() {
-				window.location.replace("{{ route('potongan_otomatis.index')}}");;
+				window.location.replace("{{ route('potongan_manual.index')}}");;
 			});
 		}else{
 			Swal.fire({

@@ -395,6 +395,12 @@ class PembayaranGajiController extends Controller
         $data_jenis = JenisBiaya::all();
         $data_casj = Cashjudex::all();
         $data_bagian = SdmKdbag::all();
+        $data_rincian = DB::select("select p.tahun, p.bulan,sum(p.nilai) as nilai,'TETAP' as status from pay_master_upah p where tahun='$tahuns' and bulan='$bulans' and nilai<>0 and nopek in (select nopeg from sdm_master_pegawai where status='C') group by tahun,bulan union all
+                                    select p.tahun, p.bulan,sum(p.nilai) as nilai,'KONTRAK' as status from pay_master_upah p where tahun='$tahuns' and bulan='$bulans' and nilai<>0 and nopek in (select nopeg from sdm_master_pegawai where status='K') group by tahun,bulan union all
+                                    select p.tahun, p.bulan,sum(p.nilai) as nilai,'PERBANTUAN' as status from pay_master_upah p where tahun='$tahuns' and bulan='$bulans' and nilai<>0 and nopek in (select nopeg from sdm_master_pegawai where status='B') group by tahun,bulan union all
+                                    select p.tahun, p.bulan,sum(p.nilai) as nilai,'KOMISARIS' as status from pay_master_upah p where tahun='$tahuns' and bulan='$bulans' and nilai<>0 and nopek in (select nopeg from sdm_master_pegawai where status='U') group by tahun,bulan union all
+                                    select p.tahun, p.bulan, sum(p.nilai) as nilai,'KOMITE' as status from pay_master_upah p where tahun='$tahuns' and bulan='$bulans' and nilai<>0 and nopek in (select nopeg from sdm_master_pegawai where status='O') group by tahun,bulan;
+                                    ");
         $data_account = DB::select("select kodeacct,descacct from account where length(kodeacct)=6 and kodeacct not like '%X%'");
         $count= Kasline::where('docno',$nodoc)->sum('totprice');
         $data_detail = Kasline::where('docno',$nodoc)->get();
@@ -405,6 +411,7 @@ class PembayaranGajiController extends Controller
             $no_urut = 1;
         }
         return view('pembayaran_gaji.edit',compact(
+            'data_rincian',
             'data_list',
             'data_bagian',
             'data_detail',
@@ -456,7 +463,7 @@ class PembayaranGajiController extends Controller
             $data_crkom = DB::select("select p.tahun, p.bulan,p.aard,sum(p.nilai) as nilai,'KOMISARIS' as status from pay_master_upah p where tahun='$tahun' and bulan='$bulan' and nilai<>0 and nopek in (select nopeg from sdm_master_pegawai where status='U') group by tahun,bulan,aard");
             $data_crkomite = DB::select("select p.tahun, p.bulan,p.aard, sum(p.nilai) as nilai,'KOMITE' as status from pay_master_upah p where tahun='$tahun' and bulan='$bulan' and nilai<>0 and nopek in (select nopeg from sdm_master_pegawai where status='O') group by tahun,bulan,aard");
 
-                if($request->status == 'tetap'){
+                if($request->status == 'TETAP'){
                     foreach($data_crtetap as $t)
                     {
                         $data_no = DB::select("select max(lineno) as v_no from kasline where docno='$docno'");
@@ -500,7 +507,7 @@ class PembayaranGajiController extends Controller
                             ]);
                     }
                     $v_jenis ='PGT';
-                }elseif($request->status == 'kontrak'){
+                }elseif($request->status == 'KONTRAK'){
                     foreach($data_crkontrak as $t)
                     {
                         $data_no = DB::select("select max(lineno) as v_no from kasline where docno='$docno'");
@@ -545,7 +552,7 @@ class PembayaranGajiController extends Controller
                             ]);
                     }
                     $v_jenis ='PGK';
-                }elseif($request->status == 'perbantuan'){
+                }elseif($request->status == 'PERBANTUAN'){
                     foreach($data_crbantu as $t)
                     {
                         $data_no = DB::select("select max(lineno) as v_no from kasline where docno='$docno'");
@@ -590,7 +597,7 @@ class PembayaranGajiController extends Controller
                             ]);
                     }
                     $v_jenis ='PGB';
-                }elseif($request->status == 'komisaris'){
+                }elseif($request->status == 'KOMISARIS'){
                     foreach($data_crkom as $t)
                     {
                         $data_no = DB::select("select max(lineno) as v_no from kasline where docno='$docno'");

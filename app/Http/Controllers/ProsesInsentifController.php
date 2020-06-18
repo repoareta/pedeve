@@ -392,6 +392,7 @@ class ProsesInsentifController extends Controller
                                         $pajakbulankt=1;
                                         $nilkenapajakkt = $nilaikenapajakakt;
                                         $sisapokokkt = $nilkenapajakkt;
+                                        $sisapokok1kt = $sisapokokkt;
                                         $data_sdmprogresif = DB::select("select * from sdm_tbl_progressif order by awal asc");
                                         foreach($data_sdmprogresif as $data_progkt)
                                         {
@@ -401,7 +402,6 @@ class ProsesInsentifController extends Controller
                                             $prosenkt = $persenkt/100;
                                             $rangekt = $akhirkt - $awalkt;
                                             if($sisapokokkt > 0){
-                                                $sisapokok1kt = $sisapokokkt;
                                                 if($sisapokok1kt > 0 and $sisapokok1kt < $rangekt){
                                                     $pph21rkt = $sisapokok1kt * $prosenkt;
                                                 }elseif($sisapokok1kt > 0 and $sisapokok1kt >= $rangekt ){
@@ -835,6 +835,7 @@ class ProsesInsentifController extends Controller
                                         $pajakbulankt=1;
                                         $nilkenapajakkt = $nilaikenapajakakt;
                                         $sisapokokkt = $nilkenapajakkt;
+                                        $sisapokok1kt = $sisapokokkt;
                                         $data_sdmprogresif = DB::select("select * from sdm_tbl_progressif order by awal asc");
                                         foreach($data_sdmprogresif as $data_progkt)
                                         {
@@ -844,7 +845,6 @@ class ProsesInsentifController extends Controller
                                             $prosenkt = $persenkt/100;
                                             $rangekt = $akhirkt - $awalkt;
                                             if($sisapokokkt > 0){
-                                                $sisapokok1kt = $sisapokokkt;
                                                 if($sisapokok1kt > 0 and $sisapokok1kt < $rangekt){
                                                     $pph21rkt = $sisapokok1kt * $prosenkt;
                                                 }elseif($sisapokok1kt > 0 and $sisapokok1kt >= $rangekt ){

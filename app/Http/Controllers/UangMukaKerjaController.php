@@ -186,6 +186,12 @@ class UangMukaKerjaController extends Controller
             'pk' => $request->pk,
             'no_umk' => $request->no_umk
             ]);
+            $count= DetailUmk::where('no_umk', $request->no_umk)->select('no_umk')->sum('nilai');
+            $jumlah = number_format($count, 0, '', '');
+            Umk::where('no_umk', $request->no_umk)
+            ->update([
+                'jumlah' => $jumlah
+            ]);
             return response()->json();
         } else {
             DetailUmk::insert([
@@ -198,6 +204,12 @@ class UangMukaKerjaController extends Controller
             'bagian' => $request->bagian,
             'pk' => $request->pk,
             'no_umk' => $request->no_umk
+            ]);
+            $count= DetailUmk::where('no_umk', $request->no_umk)->select('no_umk')->sum('nilai');
+            $jumlah = number_format($count, 0, '', '');
+            Umk::where('no_umk', $request->no_umk)
+            ->update([
+                'jumlah' => $jumlah
             ]);
             return response()->json();
         }
@@ -407,6 +419,12 @@ class UangMukaKerjaController extends Controller
         DetailUmk::where('no', $request->no)
         ->where('no_umk', $request->id)
         ->delete();
+        $count= DetailUmk::where('no_umk', $request->id)->select('no_umk')->sum('nilai');
+            $jumlah = number_format($count, 0, '', '');
+            Umk::where('no_umk', $request->id)
+            ->update([
+                'jumlah' => $jumlah
+            ]);
         return response()->json();
     }
 

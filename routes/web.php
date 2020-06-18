@@ -605,6 +605,91 @@ Route::group(['middleware'=> ['auth','checkRole:1']], function () {
         });
         //end tunjangan_golongan
 
+        //Jenis Upah
+        // Route assigned name "jenis_upah.index"...
+        Route::name('jenis_upah.')->group(function () {
+            Route::get('jenis_upah', 'JenisUpahController@index')->name('index');
+            Route::get('jenis_upah/index_json', 'JenisUpahController@indexJson')->name('index.json');
+            Route::get('jenis_upah/create', 'JenisUpahController@create')->name('create');
+            Route::post('jenis_upah/cek_golongan/json', 'JenisUpahController@cekGolonganJson')->name('golongan.json');
+            Route::post('jenis_upah/store', 'JenisUpahController@store')->name('store');
+            Route::get('jenis_upah/edit/{id}', 'JenisUpahController@edit')->name('edit');
+            Route::post('jenis_upah/update', 'JenisUpahController@update')->name('update');
+            Route::delete('jenis_upah/delete', 'JenisUpahController@delete')->name('delete');
+        });
+        //end jenis_upah
+
+
+        //Rekening Pekerja
+        // Route assigned name "rekening_pekerja.index"...
+        Route::name('rekening_pekerja.')->group(function () {
+            Route::get('rekening_pekerja', 'RekeningPekerjaController@index')->name('index');
+            Route::get('rekening_pekerja/index_json', 'RekeningPekerjaController@indexJson')->name('index.json');
+            Route::get('rekening_pekerja/create', 'RekeningPekerjaController@create')->name('create');
+            Route::post('rekening_pekerja/cek_golongan/json', 'RekeningPekerjaController@cekGolonganJson')->name('golongan.json');
+            Route::post('rekening_pekerja/store', 'RekeningPekerjaController@store')->name('store');
+            Route::get('rekening_pekerja/edit/{id}', 'RekeningPekerjaController@edit')->name('edit');
+            Route::post('rekening_pekerja/update', 'RekeningPekerjaController@update')->name('update');
+            Route::delete('rekening_pekerja/delete', 'RekeningPekerjaController@delete')->name('delete');
+        });
+        //end rekening_pekerja
+
+        //Tabel AARD
+        // Route assigned name "tabel_aard.index"...
+        Route::name('tabel_aard.')->group(function () {
+            Route::get('tabel_aard', 'TabelAardController@index')->name('index');
+            Route::get('tabel_aard/index_json', 'TabelAardController@indexJson')->name('index.json');
+            Route::get('tabel_aard/create', 'TabelAardController@create')->name('create');
+            Route::post('tabel_aard/cek_golongan/json', 'TabelAardController@cekGolonganJson')->name('golongan.json');
+            Route::post('tabel_aard/store', 'TabelAardController@store')->name('store');
+            Route::get('tabel_aard/edit/{id}', 'TabelAardController@edit')->name('edit');
+            Route::post('tabel_aard/update', 'TabelAardController@update')->name('update');
+            Route::delete('tabel_aard/delete', 'TabelAardController@delete')->name('delete');
+        });
+        //end tabel_aard
+
+        //Master Bank
+        // Route assigned name "master_bank.index"...
+        Route::name('master_bank.')->group(function () {
+            Route::get('master_bank', 'MasterBankController@index')->name('index');
+            Route::get('master_bank/index_json', 'MasterBankController@indexJson')->name('index.json');
+            Route::get('master_bank/create', 'MasterBankController@create')->name('create');
+            Route::post('master_bank/cek_golongan/json', 'MasterBankController@cekGolonganJson')->name('golongan.json');
+            Route::post('master_bank/store', 'MasterBankController@store')->name('store');
+            Route::get('master_bank/edit/{id}', 'MasterBankController@edit')->name('edit');
+            Route::post('master_bank/update', 'MasterBankController@update')->name('update');
+            Route::delete('master_bank/delete', 'MasterBankController@delete')->name('delete');
+        });
+        //end master_bank
+
+        //Master ptkp
+        // Route assigned name "master_ptkp.index"...
+        Route::name('master_ptkp.')->group(function () {
+            Route::get('master_ptkp', 'MasterPtkpController@index')->name('index');
+            Route::get('master_ptkp/index_json', 'MasterPtkpController@indexJson')->name('index.json');
+            Route::get('master_ptkp/create', 'MasterPtkpController@create')->name('create');
+            Route::post('master_ptkp/cek_golongan/json', 'MasterPtkpController@cekGolonganJson')->name('golongan.json');
+            Route::post('master_ptkp/store', 'MasterPtkpController@store')->name('store');
+            Route::get('master_ptkp/edit/{id}', 'MasterPtkpController@edit')->name('edit');
+            Route::post('master_ptkp/update', 'MasterPtkpController@update')->name('update');
+            Route::delete('master_ptkp/delete', 'MasterPtkpController@delete')->name('delete');
+        });
+        //end master_ptkp
+
+        //Master Tabungan
+        // Route assigned name "master_tabungan.index"...
+        Route::name('master_tabungan.')->group(function () {
+            Route::get('master_tabungan', 'MasterTabunganController@index')->name('index');
+            Route::get('master_tabungan/index_json', 'MasterTabunganController@indexJson')->name('index.json');
+            Route::get('master_tabungan/create', 'MasterTabunganController@create')->name('create');
+            Route::post('master_tabungan/cek_golongan/json', 'MasterTabunganController@cekGolonganJson')->name('golongan.json');
+            Route::post('master_tabungan/store', 'MasterTabunganController@store')->name('store');
+            Route::get('master_tabungan/edit/{id}', 'MasterTabunganController@edit')->name('edit');
+            Route::post('master_tabungan/update', 'MasterTabunganController@update')->name('update');
+            Route::delete('master_tabungan/delete', 'MasterTabunganController@delete')->name('delete');
+        });
+        //end master_ptkp
+
         //jamsostek
         // Route assigned name "jamsostek.index"...
         Route::name('jamsostek.')->group(function () {
@@ -715,12 +800,24 @@ Route::group(['middleware'=> ['auth','checkRole:1']], function () {
             Route::get('bulan_perbendaharaan', 'BulanPerbendaharaanController@index')->name('index');
             Route::post('bulan_perbendaharaan/index/search', 'BulanPerbendaharaanController@searchIndex')->name('search.index');
             Route::get('bulan_perbendaharaan/create', 'BulanPerbendaharaanController@create')->name('create');
-            Route::post('bulan_perbendaharaan/store', 'BulanPerbendaharaanController@store')->name('store');
+            Route::get('bulan_perbendaharaan/store', 'BulanPerbendaharaanController@store')->name('store');
             Route::get('bulan_perbendaharaan/edit/{no}', 'BulanPerbendaharaanController@edit')->name('edit');
             Route::post('bulan_perbendaharaan/update', 'BulanPerbendaharaanController@update')->name('update');
             Route::delete('bulan_perbendaharaan/delete', 'BulanPerbendaharaanController@delete')->name('delete');
         });
         //end bulan_perbendaharaan
+
+        //opening_balance
+        // Route assigned name "opening_balance.index"...
+        Route::name('opening_balance.')->group(function () {
+            Route::get('opening_balance', 'OpeningBalanceController@index')->name('index');
+            Route::post('opening_balance/index/search', 'OpeningBalanceController@searchIndex')->name('search.index');
+            Route::get('opening_balance/create', 'OpeningBalanceController@create')->name('create');
+            Route::post('opening_balance/store', 'OpeningBalanceController@store')->name('store');
+            Route::get('opening_balance/edit/{no}', 'OpeningBalanceController@edit')->name('edit');
+            Route::post('opening_balance/update', 'OpeningBalanceController@update')->name('update');
+        });
+        //end opening_balance
 
         //Penempatan deposito
         // Route assigned name "penempatan_deposito.index"...
@@ -1154,6 +1251,39 @@ Route::group(['middleware'=> ['auth','checkRole:1']], function () {
             Route::delete('main_account/delete', 'MainAccountController@delete')->name('delete');
         });
         //end main_account
+        
+    });
+    
+    
+    //Administrator
+    Route::prefix('administrator')->group(function () {
+
+        //set_user
+        // Route assigned name "set_user.index"...
+        Route::name('set_user.')->group(function () {
+            Route::get('set_user', 'SetUserController@index')->name('index');
+            Route::post('set_user/index/search', 'SetUserController@searchIndex')->name('search.index');
+            Route::get('set_user/create', 'SetUserController@create')->name('create');
+            Route::post('set_user/store', 'SetUserController@store')->name('store');
+            Route::get('set_user/edit/{no}', 'SetUserController@edit')->name('edit');
+            Route::post('set_user/update', 'SetUserController@update')->name('update');
+            Route::delete('set_user/delete', 'SetUserController@delete')->name('delete');
+        });
+        //end set_user
+
+        //set_menu
+        // Route assigned name "set_menu.index"...
+        Route::name('set_menu.')->group(function () {
+            Route::get('set_menu', 'SetMenuController@index')->name('index');
+            Route::post('set_menu/index/search', 'SetMenuController@searchIndex')->name('search.index');
+            Route::get('set_menu/create', 'SetMenuController@create')->name('create');
+            Route::post('set_menu/store', 'SetMenuController@store')->name('store');
+            Route::get('set_menu/edit/{no}', 'SetMenuController@edit')->name('edit');
+            Route::post('set_menu/update', 'SetMenuController@update')->name('update');
+            Route::delete('set_menu/delete', 'SetMenuController@delete')->name('delete');
+        });
+        //end set_menu
+
 
     });
 

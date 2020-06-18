@@ -71,6 +71,7 @@
 			<thead class="thead-light">
 				<tr>
 					<th></th>
+					<th>Tahun</th>
 					<th>Bulan</th>
 					<th>Pegawai</th>
 					<th>AARD</th>
@@ -116,6 +117,7 @@ $(document).ready(function () {
 			},
 			columns: [
 				{data: 'radio', name: 'radio'},
+				{data: 'tahun', name: 'tahun'},
 				{data: 'bulan', name: 'bulan'},
 				{data: 'nopek', name: 'nopek'},
 				{data: 'aard', name: 'aard'},
