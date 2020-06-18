@@ -36,6 +36,12 @@ class PekerjaPendidikanController extends Controller
             ->addColumn('namapt', function ($row) {
                 return optional($row->perguruan_tinggi)->nama;
             })
+            ->addColumn('mulai', function ($row) {
+                return Carbon::parse($row->mulai)->translatedFormat('d F Y');
+            })
+            ->addColumn('tgllulus', function ($row) {
+                return Carbon::parse($row->tgllulus)->translatedFormat('d F Y');
+            })
             ->rawColumns(['action'])
             ->make(true);
     }
