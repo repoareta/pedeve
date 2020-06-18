@@ -62,7 +62,7 @@
 							</div>
 						</div>
 		
-						<div class="form-group row">
+						{{-- <div class="form-group row">
 							<label for="nama" class="col-4 col-form-label">Bagian</label>
 							<div class="col-8">
 								<select class="form-control kt-select2" name="bagian" id="bagian">
@@ -72,7 +72,7 @@
 									@endforeach
 								</select>
 							</div>
-						</div>
+						</div> --}}
 		
 						<div class="form-group row">
 							<label for="tahun" class="col-4 col-form-label">Status</label>
@@ -87,7 +87,7 @@
 							</div>
 						</div>
 		
-						<div class="form-group row">
+						{{-- <div class="form-group row">
 							<label for="" class="col-4 col-form-label">Jabatan</label>
 							<div class="col-8">
 								<select class="form-control kt-select2" name="jabatan" id="jabatan">
@@ -97,7 +97,7 @@
 									@endforeach
 								</select>
 							</div>
-						</div>
+						</div> --}}
 
 						<div class="form-group row">
 							<label for="" class="col-4 col-form-label">Golongan</label>
