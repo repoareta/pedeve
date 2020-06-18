@@ -425,13 +425,6 @@
                     'informasi_saldo.create',
                     'informasi_saldo.edit',
                 ); // isi nama semua route Informasi saldo
-
-                $inisialisasi_saldo = array(
-                    'inisialisasi_saldo.index',
-                    'inisialisasi_saldo.search.index',
-                    'inisialisasi_saldo.create',
-                    'inisialisasi_saldo.edit',
-                ); // isi nama semua route inisialisasi saldo
                 $bulan_perbendaharaan = array(
                     'bulan_perbendaharaan.index',
                     'bulan_perbendaharaan.search.index',
@@ -451,8 +444,7 @@
                 ); //isi nama Subdomain Tool
 
                 $saldo = array_merge(
-                    $informasi_saldo,
-                    $inisialisasi_saldo
+                    $informasi_saldo
                 ); //isi nama Subdomain saldo
 
                 $pembayaran_gaji = array(
@@ -464,24 +456,6 @@
                     'pembayaran_gaji.edit.detail',
                     'pembayaran_gaji.approv'
                 ); // isi nama semua route pembayaran gaji
-                $pembayaran_insentif = array(
-                    'pembayaran_insentif.index',
-                    'pembayaran_insentif.search.index',
-                    'pembayaran_insentif.createmp',
-                    'pembayaran_insentif.create',
-                    'pembayaran_insentif.edit',
-                    'pembayaran_insentif.edit.detail',
-                    'pembayaran_insentif.approv'
-                ); // isi nama semua route pembayaran insentif
-                $pembayaran_thr = array(
-                    'pembayaran_thr.index',
-                    'pembayaran_thr.search.index',
-                    'pembayaran_thr.createmp',
-                    'pembayaran_thr.create',
-                    'pembayaran_thr.edit',
-                    'pembayaran_thr.edit.detail',
-                    'pembayaran_thr.approv'
-                ); // isi nama semua route pembayaran thr
                 $pembayaran_umk = array(
                     'pembayaran_umk.index',
                     'pembayaran_umk.search.index',
@@ -510,9 +484,7 @@
                     'pembayaran_pbayar.approv'
                 ); // isi nama semua route pembayaran pbayar
                 $pembayaran = array_merge(
-                    $pembayaran_gaji,
-                    $pembayaran_insentif,
-                    $pembayaran_thr,
+                $pembayaran_gaji,
                     $pembayaran_umk,
                     $pembayaran_jumk,
                     $pembayaran_pbayar

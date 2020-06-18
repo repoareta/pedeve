@@ -780,20 +780,6 @@ Route::group(['middleware'=> ['auth','checkRole:1']], function () {
         });
         //end informasi_saldo
 
-        //inisialisasi saldo
-        // Route assigned name "inisialisasi_saldo.index"...
-        Route::name('inisialisasi_saldo.')->group(function () {
-            Route::get('inisialisasi_saldo', 'InisialisasiSaldoController@index')->name('index');
-            Route::get('inisialisasi_saldo/index/json', 'InisialisasiSaldoController@indexJson')->name('index.json');
-            Route::post('inisialisasi_saldo/nokas/json', 'InisialisasiSaldoController@nokasJson')->name('nokas.json');
-            Route::get('inisialisasi_saldo/create', 'InisialisasiSaldoController@create')->name('create');
-            Route::post('inisialisasi_saldo/store', 'InisialisasiSaldoController@store')->name('store');
-            Route::get('inisialisasi_saldo/edit/{jk}/{nokas}', 'InisialisasiSaldoController@edit')->name('edit');
-            Route::post('inisialisasi_saldo/update', 'InisialisasiSaldoController@update')->name('update');
-            Route::delete('inisialisasi_saldo/delete', 'InisialisasiSaldoController@delete')->name('delete');
-        });
-        //end inisialisasi_saldo
-
         //bulan_perbendaharaan
         // Route assigned name "bulan_perbendaharaan.index"...
         Route::name('bulan_perbendaharaan.')->group(function () {
@@ -841,28 +827,6 @@ Route::group(['middleware'=> ['auth','checkRole:1']], function () {
         });
         //end penempatan_deposito
 
-         //pembayaran_asuransi
-        // Route assigned name "pembayaran_asuransi.index"...
-        Route::name('pembayaran_asuransi.')->group(function () {
-            Route::get('pembayaran_asuransi', 'PembayaranAsuransiController@index')->name('index');
-            Route::post('pembayaran_asuransi/search', 'PembayaranAsuransiController@searchIndex')->name('search.index');
-            Route::get('pembayaran_asuransi/create', 'PembayaranAsuransiController@create')->name('create');
-            Route::post('pembayaran_asuransi/create/json', 'PembayaranAsuransiController@createJson')->name('createJson');
-            Route::post('pembayaran_asuransi/lokasi/json', 'PembayaranAsuransiController@lokasiJson')->name('lokasiJson');
-            Route::post('pembayaran_asuransi/nobukti/json', 'PembayaranAsuransiController@nobuktiJson')->name('nobuktiJson');
-            Route::post('pembayaran_asuransi/store', 'PembayaranAsuransiController@store')->name('store');
-            Route::post('pembayaran_asuransi/store_detail', 'PembayaranAsuransiController@storeDetail')->name('store.detail');
-            Route::post('pembayaran_asuransi/store_app', 'PembayaranAsuransiController@storeApp')->name('store.app');
-            Route::get('pembayaran_asuransi/edit/{no}', 'PembayaranAsuransiController@edit')->name('edit');
-            Route::get('pembayaran_asuransi/editdetail/{id}/{no}', 'PembayaranAsuransiController@editDetail')->name('edit.detail');
-            Route::post('pembayaran_asuransi/update', 'PembayaranAsuransiController@update')->name('update');
-            Route::delete('pembayaran_asuransi/delete', 'PembayaranAsuransiController@delete')->name('delete');
-            Route::delete('pembayaran_asuransi/deletedetail', 'PembayaranAsuransiController@deleteDetail')->name('delete.detail');
-            Route::get('pembayaran_asuransi/approv/{id}/{status}', 'PembayaranAsuransiController@approv')->name('approv');
-        });
-        //end pembayaran_asuransi
-
-
          //pembayaran_gaji
         // Route assigned name "pembayaran_gaji.index"...
         Route::name('pembayaran_gaji.')->group(function () {
@@ -885,55 +849,6 @@ Route::group(['middleware'=> ['auth','checkRole:1']], function () {
             Route::get('pembayaran_gaji/approv/{id}/{status}', 'PembayaranGajiController@approv')->name('approv');
         });
         //end pembayaran_gaji
-
-
-         //pembayaran_insentif
-        // Route assigned name "pembayaran_insentif.index"...
-        Route::name('pembayaran_insentif.')->group(function () {
-            Route::get('pembayaran_insentif', 'PembayaranInsentifController@index')->name('index');
-            Route::post('pembayaran_insentif/search', 'PembayaranInsentifController@searchIndex')->name('search.index');
-            Route::get('pembayaran_insentif/create', 'PembayaranInsentifController@create')->name('create');
-            Route::post('pembayaran_insentif/create/json', 'PembayaranInsentifController@createJson')->name('createJson');
-            Route::post('pembayaran_insentif/lokasi/json', 'PembayaranInsentifController@lokasiJson')->name('lokasiJson');
-            Route::post('pembayaran_insentif/nobukti/json', 'PembayaranInsentifController@nobuktiJson')->name('nobuktiJson');
-            Route::post('pembayaran_insentif/store', 'PembayaranInsentifController@store')->name('store');
-            Route::post('pembayaran_insentif/store_detail', 'PembayaranInsentifController@storeDetail')->name('store.detail');
-            Route::post('pembayaran_insentif/store_app', 'PembayaranInsentifController@storeApp')->name('store.app');
-            Route::get('pembayaran_insentif/edit/{no}', 'PembayaranInsentifController@edit')->name('edit');
-            Route::get('pembayaran_insentif/editdetail/{id}/{no}', 'PembayaranInsentifController@editDetail')->name('edit.detail');
-            Route::post('pembayaran_insentif/update', 'PembayaranInsentifController@update')->name('update');
-            Route::post('pembayaran_insentif/update/detail', 'PembayaranInsentifController@updateDetail')->name('update.detail');
-            Route::delete('pembayaran_insentif/delete', 'PembayaranInsentifController@delete')->name('delete');
-            Route::delete('pembayaran_insentif/deletedetail', 'PembayaranInsentifController@deleteDetail')->name('delete.detail');
-            Route::delete('pembayaran_insentif/deletedetail/all', 'PembayaranInsentifController@deleteDetailall')->name('delete.detail.all');
-            Route::get('pembayaran_insentif/approv/{id}/{status}', 'PembayaranInsentifController@approv')->name('approv');
-        });
-        //end pembayaran_insentif
-
-
-         //pembayaran_thr
-        // Route assigned name "pembayaran_thr.index"...
-        Route::name('pembayaran_thr.')->group(function () {
-            Route::get('pembayaran_thr', 'PembayaranThrController@index')->name('index');
-            Route::post('pembayaran_thr/search', 'PembayaranThrController@searchIndex')->name('search.index');
-            Route::get('pembayaran_thr/create', 'PembayaranThrController@create')->name('create');
-            Route::post('pembayaran_thr/create/json', 'PembayaranThrController@createJson')->name('createJson');
-            Route::post('pembayaran_thr/lokasi/json', 'PembayaranThrController@lokasiJson')->name('lokasiJson');
-            Route::post('pembayaran_thr/nobukti/json', 'PembayaranThrController@nobuktiJson')->name('nobuktiJson');
-            Route::post('pembayaran_thr/store', 'PembayaranThrController@store')->name('store');
-            Route::post('pembayaran_thr/store_detail', 'PembayaranThrController@storeDetail')->name('store.detail');
-            Route::post('pembayaran_thr/store_app', 'PembayaranThrController@storeApp')->name('store.app');
-            Route::get('pembayaran_thr/edit/{no}', 'PembayaranThrController@edit')->name('edit');
-            Route::get('pembayaran_thr/editdetail/{id}/{no}', 'PembayaranThrController@editDetail')->name('edit.detail');
-            Route::post('pembayaran_thr/update', 'PembayaranThrController@update')->name('update');
-            Route::post('pembayaran_thr/update/detail', 'PembayaranThrController@updateDetail')->name('update.detail');
-            Route::delete('pembayaran_thr/delete', 'PembayaranThrController@delete')->name('delete');
-            Route::delete('pembayaran_thr/deletedetail', 'PembayaranThrController@deleteDetail')->name('delete.detail');
-            Route::delete('pembayaran_thr/deletedetail/all', 'PembayaranThrController@deleteDetailall')->name('delete.detail.all');
-            Route::get('pembayaran_thr/approv/{id}/{status}', 'PembayaranThrController@approv')->name('approv');
-        });
-        //end pembayaran_thr
-
 
          //pembayaran_umk
         // Route assigned name "pembayaran_umk.index"...
