@@ -13,7 +13,17 @@ class TabelDepositoController extends Controller
 {
     public function index()
     {
-        return view('tabel_deposito.index');
+        $data_tahunbulan = DB::select("select max(thnbln) as bulan_buku from bulankontroller where status='1' and length(thnbln)='6'");
+            if(!empty($data_tahunbulan)) {
+                foreach ($data_tahunbulan as $data_bul) {
+                    $tahun = substr($data_bul->bulan_buku,0,-2); 
+                    $bulan = substr($data_bul->bulan_buku,4); 
+                }
+            }else{
+                $bulan ='00';
+                $tahun ='0000';
+            }
+        return view('tabel_deposito.index',compact('tahun','bulan'));
     }
 
     public function searchIndex(Request $request)

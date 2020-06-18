@@ -19,11 +19,7 @@ class JenisBiayaController extends Controller
 
     public function searchIndex(Request $request)
     {
-        if($request->pencarian <> ""){
-            $data = DB::select("select a.* from jenisbiaya a where a.kode like '%$request->pencarian%' or a.keterangan like '%$request->pencarian%'");
-        }else{
-            $data = DB::select("select a.* from jenisbiaya a order by a.kode");
-        }	
+        $data = DB::select("select a.* from jenisbiaya a order by a.kode");
         return datatables()->of($data)
         ->addColumn('kode', function ($data) {
             return $data->kode;

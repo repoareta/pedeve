@@ -19,11 +19,7 @@ class LokasiKontrolerController extends Controller
 
     public function searchIndex(Request $request)
     {
-        if($request->pencarian <> ""){
-            $data = DB::select("select a.* from lokasi a where a.kodelokasi like '%$request->pencarian%' or a.nama like '%$request->pencarian%'");
-        }else{
-            $data = DB::select("select a.* from lokasi a ORDER BY a.kodelokasi");
-        }	
+        $data = DB::select("select a.* from lokasi a ORDER BY a.kodelokasi");
         return datatables()->of($data)
         ->addColumn('kode', function ($data) {
             return $data->kodelokasi;

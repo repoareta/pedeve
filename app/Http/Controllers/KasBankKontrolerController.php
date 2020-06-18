@@ -20,11 +20,7 @@ class KasBankKontrolerController extends Controller
 
     public function searchIndex(Request $request)
     {
-        if($request->pencarian <> ""){
-            $data = DB::select("select a.* from storejk a where a.kodestore like '%$request->pencarian%' or a.namabank like '%$request->pencarian%' or a.norekening like '%$request->pencarian%' or a.account like '%$request->pencarian%' order by a.jeniskartu,a.kodestore");
-        }else{
-            $data = DB::select("select a.* from storejk a ORDER BY a.jeniskartu,a.kodestore");
-        }	
+        $data = DB::select("select a.* from storejk a ORDER BY a.jeniskartu,a.kodestore");
         return datatables()->of($data)
         ->addColumn('jeniskartu', function ($data) {
             return $data->jeniskartu;

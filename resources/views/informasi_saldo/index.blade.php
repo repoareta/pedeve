@@ -40,11 +40,19 @@
 		</div>
 	</div>
 	<div class="kt-portlet__body">
-	<form id="search-form">
-			Tanggal: 	<input style="width:10%;height:35px;border: 1px solid #DCDCDC;border-radius:5px;"  name="tanggal" id="tanggal" type="text"  value="" onkeypress="return hanyaAngka(event)" autocomplete='off'>  
-				<button type="submit" style="font-size: 20px;margin-left:5px;border-radius:10px;border-radius:10px;background-color:white;" class="kt-font-info pointer-link" data-toggle="kt-tooltip" data-placement="top" title="Cari Data"> <i class="fa fa-search"></i></button>  
-				
-		</form>
+	<div class="col-12">
+			<form class="kt-form" id="search-form" >
+				<div class="form-group row">
+					<label for="" class="col-form-label">Tanggal</label>
+					<div class="col-2">
+						<input class="form-control" type="text" name="tanggal" value="" id="tanggal" onkeypress="return hanyaAngka(event)" autocomplete='off'>
+					</div>
+					<div class="col-2">
+						<button type="submit" class="btn btn-brand"><i class="fa fa-search" aria-hidden="true"></i> Cari</button>
+					</div>
+				</div>
+			</form>
+		</div>
 		<!--begin: Datatable -->
 		<table class="table table-striped table-bordered table-hover table-checkable" id="kt_table" width="100%">
 			<thead class="thead-light">

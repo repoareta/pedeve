@@ -52,11 +52,6 @@
 		</div>
 	</div>
 	<div class="kt-portlet__body">
-		<form id="search-form">
-		Pencarian: 	<input style="width:20%;height:35px;border: 1px solid #DCDCDC;border-radius:5px;"  name="pencarian"  type="text"  value="" onkeyup="this.value = this.value.toUpperCase()" autocomplete='off'>  
-				<button type="submit" style="font-size: 20px;margin-left:5px;border-radius:10px;border-radius:10px;background-color:white;" class="kt-font-info pointer-link" data-toggle="kt-tooltip" data-placement="top" title="Cari Data"> <i class="fa fa-search"></i></button>  
-				
-		</form>
 		<!--begin: Datatable -->
 		<table class="table table-striped table-bordered table-hover table-checkable" id="kt_table" width="100%">
 			<thead class="thead-light">
@@ -88,8 +83,8 @@ $(document).ready(function () {
 			scrollX   : true,
 			processing: true,
 			serverSide: true,
-			searching: false,
-			lengthChange: false,
+			searching: true,
+			lengthChange: true,
 			language: {
 				processing: '<i class="fa fa-spinner fa-spin fa-2x fa-fw"></i> <br> Loading...'
 			},
