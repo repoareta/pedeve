@@ -49,7 +49,7 @@
                     <div class="form-group row">
 						<label for="spd-input" class="col-2 col-form-label">Tahun</label>
 						<div class="col-10">
-							<input class="form-control" type="text" readonly name="tahun_smk" id="tahun_smk" value="{{ date('Y') }}">
+							<input class="form-control" type="text" name="tahun_smk" id="tahun_smk" value="{{ date('Y') }}">
 						</div>
 					</div>
 					

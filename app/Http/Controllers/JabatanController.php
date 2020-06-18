@@ -7,6 +7,7 @@ use Illuminate\Http\Request;
 // Load Model
 use App\Models\Pekerja;
 use App\Models\Jabatan;
+use App\Models\KodeJabatan;
 
 //load form request (for validation)
 use App\Http\Requests\JabatanStore;
@@ -36,7 +37,14 @@ class JabatanController extends Controller
                 return $row->kdbag.' - '.$row->kode_bagian->nama;
             })
             ->addColumn('jabatan', function ($row) {
-                return $row->kdjab;
+                $kode_bagian = $row->kdbag;
+                $kode_jabatan = $row->kdjab;
+                $jabatan = KodeJabatan::where('kdbag', $kode_bagian)
+                    ->where('kdjab', $kode_jabatan)
+                    ->first();
+                $nama_jabatan = optional($jabatan)->keterangan ? ' - '.optional($jabatan)->keterangan : null;
+                
+                return $kode_jabatan.$nama_jabatan;
             })
             ->addColumn('mulai', function ($row) {
                 return Carbon::parse($row->mulai)->translatedFormat('d F Y');
