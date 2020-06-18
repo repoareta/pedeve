@@ -24,7 +24,17 @@ class PembayaranGajiController extends Controller
 {
     public function index()
     {
-        return view('pembayaran_gaji.index');
+        $data_tahunbulan = DB::select("select max(thnbln) as bulan_buku from timetrans where status='1' and length(thnbln)='6'");
+            if(!empty($data_tahunbulan)) {
+                foreach ($data_tahunbulan as $data_bul) {
+                    $tahun = substr($data_bul->bulan_buku,0,-2); 
+                    $bulan = substr($data_bul->bulan_buku,4); 
+                }
+            }else{
+                $bulan ='00';
+                $tahun ='0000';
+            }
+        return view('pembayaran_gaji.index',compact('tahun','bulan'));
     }
 
     public function searchIndex(Request $request)
@@ -43,7 +53,7 @@ class PembayaranGajiController extends Controller
             $thnblopen = "";
         }
         $s = $thnblopen;
-        $nodok = $request->nodok;
+        $nodok = $request->bukti;
         $tahun = $request->tahun;
         $bulan = $request->bulan;
         if($nodok == "" and $tahun=="" and $bulan==""){
@@ -114,8 +124,8 @@ class PembayaranGajiController extends Controller
                 $jumlahnya = 0;
             }
         }else{
-            $data = DB::select("select (select namabank from storejk where kodestore=a.store and ci=a.ci) as namastore, a.docno,a.originaldate,a.thnbln,a.jk,a.store,a.ci,a.voucher,a.kepada,a.rate,a.verified,a.nilai_dok as nilai_dok,a.paid from kasdoc a where a.voucher='$nodok' and left(thnbln, 4)='$tahun' and SUBSTRING(thnbln, 5, 2)='$bulan' and a.kd_kepada LIKE 'PG%' order by a.store,a.voucher asc");
-            $data_objrs2 = DB::select("select sum(nilai_dok) as jml from kasdoc where voucher='$nodok' and left(thnbln, 4)='$tahun' and SUBSTRING(thnbln, 5, 2)='$bulan' and a.kd_kepada LIKE 'PG%'");
+            $data = DB::select("select (select namabank from storejk where kodestore=a.store and ci=a.ci) as namastore, a.docno,a.originaldate,a.thnbln,a.jk,a.store,a.ci,a.voucher,a.kepada,a.rate,a.verified,a.nilai_dok,a.paid from kasdoc a where a.voucher='$nodok' and left(a.thnbln, 4)='$tahun' and SUBSTRING(thnbln, 5, 2)='$bulan' and a.kd_kepada LIKE 'PG%' order by a.store,a.voucher asc");
+            $data_objrs2 = DB::select("select sum(nilai_dok) as jml from kasdoc where voucher='$nodok' and left(thnbln, 4)='$tahun' and SUBSTRING(thnbln, 5, 2)='$bulan' and kd_kepada='PG'");
             if(!empty($data_objrs2)){
              foreach($data_objrs2 as $objrs2)
              {

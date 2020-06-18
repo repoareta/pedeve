@@ -22,14 +22,19 @@ class LemburController extends Controller
     public function index()
     {
         $data_tahunbulan = DB::select("select max(thnbln) as bulan_buku from timetrans where status='1' and length(thnbln)='6'");
-        foreach($data_tahunbulan as $data_bul)
-        {
-            $bulan_buku = $data_bul->bulan_buku;
-        }
-        $tahuns = substr($bulan_buku,0,-2);
+            if(!empty($data_tahunbulan)) {
+                foreach ($data_tahunbulan as $data_bul) {
+                    $tahun = substr($data_bul->bulan_buku,0,-2); 
+                    $bulan = substr($data_bul->bulan_buku,4); 
+                }
+            }else{
+                $bulan ='00';
+                $tahun ='0000';
+            }
+        $tahuns = $tahun;
         $data_list = DB::select("select a.bulan,a.tahun, a.tanggal, a.nopek, a.libur, a.mulai, a.sampai, a.makanpg, a.makansg, a.makanml, a.transport,a.lembur,(a.makanpg+a.makansg+a.makanml+a.transport+a.lembur) as total, b.nama as nama_nopek from pay_lembur a join sdm_master_pegawai b on a.nopek=b.nopeg where a.tahun='$tahuns' order by a.tanggal desc");
         $data_pegawai = DB::select("select nopeg,nama,status,nama from sdm_master_pegawai where status <>'P' order by nopeg");	
-        return view('lembur.index',compact('data_list','data_pegawai'));
+        return view('lembur.index',compact('data_list','data_pegawai','tahun','bulan'));
     }
 
 

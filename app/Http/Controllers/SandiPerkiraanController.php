@@ -19,11 +19,7 @@ class SandiPerkiraanController extends Controller
 
     public function searchIndex(Request $request)
     {
-        if($request->pencarian <> ""){
-            $data = DB::select("select a.* from account a where a.kodeacct like '%$request->pencarian%' or a.descacct like '%$request->pencarian%' order by a.kodeacct");
-        }else{
-            $data = DB::select("select a.* from account a order by a.kodeacct");
-        }	
+        $data = DB::select("select a.* from account a order by a.kodeacct");
         return datatables()->of($data)
         ->addColumn('kode', function ($data) {
             return $data->kodeacct;
