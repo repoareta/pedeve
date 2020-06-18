@@ -32,6 +32,12 @@ class KursusController extends Controller
                 $radio = '<label class="kt-radio kt-radio--bold kt-radio--brand"><input type="radio" name="radio_kursus" value="'.$row->nopeg.'_'.$row->mulai.'_'.$row->nama.'"><span></span></label>';
                 return $radio;
             })
+            ->addColumn('mulai', function ($row) {
+                return Carbon::parse($row->mulai)->translatedFormat('d F Y');
+            })
+            ->addColumn('sampai', function ($row) {
+                return Carbon::parse($row->sampai)->translatedFormat('d F Y');
+            })
             ->rawColumns(['action'])
             ->make(true);
     }
