@@ -309,6 +309,15 @@ Route::group(['middleware'=> ['auth','checkRole:1']], function () {
                 Route::delete('pekerja/jabatan/delete', 'JabatanController@delete')->name('delete');
             });
 
+            // Route assigned name "pekerja.keluarga.index"...
+            Route::name('gaji_pokok.')->group(function () {
+                Route::get('pekerja/gaji_pokok/index_json/{pekerja}', 'GajiPokokController@indexJson')->name('index.json');
+                Route::post('pekerja/gaji_pokok/store/{pekerja}', 'GajiPokokController@store')->name('store');
+                Route::get('pekerja/gaji_pokok/show_json', 'GajiPokokController@showJson')->name('show.json');
+                Route::post('pekerja/gaji_pokok/update/{pekerja}/{status}/{nama}', 'GajiPokokController@update')->name('update');
+                Route::delete('pekerja/gaji_pokok/delete', 'GajiPokokController@delete')->name('delete');
+            });
+
             // Route assigned name "pekerja.golongan_gaji.index"...
             Route::name('golongan_gaji.')->group(function () {
                 Route::get('pekerja/golongan_gaji/index_json/{pekerja}', 'GolonganGajiController@indexJson')->name('index.json');
@@ -827,7 +836,7 @@ Route::group(['middleware'=> ['auth','checkRole:1']], function () {
         });
         //end penempatan_deposito
 
-         //pembayaran_gaji
+        //pembayaran_gaji
         // Route assigned name "pembayaran_gaji.index"...
         Route::name('pembayaran_gaji.')->group(function () {
             Route::get('pembayaran_gaji', 'PembayaranGajiController@index')->name('index');
@@ -850,7 +859,7 @@ Route::group(['middleware'=> ['auth','checkRole:1']], function () {
         });
         //end pembayaran_gaji
 
-         //pembayaran_umk
+        //pembayaran_umk
         // Route assigned name "pembayaran_umk.index"...
         Route::name('pembayaran_umk.')->group(function () {
             Route::get('pembayaran_umk', 'PembayaranUmkController@index')->name('index');
@@ -874,7 +883,7 @@ Route::group(['middleware'=> ['auth','checkRole:1']], function () {
         //end pembayaran_umk
 
 
-         //pembayaran_jumk
+        //pembayaran_jumk
         // Route assigned name "pembayaran_jumk.index"...
         Route::name('pembayaran_jumk.')->group(function () {
             Route::get('pembayaran_jumk', 'PembayaranJumkController@index')->name('index');
@@ -897,7 +906,7 @@ Route::group(['middleware'=> ['auth','checkRole:1']], function () {
         });
         //end pembayaran_jumk
 
-         //pembayaran_pbayar
+        //pembayaran_pbayar
         // Route assigned name "pembayaran_pbayar.index"...
         Route::name('pembayaran_pbayar.')->group(function () {
             Route::get('pembayaran_pbayar', 'PembayaranPbayarController@index')->name('index');
@@ -1166,7 +1175,6 @@ Route::group(['middleware'=> ['auth','checkRole:1']], function () {
             Route::delete('main_account/delete', 'MainAccountController@delete')->name('delete');
         });
         //end main_account
-        
     });
     
     
@@ -1198,9 +1206,5 @@ Route::group(['middleware'=> ['auth','checkRole:1']], function () {
             Route::delete('set_menu/delete', 'SetMenuController@delete')->name('delete');
         });
         //end set_menu
-
-
     });
-
-
 });
