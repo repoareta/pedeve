@@ -210,7 +210,7 @@
                     {{ $panjar_header->menyetujui }}
                   </td>
                   <td class="text-center border-less">
-                    {{ $panjar_header->menyetujui_keu }}
+                    {{ $panjar_header->personalia }}
                   </td>
                 </tr>
 

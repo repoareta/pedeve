@@ -91,7 +91,7 @@ Route::group(['middleware'=> ['auth','checkRole:1']], function () {
             Route::get('perjalanan_dinas/edit/{no_panjar}', 'PerjalananDinasController@edit')->name('edit');
             Route::post('perjalanan_dinas/update/{no_panjar}', 'PerjalananDinasController@update')->name('update');
             Route::delete('perjalanan_dinas/delete', 'PerjalananDinasController@delete')->name('delete');
-            Route::get('perjalanan_dinas/export/{no_panjar}', 'PerjalananDinasController@rowExport')->name('export');
+            Route::post('perjalanan_dinas/export', 'PerjalananDinasController@rowExport')->name('export');
             Route::get('perjalanan_dinas/rekap', 'PerjalananDinasController@rekap')->name('rekap');
             Route::post('perjalanan_dinas/rekap/export', 'PerjalananDinasController@rekapExport')->name('rekap.export');
             // PERJALANAN DINAS END

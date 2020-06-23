@@ -47,9 +47,14 @@
 					<i class="fas fa-times-circle"></i>
 				</span>
 
+				{{-- <span class="kt-font-info pointer-link" id="exportRowData" data-toggle="kt-tooltip" data-placement="top" title="Cetak Data">
+					<i class="fas fa-print"></i>
+				</span> --}}
+
 				<span class="kt-font-info pointer-link" id="exportRow" data-toggle="kt-tooltip" data-placement="top" title="Cetak Data">
 					<i class="fas fa-print"></i>
 				</span>
+
 			</div>
 		</div>
 		<div class="kt-portlet__head-toolbar">
@@ -83,6 +88,64 @@
 		<!--end: Datatable -->
 	</div>
 </div>
+</div>
+
+<!-- Modal -->
+<div class="modal fade" id="cetakModal" tabindex="-1" role="dialog" aria-labelledby="modelTitleId" aria-hidden="true">
+	<div class="modal-dialog modal-lg" role="document">
+		<div class="modal-content">
+			<div class="modal-header">
+				<h5 class="modal-title">Cetak Data</h5>
+				<button type="button" class="close" data-dismiss="modal" aria-label="Close">
+					<span aria-hidden="true">&times;</span>
+				</button>
+			</div>
+			<form class="kt-form kt-form--label-right" action="{{ route('perjalanan_dinas.export') }}" method="POST" id="formCetakData" target="_blank">
+				<div class="modal-body">
+					@csrf
+					<div class="form-group row">
+						<label for="" class="col-2 col-form-label">Nomor Panjar</label>
+						<div class="col-10">
+							<input class="form-control" type="text" readonly name="no_panjar_dinas" id="no_panjar_dinas">
+						</div>
+					</div>
+
+					<div class="form-group row">
+						<label for="" class="col-2 col-form-label">Atasan Ybs</label>
+						<div class="col-10">
+							<input class="form-control" type="text" name="atasan_ybs" id="atasan_ybs">
+						</div>
+					</div>
+					
+                    <div class="form-group row">
+						<label for="" class="col-2 col-form-label">Menyetujui</label>
+						<div class="col-10">
+							<input class="form-control" type="text" name="menyetujui" id="menyetujui">
+						</div>
+					</div>
+					
+					<div class="form-group row">
+						<label for="" class="col-2 col-form-label">Sekr. Perseroan</label>
+						<div class="col-10">
+							<input class="form-control" type="text" name="sekr_perseroan" id="sekr_perseroan">
+						</div>
+					</div>
+					
+					<div class="form-group row">
+						<label for="" class="col-2 col-form-label">Keuangan</label>
+						<div class="col-10">
+							<input class="form-control" type="text" name="keuangan" id="keuangan">
+						</div>
+					</div>
+					
+				</div>
+				<div class="modal-footer">
+					<button type="button" class="btn btn-warning" data-dismiss="modal"><i class="fa fa-reply" aria-hidden="true"></i> Batal</button>
+					<button type="submit" class="btn btn-primary"><i class="fa fa-check" aria-hidden="true"></i> Cetak Data</button>
+				</div>
+			</form>
+		</div>
+	</div>
 </div>
 @endsection
 
@@ -180,7 +243,7 @@
 			}
 		});
 
-		$('#exportRow').click(function(e) {
+		$('#exportRowData').click(function(e) {
 			e.preventDefault();
 			if($('input[type=radio]').is(':checked')) { 
 				$("input[type=radio]:checked").each(function() {
@@ -217,6 +280,24 @@
 			}
 		});
 
+		$('#exportRow').click(function(e) {
+			e.preventDefault();
+			if($('input[type=radio]').is(':checked')) { 
+				$("input[type=radio]:checked").each(function() {
+					var id = $(this).val();
+
+					// str.replace("Microsoft", "W3Schools");
+
+					// open modal
+					$('#cetakModal').modal('show');
+
+					// fill no_panjar to no_panjar field
+					$('#no_panjar_dinas').val(id);
+				});
+			} else {
+				swalAlertInit('cetak');
+			}
+		});
 	});
 	</script>
 @endsection
