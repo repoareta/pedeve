@@ -29,7 +29,7 @@ class UpahTetapPensiunController extends Controller
 
         return datatables()->of($upah_tetap_pensiun_list)
             ->addColumn('action', function ($row) {
-                $radio = '<label class="kt-radio kt-radio--bold kt-radio--brand"><input type="radio" name="radio_upah_tetap" value="'.$row->nopeg.'-'.$row->ut.'"><span></span></label>';
+                $radio = '<label class="kt-radio kt-radio--bold kt-radio--brand"><input type="radio" name="radio_upah_tetap_pensiun" value="'.$row->nopeg.'-'.$row->ut.'"><span></span></label>';
                 return $radio;
             })
             ->addColumn('ut', function ($row) {
@@ -96,11 +96,12 @@ class UpahTetapPensiunController extends Controller
         ->first();
 
         $upah->nopeg      = $pekerja->nopeg;
-        $upah->ut         = $request->nilai_upah_tetap;
-        $upah->mulai      = $request->mulai_upah_tetap;
-        $upah->sampai     = $request->sampai_upah_tetap;
-        $upah->keterangan = $request->keterangan_upah_tetap;
+        $upah->ut         = $request->nilai_upah_tetap_pensiun;
+        $upah->mulai      = $request->mulai_upah_tetap_pensiun;
+        $upah->sampai     = $request->sampai_upah_tetap_pensiun;
+        $upah->keterangan = $request->keterangan_upah_tetap_pensiun;
         $upah->userid     = Auth::user()->userid;
+        $upah->tglentry   = Carbon::now();
 
         $upah->save();
 

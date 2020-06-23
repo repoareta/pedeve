@@ -134,7 +134,7 @@
 
 			if(state == 'add'){
 				url = "{{ route('pekerja.upah_tetap_pensiun.store', ['pekerja' => $pekerja->nopeg]) }}";
-				swal_title = "Tambah Detail Upah Tetap";
+				swal_title = "Tambah Detail Upah Tetap Pensiun";
 			} else {
 				url = "{{ route('pekerja.upah_tetap_pensiun.update', 
 					[
@@ -142,9 +142,9 @@
 						'nilai' => ':nilai',
 					]) }}";
 				url = url
-				.replace(':nilai', $('#nilai_upah_tetap').data('nilai'));
+				.replace(':nilai', $('#nilai_upah_tetap_pensiun').data('nilai'));
 
-				swal_title = "Update Detail Upah Tetap";
+				swal_title = "Update Detail Upah Tetap Pensiun";
 			}
 
 			$.ajax({
@@ -167,10 +167,6 @@
 					// clear form
 					$('#upahTetapPensiunModal').on('hidden.bs.modal', function () {
 						$(this).find('form').trigger('reset');
-						$('#status_upah_tetap').val('').trigger('change');
-						$('#agama_upah_tetap').val('').trigger('change');
-						$('#pendidikan_upah_tetap').val('').trigger('change');
-						$('#golongan_darah_upah_tetap').val('').trigger('change');
 					});
 					// append to datatable
 					t.ajax.reload();
@@ -185,8 +181,8 @@
 
 	$('#deleteRowUpahTetapPensiun').click(function(e) {
 		e.preventDefault();
-		if($('input[name=radio_upah_tetap]').is(':checked')) { 
-			$("input[name=radio_upah_tetap]:checked").each(function() {
+		if($('input[name=radio_upah_tetap_pensiun]').is(':checked')) { 
+			$("input[name=radio_upah_tetap_pensiun]:checked").each(function() {
 				var nopeg = $(this).val().split('-')[0];
 				var ut = $(this).val().split('-')[1];
 				
@@ -200,7 +196,7 @@
 
 				swalWithBootstrapButtons.fire({
 					title: "Data yang akan dihapus?",
-					text: "Upah Tetap : " + ut,
+					text: "Upah Tetap Pensiun: " + ut,
 					type: 'warning',
 					showCancelButton: true,
 					reverseButtons: true,
@@ -221,7 +217,7 @@
 							success: function () {
 								Swal.fire({
 									type  : 'success',
-									title : 'Hapus Detail Upah Tetap ' + ut,
+									title : 'Hapus Detail Upah Tetap Pensiun ' + ut,
 									text  : 'Success',
 									timer : 2000
 								}).then(function() {
@@ -245,8 +241,8 @@
 	$('#editRowUpahTetapPensiun').click(function(e) {
 		e.preventDefault();
 
-		if($('input[name=radio_upah_tetap]').is(':checked')) { 
-			$("input[name=radio_upah_tetap]:checked").each(function() {
+		if($('input[name=radio_upah_tetap_pensiun]').is(':checked')) { 
+			$("input[name=radio_upah_tetap_pensiun]:checked").each(function() {
 				// get value from row					
 				var nopeg = $(this).val().split('-')[0];
 				var ut = $(this).val().split('-')[1];
@@ -263,16 +259,16 @@
 						console.log(response);
 						// update stuff
 						// append value						
-						$('#nilai_upah_tetap').val(response.ut);
-						$('#mulai_upah_tetap').val(response.mulai);
-						$('#sampai_upah_tetap').val(response.sampai);
-						$('#keterangan_upah_tetap').val(response.keterangan);
+						$('#nilai_upah_tetap_pensiun').val(response.ut);
+						$('#mulai_upah_tetap_pensiun').val(response.mulai.split(' ')[0]);
+						$('#sampai_upah_tetap_pensiun').val(response.sampai.split(' ')[0]);
+						$('#keterangan_upah_tetap_pensiun').val(response.keterangan);
 						
 						// title
-						$('#title_modal').text('Ubah Detail Upah Tetap');
+						$('#title_modal').text('Ubah Detail Upah Tetap Pensiun');
 						$('#title_modal').data('state', 'update');
 						// for url update
-						$('#nilai_upah_tetap').data('nilai', response.ut);
+						$('#nilai_upah_tetap_pensiun').data('nilai', response.ut);
 						// open modal
 						$('#upahTetapPensiunModal').modal('show');
 					},
