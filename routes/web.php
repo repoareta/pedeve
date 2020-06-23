@@ -390,6 +390,15 @@ Route::group(['middleware'=> ['auth','checkRole:1']], function () {
                 Route::delete('pekerja/upah_tetap/delete', 'UpahTetapController@delete')->name('delete');
             });
 
+            // Route assigned name "pekerja.upah_tetap.index"...
+            Route::name('upah_tetap_pensiun.')->group(function () {
+                Route::get('pekerja/upah_tetap_pensiun/index_json/{pekerja}', 'UpahTetapPensiunController@indexJson')->name('index.json');
+                Route::post('pekerja/upah_tetap_pensiun/store/{pekerja}', 'UpahTetapPensiunController@store')->name('store');
+                Route::get('pekerja/upah_tetap_pensiun/show_json', 'UpahTetapPensiunController@showJson')->name('show.json');
+                Route::post('pekerja/upah_tetap_pensiun/update/{pekerja}/{nilai}', 'UpahTetapPensiunController@update')->name('update');
+                Route::delete('pekerja/upah_tetap_pensiun/delete', 'UpahTetapPensiunController@delete')->name('delete');
+            });
+
             // Route assigned name "pekerja.upah_all_in.index"...
             Route::name('upah_all_in.')->group(function () {
                 Route::get('pekerja/upah_all_in/index_json/{pekerja}', 'UpahAllInController@indexJson')->name('index.json');

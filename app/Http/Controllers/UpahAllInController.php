@@ -33,6 +33,9 @@ class UpahAllInController extends Controller
                 $radio = '<label class="kt-radio kt-radio--bold kt-radio--brand"><input type="radio" name="radio_upah_all_in" value="'.$row->nopek.'-'.$row->nilai.'"><span></span></label>';
                 return $radio;
             })
+            ->addColumn('nilai', function ($row) {
+                return currency_idr($row->nilai);
+            })
             ->addColumn('mulai', function ($row) {
                 if ($row->mulai) {
                     return Carbon::parse($row->mulai)->translatedFormat('d F Y');
