@@ -441,6 +441,11 @@
 						</a>
 					</li>
 					<li class="nav-item">
+						<a class="nav-link" data-toggle="tab" href="#detail_gaji_pokok" role="tab" aria-selected="false">
+						Gaji Pokok
+						</a>
+					</li>
+					<li class="nav-item">
 						<a class="nav-link" data-toggle="tab" href="#detail_golongan_gaji" role="tab" aria-selected="false">
 						Golongan Gaji
 						</a>
@@ -481,6 +486,11 @@
 						</a>
 					</li>
 					<li class="nav-item">
+						<a class="nav-link" data-toggle="tab" href="#detail_upah_tetap_pensiun" role="tab" aria-selected="false">
+						Upah Tetap Pensiun
+						</a>
+					</li>
+					<li class="nav-item">
 						<a class="nav-link" data-toggle="tab" href="#detail_upah_all_in" role="tab" aria-selected="false">
 						Upah All In
 						</a>
@@ -496,6 +506,10 @@
 	
 				<div class="tab-pane" id="detail_jabatan">
 					@include('pekerja.detail_jabatan')
+				</div>
+
+				<div class="tab-pane" id="detail_gaji_pokok">
+					@include('pekerja.detail_gaji_pokok')
 				</div>
 
 				<div class="tab-pane" id="detail_golongan_gaji">
@@ -528,6 +542,10 @@
 
 				<div class="tab-pane" id="detail_upah_tetap">
 					@include('pekerja.detail_upah_tetap')
+				</div>
+
+				<div class="tab-pane" id="detail_upah_tetap_pensiun">
+					@include('pekerja.detail_upah_tetap_pensiun')
 				</div>
 
 				<div class="tab-pane" id="detail_upah_all_in">
@@ -679,6 +697,7 @@ $(document).ready(function () {
 
 @yield('detail_keluarga_script')
 @yield('detail_jabatan_script')
+@yield('detail_gaji_pokok_script')
 @yield('detail_golongan_gaji_script')
 @yield('detail_kursus_script')
 @yield('detail_pendidikan_script')
@@ -687,5 +706,6 @@ $(document).ready(function () {
 @yield('detail_seminar_script')
 @yield('detail_smk_script')
 @yield('detail_upah_tetap_script')
+@yield('detail_upah_tetap_pensiun_script')
 @yield('detail_upah_all_in_script')
 @endsection
