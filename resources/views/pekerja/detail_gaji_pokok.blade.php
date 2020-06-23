@@ -42,28 +42,21 @@
 	<div class="modal-dialog modal-lg" role="document">
 		<div class="modal-content">
 			<div class="modal-header">
-				<h5 class="modal-title" id="title_modal" data-state="add">Tambah Detail Gaji Pokok</h5>
+				<h5 class="modal-title" id="title_modal_gaji_pokok" data-state="add">Tambah Detail Gaji Pokok</h5>
 				<button type="button" class="close" data-dismiss="modal" aria-label="Close">
 				</button>
 			</div>
-			<form class="kt-form kt-form--label-right" action="" method="POST" id="formPekerjaGajiPokok">
+			<form class="kt-form kt-form--label-right" action="" method="POST" id="formGajiPokok">
 				<div class="modal-body">
 					<div class="form-group row">
-						<label for="spd-input" class="col-2 col-form-label">Nomor Pekerja</label>
+						<label for="" class="col-2 col-form-label">Gaji Pokok</label>
 						<div class="col-10">
-							<input class="form-control" type="text" readonly name="nopeg_gaji_pokok" id="nopeg_gaji_pokok" value="{{ $pekerja->nopeg }}">
-						</div>
-					</div>
-
-					<div class="form-group row">
-						<label for="spd-input" class="col-2 col-form-label">Gaji Pokok</label>
-						<div class="col-10">
-							<input class="form-control" type="text" name="nilai_gaji_pokok" id="nilai_gaji_pokok">
+							<input class="form-control" type="number" name="nilai_gaji_pokok" id="nilai_gaji_pokok">
 						</div>
                     </div>
 
                     <div class="form-group row">
-						<label for="spd-input" class="col-2 col-form-label">Mulai</label>
+						<label for="" class="col-2 col-form-label">Mulai</label>
 						<div class="col-4">
 							<div class="input-group date">
 								<input type="text" class="form-control datepicker" readonly="" placeholder="Pilih Tanggal" name="mulai_gaji_pokok" id="mulai_gaji_pokok">
@@ -75,7 +68,7 @@
 							</div>
                         </div>
                         
-                        <label for="spd-input" class="col-2 col-form-label">Sampai</label>
+                        <label for="" class="col-2 col-form-label">Sampai</label>
 						<div class="col-4">
 							<div class="input-group date">
 								<input type="text" class="form-control datepicker" readonly="" placeholder="Pilih Tanggal" name="sampai_gaji_pokok" id="sampai_gaji_pokok">
@@ -86,10 +79,10 @@
 								</div>
 							</div>
 						</div>
-					</div>
-					
-					<div class="form-group row">
-						<label for="spd-input" class="col-2 col-form-label">Keterangan</label>
+                    </div>
+
+                    <div class="form-group row">
+						<label for="" class="col-2 col-form-label">Keterangan</label>
 						<div class="col-10">
 							<input class="form-control" type="text" name="keterangan_gaji_pokok" id="keterangan_gaji_pokok">
 						</div>
@@ -106,7 +99,8 @@
 <!--end::Modal-->
 
 @section('detail_gaji_pokok_script')
-{!! JsValidator::formRequest('App\Http\Requests\GajiPokokStore', '#formPekerjaGajiPokok') !!}
+{!! JsValidator::formRequest('App\Http\Requests\GajiPokokStore', '#formGajiPokok') !!}
+
 <script type="text/javascript">
 	$(document).ready(function () {
 
@@ -129,31 +123,28 @@
 	$('#addRowGajiPokok').click(function(e) {
 		e.preventDefault();
 		$('#gajiPokokModal').modal('show');
-		$('#title_modal').data('state', 'add');
+		$('#title_modal_gaji_pokok').data('state', 'add');
 	});
 
-	$("#formPekerjaGajiPokok").on('submit', function(){
+	$("#formGajiPokok").on('submit', function(){
 		if($(this).valid()) {
-
-			var state = $('#title_modal').data('state');
+			var state = $('#title_modal_gaji_pokok').data('state');
 
 			var url, swal_title;
 
 			if(state == 'add'){
 				url = "{{ route('pekerja.gaji_pokok.store', ['pekerja' => $pekerja->nopeg]) }}";
-				swal_title = "Tambah Detail GajiPokok";
+				swal_title = "Tambah Detail Gaji Pokok";
 			} else {
 				url = "{{ route('pekerja.gaji_pokok.update', 
 					[
 						'pekerja' => $pekerja->nopeg,
-						'status' => ':status',
-						'nama' => ':nama'
+						'nilai' => ':nilai',
 					]) }}";
 				url = url
-				.replace(':status', $('#status_jabatan').data('status'))
-				.replace(':nama', $('#nama_jabatan').data('nama'));
+				.replace(':nilai', $('#nilai_gaji_pokok').data('nilai'));
 
-				swal_title = "Update Detail GajiPokok";
+				swal_title = "Update Detail Gaji Pokok";
 			}
 
 			$.ajax({
@@ -190,12 +181,10 @@
 
 	$('#deleteRowGajiPokok').click(function(e) {
 		e.preventDefault();
-		if($('input[name=radio_jabatan]').is(':checked')) { 
-			$("input[name=radio_jabatan]:checked").each(function() {
-				var nopeg = $(this).val().split('_')[0];
-				var mulai = $(this).val().split('_')[1];
-				var kdbag = $(this).val().split('_')[2];
-				var kdjab = $(this).val().split('_')[3];
+		if($('input[name=radio_gaji_pokok]').is(':checked')) { 
+			$("input[name=radio_gaji_pokok]:checked").each(function() {
+				var nopeg = $(this).val().split('-')[0];
+				var gapok = $(this).val().split('-')[1];
 				
 				const swalWithBootstrapButtons = Swal.mixin({
 				customClass: {
@@ -207,7 +196,7 @@
 
 				swalWithBootstrapButtons.fire({
 					title: "Data yang akan dihapus?",
-					text: "Nama GajiPokok : " + kdjab,
+					text: "Gaji Pokok: " + gapok,
 					type: 'warning',
 					showCancelButton: true,
 					reverseButtons: true,
@@ -221,16 +210,14 @@
 							type: 'DELETE',
 							dataType: 'json',
 							data: {
-								"nopeg": "{{ $pekerja->nopeg }}",
-								"mulai": mulai,
-								"kdbag": kdbag,
-								"kdjab": kdjab,
+								"nopeg": nopeg,
+								"gapok": gapok,
 								"_token": "{{ csrf_token() }}",
 							},
 							success: function () {
 								Swal.fire({
 									type  : 'success',
-									title : 'Hapus Detail GajiPokok ' + kdjab,
+									title : 'Hapus Detail Gaji Pokok ' + gapok,
 									text  : 'Success',
 									timer : 2000
 								}).then(function() {
@@ -249,41 +236,39 @@
 		}
 	});
 
+	
+
 	$('#editRowGajiPokok').click(function(e) {
 		e.preventDefault();
 
-		if($('input[name=radio_jabatan]').is(':checked')) { 
-			$("input[name=radio_jabatan]:checked").each(function() {
+		if($('input[name=radio_gaji_pokok]').is(':checked')) { 
+			$("input[name=radio_gaji_pokok]:checked").each(function() {
 				// get value from row					
 				var nopeg = $(this).val().split('-')[0];
-				var status = $(this).val().split('-')[1];
-				var nama = $(this).val().split('-')[2];
+				var gapok = $(this).val().split('-')[1];
 
 				$.ajax({
 					url: "{{ route('pekerja.gaji_pokok.show.json') }}",
 					type: 'GET',
 					data: {
 						"nopeg" : "{{ $pekerja->nopeg }}",
-						"status" : status,
-						"nama" : nama,
+						"gapok"    : gapok,
 						"_token": "{{ csrf_token() }}",
 					},
 					success: function (response) {
-						$('#nama_jabatan').val(response.nama);
-						$('#status_jabatan').val(response.status).trigger('change');
-						$('#tempat_lahir_jabatan').val(response.tempatlahir);
-						$('#tanggal_lahir_jabatan').val(response.tgllahir);
-						$('#agama_jabatan').val(response.agama).trigger('change');
-						$('#golongan_darah_jabatan').val(response.goldarah).trigger('change');
-						$('#pendidikan_jabatan').val(response.kodependidikan).trigger('change');
-						$('#tempat_pendidikan_jabatan').val(response.tempatpendidikan);
+						console.log(response);
+						// update stuff
+						// append value						
+						$('#nilai_gaji_pokok').val(response.gapok);
+						$('#mulai_gaji_pokok').val(response.mulai.split(' ')[0]);
+						$('#sampai_gaji_pokok').val(response.sampai.split(' ')[0]);
+						$('#keterangan_gaji_pokok').val(response.keterangan);
 						
 						// title
-						$('#title_modal').text('Ubah Detail GajiPokok');
-						$('#title_modal').data('state', 'update');
+						$('#title_modal_gaji_pokok').text('Ubah Detail Gaji Pokok');
+						$('#title_modal_gaji_pokok').data('state', 'update');
 						// for url update
-						$('#nama_jabatan').data('nama', response.nama);
-						$('#status_jabatan').data('status', response.status);
+						$('#nilai_gaji_pokok').data('nilai', response.gapok);
 						// open modal
 						$('#gajiPokokModal').modal('show');
 					},
