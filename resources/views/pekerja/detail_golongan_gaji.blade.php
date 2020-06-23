@@ -49,7 +49,13 @@
 					<div class="form-group row">
 						<label for="spd-input" class="col-2 col-form-label">Golongan Gaji</label>
 						<div class="col-10">
-							<input class="form-control" type="text" name="golongan_gaji" id="golongan_gaji">
+							<select class="form-control kt-select2" name="golongan_gaji" id="golongan_gaji" style="width: 100% !important;">
+								<option value="">- Pilih Golongan Gaji -</option>
+								@foreach ($golongan_gaji_list as $golongan_gaji)
+									<option value="{{ $golongan_gaji->golongan }}">{{ $golongan_gaji->golongan.' - '.float_two($golongan_gaji->nilai) }}</option>
+								@endforeach
+							</select>
+							<div id="gelar_1-nya"></div>
 						</div>
                     </div>
 

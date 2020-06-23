@@ -13,6 +13,7 @@ use App\Models\Provinsi;
 use App\Models\Agama;
 use App\Models\Pendidikan;
 use App\Models\PerguruanTinggi;
+use App\Models\PayTunjangan;
 
 //load form request (for validation)
 use App\Http\Requests\PekerjaStore;
@@ -184,6 +185,7 @@ class PekerjaController extends Controller
         $agama_list = Agama::all();
         $pendidikan_list = Pendidikan::all();
         $perguruan_tinggi_list = PerguruanTinggi::all();
+        $golongan_gaji_list = PayTunjangan::all();
 
         return view('pekerja.edit', compact(
             'kode_bagian_list',
@@ -192,6 +194,7 @@ class PekerjaController extends Controller
             'agama_list',
             'pendidikan_list',
             'perguruan_tinggi_list',
+            'golongan_gaji_list',
             'pekerja'
         ));
     }
