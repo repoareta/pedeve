@@ -29,7 +29,7 @@ class GajiPokokController extends Controller
 
         return datatables()->of($gaji_pokok_list)
             ->addColumn('action', function ($row) {
-                $radio = '<label class="kt-radio kt-radio--bold kt-radio--brand"><input type="radio" name="radio_golongan_gaji" value="'.$row->nopeg.'_'.$row->gapok.'"><span></span></label>';
+                $radio = '<label class="kt-radio kt-radio--bold kt-radio--brand"><input type="radio" name="radio_gaji_pokok" value="'.$row->nopeg.'-'.$row->gapok.'"><span></span></label>';
                 return $radio;
             })
             ->addColumn('gapok', function ($row) {
@@ -75,12 +75,11 @@ class GajiPokokController extends Controller
      */
     public function showJson(Request $request)
     {
-        $golongan_gaji = GajiPokok::where('nopeg', $request->nopeg)
-        ->where('golgaji', $request->golongan_gaji)
-        ->where('tanggal', $request->tanggal)
+        $gaji_pokok = GajiPokok::where('nopeg', $request->nopeg)
+        ->where('gapok', $request->gapok)
         ->first();
 
-        return response()->json($golongan_gaji, 200);
+        return response()->json($gaji_pokok, 200);
     }
 
     /**
@@ -90,21 +89,23 @@ class GajiPokokController extends Controller
      * @param  int  $id
      * @return \Illuminate\Http\Response
      */
-    public function update(Request $request, Pekerja $pekerja, $golongan_gaji, $tanggal)
+    public function update(Request $request, Pekerja $pekerja, $nilai)
     {
-        $golongan_gaji = GajiPokok::where('nopeg', $pekerja->nopeg)
-        ->where('golgaji', $golongan_gaji)
-        ->where('tanggal', $tanggal)
+        $gaji_pokok = GajiPokok::where('nopeg', $pekerja->nopeg)
+        ->where('gapok', $nilai)
         ->first();
-        
-        $golongan_gaji->nopeg = $pekerja->nopeg;
-        $golongan_gaji->tanggal = $request->tanggal_golongan_gaji;
-        $golongan_gaji->golgaji = $request->golongan_gaji;
-        $golongan_gaji->userid = Auth::user()->userid;
 
-        $golongan_gaji->save();
+        $gaji_pokok->nopeg = $pekerja->nopeg;
+        $gaji_pokok->mulai = $request->mulai_gaji_pokok;
+        $gaji_pokok->sampai = $request->sampai_gaji_pokok;
+        $gaji_pokok->gapok = $request->nilai_gaji_pokok;
+        $gaji_pokok->keterangan = $request->keterangan_gaji_pokok;
+        $gaji_pokok->userid = Auth::user()->userid;
+        $gaji_pokok->tglentry = Carbon::now();
 
-        return response()->json($golongan_gaji, 200);
+        $gaji_pokok->save();
+
+        return response()->json($gaji_pokok, 200);
     }
 
     /**
@@ -115,9 +116,8 @@ class GajiPokokController extends Controller
      */
     public function delete(Request $request)
     {
-        $golongan_gaji = GajiPokok::where('nopeg', $request->nopeg)
-        ->where('golgaji', $request->golongan_gaji)
-        ->where('tanggal', $request->tanggal)
+        $gaji_pokok = GajiPokok::where('nopeg', $request->nopeg)
+        ->where('gapok', $request->gapok)
         ->delete();
 
         return response()->json(['deleted' => true], 200);

@@ -309,12 +309,12 @@ Route::group(['middleware'=> ['auth','checkRole:1']], function () {
                 Route::delete('pekerja/jabatan/delete', 'JabatanController@delete')->name('delete');
             });
 
-            // Route assigned name "pekerja.keluarga.index"...
+            // Route assigned name "pekerja.gaji_pokok.index"...
             Route::name('gaji_pokok.')->group(function () {
                 Route::get('pekerja/gaji_pokok/index_json/{pekerja}', 'GajiPokokController@indexJson')->name('index.json');
                 Route::post('pekerja/gaji_pokok/store/{pekerja}', 'GajiPokokController@store')->name('store');
                 Route::get('pekerja/gaji_pokok/show_json', 'GajiPokokController@showJson')->name('show.json');
-                Route::post('pekerja/gaji_pokok/update/{pekerja}/{status}/{nama}', 'GajiPokokController@update')->name('update');
+                Route::post('pekerja/gaji_pokok/update/{pekerja}/{nilai}', 'GajiPokokController@update')->name('update');
                 Route::delete('pekerja/gaji_pokok/delete', 'GajiPokokController@delete')->name('delete');
             });
 
