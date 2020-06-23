@@ -79,9 +79,14 @@
 							<div class="col-8">
 								<select class="form-control kt-select2" name="status" id="status">
 									<option value=""> - Pilih Status- </option>
-									<option value="K">Aktif</option>
+									<option value="C">Aktif</option>
+									<option value="P">Pensiun</option>									
 									<option value="K">Kontrak</option>
-									<option value="P">Pensiun</option>
+									<option value="B">Perbantuan</option>
+									<option value="D">Direksi</option>
+									<option value="N">Pekerja Baru</option>
+									<option value="U">Komisaris</option>
+									<option value="O">Komite</option>
 								</select>
 								<div id="status-nya"></div>
 							</div>
@@ -99,12 +104,12 @@
 							</div>
 						</div> --}}
 
-						<div class="form-group row">
+						{{-- <div class="form-group row">
 							<label for="" class="col-4 col-form-label">Golongan</label>
 							<div class="col-8">
 								<input class="form-control" type="text" name="golongan" id="golongan" readonly>
 							</div>
-						</div>
+						</div> --}}
 		
 						<div class="form-group row">
 							<label for="" class="col-4 col-form-label">Tgl Aktif Dinas</label>
@@ -121,7 +126,7 @@
 						</div>
 		
 						<div class="form-group row">
-							<label for="" class="col-4 col-form-label">No. YDP</label>
+							<label for="" class="col-4 col-form-label">No. Dana Pensiun</label>
 							<div class="col-8">
 								<input class="form-control" type="text" name="no_ydp" id="no_ydp">
 							</div>
@@ -135,7 +140,7 @@
 						</div>
 		
 						<div class="form-group row">
-							<label for="" class="col-4 col-form-label">No. Astek</label>
+							<label for="" class="col-4 col-form-label">No. BPJS</label>
 							<div class="col-8">
 								<input class="form-control" type="text" name="no_astek" id="no_astek">
 							</div>

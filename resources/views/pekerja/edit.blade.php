@@ -81,15 +81,45 @@
 								<select class="form-control kt-select2" name="status" id="status">
 									<option value=""> - Pilih Status- </option>
 									<option 
-										@if($pekerja->status == 'K')
+										@if($pekerja->status == 'C')
 											selected
 										@endif
-									value="K">Kontrak</option>
+									value="C">Aktif</option>
 									<option 
 										@if($pekerja->status == 'P')
 											selected
 										@endif
 									value="P">Pensiun</option>
+									<option 
+										@if($pekerja->status == 'K')
+											selected
+										@endif
+									value="K">Kontrak</option>
+									<option 
+										@if($pekerja->status == 'B')
+											selected
+										@endif
+									value="B">Perbantuan</option>
+									<option 
+										@if($pekerja->status == 'D')
+											selected
+										@endif
+									value="D">Direksi</option>
+									<option 
+										@if($pekerja->status == 'N')
+											selected
+										@endif
+									value="N">Pekerja Baru</option>
+									<option 
+										@if($pekerja->status == 'U')
+											selected
+										@endif
+									value="U">Komisaris</option>
+									<option 
+										@if($pekerja->status == 'O')
+											selected
+										@endif
+									value="O">Komite</option>
 								</select>
 								<div id="status-nya"></div>
 							</div>
@@ -107,12 +137,12 @@
 							</div>
 						</div> --}}
 
-						<div class="form-group row">
+						{{-- <div class="form-group row">
 							<label for="" class="col-4 col-form-label">Golongan</label>
 							<div class="col-8">
 								<input class="form-control" type="text" name="golongan" id="golongan" readonly>
 							</div>
-						</div>
+						</div> --}}
 		
 						<div class="form-group row">
 							<label for="" class="col-4 col-form-label">Tgl Aktif Dinas</label>
@@ -129,7 +159,7 @@
 						</div>
 		
 						<div class="form-group row">
-							<label for="" class="col-4 col-form-label">No. YDP</label>
+							<label for="" class="col-4 col-form-label">No. Dana Pensiun</label>
 							<div class="col-8">
 								<input class="form-control" type="text" name="no_ydp" id="no_ydp" value="{{ $pekerja->noydp }}">
 							</div>
@@ -143,7 +173,7 @@
 						</div>
 		
 						<div class="form-group row">
-							<label for="" class="col-4 col-form-label">No. Astek</label>
+							<label for="" class="col-4 col-form-label">No. BPJS</label>
 							<div class="col-8">
 								<input class="form-control" type="text" name="no_astek" id="no_astek" value="{{ $pekerja->noastek }}">
 							</div>
