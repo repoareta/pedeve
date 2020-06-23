@@ -32,6 +32,9 @@ class GolonganGajiController extends Controller
                 $radio = '<label class="kt-radio kt-radio--bold kt-radio--brand"><input type="radio" name="radio_golongan_gaji" value="'.$row->nopeg.'_'.$row->golgaji.'_'.$row->tanggal.'"><span></span></label>';
                 return $radio;
             })
+            ->addColumn('tanggal', function ($row) {
+                return Carbon::parse($row->tanggal)->translatedFormat('d F Y');
+            })
             ->rawColumns(['action'])
             ->make(true);
     }
