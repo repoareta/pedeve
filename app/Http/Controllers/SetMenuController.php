@@ -109,8 +109,7 @@ class SetMenuController extends Controller
 
     public function edit($no)
     {
-        $data_user = DB::select("select a.ability, a.userid,a.menuid, (select b.menunm from dftmenu b where b.menuid=a.menuid order by b.menuid) as menunm from usermenu a 
-                                where a.userid='$no' order by a.menuid");
+        $data_user = DB::select("select  a.ability,a.userid,a.menuid, b.menunm from usermenu a join dftmenu b on  b.menuid=a.menuid where a.userid='$no' order by a.menuid");
         foreach($data_user as $data)
         {
             $userid  = $data->userid; 
@@ -119,24 +118,50 @@ class SetMenuController extends Controller
     }
     public function update(Request $request)
     {
-        $menuid=$request->menuid;
-        $ability[]=$request['ability'];
         $userid=$request->userid;
-            $data = array(
-                'menuid' => $menuid,
-                'ability' => $ability,
-                'userid' => $userid,
-            );
-            foreach($ability as $asa)
-            {
-                dd($asa[3]);
+        $a=$request->a;
+        $as = array_sum($request->a);
+        dd($as);
+        for($count = 1; $count < $a; $count++)
+        {
+            $sa = "menuid$count";
+            $menuid = $request->$sa;
+            $ability = $request->ability;
+            // echo "$menuid<br>";
+                // $countmenuid = count($request->menuid);
+                // $countability = count($request->ability);
+                // if($countability >= $countmenuid){
+                //     // echo "$ability[$count]";
+                //     $menuid = $request->menuid;
+                //     $ability = $request->ability;
+                // }else{
+                //     $menuid = $request->menuid;
+                //     $ability = "0";
+                //     // echo "0";
+        
+                // }
+                // Usermenu::where('userid',$userid)
+                // ->where('menuid',$menuid)
+                // ->update([
+                //     'ability' => $ability
+                // ]);
+                // $data = array(
+                //     ':userid' => $userid[$count],
+                //     ':menuid' => $menuid[$count],
+                //     ':ability' => $ability[$count]
+                // );
+                // echo "$da";
+                // DB::update("update usermenu set ability='$ability[$count]' where userid='$userid' and menuid='$menuid[$count]'");
             }
+            // $sentimentPost = array_count_values($ability);
+
+        
                 // Usermenu::where('userid',$data->menuid)
                 // ->where('menuid',$data->menuid)
                 // ->update([
                 //     'ability' => $data->ability
                 // ]);        
-                // return response()->json();
+                return response()->json();
     }
 
     public function delete(Request $request)

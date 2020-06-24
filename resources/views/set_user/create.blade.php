@@ -87,7 +87,7 @@
 										<span></span>
 									</label>
 									<label class="kt-radio kt-radio--solid">
-										<input type="radio"    name="userlv" value="0"> USER
+										<input type="radio"    name="userlv" value="1"> USER
 										<span></span>
 									</label>
 								</div>

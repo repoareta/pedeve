@@ -7,7 +7,7 @@
 		<div class="kt-subheader__main">
 			<h3 class="kt-subheader__title">
 				Set Menu </h3>
-			<span class="kt-subheader__separator kt-hidden"></span>
+			<span class="kt-subheader__separator kt-text"></span>
 			<div class="kt-subheader__breadcrumbs">
 				<a href="#" class="kt-subheader__breadcrumbs-home"><i class="flaticon2-shelter"></i></a>
 				<span class="kt-subheader__breadcrumbs-separator"></span>
@@ -20,7 +20,8 @@
 	</div>
 </div>
 <!-- end:: Subheader -->
-<form  class="kt-form kt-form--label-right" method="post" action="{{route('set_menu.update')}}" id="form-createa">
+<!-- <formmmm  class="kt-form kt-form--label-right" method="post" action="{{route('set_menu.update')}}"  id="form-creates"> -->
+<form  class="kt-form kt-form--label-right" method="post" action="{{route('set_menu.update')}}"  id="form-creates">
 {{csrf_field()}}
 <div class="kt-container  kt-container--fluid  kt-grid__item kt-grid__item--fluid">
 <div class="kt-portlet kt-portlet--mobile">
@@ -28,10 +29,6 @@
 		<div class="kt-portlet__head-label">
 			<h3 class="kt-portlet__head-title">
 			User ID : {{$userid}}
-			<input style=" width: 17px;height: 26px;margin-left:50px;" name="ability[]" type="checkbox" value="1">
-			<input style=" width: 17px;height: 26px;margin-left:50px;" name="ability[]" type="checkbox" value="2">
-			<input style=" width: 17px;height: 26px;margin-left:50px;" name="ability[]" type="checkbox" value="3">
-			<input style=" width: 17px;height: 26px;margin-left:50px;" name="ability[]" type="checkbox" value="4">
 			</h3>			
 			<div class="kt-portlet__head-toolbar">
 				<div class="kt-portlet__head-wrapper">
@@ -40,10 +37,10 @@
 							<div class="row">
 								<div class="col-2"></div>
 								<div class="col-4">
-									<button type="submit" class="btn btn-brand"><i class="fa fa-check" aria-hidden="true"></i>Save</button>
+									<button type="submit" class="btn btn-brand"><i class="fa fa-check" aria-text="true"></i>Save</button>
 								</div>
 								<div class="col-4">
-									<a  href="{{route('set_user.index')}}" class="btn btn-warning"><i class="fa fa-reply" aria-hidden="true"></i>Cancel</a>
+									<a  href="{{route('set_user.index')}}" class="btn btn-warning"><i class="fa fa-reply" aria-text="true"></i>Cancel</a>
 								</div>
 							</div>
 						</div>
@@ -57,7 +54,6 @@
 		<table class="table table-striped table-bordered table-hover table-checkable" id="kt_table" width="100%">
 			<thead class="thead-light">
 				<tr>
-					<th>menuid</th>
 					<th>ABILITY</th>
 					<th>MENU ID</th>
 					<th>MENU NAME  </th>
@@ -68,13 +64,17 @@
 			@foreach($data_user as $data)
 			<?php $a++; ?>
 			<tr>
-			<input name="userid[]" value="{{$data->userid}}" type="hidden">
-				<td></td>
-				<td><input style=" width: 17px;height: 26px;margin-left:50px;" name="menuid[]" type="text" value="{{$data->menuid}}"></td>
+			<input name="userid{{$a}}" value="{{$userid}}" type="hidden">
+			<input style=" width: 17px;height: 26px;margin-left:50px;" name="menuid{{$a}}" type="hidden" value="{{$data->menuid}}">
+				<td>
+					<input style=" width: 17px;height: 26px;margin-left:50px;" name="ability{{$a}}" type="checkbox" value="1" <?php if ($data->ability == '1' )  echo 'checked' ; ?>></td>
+					
+				</td>
 				<td>{{$data->menuid}}</td>
 				<td>{{$data->menunm}}</td>
 			</tr>
 			@endforeach
+			<input name="a" value="{{$a[$a]}}" type="hidden">
 			</tbody>
 		</table>
 
