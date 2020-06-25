@@ -80,31 +80,62 @@ class SetMenuController extends Controller
         ->make(true); 
     }
 
-    public function create()
+    public function create($no)
     {
-        return view('set_menu.create');
+        $data_userid = DB::select("select usernm,userid from userpdv where userid='$no'");
+        foreach($data_userid as $data)
+        {
+            $userid = $data->userid;
+            $usernm = $data->usernm;
+        }
+        $data_menuid = DB::select("select a.*,b.menunm from usermenu a, dftmenu b where a.userid='$no' and a.menuid=b.menuid order by b.menuid asc");
+        return view('set_menu.create',compact('data_menuid','userid','usernm'));
     }
     public function store(Request $request)
     {
+        if($request->tambah == ""){
+            $tambah = 0;
+        }else{
+            $tambah = 1;
+        }
+        if($request->ubah == ""){
+            $rubah = 0;
+        }else{
+            $rubah = 1;
+        }
+        if($request->hapus == ""){
+            $hapus = 0;
+        }else{
+            $hapus = 1;
+        }
+        if($request->cetak == ""){
+            $cetak = 0;
+        }else{
+            $cetak = 1;
+        }
+        if($request->lihat == ""){
+            $lihat = 0;
+        }else{
+            $lihat = 1;
+        }
         $userid = $request->userid;
-        $usernm = $request->usernm;
-        $userlv = $request->userlv;
-        $userap = $request->akt.''.$request->tab.''.$request->inv.''.$request->pbd.''.$request->umu.''.$request->sdm;
-        $userpw = "";
-        $usrupd = Auth::user()->userid;
-        $kode = $request->kode;
+        $menuid = $request->menuid;
+        Usermenu::where('userid',$userid)
+        ->where('menuid',$menuid)
+        ->update([
+            'tambah' => $tambah,
+            'rubah' => $rubah,
+            'hapus' => $hapus,
+            'cetak' => $cetak,
+            'lihat' => $lihat,
+        ]);
+        return response()->json($request->menuid);
+    }
 
-        
-        foreach ($request['id_tag'] as $data) {
-            Tag_detail::create([
-                'id' => $data,
-                'id_jurnal' => "0021$id_otomatis",
-            ]);
-            }
-
-        // strconf="sudah tersimpan dalam database"
-            $data = 1;
-            return response()->json($data);
+    public function menuidJson(Request $request)
+    {
+        $datas = DB::select("select a.* from usermenu a where a.userid='$request->userid' and menuid='$request->menuid'");
+        return response()->json($datas[0]);
     }
 
     public function edit($no)
@@ -114,54 +145,32 @@ class SetMenuController extends Controller
         {
             $userid  = $data->userid; 
         }
-        return view('set_menu.edit',compact('userid','data_user'));
+        $data_jum = DB::select("select  count(a.userid) as jumlah from usermenu a join dftmenu b on  b.menuid=a.menuid where a.userid='$no'");
+        foreach($data_jum as $data_ju)
+        {
+            $jumlah  = $data_ju->jumlah; 
+        }
+        return view('set_menu.edit',compact('userid','data_user','jumlah'));
     }
     public function update(Request $request)
     {
-        $userid=$request->userid;
-        $a=$request->a;
-        $as = array_sum($request->a);
-        dd($as);
-        for($count = 1; $count < $a; $count++)
+        $a = $request->jumlah;
+        for($count = 1; $count <= $a; $count++)
         {
-            $sa = "menuid$count";
-            $menuid = $request->$sa;
-            $ability = $request->ability;
-            // echo "$menuid<br>";
-                // $countmenuid = count($request->menuid);
-                // $countability = count($request->ability);
-                // if($countability >= $countmenuid){
-                //     // echo "$ability[$count]";
-                //     $menuid = $request->menuid;
-                //     $ability = $request->ability;
-                // }else{
-                //     $menuid = $request->menuid;
-                //     $ability = "0";
-                //     // echo "0";
-        
-                // }
-                // Usermenu::where('userid',$userid)
-                // ->where('menuid',$menuid)
-                // ->update([
-                //     'ability' => $ability
-                // ]);
-                // $data = array(
-                //     ':userid' => $userid[$count],
-                //     ':menuid' => $menuid[$count],
-                //     ':ability' => $ability[$count]
-                // );
-                // echo "$da";
-                // DB::update("update usermenu set ability='$ability[$count]' where userid='$userid' and menuid='$menuid[$count]'");
-            }
-            // $sentimentPost = array_count_values($ability);
-
-        
-                // Usermenu::where('userid',$data->menuid)
-                // ->where('menuid',$data->menuid)
-                // ->update([
-                //     'ability' => $data->ability
-                // ]);        
-                return response()->json();
+            $ability = 0;
+            $menu = "menuid$count";
+            $user = "userid$count";
+            $abili = "ability$count";
+            $menuid = $request->$menu;
+            $ability = $request->$abili;
+            $userid = $request->$user;
+                Usermenu::where('userid',$userid)
+                ->where('menuid',$menuid)
+                ->update([
+                    'ability' => $ability
+                ]);
+            }      
+            return response()->json();
     }
 
     public function delete(Request $request)

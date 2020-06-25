@@ -1208,12 +1208,26 @@ Route::group(['middleware'=> ['auth','checkRole:1']], function () {
         Route::name('set_menu.')->group(function () {
             Route::get('set_menu', 'SetMenuController@index')->name('index');
             Route::post('set_menu/index/search', 'SetMenuController@searchIndex')->name('search.index');
-            Route::get('set_menu/create', 'SetMenuController@create')->name('create');
+            Route::post('set_menu/menuid/json', 'SetMenuController@menuidJson')->name('menuid.json');
+            Route::get('set_menu/create/{no}', 'SetMenuController@create')->name('create');
             Route::post('set_menu/store', 'SetMenuController@store')->name('store');
             Route::get('set_menu/edit/{no}', 'SetMenuController@edit')->name('edit');
             Route::post('set_menu/update', 'SetMenuController@update')->name('update');
             Route::delete('set_menu/delete', 'SetMenuController@delete')->name('delete');
         });
         //end set_menu
+
+        //tabel_menu
+        // Route assigned name "tabel_menu.index"...
+        Route::name('tabel_menu.')->group(function () {
+            Route::get('tabel_menu', 'TabelMenuController@index')->name('index');
+            Route::post('tabel_menu/index/search', 'TabelMenuController@searchIndex')->name('search.index');
+            Route::get('tabel_menu/create', 'TabelMenuController@create')->name('create');
+            Route::post('tabel_menu/store', 'TabelMenuController@store')->name('store');
+            Route::get('tabel_menu/edit/{no}', 'TabelMenuController@edit')->name('edit');
+            Route::post('tabel_menu/update', 'TabelMenuController@update')->name('update');
+            Route::delete('tabel_menu/delete', 'TabelMenuController@delete')->name('delete');
+        });
+        //end tabel_menu
     });
 });

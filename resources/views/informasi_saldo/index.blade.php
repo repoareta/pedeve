@@ -40,9 +40,9 @@
 		</div>
 	</div>
 	<div class="kt-portlet__body">
-	<div class="col-12">
+	<div class="">
 			<form class="kt-form" id="search-form" >
-				<div class="form-group row">
+				<div class="form-group row col-12">
 					<label for="" class="col-form-label">Tanggal</label>
 					<div class="col-2">
 						<input class="form-control" type="text" name="tanggal" value="" id="tanggal" onkeypress="return hanyaAngka(event)" autocomplete='off'>

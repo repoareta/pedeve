@@ -72,6 +72,22 @@
 	</div>
 </div>
 </div>
+
+@if($message = Session::get('tglex'))
+<div class="modal fade modal-create-detail-umk" id="mymodal"  tabindex="-1" role="dialog" aria-labelledby="exampleModalLabel" aria-hidden="true">
+	<div class="modal-dialog modal-lg" role="document">
+		<div class="modal-content">
+			<div class="modal-header">
+				<h5 class="modal-title" id="title-detail"></h5>
+			</div>
+			<div class="modal-body">
+			<span id="form_result">{{$message}}</span>
+				
+			</div>
+		</div>
+	</div>
+</div>
+@endif
 @endsection
 
 @section('scripts')
@@ -110,6 +126,11 @@ $(document).ready(function () {
 			t.draw();
 			e.preventDefault();
 		});
+
+		$(window).on('load',function(){
+            //tampilkan modal dengan id="mymodal"
+            $("#mymodal").modal('show');
+        });
 
 		$('#deleteRow').click(function(e) {
 			e.preventDefault();

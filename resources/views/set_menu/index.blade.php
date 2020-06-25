@@ -34,17 +34,11 @@
 			<div class="kt-portlet__head-toolbar">
 				<div class="kt-portlet__head-wrapper">
 					<div class="kt-portlet__head-actions">
-						<a href="{{ route('set_menu.create') }}">
-							<span style="font-size: 2em;" class="kt-font-success" data-toggle="kt-tooltip" data-placement="top" title="Tambah Data">
-								<i class="fas fa-plus-circle"></i>
-							</span>
-						</a>
-						<span style="font-size: 2em;" class="kt-font-warning pointer-link" data-toggle="kt-tooltip" data-placement="top" title="Ubah Data">
-							<i class="fas fa-edit" id="editRow"></i>
+						<span style="font-size: 2em;" class="kt-font-primary pointer-link" data-toggle="kt-tooltip" data-placement="top" title="Ubah Function">
+							<i class="fas fa-edit" id="addRow"></i>
 						</span>
-
-						<span style="font-size: 2em;"  class="kt-font-danger pointer-link" data-toggle="kt-tooltip" data-placement="top" title="Hapus Data">
-							<i class="fas fa-times-circle" id="deleteRow"></i>
+						<span style="font-size: 2em;" class="kt-font-warning pointer-link" data-toggle="kt-tooltip" data-placement="top" title="Ubah Menu">
+							<i class="fas fa-edit" id="editRow"></i>
 						</span>
 					</div>
 				</div>
@@ -110,7 +104,6 @@ $(document).ready(function () {
 			t.draw();
 			e.preventDefault();
 		});
-
 		$('#deleteRow').click(function(e) {
 			e.preventDefault();
 			if($('input[class=btn-radio]').is(':checked')) { 
@@ -173,6 +166,19 @@ $(document).ready(function () {
 				$("input[class=btn-radio]:checked").each(function(){
 					var no = $(this).attr('kode');
 					location.replace("{{url('administrator/set_menu/edit')}}"+ '/' +no);
+				});
+			} else {
+				swalAlertInit('ubah');
+			}
+		});
+		//edit 
+		$('#addRow').click(function(e) {
+			e.preventDefault();
+
+			if($('input[class=btn-radio]').is(':checked')) { 
+				$("input[class=btn-radio]:checked").each(function(){
+					var no = $(this).attr('kode');
+					location.replace("{{url('administrator/set_menu/create')}}"+ '/' +no);
 				});
 			} else {
 				swalAlertInit('ubah');

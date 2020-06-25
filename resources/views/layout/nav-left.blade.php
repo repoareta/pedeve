@@ -645,10 +645,16 @@
                     'set_menu.index',
                     'set_menu.create',
                     'set_menu.edit'                    
-                ); // isi nama semua route set_user
+                ); // isi nama semua route set_menu
+                $tabel_menu = array(
+                    'tabel_menu.index',
+                    'tabel_menu.create',
+                    'tabel_menu.edit'                    
+                ); // isi nama semua route tabel_menu
                 $administrator = array_merge(
                     $set_user,
-                    $set_menu
+                    $set_menu,
+                    $tabel_menu
                 ); // array merge semua submenu
             @endphp
 
@@ -1818,6 +1824,14 @@
                                     <span></span>
                                 </i>
                                 <span class="kt-menu__link-text">Set Menu</span>
+                            </a>
+                        </li>
+                        <li class="kt-menu__item kt-menu__item{{ set_active_submenu($tabel_menu) }}" aria-haspopup="true">
+                            <a href="{{route('tabel_menu.index')}}" class="kt-menu__link">
+                                <i class="kt-menu__link-bullet kt-menu__link-bullet--dot">
+                                    <span></span>
+                                </i>
+                                <span class="kt-menu__link-text">Tabel Menu</span>
                             </a>
                         </li>
                     </ul>

@@ -57,9 +57,8 @@
 		</div>
 	</div>
 	<div class="kt-portlet__body">
-		<div class="col-12">
 			<form class="kt-form" id="search-form" >
-				<div class="form-group row">
+				<div class="form-group row col-12">
 					<label for="" class="col-form-label">No. Permintaan</label>
 					<div class="col-2">
 						<input class="form-control" type="text" name="permintaan" value="" size="18" maxlength="18">
@@ -96,10 +95,9 @@
 					</div>
 				</div>
 			</form>
-		</div>
 
 		<!--begin: Datatable -->
-		<table class="table table-striped table-bordered table-hover table-checkable" id="table-permintaan">
+		<table class="table table-striped table-bordered table-hover table-checkable" id="table-permintaan" width="100%">
 			<thead class="thead-light">
 				<tr>
 					<th></th>
@@ -112,13 +110,13 @@
 					<th>Approval</th>
 				</tr>
 			</thead>
-			<tbody class="thead-light">
+			<tbody>
 			</tbody>
 		</table>
 
 		<!--end: Datatable -->
-		</div>
 	</div>
+</div>
 </div>
 @endsection
 
