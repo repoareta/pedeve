@@ -6,7 +6,8 @@ use App\Models\Userlogin;
 use App\Models\Userlog;
 use Auth;
 use DB;
-use App\User;
+use Session;
+use PDF;
 use Alert;
 
 class AuthController extends Controller
@@ -35,26 +36,23 @@ class AuthController extends Controller
                     $sUserAplikasi = $rsuser->userap;
                     $sUserPassword = $rsuser->userpw;
                     if($rsuser->host == null){
-                        $sUserHost = '193';
+                        $sUserHost = '192';
                     }else{
                         $sUserHost = $rsuser->host;
                     }
                 
                         if ($password <> $rsuser->userpw) {
-                            Alert::info('Your password not allowed...', 'Failed')->persistent(true)->autoClose(2000);
                             return redirect('/logout')->with('notif', "Your password not allowed...");
                         }else{
                             if (($sUserHost<>"%" and $UserIPAddress) <> $sUserHost) {
-                                Alert::info('You are not allowed to access from there...', 'Failed')->persistent(true)->autoClose(2000);
                                 return redirect('/logout')->with('notif', "You are not allowed to access from there...");
                             }else{
+                                Userlogin::where('terminal',$GetTerminalName)->where('userid',$loginid)->delete();
                                 $rsUserLogin = DB::select("select userid from userlogin where terminal='$GetTerminalName' and userid='$loginid'");
                                 
                                 if(!empty($rsUserLogin)){
-                                    Alert::info('User $loginid in use...', 'Failed')->persistent(true)->autoClose(2000);
                                     return redirect('/login')->with('notif', "User $loginid in use...");
                                 }else{
-                                    Userlogin::where('terminal',$GetTerminalName)->where('userid',$loginid)->delete();
                                     $dLogin = date('Y-m-d H:i:s');
                                     Userlogin::insert([
                                         'userid' => $loginid,
@@ -87,7 +85,6 @@ class AuthController extends Controller
                                             return redirect()->route('perjalanan_dinas.index');
                                         }else{
                                             if($objRS->status == "exp"){
-                                                Alert::success('Password Anda Sudah Expired ', 'Failed')->persistent(true)->autoClose(2000);
                                                 return redirect('/logout')->with('notif',"Password Anda Sudah Expired");	
                                             }else{
                                             return redirect()->route('perjalanan_dinas.index');
@@ -99,7 +96,6 @@ class AuthController extends Controller
                         }
                 } //loop
             }else{
-                    Alert::success('User $loginid not allowed...', 'Failed')->persistent(true)->autoClose(2000);
                     return redirect('/login')->with('notif',"User $loginid not allowed...");
             }
         
