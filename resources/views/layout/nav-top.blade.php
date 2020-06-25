@@ -19,7 +19,6 @@
             </ul>
         </div>
     </div>
-
     <!-- end:: Header Menu -->
 
     <!-- begin:: Header Topbar -->
@@ -112,5 +111,12 @@
 
     <!-- end:: Header Topbar -->
 </div>
+@if($message = Session::get('tglex'))
+    <div class="alert alert-danger alert-block">
+        <button type="button" class="close" data-dismiss="alert">×</button> 
+        <div ><font style="padding-left:20px;">PASSWORD ANDA SUDAH EXPIRED. PASSWORD HARUS SEGERA DIGANTI DALAM JANGKA WAKTU <span style="color:blue;">{{Session::get('remain')}}</span> HARI <span style="color:blue;">{{Session::get('tglex')}}</span></font> </div>
+    </div>
+@endif
+
 
 <!-- end:: Header -->

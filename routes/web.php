@@ -1229,5 +1229,14 @@ Route::group(['middleware'=> ['auth','checkRole:1']], function () {
             Route::delete('tabel_menu/delete', 'TabelMenuController@delete')->name('delete');
         });
         //end tabel_menu
+
+        //password_administrator
+        // Route assigned name "password_administrator.index"...
+        Route::name('password_administrator.')->group(function () {
+            Route::get('password_administrator', 'PasswordController@index')->name('index');
+            Route::post('password_administrator/pass/json', 'PasswordController@passJson')->name('passJson');
+            Route::post('password_administrator/store', 'PasswordController@store')->name('store');
+        });
+        //end password_administrator
     });
 });
