@@ -76,7 +76,11 @@ class SetUserController extends Controller
             $radio = '<center><label class="kt-radio kt-radio--bold kt-radio--brand"><input type="radio" kode="'.$data->userid.'" class="btn-radio" name="btn-radio"><span></span></label></center>'; 
             return $radio;
         })
-        ->rawColumns(['radio','userap'])
+        ->addColumn('reset', function ($data) {
+            $radio = '<center><a style="color:blue;" href="'. route('set_user.reset',['no' => $data->userid]).'">RESET</a></center>'; 
+            return $radio;
+        })
+        ->rawColumns(['radio','userap','reset'])
         ->make(true); 
     }
 
@@ -177,6 +181,24 @@ class SetUserController extends Controller
         Userpdv::where('userid',$request->kode)->delete();
         Usermenu::where('userid',$request->kode)->delete();
         return response()->json();
+    }
+
+    public function Reset(Request $request)
+    {
+        $data_tglexp = DB::select("select (date(now()) + INTERVAL  '4' month) as tglexp");
+            foreach ($data_tglexp as $data_tgl) {
+                $tglexp = $data_tgl->tglexp;
+            }
+            $tglupd = date('Y-m-d');
+            $userpw ="v3ntur4";
+            Userpdv::where('userid', $request->no)
+            ->update([
+                'userpw' => $userpw,
+                'tglupd' => $tglupd,
+                'passexp' => $tglexp
+            ]);
+            Alert::success('Password telah di Reset.', 'Berhasil')->persistent(true)->autoClose(2000);
+            return redirect()->route('set_user.index');
     }
     
 }

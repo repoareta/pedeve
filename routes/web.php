@@ -1199,6 +1199,7 @@ Route::group(['middleware'=> ['auth','checkRole:1,0']], function () {
             Route::get('set_user/create', 'SetUserController@create')->name('create');
             Route::post('set_user/store', 'SetUserController@store')->name('store');
             Route::get('set_user/edit/{no}', 'SetUserController@edit')->name('edit');
+            Route::get('set_user/reset', 'SetUserController@Reset')->name('reset');
             Route::post('set_user/update', 'SetUserController@update')->name('update');
             Route::delete('set_user/delete', 'SetUserController@delete')->name('delete');
         });

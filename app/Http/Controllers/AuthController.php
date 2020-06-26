@@ -23,7 +23,7 @@ class AuthController extends Controller
 
             $loginid = $request->userid;
             $password = $request->userpw;
-            $GetTerminalName=gethostbyaddr($_SERVER['REMOTE_ADDR']);
+            $GetTerminalName=substr(gethostbyaddr($_SERVER['REMOTE_ADDR']),15);
             // $UserIPAddress =substr($_SERVER['REMOTE_ADDR'],3);
             $UserIPAddress ='192';
             if(Auth::attempt($request->only('userid','userpw'))){

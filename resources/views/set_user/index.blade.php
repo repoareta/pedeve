@@ -62,6 +62,7 @@
 					<th>USER GROUP </th>
 					<th>USER LEVEL</th>
 					<th>USER APPLICATION</th>
+					<th>RESET PASSWORD</th>
 				</tr>
 			</thead>
 			<tbody>
@@ -104,6 +105,7 @@ $(document).ready(function () {
 				{data: 'kode', name: 'kode'},
 				{data: 'userlv', name: 'userlv'},
 				{data: 'userap', name: 'userap'},
+				{data: 'reset', name: 'reset'},
 			]
 		});
 		$('#search-form').on('submit', function(e) {
