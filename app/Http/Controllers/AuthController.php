@@ -49,11 +49,11 @@ class AuthController extends Controller
                                 return redirect('/error')->with('notif', "You are not allowed to access from there...");
                             }else{
                                 $rsUserLogin = DB::select("select userid from userlogin where terminal='$GetTerminalName' and userid='$loginid'");
+                                Userlogin::where('terminal',$GetTerminalName)->where('userid',$loginid)->delete();
                                 
                                 if(!empty($rsUserLogin)){
                                     return redirect('/error')->with('notif', "User $loginid in use...");
                                 }else{
-                                    Userlogin::where('terminal',$GetTerminalName)->where('userid',$loginid)->delete();
                                     $dLogin = date('Y-m-d H:i:s');
                                     Userlogin::insert([
                                         'userid' => $loginid,
@@ -116,7 +116,11 @@ class AuthController extends Controller
 	public function logout(){
         $dLogin = session()->get('log');
         $dLogout = date('Y-m-d H:i:s');
-        $userid = Auth::user()->userid;
+        if (!empty(Auth::user()->userid)) {
+            $userid = Auth::user()->userid;
+        }else{
+            $userid = null;
+        }
         Userlogin::where('userid',$userid)->delete();
         Userlog::where('userid', $userid)
         ->update([
