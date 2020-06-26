@@ -100,6 +100,65 @@
             }else{
               $('.errorConfirm').hide();
             }
+		});
+		$('#form-create').submit(function(e){
+            e.preventDefault();
+            if($('#newpw').val() !=$('#newpw1').val()){
+				$('#newpw').val("");
+				$('#newpw1').val("");
+				$( "#newpw1" ).prop( "required", true );
+				$('.errorConfirm').show();
+            }else{
+			  $('.errorConfirm').hide();
+			  $('#form-create').submit(function(){
+					$.ajax({
+						url  : "{{route('password_administrator.store')}}",
+						type : "POST",
+						data : $('#form-create').serialize(),
+						dataType : "JSON",
+						headers: {
+						'X-CSRF-Token': '{{ csrf_token() }}',
+						},
+						success : function(data){
+						if(data == 1){
+							const swalWithBootstrapButtons = Swal.mixin({
+								customClass: {
+									confirmButton: 'btn btn-primary',
+									cancelButton: 'btn btn-danger'
+								},
+									buttonsStyling: false
+								})
+								swalWithBootstrapButtons.fire({
+									title: "Password Berhasil Diubah.",
+									text: "Click Ya Untuk Logout.",
+									type: 'success',
+									showCancelButton: true,
+									reverseButtons: true,
+									confirmButtonText: 'Ya',
+									cancelButtonText: 'Tidak'
+								})
+								.then((result) => {
+								if (result.value) {
+									window.location.replace("{{ route('logout.index') }}");
+								}
+							});
+								
+						}else{
+							Swal.fire({
+								type  : 'info',
+								title : 'Password yang di masukan salah.',
+								text  : 'Info',
+							});
+						}
+
+						}, 
+						error : function(){
+							alert("Terjadi kesalahan, coba lagi nanti");
+						}
+					});	
+					return false;
+				});
+            }
 			
 		});
 
@@ -127,41 +186,6 @@
 					alert("Ada kesalahan controller!");
 				}
 			})
-		});
-
-		$('#form-create').submit(function(){
-			$.ajax({
-				url  : "{{route('password_administrator.store')}}",
-				type : "POST",
-				data : $('#form-create').serialize(),
-				dataType : "JSON",
-				headers: {
-				'X-CSRF-Token': '{{ csrf_token() }}',
-				},
-				success : function(data){
-				if(data == 1){
-					Swal.fire({
-						type  : 'success',
-						title : 'Data Berhasil Diubah',
-						text  : 'Berhasil',
-						timer : 2000
-					}).then(function(data) {
-						window.location.replace("{{ route('password_administrator.index') }}");
-						});
-				}else{
-					Swal.fire({
-						type  : 'info',
-						title : 'Password yang di masukan salah.',
-						text  : 'Info',
-					});
-				}
-
-				}, 
-				error : function(){
-					alert("Terjadi kesalahan, coba lagi nanti");
-				}
-			});	
-			return false;
 		});
 	});
 	

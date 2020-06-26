@@ -12,6 +12,7 @@ use Alert;
 
 class AuthController extends Controller
 {
+    
 
     public function login()
     {
@@ -42,17 +43,17 @@ class AuthController extends Controller
                     }
                 
                         if ($password <> $rsuser->userpw) {
-                            return redirect('/logout')->with('notif', "Your password not allowed...");
+                            return redirect('/error')->with('notif', "Your password not allowed...");
                         }else{
                             if (($sUserHost<>"%" and $UserIPAddress) <> $sUserHost) {
-                                return redirect('/logout')->with('notif', "You are not allowed to access from there...");
+                                return redirect('/error')->with('notif', "You are not allowed to access from there...");
                             }else{
-                                Userlogin::where('terminal',$GetTerminalName)->where('userid',$loginid)->delete();
                                 $rsUserLogin = DB::select("select userid from userlogin where terminal='$GetTerminalName' and userid='$loginid'");
                                 
                                 if(!empty($rsUserLogin)){
-                                    return redirect('/login')->with('notif', "User $loginid in use...");
+                                    return redirect('/error')->with('notif', "User $loginid in use...");
                                 }else{
+                                    Userlogin::where('terminal',$GetTerminalName)->where('userid',$loginid)->delete();
                                     $dLogin = date('Y-m-d H:i:s');
                                     Userlogin::insert([
                                         'userid' => $loginid,
@@ -85,7 +86,7 @@ class AuthController extends Controller
                                             return redirect()->route('perjalanan_dinas.index');
                                         }else{
                                             if($objRS->status == "exp"){
-                                                return redirect('/logout')->with('notif',"Password Anda Sudah Expired");	
+                                                return redirect('/error')->with('notif',"Password Anda Sudah Expired");	
                                             }else{
                                             return redirect()->route('perjalanan_dinas.index');
                                             }
@@ -96,7 +97,7 @@ class AuthController extends Controller
                         }
                 } //loop
             }else{
-                    return redirect('/login')->with('notif',"User $loginid not allowed...");
+                    return redirect('/error')->with('notif',"User $loginid not allowed...");
             }
         
     }
@@ -112,7 +113,6 @@ class AuthController extends Controller
     {
         return $user->getAuthPassword() === $credentials['userpw'];
     }
-
 	public function logout(){
         $dLogin = session()->get('log');
         $dLogout = date('Y-m-d H:i:s');
@@ -128,5 +128,9 @@ class AuthController extends Controller
         session()->forget('remain');
         Auth::logout();
         return redirect('/login');
+    }
+	public function error(){
+        Auth::logout();
+        return view('login');
     }
 }

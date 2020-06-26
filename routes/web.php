@@ -17,6 +17,7 @@ Route::get('/', 'AuthController@login')->name('login');
 Route::get('/login', 'AuthController@login')->name('login');
 Route::post('login_user', 'AuthController@postlogin')->name('login_user.postlogin');
 Route::get('/logout', 'AuthController@logout')->name('logout.index');
+Route::get('/error', 'AuthController@error')->name('error');
 
 Route::get('/migration_show', function () {
     $migrasi = DB::select(DB::raw("SELECT * FROM migrations"));
