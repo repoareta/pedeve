@@ -12,12 +12,12 @@
 				<a href="#" class="kt-subheader__breadcrumbs-home"><i class="flaticon2-shelter"></i></a>
 				<span class="kt-subheader__breadcrumbs-separator"></span>
 				<a href="" class="kt-subheader__breadcrumbs-link">
-					Administrator </a>
+					Kontroler </a>
 				<span class="kt-subheader__breadcrumbs-separator"></span>
 				<a href="" class="kt-subheader__breadcrumbs-link">
 					Set User </a>
 				<span class="kt-subheader__breadcrumbs-separator"></span>
-				<span class="kt-subheader__breadcrumbs-link kt-subheader__breadcrumbs-link--active">Tambah</span>
+				<span class="kt-subheader__breadcrumbs-link kt-subheader__breadcrumbs-link--active">Edit</span>
 			</div>
 		</div>
 	</div>
@@ -32,7 +32,7 @@
 					<i class="kt-font-brand flaticon2-plus-1"></i>
 				</span>
 				<h3 class="kt-portlet__head-title">
-					Tambah Set User
+					Edit Set User
 				</h3>			
 			</div>
 			<div class="kt-portlet__head-toolbar">
@@ -55,26 +55,26 @@
 						<div class="form-group row">
 							<label for="" class="col-2 col-form-label">User ID<span style="color:red;">*</span></label>
 							<div class="col-10">
-								<input class="form-control" type="text" value="" name="userid" size="15" maxlength="10" title="User ID" onkeyup="this.value = this.value.toUpperCase()" autocomplete='off' required oninvalid="this.setCustomValidity('User ID Harus Diisi...')" oninput="setCustomValidity('')">
+								<input class="form-control" type="text" value="{{$userid}}" name="userid" size="15" maxlength="10" title="User ID" style="background-color:#DCDCDC; cursor:not-allowed" readonly>
 							</div>
 						</div>
 						<div class="form-group row">
 							<label for="" class="col-2 col-form-label">User Name<span style="color:red;">*</span></label>
 							<div class="col-10">
-								<input class="form-control" type="text" value="" name="usernm"  size="25" maxlength="20" title="User Name" onkeyup="this.value = this.value.toUpperCase()" autocomplete='off' required oninvalid="this.setCustomValidity('User Name Harus Diisi...')" oninput="setCustomValidity('')">
+								<input class="form-control" type="text" value="{{$usernm}}" name="usernm"  size="25" maxlength="20" title="User Name" onkeyup="this.value = this.value.toUpperCase()" autocomplete='off' required oninvalid="this.setCustomValidity('User Name Harus Diisi...')" oninput="setCustomValidity('')">
 							</div>
 						</div>
 						<div class="form-group row">
 							<label class="col-2 col-form-label">User Group</label>
 							<div class="col-10">
 								<select name="kode" class="form-control selectpicker" data-live-search="true">
-									<option value="KONTROLER">KONTROLER</option>		
-									<option value="TABUNGAN">TABUNGAN</option>
-									<option value="PERBENDAHARAAN">PERBENDAHARAAN</option>
-									<option value="INVESTASI">INVESTASI</option>
-									<option value="SDM">SDM</option>
-									<option value="UMUM">UMUM</option>
-									<option value="ADMIN">SYSTEM ADMINISTRATOR</option>									
+									<option value="KONTROLER" <?php if($kode  == 'KONTROLER' ) echo 'selected' ; ?>>KONTROLER</option>		
+									<option value="TABUNGAN" <?php if($kode  == 'TABUNGAN' ) echo 'selected' ; ?>>TABUNGAN</option>
+									<option value="PERBENDAHARAAN" <?php if($kode  == 'PERBENDAHARAAN' ) echo 'selected' ; ?>>PERBENDAHARAAN</option>
+									<option value="INVESTASI" <?php if($kode  == 'INVESTASI' ) echo 'selected' ; ?>>INVESTASI</option>
+									<option value="SDM" <?php if($kode  == 'SDM' ) echo 'selected' ; ?>>SDM</option>
+									<option value="UMUM" <?php if($kode  == 'UMUM' ) echo 'selected' ; ?>>UMUM</option>
+									<option value="ADMIN" <?php if($kode  == 'ADMIN' ) echo 'selected' ; ?>>SYSTEM ADMINISTRATOR</option>									
 								</select>							
 							</div>
 						</div>
@@ -83,11 +83,11 @@
 							<div class="col-8">
 								<div class="kt-radio-inline">
 									<label class="kt-radio kt-radio--solid">
-										<input type="radio"  name="userlv" value="0" checked> ADMINISTRATOR
+										<input type="radio"  name="userlv" value="0" <?php if($userlv  == '0' ) echo 'checked' ; ?>> ADMINISTRATOR
 										<span></span>
 									</label>
 									<label class="kt-radio kt-radio--solid">
-										<input type="radio"    name="userlv" value="1"> USER
+										<input type="radio"    name="userlv" value="1" <?php if($userlv  == '1' ) echo 'checked' ; ?>> USER
 										<span></span>
 									</label>
 								</div>
@@ -98,28 +98,60 @@
 							<label for="" class="col-2 col-form-label">User Application</label>
 							<div class="col-8">
 								<div class="kt-checkbox-inline">
+								<?php
+								if(substr_count($userap,"A") > 0){
+									$userp1 = "A"; 
+								}else{ 
+									$userp1="";
+								} 
+								if(substr_count($userap,"B") > 0){
+									$userp2 = "B"; 
+								}else{ 
+									$userp2="";
+								} 
+								if(substr_count($userap,"C") > 0){
+									$userp3 = "C"; 
+								}else{ 
+									$userp3="";
+								} 
+								if(substr_count($userap,"D") > 0){ 
+									$userp4 = "D"; 
+								}else{ 
+									$userp4="";
+								} 
+								if(substr_count($userap,"E") > 0){ 
+									$userp5 = "E"; 
+								}else{ 
+									$userp5="";
+								} 
+								if(substr_count($userap,"F") > 0){ 
+									$userp6 = "F"; 
+								}else{ 
+									$userp6="";
+								} 
+								?>
 									<label class="kt-checkbox kt-checkbox--solid">
-										<input type="checkbox"  name="akt" value="A" > Kontroler
+										<input type="checkbox"  name="akt" value="A" <?php if($userp1  == 'A' ) echo 'checked' ; ?>> Kontroler
 										<span></span>
 									</label>
 									<label class="kt-checkbox kt-checkbox--solid">
-										<input type="checkbox"    name="tab" value="B"> Tabungan
+										<input type="checkbox"    name="tab" value="B" <?php if($userp2  == 'B' ) echo 'checked' ; ?>> Tabungan
 										<span></span>
 									</label>
 									<label class="kt-checkbox kt-checkbox--solid">
-										<input type="checkbox"    name="inv" value="C"> Investasi
+										<input type="checkbox"    name="inv" value="C" <?php if($userp3  == 'C' ) echo 'checked' ; ?>> Investasi
 										<span></span>
 									</label>
 									<label class="kt-checkbox kt-checkbox--solid">
-										<input type="checkbox"    name="pbd" value="D"> Perbendaharaan
+										<input type="checkbox"    name="pbd" value="D" <?php if($userp4  == 'D' ) echo 'checked' ; ?>> Perbendaharaan
 										<span></span>
 									</label>
 									<label class="kt-checkbox kt-checkbox--solid">
-										<input type="checkbox"    name="umu" value="E"> UMUM
+										<input type="checkbox"    name="umu" value="E" <?php if($userp5  == 'E' ) echo 'checked' ; ?>> UMUM
 										<span></span>
 									</label>
 									<label class="kt-checkbox kt-checkbox--solid">
-										<input type="checkbox"    name="sdm" value="F"> SDM
+										<input type="checkbox"    name="sdm" value="F" <?php if($userp6  == 'F' ) echo 'checked' ; ?>> SDM
 										<span></span>
 									</label>
 								</div>
@@ -128,7 +160,7 @@
 						<div class="form-group row">
 							<label for="" class="col-2 col-form-label">Last Updated By</label>
 							<div class="col-10">
-								<input class="form-control" type="text" value="" style="background-color:#DCDCDC; cursor:not-allowed" readonly>
+								<input class="form-control" type="text" value="{{$usrupd}}" style="background-color:#DCDCDC; cursor:not-allowed" readonly>
 							</div>
 						</div>
 						
@@ -159,7 +191,7 @@
 
 		$('#form-create').submit(function(){
 			$.ajax({
-				url  : "{{route('set_user.store')}}",
+				url  : "{{route('set_user.update')}}",
 				type : "POST",
 				data : $('#form-create').serialize(),
 				dataType : "JSON",
@@ -167,22 +199,14 @@
 				'X-CSRF-Token': '{{ csrf_token() }}',
 				},
 				success : function(data){
-				if(data == 1){
 					Swal.fire({
 						type  : 'success',
-						title : 'Data Berhasil Ditambah',
+						title : 'Data Berhasil Diubah',
 						text  : 'Berhasil',
 						timer : 2000
 					}).then(function(data) {
 						window.location.replace("{{ route('set_user.index') }}");
 						});
-				}else{
-					Swal.fire({
-						type  : 'info',
-						title : 'User ID '+data+' Sudah Ada.',
-						text  : 'Info',
-					});
-				}
 
 				}, 
 				error : function(){

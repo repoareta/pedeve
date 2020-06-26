@@ -6,7 +6,7 @@
 	<div class="kt-container  kt-container--fluid ">
 		<div class="kt-subheader__main">
 			<h3 class="kt-subheader__title">
-				Set User </h3>
+				User Function </h3>
 			<span class="kt-subheader__separator kt-hidden"></span>
 			<div class="kt-subheader__breadcrumbs">
 				<a href="#" class="kt-subheader__breadcrumbs-home"><i class="flaticon2-shelter"></i></a>
@@ -15,7 +15,7 @@
 					Administrator </a>
 				<span class="kt-subheader__breadcrumbs-separator"></span>
 				<a href="" class="kt-subheader__breadcrumbs-link">
-					Set User </a>
+					User Function </a>
 				<span class="kt-subheader__breadcrumbs-separator"></span>
 				<span class="kt-subheader__breadcrumbs-link kt-subheader__breadcrumbs-link--active">Tambah</span>
 			</div>
@@ -32,7 +32,7 @@
 					<i class="kt-font-brand flaticon2-plus-1"></i>
 				</span>
 				<h3 class="kt-portlet__head-title">
-					Tambah Set User
+					Tambah User Function
 				</h3>			
 			</div>
 			<div class="kt-portlet__head-toolbar">
@@ -47,7 +47,7 @@
 						<div class="alert alert-secondary" role="alert">
 							<div class="alert-text">
 								<h5 class="kt-portlet__head-title">
-									Header Set User
+									Header User Function
 								</h5>	
 							</div>
 						</div>
@@ -55,80 +55,53 @@
 						<div class="form-group row">
 							<label for="" class="col-2 col-form-label">User ID<span style="color:red;">*</span></label>
 							<div class="col-10">
-								<input class="form-control" type="text" value="" name="userid" size="15" maxlength="10" title="User ID" onkeyup="this.value = this.value.toUpperCase()" autocomplete='off' required oninvalid="this.setCustomValidity('User ID Harus Diisi...')" oninput="setCustomValidity('')">
+								<input class="form-control" type="text" value="{{$userid}}" name="userid" id="userid" size="15" maxlength="10" title="User ID" style="background-color:#DCDCDC; cursor:not-allowed" readonly>
 							</div>
 						</div>
 						<div class="form-group row">
 							<label for="" class="col-2 col-form-label">User Name<span style="color:red;">*</span></label>
 							<div class="col-10">
-								<input class="form-control" type="text" value="" name="usernm"  size="25" maxlength="20" title="User Name" onkeyup="this.value = this.value.toUpperCase()" autocomplete='off' required oninvalid="this.setCustomValidity('User Name Harus Diisi...')" oninput="setCustomValidity('')">
+								<input class="form-control" type="text" value="{{$usernm}}" name="usernm"  size="25" maxlength="20" title="User Name" style="background-color:#DCDCDC; cursor:not-allowed" readonly>
 							</div>
 						</div>
 						<div class="form-group row">
-							<label class="col-2 col-form-label">User Group</label>
+							<label class="col-2 col-form-label">Menu ID<span style="color:red;">*</span></label>
 							<div class="col-10">
-								<select name="kode" class="form-control selectpicker" data-live-search="true">
-									<option value="KONTROLER">KONTROLER</option>		
-									<option value="TABUNGAN">TABUNGAN</option>
-									<option value="PERBENDAHARAAN">PERBENDAHARAAN</option>
-									<option value="INVESTASI">INVESTASI</option>
-									<option value="SDM">SDM</option>
-									<option value="UMUM">UMUM</option>
-									<option value="ADMIN">SYSTEM ADMINISTRATOR</option>									
+								<select name="menuid" id="menuid" class="form-control kt-select2" required oninvalid="this.setCustomValidity('Menu ID Harus Diisi..')" onchange="setCustomValidity('')">
+									<option value="">- Pilih -</option>		
+									@foreach($data_menuid as $data)
+									<option value="{{$data->menuid}}">{{$data->menunm}} - Tambah[{{$data->tambah}}] Ubah[{{$data->rubah}}] Hapus[{{$data->hapus}}] Cetak[{{$data->cetak}}] Lihat[{{$data->lihat}}]</option>	
+									@endforeach	
+																		
 								</select>							
-							</div>
-						</div>
-						<div class="form-group row">
-							<label for="" class="col-2 col-form-label">User Level</label>
-							<div class="col-8">
-								<div class="kt-radio-inline">
-									<label class="kt-radio kt-radio--solid">
-										<input type="radio"  name="userlv" value="0" checked> ADMINISTRATOR
-										<span></span>
-									</label>
-									<label class="kt-radio kt-radio--solid">
-										<input type="radio"    name="userlv" value="0"> USER
-										<span></span>
-									</label>
-								</div>
 							</div>
 						</div>
 
 						<div class="form-group row">
-							<label for="" class="col-2 col-form-label">User Application</label>
+							<label for="" class="col-2 col-form-label">Privileges</label>
 							<div class="col-8">
 								<div class="kt-checkbox-inline">
 									<label class="kt-checkbox kt-checkbox--solid">
-										<input type="checkbox"  name="akt" value="A" > Kontroler
+										<input type="checkbox"  name="tambah" id="tambah" value="1" > Tambah
 										<span></span>
 									</label>
 									<label class="kt-checkbox kt-checkbox--solid">
-										<input type="checkbox"    name="tab" value="B"> Tabungan
+										<input type="checkbox"    name="ubah" id="ubah" value="1"> Ubah
 										<span></span>
 									</label>
 									<label class="kt-checkbox kt-checkbox--solid">
-										<input type="checkbox"    name="inv" value="C"> Investasi
+										<input type="checkbox"    name="hapus" id="hapus" value="1"> Hapus
 										<span></span>
 									</label>
 									<label class="kt-checkbox kt-checkbox--solid">
-										<input type="checkbox"    name="pbd" value="D"> Perbendaharaan
+										<input type="checkbox"    name="cetak" id="cetak" value="1"> Cetak
 										<span></span>
 									</label>
 									<label class="kt-checkbox kt-checkbox--solid">
-										<input type="checkbox"    name="umu" value="E"> UMUM
-										<span></span>
-									</label>
-									<label class="kt-checkbox kt-checkbox--solid">
-										<input type="checkbox"    name="sdm" value="F"> SDM
+										<input type="checkbox"    name="lihat" id="lihat" value="1"> Lihat
 										<span></span>
 									</label>
 								</div>
-							</div>
-						</div>
-						<div class="form-group row">
-							<label for="" class="col-2 col-form-label">Last Updated By</label>
-							<div class="col-10">
-								<input class="form-control" type="text" value="" style="background-color:#DCDCDC; cursor:not-allowed" readonly>
 							</div>
 						</div>
 						
@@ -136,7 +109,7 @@
 							<div class="row">
 								<div class="col-2"></div>
 								<div class="col-10">
-									<a  href="{{route('set_user.index')}}" class="btn btn-warning"><i class="fa fa-reply" aria-hidden="true"></i>Cancel</a>
+									<a  href="{{route('set_menu.index')}}" class="btn btn-warning"><i class="fa fa-reply" aria-hidden="true"></i>Cancel</a>
 									<button type="submit" class="btn btn-brand"><i class="fa fa-check" aria-hidden="true"></i>Save</button>
 								</div>
 							</div>
@@ -157,9 +130,82 @@
 			serverSide: false,
 		});
 
-		$('#form-create').submit(function(){
+		$('.kt-select2').select2().on('change', function() {
+			$(this).valid();
+		});
+
+		$("#menuid").on("change", function(){
+			var userid = $('#userid').val();
+			var menuid = $(this).val();
+
 			$.ajax({
-				url  : "{{route('set_user.store')}}",
+				url : "{{route('set_menu.menuid.json')}}",
+				type : "POST",
+				dataType: 'json',
+				data : {
+					menuid:menuid,
+					userid:userid
+					},
+				headers: {
+					'X-CSRF-Token': '{{ csrf_token() }}',
+					},
+				success : function(data){
+					if (data.tambah == 1) {
+						$("#tambah").each(function() {
+							this.checked=true;
+						});
+					}else{
+						$("#tambah").each(function() {
+							this.checked=false;
+						});
+					}
+					if (data.rubah == 1) {
+						$("#ubah").each(function() {
+							this.checked=true;
+						});
+					}else{
+						$("#ubah").each(function() {
+							this.checked=false;
+						});
+					}
+					if (data.hapus == 1) {
+						$("#hapus").each(function() {
+							this.checked=true;
+						});
+					}else{
+						$("#hapus").each(function() {
+							this.checked=false;
+						});
+					}
+					if (data.cetak == 1) {
+						$("#cetak").each(function() {
+							this.checked=true;
+						});
+					}else{
+						$("#cetak").each(function() {
+							this.checked=false;
+						});
+					}
+					if (data.lihat == 1) {
+						$("#lihat").each(function() {
+							this.checked=true;
+						});
+					}else{
+						$("#lihat").each(function() {
+							this.checked=false;
+						});
+					}
+				},
+				error : function(){
+					alert("Ada kesalahan controller!");
+				}
+			})
+		});
+
+		$('#form-create').submit(function(){
+			var userid = $('#userid').val();
+			$.ajax({
+				url  : "{{route('set_menu.store')}}",
 				type : "POST",
 				data : $('#form-create').serialize(),
 				dataType : "JSON",
@@ -167,23 +213,15 @@
 				'X-CSRF-Token': '{{ csrf_token() }}',
 				},
 				success : function(data){
-				if(data == 1){
+					console.log(data);
 					Swal.fire({
 						type  : 'success',
-						title : 'Data Berhasil Ditambah',
+						title : 'Data Berhasil Diubah',
 						text  : 'Berhasil',
 						timer : 2000
 					}).then(function(data) {
-						window.location.replace("{{ route('set_user.index') }}");
+						location.reload();
 						});
-				}else{
-					Swal.fire({
-						type  : 'info',
-						title : 'User ID '+data+' Sudah Ada.',
-						text  : 'Info',
-					});
-				}
-
 				}, 
 				error : function(){
 					alert("Terjadi kesalahan, coba lagi nanti");

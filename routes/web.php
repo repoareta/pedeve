@@ -17,6 +17,7 @@ Route::get('/', 'AuthController@login')->name('login');
 Route::get('/login', 'AuthController@login')->name('login');
 Route::post('login_user', 'AuthController@postlogin')->name('login_user.postlogin');
 Route::get('/logout', 'AuthController@logout')->name('logout.index');
+Route::get('/error', 'AuthController@error')->name('error');
 
 Route::get('/migration_show', function () {
     $migrasi = DB::select(DB::raw("SELECT * FROM migrations"));
@@ -28,7 +29,7 @@ Route::get('/migration_clear', function () {
 });
 
 //MODUL UMUM
-Route::group(['middleware'=> ['auth','checkRole:1']], function () {
+Route::group(['middleware'=> ['auth','checkRole:1,0']], function () {
     Route::prefix('umum')->group(function () {
 
         // UMK
@@ -1208,12 +1209,35 @@ Route::group(['middleware'=> ['auth','checkRole:1']], function () {
         Route::name('set_menu.')->group(function () {
             Route::get('set_menu', 'SetMenuController@index')->name('index');
             Route::post('set_menu/index/search', 'SetMenuController@searchIndex')->name('search.index');
-            Route::get('set_menu/create', 'SetMenuController@create')->name('create');
+            Route::post('set_menu/menuid/json', 'SetMenuController@menuidJson')->name('menuid.json');
+            Route::get('set_menu/create/{no}', 'SetMenuController@create')->name('create');
             Route::post('set_menu/store', 'SetMenuController@store')->name('store');
             Route::get('set_menu/edit/{no}', 'SetMenuController@edit')->name('edit');
             Route::post('set_menu/update', 'SetMenuController@update')->name('update');
             Route::delete('set_menu/delete', 'SetMenuController@delete')->name('delete');
         });
         //end set_menu
+
+        //tabel_menu
+        // Route assigned name "tabel_menu.index"...
+        Route::name('tabel_menu.')->group(function () {
+            Route::get('tabel_menu', 'TabelMenuController@index')->name('index');
+            Route::post('tabel_menu/index/search', 'TabelMenuController@searchIndex')->name('search.index');
+            Route::get('tabel_menu/create', 'TabelMenuController@create')->name('create');
+            Route::post('tabel_menu/store', 'TabelMenuController@store')->name('store');
+            Route::get('tabel_menu/edit/{no}', 'TabelMenuController@edit')->name('edit');
+            Route::post('tabel_menu/update', 'TabelMenuController@update')->name('update');
+            Route::delete('tabel_menu/delete', 'TabelMenuController@delete')->name('delete');
+        });
+        //end tabel_menu
+
+        //password_administrator
+        // Route assigned name "password_administrator.index"...
+        Route::name('password_administrator.')->group(function () {
+            Route::get('password_administrator', 'PasswordController@index')->name('index');
+            Route::post('password_administrator/pass/json', 'PasswordController@passJson')->name('passJson');
+            Route::post('password_administrator/store', 'PasswordController@store')->name('store');
+        });
+        //end password_administrator
     });
 });

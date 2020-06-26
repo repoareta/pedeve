@@ -110,7 +110,6 @@ $(document).ready(function () {
 			t.draw();
 			e.preventDefault();
 		});
-
 		$('#deleteRow').click(function(e) {
 			e.preventDefault();
 			if($('input[class=btn-radio]').is(':checked')) { 

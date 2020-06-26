@@ -60,9 +60,9 @@
 		</div>
 	</div>
 	<div class="kt-portlet__body">
-		<div class="col-12">
+		<div class="">
 			<form class="kt-form" id="search-form" >
-				<div class="form-group row">
+				<div class="form-group row col-12">
 					<label for="" class="col-form-label">Bulan</label>
 					<div class="col-2">
 						<select name="bulan" class="form-control selectpicker" data-live-search="true">
@@ -76,7 +76,6 @@
 							<option value="07" <?php if($bulan  == '07' ) echo 'selected' ; ?>>Juli</option>
 							<option value="08" <?php if($bulan  == '08' ) echo 'selected' ; ?>>Agustus</option>
 							<option value="09" <?php if($bulan  == '09' ) echo 'selected' ; ?>>September</option>
-							<option value="10" <?php if($bulan  == '10' ) echo 'selected' ; ?>>Oktober</option>
 							<option value="11" <?php if($bulan  == '11' ) echo 'selected' ; ?>>November</option>
 							<option value="12" <?php if($bulan  == '12' ) echo 'selected' ; ?>>Desember</option>
 						</select>

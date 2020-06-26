@@ -90,13 +90,9 @@ class SetUserController extends Controller
         $usernm = $request->usernm;
         $userlv = $request->userlv;
         $userap = $request->akt.''.$request->tab.''.$request->inv.''.$request->pbd.''.$request->umu.''.$request->sdm;
-        $userpw = "";
+        $userpw = "v3ntur4";
         $usrupd = Auth::user()->userid;
         $kode = $request->kode;
-
-        if($userpw == ""){
-            $userpw = "v3ntur4";
-        }
         $data_chkuser = DB::select("select userid from userpdv where userid='$userid'");
         if(!empty($data_chkuser)){
             foreach($data_chkuser as $data_ch)
@@ -104,8 +100,6 @@ class SetUserController extends Controller
                 $data = $data_ch->userid;
                 return response()->json($data);
             }
-            // erry="user id " & userid & " sudah ada "
-            // respage="setuser&erry=" & erry & "&mode=view&userid=" & userid
         }else{
             $data_tglexp = DB::select("select (date(now()) + INTERVAL  '4' month) as tglexp");
             foreach($data_tglexp as $data_tgl)
@@ -124,22 +118,20 @@ class SetUserController extends Controller
                 'passexp' => $tglexp,
                 'usrupd' => $usrupd 
             ]);
+            $data_menu = DB::select("select distinct(menuid) as menuid from dftmenu");
+                foreach($data_menu as $data_m)
+                {
+                    Usermenu::insert([
+                        'userid' => $userid,
+                        'menuid' => $data_m->menuid,
+                        'cetak' => '0',
+                        'tambah' => '0',
+                        'rubah' => '0',
+                        'lihat' => '0',
+                        'hapus' => '0'
+                    ]);
+                }
         }
-        $data_menu = DB::select("select distinct(menuid) from dftmenu");
-            foreach($data_menu as $data_m)
-            {
-                $menuid = $data_m->menuid;
-                Usermenu::insert([
-                    'userid' => $userid,
-                    'menuid' => $menuid,
-                    'cetak' => '0',
-                    'tambah' => '0',
-                    'rubah' => '0',
-                    'lihat' => '0',
-                    'hapus' => '0'
-                ]);
-            }
-        // strconf="sudah tersimpan dalam database"
             $data = 1;
             return response()->json($data);
     }

@@ -645,10 +645,20 @@
                     'set_menu.index',
                     'set_menu.create',
                     'set_menu.edit'                    
-                ); // isi nama semua route set_user
+                ); // isi nama semua route set_menu
+                $tabel_menu = array(
+                    'tabel_menu.index',
+                    'tabel_menu.create',
+                    'tabel_menu.edit'                    
+                ); // isi nama semua route tabel_menu
+                $password_administrator = array(
+                    'password_administrator.index'                   
+                ); // isi nama semua route password_administrator
                 $administrator = array_merge(
                     $set_user,
-                    $set_menu
+                    $set_menu,
+                    $tabel_menu,
+                    $password_administrator
                 ); // array merge semua submenu
             @endphp
 
@@ -1809,7 +1819,7 @@
                                 <i class="kt-menu__link-bullet kt-menu__link-bullet--dot">
                                     <span></span>
                                 </i>
-                                <span class="kt-menu__link-text">Set User</span>
+                                <span class="kt-menu__link-text">User Administration</span>
                             </a>
                         </li>
                         <li class="kt-menu__item kt-menu__item{{ set_active_submenu($set_menu) }}" aria-haspopup="true">
@@ -1817,7 +1827,23 @@
                                 <i class="kt-menu__link-bullet kt-menu__link-bullet--dot">
                                     <span></span>
                                 </i>
-                                <span class="kt-menu__link-text">Set Menu</span>
+                                <span class="kt-menu__link-text">Menu & Function</span>
+                            </a>
+                        </li>
+                        <li class="kt-menu__item kt-menu__item{{ set_active_submenu($tabel_menu) }}" aria-haspopup="true">
+                            <a href="{{route('tabel_menu.index')}}" class="kt-menu__link">
+                                <i class="kt-menu__link-bullet kt-menu__link-bullet--dot">
+                                    <span></span>
+                                </i>
+                                <span class="kt-menu__link-text">Tabel Menu</span>
+                            </a>
+                        </li>
+                        <li class="kt-menu__item kt-menu__item{{ set_active_submenu($password_administrator) }}" aria-haspopup="true">
+                            <a href="{{route('password_administrator.index')}}" class="kt-menu__link">
+                                <i class="kt-menu__link-bullet kt-menu__link-bullet--dot">
+                                    <span></span>
+                                </i>
+                                <span class="kt-menu__link-text">Password Administration</span>
                             </a>
                         </li>
                     </ul>
