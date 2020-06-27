@@ -23,8 +23,8 @@ class AuthController extends Controller
 
             $loginid = $request->userid;
             $password = $request->userpw;
-            $GetTerminalName=substr(gethostbyaddr($_SERVER['REMOTE_ADDR']),15);
-            // $UserIPAddress =substr($_SERVER['REMOTE_ADDR'],3);
+            $GetTerminalName=substr(gethostbyaddr($_SERVER['REMOTE_ADDR']),0,15);
+            // $UserIPAddress =substr($_SERVER['REMOTE_ADDR'],0,3);
             $UserIPAddress ='192';
             if(Auth::attempt($request->only('userid','userpw'))){
                 $data_user = DB::select("select userid,usernm,kode,userpw,userlv,userap,host from userpdv where userid='$loginid'");
