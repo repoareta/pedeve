@@ -45,7 +45,7 @@ class AuthController extends Controller
                         if ($password <> $rsuser->userpw) {
                             return redirect('/error')->with('notif', "Your password not allowed...");
                         }else{
-                            if (($sUserHost<>"%" and $UserIPAddress) <> $sUserHost) {
+                            if ($sUserHost<>"%" and $UserIPAddress <> $sUserHost) {
                                 return redirect('/error')->with('notif', "You are not allowed to access from there...");
                             }else{
                                 $rsUserLogin = DB::select("select userid from userlogin where terminal='$GetTerminalName' and userid='$loginid'");
