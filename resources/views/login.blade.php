@@ -68,7 +68,7 @@
 										<div class="clear"></div>
 									</div>	
 										@if(\Session::has('notif'))
-												<span style="padding-top:20px;margin-bottom:-30px;color:red; font-size:2; float:left;">{{Session::get('notif')}}</span>
+												<span style="padding-top:20px;margin-bottom:-15px;color:red; font-size:2; float:left;">{{Session::get('notif')}}</span>
 										@endif
 								</form>
 							</div>
