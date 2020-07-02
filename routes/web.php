@@ -1065,23 +1065,15 @@ Route::group(['middleware'=> ['auth','checkRole:1,0']], function () {
         });
         //end Master Pekerja
 
-        //Master PHK
-        // Route assigned name "master_phk.index"...
-        Route::name('master_phk.')->group(function () {
-            Route::get('master_phk', 'MasterPhkController@index')->name('index');
-            Route::post('master_phk/index/json', 'MasterPhkController@indexJson')->name('index.json');
-            Route::post('master_phk/nopek/json', 'MasterPhkController@nopekJson')->name('nopek.json');
-            Route::get('master_phk/create', 'MasterPhkController@create')->name('create');
-            Route::post('master_phk/store', 'MasterPhkController@store')->name('store');
-            Route::post('master_phk/store/detail', 'MasterPhkController@deteilStore')->name('store.detail');
-            Route::get('master_phk/edit/{kode}', 'MasterPhkController@edit')->name('edit');
-            Route::post('master_phk/update', 'MasterPhkController@update')->name('update');
-            Route::delete('master_phk/delete', 'MasterPhkController@delete')->name('delete');
-            Route::get('master_phk/proses/{no}/{tahun}/{bulan}', 'MasterPhkController@proses')->name('proses');
-            Route::get('master_phk/serah/{no}/{tahun}/{bulan}', 'MasterPhkController@serah')->name('serah');
-        });
-        //end Master PHK
 
+
+        //cetak_kas_bank
+        // Route assigned name "cetak_kas_bank.index"...
+        Route::name('cetak_kas_bank.')->group(function () {
+            Route::get('cetak_kas_bank', 'KasBankKontrolerController@indexCetak')->name('index');
+            Route::post('cetak_kas_bank/index/search', 'KasBankKontrolerController@searchIndexCetak')->name('search.cetak.index');
+        });
+        //end cetak_kas_bank
 
         //tabel_deposito
         // Route assigned name "tabel_deposito.index"...
