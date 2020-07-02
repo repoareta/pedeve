@@ -582,6 +582,46 @@
                     $tabel_deposito
                 ); // array merge semua submenu treassury
 
+                $d2_perbulan = array(
+                    'd2_perbulan.create_d2_perbulan'
+                ); // isi nama semua route d2_perbulan
+                $d2_periode = array(
+                    'd2_periode.create_d2_periode'
+                ); // isi nama semua route d2_periode
+                $d5_report = array(
+                    'd5_report.create_d5_report'
+                ); // isi nama semua route d5_report
+                $neraca_konsolidasi = array(
+                    'neraca_konsolidasi.create_neraca_konsolidasi'
+                ); // isi nama semua route neraca_konsolidasi
+                $neraca_detail = array(
+                    'neraca_detail.create_neraca_detail'
+                ); // isi nama semua route neraca_detail
+                $laba_rugi_konsolidasi = array(
+                    'laba_rugi_konsolidasi.create_laba_rugi_konsolidasi'
+                ); // isi nama semua route laba_rugi_konsolidasi
+                $laba_rugi_detail = array(
+                    'laba_rugi_detail.create_laba_rugi_detail'
+                ); // isi nama semua route laba_rugi_detail
+                $laporan_keuangan = array(
+                    'laporan_keuangan.create_laporan_keuangan'
+                ); // isi nama semua route laporan_keuangan
+                $biaya_pegawai = array(
+                    'biaya_pegawai.create_biaya_pegawai'
+                ); // isi nama semua route biaya_pegawai
+
+                $report_kontroler = array_merge(
+                    $d2_perbulan,
+                    $d2_periode,
+                    $d5_report,
+                    $neraca_konsolidasi,
+                    $neraca_detail,
+                    $laba_rugi_konsolidasi,
+                    $laba_rugi_detail,
+                    $laporan_keuangan,
+                    $biaya_pegawai
+                ); // array merge semua submenu report_kontroler
+
                 $cash_judex = array(
                     'cash_judex.index',
                     'cash_judex.create',
@@ -632,6 +672,7 @@
                     $postingan_kas_bank,
                     $verifikasi_kas_bank,
                     $treassury,
+                    $report_kontroler,
                     $tabel
                 ); // array merge semua submenu
 
@@ -1630,7 +1671,7 @@
                                 </ul>
                             </div>
                         </li>
-                        <li class="kt-menu__item kt-menu__item--submenu" aria-haspopup="true" data-ktmenu-submenu-toggle="hover">
+                        <li class="kt-menu__item kt-menu__item--submenu {{ set_active($report_kontroler) }}" aria-haspopup="true" data-ktmenu-submenu-toggle="hover">
                             <a href="javascript:;" class="kt-menu__link kt-menu__toggle">
                                 <i class="kt-menu__link-bullet kt-menu__link-bullet--dot">
                                     <span></span>
@@ -1640,12 +1681,76 @@
                             </a>
                             <div class="kt-menu__submenu "><span class="kt-menu__arrow"></span>
                                 <ul class="kt-menu__subnav">
-                                    <li class="kt-menu__item kt-menu__item{{ set_active_submenu($cetak_kas_bank) }}" aria-haspopup="true">
-                                        <a href="{{ route('uang_muka_kerja.index') }}" class="kt-menu__link">
+                                    <li class="kt-menu__item kt-menu__item{{ set_active_submenu($d2_perbulan) }}" aria-haspopup="true">
+                                        <a href="{{ route('d2_perbulan.create_d2_perbulan') }}" class="kt-menu__link">
                                             <i class="kt-menu__link-bullet kt-menu__link-bullet--line">
                                                 <span></span>
                                             </i>
-                                            <span class="kt-menu__link-text">Cetak Kas Bank</span>
+                                            <span class="kt-menu__link-text">D2 Per Bulan</span>
+                                        </a>
+                                    </li>
+                                    <li class="kt-menu__item kt-menu__item{{ set_active_submenu($d2_periode) }}" aria-haspopup="true">
+                                        <a href="{{ route('d2_periode.create_d2_periode') }}" class="kt-menu__link">
+                                            <i class="kt-menu__link-bullet kt-menu__link-bullet--line">
+                                                <span></span>
+                                            </i>
+                                            <span class="kt-menu__link-text">D2 Per Periode</span>
+                                        </a>
+                                    </li>
+                                    <li class="kt-menu__item kt-menu__item{{ set_active_submenu($d5_report) }}" aria-haspopup="true">
+                                        <a href="{{ route('d5_report.create_d5_report') }}" class="kt-menu__link">
+                                            <i class="kt-menu__link-bullet kt-menu__link-bullet--line">
+                                                <span></span>
+                                            </i>
+                                            <span class="kt-menu__link-text">D5</span>
+                                        </a>
+                                    </li>
+                                    <li class="kt-menu__item kt-menu__item{{ set_active_submenu($neraca_konsolidasi) }}" aria-haspopup="true">
+                                        <a href="{{ route('neraca_konsolidasi.create_neraca_konsolidasi') }}" class="kt-menu__link">
+                                            <i class="kt-menu__link-bullet kt-menu__link-bullet--line">
+                                                <span></span>
+                                            </i>
+                                            <span class="kt-menu__link-text">Neraca Konsolidasi</span>
+                                        </a>
+                                    </li>
+                                    <li class="kt-menu__item kt-menu__item{{ set_active_submenu($neraca_detail) }}" aria-haspopup="true">
+                                        <a href="{{ route('neraca_detail.create_neraca_detail') }}" class="kt-menu__link">
+                                            <i class="kt-menu__link-bullet kt-menu__link-bullet--line">
+                                                <span></span>
+                                            </i>
+                                            <span class="kt-menu__link-text">Neraca Detail</span>
+                                        </a>
+                                    </li>
+                                    <li class="kt-menu__item kt-menu__item{{ set_active_submenu($laba_rugi_konsolidasi) }}" aria-haspopup="true">
+                                        <a href="{{ route('laba_rugi_konsolidasi.create_laba_rugi_konsolidasi') }}" class="kt-menu__link">
+                                            <i class="kt-menu__link-bullet kt-menu__link-bullet--line">
+                                                <span></span>
+                                            </i>
+                                            <span class="kt-menu__link-text">Laba Rugi Konsolidasi</span>
+                                        </a>
+                                    </li>
+                                    <li class="kt-menu__item kt-menu__item{{ set_active_submenu($laba_rugi_detail) }}" aria-haspopup="true">
+                                        <a href="{{ route('laba_rugi_detail.create_laba_rugi_detail') }}" class="kt-menu__link">
+                                            <i class="kt-menu__link-bullet kt-menu__link-bullet--line">
+                                                <span></span>
+                                            </i>
+                                            <span class="kt-menu__link-text">Laba Rugi Detail</span>
+                                        </a>
+                                    </li>
+                                    <li class="kt-menu__item kt-menu__item{{ set_active_submenu($laporan_keuangan) }}" aria-haspopup="true">
+                                        <a href="{{ route('laporan_keuangan.create_laporan_keuangan') }}" class="kt-menu__link">
+                                            <i class="kt-menu__link-bullet kt-menu__link-bullet--line">
+                                                <span></span>
+                                            </i>
+                                            <span class="kt-menu__link-text">Catatan Atas Lap.Keuangan</span>
+                                        </a>
+                                    </li>
+                                    <li class="kt-menu__item kt-menu__item{{ set_active_submenu($biaya_pegawai) }}" aria-haspopup="true">
+                                        <a href="{{ route('biaya_pegawai.create_biaya_pegawai') }}" class="kt-menu__link">
+                                            <i class="kt-menu__link-bullet kt-menu__link-bullet--line">
+                                                <span></span>
+                                            </i>
+                                            <span class="kt-menu__link-text">Biaya Pegawai dan Kantor</span>
                                         </a>
                                     </li>
                                 </ul>
