@@ -262,8 +262,8 @@ class PekerjaController extends Controller
     {
         $pekerja = Pekerja::find($request->id);
         
-        $image_path = "public/pekerja_img/$pekerja->photo";  // Value is not URL but directory file path
-        Storage::delete($image_path);
+        // $image_path = "public/pekerja_img/$pekerja->photo";  // Value is not URL but directory file path
+        // Storage::delete($image_path);
 
         $pekerja->delete();
 
