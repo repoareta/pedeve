@@ -1207,7 +1207,7 @@ Route::group(['middleware'=> ['auth','checkRole:1,0']], function () {
         // Route assigned name "neraca_konsolidasi.index"...
         Route::name('neraca_konsolidasi.')->group(function () {
             Route::get('neraca_konsolidasi', 'ReportKontrolerController@create_neraca_konsolidasi')->name('create_neraca_konsolidasi');
-            // Route::post('neraca_konsolidasi/index/search', 'ReportKontrolerController@searchIndex')->name('search.index');
+            Route::post('neraca_konsolidasi/export', 'ReportKontrolerController@exportNeracaKonsolidasi')->name('export');
         });
         //end neraca_konsolidasi
 
@@ -1248,7 +1248,7 @@ Route::group(['middleware'=> ['auth','checkRole:1,0']], function () {
         // Route assigned name "biaya_pegawai.index"...
         Route::name('biaya_pegawai.')->group(function () {
             Route::get('biaya_pegawai', 'ReportKontrolerController@create_biaya_pegawai')->name('create_biaya_pegawai');
-            // Route::post('biaya_pegawai/index/search', 'ReportKontrolerController@searchIndex')->name('search.index');
+            Route::post('biaya_pegawai/export', 'ReportKontrolerController@exportBiayaPegawai')->name('export_biaya_pegawai');
         });
         //end biaya_pegawai
     });
