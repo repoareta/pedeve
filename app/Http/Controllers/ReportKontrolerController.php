@@ -148,6 +148,44 @@ class ReportKontrolerController extends Controller
         $data_sanper = DB::select("select kodeacct,descacct from account where length(kodeacct)=6 and kodeacct not like '%X%' order by kodeacct desc");
         return view('report_kontroler.create_laba_rugi_konsolidasi',compact('data_tahun','data_kodelok','data_sanper'));
     }
+    public function exportLabaRugiKonsolidasi(Request $request)
+    {
+            if ($request->lapangan <> "KL") {
+                $lokasi = "m.lokasi = '$request->lapangan'";
+                $tahun = "tahun = '$request->tahun'";
+                $bulan = "bulan = '$request->bulan'";
+                $suplesi = "suplesi = '$request->suplesi'";
+                $thnbln = "2019$request->bulan$request->suplesi";
+                $obpsi  = "obpsi_$request->tahun";
+            }else{
+                $lokasi = "m.lokasi in ('MD','MS')";
+                $tahun = "tahun = '$request->tahun'";
+                $bulan = "bulan = '$request->bulan'";
+                $suplesi = "suplesi = '$request->suplesi'";
+                $thnbln = "2019$request->bulan$request->suplesi";
+                $obpsi  = "obpsi_$request->tahun";
+            }
+        $data_list = DB::select("
+        select substr(a.account,1,3) as tigadigit, a.tahun, a.bulan, a.suplesi, a.ci mu, a.jb, a.account sandi,a.lokasi lapangan,coalesce(a.awalrp,0) last_rp, coalesce(a.awaldl,0) last_dl,a.pricerp cur_rp, a.pricedl cur_dl, a.totpricerp cum_rp, a.totpricedl cum_dl, m.* from $obpsi a, v_class_account m where substr(a.account,1,length(m.batas_awal)) between m.batas_awal and m.batas_akhir and strpos(m.lokasi,a.lokasi)>0 and $lokasi union all
+        select substr(b.account,1,3) as tigadigit, b.tahun, b.bulan, b.supbln suplesi, b.ci mu, b.jb, b.account sandi,b.lokasi lapangan,0 last_rp, 0 last_dl,Sum(coalesce(b.TotpriceRp,0)) cur_rp, Sum(coalesce(b.TotPrice,0)) cur_dl, Sum(coalesce(b.TotpriceRp,0)) cum_rp,Sum(coalesce(b.TotpriceDl,0)) cum_dl,m.*  from fiosd201 b, v_class_account m where substr(b.account,1,length(m.batas_awal)) between m.batas_awal and m.batas_akhir and strpos(m.lokasi,b.lokasi)>0 and $lokasi and ci='2'  and $tahun and tahun||bulan||supbln <= '$thnbln' group by b.tahun, b.bulan, b.supbln, b.account, b.jb, b.ci,b.lokasi,m.jenis,m.batas_awal,m.batas_akhir,m.urutan,m.pengali,m.pengali_tampil,m.sub_akun,m.lokasi,m.urutan_sc union all
+        select substr(c.account,1,3) as tigadigit, c.tahun, c.bulan, c.supbln suplesi, c.ci mu, c.jb, c.account sandi,c.lokasi lapangan,0 last_rp, 0 last_dl,Sum(coalesce(c.TotpriceRp,0)) cur_rp, 0 cur_dl, Sum(coalesce(c.TotpriceRp,0)) cum_rp, 0 cum_dl,m.* from fiosd201 c, v_class_account m where substr(c.account,1,length(m.batas_awal)) between m.batas_awal and m.batas_akhir and strpos(m.lokasi,c.lokasi)>0  and $lokasi and ci='1'  and $tahun and tahun||bulan||supbln <= '$thnbln' group by c.tahun, c.bulan, c.supbln, c.account, c.jb, c.ci,c.lokasi,m.jenis,m.batas_awal,m.batas_akhir,m.urutan,m.pengali,m.pengali_tampil,m.sub_akun,m.lokasi,m.urutan_sc
+        ");
+        if (!empty($data_list)) {
+            set_time_limit(1200);
+            $pdf = PDF::loadview('report_kontroler.export_laba_rugi_konsolidasi', compact('request', 'data_list'))->setPaper('a4', 'Portrait');
+            $pdf->output();
+            $dom_pdf = $pdf->getDomPDF();
+        
+            $canvas = $dom_pdf ->get_canvas();
+            // $canvas->page_text(485, 100, "Halaman {PAGE_NUM} Dari {PAGE_COUNT}", null, 10, array(0, 0, 0)); //lembur landscape
+            // return $pdf->download('rekap_umk_'.date('Y-m-d H:i:s').'.pdf');
+            return $pdf->stream();
+        } else {
+            Alert::info("Tidak ditemukan data dengan Bulan $request->bulan Tahun: $request->tahun ", 'Failed')->persistent(true);
+            return redirect()->route('laba_rugi_konsolidasi.create_laba_rugi_konsolidasi');
+        }
+    }
+
     public function create_laba_rugi_detail()
     {
         $data_tahun = DB::select("select max(tahun||bulan||supbln) as sbulan from fiosd201");
