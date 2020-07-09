@@ -52,153 +52,174 @@
     </head>
     <body>
         <div class="row">
-          <div class="text-center">
+          <div>
             <p>
                 <b>PT. PERTAMINA PEDEVE INDONESIA</b>
+                <br>
+                <b>Deklarasi</b>
             </p>
           </div>
           <div>
             <img align="right" src="{{public_path() . '/images/pertamina.jpg'}}" width="120px" height="60px">
           </div>
         </div>
-        <div class="row" style="margin-bottom:50px;">
-          <div class="text-center">
-            <p>
-                <u><b>PERTANGGUNGJAWABAN PERJALANAN DINAS</b></u>
-            </p>
-            NOMOR: {{ $ppanjar_header->no_ppanjar }}
-          </div>
-        </div>
-
-        <div class="row">
-            <table class="table-no-border">
-              <tr>
-                <td>NAMA</td>
-                <td>:</td>
-                <td>{{ $ppanjar_header->nama }}</td>
-              </tr>
-              <tr>
-                <td>NOMOR PEGAWAI</td>
-                <td>:</td>
-                <td>{{ $ppanjar_header->nopek }}</td>
-              </tr>
-              <tr>
-                <td>BAGIAN/ESELON</td>
-                <td>:</td>
-                <td>{{ $pekerja_jabatan }}</td>
-              </tr>
-            </table>
-        </div>
-        
-        <div class="row">
-          <hr>
+        <div class="row" style="margin-bottom:20px;">
+          <table class="table-no-border">
+            <tr>
+              <td>Klaim Pegawai</td>
+              <td>:</td>
+              <td><b>{{ $ppanjar_header->nama }}</b></td>
+            </tr>
+            <tr>
+              <td>Keterangan</td>
+              <td>:</td>
+              <td>{{ $ppanjar_header->keterangan }}</td>
+            </tr>
+            <tr>
+              <td>Dokumen</td>
+              <td>:</td>
+              <td>
+                Surat Keterangan Perjalanan Dinas Nomor 
+                {{ $ppanjar_header->panjar_header->no_panjar }} 
+                tanggal 
+                {{ Carbon\Carbon::parse($ppanjar_header->panjar_header->tgl_panjar)->translatedFormat('d F Y') }}
+              </td>
+            </tr>
+            <tr>
+              <td>Tujuan</td>
+              <td>:</td>
+              <td>{{ $ppanjar_header->panjar_header->tujuan }}</td>
+            </tr>
+          </table>
         </div>
 
         @php
             $ppanjar_header_jumlah = $ppanjar_header->jmlpanjar;
             $ppanjar_detail_jumlah = $ppanjar_header->ppanjar_detail->sum('total');
+            $spanrow = $ppanjar_header->ppanjar_detail->count('total');
         @endphp
+
+        <div class="row" style="margin-bottom:20px;">
+          <table class="table" style="width:100%;">
+            <thead>
+              <tr>
+                <th>Tanggal</th>
+                <th>Keterangan</th>
+                <th>Qty</th>
+                <th></th>
+                <th>Jumlah</th>
+              </tr>
+            </thead>
+            <tbody>
+              @php
+                $total =  0;
+                $rowid = 0;
+                $rowspan = 0; 
+              @endphp
+              @forelse ($ppanjar_header->ppanjar_detail as $key => $detail)
+              @php
+                $rowid += 1;
+              @endphp
+                <tr>
+                  @if ($key == 0 || $rowspan == $rowid)
+                      @php
+                          $rowid = 0;
+                          $rowspan = $spanrow;
+                      @endphp
+                      <td rowspan="{{ $rowspan }}" class="text-center" valign="top">
+                        {{ Carbon\Carbon::parse($ppanjar_header->panjar_header->mulai)->translatedFormat('d')." - ".Carbon\Carbon::parse($ppanjar_header->panjar_header->sampai)->translatedFormat('d M Y') }}
+                      </td>
+                  @endif
+                  <td>
+                    {{ $detail->keterangan }}
+                  </td>
+                  <td class="text-center">
+                    {{ abs($detail->qty) }}
+                  </td>
+                  <td class="text-right">
+                    {{ currency_idr($detail->nilai) }}
+                  </td>
+                  <td class="text-right">
+                    {{ currency_idr($detail->nilai * $detail->qty) }}
+                    @php
+                      $total +=  $detail->nilai * $detail->qty;  
+                    @endphp
+                  </td>
+                </tr>
+                @empty
+                <tr>
+                  <td colspan="5">
+                    <b>Tidak ada data</b>
+                  </td>
+                </tr>
+              @endforelse
+              <tr>
+                <td colspan="2">
+                </td>
+                <td colspan="2" class="text-center">
+                  <b>Total</b>
+                </td>
+                <td class="text-right">
+                  {{ currency_idr($total) }}
+                </td>  
+              </tr>
+              <tr>
+                <td colspan="5">
+                  <b>Terbilang</b>: {{ strtoupper(Terbilang::angka(abs($total))).' RUPIAH' }}
+                </td>  
+              </tr>
+            </tbody>
+          </table>
+        </div>
 
         <div class="row">
           <table class="table-no-border" style="width:100%;">
             <tr>
-              <td colspan="2" style="height:40px;">
-                <b>UANG MUKA KERJA/PANJAR KERJA</b>
-              </td>
-              <td>
-                <b>Rp.</b>
-              </td>
+              <td colspan="2">Panjar yang sudah di terima</td>
               <td class="text-right">
-                <b>{{ number_format($ppanjar_header->panjar_header->jum_panjar, 2, ',', '.') }}</b>
+                {{ currency_idr($ppanjar_header->panjar_header->jum_panjar) }}
               </td>
             </tr>
-
-            <tr>
-              <td colspan="4">
-                <b>RINCIAN PENGGUNAAN UANG MUKA KERJA : </b>
-              </td>
-            </tr>
-
-            @forelse ($ppanjar_header->ppanjar_detail as $detail)
             <tr>
               <td colspan="2">
-                {{ $detail->keterangan }}
+                Selisih yang harus dibayar
+                <br>
+                <br>
+                <br>
+                <br>
               </td>
-              <td>
-                Rp.
-              </td>
-              <td class="text-right">
-                {{ number_format($detail->nilai * $detail->qty, 2, ',', '.') }}
+              <td class="text-right" valign="top">
+                {{ currency_idr(abs($ppanjar_header->panjar_header->jum_panjar - $total)) }}
               </td>
             </tr>
-            @empty
             <tr>
-              <td colspan="4">
-                <b>Tidak ada data</b>
-              </td>
+              <td class="text-center">Menyetujui</td>
+              <td class="text-center">Mengetahui,</td>
+              <td></td>
             </tr>
-            @endforelse
-            
             <tr>
               <td></td>
-              <td class="text-right" style="padding-right:30px; height:40px;">
-                <b>JUMLAH</b> 
-              </td>
-              <td>
-                <b>Rp.</b>
-              </td>
-              <td style="border-top:1px solid;" class="text-right">
-                <b>{{ number_format($ppanjar_detail_jumlah, 2, ',', '.') }}</b>
-              </td>
-            </>
-
-            <tr>
-              <td colspan="2" style="height:20px;">
-                <b>SISA UNTUK DISETOR KEMBALI :</b> 
-              </td>
-              <td>
-                <b>Rp.</b>
-              </td>
-              <td class="text-right">
-                <b>{{ number_format(($ppanjar_header->panjar_header->jum_panjar - $ppanjar_detail_jumlah), 2, ',', '.') }}</b>
-              </td>
+              <td class="text-center">untuk pembayaran menurut keterangan tersebut diatas</td>
+              <td class="text-center">Jakarta, {{ Carbon\Carbon::parse(date('Y-m-d'))->translatedFormat('d F Y') }}</td>
             </tr>
-
-            <tr>
-              <td class="container" colspan="2"></td>
-              <td colspan="2" valign="bottom">
-                JAKARTA, 19/04/2020
-              </td>
-            </tr>
-
             <tr>
               <td class="text-center">
-                MENYETUJUI,
+                <b>Atasan</b> 
+                <br>
+                <br>
+                <br>
+                <br>
+                <br>
+              </td>
+              <td class="text-center" valign="top">
+                <b>{{ $pekerja_jabatan }}</b>
               </td>
               <td></td>
-              <td colspan="2">
-                PEMOHON,
-              </td>
             </tr>
-
             <tr>
-              <td class="container text-center" valign="top">
-                CS & BS
-              </td>
-              <td></td>
-              <td colspan="2" valign="top">
-                {{ $pekerja_jabatan }}
-              </td>
-            </tr>
-
-            <tr>
-              <td class="text-center">
-                <u>ALI SYAMSUL ROHMAN</u>
-              </td>
-              <td></td>
-              <td colspan="2">
-                <u>{{ $ppanjar_header->nama }}</u>
-              </td>
+              <td class="text-center"><b><u>{{ $ppanjar_header->panjar_header->atasan }}</u></b></td>
+              <td class="text-center"><b><u>{{ $ppanjar_header->nama }}</u></b></td>
+              <td class="text-center"><b><u>Anggraini Gitta L</u></b></td>
             </tr>
           </table>
         </div>
