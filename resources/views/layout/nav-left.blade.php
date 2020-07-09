@@ -392,23 +392,24 @@
                 ); // isi nama semua route absensi implementasi GCG
 
                 $gcg_coi = array(
-                    'gcg.coi.index'
+                    'gcg.coi.lampiran_satu',
+                    'gcg.coi.lampiran_dua',
                 ); // isi nama semua route absensi implementasi GCG
 
                 $gcg_gratifikasi = array(
-                    'gcg.coi.index'
+                    'gcg.gratifikasi.index'
                 ); // isi nama semua route absensi implementasi GCG
 
                 $gcg_sosialisasi = array(
-                    'gcg.coi.index'
+                    'gcg.sosialisasi.index'
                 ); // isi nama semua route absensi implementasi GCG
 
                 $gcg_lhkpn = array(
-                    'gcg.coi.index'
+                    'gcg.lhkpn.index'
                 ); // isi nama semua route absensi implementasi GCG
 
                 $gcg_report_boundary = array(
-                    'gcg.coi.index'
+                    'gcg.report_boundary.index'
                 ); // isi nama semua route absensi implementasi GCG
 
                 $implementasi_gcg = array_merge(
@@ -1366,39 +1367,39 @@
                                         </a>
                                     </li>
                                     <li class="kt-menu__item kt-menu__item{{ set_active_submenu($gcg_coi) }}" aria-haspopup="true">
-                                        <a href="{{route('gcg.coi.index')}}" class="kt-menu__link">
+                                        <a href="{{route('gcg.coi.lampiran_satu')}}" class="kt-menu__link">
                                             <i class="kt-menu__link-bullet kt-menu__link-bullet--line">
                                                 <span></span>
                                             </i>
                                             <span class="kt-menu__link-text">CoI</span>
                                         </a>
                                     </li>
-                                    <li class="kt-menu__item kt-menu__item{{ set_active_submenu($gcg_coi) }}" aria-haspopup="true">
-                                        <a href="{{route('gcg.coi.index')}}" class="kt-menu__link">
+                                    <li class="kt-menu__item kt-menu__item{{ set_active_submenu($gcg_gratifikasi) }}" aria-haspopup="true">
+                                        <a href="{{route('gcg.gratifikasi.index')}}" class="kt-menu__link">
                                             <i class="kt-menu__link-bullet kt-menu__link-bullet--line">
                                                 <span></span>
                                             </i>
                                             <span class="kt-menu__link-text">Gratifikasi</span>
                                         </a>
                                     </li>
-                                    <li class="kt-menu__item kt-menu__item{{ set_active_submenu($gcg_coi) }}" aria-haspopup="true">
-                                        <a href="{{route('gcg.coi.index')}}" class="kt-menu__link">
+                                    <li class="kt-menu__item kt-menu__item{{ set_active_submenu($gcg_sosialisasi) }}" aria-haspopup="true">
+                                        <a href="{{route('gcg.sosialisasi.index')}}" class="kt-menu__link">
                                             <i class="kt-menu__link-bullet kt-menu__link-bullet--line">
                                                 <span></span>
                                             </i>
                                             <span class="kt-menu__link-text">Sosialisasi</span>
                                         </a>
                                     </li>
-                                    <li class="kt-menu__item kt-menu__item{{ set_active_submenu($gcg_coi) }}" aria-haspopup="true">
-                                        <a href="{{route('gcg.coi.index')}}" class="kt-menu__link">
+                                    <li class="kt-menu__item kt-menu__item{{ set_active_submenu($gcg_lhkpn) }}" aria-haspopup="true">
+                                        <a href="{{route('gcg.lhkpn.index')}}" class="kt-menu__link">
                                             <i class="kt-menu__link-bullet kt-menu__link-bullet--line">
                                                 <span></span>
                                             </i>
                                             <span class="kt-menu__link-text">LHKPN</span>
                                         </a>
                                     </li>
-                                    <li class="kt-menu__item kt-menu__item{{ set_active_submenu($gcg_coi) }}" aria-haspopup="true">
-                                        <a href="{{route('gcg.coi.index')}}" class="kt-menu__link">
+                                    <li class="kt-menu__item kt-menu__item{{ set_active_submenu($gcg_report_boundary) }}" aria-haspopup="true">
+                                        <a href="{{route('gcg.report_boundary.index')}}" class="kt-menu__link">
                                             <i class="kt-menu__link-bullet kt-menu__link-bullet--line">
                                                 <span></span>
                                             </i>

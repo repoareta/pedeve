@@ -12,7 +12,7 @@
 				<a href="#" class="kt-subheader__breadcrumbs-home"><i class="flaticon2-shelter"></i></a>
 				<span class="kt-subheader__breadcrumbs-separator"></span>
 				<a href="" class="kt-subheader__breadcrumbs-link">
-                    CoC 
+                    CoI 
                 </a>
 			</div>
 		</div>
@@ -28,7 +28,7 @@
 				<i class="kt-font-brand flaticon2-line-chart"></i>
 			</span>
 			<h3 class="kt-portlet__head-title">
-				CoC (Code of Conduct)
+				CoI (Code of Interest)
 			</h3>			
 		</div>
 	</div>
