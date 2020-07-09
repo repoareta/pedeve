@@ -96,6 +96,7 @@
         @php
             $ppanjar_header_jumlah = $ppanjar_header->jmlpanjar;
             $ppanjar_detail_jumlah = $ppanjar_header->ppanjar_detail->sum('total');
+            $spanrow = $ppanjar_header->ppanjar_detail->count('total');
         @endphp
 
         <div class="row" style="margin-bottom:20px;">
@@ -111,17 +112,28 @@
             </thead>
             <tbody>
               @php
-                $total =  0;  
+                $total =  0;
+                $rowid = 0;
+                $rowspan = 0; 
               @endphp
-              @forelse ($ppanjar_header->ppanjar_detail as $detail)
+              @forelse ($ppanjar_header->ppanjar_detail as $key => $detail)
+              @php
+                $rowid += 1;
+              @endphp
                 <tr>
-                  <td class="text-center">
-                    {{ Carbon\Carbon::parse($ppanjar_header->panjar_header->mulai)->translatedFormat('d')." - ".Carbon\Carbon::parse($ppanjar_header->panjar_header->sampai)->translatedFormat('d M Y') }}
-                  </td>
+                  @if ($key == 0 || $rowspan == $rowid)
+                      @php
+                          $rowid = 0;
+                          $rowspan = $spanrow;
+                      @endphp
+                      <td rowspan="{{ $rowspan }}" class="text-center" valign="top">
+                        {{ Carbon\Carbon::parse($ppanjar_header->panjar_header->mulai)->translatedFormat('d')." - ".Carbon\Carbon::parse($ppanjar_header->panjar_header->sampai)->translatedFormat('d M Y') }}
+                      </td>
+                  @endif
                   <td>
                     {{ $detail->keterangan }}
                   </td>
-                  <td class="text-right">
+                  <td class="text-center">
                     {{ abs($detail->qty) }}
                   </td>
                   <td class="text-right">
@@ -136,7 +148,7 @@
                 </tr>
                 @empty
                 <tr>
-                  <td colspan="4">
+                  <td colspan="5">
                     <b>Tidak ada data</b>
                   </td>
                 </tr>
