@@ -381,11 +381,45 @@
                     'absensi_karyawan.create',
                     'absensi_karyawan.edit'
                 ); // isi nama semua route absensi karyawan
-                $implementasi_gcg = array(
-                    'implementasi_gcg.index',
-                    'implementasi_gcg.create',
-                    'implementasi_gcg.edit'
+                
+                $gcg_home = array(
+                    'gcg.index'
                 ); // isi nama semua route absensi implementasi GCG
+
+                $gcg_coc = array(
+                    'gcg.coc.lampiran_satu',
+                    'gcg.coc.lampiran_dua',
+                ); // isi nama semua route absensi implementasi GCG
+
+                $gcg_coi = array(
+                    'gcg.coi.index'
+                ); // isi nama semua route absensi implementasi GCG
+
+                $gcg_gratifikasi = array(
+                    'gcg.coi.index'
+                ); // isi nama semua route absensi implementasi GCG
+
+                $gcg_sosialisasi = array(
+                    'gcg.coi.index'
+                ); // isi nama semua route absensi implementasi GCG
+
+                $gcg_lhkpn = array(
+                    'gcg.coi.index'
+                ); // isi nama semua route absensi implementasi GCG
+
+                $gcg_report_boundary = array(
+                    'gcg.coi.index'
+                ); // isi nama semua route absensi implementasi GCG
+
+                $implementasi_gcg = array_merge(
+                    $gcg_home,
+                    $gcg_coc,
+                    $gcg_coi,
+                    $gcg_gratifikasi,
+                    $gcg_sosialisasi,
+                    $gcg_lhkpn,
+                    $gcg_report_boundary
+                ); //isi nama Subdomain proses gaji
 
                 //menu sdm & Payroll
                 $sdm_payroll = array_merge(
@@ -1304,16 +1338,77 @@
                                 </span>
                             </a>
                         </li>
-                        <li class="kt-menu__item kt-menu__item{{ set_active_submenu($implementasi_gcg) }}" aria-haspopup="true">
-                            <a href="{{ route('implementasi_gcg.index') }}" class="kt-menu__link">
+
+                        <li class="kt-menu__item kt-menu__item--submenu {{  set_active($implementasi_gcg) }}" aria-haspopup="true" data-ktmenu-submenu-toggle="hover">
+                            <a href="javascript:;" class="kt-menu__link kt-menu__toggle">
                                 <i class="kt-menu__link-bullet kt-menu__link-bullet--dot">
                                     <span></span>
                                 </i>
-                                <span class="kt-menu__link-text">
-                                    Implementasi GCG   
-                                </span>
+                                <span class="kt-menu__link-text">Implementasi GCG</span>
+                                <i class="kt-menu__ver-arrow la la-angle-right"></i>
                             </a>
+                            <div class="kt-menu__submenu "><span class="kt-menu__arrow"></span>
+                                <ul class="kt-menu__subnav">
+                                    <li class="kt-menu__item kt-menu__item{{ set_active_submenu($gcg_home) }}" aria-haspopup="true">
+                                        <a href="{{ route('gcg.index') }}" class="kt-menu__link">
+                                            <i class="kt-menu__link-bullet kt-menu__link-bullet--line">
+                                                <span></span>
+                                            </i>
+                                            <span class="kt-menu__link-text">Home</span>
+                                        </a>
+                                    </li>
+                                    <li class="kt-menu__item kt-menu__item{{ set_active_submenu($gcg_coc) }}" aria-haspopup="true">
+                                        <a href="{{route('gcg.coc.lampiran_satu')}}" class="kt-menu__link">
+                                            <i class="kt-menu__link-bullet kt-menu__link-bullet--line">
+                                                <span></span>
+                                            </i>
+                                            <span class="kt-menu__link-text">CoC</span>
+                                        </a>
+                                    </li>
+                                    <li class="kt-menu__item kt-menu__item{{ set_active_submenu($gcg_coi) }}" aria-haspopup="true">
+                                        <a href="{{route('gcg.coi.index')}}" class="kt-menu__link">
+                                            <i class="kt-menu__link-bullet kt-menu__link-bullet--line">
+                                                <span></span>
+                                            </i>
+                                            <span class="kt-menu__link-text">CoI</span>
+                                        </a>
+                                    </li>
+                                    <li class="kt-menu__item kt-menu__item{{ set_active_submenu($gcg_coi) }}" aria-haspopup="true">
+                                        <a href="{{route('gcg.coi.index')}}" class="kt-menu__link">
+                                            <i class="kt-menu__link-bullet kt-menu__link-bullet--line">
+                                                <span></span>
+                                            </i>
+                                            <span class="kt-menu__link-text">Gratifikasi</span>
+                                        </a>
+                                    </li>
+                                    <li class="kt-menu__item kt-menu__item{{ set_active_submenu($gcg_coi) }}" aria-haspopup="true">
+                                        <a href="{{route('gcg.coi.index')}}" class="kt-menu__link">
+                                            <i class="kt-menu__link-bullet kt-menu__link-bullet--line">
+                                                <span></span>
+                                            </i>
+                                            <span class="kt-menu__link-text">Sosialisasi</span>
+                                        </a>
+                                    </li>
+                                    <li class="kt-menu__item kt-menu__item{{ set_active_submenu($gcg_coi) }}" aria-haspopup="true">
+                                        <a href="{{route('gcg.coi.index')}}" class="kt-menu__link">
+                                            <i class="kt-menu__link-bullet kt-menu__link-bullet--line">
+                                                <span></span>
+                                            </i>
+                                            <span class="kt-menu__link-text">LHKPN</span>
+                                        </a>
+                                    </li>
+                                    <li class="kt-menu__item kt-menu__item{{ set_active_submenu($gcg_coi) }}" aria-haspopup="true">
+                                        <a href="{{route('gcg.coi.index')}}" class="kt-menu__link">
+                                            <i class="kt-menu__link-bullet kt-menu__link-bullet--line">
+                                                <span></span>
+                                            </i>
+                                            <span class="kt-menu__link-text">Report Boundary</span>
+                                        </a>
+                                    </li>
+                                </ul>
+                            </div>
                         </li>
+
                     </ul>
                 </div>
             </li>
