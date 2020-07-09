@@ -1226,12 +1226,12 @@ Route::group(['middleware'=> ['auth','checkRole:1,0']], function () {
             Route::post('laba_rugi_konsolidasi/export', 'ReportKontrolerController@exportLabaRugiKonsolidasi')->name('export.laba.rugi.konsolidasi');
         });
         //end laba_rugi_konsolidasi
-
+        
         //laba_rugi_detail
         // Route assigned name "laba_rugi_detail.index"...
         Route::name('laba_rugi_detail.')->group(function () {
             Route::get('laba_rugi_detail', 'ReportKontrolerController@create_laba_rugi_detail')->name('create_laba_rugi_detail');
-            // Route::post('laba_rugi_detail/index/search', 'ReportKontrolerController@searchIndex')->name('search.index');
+            Route::post('laba_rugi_detail/export', 'ReportKontrolerController@exportLabaRugiDetail')->name('export.laba.rugi.detail');
         });
 
         //end laporan_keuangan

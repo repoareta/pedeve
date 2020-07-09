@@ -91,9 +91,9 @@
                     <tr style="font-size: 9pt;">
                         <th width="70%" style="text-align:right;padding-right:40%x;border-right:1px solid black;">KETERANGAN</th>
                         <tH width="15%" style="text-align:center;border-right:1px solid black;">SUB<br> AKUN</tH>
-                        <th width="30%" style="text-align:center;border-right:1px solid black;">MD</th>
-                        <th width="30%" style="text-align:center;border-right:1px solid black;">MS</th>
-                        <th width="30%" style="text-align:right;padding-right:20px;border-right:1px solid black;">KONSOLIDASI</th>
+                        <th width="30%" style="text-align:center;border-right:1px solid black;">KOMULASI<br> LALU</th>
+                        <th width="30%" style="text-align:center;border-right:1px solid black;">TRANSAKSI<br> BERJALAN</th>
+                        <th width="30%" style="text-align:right;padding-right:20px;border-right:1px solid black;">KOMULASI<br> BERJALAN</th>
                     </tr>
                 <thead>
             </table>
@@ -118,34 +118,34 @@
                     <?php $a++; ?>
                         <?php
                             if($data->tigadigit == 400 and $data->lapangan=='MD'){
-                                $mdupah1[$a] =  $data->pengali_tampil*$data->cum_rp ;
+                                $mdupah1[$a] =  $data->pengali_tampil*$data->last_rp ;
                             }else{ 
                                 $mdupah1[$a] = "0";
                             }
                             if($data->tigadigit == 400 and $data->lapangan=='MS'){
-                                $msupah1[$a] =  $data->pengali_tampil*$data->cum_rp ;
+                                $msupah1[$a] =  $data->pengali_tampil*$data->cur_rp ;
                             }else{ 
                                 $msupah1[$a] = "0";
                             }
                             
                             if($data->tigadigit == 409 and $data->lapangan=='MD'){
-                                $mdupah2[$a] =  $data->pengali_tampil*$data->cum_rp ;
+                                $mdupah2[$a] =  $data->pengali_tampil*$data->last_rp ;
                             }else{ 
                                 $mdupah2[$a] = "0";
                             }
                             if($data->tigadigit == 409 and $data->lapangan=='MS'){
-                                $msupah2[$a] =  $data->pengali_tampil*$data->cum_rp ;
+                                $msupah2[$a] =  $data->pengali_tampil*$data->cur_rp ;
                             }else{ 
                                 $msupah2[$a] = "0";
                             }
 
                             if($data->tigadigit == 420 and $data->lapangan=='MD'){
-                                $mdupah3[$a] =  $data->pengali_tampil*$data->cum_rp ;
+                                $mdupah3[$a] =  $data->pengali_tampil*$data->last_rp ;
                             }else{ 
                                 $mdupah3[$a] = "0";
                             }
                             if($data->tigadigit == 420 and $data->lapangan=='MS'){
-                                $msupah3[$a] =  $data->pengali_tampil*$data->cum_rp ;
+                                $msupah3[$a] =  $data->pengali_tampil*$data->cur_rp ;
                             }else{ 
                                 $msupah3[$a] = "0";
                             }
@@ -189,30 +189,30 @@
                     <?php $a++; ?>
                         <?php
                             if($data->tigadigit == 500 and $data->lapangan=='MD'){
-                                $mdupah4[$a] =  $data->pengali_tampil*$data->cum_rp ;
+                                $mdupah4[$a] =  $data->pengali_tampil*$data->last_rp ;
                             }else{ 
                                 $mdupah4[$a] = "0";
                             }
                             if($data->tigadigit == 500 and $data->lapangan=='MS'){
-                                $msupah4[$a] =  $data->pengali_tampil*$data->cum_rp ;
+                                $msupah4[$a] =  $data->pengali_tampil*$data->cur_rp ;
                             }else{ 
                                 $msupah4[$a] = "0";
                             }
 
                             if($data->tigadigit == 510 and $data->lapangan=='MD'){
-                                $mdupah5[$a] =  $data->pengali_tampil*$data->cum_rp ;
+                                $mdupah5[$a] =  $data->pengali_tampil*$data->last_rp ;
                             }else{ 
                                 $mdupah5[$a] = "0";
                             }
                             if($data->tigadigit == 510 and $data->lapangan=='MS'){
-                                $msupah5[$a] =  $data->pengali_tampil*$data->cum_rp ;
+                                $msupah5[$a] =  $data->pengali_tampil*$data->cur_rp ;
                             }else{ 
                                 $msupah5[$a] = "0";
                             }
                             
                             if ($data->tigadigit == 512 and $data->sub_akun== 510 and $data->lapangan=='MD') {
                                 if ($data->sandi =='512011') {
-                                    $mdupah6[$a] =  $data->pengali_tampil*$data->cum_rp ;
+                                    $mdupah6[$a] =  $data->pengali_tampil*$data->last_rp ;
                                 } else {
                                     $mdupah6[$a] =  "0" ;
                                 }
@@ -220,14 +220,14 @@
                                     if ($data->sandi =='512011') {
                                         $mdupah6[$a] =  "0" ;
                                     } else {
-                                        $mdupah6[$a] =  $data->pengali_tampil*$data->cum_rp ;
+                                        $mdupah6[$a] =  $data->pengali_tampil*$data->last_rp ;
                                     }
                             }else{ 
                                 $mdupah6[$a] = "0";
                             }
                             if ($data->tigadigit == 512 and $data->sub_akun== 510 and $data->lapangan=='MS') {
                                 if ($data->sandi =='512011') {
-                                    $msupah6[$a] =  $data->pengali_tampil*$data->cum_rp ;
+                                    $msupah6[$a] =  $data->pengali_tampil*$data->cur_rp ;
                                 } else {
                                     $msupah6[$a] =  "0" ;
                                 }
@@ -235,7 +235,7 @@
                                     if ($data->sandi =='512011') {
                                         $msupah6[$a] =  "0" ;
                                     } else {
-                                        $msupah6[$a] =  $data->pengali_tampil*$data->cum_rp ;
+                                        $msupah6[$a] =  $data->pengali_tampil*$data->cur_rp ;
                                     }
 
                             }else{ 
@@ -243,34 +243,34 @@
                             }
                             
                             if($data->tigadigit == 516 and $data->lapangan=='MD'){
-                                $mdupah7[$a] =  $data->pengali_tampil*$data->cum_rp ;
+                                $mdupah7[$a] =  $data->pengali_tampil*$data->last_rp ;
                             }else{ 
                                 $mdupah7[$a] = "0";
                             }
                             if($data->tigadigit == 516 and $data->lapangan=='MS'){
-                                $msupah7[$a] =  $data->pengali_tampil*$data->cum_rp ;
+                                $msupah7[$a] =  $data->pengali_tampil*$data->cur_rp ;
                             }else{ 
                                 $msupah7[$a] = "0";
                             }
 
                             if($data->tigadigit == 530 and $data->lapangan=='MD'){
-                                $mdupah8[$a] =  $data->pengali_tampil*$data->cum_rp ;
+                                $mdupah8[$a] =  $data->pengali_tampil*$data->last_rp ;
                             }else{ 
                                 $mdupah8[$a] = "0";
                             }
                             if($data->tigadigit == 530 and $data->lapangan=='MS'){
-                                $msupah8[$a] =  $data->pengali_tampil*$data->cum_rp ;
+                                $msupah8[$a] =  $data->pengali_tampil*$data->cur_rp ;
                             }else{ 
                                 $msupah8[$a] = "0";
                             }
 
                             if($data->tigadigit == 540 and $data->lapangan=='MD'){
-                                $mdupah9[$a] =  $data->pengali_tampil*$data->cum_rp ;
+                                $mdupah9[$a] =  $data->pengali_tampil*$data->last_rp ;
                             }else{ 
                                 $mdupah9[$a] = "0";
                             }
                             if($data->tigadigit == 540 and $data->lapangan=='MS'){
-                                $msupah9[$a] =  $data->pengali_tampil*$data->cum_rp ;
+                                $msupah9[$a] =  $data->pengali_tampil*$data->cur_rp ;
                             }else{ 
                                 $msupah9[$a] = "0";
                             }
