@@ -43,54 +43,72 @@
 			<form action="" class="form-horizontal">
 				<div class="col-md-12">
 					<p>
-						<center>SURAT PERNYATAAN PEJABAT YANG BERTANGGUNG JAWAB ATAS PENERAPAN ATAS ETIKA USAHA DAN TATA PERILAKU (CODE OF CONDUCT)</center>
+						<center>
+							SURAT PERNYATAAAN INSAN PERTAMINA DANA VENTURA
+						</center>
 					</p>
+
 					<p>
-						Sehubungan dengan pemberitahuan Etika Usaha dan Tata Perilaku (Code of Conduct) PT. PERTAMINA DANA VENTURA
-
+						Yang bertanda tangan dibawah ini:
 						<br>
-						<br>
-
-						Tanggal (Efektif) 2017-01-11 08:09:07 yang telah saya terima dan pahami sepenuhnya saya menyatakan bahwa pada tahun 2016 
-
-						<br>
-						<br>
-
-						1. telah mendistribusikan Etika Usaha dan Tata Perilaku (Code of Conduct) telah diterima dan ditandatangani oleh seluruh insan PERTAMINA DANA VENTURA di fungsi krja yang menjadi tanggung jawab saya;
-
-						<br>
-
-						2. setelah mengkoordinasikan pelaksanaan sosialisasi dan internalisasi dengan Sekretaris Perseroan untuk 45 (orang) insan PERTAMINA DANA VENTURA dengan daftar terlampir;
-
-						<br>
-
-						3. telah melaporkan upaya-upaya untuk menjamin kepatuhan terhadap Etika Usaha dan Tata Perilaku (Code of Conduct) di fungsi kerja yang menjadi tanggung jawab saya;
-
-						<br>
-
-						4. telah melaporkan semua pelanggaran secara lengkap kepada Sekretaris Perseroan Jakarta, 2016-02-01 08:08:07
-
-						<br>
-
-						5. telah melaksanakan semua pemberian sanksi disiplin dan tindakan pembinaan/perbaikan yang harus dilakukan unit kerja yang menjadi tanggung jawab saya.
-
-						<br>
-
 						Nama: I Made Sunarta
-
 						<br>
+						Nomor Pekerja: 213435334
+						<br>
+						Jabatan: Manajer/Setara
+						<br>
+						Fungsi: SEKRETARIS PERSEROAN
+					</p>
 
-						Jabatan: Sekretaris Perseroan
+					<p>
+						Dengan ini menyatakan dan menjamin bahwa SAYA tidak mempunyai benturan kepentingan terhadap PT. Pertamina Dana Ventura yang membuat SAYA tidak patut untuk melakukan tindakan berikut ini : 
+						
+						<ul>
+							<li>
+								Melaksanakan jasa apapun atau memiliki peran apapun dalam perusahaan lain atau usaha pesaing yang sedang atau akan melakukan kerjasama usaha dengan PT. Pertamina Dana Ventura.
+							</li>
+							<li>
+								Memiliki kepentingan ekonomi secara langsung maupun tidak langsunh terhadap persahaan atau organisasi manapun yang saat ini sedang melakukan kerjasama dengan PT. Pertamina Dana Ventura atau ingin melakukan kerjasama dengan PT. Pertamina Dana Ventura.
+							</li>
+							<li>
+								Memiliki anggota keluarga atau teman yang memiliki kepentingan ekonomi secara langsung maupun tidak langsung terhadap perusahaan atau organisasi yang saat ini melakukan usaha dengan PT. Pertamina Dana Ventura.
+							</li>
+							<li>
+								Melakukan transaksi dan/atau menggunakan harta/fasilitas PT. Pertamina Dana Ventura untuk kepentingan diri sendiri, keluarga, atau golongan.
+							</li>
+							<li>
+								Mewakili PT. Pertamina Dana Ventura dalam transaksi dengan perusahaan lain dimana SAYA atau anggota keluarga SAYA atau teman SAYA memiliki kepentingan.
+							</li>
+							<li>
+								Menerima hadiah, uang atau hiburan dari pemasok atau mitra usaha, atau dari agen manapun atau bertindak sebagai atau mewakili pemasok atau mitra usaha dalam transaksinya dengan PT. Pertamina Dana Ventura selain daripada yang diuraikan dalam kebijakan PT. Pertamina Dana Ventura mengenai Hadiah dan Hiburan.
+							</li>
+							<li>
+								Menggunakan informasi rahasia dan data bisnis PT. Pertamina Dana Ventura untuk kepentingan pribadi atau dengan cara yang merugikan kepentingan PT. Pertamina Dana Ventura. 
+							</li>
+							<li>
+								Mengungkapkan kepada individu atau organisasi atau pihak manapun di luar PT. Pertamina Dana Ventura setiap informasi, program, data keuangan, formula, proses atau "Know-How" rahasia milik PT. Pertamina Dana Ventura atau yang dikembangkan oleh SAYA dalam memenuhi tanggung jawab SAYA terhadap PT. Pertamina Dana Ventura.
+							</li>
+							<li>
+								Melaksanakan setiap tindakan lainnya, yang tidak disebutkan secara spesifik diatas ini, yang dianggap merugikan bagi kepentingan PT. Pertamina Dana Ventura. 
+							</li>
+						</ul>
+
+						SAYA mengerti bahwa apabila SAYA memiliki benturan kepentingan dan sebelumnya SAYA tidak melaporkan hal tersebut kepada atasan atau pihak yang berwenang di PT. Pertamina Dana Ventura. SAYA dapat dikenakan tindakan disiplin sebagaimana yang tercantum dalam peraturan perusahaan PT. Pertamina Dana Ventura yang mana SAYA telah memahami peraturan tersebut.
 						
 						<br>
+						<br>
 
-						<button type="button" class="btn btn-primary">Print Preview</button>
+						Demikian pernyataan ini SAYA buat dengan sebenarnya, dalam keadaan sehat baik jasmani dan rohani dan tanpa ada paksaan dari pihak manapun.
+
+						<br>
+						<br>
+						<button type="button" class="btn btn-primary">Simpan</button>
 					</p>
 				</div>
 			</form>
 		</div>
 	</div>
-</>
+</div>
 </div>
 @endsection
 
