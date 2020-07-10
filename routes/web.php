@@ -1084,23 +1084,15 @@ Route::group(['middleware'=> ['auth','checkRole:1,0']], function () {
         });
         //end Master Pekerja
 
-        //Master PHK
-        // Route assigned name "master_phk.index"...
-        Route::name('master_phk.')->group(function () {
-            Route::get('master_phk', 'MasterPhkController@index')->name('index');
-            Route::post('master_phk/index/json', 'MasterPhkController@indexJson')->name('index.json');
-            Route::post('master_phk/nopek/json', 'MasterPhkController@nopekJson')->name('nopek.json');
-            Route::get('master_phk/create', 'MasterPhkController@create')->name('create');
-            Route::post('master_phk/store', 'MasterPhkController@store')->name('store');
-            Route::post('master_phk/store/detail', 'MasterPhkController@deteilStore')->name('store.detail');
-            Route::get('master_phk/edit/{kode}', 'MasterPhkController@edit')->name('edit');
-            Route::post('master_phk/update', 'MasterPhkController@update')->name('update');
-            Route::delete('master_phk/delete', 'MasterPhkController@delete')->name('delete');
-            Route::get('master_phk/proses/{no}/{tahun}/{bulan}', 'MasterPhkController@proses')->name('proses');
-            Route::get('master_phk/serah/{no}/{tahun}/{bulan}', 'MasterPhkController@serah')->name('serah');
-        });
-        //end Master PHK
 
+
+        //cetak_kas_bank
+        // Route assigned name "cetak_kas_bank.index"...
+        Route::name('cetak_kas_bank.')->group(function () {
+            Route::get('cetak_kas_bank', 'KasBankKontrolerController@indexCetak')->name('index');
+            Route::post('cetak_kas_bank/index/search', 'KasBankKontrolerController@searchIndexCetak')->name('search.cetak.index');
+        });
+        //end cetak_kas_bank
 
         //tabel_deposito
         // Route assigned name "tabel_deposito.index"...
@@ -1204,6 +1196,80 @@ Route::group(['middleware'=> ['auth','checkRole:1,0']], function () {
             Route::delete('main_account/delete', 'MainAccountController@delete')->name('delete');
         });
         //end main_account
+
+        
+        //d2_perbulan
+        // Route assigned name "d2_perbulan.index"...
+        Route::name('d2_perbulan.')->group(function () {
+            Route::get('d2_perbulan', 'ReportKontrolerController@create_d2_perbulan')->name('create_d2_perbulan');
+            // Route::post('d2_perbulan/index/search', 'ReportKontrolerController@searchIndex')->name('search.index');
+        });
+        //end d2_perbulan
+
+        //d2_periode
+        // Route assigned name "d2_periode.index"...
+        Route::name('d2_periode.')->group(function () {
+            Route::get('d2_periode', 'ReportKontrolerController@create_d2_periode')->name('create_d2_periode');
+            // Route::post('d2_periode/index/search', 'ReportKontrolerController@searchIndex')->name('search.index');
+        });
+        //end d2_periode
+
+        //d5_report
+        // Route assigned name "d5_report.index"...
+        Route::name('d5_report.')->group(function () {
+            Route::get('d5_report', 'ReportKontrolerController@create_d5_report')->name('create_d5_report');
+            // Route::post('d5_report/index/search', 'ReportKontrolerController@searchIndex')->name('search.index');
+        });
+        //end d5_report
+
+        //neraca_konsolidasi
+        // Route assigned name "neraca_konsolidasi.index"...
+        Route::name('neraca_konsolidasi.')->group(function () {
+            Route::get('neraca_konsolidasi', 'ReportKontrolerController@create_neraca_konsolidasi')->name('create_neraca_konsolidasi');
+            Route::post('neraca_konsolidasi/export', 'ReportKontrolerController@exportNeracaKonsolidasi')->name('export');
+        });
+        //end neraca_konsolidasi
+
+        //neraca_detail
+        // Route assigned name "neraca_detail.index"...
+        Route::name('neraca_detail.')->group(function () {
+            Route::get('neraca_detail', 'ReportKontrolerController@create_neraca_detail')->name('create_neraca_detail');
+            // Route::post('neraca_detail/index/search', 'ReportKontrolerController@searchIndex')->name('search.index');
+        });
+        //end neraca_detail
+
+        //laba_rugi_konsolidasi
+        // Route assigned name "laba_rugi_konsolidasi.index"...
+        Route::name('laba_rugi_konsolidasi.')->group(function () {
+            Route::get('laba_rugi_konsolidasi', 'ReportKontrolerController@create_laba_rugi_konsolidasi')->name('create_laba_rugi_konsolidasi');
+            Route::post('laba_rugi_konsolidasi/export', 'ReportKontrolerController@exportLabaRugiKonsolidasi')->name('export.laba.rugi.konsolidasi');
+        });
+        //end laba_rugi_konsolidasi
+        
+        //laba_rugi_detail
+        // Route assigned name "laba_rugi_detail.index"...
+        Route::name('laba_rugi_detail.')->group(function () {
+            Route::get('laba_rugi_detail', 'ReportKontrolerController@create_laba_rugi_detail')->name('create_laba_rugi_detail');
+            Route::post('laba_rugi_detail/export', 'ReportKontrolerController@exportLabaRugiDetail')->name('export.laba.rugi.detail');
+        });
+
+        //end laporan_keuangan
+        //laporan_keuangan
+        // Route assigned name "laporan_keuangan.index"...
+        Route::name('laporan_keuangan.')->group(function () {
+            Route::get('laporan_keuangan', 'ReportKontrolerController@create_laporan_keuangan')->name('create_laporan_keuangan');
+            // Route::post('laporan_keuangan/index/search', 'ReportKontrolerController@searchIndex')->name('search.index');
+        });
+        //end laporan_keuangan
+
+        //end biaya_pegawai
+        //biaya_pegawai
+        // Route assigned name "biaya_pegawai.index"...
+        Route::name('biaya_pegawai.')->group(function () {
+            Route::get('biaya_pegawai', 'ReportKontrolerController@create_biaya_pegawai')->name('create_biaya_pegawai');
+            Route::post('biaya_pegawai/export', 'ReportKontrolerController@exportBiayaPegawai')->name('export_biaya_pegawai');
+        });
+        //end biaya_pegawai
     });
     
     

@@ -68,7 +68,7 @@ class AuthController extends Controller
                                         'login' => $dLogin
                                     ]);
                             
-                                    $request->session()->put('Log',$dLogin);
+                                    $request->session()->put('log',$dLogin);
                                     $request->session()->put('tgltrans',$dLogin);
                                     $data_objRs = DB::select("select u.userid, u.usernm, 
                                                             case when u.passexp > localtimestamp then 
@@ -114,15 +114,20 @@ class AuthController extends Controller
         return $user->getAuthPassword() === $credentials['userpw'];
     }
 	public function logout(){
+        
         $dLogin = session()->get('log');
         $dLogout = date('Y-m-d H:i:s');
         if (!empty(Auth::user()->userid)) {
             $userid = Auth::user()->userid;
+            if($userid <> "Admin")
+            {
+                Userlogin::where('userid',$userid)->delete();
+            }
         }else{
             $userid = null;
         }
-        Userlogin::where('userid',$userid)->delete();
         Userlog::where('userid', $userid)
+        ->where('login', $dLogin)
         ->update([
             'logout' => $dLogout
             ]);

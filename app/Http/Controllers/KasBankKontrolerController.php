@@ -10,6 +10,7 @@ use DB;
 use Session;
 use PDF;
 use Alert;
+use DataTables;
 
 class KasBankKontrolerController extends Controller
 {
@@ -128,5 +129,98 @@ class KasBankKontrolerController extends Controller
         }
         Storejk::where('kodestore',$request->kode)->delete();
         return response()->json();
+    }
+
+
+    public function indexCetak()
+    {
+        $data_tahunbulan = DB::select("select max(thnbln) as bulan_buku from bulankontroller where status='1' and length(thnbln)='6'");
+        if(!empty($data_tahunbulan)) {
+            foreach ($data_tahunbulan as $data_bul) {
+                $tahun = substr($data_bul->bulan_buku,0,-2); 
+                $bulan = substr($data_bul->bulan_buku,4); 
+            }
+        }else{
+            $bulan ='00';
+            $tahun ='0000';
+        }
+        return view('kas_bank_kontroler.index_cetak',compact('tahun','bulan'));
+    }
+
+    public function searchIndexCetak(Request $request)
+    {
+        $rsbulan = DB::select("select max(thnbln) as thnbln from bulankontroller where status='1' and length(thnbln)=6");
+        if(!empty($rsbulan)){
+            foreach($rsbulan as $dat)
+            {
+                if(is_null($dat->thnbln)){
+                    $thnblopen2 = "";
+                }else{
+                    $thnblopen2 = $dat->thnbln;
+                }
+            }
+        }else{
+            $thnblopen2 = "";
+        }
+        $tahun = $request->tahun;
+        $bulan = $request->bulan;
+        $nodok = $request->nodok;
+        if($nodok == "" and $tahun =="" and $bulan ==""){
+            $data = DB::select("select a.docno,a.originaldate,a.thnbln,a.jk,a.store,a.ci,a.voucher,a.kepada,a.rate,a.nilai_dok,a.paid from kasdoc a where a.thnbln='$thnblopen2' order by a.store,a.voucher asc ");
+        }elseif($nodok <> "" and $tahun =="" and $bulan ==""){
+            $data =DB::select("select a.docno,a.originaldate,a.thnbln,a.jk,a.store,a.ci,a.voucher,a.kepada,a.rate,a.nilai_dok,a.paid from kasdoc a where a.voucher='$nodok' order by a.store,a.voucher asc");
+        }elseif($nodok <> "" and $tahun <> "" and $bulan == ""){
+            $data = DB::select("select a.docno,a.originaldate,a.thnbln,a.jk,a.store,a.ci,a.voucher,a.kepada,a.rate,a.nilai_dok,a.paid from kasdoc a where a.voucher='$nodok' and left(a.thnbln, 4)='$tahun' order by a.store,a.voucher asc");
+        }elseif($nodok == "" and $tahun <> "" and $bulan <> ""){
+            $data = DB::select("select a.docno,a.originaldate,a.thnbln,a.jk,a.store,a.ci,a.voucher,a.kepada,a.rate,a.nilai_dok,a.paid from kasdoc a where left(thnbln, 4)='$tahun' and substr(thnbln, 5, 2)='$bulan' order by a.store,a.voucher asc ");
+        }else{
+            $data = DB::select("select a.docno,a.originaldate,a.thnbln,a.jk,a.store,a.ci,a.voucher,a.kepada,a.rate,a.nilai_dok,a.paid from kasdoc a where a.voucher='$nodok' and left(thnbln, 4)='$tahun' and substr(thnbln, 5, 2)='$bulan' order by a.store,a.voucher asc");
+        }
+        
+        return datatables()->of($data)
+        ->addColumn('action', function ($data) {
+            if($data->paid == 'Y'){
+                return '<p align="center"><span style="font-size: 2em;" class="kt-font-success pointer-link" data-toggle="kt-tooltip" data-placement="top"  title="Batalkan Pembayaran"><i class="fas fa-check-circle" ></i></span></p>';
+            }else{
+                return '<p align="center"><span style="font-size: 2em;" class="kt-font-danger pointer-link" data-toggle="kt-tooltip" data-placement="top" title="Klik Untuk Pembayaran"><i class="fas fa-ban" ></i></span></p>';
+            }
+       })
+        ->addColumn('docno', function ($data) {
+            return $data->docno;
+       })
+        ->addColumn('tahun', function ($data) {
+            return $data->thnbln;
+       })
+        ->addColumn('nobukti', function ($data) {
+            return $data->voucher;
+       })
+        ->addColumn('kepada', function ($data) {
+            return $data->kepada;
+       })
+        ->addColumn('jk', function ($data) {
+            return $data->jk;
+       })
+        ->addColumn('nokas', function ($data) {
+            return $data->store;
+       })
+        ->addColumn('ci', function ($data) {
+            return $data->ci;
+       })
+        ->addColumn('kurs', function ($data) {
+            return $data->rate;
+       })
+        ->addColumn('nilai', function ($data) {
+            if ($data->nilai_dok == "") {
+                return  '0';
+            }else{
+                return number_format($data->nilai_dok,2,'.',',');
+            }
+       })
+        ->addColumn('radio', function ($data) {
+            $radio = '<center><label class="kt-radio kt-radio--bold kt-radio--brand"><input type="radio" kode="'.str_replace('/', '-', $data->docno).'" class="btn-radio" name="btn-radio"><span></span></label></center>'; 
+            return $radio;
+        })
+        ->rawColumns(['radio','action'])
+        ->make(true); 
     }
 }
