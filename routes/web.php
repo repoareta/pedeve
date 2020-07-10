@@ -755,9 +755,28 @@ Route::group(['middleware'=> ['auth','checkRole:1,0']], function () {
         Route::get('absensi_karyawan/create', 'AbsensiKaryawanController@create')->name('absensi_karyawan.create');
         Route::get('absensi_karyawan/edit', 'AbsensiKaryawanController@edit')->name('absensi_karyawan.edit');
         //absensi karyawan
-        Route::get('implementasi_gcg', 'ImplementasiGcgController@index')->name('implementasi_gcg.index');
-        Route::get('implementasi_gcg/create', 'ImplementasiGcgController@create')->name('implementasi_gcg.create');
-        Route::get('implementasi_gcg/edit', 'ImplementasiGcgController@edit')->name('implementasi_gcg.edit');
+
+
+        // GCG
+        // Route assigned name "gcg.index"...
+        Route::name('gcg.')->group(function () {
+            Route::get('gcg', 'GcgController@index')->name('index');
+
+            Route::get('gcg/coc', 'GcgCocController@index')->name('coc.lampiran_satu');
+            Route::get('gcg/coc/lampiran_dua', 'GcgCocController@lampiranDua')->name('coc.lampiran_dua');
+            
+            Route::get('gcg/coi', 'GcgCoiController@index')->name('coi.lampiran_satu');
+            Route::get('gcg/coi/lampiran_dua', 'GcgCoiController@lampiranDua')->name('coi.lampiran_dua');
+
+            Route::get('gcg/gratifikasi', 'GcgGratifikasiController@index')->name('gratifikasi.index');
+
+            Route::get('gcg/sosialisasi', 'GcgSosialisasiController@index')->name('sosialisasi.index');
+
+            Route::get('gcg/lhkpn', 'GcgLhkpnController@index')->name('lhkpn.index');
+            
+            Route::get('gcg/report_boundary', 'GcgReportBoundaryController@index')->name('report_boundary.index');
+        });
+        //end GCG
     });
 
 
