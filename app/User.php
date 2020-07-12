@@ -19,7 +19,9 @@ class User extends Authenticatable
      * @var array
      */
     protected $primaryKey = "userid";
+    protected $keyType = 'string';
     public $incrementing = false;
+    public $timestamps = false;
     protected $table      = "userpdv";
     protected $fillable   = [
         'userid',
@@ -31,7 +33,8 @@ class User extends Authenticatable
         'usrpd',
         'kode',
         'passexp',
-        'host'
+        'host',
+        'nopeg'
     ];
 
     public function getAuthPassword()
@@ -45,5 +48,4 @@ class User extends Authenticatable
     // {
     //     return $user->getAuthPassword() === $credentials['userpwm'];
     // }
-
 }

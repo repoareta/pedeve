@@ -768,6 +768,7 @@ Route::group(['middleware'=> ['auth','checkRole:1,0']], function () {
             Route::get('gcg/coc/lampiran_dua_print', 'GcgCocController@lampiranDuaPrint')->name('coc.lampiran_dua.print');
             
             Route::get('gcg/coi', 'GcgCoiController@index')->name('coi.lampiran_satu');
+            Route::get('gcg/coi/lampiran_satu_print', 'GcgCoiController@lampiranSatuPrint')->name('coi.lampiran_satu.print');
             Route::get('gcg/coi/lampiran_dua', 'GcgCoiController@lampiranDua')->name('coi.lampiran_dua');
 
             Route::get('gcg/gratifikasi', 'GcgGratifikasiController@index')->name('gratifikasi.index');
