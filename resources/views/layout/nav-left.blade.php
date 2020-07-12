@@ -378,8 +378,7 @@
                 ); // isi nama Subdomain  report sdm dan payroll
                 $absensi_karyawan = array(
                     'absensi_karyawan.index',
-                    'absensi_karyawan.create',
-                    'absensi_karyawan.edit'
+                    'absensi_karyawan.download'
                 ); // isi nama semua route absensi karyawan
                 
                 $gcg_home = array(
