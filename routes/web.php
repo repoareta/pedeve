@@ -763,8 +763,9 @@ Route::group(['middleware'=> ['auth','checkRole:1,0']], function () {
             Route::get('gcg', 'GcgController@index')->name('index');
 
             Route::get('gcg/coc', 'GcgCocController@index')->name('coc.lampiran_satu');
-            Route::get('gcg/coc/print_lampiran_satu', 'GcgCocController@printLampiranSatu')->name('coc.lampiran_satu.print');
+            Route::get('gcg/coc/lampiran_satu_print', 'GcgCocController@lampiranSatuPrint')->name('coc.lampiran_satu.print');
             Route::get('gcg/coc/lampiran_dua', 'GcgCocController@lampiranDua')->name('coc.lampiran_dua');
+            Route::get('gcg/coc/lampiran_dua_print', 'GcgCocController@lampiranDuaPrint')->name('coc.lampiran_dua.print');
             
             Route::get('gcg/coi', 'GcgCoiController@index')->name('coi.lampiran_satu');
             Route::get('gcg/coi/lampiran_dua', 'GcgCoiController@lampiranDua')->name('coi.lampiran_dua');

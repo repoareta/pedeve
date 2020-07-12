@@ -54,7 +54,7 @@
 						Etika Usaha dan Tata Perilaku (Code of Conduct) PT. Pertamina DANA VENTURA
 		
 						Tanggal (Efektif) 
-						@if(Request::get('tempat'))
+						@if(Request::get('tanggal_efektif'))
 							<b>{{ Request::get('tanggal_efektif') }}</b>
 						@else
 							<b>{{ date('Y-m-d H:i:s') }}</b>
@@ -78,7 +78,7 @@
 							<input type="hidden" name="tanggal_efektif" value="{{ date('Y-m-d H:i:s') }}" required>
 						@endif
 						, 
-						@if(Request::get('tempat'))
+						@if(Request::get('tanggal_efektif'))
 							<b>{{ Request::get('tanggal_efektif') }}</b>
 						@else
 							<b>{{ date('Y-m-d H:i:s') }}</b>
@@ -87,7 +87,7 @@
 						<br>
 						<br>
 						
-						I Made Sunarta - Sekretaris PERSEROAN
+						{{ Auth::user()->usernm }} - Sekretaris PERSEROAN
 						
 						<br>
 						<br>

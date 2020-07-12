@@ -32,7 +32,7 @@ class GcgCocController extends Controller
         return view('gcg.coc.lampiran_dua');
     }
 
-    public function printLampiranSatu(Request $request)
+    public function lampiranSatuPrint(Request $request)
     {
         $tempat = $request->tempat;
         $tanggal_efektif = $request->tanggal_efektif;
@@ -40,5 +40,15 @@ class GcgCocController extends Controller
         $pdf = PDF::loadview('gcg.coc.lampiran_satu_print', compact('tempat', 'tanggal_efektif'));
 
         return $pdf->stream('coc_lampiran_satu'.date('Y-m-d H:i:s').'.pdf');
+    }
+
+    public function lampiranDuaPrint(Request $request)
+    {
+        $orang = $request->orang;
+        $tanggal_efektif = $request->tanggal_efektif;
+
+        $pdf = PDF::loadview('gcg.coc.lampiran_dua_print', compact('orang', 'tanggal_efektif'));
+
+        return $pdf->stream('coc_lampiran_dua'.date('Y-m-d H:i:s').'.pdf');
     }
 }

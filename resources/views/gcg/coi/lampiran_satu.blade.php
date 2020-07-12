@@ -28,7 +28,7 @@
 				<i class="kt-font-brand flaticon2-line-chart"></i>
 			</span>
 			<h3 class="kt-portlet__head-title">
-				CoI (Code of Interest)
+				CoI (Conflict of Interest)
 			</h3>			
 		</div>
 	</div>
