@@ -1,58 +1,37 @@
-@extends('layout.global')
+<html>
+    <head>
+        <style>
+            .row {
+              display: -ms-flexbox;
+              display: flex;
+              -ms-flex-wrap: wrap;
+              flex-wrap: wrap;
+              margin-right: -5px;
+              margin-left: -5px;
+            }
 
-@section('content')
-<!-- begin:: Subheader -->
-<div class="kt-subheader   kt-grid__item" id="kt_subheader">
-	<div class="kt-container  kt-container--fluid ">
-		<div class="kt-subheader__main">
-			<h3 class="kt-subheader__title">
-				Implementasi GCG </h3>
-			<span class="kt-subheader__separator kt-hidden"></span>
-			<div class="kt-subheader__breadcrumbs">
-				<a href="#" class="kt-subheader__breadcrumbs-home"><i class="flaticon2-shelter"></i></a>
-				<span class="kt-subheader__breadcrumbs-separator"></span>
-				<a href="" class="kt-subheader__breadcrumbs-link">
-                    CoI 
-                </a>
-			</div>
-		</div>
-	</div>
-</div>
-<!-- end:: Subheader -->
+            .text-center {
+              text-align: center;
+            }
 
-<div class="kt-container  kt-container--fluid  kt-grid__item kt-grid__item--fluid">
-<div class="kt-portlet kt-portlet--mobile">
-	<div class="kt-portlet__head kt-portlet__head--lg">
-		<div class="kt-portlet__head-label">
-			<span class="kt-portlet__head-icon">
-				<i class="kt-font-brand flaticon2-line-chart"></i>
-			</span>
-			<h3 class="kt-portlet__head-title">
-				CoI (Code of Interest)
-			</h3>			
-		</div>
-	</div>
-	<div class="kt-portlet__body">
-		<div class="row">
-			<div class="col-md-12 text-center">
-				<a class="btn btn-primary btn-sm active" href="{{ route('gcg.coi.lampiran_satu') }}" role="button">Lampiran 1</a>
-				<a class="btn btn-primary btn-sm" href="{{ route('gcg.coi.lampiran_dua') }}" role="button">Lampiran 2</a>
-			</div>
-		</div>
-		<div class="row">
-			<form class="kt-form" id="formPrint" 
-			@if(Request::get('tempat'))action="{{ route('gcg.coi.lampiran_dua.print') }}" @endif
-			 method="get">
-				<div class="col-md-12">
-					<p>
-						<center>
+            .text-justify {
+              text-align: justify;
+            }
+        </style>
+    </head>
+    <body>
+        <div class="">
+          <p>
+            <center>
 							<b>
 								SURAT PERNYATAAAN INSAN PERTAMINA DANA VENTURA
 							</b>
 						</center>
-					</p>
+          </p>
 
-					<p>
+          <br>
+
+          <p>
 						Yang bertanda tangan dibawah ini:
 						<br>
 						Nama: {{ Auth::user()->usernm }}
@@ -64,10 +43,10 @@
 						Fungsi: {{ $jabatan->keterangan }}
 					</p>
 
-					<p>
+          <p class="text-justify">
 						Dengan ini menyatakan dan menjamin bahwa SAYA tidak mempunyai benturan kepentingan terhadap PT. Pertamina Dana Ventura yang membuat SAYA tidak patut untuk melakukan tindakan berikut ini : 
 						
-						<ul>
+						<ul class="text-justify">
 							<li>
 								Melaksanakan jasa apapun atau memiliki peran apapun dalam perusahaan lain atau usaha pesaing yang sedang atau akan melakukan kerjasama usaha dengan PT. Pertamina Dana Ventura.
 							</li>
@@ -103,51 +82,19 @@
 						<br>
 
 						Demikian pernyataan ini SAYA buat dengan sebenarnya, dalam keadaan sehat baik jasmani dan rohani dan tanpa ada paksaan dari pihak manapun.
-
-						<br>
-					<br>
-
-					@if (Request::get('tempat'))
-						<b>{{ Request::get('tempat') }}</b>
-					@else						
-						<input class="form-control col-2" style="display:inline" type="text" name="tempat" placeholder="lokasi kerja anda" required>
-						
-						<input type="hidden" name="tanggal_efektif" value="{{ date('Y-m-d H:i:s') }}" required>
-					@endif
-					, 
-					@if(Request::get('tanggal_efektif'))
-						<b>{{ Request::get('tanggal_efektif') }}</b>
-					@else
-						<b>{{ date('Y-m-d H:i:s') }}</b>
-					@endif
-
-					<br>
-					<br>
-
-					{{ Auth::user()->usernm.' - '.$jabatan->keterangan }}
-
-					<br>
-					<br>
-					@if (Request::get('tempat'))
-						<input type="hidden" name="tempat" value="{{ Request::get('tempat') }}" required>
-						<input type="hidden" name="tanggal_efektif" value="{{ Request::get('tanggal_efektif') }}" required>
-						<button type="submit" onclick="printPDF()" class="btn btn-primary"><i class="fa fa-print" aria-hidden="true"></i> Print</button>
-					@else
-						<button type="submit" class="btn btn-primary"><i class="fa fa-check" aria-hidden="true"></i> Simpan</button>
-					@endif
 					</p>
-				</div>
-			</form>
-		</div>
-	</div>
-</div>
-</div>
-@endsection
 
-@section('scripts')
-	<script type="text/javascript">
-		function printPDF() {
-			$("#formPrint").attr("target", "_blank");
-		}
-	</script>
-@endsection
+          <br>
+          <br>
+          <br>
+          
+          {{ ucwords($tempat).', '.$tanggal_efektif }}
+          <br>
+          <br>
+          <br>
+          <br>
+          <br>
+          {{ Auth::user()->usernm.' - '.$jabatan->keterangan }}
+        </div>
+    </body>
+</html>
