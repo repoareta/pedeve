@@ -33,11 +33,11 @@
 			
 			<div class="kt-portlet__head-actions">
 				<div class="btn-group" role="group" aria-label="Basic example">
-					<a name="" id="" class="btn btn-primary" href="#" role="button">Outstanding</a>
-					<a name="" id="" class="btn btn-primary" href="#" role="button">Penerimaan</a>
-					<a name="" id="" class="btn btn-primary" href="#" role="button">Pemberian</a>
-					<a name="" id="" class="btn btn-primary" href="#" role="button">Permintaan</a>
-					<a name="" id="" class="btn btn-primary" href="#" role="button">Report</a>
+					<a class="btn btn-primary active" href="{{ route('gcg.gratifikasi.index') }}" role="button">Outstanding</a>
+					<a class="btn btn-primary" href="{{ route('gcg.gratifikasi.penerimaan') }}" role="button">Penerimaan</a>
+					<a class="btn btn-primary" href="{{ route('gcg.gratifikasi.pemberian') }}" role="button">Pemberian</a>
+					<a class="btn btn-primary" href="{{ route('gcg.gratifikasi.permintaan') }}" role="button">Permintaan</a>
+					<a class="btn btn-primary" href="{{ route('gcg.gratifikasi.index') }}" role="button">Report</a>
 				</div>
 			</div>
 		</div>
@@ -65,19 +65,23 @@
 				</tr>
 			</thead>
 			<tbody>
+				@foreach ($gratifikasi_list as $gratifikasi)
 				<tr>
-					<td>Nopek 1</td>
+					<td>{{ $gratifikasi->nopeg }}</td>
 					<td>Nama 1</td>
-					<td>Tgl 1</td>
-					<td>Jenis 1</td>
-					<td>Jumlah 1</td>
-					<td>Pemberi 1</td>
-					<td>Keterangan 1</td>
-					<td>Status 1</td>
-					<td>NIHIL 1</td>
-					<td>Type 1</td>
-					<td>Action 1</td>
+					<td>{{ $gratifikasi->tgl_gratifikasi }}</td>
+					<td>{{ $gratifikasi->bentuk }}</td>
+					<td>{{ $gratifikasi->jumlah }}</td>
+					<td>{{ $gratifikasi->pemberi }}</td>
+					<td>{{ $gratifikasi->keterangan }}</td>
+					<td>{{ $gratifikasi->status }}</td>
+					<td>NIHIL</td>
+					<td>{{ $gratifikasi->jenis_gratifikasi }}</td>
+					<td>
+						<a href="{{ route('gcg.gratifikasi.index') }}" class="btn btn-sm btn-warning"><i class="fa fa-edit" aria-hidden="true"></i> Ubah</a>
+					</td>
 				</tr>
+				@endforeach
 			</tbody>
 		</table>
 		<!--end: Datatable -->

@@ -773,6 +773,14 @@ Route::group(['middleware'=> ['auth','checkRole:1,0']], function () {
             Route::get('gcg/coi/lampiran_dua_print', 'GcgCoiController@lampiranDuaPrint')->name('coi.lampiran_dua.print');
 
             Route::get('gcg/gratifikasi', 'GcgGratifikasiController@index')->name('gratifikasi.index');
+            Route::get('gcg/gratifikasi/penerimaan', 'GcgGratifikasiController@penerimaan')->name('gratifikasi.penerimaan');
+            Route::post('gcg/gratifikasi/penerimaan/store', 'GcgGratifikasiController@penerimaanStore')->name('gratifikasi.penerimaan.store');
+
+            Route::get('gcg/gratifikasi/pemberian', 'GcgGratifikasiController@pemberian')->name('gratifikasi.pemberian');
+            Route::post('gcg/gratifikasi/pemberian/store', 'GcgGratifikasiController@pemberianStore')->name('gratifikasi.pemberian.store');
+
+            Route::get('gcg/gratifikasi/permintaan', 'GcgGratifikasiController@permintaan')->name('gratifikasi.permintaan');
+            Route::post('gcg/gratifikasi/permintaan/store', 'GcgGratifikasiController@permintaanStore')->name('gratifikasi.permintaan.store');
 
             Route::get('gcg/sosialisasi', 'GcgSosialisasiController@index')->name('sosialisasi.index');
 

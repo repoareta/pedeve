@@ -396,7 +396,10 @@
                 ); // isi nama semua route absensi implementasi GCG
 
                 $gcg_gratifikasi = array(
-                    'gcg.gratifikasi.index'
+                    'gcg.gratifikasi.index',
+                    'gcg.gratifikasi.penerimaan',
+                    'gcg.gratifikasi.pemberian',
+                    'gcg.gratifikasi.permintaan'
                 ); // isi nama semua route absensi implementasi GCG
 
                 $gcg_sosialisasi = array(
