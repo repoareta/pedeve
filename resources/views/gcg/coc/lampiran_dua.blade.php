@@ -35,8 +35,8 @@
 	<div class="kt-portlet__body">
 		<div class="row">
 			<div class="col-md-12 text-center">
-				<a name="" id="" class="btn btn-primary" href="#" role="button">Lampiran 1</a>
-				<a name="" id="" class="btn btn-primary" href="{{ route('gcg.coc.lampiran_dua') }}" role="button">Lampiran 2</a>
+				<a class="btn btn-primary" href="{{ route('gcg.coc.lampiran_satu') }}" role="button">Lampiran 1</a>
+				<a class="btn btn-primary active" href="{{ route('gcg.coc.lampiran_dua') }}" role="button">Lampiran 2</a>
 			</div>
 		</div>
 		<div class="row">

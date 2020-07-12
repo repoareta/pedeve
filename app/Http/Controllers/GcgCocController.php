@@ -4,6 +4,12 @@ namespace App\Http\Controllers;
 
 use Illuminate\Http\Request;
 
+// Load Plugin
+use Carbon\Carbon;
+use Session;
+use PDF;
+use Auth;
+
 class GcgCocController extends Controller
 {
     /**
@@ -13,7 +19,7 @@ class GcgCocController extends Controller
      */
     public function index()
     {
-        return view('gcg.coc.index');
+        return view('gcg.coc.lampiran_satu');
     }
 
     /**
@@ -24,5 +30,15 @@ class GcgCocController extends Controller
     public function lampiranDua()
     {
         return view('gcg.coc.lampiran_dua');
+    }
+
+    public function printLampiranSatu(Request $request)
+    {
+        $tempat = $request->tempat;
+        $tanggal_efektif = $request->tanggal_efektif;
+
+        $pdf = PDF::loadview('gcg.coc.lampiran_satu_print', compact('tempat', 'tanggal_efektif'));
+
+        return $pdf->stream('coc_lampiran_satu'.date('Y-m-d H:i:s').'.pdf');
     }
 }
