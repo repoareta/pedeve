@@ -96,4 +96,30 @@ class GcgGratifikasiController extends Controller
         Alert::success('Simpan Data Permintaan', 'Berhasil')->persistent(true)->autoClose(2000);
         return redirect()->route('gcg.gratifikasi.index');
     }
+
+    public function reportPersonal()
+    {
+        return view('gcg.gratifikasi.report_personal');
+    }
+
+    public function reportManagement()
+    {
+        return view('gcg.gratifikasi.report_management');
+    }
+
+    public function edit(GcgGratifikasi $gratifikasi)
+    {
+        return view('gcg.gratifikasi.edit', compact('gratifikasi'));
+    }
+
+    public function update(GcgGratifikasi $gratifikasi, Request $request)
+    {
+        $gratifikasi->status  = $request->status;
+        $gratifikasi->catatan = $request->catatan;
+
+        $gratifikasi->save();
+
+        Alert::success('Update Data Gratifikasi', 'Berhasil')->persistent(true)->autoClose(2000);
+        return redirect()->route('gcg.gratifikasi.index');
+    }
 }

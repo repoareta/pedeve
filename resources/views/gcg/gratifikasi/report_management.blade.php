@@ -61,7 +61,7 @@
 				<tr>
 					<th>Nopek</th>
 					<th>Nama</th>
-					<th>Tanggal</th>
+					<th>Tgl</th>
 					<th>Jenis</th>
 					<th>Jumlah</th>
 					<th>Pemberi</th>
@@ -76,17 +76,17 @@
 				@foreach ($gratifikasi_list as $gratifikasi)
 				<tr>
 					<td>{{ $gratifikasi->nopeg }}</td>
-					<td>{{ $gratifikasi->pekerja->nama }}</td>
-					<td>{{ Carbon\Carbon::parse($gratifikasi->tgl_gratifikasi)->translatedFormat('d F Y') }}</td>
+					<td>Nama 1</td>
+					<td>{{ $gratifikasi->tgl_gratifikasi }}</td>
 					<td>{{ $gratifikasi->bentuk }}</td>
 					<td>{{ $gratifikasi->jumlah }}</td>
 					<td>{{ $gratifikasi->pemberi }}</td>
 					<td>{{ $gratifikasi->keterangan }}</td>
 					<td>{{ $gratifikasi->status }}</td>
 					<td>NIHIL</td>
-					<td>{{ ucwords($gratifikasi->jenis_gratifikasi) }}</td>
+					<td>{{ $gratifikasi->jenis_gratifikasi }}</td>
 					<td>
-						<a href="{{ route('gcg.gratifikasi.edit', ['gratifikasi' => $gratifikasi->id]) }}" class="btn btn-sm btn-warning"><i class="fa fa-edit" aria-hidden="true"></i> Ubah</a>
+						<a href="{{ route('gcg.gratifikasi.index') }}" class="btn btn-sm btn-warning"><i class="fa fa-edit" aria-hidden="true"></i> Ubah</a>
 					</td>
 				</tr>
 				@endforeach
