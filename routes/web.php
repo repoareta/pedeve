@@ -865,6 +865,15 @@ Route::group(['middleware'=> ['auth','checkRole:1,0']], function () {
         });
         //end penempatan_deposito
 
+        //Penempatan deposito
+        // Route assigned name "penempatan_deposito.index"...
+        Route::name('perhitungan_bagihasil.')->group(function () {
+            Route::get('perhitungan_bagihasil', 'PerhitunganBagiHasilController@index')->name('index');
+            Route::post('perhitungan_bagihasil/search', 'PerhitunganBagiHasilController@index')->name('index.search');
+            Route::delete('perhitungan_bagihasil/delete', 'PerhitunganBagiHasilController@delete')->name('delete');
+        });
+        //end perhitungan_bagihasil
+
         //pembayaran_gaji
         // Route assigned name "pembayaran_gaji.index"...
         Route::name('pembayaran_gaji.')->group(function () {
