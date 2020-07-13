@@ -480,6 +480,15 @@
                     $opening_balance
                 ); //isi nama Subdomain Tool
 
+                $data_pajak = array(
+                    'data_pajak.index',
+                    'data_pajak.create',
+                    'data_pajak.edit',
+                ); // isi nama semua route Informasi saldo
+                $pajak_tahunan = array_merge(
+                    $data_pajak
+                ); //isi nama Subdomain Tool
+
                 $saldo = array_merge(
                     $informasi_saldo
                 ); //isi nama Subdomain saldo
@@ -593,6 +602,7 @@
                     $pembayaran,
                     $rekap_perbendaharaan,
                     $report_perbendaharaan,
+                    $pajak_tahunan,
                     $tool
                 ); // array merge semua submenu
                 
@@ -1616,6 +1626,29 @@
                                             </i>
                                             <span class="kt-menu__link-text">
                                                 Perhitungan Bagi Hasil
+                                            </span>
+                                        </a>
+                                    </li>
+                                </ul>
+                            </div>
+                        </li>
+                        <li class="kt-menu__item kt-menu__item--submenu {{ set_active($pajak_tahunan) }}" aria-haspopup="true" data-ktmenu-submenu-toggle="hover">
+                            <a href="javascript:;" class="kt-menu__link kt-menu__toggle">
+                                <i class="kt-menu__link-bullet kt-menu__link-bullet--dot">
+                                    <span></span>
+                                </i>
+                                <span class="kt-menu__link-text">Pajak Tahunan</span>
+                                <i class="kt-menu__ver-arrow la la-angle-right"></i>
+                            </a>
+                            <div class="kt-menu__submenu "><span class="kt-menu__arrow"></span>
+                                <ul class="kt-menu__subnav">
+                                    <li class="kt-menu__item kt-menu__item--submenu {{ set_active($data_pajak) }}" aria-haspopup="true" data-ktmenu-submenu-toggle="hover">
+                                        <a href="{{ route('data_pajak.index') }}" class="kt-menu__link">
+                                            <i class="kt-menu__link-bullet kt-menu__link-bullet--dot">
+                                                <span></span>
+                                            </i>
+                                            <span class="kt-menu__link-text">
+                                                Data Pajak
                                             </span>
                                         </a>
                                     </li>

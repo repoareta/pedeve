@@ -830,6 +830,20 @@ Route::group(['middleware'=> ['auth','checkRole:1,0']], function () {
         });
         //end informasi_saldo
 
+
+        //data Pajak
+        // Route assigned name "data_pajak.index"...
+        Route::name('data_pajak.')->group(function () {
+            Route::get('data_pajak', 'DataPajakController@index')->name('index');
+            Route::post('data_pajak/index/json', 'DataPajakController@indexJson')->name('index.json');
+            Route::get('data_pajak/create', 'DataPajakController@create')->name('create');
+            Route::post('data_pajak/store', 'DataPajakController@store')->name('store');
+            Route::get('data_pajak/edit/{tahun}/{bulan}/{nopek}/{jenis}', 'DataPajakController@edit')->name('edit');
+            Route::post('data_pajak/update', 'DataPajakController@update')->name('update');
+            Route::delete('data_pajak/delete', 'DataPajakController@delete')->name('delete');
+        });
+        //end data_pajak
+
         //bulan_perbendaharaan
         // Route assigned name "bulan_perbendaharaan.index"...
         Route::name('bulan_perbendaharaan.')->group(function () {
