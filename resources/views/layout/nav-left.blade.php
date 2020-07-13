@@ -402,6 +402,7 @@
                     'gcg.gratifikasi.permintaan',
                     'gcg.gratifikasi.report.personal',
                     'gcg.gratifikasi.report.management',
+                    'gcg.gratifikasi.edit',
                 ); // isi nama semua route absensi implementasi GCG
 
                 $gcg_sosialisasi = array(

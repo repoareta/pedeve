@@ -86,7 +86,7 @@
 					<td>NIHIL</td>
 					<td>{{ ucwords($gratifikasi->jenis_gratifikasi) }}</td>
 					<td>
-						<a href="{{ route('gcg.gratifikasi.index') }}" class="btn btn-sm btn-warning"><i class="fa fa-edit" aria-hidden="true"></i> Ubah</a>
+						<a href="{{ route('gcg.gratifikasi.edit', ['gratifikasi' => $gratifikasi->id]) }}" class="btn btn-sm btn-warning"><i class="fa fa-edit" aria-hidden="true"></i> Ubah</a>
 					</td>
 				</tr>
 				@endforeach
