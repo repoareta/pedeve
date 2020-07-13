@@ -782,6 +782,9 @@ Route::group(['middleware'=> ['auth','checkRole:1,0']], function () {
             Route::get('gcg/gratifikasi/permintaan', 'GcgGratifikasiController@permintaan')->name('gratifikasi.permintaan');
             Route::post('gcg/gratifikasi/permintaan/store', 'GcgGratifikasiController@permintaanStore')->name('gratifikasi.permintaan.store');
 
+            Route::get('gcg/gratifikasi/report/personal', 'GcgGratifikasiController@reportPersonal')->name('gratifikasi.report.personal');
+            Route::get('gcg/gratifikasi/report/management', 'GcgGratifikasiController@reportManagement')->name('gratifikasi.report.management');
+
             Route::get('gcg/sosialisasi', 'GcgSosialisasiController@index')->name('sosialisasi.index');
 
             Route::get('gcg/lhkpn', 'GcgLhkpnController@index')->name('lhkpn.index');

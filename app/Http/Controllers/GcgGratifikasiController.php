@@ -96,4 +96,14 @@ class GcgGratifikasiController extends Controller
         Alert::success('Simpan Data Permintaan', 'Berhasil')->persistent(true)->autoClose(2000);
         return redirect()->route('gcg.gratifikasi.index');
     }
+
+    public function reportPersonal()
+    {
+        return view('gcg.gratifikasi.report_personal');
+    }
+
+    public function reportManagement()
+    {
+        return view('gcg.gratifikasi.report_management');
+    }
 }
