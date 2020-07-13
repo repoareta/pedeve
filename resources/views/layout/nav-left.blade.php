@@ -378,8 +378,7 @@
                 ); // isi nama Subdomain  report sdm dan payroll
                 $absensi_karyawan = array(
                     'absensi_karyawan.index',
-                    'absensi_karyawan.create',
-                    'absensi_karyawan.edit'
+                    'absensi_karyawan.download'
                 ); // isi nama semua route absensi karyawan
                 
                 $gcg_home = array(
@@ -397,7 +396,10 @@
                 ); // isi nama semua route absensi implementasi GCG
 
                 $gcg_gratifikasi = array(
-                    'gcg.gratifikasi.index'
+                    'gcg.gratifikasi.index',
+                    'gcg.gratifikasi.penerimaan',
+                    'gcg.gratifikasi.pemberian',
+                    'gcg.gratifikasi.permintaan'
                 ); // isi nama semua route absensi implementasi GCG
 
                 $gcg_sosialisasi = array(
@@ -1432,7 +1434,7 @@
                                             <span class="kt-menu__link-text">Gratifikasi</span>
                                         </a>
                                     </li>
-                                    <li class="kt-menu__item kt-menu__item{{ set_active_submenu($gcg_sosialisasi) }}" aria-haspopup="true">
+                                    {{-- <li class="kt-menu__item kt-menu__item{{ set_active_submenu($gcg_sosialisasi) }}" aria-haspopup="true">
                                         <a href="{{route('gcg.sosialisasi.index')}}" class="kt-menu__link">
                                             <i class="kt-menu__link-bullet kt-menu__link-bullet--line">
                                                 <span></span>
@@ -1447,7 +1449,7 @@
                                             </i>
                                             <span class="kt-menu__link-text">LHKPN</span>
                                         </a>
-                                    </li>
+                                    </li> --}}
                                     <li class="kt-menu__item kt-menu__item{{ set_active_submenu($gcg_report_boundary) }}" aria-haspopup="true">
                                         <a href="{{route('gcg.report_boundary.index')}}" class="kt-menu__link">
                                             <i class="kt-menu__link-bullet kt-menu__link-bullet--line">

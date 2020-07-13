@@ -16,4 +16,9 @@ class Userpdv extends Model
     public $timestamps = false;
 
     protected $dates = ['deleted_at'];
+
+    public function jabatan_latest()
+    {
+        return $this->hasMany('App\Models\Jabatan', 'nopeg')->latest()->first();
+    }
 }
