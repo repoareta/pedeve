@@ -95,27 +95,19 @@
 				success : function(data){
 				if(data == 1){
 					Swal.fire({
-						type  : 'success',
-						title : 'Data Berhasil Dibatalkan',
-						text  : 'Berhasil',
-						timer : 2000
-					}).then(function(data) {
-						window.location.replace("{{ route('opening_balance.index') }}");
-						});
-				}else if(data == 2){
-					Swal.fire({
-						type  : 'info',
-						title : 'Opening balance terakhir adalah!~~' +data,
-						text  : 'Info',
-					});
-				}else{
-					Swal.fire({
 						type  : 'info',
 						title : '~Opening Balance tidak bisa di batalkan, Opening Balance bulan terakhir harus dibatalkan terlebih dahulu',
 						text  : 'Info',
 					});
+				}else{
+					Swal.fire({
+						type  : 'success',
+						title : 'Data Berhasil Dibatalkan Dan Opening Balance Terakhir Adalah!~~' +data,
+						text  : 'Berhasil',
+					}).then(function(data) {
+						window.location.replace("{{ route('opening_balance.index') }}");
+						});
 				}
-
 				}, 
 				error : function(){
 					alert("Terjadi kesalahan, coba lagi nanti");

@@ -57,8 +57,8 @@ class OpeningBalanceController extends Controller
         $tabel_opsi = "obpsi_$thn";
         $cek =DB::select("select * from history_ob where substr(thnblnsup,1,4)='$thn'");
         if(!empty($cek)){
-            $data = 2;
-            return response()->json($data);
+            $dataa = 2;
+            return response()->json($dataa);
         }else{
             $data_vthn = DB::select("select substr(max(o.thnblnsup),1,4) as vthn from history_ob o");
             if(!empty($data_vthn)){
@@ -252,30 +252,27 @@ class OpeningBalanceController extends Controller
     {
         $thn = $request->tahun;
         $tabel_opsi = "obpsi_$thn";
-        $data_vthn = DB::select("select substr(max(a.tablename),7,4) as vthn from pg_tables a where a.tablename like 'obpsi_%'");
-        foreach($data_vthn as $data_vt)
-        {
-            if($thn<>$data_vt->vthn){
-                $data = $data_vt->vthn;
-                return response()->json($data);
-                // RAISE EXCEPTION '~~Opening Balance terakhir adalah %!~~', vTHN ;
-            }
-        }
+        
         
         $data_vtnbln = DB::select("select max(thnblnsup) as vthnbln from history_ob");
         foreach($data_vtnbln as $data_vth)
         {
             if(substr($data_vth->vthnbln,0,4) <> $thn){
-                $data = 3;
+                $data = 1;
                 return response()->json($data);
-                // RAISE EXCEPTION '~~Opening Balance tidak bisa di batalkan, Opening Balance bulan terakhir harus dibatalkan terlebih dahulu~~';
             }
         }
         Schema::dropIfExists("$tabel_opsi");
         // vSQL := 'Drop Table OBPSI_' || Thn;
         // EXECUTE vSQL;
         HistoryOb::where('thnblnsup', 'like',"$thn%")->delete();
-        $data = 1;
-        return response()->json($data);
+        $data_vthn = DB::select("select substr(max(a.tablename),7,4) as vthn from pg_tables a where a.tablename like 'obpsi_%'");
+        foreach($data_vthn as $data_vt)
+        {
+            if($thn<>$data_vt->vthn){
+                $data = $data_vt->vthn;
+                return response()->json($data);
+            }
+        }
     }
 }

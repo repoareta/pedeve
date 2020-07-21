@@ -1,5 +1,103 @@
 @extends('layout.global')
+<style type="text/css">
+ #loader {
 
+position: absolute;
+
+left: 50%;
+
+top: 50%;
+
+z-index: 1;
+
+width: 150px;
+
+height: 150px;
+
+margin: -75px 0 0 -75px;
+
+border: 16px solid #f3f3f3;
+
+border-radius: 50%;
+
+border-top: 16px solid #3498db;
+
+width: 120px;
+
+height: 120px;
+
+-webkit-animation: spin 2s linear infinite;
+
+animation: spin 2s linear infinite;
+
+}
+
+
+
+@-webkit-keyframes spin {
+
+0% { -webkit-transform: rotate(0deg); }
+
+100% { -webkit-transform: rotate(360deg); }
+
+}
+
+
+
+@keyframes spin {
+
+0% { transform: rotate(0deg); }
+
+100% { transform: rotate(360deg); }
+
+}
+
+
+
+/* Add animation to "page content" */
+
+.animate-bottom {
+
+position: relative;
+
+-webkit-animation-name: animatebottom;
+
+-webkit-animation-duration: 1s;
+
+animation-name: animatebottom;
+
+animation-duration: 1s
+
+}
+
+
+
+@-webkit-keyframes animatebottom {
+
+from { bottom:-100px; opacity:0 }
+
+to { bottom:0px; opacity:1 }
+
+}
+
+
+
+@keyframes animatebottom {
+
+from{ bottom:-100px; opacity:0 }
+
+to{ bottom:0; opacity:1 }
+
+}
+
+
+
+#myDiv {
+
+display: none;
+
+}
+</style>
 @section('content')
 <!-- begin:: Subheader -->
 <div class="kt-subheader   kt-grid__item" id="kt_subheader">
@@ -59,7 +157,7 @@
 								$tahun = date_format($tgl, 'Y'); 
 								$bulan = date_format($tgl, 'n'); 
 							?>
-								<select class="form-control selectpicker" data-live-search="true" name="bulan">
+								<select class="form-control kt-select2"  name="bulan">
 									<option value="01" <?php if($bulan  == 1 ) echo 'selected' ; ?>>Januari</option>
 									<option value="02" <?php if($bulan  == 2 ) echo 'selected' ; ?>>Februari</option>
 									<option value="03" <?php if($bulan  == 3 ) echo 'selected' ; ?>>Maret</option>
@@ -102,12 +200,19 @@
 			</form>
 	</div>
 </div>
+<div style="display:none;" id="loader"></div>
+<div style="display:true;" id="myDiv" class="animate-bottom"></div>
+
 @endsection
 
 @section('scripts')
 	<script type="text/javascript">
 	$(document).ready(function () {
+		$('.kt-select2').select2().on('change', function() {
+			$(this).valid();
+		});
 		$('#form-create').submit(function(){
+			$('#loader').show();
 			$.ajax({
 				url  : "{{route('opening_balance.store')}}",
 				type : "POST",
@@ -118,6 +223,7 @@
 				},
 				success : function(data){
 				if(data == 1){
+					$('#loader').hide();
 					Swal.fire({
 						type  : 'success',
 						title : 'Data Berhasil Ditambah',
@@ -127,12 +233,14 @@
 						window.location.replace("{{ route('opening_balance.index') }}");
 						});
 				}else if(data == 2){
+					$('#loader').hide();
 					Swal.fire({
 						type  : 'info',
 						title : 'Data sudah ada, entri dibatalkan',
 						text  : 'Info',
 					});
 				}else{
+					$('#loader').hide();
 					Swal.fire({
 						type  : 'info',
 						title : 'Opening balance terakhir adalah! ' +data,
@@ -148,8 +256,6 @@
 			return false;
 		});
 	});
-	
-
   
 
 		

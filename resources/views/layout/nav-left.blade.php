@@ -758,7 +758,7 @@
                     $password_administrator
                 ); // array merge semua submenu
             @endphp
-
+            @if(substr_count(Auth::user()->userap,"E") > 0)
             <li class="kt-menu__item  kt-menu__item--submenu {{ set_active($umum) }}" aria-haspopup="true" data-ktmenu-submenu-toggle="hover">
                 <a href="javascript:;" class="kt-menu__link kt-menu__toggle">
                     <span class="kt-menu__link-icon">
@@ -777,7 +777,8 @@
                                 </span>
                             </span>
                         </li>
-
+                        @foreach(DB::table('usermenu')->where('userid',Auth::user()->userid)->where('menuid',701)->limit(1)->get() as $data_umu)
+                        @if($data_umu->ability == 1)
                         <li class="kt-menu__item kt-menu__item--submenu {{ set_active($perjalanan_dinas_menu) }}" aria-haspopup="true" data-ktmenu-submenu-toggle="hover">
                             <a href="javascript:;" class="kt-menu__link kt-menu__toggle">
                                 <i class="kt-menu__link-bullet kt-menu__link-bullet--dot">
@@ -807,7 +808,11 @@
                                 </ul>
                             </div>
                         </li>
+                        @endif
+                        @endforeach
 
+                        @foreach(DB::table('usermenu')->where('userid',Auth::user()->userid)->where('menuid',722)->limit(1)->get() as $data_umu)
+                        @if($data_umu->ability == 1)
                         <li class="kt-menu__item kt-menu__item--submenu {{ set_active($umk_menu) }}" aria-haspopup="true" data-ktmenu-submenu-toggle="hover">
                             <a href="javascript:;" class="kt-menu__link kt-menu__toggle">
                                 <i class="kt-menu__link-bullet kt-menu__link-bullet--dot">
@@ -837,7 +842,11 @@
                                 </ul>
                             </div>
                         </li>
+                        @endif
+                        @endforeach
 
+                        @foreach(DB::table('usermenu')->where('userid',Auth::user()->userid)->where('menuid',741)->limit(1)->get() as $data_umu)
+                        @if($data_umu->ability == 1)
                         <li class="kt-menu__item  kt-menu__item{{ set_active_submenu($permintaan_bayar) }}" aria-haspopup="true">
                             <a href="{{ route('permintaan_bayar.index') }}" class="kt-menu__link">
                                 <i class="kt-menu__link-bullet kt-menu__link-bullet--dot">
@@ -848,6 +857,8 @@
                                 </span>
                             </a>
                         </li>
+                        @endif
+                        @endforeach
 
                         {{-- <li class="kt-menu__item  kt-menu__item{{ set_active_submenu($anggaran) }}" aria-haspopup="true">
                             <a href="{{ route('anggaran.index') }}" class="kt-menu__link">
@@ -898,6 +909,8 @@
                             </div>
                         </li>
 
+                        @foreach(DB::table('usermenu')->where('userid',Auth::user()->userid)->where('menuid',740)->limit(1)->get() as $data_umu)
+                        @if($data_umu->ability == 1)
                         <li class="kt-menu__item kt-menu__item--submenu {{ set_active($report_umum_menu) }}" aria-haspopup="true" data-ktmenu-submenu-toggle="hover">
                             <a href="javascript:;" class="kt-menu__link kt-menu__toggle">
                                 <i class="kt-menu__link-bullet kt-menu__link-bullet--dot">
@@ -935,6 +948,9 @@
                                 </ul>
                             </div>
                         </li>
+                        @endif
+                        @endforeach
+
                         <li class="kt-menu__item  kt-menu__item{{ set_active_submenu($vendor) }}" aria-haspopup="true">
                             <a href="{{ route('vendor.index') }}" class="kt-menu__link">
                                 <i class="kt-menu__link-bullet kt-menu__link-bullet--dot">
@@ -948,7 +964,8 @@
                     </ul>
                 </div>
             </li>
-
+            @endif
+            @if(substr_count(Auth::user()->userap,"F") > 0)
             <li class="kt-menu__item  kt-menu__item--submenu {{ set_active($sdm_payroll) }}" aria-haspopup="true" data-ktmenu-submenu-toggle="hover">
                 <a href="javascript:;" class="kt-menu__link kt-menu__toggle">
                     <span class="kt-menu__link-icon">
@@ -967,6 +984,8 @@
                                 </span>
                             </span>
                         </li>
+                        @foreach(DB::table('usermenu')->where('userid',Auth::user()->userid)->where('menuid',600)->limit(1)->get() as $data_umu)
+                        @if($data_umu->ability == 1)
                         <li class="kt-menu__item kt-menu__item--submenu {{ set_active($master_data_menu) }}" aria-haspopup="true" data-ktmenu-submenu-toggle="hover">
                             <a href="javascript:;" class="kt-menu__link kt-menu__toggle">
                                 <i class="kt-menu__link-bullet kt-menu__link-bullet--dot">
@@ -1030,6 +1049,11 @@
                                 </span>
                             </a>
                         </li>
+                        @endif
+                        @endforeach
+
+                        @foreach(DB::table('usermenu')->where('userid',Auth::user()->userid)->where('menuid',620)->limit(1)->get() as $data_umu)
+                        @if($data_umu->ability == 1)
                         <li class="kt-menu__item kt-menu__item--submenu {{ set_active($master_payroll_menu) }}" aria-haspopup="true" data-ktmenu-submenu-toggle="hover">
                             <a href="javascript:;" class="kt-menu__link kt-menu__toggle">
                                 <i class="kt-menu__link-bullet kt-menu__link-bullet--dot">
@@ -1391,6 +1415,10 @@
                                 </ul>
                             </div>
                         </li>
+                        @endif
+                        @endforeach
+
+
                         <li class="kt-menu__item kt-menu__item{{ set_active_submenu($absensi_karyawan) }}" aria-haspopup="true">
                             <a href="{{ route('absensi_karyawan.index') }}" class="kt-menu__link">
                                 <i class="kt-menu__link-bullet kt-menu__link-bullet--dot">
@@ -1475,7 +1503,8 @@
                     </ul>
                 </div>
             </li>
-            
+            @endif
+            @if(substr_count(Auth::user()->userap,"D") > 0)            
             <li class="kt-menu__item  kt-menu__item--submenu {{ set_active($perbendaharaan) }}" aria-haspopup="true" data-ktmenu-submenu-toggle="hover">
                 <a href="javascript:;" class="kt-menu__link kt-menu__toggle">
                     <span class="kt-menu__link-icon">
@@ -1494,6 +1523,8 @@
                                 </span>
                             </span>
                         </li>
+                        @foreach(DB::table('usermenu')->where('userid',Auth::user()->userid)->where('menuid',501)->limit(1)->get() as $data_umu)
+                        @if($data_umu->ability == 1)
                         <li class="kt-menu__item kt-menu__item{{ set_active_submenu($penerimaan_kas) }} " aria-haspopup="true">
                             <a href="{{ route('penerimaan_kas.index') }}" class="kt-menu__link">
                                 <i class="kt-menu__link-bullet kt-menu__link-bullet--dot">
@@ -1504,6 +1535,11 @@
                                 </span>
                             </a>
                         </li>
+                        @endif
+                        @endforeach
+
+                        @foreach(DB::table('usermenu')->where('userid',Auth::user()->userid)->where('menuid',502)->limit(1)->get() as $data_umu)
+                        @if($data_umu->ability == 1)
                         <li class="kt-menu__item kt-menu__item--submenu {{ set_active($pembayaran) }}" aria-haspopup="true" data-ktmenu-submenu-toggle="hover">
                             <a href="javascript:;" class="kt-menu__link kt-menu__toggle">
                                 <i class="kt-menu__link-bullet kt-menu__link-bullet--dot">
@@ -1549,6 +1585,11 @@
                                 </ul>
                             </div>
                         </li>
+                        @endif
+                        @endforeach
+
+                        @foreach(DB::table('usermenu')->where('userid',Auth::user()->userid)->where('menuid',504)->limit(1)->get() as $data_umu)
+                        @if($data_umu->ability == 1)
                         <li class="kt-menu__item kt-menu__item--submenu {{ set_active($saldo) }}" aria-haspopup="true" data-ktmenu-submenu-toggle="hover">
                             <a href="javascript:;" class="kt-menu__link kt-menu__toggle">
                                 <i class="kt-menu__link-bullet kt-menu__link-bullet--dot">
@@ -1570,6 +1611,11 @@
                                 </ul>
                             </div>
                         </li>
+                        @endif
+                        @endforeach
+
+                        @foreach(DB::table('usermenu')->where('userid',Auth::user()->userid)->where('menuid',508)->limit(1)->get() as $data_umu)
+                        @if($data_umu->ability == 1)
                         <li class="kt-menu__item kt-menu__item--submenu {{ set_active($tool) }}" aria-haspopup="true" data-ktmenu-submenu-toggle="hover">
                             <a href="javascript:;" class="kt-menu__link kt-menu__toggle">
                                 <i class="kt-menu__link-bullet kt-menu__link-bullet--dot">
@@ -1599,6 +1645,11 @@
                                 </ul>
                             </div>
                         </li>
+                        @endif
+                        @endforeach
+
+                        @foreach(DB::table('usermenu')->where('userid',Auth::user()->userid)->where('menuid',509)->limit(1)->get() as $data_umu)
+                        @if($data_umu->ability == 1)
                         <li class="kt-menu__item kt-menu__item--submenu {{ set_active($deposito) }}" aria-haspopup="true" data-ktmenu-submenu-toggle="hover">
                             <a href="javascript:;" class="kt-menu__link kt-menu__toggle">
                                 <i class="kt-menu__link-bullet kt-menu__link-bullet--dot">
@@ -1632,6 +1683,11 @@
                                 </ul>
                             </div>
                         </li>
+                        @endif
+                        @endforeach
+
+                        @foreach(DB::table('usermenu')->where('userid',Auth::user()->userid)->where('menuid',505)->limit(1)->get() as $data_umu)
+                        @if($data_umu->ability == 1)
                         <li class="kt-menu__item kt-menu__item--submenu {{ set_active($pajak_tahunan) }}" aria-haspopup="true" data-ktmenu-submenu-toggle="hover">
                             <a href="javascript:;" class="kt-menu__link kt-menu__toggle">
                                 <i class="kt-menu__link-bullet kt-menu__link-bullet--dot">
@@ -1655,6 +1711,11 @@
                                 </ul>
                             </div>
                         </li>
+                        @endif
+                        @endforeach
+
+                        @foreach(DB::table('usermenu')->where('userid',Auth::user()->userid)->where('menuid',503)->limit(1)->get() as $data_umu)
+                        @if($data_umu->ability == 1)
                         <li class="kt-menu__item kt-menu__item--submenu {{ set_active($rekap_perbendaharaan) }}" aria-haspopup="true" data-ktmenu-submenu-toggle="hover">
                             <a href="javascript:;" class="kt-menu__link kt-menu__toggle">
                                 <i class="kt-menu__link-bullet kt-menu__link-bullet--dot">
@@ -1692,6 +1753,11 @@
                                 </ul>
                             </div>
                         </li>
+                        @endif
+                        @endforeach
+
+                        @foreach(DB::table('usermenu')->where('userid',Auth::user()->userid)->where('menuid',510)->limit(1)->get() as $data_umu)
+                        @if($data_umu->ability == 1)
                         <li class="kt-menu__item kt-menu__item--submenu {{ set_active($report_perbendaharaan) }}" aria-haspopup="true" data-ktmenu-submenu-toggle="hover">
                             <a href="javascript:;" class="kt-menu__link kt-menu__toggle">
                                 <i class="kt-menu__link-bullet kt-menu__link-bullet--dot">
@@ -1753,10 +1819,13 @@
                                 </ul>
                             </div>
                         </li>
+                        @endif
+                        @endforeach
                     </ul>
                 </div>
             </li>
-
+            @endif
+            @if(substr_count(Auth::user()->userap,"A") > 0)
             <li class="kt-menu__item  kt-menu__item--submenu {{ set_active($kontroler) }}" aria-haspopup="true" data-ktmenu-submenu-toggle="hover">
                 <a href="javascript:;" class="kt-menu__link kt-menu__toggle">
                     <span class="kt-menu__link-icon">
@@ -1775,6 +1844,8 @@
                                 </span>
                             </span>
                         </li>
+                        @foreach(DB::table('usermenu')->where('userid',Auth::user()->userid)->where('menuid',201)->limit(1)->get() as $data_umu)
+                        @if($data_umu->ability == 1)
                         <li class="kt-menu__item kt-menu__item{{ set_active_submenu($jurnal_umum) }}" aria-haspopup="true">
                             <a href="{{ route('jurnal_umum.index') }}" class="kt-menu__link">
                                 <i class="kt-menu__link-bullet kt-menu__link-bullet--dot">
@@ -1785,6 +1856,11 @@
                                 </span>
                             </a>
                         </li>
+                        @endif
+                        @endforeach
+
+                        @foreach(DB::table('usermenu')->where('userid',Auth::user()->userid)->where('menuid',202)->limit(1)->get() as $data_umu)
+                        @if($data_umu->ability == 1)
                         <li class="kt-menu__item kt-menu__item{{ set_active_submenu($verifikasi_kas_bank) }}" aria-haspopup="true">
                             <a href="{{route('postingan_kas_bank.verkass')}}" class="kt-menu__link">
                                 <i class="kt-menu__link-bullet kt-menu__link-bullet--dot">
@@ -1795,6 +1871,11 @@
                                 </span>
                             </a>
                         </li>
+                        @endif
+                        @endforeach
+
+                        @foreach(DB::table('usermenu')->where('userid',Auth::user()->userid)->where('menuid',203)->limit(1)->get() as $data_umu)
+                        @if($data_umu->ability == 1)
                         <li class="kt-menu__item kt-menu__item{{ set_active_submenu($postingan_kas_bank) }}" aria-haspopup="true">
                             <a href="{{ route('postingan_kas_bank.index') }}" class="kt-menu__link">
                                 <i class="kt-menu__link-bullet kt-menu__link-bullet--dot">
@@ -1805,6 +1886,11 @@
                                 </span>
                             </a>
                         </li>
+                        @endif
+                        @endforeach
+
+                        @foreach(DB::table('usermenu')->where('userid',Auth::user()->userid)->where('menuid',204)->limit(1)->get() as $data_umu)
+                        @if($data_umu->ability == 1)
                         <li class="kt-menu__item kt-menu__item--submenu {{ set_active($treassury) }}" aria-haspopup="true" data-ktmenu-submenu-toggle="hover">
                             <a href="javascript:;" class="kt-menu__link kt-menu__toggle">
                                 <i class="kt-menu__link-bullet kt-menu__link-bullet--dot">
@@ -1834,6 +1920,11 @@
                                 </ul>
                             </div>
                         </li>
+                        @endif
+                        @endforeach
+
+                        @foreach(DB::table('usermenu')->where('userid',Auth::user()->userid)->where('menuid',205)->limit(1)->get() as $data_umu)
+                        @if($data_umu->ability == 1)
                         <li class="kt-menu__item kt-menu__item--submenu {{ set_active($report_kontroler) }}" aria-haspopup="true" data-ktmenu-submenu-toggle="hover">
                             <a href="javascript:;" class="kt-menu__link kt-menu__toggle">
                                 <i class="kt-menu__link-bullet kt-menu__link-bullet--dot">
@@ -1919,6 +2010,11 @@
                                 </ul>
                             </div>
                         </li>
+                        @endif
+                        @endforeach
+
+                        @foreach(DB::table('usermenu')->where('userid',Auth::user()->userid)->where('menuid',206)->limit(1)->get() as $data_umu)
+                        @if($data_umu->ability == 1)
                         <li class="kt-menu__item kt-menu__item--submenu {{ set_active($tabel) }}" aria-haspopup="true" data-ktmenu-submenu-toggle="hover">
                             <a href="javascript:;" class="kt-menu__link kt-menu__toggle">
                                 <i class="kt-menu__link-bullet kt-menu__link-bullet--dot">
@@ -1988,10 +2084,13 @@
                                 </ul>
                             </div>
                         </li>
+                        @endif
+                        @endforeach
                     </ul>
                 </div>
             </li>
-            
+            @endif
+            @if(substr_count(Auth::user()->userap,"B") > 0)            
             <li class="kt-menu__item  kt-menu__item--submenu" aria-haspopup="true" data-ktmenu-submenu-toggle="hover">
                 <a href="javascript:;" class="kt-menu__link kt-menu__toggle">
                     <span class="kt-menu__link-icon">
@@ -2063,7 +2162,8 @@
                     </ul>
                 </div>
             </li>
-
+            @endif
+            @if(Auth::user()->userlv == 0 or Auth::user()->userlv == 1) 
             <li class="kt-menu__item  kt-menu__item--submenu {{ set_active($administrator) }}" aria-haspopup="true" data-ktmenu-submenu-toggle="hover">
                 <a href="javascript:;" class="kt-menu__link kt-menu__toggle">
                     <span class="kt-menu__link-icon">
@@ -2082,6 +2182,7 @@
                                 </span>
                             </span>
                         </li>
+                        @if(Auth::user()->userlv == 0) 
                         <li class="kt-menu__item kt-menu__item{{ set_active_submenu($set_user) }}" aria-haspopup="true">
                             <a href="{{route('set_user.index')}}" class="kt-menu__link">
                                 <i class="kt-menu__link-bullet kt-menu__link-bullet--dot">
@@ -2106,6 +2207,8 @@
                                 <span class="kt-menu__link-text">Tabel Menu</span>
                             </a>
                         </li>
+                        @endif
+                        @if(Auth::user()->userlv == 0 or Auth::user()->userlv == 1)
                         <li class="kt-menu__item kt-menu__item{{ set_active_submenu($password_administrator) }}" aria-haspopup="true">
                             <a href="{{route('password_administrator.index')}}" class="kt-menu__link">
                                 <i class="kt-menu__link-bullet kt-menu__link-bullet--dot">
@@ -2114,9 +2217,11 @@
                                 <span class="kt-menu__link-text">Password Administration</span>
                             </a>
                         </li>
+                        @endif
                     </ul>
                 </div>
             </li>
+            @endif
         </ul>
     </div>
 </div>
