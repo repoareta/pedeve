@@ -88,7 +88,7 @@ class SetMenuController extends Controller
             $userid = $data->userid;
             $usernm = $data->usernm;
         }
-        $data_menuid = DB::select("select a.*,b.menunm from usermenu a, dftmenu b where a.userid='$no' and a.menuid=b.menuid order by b.menuid asc");
+        $data_menuid = DB::select("select a.*,b.menunm from usermenu a, dftmenu b where a.userid='$no' and a.ability='1' and a.menuid=b.menuid order by b.menuid asc");
         return view('set_menu.create',compact('data_menuid','userid','usernm'));
     }
     public function store(Request $request)
