@@ -544,6 +544,7 @@
                     'penempatan_deposito.search.index',
                     'penempatan_deposito.create',
                     'penempatan_deposito.edit',
+                    'penempatan_deposito.depopjg',
                     'penempatan_deposito.rekaprc',
                 ); // isi nama semua route penempatan deposito
                 $perhitungan = array(
