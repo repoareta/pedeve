@@ -31,8 +31,8 @@
 			<h3 class="kt-portlet__head-title">
 				Tabel Umum Panjar Dinas
 			</h3>
-			@foreach(DB::table('usermenu')->where('userid',Auth::user()->userid)->where('menuid',703)->limit(1)->get() as $data_akses)
 			<div class="kt-portlet__head-actions" style="font-size: 2rem;">
+				@foreach(DB::table('usermenu')->where('userid',Auth::user()->userid)->where('menuid',703)->limit(1)->get() as $data_akses)
 				@if($data_akses->tambah == 1)
 				<a href="{{ route('perjalanan_dinas.create') }}">
 					<span class="kt-font-success" data-toggle="kt-tooltip" data-placement="top" title="Tambah Data">
@@ -62,9 +62,9 @@
 					<i class="fas fa-print"></i>
 				</span>
 				@endif
+				@endforeach
 
 			</div>
-			@endforeach
 		</div>
 		<div class="kt-portlet__head-toolbar">
 			<div class="kt-portlet__head-wrapper">

@@ -120,7 +120,11 @@
 								<div class="col-2"></div>
 								<div class="col-10">
 									<a  href="{{route('kas_bank_kontroler.index')}}" class="btn btn-warning"><i class="fa fa-reply" aria-hidden="true"></i>Cancel</a>
+									@foreach(DB::table('usermenu')->where('userid',Auth::user()->userid)->where('menuid',206)->limit(1)->get() as $data_akses)
+									@if($data_akses->rubah == 1)
 									<button type="submit" class="btn btn-brand"><i class="fa fa-check" aria-hidden="true"></i>Save</button>
+									@endif
+									@endforeach
 								</div>
 							</div>
 						</div>

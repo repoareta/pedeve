@@ -188,7 +188,11 @@
 								<div class="col-2"></div>
 								<div class="col-10">
 									<a  href="{{route('pembayaran_gaji.index')}}" class="btn btn-warning"><i class="fa fa-reply" aria-hidden="true"></i>Cancel</a>
+									@foreach(DB::table('usermenu')->where('userid',Auth::user()->userid)->where('menuid',502)->limit(1)->get() as $data_akses)
+									@if($data_akses->rubah == 1)
 									<button type="submit" class="btn btn-brand"><i class="fa fa-check" aria-hidden="true"></i>Save</button>
+									@endif
+									@endforeach
 								</div>
 							</div>
 						</div>
@@ -313,7 +317,11 @@
 							<div class="col-2"></div>
 							<div class="col-10">
 								<button type="reset"  class="btn btn-warning"  data-dismiss="modal"><i class="fa fa-reply" aria-hidden="true"></i>Cancel</button>
+								@foreach(DB::table('usermenu')->where('userid',Auth::user()->userid)->where('menuid',502)->limit(1)->get() as $data_akses)
+								@if($data_akses->rubah == 1)
 								<button type="submit" class="btn btn-brand"><i class="fa fa-check" aria-hidden="true"></i>Save</button>
+								@endif
+								@endforeach
 							</div>
 						</div>
 					</div>
@@ -349,7 +357,11 @@
 							<div class="col-2"></div>
 							<div class="col-10">
 								<button type="reset"  class="btn btn-warning"  data-dismiss="modal"><i class="fa fa-reply" aria-hidden="true"></i>Cancel</button>
+								@foreach(DB::table('usermenu')->where('userid',Auth::user()->userid)->where('menuid',502)->limit(1)->get() as $data_akses)
+								@if($data_akses->rubah == 1)
 								<button type="submit" class="btn btn-brand"><i class="fa fa-check" aria-hidden="true"></i>Save</button>
+								@endif
+								@endforeach
 							</div>
 						</div>
 					</div>
@@ -476,7 +488,11 @@
 							<div class="col-2"></div>
 							<div class="col-10">
 								<button type="reset"  class="btn btn-warning"  data-dismiss="modal"><i class="fa fa-reply" aria-hidden="true"></i>Cancel</button>
+								@foreach(DB::table('usermenu')->where('userid',Auth::user()->userid)->where('menuid',502)->limit(1)->get() as $data_akses)
+								@if($data_akses->rubah == 1)
 								<button type="submit" class="btn btn-brand"><i class="fa fa-check" aria-hidden="true"></i>Save</button>
+								@endif
+								@endforeach
 							</div>
 						</div>
 					</div>

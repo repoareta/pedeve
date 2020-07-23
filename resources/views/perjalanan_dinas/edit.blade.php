@@ -180,7 +180,11 @@
 						<div class="col-2"></div>
 						<div class="col-10">
 							<a  href="{{ url()->previous() }}" class="btn btn-warning"><i class="fa fa-reply" aria-hidden="true"></i> Batal</a>
+							@foreach(DB::table('usermenu')->where('userid',Auth::user()->userid)->where('menuid',703)->limit(1)->get() as $data_akses)
+							@if($data_akses->rubah == 1)
 							<button type="submit" class="btn btn-brand"><i class="fa fa-check" aria-hidden="true"></i> Simpan</button>
+							@endif
+							@endforeach
 						</div>
 					</div>
 				</div>
@@ -298,7 +302,11 @@
 				</div>
 				<div class="modal-footer">
 					<button type="button" class="btn btn-warning" data-dismiss="modal"><i class="fa fa-reply" aria-hidden="true"></i> Batal</button>
+					@foreach(DB::table('usermenu')->where('userid',Auth::user()->userid)->where('menuid',703)->limit(1)->get() as $data_akses)
+					@if($data_akses->rubah == 1)
 					<button type="submit" class="btn btn-primary"><i class="fa fa-check" aria-hidden="true"></i> Simpan</button>
+					@endif
+					@endforeach
 				</div>
 			</form>
 		</div>
