@@ -162,26 +162,35 @@
 						<div class="kt-portlet__head-toolbar">
 							<div class="kt-portlet__head-wrapper">
 								<div class="kt-portlet__head-actions">
+								@foreach(DB::table('usermenu')->where('userid',Auth::user()->userid)->where('menuid',202)->limit(1)->get() as $data_akses)
 								@if($docno<>"")
+									@if($data_akses->tambah == 1)
 									<a href="#" data-toggle="modal" data-target="#kt_modal_4">
 										<span style="font-size: 2em;" class="kt-font-success">
 											<i class="fas fa-plus-circle"></i>
 										</span>
 									</a>
-					
+									@endif
+
+									@if($data_akses->rubah == 1)					
 									<a href="#" id="editRow">
 										<span style="font-size: 2em;" class="kt-font-warning">
 											<i class="fas fa-edit"></i>
 										</span>
 									</a>
+									@endif
+
 								@endif
 									@if($verified == "N")
-									<a href="#" id="deleteRow">
-										<span style="font-size: 2em;" class="kt-font-danger">
-											<i class="fas fa-times-circle"></i>
-										</span>
-									</a>
+										@if($data_akses->hapus == 1)
+										<a href="#" id="deleteRow">
+											<span style="font-size: 2em;" class="kt-font-danger">
+												<i class="fas fa-times-circle"></i>
+											</span>
+										</a>
+										@endif
 									@endif
+								@endforeach
 								</div>
 							</div>
 						</div>

@@ -33,11 +33,15 @@
 			</h3>			
 			<div class="kt-portlet__head-toolbar">
 				<div class="kt-portlet__head-wrapper">
+					@foreach(DB::table('usermenu')->where('userid',Auth::user()->userid)->where('menuid',204)->limit(1)->get() as $data_akses)
+					@if($data_akses->cetak == 1)
 					<div class="kt-portlet__head-actions">
 						<span style="font-size: 2em;" class="kt-font-info pointer-link" data-toggle="kt-tooltip" data-placement="top" title="Cetak Data">
 							<i class="fas fa-print" id="exportRow"></i>
 						</span>
 					</div>
+					@endif
+					@endforeach
 				</div>
 			</div>
 		</div>

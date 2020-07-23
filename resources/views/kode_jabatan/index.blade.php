@@ -34,19 +34,27 @@
 			</h3>
 			
 			<div class="kt-portlet__head-actions" style="font-size: 2rem;">
+				@foreach(DB::table('usermenu')->where('userid',Auth::user()->userid)->where('menuid',600)->limit(1)->get() as $data_akses)
+				@if($data_akses->tambah == 1)
 				<a href="{{ route('kode_jabatan.create') }}">
 					<span class="kt-font-success" data-toggle="kt-tooltip" data-placement="top" title="Tambah Data">
 						<i class="fas fa-plus-circle"></i>
 					</span>
 				</a>
+				@endif
 
-				<span class="kt-font-warning pointer-link" id="editRow" data-toggle="kt-tooltip" data-placement="top" title="Ubah Data">
+				@if($data_akses->rubah == 1 or $data_akses->lihat == 1)
+				<span class="kt-font-warning pointer-link" id="editRow" data-toggle="kt-tooltip" data-placement="top" title="Ubah Data Atau Lihat Data">
 					<i class="fas fa-edit"></i>
 				</span>
+				@endif
 
+				@if($data_akses->hapus == 1)
 				<span class="kt-font-danger pointer-link" id="deleteRow" data-toggle="kt-tooltip" data-placement="top" title="Hapus Data">
 					<i class="fas fa-times-circle"></i>
 				</span>
+				@endif
+				@endforeach
 			</div>
 		</div>
 		<div class="kt-portlet__head-toolbar">

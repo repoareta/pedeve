@@ -34,22 +34,33 @@
 			<div class="kt-portlet__head-toolbar">
 				<div class="kt-portlet__head-wrapper">
 					<div class="kt-portlet__head-actions">
+							@foreach(DB::table('usermenu')->where('userid',Auth::user()->userid)->where('menuid',721)->limit(1)->get() as $data_akses)
+							@if($data_akses->tambah == 1)
 							<a href="{{ route('uang_muka_kerja.create') }}">
 								<span style="font-size: 2em;" class="kt-font-success" data-toggle="kt-tooltip" data-placement="top" title="Tambah Data">
 									<i class="fas fa-plus-circle"></i>
 								</span>
 							</a>
+							@endif
+
+							@if($data_akses->rubah == 1)
 							<span style="font-size: 2em;" class="kt-font-warning pointer-link" data-toggle="kt-tooltip" data-placement="top" title="Ubah Data">
 								<i class="fas fa-edit" id="btn-edit-umk"></i>
 							</span>
+							@endif
 
+							@if($data_akses->hapus == 1)
 							<span style="font-size: 2em;"  class="kt-font-danger pointer-link" data-toggle="kt-tooltip" data-placement="top" title="Hapus Data">
 								<i class="fas fa-times-circle" id="deleteRow"></i>
 							</span>
+							@endif
 
+							@if($data_akses->cetak == 1)
 							<span style="font-size: 2em;" class="kt-font-info pointer-link" data-toggle="kt-tooltip" data-placement="top" title="Cetak Data">
 								<i class="fas fa-print" id="reportRow"></i>
 							</span>
+							@endif
+							@endforeach
 					</div>
 				</div>
 			</div>

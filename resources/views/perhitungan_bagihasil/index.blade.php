@@ -33,10 +33,14 @@
 			</h3>			
 			<div class="kt-portlet__head-toolbar">
 				<div class="kt-portlet__head-wrapper">
-					<div class="kt-portlet__head-actions">		
+					<div class="kt-portlet__head-actions">
+						@foreach(DB::table('usermenu')->where('userid',Auth::user()->userid)->where('menuid',509)->limit(1)->get() as $data_akses)
+						@if($data_akses->hapus == 1)		
 						<span style="font-size: 2em;" class="kt-font-danger pointer-link" id="deleteRow" data-toggle="kt-tooltip" data-placement="top" title="Hapus Data">
 							<i class="fas fa-trash"></i>
 						</span>
+						@endif
+						@endforeach
 						<!-- <span style="font-size: 2em;" class="kt-font-info pointer-link" id="exportRow" data-toggle="kt-tooltip" data-placement="top" title="Cetak Data">
 							<i class="fas fa-print"></i>
 						</span> -->

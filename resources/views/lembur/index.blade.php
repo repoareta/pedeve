@@ -34,19 +34,27 @@
 			<div class="kt-portlet__head-toolbar">
 				<div class="kt-portlet__head-wrapper">
 					<div class="kt-portlet__head-actions">
+						@foreach(DB::table('usermenu')->where('userid',Auth::user()->userid)->where('menuid',301)->limit(1)->get() as $data_akses)
+						@if($data_akses->tambah == 1)
 						<a href="{{ route('lembur.create') }}">
 							<span style="font-size: 2em;" class="kt-font-success">
 								<i class="fas fa-plus-circle"></i>
 							</span>
 						</a>
-	
-							<span style="font-size: 2em;" class="kt-font-warning pointer-link" data-toggle="kt-tooltip" data-placement="top" title="Ubah data">
+						@endif
+
+						@if($data_akses->rubah == 1 or $data_akses->lihat == 1)	
+							<span style="font-size: 2em;" class="kt-font-warning pointer-link" data-toggle="kt-tooltip" data-placement="top" title="Ubah data Atau Lihat Data">
 								<i class="fas fa-edit" id="editRow"></i>
 							</span>
-	
+						@endif
+
+						@if($data_akses->hapus == 1)	
 							<span style="font-size: 2em;" class="kt-font-danger pointer-link" data-toggle="kt-tooltip" data-placement="top" title="Hapus data">
 								<i class="fas fa-times-circle" id="deleteRow"></i>
 							</span>
+						@endif
+						@endforeach
 					</div>
 				</div>
 			</div>
