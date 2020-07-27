@@ -15,6 +15,9 @@ use App\Http\Requests\GcgPermintaanStore;
 // Load Plugin
 use Alert;
 use Auth;
+use Carbon\Carbon;
+use PDF;
+use DB;
 
 class GcgGratifikasiController extends Controller
 {
@@ -100,7 +103,53 @@ class GcgGratifikasiController extends Controller
 
     public function reportPersonal()
     {
-        return view('gcg.gratifikasi.report_personal');
+        $gratifikasi_tahun = GcgGratifikasi::selectRaw("extract(year from created_at) AS year")
+        ->groupBy('year')
+        ->orderBy('year', 'desc')
+        ->get();
+
+        return view('gcg.gratifikasi.report_personal', compact('gratifikasi_tahun'));
+    }
+
+    public function reportPersonalExport(Request $request)
+    {
+        $gratifikasi_list = GcgGratifikasi::where('jenis_gratifikasi', $request->bentuk_gratifikasi)
+        ->where(DB::raw("extract(month from created_at)"), $request->bulan)
+        ->where(DB::raw("extract(year from created_at)"), $request->tahun)
+        ->get();
+
+        // return default PDF
+        $pdf = PDF::loadview('gcg.gratifikasi.report_personal_export_pdf', compact('gratifikasi_list'))
+        ->setOptions(['isPhpEnabled' => true]);
+
+        return $pdf->stream('gcg_report_personal_'.date('Y-m-d H:i:s').'.pdf');
+    }
+
+    public function indexJsonReportPersonal(Request $request)
+    {
+        $gratifikasi_list = GcgGratifikasi::orderBy('created_at', 'desc');
+
+        return datatables()->of($gratifikasi_list)
+            ->filter(function ($query) use ($request) {
+                if ($request->has('bentuk_gratifikasi')) {
+                    $query->where('jenis_gratifikasi', 'like', "%{$request->get('bentuk_gratifikasi')}%");
+                }
+
+                if ($request->has('bulan')) {
+                    $query->where('created_at', 'like', "%{$request->get('bulan')}%");
+                }
+
+                if ($request->has('tahun')) {
+                    $query->where('created_at', 'like', "%{$request->get('tahun')}%");
+                }
+            })
+            ->addColumn('tanggal_gratifikasi', function ($row) {
+                return Carbon::parse($row->tgl_gratifikasi)->translatedFormat('d F Y');
+            })
+            ->addColumn('tanggal_submit', function ($row) {
+                return Carbon::parse($row->created_at)->translatedFormat('d F Y');
+            })
+            ->make(true);
     }
 
     public function reportManagement()
