@@ -114,7 +114,7 @@
 @endsection
 
 @section('scripts')
-{!! JsValidator::formRequest('App\Http\Requests\PenerimaanStore', '#formPenerimaan') !!}
+{!! JsValidator::formRequest('App\Http\Requests\GcgPenerimaanStore', '#formPenerimaan') !!}
 
 <script type="text/javascript">
 	$(document).ready(function () {

@@ -8,7 +8,9 @@ use Illuminate\Http\Request;
 use App\Models\GcgGratifikasi;
 
 //load form request (for validation)
-use App\Http\Requests\PenerimaanStore;
+use App\Http\Requests\GcgPenerimaanStore;
+use App\Http\Requests\GcgPemberianStore;
+use App\Http\Requests\GcgPermintaanStore;
 
 // Load Plugin
 use Alert;
@@ -32,7 +34,7 @@ class GcgGratifikasiController extends Controller
         return view('gcg.gratifikasi.penerimaan');
     }
 
-    public function penerimaanStore(PenerimaanStore $request, GcgGratifikasi $penerimaan)
+    public function penerimaanStore(GcgPenerimaanStore $request, GcgGratifikasi $penerimaan)
     {
         $penerimaan->nopeg             = Auth::user()->nopeg;
         $penerimaan->gift_last_month   = $request->penerimaan_bulan_lalu;
@@ -55,7 +57,7 @@ class GcgGratifikasiController extends Controller
         return view('gcg.gratifikasi.pemberian');
     }
 
-    public function pemberianStore(Request $request, GcgGratifikasi $pemberian)
+    public function pemberianStore(GcgPemberianStore $request, GcgGratifikasi $pemberian)
     {
         $pemberian->nopeg             = Auth::user()->nopeg;
         $pemberian->gift_last_month   = $request->pemberian_bulan_lalu;
@@ -78,7 +80,7 @@ class GcgGratifikasiController extends Controller
         return view('gcg.gratifikasi.permintaan');
     }
 
-    public function permintaanStore(Request $request, GcgGratifikasi $permintaan)
+    public function permintaanStore(GcgPermintaanStore $request, GcgGratifikasi $permintaan)
     {
         $permintaan->nopeg             = Auth::user()->nopeg;
         $permintaan->gift_last_month   = $request->permintaan_bulan_lalu;
