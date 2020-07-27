@@ -9,7 +9,6 @@ use App\Models\GcgGratifikasi;
 
 //load form request (for validation)
 use App\Http\Requests\PenerimaanStore;
-use App\Http\Requests\AgamaUpdate;
 
 // Load Plugin
 use Alert;
@@ -33,7 +32,7 @@ class GcgGratifikasiController extends Controller
         return view('gcg.gratifikasi.penerimaan');
     }
 
-    public function penerimaanStore(Request $request, GcgGratifikasi $penerimaan)
+    public function penerimaanStore(PenerimaanStore $request, GcgGratifikasi $penerimaan)
     {
         $penerimaan->nopeg             = Auth::user()->nopeg;
         $penerimaan->gift_last_month   = $request->penerimaan_bulan_lalu;
