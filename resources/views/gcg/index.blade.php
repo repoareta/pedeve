@@ -28,7 +28,7 @@
 				<i class="kt-font-brand flaticon2-line-chart"></i>
 			</span>
 			<h3 class="kt-portlet__head-title">
-				Personal Info - Sekretaris Perseroan
+				{{ Auth::user()->usernm.' - '.$jabatan->keterangan }}
 			</h3>			
 		</div>
 	</div>
@@ -44,15 +44,16 @@
 				</tr>
 			</thead>
 			<tbody>
-				<tr>
-					<td>Bulan 1</td>
-					<td>Penerimaan 1</td>
-					<td>Permintaan 1</td>
-					<td>Pemberian 1</td>
-				</tr>
+				@foreach ($gratifikasi_list as $gratifikasi)
+					<tr>
+						<td>{{ bulan($gratifikasi->month).' '.$gratifikasi->year}}</td>
+						<td>{{ $gratifikasi->penerimaan }}</td>
+						<td>{{ $gratifikasi->permintaan }}</td>
+						<td>{{ $gratifikasi->pemberian }}</td>
+					</tr>
+				@endforeach
 			</tbody>
 		</table>
-
 		<!--end: Datatable -->
 	</div>
 </div>

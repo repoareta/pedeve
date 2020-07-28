@@ -39,7 +39,7 @@
 			</div>
 		</div>
 			<div class="kt-portlet__body">
-				<form class="kt-form kt-form--label-right" id="formAgama" action="{{ route('gcg.gratifikasi.permintaan.store') }}" method="POST">
+				<form class="kt-form kt-form--label-right" id="formPermintaan" action="{{ route('gcg.gratifikasi.permintaan.store') }}" method="POST">
 					@csrf
 					<div class="form-group row">
 						<label for="permintaan_bulan_lalu" class="col-3 col-form-label">Tidak ada permintaan bulan lalu</label>
@@ -114,7 +114,7 @@
 @endsection
 
 @section('scripts')
-{{-- {!! JsValidator::formRequest('App\Http\Requests\InsentifMasterStore', '#formInsentifMaster') !!} --}}
+{!! JsValidator::formRequest('App\Http\Requests\GcgPermintaanStore', '#formPermintaan') !!}
 
 <script type="text/javascript">
 	$(document).ready(function () {
