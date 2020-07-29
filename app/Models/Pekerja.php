@@ -36,4 +36,9 @@ class Pekerja extends Model
     {
         return $this->hasMany('App\Models\Jabatan', 'nopeg')->latest()->first();
     }
+
+    public function jabatan_latest_one()
+    {
+        return $this->hasOne('App\Models\Jabatan', 'nopeg')->latest();
+    }
 }

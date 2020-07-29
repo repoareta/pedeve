@@ -35,23 +35,7 @@
 				Gratifikasi
 			</h3>
 			
-			<div class="kt-portlet__head-actions">
-				<div class="btn-group" role="group" aria-label="Basic example">
-					<a class="btn btn-outline-secondary" href="{{ route('gcg.gratifikasi.index') }}" role="button">Outstanding</a>
-					<a class="btn btn-outline-secondary" href="{{ route('gcg.gratifikasi.penerimaan') }}" role="button">Penerimaan</a>
-					<a class="btn btn-outline-secondary" href="{{ route('gcg.gratifikasi.pemberian') }}" role="button">Pemberian</a>
-					<a class="btn btn-outline-secondary" href="{{ route('gcg.gratifikasi.permintaan') }}" role="button">Permintaan</a>
-					<div class="btn-group" role="group">
-						<button id="btnGroupVerticalDrop1" type="button" class="btn btn-outline-secondary dropdown-toggle active" data-toggle="dropdown" aria-haspopup="true" aria-expanded="false">
-							Report
-						</button>
-						<div class="dropdown-menu" aria-labelledby="btnGroupVerticalDrop1">
-							<a class="dropdown-item" href="{{ route('gcg.gratifikasi.report.personal') }}">Personal</a>
-							<a class="dropdown-item" href="{{ route('gcg.gratifikasi.report.management') }}">Management</a>
-						</div>
-					</div>
-				</div>
-			</div>
+			@include('gcg.gratifikasi.menu')
 		</div>
 		<div class="kt-portlet__head-toolbar">
 			<div class="kt-portlet__head-wrapper">
@@ -59,11 +43,11 @@
 		</div>
 	</div>
 	<div class="kt-portlet__body">
-		<form action="{{ route('gcg.gratifikasi.report.personal.export') }}" target="_blank" class="kt-form col-12" id="search-form" method="POST">
+		<form action="{{ route('gcg.gratifikasi.report.personal.export') }}" target="_blank" class="kt-form col-12 kt-form--label-right" id="search-form" method="POST">
 			@csrf
 			<div class="form-group row">
-				<label for="spd-input" class="col-form-label">Bentuk Gratifikasi</label>
-				<div class="col-2">
+				<label for="spd-input" class="col-2 col-form-label">Bentuk Gratifikasi</label>
+				<div class="col-4">
 					<select class="form-control kt-select2" name="bentuk_gratifikasi" id="bentuk_gratifikasi">
 						<option value="">- Pilih -</option>
 						<option value="penerimaan">Penerimaan</option>
@@ -71,9 +55,11 @@
 						<option value="permintaan">Permintaan</option>
 					</select>
 				</div>
+			</div>
 
-				<label for="spd-input" class="col-form-label">Bulan</label>
-				<div class="col-2">
+			<div class="form-group row">
+				<label for="spd-input" class="col-2 col-form-label">Bulan</label>
+				<div class="col-4">
 					<select class="form-control kt-select2" name="bulan" id="bulan">
 						<option value="">- Pilih Bulan -</option>
 						<option value="01">Januari</option>
@@ -90,9 +76,11 @@
 						<option value="12">Desember</option>
 					</select>
 				</div>
+			</div>
 
-				<label for="spd-input" class="col-form-label">Tahun</label>
-				<div class="col-2">
+			<div class="form-group row">
+				<label for="spd-input" class="col-2 col-form-label">Tahun</label>
+				<div class="col-4">
 					<select class="form-control kt-select2" name="tahun" id="tahun">
 						<option value="">- Pilih Tahun -</option>
 						@foreach ($gratifikasi_tahun as $tahun)
@@ -100,9 +88,12 @@
 						@endforeach
 					</select>
 				</div>
+			</div>
 
-				<div class="col-3">
-					<button type="submit" class="btn btn-brand"><i class="fa fa-search" aria-hidden="true"></i> Cari</button>
+			<div class="form-group row">
+				<div class="col-2"></div>
+				<div class="col-4">
+					<button type="submit" class="btn btn-brand"><i class="fa fa-search" aria-hidden="true"></i> Tampilkan</button>
 					<button type="button" onclick="this.form.submit()" class="btn btn-danger"><i class="fa fa-print" aria-hidden="true"></i> Cetak .PDF</button>
 				</div>
 			</div>

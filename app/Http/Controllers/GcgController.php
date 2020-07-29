@@ -27,8 +27,8 @@ class GcgController extends Controller
         ->first();
 
         $gratifikasi_list = GcgGratifikasi::selectRaw("
-            extract(year from created_at) AS year, 
-            extract(month from created_at) AS month, 
+            extract(year from tgl_gratifikasi) AS year, 
+            extract(month from tgl_gratifikasi) AS month, 
             COUNT(CASE WHEN (jenis_gratifikasi = 'pemberian') THEN jenis_gratifikasi ELSE NULL END) AS pemberian,
             COUNT(CASE WHEN (jenis_gratifikasi = 'penerimaan') THEN jenis_gratifikasi ELSE NULL END) AS penerimaan,
             COUNT(CASE WHEN (jenis_gratifikasi = 'permintaan') THEN jenis_gratifikasi ELSE NULL END) AS permintaan
