@@ -113,11 +113,17 @@ class GcgGratifikasiController extends Controller
 
     public function reportPersonalExport(Request $request)
     {
-        $gratifikasi_list = GcgGratifikasi::where('jenis_gratifikasi', $request->bentuk_gratifikasi)
-        ->where(DB::raw("extract(month from created_at)"), $request->bulan)
-        ->where(DB::raw("extract(year from created_at)"), $request->tahun)
+        $gratifikasi_list = GcgGratifikasi::when(request('bentuk_gratifikasi'), function ($q) {
+            return $q->where('jenis_gratifikasi', request('bentuk_gratifikasi'));
+        })
+        ->when(request('bulan'), function ($q) {
+            return $q->where(DB::raw('extract(month from tgl_gratifikasi)'), request('bulan'));
+        })
+        ->when(request('tahun'), function ($q) {
+            return $q->where(DB::raw('extract(year from tgl_gratifikasi)'), request('tahun'));
+        })
         ->get();
-
+        
         // return default PDF
         $pdf = PDF::loadview('gcg.gratifikasi.report_personal_export_pdf', compact('gratifikasi_list'))
         ->setOptions(['isPhpEnabled' => true]);
@@ -131,16 +137,16 @@ class GcgGratifikasiController extends Controller
 
         return datatables()->of($gratifikasi_list)
             ->filter(function ($query) use ($request) {
-                if ($request->has('bentuk_gratifikasi')) {
-                    $query->where('jenis_gratifikasi', 'like', "%{$request->get('bentuk_gratifikasi')}%");
+                if (request('bentuk_gratifikasi')) {
+                    $query->where('jenis_gratifikasi', request('bentuk_gratifikasi'));
                 }
 
-                if ($request->has('bulan')) {
-                    $query->where('created_at', 'like', "%{$request->get('bulan')}%");
+                if (request('bulan')) {
+                    $query->where(DB::raw('extract(month from tgl_gratifikasi)'), request('bulan'));
                 }
 
-                if ($request->has('tahun')) {
-                    $query->where('created_at', 'like', "%{$request->get('tahun')}%");
+                if (request('tahun')) {
+                    $query->where(DB::raw('extract(year from tgl_gratifikasi)'), request('tahun'));
                 }
             })
             ->addColumn('tanggal_gratifikasi', function ($row) {
@@ -152,9 +158,21 @@ class GcgGratifikasiController extends Controller
             ->make(true);
     }
 
-    public function reportManagement()
+    public function reportManagement(Request $request)
     {
-        return view('gcg.gratifikasi.report_management');
+        // dd($request->all());
+
+        $gratifikasi_list = GcgGratifikasi::when(request('bentuk_gratifikasi'), function ($q) {
+            return $q->where('jenis_gratifikasi', request('bentuk_gratifikasi'));
+        })
+        ->get();
+
+        $gratifikasi_tahun = GcgGratifikasi::selectRaw("extract(year from created_at) AS year")
+        ->groupBy('year')
+        ->orderBy('year', 'desc')
+        ->get();
+
+        return view('gcg.gratifikasi.report_management', compact('gratifikasi_tahun', 'gratifikasi_list'));
     }
 
     public function edit(GcgGratifikasi $gratifikasi)

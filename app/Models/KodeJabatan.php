@@ -8,7 +8,8 @@ use App\Traits\CompositeKey;
 class KodeJabatan extends Model
 {
     use CompositeKey;
-    
+    use \Awobaz\Compoships\Compoships;
+
     protected $table = "sdm_tbl_kdjab";
     protected $primaryKey = ['kdbag', 'kdjab'];
     protected $keyType = 'string';

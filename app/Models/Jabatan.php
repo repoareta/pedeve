@@ -8,6 +8,7 @@ use App\Traits\CompositeKey;
 class Jabatan extends Model
 {
     use CompositeKey;
+    use \Awobaz\Compoships\Compoships;
     
     protected $table = "sdm_jabatan";
     protected $primaryKey = ['nopeg', 'kdbag', 'kdjab'];
@@ -29,5 +30,10 @@ class Jabatan extends Model
     public function kode_jabatan()
     {
         return $this->belongsTo('App\Models\KodeJabatan', 'kdjab', 'kdbag');
+    }
+
+    public function kode_jabatan_new()
+    {
+        return $this->belongsTo('App\Models\KodeJabatan', ['kdjab', 'kdbag'], ['kdjab', 'kdbag']);
     }
 }
