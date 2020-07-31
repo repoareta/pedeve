@@ -133,7 +133,8 @@ class GcgGratifikasiController extends Controller
 
     public function indexJsonReportPersonal(Request $request)
     {
-        $gratifikasi_list = GcgGratifikasi::orderBy('created_at', 'desc');
+        $gratifikasi_list = GcgGratifikasi::where('nopeg', Auth::user()->nopeg)
+        ->orderBy('created_at', 'desc');
 
         return datatables()->of($gratifikasi_list)
             ->filter(function ($query) use ($request) {
@@ -160,10 +161,14 @@ class GcgGratifikasiController extends Controller
 
     public function reportManagement(Request $request)
     {
-        // dd($request->all());
-
         $gratifikasi_list = GcgGratifikasi::when(request('bentuk_gratifikasi'), function ($q) {
             return $q->where('jenis_gratifikasi', request('bentuk_gratifikasi'));
+        })
+        ->when(request('bulan'), function ($q) {
+            return $q->where(DB::raw('extract(month from tgl_gratifikasi)'), request('bulan'));
+        })
+        ->when(request('tahun'), function ($q) {
+            return $q->where(DB::raw('extract(year from tgl_gratifikasi)'), request('tahun'));
         })
         ->get();
 

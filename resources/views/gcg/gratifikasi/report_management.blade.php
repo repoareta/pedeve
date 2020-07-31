@@ -53,22 +53,11 @@
 			</div>
 
 			<div class="form-group row">
-				<label for="spd-input" class="col-2 col-form-label">Jenis Report</label>
+				<label for="spd-input" class="col-2 col-form-label">Pilih Fungsi</label>
 				<div class="col-4">
-					<select class="form-control kt-select2" name="jenis_report" id="jenis_report">
+					<select class="form-control kt-select2" name="fungsi" id="fungsi">
 						<option value="">- Pilih -</option>
-						<option value="coscenter" @if (request('jenis_report') == 'coscenter') {{ 'selected' }} @endif>Per CosCenter</option>
-						<option value="pekerja" @if (request('jenis_report') == 'pekerja') {{ 'selected' }} @endif>Per Pekerja</option>
-					</select>
-				</div>
-			</div>
-
-			<div class="form-group row">
-				<div class="col-2"></div>
-				<div class="col-4">
-					<select class="form-control kt-select2" name="jenis_report_ext" id="jenis_report_ext">
-						<option value="">- Pilih -</option>
-						<option value="null" @if (request('jenis_report_ext') == 'null') {{ 'selected' }} @endif>NULL</option>
+						<option value="coscenter" @if (request('fungsi') == 'coscenter') {{ 'selected' }} @endif>Direktur</option>
 					</select>
 				</div>
 			</div>
@@ -116,9 +105,35 @@
 			</div>
 		</form>
 
-		@if (request('jenis_report') === 'pekerja')
-			@include('gcg.gratifikasi.report_management_pekerja')
-		@endif
+		<!--begin: Datatable -->
+		<table class="table table-striped table-bordered table-hover table-checkable" id="kt_table">
+			<thead class="thead-light">
+				<tr>
+					<th>Nama</th>
+					<th>Jabatan</th>
+					<th>Tgl Penerimaan</th>
+					<th>Jenis</th>
+					<th>Jumlah</th>
+					<th>Pemberi</th>
+					<th>Keterangan</th>
+				</tr>
+			</thead>
+			<tbody>
+				@foreach ($gratifikasi_list as $gratifikasi)
+					<tr>
+						<td>{{ $gratifikasi->pekerja->nama }}</td>
+						<td>{{ $gratifikasi->pekerja->jabatan_latest_one->kode_jabatan_new->keterangan }}</td>
+						<td>{{ Carbon\Carbon::parse($gratifikasi->tgl_gratifikasi)->translatedFormat('d F Y') }}</td>
+						<td>{{ $gratifikasi->bentuk }}</td>
+						<td>{{ $gratifikasi->jumlah }}</td>
+						<td>{{ $gratifikasi->pemberi }}</td>
+						<td>{{ $gratifikasi->keterangan }}</td>
+					</tr>
+				@endforeach
+			</tbody>
+		</table>
+		<!--end: Datatable -->
+		
 	</div>
 </div>
 </div>
