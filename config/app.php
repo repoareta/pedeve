@@ -180,6 +180,7 @@ return [
          */
         Yajra\DataTables\DataTablesServiceProvider::class,
         Barryvdh\DomPDF\ServiceProvider::class,
+        Barryvdh\Snappy\ServiceProvider::class,
         Tuta\Terbilang\TerbilangServiceProvider::class,
         Maatwebsite\Excel\ExcelServiceProvider::class,
         RealRashid\SweetAlert\SweetAlertServiceProvider::class,
@@ -238,6 +239,8 @@ return [
         'PDF' => Barryvdh\DomPDF\Facade::class,
         'Excel' => Maatwebsite\Excel\Facades\Excel::class,
         'Alert' => RealRashid\SweetAlert\Facades\Alert::class,
+        'SnappyPDF' => Barryvdh\Snappy\Facades\SnappyPdf::class,
+        'SnappyImage' => Barryvdh\Snappy\Facades\SnappyImage::class,
     ],
 
 ];

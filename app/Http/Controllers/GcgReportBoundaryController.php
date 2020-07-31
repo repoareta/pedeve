@@ -4,6 +4,8 @@ namespace App\Http\Controllers;
 
 use Illuminate\Http\Request;
 
+use SnappyPDF;
+
 class GcgReportBoundaryController extends Controller
 {
     /**
@@ -13,6 +15,7 @@ class GcgReportBoundaryController extends Controller
      */
     public function index()
     {
-        return view('gcg.report_boundary.index');
+        $pdf = SnappyPDF::loadView('gcg.report_boundary.index');
+        return $pdf->stream('invoice.pdf');
     }
 }
