@@ -39,7 +39,7 @@
 		</div>
 	</div>
 	<div class="kt-portlet__body">
-		<form action="{{ route('gcg.gratifikasi.report.management') }}" class="kt-form col-12 kt-form--label-right" method="GET">
+		<form action="{{ route('gcg.gratifikasi.report.management.export') }}" class="kt-form col-12 kt-form--label-right" method="GET" id="search-form" target="_blank">
 			<div class="form-group row">
 				<label for="spd-input" class="col-2 col-form-label">Bentuk Gratifikasi</label>
 				<div class="col-4">
@@ -119,17 +119,6 @@
 				</tr>
 			</thead>
 			<tbody>
-				@foreach ($gratifikasi_list as $gratifikasi)
-					<tr>
-						<td>{{ $gratifikasi->pekerja->nama }}</td>
-						<td>{{ $gratifikasi->pekerja->jabatan_latest_one->kode_jabatan_new->keterangan }}</td>
-						<td>{{ Carbon\Carbon::parse($gratifikasi->tgl_gratifikasi)->translatedFormat('d F Y') }}</td>
-						<td>{{ $gratifikasi->bentuk }}</td>
-						<td>{{ $gratifikasi->jumlah }}</td>
-						<td>{{ $gratifikasi->pemberi }}</td>
-						<td>{{ $gratifikasi->keterangan }}</td>
-					</tr>
-				@endforeach
 			</tbody>
 		</table>
 		<!--end: Datatable -->
@@ -142,7 +131,34 @@
 @section('scripts')
 	<script type="text/javascript">
 	$(document).ready(function () {
-		$('#kt_table').DataTable();
+		var t = $('#kt_table').DataTable({
+			scrollX   : true,
+			processing: true,
+			serverSide: true,
+			ajax      : {
+				url: "{{ route('gcg.gratifikasi.report.management.json') }}",
+				data: function (d) {
+					d.bentuk_gratifikasi = $('select[name=bentuk_gratifikasi]').val();
+					d.fungsi = $('select[name=fungsi]').val();
+					d.bulan = $('select[name=bulan]').val();
+					d.tahun = $('select[name=tahun]').val();
+				}
+			},
+			columns: [
+				{data: 'nama', name: 'nama', class:'no-wrap'},
+				{data: 'jabatan', name: 'jabatan', class:'no-wrap'},
+				{data: 'tanggal_gratifikasi', name: 'tgl_gratifikasi', class:'no-wrap'},
+				{data: 'bentuk', name: 'bentuk', class:'no-wrap'},
+				{data: 'jumlah', name: 'jumlah', class:'no-wrap'},
+				{data: 'pemberi', name: 'pemberi', class:'no-wrap'},
+				{data: 'keterangan', name: 'keterangan'}
+			]
+		});
+
+		$('#search-form').on('submit', function(e) {
+			t.draw();
+			e.preventDefault();
+		});
 
 		$('.kt-select2').select2().on('change', function() {
 			$(this).valid();
