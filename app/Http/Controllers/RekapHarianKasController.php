@@ -9,7 +9,7 @@ use App\Models\Rekapkas;
 use App\Models\Kasdoc;
 use App\Models\Kasline;
 use DB;
-use PDF;
+use DomPDF;
 use Excel;
 use Alert;
 
@@ -367,7 +367,7 @@ class RekapHarianKasController extends Controller
         rk.jk=d.jk and d.docno=l.docno and coalesce(l.penutup,'N')='N' and d.ci=mu.kodemu and coalesce(d.paid,'N')='Y' and rk.store='21' and to_char(rk.tglrekap,'dd/mm/yyyy')='09/01/2009' order by d.voucher, l.lineno;
         ");
         if(!empty($data_list)){
-            $pdf = PDF::loadview('rekap_harian_kas.export_hariankas',compact('request','data_list'))->setPaper('a4', 'Portrait');
+            $pdf = DomPDF::loadview('rekap_harian_kas.export_hariankas',compact('request','data_list'))->setPaper('a4', 'Portrait');
             $pdf->output();
             $dom_pdf = $pdf->getDomPDF();
 

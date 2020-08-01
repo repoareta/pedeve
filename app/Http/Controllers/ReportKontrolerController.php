@@ -5,7 +5,7 @@ namespace App\Http\Controllers;
 use Illuminate\Http\Request;
 use App\Models\SdmMasterPegawai;
 use DB;
-use PDF;
+use DomPDF;
 use Excel;
 use Alert;
 
@@ -74,7 +74,7 @@ class ReportKontrolerController extends Controller
         if(!empty($data_list)){
             set_time_limit(1200);
             // return view('report_kontroler.export_report1',compact('request','data_list'));
-            $pdf = PDF::loadview('report_kontroler.export_report1',compact('request','data_list'))->setPaper('a4', 'Portrait');
+            $pdf = DomPDF::loadview('report_kontroler.export_report1',compact('request','data_list'))->setPaper('a4', 'Portrait');
             $pdf->output();
             $dom_pdf = $pdf->getDomPDF();
 
@@ -119,7 +119,7 @@ class ReportKontrolerController extends Controller
                                 // dd($data_list);
         if(!empty($data_list)){
             set_time_limit(1200);
-            $pdf = PDF::loadview('report_kontroler.export_neraca_konsolidasi',compact('request','data_list'))->setPaper('a4', 'Portrait');
+            $pdf = DomPDF::loadview('report_kontroler.export_neraca_konsolidasi',compact('request','data_list'))->setPaper('a4', 'Portrait');
             $pdf->output();
             $dom_pdf = $pdf->getDomPDF();
 
@@ -172,7 +172,7 @@ class ReportKontrolerController extends Controller
         ");
         if (!empty($data_list)) {
             set_time_limit(1200);
-            $pdf = PDF::loadview('report_kontroler.export_laba_rugi_konsolidasi', compact('request', 'data_list'))->setPaper('a4', 'Portrait');
+            $pdf = DomPDF::loadview('report_kontroler.export_laba_rugi_konsolidasi', compact('request', 'data_list'))->setPaper('a4', 'Portrait');
             $pdf->output();
             $dom_pdf = $pdf->getDomPDF();
         
@@ -217,7 +217,7 @@ class ReportKontrolerController extends Controller
         ");
         if (!empty($data_list)) {
             set_time_limit(1200);
-            $pdf = PDF::loadview('report_kontroler.export_laba_rugi_detail', compact('request', 'data_list'))->setPaper('a4', 'Portrait');
+            $pdf = DomPDF::loadview('report_kontroler.export_laba_rugi_detail', compact('request', 'data_list'))->setPaper('a4', 'Portrait');
             $pdf->output();
             $dom_pdf = $pdf->getDomPDF();
         
@@ -260,7 +260,7 @@ class ReportKontrolerController extends Controller
         $data_list = DB::select("select *, substr(sandi,1,2) as duadigit,substr(sandi,1,3) as tigadigit from v_rincibiayakontroler where substr(sandi,1,3) between '500' and '519' and $zzz");
         if (!empty($data_list)) {
             set_time_limit(1200);
-            $pdf = PDF::loadview('report_kontroler.export_biaya_pegawai', compact('request', 'data_list'))->setPaper('a4', 'Portrait');
+            $pdf = DomPDF::loadview('report_kontroler.export_biaya_pegawai', compact('request', 'data_list'))->setPaper('a4', 'Portrait');
             $pdf->output();
             $dom_pdf = $pdf->getDomPDF();
         

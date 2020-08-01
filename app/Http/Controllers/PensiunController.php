@@ -5,7 +5,7 @@ namespace App\Http\Controllers;
 use Illuminate\Http\Request;
 use App\Models\PayTblPensiun;
 use DB;
-use PDF;
+use DomPDF;
 use Excel;
 use Alert;
 
@@ -154,7 +154,7 @@ class PensiunController extends Controller
                                     from pay_master_bebanprshn a join sdm_master_pegawai b on a.nopek=b.nopeg where a.aard in ('15','46') and a.tahun='$request->tahun' and a.bulan='$request->bulan' union all
                                     select c.nopek,d.nama, c.aard, c.nilai as curramount
                                     from pay_master_upah c join sdm_master_pegawai d on c.nopek=d.nopeg where c.aard='14' and c.tahun='$request->tahun' and c.bulan='$request->bulan') d group by nama, nopek order by nama asc");
-            $pdf = PDF::loadview('pensiun.export_iuranpensiun',compact('request','data_list'))->setPaper('a4', 'Portrait');
+            $pdf = DomPDF::loadview('pensiun.export_iuranpensiun',compact('request','data_list'))->setPaper('a4', 'Portrait');
             $pdf->output();
             $dom_pdf = $pdf->getDomPDF();
 
@@ -211,7 +211,7 @@ class PensiunController extends Controller
             Alert::info("Tidak ditemukan data Tahun: $request->tahun", 'Failed')->persistent(true);
             return redirect()->route('pensiun.ctkrekapiuranpensiun');
         }
-        $pdf = PDF::loadview('pensiun.export_rekap_iuranpensiun',compact('request','data_list'))->setPaper('legal', 'landscape');
+        $pdf = DomPDF::loadview('pensiun.export_rekap_iuranpensiun',compact('request','data_list'))->setPaper('legal', 'landscape');
         $pdf->output();
         $dom_pdf = $pdf->getDomPDF();
 

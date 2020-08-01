@@ -180,6 +180,8 @@
 						<div class="kt-portlet__head-toolbar">
 							<div class="kt-portlet__head-wrapper">
 								<div class="kt-portlet__head-actions">
+						@foreach(DB::table('usermenu')->where('userid',Auth::user()->userid)->where('menuid',201)->limit(1)->get() as $data_akses)
+							@if($data_akses->rubah == 1)
 								@if($status2 <> "Y")
 									<a href="#" data-toggle="modal" data-target="#kt_modal_4">
 										<span style="font-size: 2em;" class="kt-font-success">
@@ -211,6 +213,8 @@
 										<i class="fas fa-times-circle"></i>
 									</span>
 								@endif
+							@endif
+						@endforeach
 								</div>
 							</div>
 						</div>

@@ -70,7 +70,7 @@
 								<select name="menuid" id="menuid" class="form-control kt-select2" required oninvalid="this.setCustomValidity('Menu ID Harus Diisi..')" onchange="setCustomValidity('')">
 									<option value="">- Pilih -</option>		
 									@foreach($data_menuid as $data)
-									<option value="{{$data->menuid}}">{{$data->menunm}} - Tambah[{{$data->tambah}}] Ubah[{{$data->rubah}}] Hapus[{{$data->hapus}}] Cetak[{{$data->cetak}}] Lihat[{{$data->lihat}}]</option>	
+									<option value="{{$data->menuid}}">{{$data->menuid}} - {{$data->menunm}} - Tambah[{{$data->tambah}}] Ubah[{{$data->rubah}}] Hapus[{{$data->hapus}}] Cetak[{{$data->cetak}}] Lihat[{{$data->lihat}}]</option>	
 									@endforeach	
 																		
 								</select>							

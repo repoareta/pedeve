@@ -617,6 +617,7 @@
                     'jurnal_umum.posting',
                     'jurnal_umum.cpyjurnalumum',
                     'jurnal_umum.copy',
+                    'jurnal_umum.rekap',
                 ); // isi nama semua route jurnal_umum
                 $postingan_kas_bank = array(
                     'postingan_kas_bank.index',
