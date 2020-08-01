@@ -7,7 +7,7 @@ use App\Models\Cashjudex;
 use Auth;
 use DB;
 use Session;
-use PDF;
+use DomPDF;
 use Alert;
 
 class CashJudexController extends Controller

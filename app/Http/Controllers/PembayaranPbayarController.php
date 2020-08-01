@@ -15,7 +15,7 @@ use App\Models\PermintaanBayar;
 use Auth;
 use DB;
 use Session;
-use PDF;
+use DomPDF;
 use Alert;
 
 class PembayaranPbayarController extends Controller

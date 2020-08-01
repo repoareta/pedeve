@@ -16,7 +16,7 @@ use App\Models\KodeJabatan;
 // Load Plugin
 use Carbon\Carbon;
 use Session;
-use PDF;
+use DomPDF;
 use DB;
 use Alert;
 use DataTables;
@@ -282,7 +282,7 @@ class UangMukaKerjaPertanggungJawabanController extends Controller
         ->where('kdjab', $pumk_header->pekerja->jabatan_latest()->kdjab)
         ->first();
 
-        $pdf = PDF::loadview('umk_pertanggungjawaban.export_row', [
+        $pdf = DomPDF::loadview('umk_pertanggungjawaban.export_row', [
             'pumk_header' => $pumk_header,
             'pekerja_jabatan' => $pekerja_jabatan
         ]);

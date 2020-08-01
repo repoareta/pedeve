@@ -20,7 +20,7 @@ use App\Exports\RekapSPD;
 // Load Plugin
 use Carbon\Carbon;
 use Session;
-use PDF;
+use DomPDF;
 use Excel;
 use Alert;
 
@@ -258,7 +258,7 @@ class PerjalananDinasController extends Controller
         }
 
         // return default PDF
-        $pdf = PDF::loadview('perjalanan_dinas.export_pdf', compact('panjar_header_list', 'mulai', 'sampai'))
+        $pdf = DomPDF::loadview('perjalanan_dinas.export_pdf', compact('panjar_header_list', 'mulai', 'sampai'))
         ->setPaper('a4', 'landscape')
         ->setOptions(['isPhpEnabled' => true]);
 
@@ -279,7 +279,7 @@ class PerjalananDinasController extends Controller
 
         $panjar_header->save();
 
-        $pdf = PDF::loadview('perjalanan_dinas.export_row', compact('panjar_header'));
+        $pdf = DomPDF::loadview('perjalanan_dinas.export_row', compact('panjar_header'));
 
         return $pdf->stream('rekap_spd_'.date('Y-m-d H:i:s').'.pdf');
     }

@@ -17,7 +17,7 @@ use App\Models\Umk;
 use Auth;
 use DB;
 use Session;
-use PDF;
+use DomPDF;
 use Alert;
 
 class PembayaranUmkController extends Controller

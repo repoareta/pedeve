@@ -14,7 +14,7 @@ use App\Http\Requests\AnggaranSubmainStore;
 // Load Plugin
 use Carbon\Carbon;
 use Session;
-use PDF;
+use DomPDF;
 use Excel;
 use Alert;
 use Auth;

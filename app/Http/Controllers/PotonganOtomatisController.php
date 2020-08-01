@@ -7,7 +7,7 @@ use App\Models\PayPotongan;
 use App\Models\PayAard;
 use App\Models\SdmMasterPegawai;
 use DB;
-use PDF;
+use DomPDF;
 use Excel;
 use Alert;
 

@@ -11,7 +11,7 @@ use App\Models\KodeJabatan;
 // Load Plugin
 use Carbon\Carbon;
 use Session;
-use PDF;
+use DomPDF;
 use Auth;
 
 class GcgCoiController extends Controller
@@ -56,7 +56,7 @@ class GcgCoiController extends Controller
         ->where('kdjab', $jabatan_latest->kdjab)
         ->first();
 
-        $pdf = PDF::loadview('gcg.coi.lampiran_satu_print', compact(
+        $pdf = DomPDF::loadview('gcg.coi.lampiran_satu_print', compact(
             'konflik',
             'tempat',
             'tanggal_efektif',
@@ -75,7 +75,7 @@ class GcgCoiController extends Controller
         ->where('kdjab', $jabatan_latest->kdjab)
         ->first();
 
-        $pdf = PDF::loadview('gcg.coi.lampiran_dua_print', compact(
+        $pdf = DomPDF::loadview('gcg.coi.lampiran_dua_print', compact(
             'tempat',
             'tanggal_efektif',
             'jabatan'

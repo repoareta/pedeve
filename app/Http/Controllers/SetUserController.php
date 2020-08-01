@@ -8,7 +8,7 @@ use App\Models\Usermenu;
 use Auth;
 use DB;
 use Session;
-use PDF;
+use DomPDF;
 use Alert;
 
 class SetUserController extends Controller

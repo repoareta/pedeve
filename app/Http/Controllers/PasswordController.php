@@ -7,7 +7,7 @@ use App\Models\Userpdv;
 use Auth;
 use DB;
 use Session;
-use PDF;
+use DomPDF;
 use Alert;
 
 class PasswordController extends Controller

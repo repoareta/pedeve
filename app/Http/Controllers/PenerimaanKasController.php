@@ -14,7 +14,7 @@ use App\Models\Mtrdeposito;
 use App\Models\Dtldepositotest;
 use App\Models\Saldostore;
 use DB;
-use PDF;
+use DomPDF;
 use Excel;
 use Alert;
 

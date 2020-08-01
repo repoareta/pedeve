@@ -6,6 +6,7 @@ use Illuminate\Http\Request;
 
 // Load Model
 use App\Models\GcgGratifikasi;
+use App\Models\GcgFungsi;
 
 //load form request (for validation)
 use App\Http\Requests\GcgPenerimaanStore;
@@ -161,29 +162,28 @@ class GcgGratifikasiController extends Controller
 
     public function reportManagement(Request $request)
     {
-        $gratifikasi_list = GcgGratifikasi::when(request('bentuk_gratifikasi'), function ($q) {
-            return $q->where('jenis_gratifikasi', request('bentuk_gratifikasi'));
-        })
-        ->when(request('bulan'), function ($q) {
-            return $q->where(DB::raw('extract(month from tgl_gratifikasi)'), request('bulan'));
-        })
-        ->when(request('tahun'), function ($q) {
-            return $q->where(DB::raw('extract(year from tgl_gratifikasi)'), request('tahun'));
-        })
-        ->get();
-
         $gratifikasi_tahun = GcgGratifikasi::selectRaw("extract(year from created_at) AS year")
         ->groupBy('year')
         ->orderBy('year', 'desc')
         ->get();
 
-        return view('gcg.gratifikasi.report_management', compact('gratifikasi_tahun', 'gratifikasi_list'));
+        $fungsi_list = GcgFungsi::all();
+
+        return view('gcg.gratifikasi.report_management', compact('gratifikasi_tahun', 'fungsi_list'));
     }
 
     public function reportManagementExport(Request $request)
     {
-        $gratifikasi_list = GcgGratifikasi::when(request('bentuk_gratifikasi'), function ($q) {
+        $gratifikasi_list = GcgGratifikasi::with('userpdv')
+        ->with('userpdv.fungsi')
+        ->with('userpdv.fungsi_jabatan')
+        ->when(request('bentuk_gratifikasi'), function ($q) {
             return $q->where('jenis_gratifikasi', request('bentuk_gratifikasi'));
+        })
+        ->when(request('fungsi'), function ($q) {
+            return $q->whereHas('userpdv', function ($qry) {
+                return $qry->where('gcg_fungsi_id', request('fungsi'));
+            });
         })
         ->when(request('bulan'), function ($q) {
             return $q->where(DB::raw('extract(month from tgl_gratifikasi)'), request('bulan'));
@@ -194,14 +194,17 @@ class GcgGratifikasiController extends Controller
         ->get();
         
         // return default PDF
-        $pdf = PDF::loadview('gcg.gratifikasi.report_management_export_pdf', compact('gratifikasi_list'));
+        $pdf = DomPDF::loadview('gcg.gratifikasi.report_management_export_pdf', compact('gratifikasi_list'));
 
         return $pdf->stream('gcg_report_management_'.date('Y-m-d H:i:s').'.pdf');
     }
 
     public function reportManagementIndexJson(Request $request)
     {
-        $gratifikasi_list = GcgGratifikasi::orderBy('created_at', 'desc');
+        $gratifikasi_list = GcgGratifikasi::with('userpdv')
+        ->with('userpdv.fungsi')
+        ->with('userpdv.fungsi_jabatan')
+        ->orderBy('created_at', 'desc');
 
         return datatables()->of($gratifikasi_list)
             ->filter(function ($query) use ($request) {
@@ -210,7 +213,9 @@ class GcgGratifikasiController extends Controller
                 }
 
                 if (request('fungsi')) {
-                    $query->where(DB::raw('extract(month from tgl_gratifikasi)'), request('bulan'));
+                    $query->whereHas('userpdv', function ($q) {
+                        return $q->where('gcg_fungsi_id', request('fungsi'));
+                    });
                 }
 
                 if (request('bulan')) {
@@ -224,8 +229,8 @@ class GcgGratifikasiController extends Controller
             ->addColumn('nama', function ($row) {
                 return $row->pekerja->nama;
             })
-            ->addColumn('jabatan', function ($row) {
-                return $row->pekerja->jabatan_latest_one->kode_jabatan_new->keterangan;
+            ->addColumn('fungsi_jabatan', function ($row) {
+                return $row->userpdv->fungsi_jabatan->nama;
             })
             ->addColumn('tanggal_gratifikasi', function ($row) {
                 return Carbon::parse($row->tgl_gratifikasi)->translatedFormat('d F Y');

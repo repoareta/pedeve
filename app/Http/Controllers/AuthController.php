@@ -7,7 +7,7 @@ use App\Models\Userlog;
 use Auth;
 use DB;
 use Session;
-use PDF;
+use DomPDF;
 use Alert;
 
 class AuthController extends Controller

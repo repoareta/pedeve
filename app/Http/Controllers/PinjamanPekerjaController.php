@@ -5,7 +5,7 @@ namespace App\Http\Controllers;
 use Illuminate\Http\Request;
 use App\Models\PayMtrpkpp;
 use DB;
-use PDF;
+use DomPDF;
 use Excel;
 use Alert;
 

@@ -9,7 +9,7 @@ use App\Models\Kasline;
 use App\Models\Mtrdeposito;
 use App\Models\Dtldepositotest;
 use DB;
-use PDF;
+use DomPDF;
 use Excel;
 use Alert;
 
