@@ -9,7 +9,7 @@ use App\Models\Kasline;
 use App\Models\Mtrdeposito;
 use App\Models\Dtldepositotest;
 use DB;
-use PDF;
+use DomPDF;
 use Excel;
 use Alert;
 
@@ -755,7 +755,7 @@ class PenempatanDepositoController extends Controller
                                             and b.bulan='$bulan' and b.tahun='$tahun' and a.kdbank $sanper and a.asal='$lp' order by a.tgltempo asc");
             }
         if(!empty($data_list)){
-            $pdf = PDF::loadview('penempatan_deposito.export_depo',compact('request','data_list'))->setPaper('a4', 'landscape');
+            $pdf = DomPDF::loadview('penempatan_deposito.export_depo',compact('request','data_list'))->setPaper('a4', 'landscape');
             $pdf->output();
             $dom_pdf = $pdf->getDomPDF();
 

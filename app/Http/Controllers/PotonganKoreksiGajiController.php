@@ -7,7 +7,7 @@ use App\Models\KoreksiGaji;
 use App\Models\PayAard;
 use App\Models\SdmMasterPegawai;
 use DB;
-use PDF;
+use DomPDF;
 use Excel;
 use Alert;
 
@@ -188,7 +188,7 @@ class PotonganKoreksiGajiController extends Controller
     {
         $data_list = DB::select("select a.aard,a.nopek,a.nilai,b.nama from pay_koreksigaji a join sdm_master_pegawai b on a.nopek=b.nopeg where a.aard in ('32','34') and a.tahun='$request->tahun' and a.bulan='$request->bulan' and b.status='$request->prosesupah' order by b.nama asc");
         if(!empty($data_list)){
-            $pdf = PDF::loadview('potongan_koreksi_gaji.export_koreksigaji',compact('request','data_list'))->setPaper('a4', 'Portrait');
+            $pdf = DomPDF::loadview('potongan_koreksi_gaji.export_koreksigaji',compact('request','data_list'))->setPaper('a4', 'Portrait');
             $pdf->output();
             $dom_pdf = $pdf->getDomPDF();
 

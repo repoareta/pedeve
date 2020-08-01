@@ -9,7 +9,7 @@ use App\Models\Fiosd201;
 use Auth;
 use DB;
 use Session;
-use PDF;
+use DomPDF;
 use Alert;
 
 class JurnalUmumController extends Controller
@@ -638,7 +638,7 @@ class JurnalUmumController extends Controller
                 $bulan = $dataa->bulan;
                 $tahun = $dataa->tahun;
             }
-            $pdf = PDF::loadview('jurnal_umum.export',compact('request','data_list','jk','ci','voucher','docno','bulan','tahun'))->setPaper('letter', 'landscape');
+            $pdf = DomPDF::loadview('jurnal_umum.export',compact('request','data_list','jk','ci','voucher','docno','bulan','tahun'))->setPaper('letter', 'landscape');
             $pdf->output();
             $dom_pdf = $pdf->getDomPDF();
         

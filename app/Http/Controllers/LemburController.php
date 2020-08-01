@@ -9,7 +9,7 @@ use Carbon\Carbon;
 use PhpOffice\PhpSpreadsheet\Spreadsheet;
 use DB;
 use Session;
-use PDF;
+use DomPDF;
 use Alert;
 
 class LemburController extends Controller
@@ -223,7 +223,7 @@ class LemburController extends Controller
     public function rekapExport(Request $request)
     {
         $data_list = DB::select("select a.*, b.* from pay_lembur a join sdm_master_pegawai b on a.nopek=b.nopeg where a.tahun='2020' and a.bulan='4'");
-        $pdf = PDF::loadview('lembur.export_lembur',compact('request','data_list'))->setPaper('a4', 'landscape');
+        $pdf = DomPDF::loadview('lembur.export_lembur',compact('request','data_list'))->setPaper('a4', 'landscape');
         $pdf->output();
         $dom_pdf = $pdf->getDomPDF();
 

@@ -14,7 +14,7 @@ use Carbon\Carbon;
 use PhpOffice\PhpSpreadsheet\Spreadsheet;
 use DB;
 use Session;
-use PDF;
+use DomPDF;
 use Alert;
 
 class UangMukaKerjaController extends Controller
@@ -478,7 +478,7 @@ class UangMukaKerjaController extends Controller
         }
         $detail_list = DetailUmk::where('no_umk', $noumk)->get();
         $list_acount =DetailUmk::where('no_umk', $noumk)->select('nilai')->sum('nilai');
-        $pdf = PDF::loadview('umk.export', compact(
+        $pdf = DomPDF::loadview('umk.export', compact(
             'list_acount',
             'data_report',
             'detail_list',
@@ -526,7 +526,7 @@ class UangMukaKerjaController extends Controller
                 // dd($umk_header_list);
                 $list_acount =Umk::whereBetween('tgl_panjar', [$mulai, $sampai])
                 ->select('jumlah')->sum('jumlah');
-                $pdf = PDF::loadview('umk.exportrange', compact('umk_header_list', 'list_acount', 'bulan', 'tahun'))->setPaper('a4', 'landscape');
+                $pdf = DomPDF::loadview('umk.exportrange', compact('umk_header_list', 'list_acount', 'bulan', 'tahun'))->setPaper('a4', 'landscape');
                 $pdf->output();
                 $dom_pdf = $pdf->getDomPDF();
         

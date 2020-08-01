@@ -11,7 +11,7 @@ use PhpOffice\PhpSpreadsheet\Spreadsheet;
 use Carbon\Carbon;
 use DB;
 use Session;
-use PDF;
+use DomPDF;
 use Alert;
 
 
@@ -400,7 +400,7 @@ class PermintaanBayarController extends Controller
         }
         $bayar_detail_list = PermintaanDetail::where('no_bayar', $nobayar)->get();
         $list_acount =PermintaanDetail::where('no_bayar',$nobayar)->select('nilai')->sum('nilai');
-        $pdf = PDF::loadview('permintaan_bayar.export', compact('list_acount','data_report','bayar_detail_list','request'))->setPaper('a4', 'Portrait');
+        $pdf = DomPDF::loadview('permintaan_bayar.export', compact('list_acount','data_report','bayar_detail_list','request'))->setPaper('a4', 'Portrait');
         // return $pdf->download('rekap_permint_'.date('Y-m-d H:i:s').'.pdf');
         return $pdf->stream();
     }
@@ -442,7 +442,7 @@ class PermintaanBayarController extends Controller
                 ->Join('umu_bayar_detail', 'umu_bayar_detail.no_bayar', '=', 'umu_bayar_header.no_bayar')
                 ->whereBetween('umu_bayar_header.tgl_bayar', [$mulai, $sampai])
                 ->get();
-                $pdf = PDF::loadview('permintaan_bayar.exportrange', compact('bayar_header_list_total','bayar_header_list','bulan','tahun'))->setPaper('a4', 'landscape');
+                $pdf = DomPDF::loadview('permintaan_bayar.exportrange', compact('bayar_header_list_total','bayar_header_list','bulan','tahun'))->setPaper('a4', 'landscape');
                 $pdf->output();
                 $dom_pdf = $pdf->getDomPDF();
                 $canvas = $dom_pdf ->get_canvas();

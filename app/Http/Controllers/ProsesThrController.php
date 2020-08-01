@@ -6,7 +6,7 @@ use Illuminate\Http\Request;
 use App\Models\StatBayarThr;
 use App\Models\PayMasterThr;
 use DB;
-use PDF;
+use DomPDF;
 use Excel;
 use Alert;
 
@@ -1755,7 +1755,7 @@ class ProsesThrController extends Controller
         $data_list = DB::select("select a.nopek,round(a.jmlcc,0) as jmlcc,round(a.ccl,0) as ccl,round(a.nilai,0) as nilai,a.aard,a.bulan,a.tahun,b.nama as nama_pegawai, c.nama as nama_aard,d.nama as nama_upah, d.cetak from pay_master_thr a join sdm_master_pegawai b on a.nopek=b.nopeg join pay_tbl_aard c on a.aard=c.kode join pay_tbl_jenisupah d on c.jenis=d.kode where a.nopek='$request->nopek' and a.tahun='$request->tahun' and bulan='$request->bulan' and d.kode in ('02','10')");
         $data_detail = DB::select("select a.nopek,round(a.jmlcc,0) as jmlcc,round(a.ccl,0) as ccl,round(a.nilai,0) as nilai,a.aard,a.bulan,a.tahun,b.nama as nama_pegawai, c.nama as nama_aard,d.nama as nama_upah, d.cetak from pay_master_thr a join sdm_master_pegawai b on a.nopek=b.nopeg join pay_tbl_aard c on a.aard=c.kode join pay_tbl_jenisupah d on c.jenis=d.kode where a.nopek='$request->nopek' and a.tahun='$request->tahun' and bulan='$request->bulan' and d.kode in ('07','03')");
         if(!empty($data_list) and !empty($data_detail)) {
-            $pdf = PDF::loadview('proses_thr.export_slipthr',compact('request','data_list','data_detail'))->setPaper('a4', 'Portrait');
+            $pdf = DomPDF::loadview('proses_thr.export_slipthr',compact('request','data_list','data_detail'))->setPaper('a4', 'Portrait');
             $pdf->output();
             $dom_pdf = $pdf->getDomPDF();
             
@@ -1777,7 +1777,7 @@ class ProsesThrController extends Controller
     {
         $data_list = DB::select("select a.aard,a.bulan,a.tahun,a.nopek,a.koreksi,a.nilai,a.pengali,a.pajakthr,a.tbiayahidup,a.ut,a.tjabatan,a.status,a.potongan,b.nama as namapegawai from pay_master_thr a join sdm_master_pegawai b on a.nopek=b.nopeg where a.aard='25' and a.tahun='$request->tahun' and a.bulan='$request->bulan'");
         if(!empty($data_list)){
-            $pdf = PDF::loadview('proses_thr.export_rekapthr',compact('request','data_list'))->setPaper('a4', 'Portrait');
+            $pdf = DomPDF::loadview('proses_thr.export_rekapthr',compact('request','data_list'))->setPaper('a4', 'Portrait');
             $pdf->output();
             $dom_pdf = $pdf->getDomPDF();
 
