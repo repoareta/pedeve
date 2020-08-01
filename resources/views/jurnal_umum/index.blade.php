@@ -251,10 +251,8 @@ $(document).ready(function () {
 
 			if($('input[class=btn-radio]').is(':checked')) { 
 				$("input[class=btn-radio]:checked").each(function(){
-					var id = $(this).attr('jk');
-					var no = $(this).attr('nokas');
-					var tanggal = $(this).attr('tanggal');
-					location.replace("{{url('kontroler/jurnal_umum/rekap')}}"+ '/' +no+'/'+id+'/'+tanggal);
+					var docno = $(this).attr('docno');
+					location.replace("{{url('kontroler/jurnal_umum/rekap')}}"+ '/' +docno);
 				});
 			} else {
 				swalAlertInit('cetak');

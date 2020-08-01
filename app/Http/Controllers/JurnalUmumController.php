@@ -610,4 +610,45 @@ class JurnalUmumController extends Controller
         Alert::success('Copy Jurnal', 'Berhasil')->persistent(true);
         return redirect()->route('jurnal_umum.index');
     }
+
+    public function rekap($docno)
+    {
+        $dibuat ="WASONO H";
+        $diperiksa="WASONO H";
+        $disetujui="WASONO H";
+        return view('jurnal_umum.rekap',compact(
+            'docno',
+            'dibuat',
+            'diperiksa',
+            'disetujui'
+        ));
+    }
+
+    public function export(Request $request)
+    {
+            $docno = str_replace('-', '/', $request->docno);   
+            $data_list= DB::select("select right(a.thnbln,2) bulan,  left(a.thnbln, 4) tahun,a.jk as jka,a.ci as cia,a.voucher as vouchera,a.keterangan, b.* from jurumdoc a join jurumline b on a.docno=b.docno where a.docno='$docno'");
+        if(!empty($data_list)){
+            foreach($data_list as $dataa)
+            {
+                $jk = $dataa->jka;
+                $ci = $dataa->cia;
+                $voucher = $dataa->vouchera;
+                $docno = $dataa->docno;
+                $bulan = $dataa->bulan;
+                $tahun = $dataa->tahun;
+            }
+            $pdf = PDF::loadview('jurnal_umum.export',compact('request','data_list','jk','ci','voucher','docno','bulan','tahun'))->setPaper('letter', 'landscape');
+            $pdf->output();
+            $dom_pdf = $pdf->getDomPDF();
+        
+            $canvas = $dom_pdf ->get_canvas();
+            $canvas->page_text(105, 75, "{PAGE_NUM} Dari {PAGE_COUNT}", null, 10, array(0, 0, 0)); //slip Gaji landscape
+            // return $pdf->download('rekap_umk_'.date('Y-m-d H:i:s').'.pdf');
+            return $pdf->stream();
+        }else{
+            Alert::info("Tidak ditemukan data", 'Failed')->persistent(true);
+            return redirect()->route('jurnal_umum.index');
+        }
+    }
 }

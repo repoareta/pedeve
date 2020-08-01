@@ -181,7 +181,7 @@
 	});
 		
 
-//report Uang Muka Kerja 
+//report permintaan bayar
 $('#reportRow').on('click', function(e) {
 	e.preventDefault();
 

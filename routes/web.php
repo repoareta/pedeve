@@ -1061,6 +1061,8 @@ Route::group(['middleware'=> ['auth','checkRole:1,0']], function () {
             Route::post('jurnal_umum/store/posting', 'JurnalUmumController@storePosting')->name('store.posting');
             Route::get('jurnal_umum/copy/{no}', 'JurnalUmumController@copy')->name('copy');
             Route::post('jurnal_umum/store/copy', 'JurnalUmumController@storeCopy')->name('store.copy');
+            Route::get('jurnal_umum/rekap/{docno}', 'JurnalUmumController@rekap')->name('rekap');
+            Route::post('jurnal_umum/export', 'JurnalUmumController@export')->name('export');
         });
         //end jurnam_umum
 
