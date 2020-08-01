@@ -12,4 +12,9 @@ class GcgGratifikasi extends Model
     {
         return $this->belongsTo('App\Models\Pekerja', 'nopeg');
     }
+
+    public function userpdv()
+    {
+        return $this->belongsTo('App\Models\Userpdv', 'nopeg', 'nopeg');
+    }
 }

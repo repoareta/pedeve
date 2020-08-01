@@ -135,25 +135,25 @@ header {
             <table style="width:100%;" class="table">
                 <thead>
                     <tr>
-                        <th>Tanggal</th>
+                        <th>Nama</th>
+                        <th>Jabatan</th>
+                        <th>Tanggal Penerimaan</th>
                         <th>Jenis</th>
                         <th>Jumlah</th>
                         <th>Pemberi</th>
                         <th>Keterangan</th>
-                        <th>Tanggal Submit</th>
-                        <th>Status</th>
                     </tr>
                 </thead>
                 <tbody>
                     @foreach ($gratifikasi_list as $gratifikasi)
                         <tr>
+                            <td>{{ $gratifikasi->pekerja->nama }}</td>
+                            <td>{{ $gratifikasi->userpdv->fungsi_jabatan->nama }}</td>
                             <td>{{ Carbon\Carbon::parse($gratifikasi->tgl_gratifikasi)->translatedFormat('d F Y') }}</td>
                             <td>{{ $gratifikasi->bentuk }}</td>
                             <td>{{ $gratifikasi->jumlah }}</td>
                             <td>{{ $gratifikasi->pemberi }}</td>
                             <td>{{ $gratifikasi->keterangan }}</td>
-                            <td>{{ Carbon\Carbon::parse($gratifikasi->created_at)->translatedFormat('d F Y') }}</td>
-                            <td>{{ $gratifikasi->status }}</td>
                         </tr>
                     @endforeach
                 </tbody>

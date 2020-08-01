@@ -57,7 +57,9 @@
 				<div class="col-4">
 					<select class="form-control kt-select2" name="fungsi" id="fungsi">
 						<option value="">- Pilih -</option>
-						<option value="coscenter" @if (request('fungsi') == 'coscenter') {{ 'selected' }} @endif>Direktur</option>
+						@foreach ($fungsi_list as $fungsi)
+						<option value="{{ $fungsi->id }}" @if (request('fungsi') == $fungsi->id) {{ 'selected' }} @endif>{{ $fungsi->nama }}</option>
+						@endforeach
 					</select>
 				</div>
 			</div>
@@ -146,7 +148,7 @@
 			},
 			columns: [
 				{data: 'nama', name: 'nama', class:'no-wrap'},
-				{data: 'jabatan', name: 'jabatan', class:'no-wrap'},
+				{data: 'fungsi_jabatan', name: 'fungsi_jabatan', class:'no-wrap'},
 				{data: 'tanggal_gratifikasi', name: 'tgl_gratifikasi', class:'no-wrap'},
 				{data: 'bentuk', name: 'bentuk', class:'no-wrap'},
 				{data: 'jumlah', name: 'jumlah', class:'no-wrap'},

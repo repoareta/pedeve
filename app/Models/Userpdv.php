@@ -21,4 +21,14 @@ class Userpdv extends Model
     {
         return $this->hasMany('App\Models\Jabatan', 'nopeg')->latest()->first();
     }
+
+    public function fungsi()
+    {
+        return $this->belongsTo('App\Models\GcgFungsi', 'gcg_fungsi_id', 'id');
+    }
+
+    public function fungsi_jabatan()
+    {
+        return $this->belongsTo('App\Models\GcgJabatan', 'gcg_jabatan_id', 'id');
+    }
 }
