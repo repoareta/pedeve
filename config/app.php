@@ -180,6 +180,7 @@ return [
          */
         Yajra\DataTables\DataTablesServiceProvider::class,
         Barryvdh\DomPDF\ServiceProvider::class,
+        Barryvdh\Snappy\ServiceProvider::class,
         Tuta\Terbilang\TerbilangServiceProvider::class,
         Maatwebsite\Excel\ExcelServiceProvider::class,
         RealRashid\SweetAlert\SweetAlertServiceProvider::class,
@@ -235,9 +236,11 @@ return [
         'View' => Illuminate\Support\Facades\View::class,
         // Custom plugin
         'DataTables' => Yajra\DataTables\Facades\DataTables::class,
-        'PDF' => Barryvdh\DomPDF\Facade::class,
+        'DomPDF' => Barryvdh\DomPDF\Facade::class,
         'Excel' => Maatwebsite\Excel\Facades\Excel::class,
         'Alert' => RealRashid\SweetAlert\Facades\Alert::class,
+        'PDF' => Barryvdh\Snappy\Facades\SnappyPdf::class,
+        'SnappyImage' => Barryvdh\Snappy\Facades\SnappyImage::class,
     ],
 
 ];

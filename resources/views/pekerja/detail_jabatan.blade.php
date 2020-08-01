@@ -44,7 +44,7 @@
 	<div class="modal-dialog modal-lg" role="document">
 		<div class="modal-content">
 			<div class="modal-header">
-				<h5 class="modal-title" id="title_modal" data-state="add">Tambah Detail Jabatan</h5>
+				<h5 class="modal-title" id="title_modal_jabatan" data-state="add">Tambah Detail Jabatan</h5>
 				<button type="button" class="close" data-dismiss="modal" aria-label="Close">
 				</button>
 			</div>
@@ -168,7 +168,7 @@
 	$('#addRowJabatan').click(function(e) {
 		e.preventDefault();
 		$('#jabatanModal').modal('show');
-		$('#title_modal').data('state', 'add');
+		$('#title_modal_jabatan').data('state', 'add');
 	});
 
 	$('#bagian_pekerja').on('change', function(){
@@ -219,7 +219,7 @@
 
 		if($(this).valid()) {
 
-			var state = $('#title_modal').data('state');
+			var state = $('#title_modal_jabatan').data('state');
 
 			var url, swal_title;
 
@@ -341,23 +341,25 @@
 		if($('input[name=radio_jabatan]').is(':checked')) { 
 			$("input[name=radio_jabatan]:checked").each(function() {
 				// get value from row					
-				var nopeg = $(this).val().split('-')[0];
-				var status = $(this).val().split('-')[1];
-				var nama = $(this).val().split('-')[2];
+				var nopeg = $(this).val().split('_')[0];
+				var mulai = $(this).val().split('_')[1];
+				var kdbag = $(this).val().split('_')[2];
+				var kdjab = $(this).val().split('_')[3];
 
 				$.ajax({
 					url: "{{ route('pekerja.jabatan.show.json') }}",
 					type: 'GET',
 					data: {
 						"nopeg" : "{{ $pekerja->nopeg }}",
-						"status" : status,
-						"nama" : nama,
+						"mulai" : mulai,
+						"kdbag" : kdbag,
+						"kdjab" : kdjab,
 						"_token": "{{ csrf_token() }}",
 					},
 					success: function (response) {
-						$('#nama_jabatan').val(response.nama);
-						$('#status_jabatan').val(response.status).trigger('change');
-						$('#tempat_lahir_jabatan').val(response.tempatlahir);
+						$('#bagian_pekerja').val(response.kdbag).trigger('change');
+						$('#jabatan_pekerja').val(response.kdjab).trigger('change');
+						// $('#golongan_pekerja').val(response.tempatlahir);
 						$('#tanggal_lahir_jabatan').val(response.tgllahir);
 						$('#agama_jabatan').val(response.agama).trigger('change');
 						$('#golongan_darah_jabatan').val(response.goldarah).trigger('change');
@@ -365,8 +367,8 @@
 						$('#tempat_pendidikan_jabatan').val(response.tempatpendidikan);
 						
 						// title
-						$('#title_modal').text('Ubah Detail Jabatan');
-						$('#title_modal').data('state', 'update');
+						$('#title_modal_jabatan').text('Ubah Detail Jabatan');
+						$('#title_modal_jabatan').data('state', 'update');
 						// for url update
 						$('#nama_jabatan').data('nama', response.nama);
 						$('#status_jabatan').data('status', response.status);

@@ -783,10 +783,12 @@ Route::group(['middleware'=> ['auth','checkRole:1,0']], function () {
             Route::post('gcg/gratifikasi/permintaan/store', 'GcgGratifikasiController@permintaanStore')->name('gratifikasi.permintaan.store');
 
             Route::get('gcg/gratifikasi/report/personal', 'GcgGratifikasiController@reportPersonal')->name('gratifikasi.report.personal');
-            Route::get('gcg/gratifikasi/report/personal/index_json', 'GcgGratifikasiController@indexJsonReportPersonal')->name('gratifikasi.report.personal.json');
+            Route::get('gcg/gratifikasi/report/personal/index_json', 'GcgGratifikasiController@reportPersonalIndexJson')->name('gratifikasi.report.personal.json');
             Route::post('gcg/gratifikasi/report/personal/export', 'GcgGratifikasiController@reportPersonalExport')->name('gratifikasi.report.personal.export');
 
             Route::get('gcg/gratifikasi/report/management', 'GcgGratifikasiController@reportManagement')->name('gratifikasi.report.management');
+            Route::get('gcg/gratifikasi/report/management/index_json', 'GcgGratifikasiController@reportManagementIndexJson')->name('gratifikasi.report.management.json');
+            Route::get('gcg/gratifikasi/report/management/export', 'GcgGratifikasiController@reportManagementExport')->name('gratifikasi.report.management.export');
 
             Route::get('gcg/gratifikasi/edit/{gratifikasi}', 'GcgGratifikasiController@edit')->name('gratifikasi.edit');
             Route::post('gcg/gratifikasi/update/{gratifikasi}', 'GcgGratifikasiController@update')->name('gratifikasi.update');
