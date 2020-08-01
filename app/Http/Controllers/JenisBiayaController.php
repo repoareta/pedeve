@@ -7,7 +7,7 @@ use App\Models\JenisBiaya;
 use Auth;
 use DB;
 use Session;
-use PDF;
+use DomPDF;
 use Alert;
 
 class JenisBiayaController extends Controller

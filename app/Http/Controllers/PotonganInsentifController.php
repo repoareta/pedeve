@@ -6,7 +6,7 @@ use Illuminate\Http\Request;
 use App\Models\PayPotonganInsentif;
 use App\Models\SdmMasterPegawai;
 use DB;
-use PDF;
+use DomPDF;
 use Excel;
 use Alert;
 

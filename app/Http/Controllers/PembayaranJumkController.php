@@ -17,7 +17,7 @@ use App\Models\PUmkHeader;
 use Auth;
 use DB;
 use Session;
-use PDF;
+use DomPDF;
 use Alert;
 
 class PembayaranJumkController extends Controller

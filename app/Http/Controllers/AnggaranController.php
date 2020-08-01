@@ -15,7 +15,7 @@ use App\Http\Requests\AnggaranStore;
 // Load Plugin
 use Carbon\Carbon;
 use Session;
-use PDF;
+use DomPDF;
 use Excel;
 use Alert;
 use Auth;
@@ -203,7 +203,7 @@ class AnggaranController extends Controller
         // dd($v_anggaran);
 
         // return default PDF
-        $pdf = PDF::loadview('anggaran.export_pdf', compact('anggaran_list', 'tahun'))
+        $pdf = DomPDF::loadview('anggaran.export_pdf', compact('anggaran_list', 'tahun'))
         ->setPaper('a4', 'potrait')
         ->setOptions(['isPhpEnabled' => true]);
 

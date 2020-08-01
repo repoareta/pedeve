@@ -17,7 +17,7 @@ use App\Models\StatusBayarGaji;
 use Auth;
 use DB;
 use Session;
-use PDF;
+use DomPDF;
 use Alert;
 
 class PembayaranGajiController extends Controller

@@ -18,7 +18,7 @@ use App\Http\Requests\PPerjalananDinasStore;
 // Load Plugin
 use Carbon\Carbon;
 use Session;
-use PDF;
+use DomPDF;
 
 class PerjalananDinasPertanggungJawabanController extends Controller
 {
@@ -235,7 +235,7 @@ class PerjalananDinasPertanggungJawabanController extends Controller
 
         $pekerja_jabatan = $ppanjar_header->pangkat;
 
-        $pdf = PDF::loadview('perjalanan_dinas_pertanggungjawaban.export_row', [
+        $pdf = DomPDF::loadview('perjalanan_dinas_pertanggungjawaban.export_row', [
             'ppanjar_header' => $ppanjar_header,
             'pekerja_jabatan' => $pekerja_jabatan
         ]);

@@ -9,7 +9,7 @@ use App\Models\Fiosd201;
 use Auth;
 use DB;
 use Session;
-use PDF;
+use DomPDF;
 use Alert;
 
 class PostingKasBankController extends Controller

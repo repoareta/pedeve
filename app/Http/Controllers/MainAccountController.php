@@ -7,7 +7,7 @@ use App\Models\Mainaccount;
 use Auth;
 use DB;
 use Session;
-use PDF;
+use DomPDF;
 use Alert;
 
 class MainAccountController extends Controller

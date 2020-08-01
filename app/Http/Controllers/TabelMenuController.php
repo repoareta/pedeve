@@ -7,7 +7,7 @@ use App\Models\Dftmenu;
 use Auth;
 use DB;
 use Session;
-use PDF;
+use DomPDF;
 use Alert;
 
 class TabelMenuController extends Controller

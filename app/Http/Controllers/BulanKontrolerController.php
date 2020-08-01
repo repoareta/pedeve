@@ -7,7 +7,7 @@ use App\Models\Bulankontroller;
 use Auth;
 use DB;
 use Session;
-use PDF;
+use DomPDF;
 use Alert;
 
 class BulanKontrolerController extends Controller

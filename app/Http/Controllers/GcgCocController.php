@@ -7,7 +7,7 @@ use Illuminate\Http\Request;
 // Load Plugin
 use Carbon\Carbon;
 use Session;
-use PDF;
+use DomPDF;
 use Auth;
 
 class GcgCocController extends Controller
@@ -37,7 +37,7 @@ class GcgCocController extends Controller
         $tempat = $request->tempat;
         $tanggal_efektif = $request->tanggal_efektif;
 
-        $pdf = PDF::loadview('gcg.coc.lampiran_satu_print', compact('tempat', 'tanggal_efektif'));
+        $pdf = DomPDF::loadview('gcg.coc.lampiran_satu_print', compact('tempat', 'tanggal_efektif'));
 
         return $pdf->stream('coc_lampiran_satu'.date('Y-m-d H:i:s').'.pdf');
     }
@@ -47,7 +47,7 @@ class GcgCocController extends Controller
         $orang = $request->orang;
         $tanggal_efektif = $request->tanggal_efektif;
 
-        $pdf = PDF::loadview('gcg.coc.lampiran_dua_print', compact('orang', 'tanggal_efektif'));
+        $pdf = DomPDF::loadview('gcg.coc.lampiran_dua_print', compact('orang', 'tanggal_efektif'));
 
         return $pdf->stream('coc_lampiran_dua'.date('Y-m-d H:i:s').'.pdf');
     }

@@ -8,7 +8,7 @@ use App\Models\Account;
 use Auth;
 use DB;
 use Session;
-use PDF;
+use DomPDF;
 use Alert;
 use DataTables;
 

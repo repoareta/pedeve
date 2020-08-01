@@ -17,7 +17,7 @@ use Alert;
 use Auth;
 use Carbon\Carbon;
 use DomPDF;
-use PDF;
+use DomPDF;
 use DB;
 
 class GcgGratifikasiController extends Controller
@@ -183,7 +183,7 @@ class GcgGratifikasiController extends Controller
         ->get();
         
         // return default PDF
-        $pdf = PDF::loadview('gcg.gratifikasi.report_management_export_pdf', compact('gratifikasi_list'));
+        $pdf = DomPDF::loadview('gcg.gratifikasi.report_management_export_pdf', compact('gratifikasi_list'));
 
         return $pdf->stream('gcg_report_management_'.date('Y-m-d H:i:s').'.pdf');
     }
