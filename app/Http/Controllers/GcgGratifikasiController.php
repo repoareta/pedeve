@@ -161,23 +161,12 @@ class GcgGratifikasiController extends Controller
 
     public function reportManagement(Request $request)
     {
-        $gratifikasi_list = GcgGratifikasi::when(request('bentuk_gratifikasi'), function ($q) {
-            return $q->where('jenis_gratifikasi', request('bentuk_gratifikasi'));
-        })
-        ->when(request('bulan'), function ($q) {
-            return $q->where(DB::raw('extract(month from tgl_gratifikasi)'), request('bulan'));
-        })
-        ->when(request('tahun'), function ($q) {
-            return $q->where(DB::raw('extract(year from tgl_gratifikasi)'), request('tahun'));
-        })
-        ->get();
-
         $gratifikasi_tahun = GcgGratifikasi::selectRaw("extract(year from created_at) AS year")
         ->groupBy('year')
         ->orderBy('year', 'desc')
         ->get();
 
-        return view('gcg.gratifikasi.report_management', compact('gratifikasi_tahun', 'gratifikasi_list'));
+        return view('gcg.gratifikasi.report_management', compact('gratifikasi_tahun'));
     }
 
     public function reportManagementExport(Request $request)
