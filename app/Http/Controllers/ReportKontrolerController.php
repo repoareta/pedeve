@@ -3,6 +3,8 @@
 namespace App\Http\Controllers;
 
 use Illuminate\Http\Request;
+use Illuminate\Database\Schema\Blueprint;
+use Illuminate\Support\Facades\Schema;
 use App\Models\SdmMasterPegawai;
 use DB;
 use DomPDF;
@@ -110,23 +112,55 @@ class ReportKontrolerController extends Controller
     }
     public function exportNeracaKonsolidasi(Request $request)
     {
-        $tahun = $request->tahun;
-        $thnblnsp = "$tahun$request->bulan$request->suplesi";
-        $data_list = DB::select("select a.tahun, a.bulan, a.suplesi, a.ci mu, a.jb, a.account sandi,a.lokasi lapangan,coalesce(a.awalrp,0) last_rp, coalesce(a.awaldl,0) last_dl,a.pricerp cur_rp, a.pricedl cur_dl, a.totpricerp cum_rp, a.totpricedl cum_dl, m.* from obpsi_$tahun a, v_main_account m where substr(a.account,1,length(m.batas_awal)) between m.batas_awal and m.batas_akhir and strpos(m.lokasi,a.lokasi)>0 and a.lokasi like '*' union all
-                                select b.tahun, b.bulan, b.supbln suplesi, b.ci mu, b.jb, b.account sandi,b.lokasi lapangan,0 last_rp, 0 last_dl,Sum(coalesce(b.TotpriceRp,0)) cur_rp, Sum(coalesce(b.TotPrice,0)) cur_dl, Sum(coalesce(b.TotpriceRp,0)) cum_rp,Sum(coalesce(b.TotpriceDl,0)) cum_dl,m.*  from fiosd201 b, v_main_account m where substr(b.account,1,length(m.batas_awal)) between m.batas_awal and m.batas_akhir and strpos(m.lokasi,b.lokasi)>0 and b.lokasi like '*' and ci='2'  and tahun = '$tahun' and tahun||bulan||supbln <= '$thnblnsp' group by b.tahun, b.bulan, b.supbln, b.account, b.jb, b.ci,b.lokasi,m.jenis,m.batas_awal,m.batas_akhir,m.urutan,m.pengali,m.pengali_tampil,m.sub_akun,m.lokasi,m.urutan_sc union all
-                                select c.tahun, c.bulan, c.supbln suplesi, c.ci mu, c.jb, c.account sandi,c.lokasi lapangan,0 last_rp, 0 last_dl,Sum(coalesce(c.TotpriceRp,0)) cur_rp, 0 cur_dl, Sum(coalesce(c.TotpriceRp,0)) cum_rp, 0 cum_dl,m.* from fiosd201 c, v_main_account m where substr(c.account,1,length(m.batas_awal)) between m.batas_awal and m.batas_akhir and strpos(m.lokasi,c.lokasi)>0  and c.lokasi like 'MD' and ci='1'  and tahun = '$tahun' and tahun||bulan||supbln <= '$thnblnsp' group by c.tahun, c.bulan, c.supbln, c.account, c.jb, c.ci,c.lokasi,m.jenis,m.batas_awal,m.batas_akhir,m.urutan,m.pengali,m.pengali_tampil,m.sub_akun,m.lokasi,m.urutan_sc;
-                                ");
-                                // dd($data_list);
-        if(!empty($data_list)){
-            set_time_limit(1200);
-            $pdf = DomPDF::loadview('report_kontroler.export_neraca_konsolidasi',compact('request','data_list'))->setPaper('a4', 'Portrait');
-            $pdf->output();
-            $dom_pdf = $pdf->getDomPDF();
+        if ($request->lapangan <> "KL") {
+            $lokasi = "a.lapangan = '$request->lapangan'";
+            $tahun = "$request->tahun";
+            $bulan = "$request->bulan";
+            $suplesi = "$request->suplesi";
+            $thnbln = "2019$request->bulan$request->suplesi";
+            $obpsi  = "obpsi_$request->tahun";
+        }else{
+            $lokasi = "a.lapangan in ('MD','MS')";
+            $tahun = "$request->tahun";
+            $bulan = "$request->bulan";
+            $suplesi = "$request->suplesi'";
+            $thnbln = "2019$request->bulan$request->suplesi";
+            $obpsi  = "obpsi_$request->tahun";
+        }
+        $data_cek = DB::select("select a.tablename as vada from pg_tables a where a.tablename = '$obpsi' ");
+        if(!empty($data_cek)){
+        
+            DB::statement("DROP VIEW IF EXISTS v_report_d5 CASCADE");
+            DB::statement("CREATE OR REPLACE VIEW v_report_d5 AS
+                            select tahun, bulan, suplesi, ci mu, jb, account sandi, lokasi lapangan, coalesce(awalrp,0) last_rp, coalesce(awaldl,0) last_dl, pricerp cur_rp, pricedl cur_dl, totpricerp cum_rp, totpricedl cum_dl from $obpsi union all 
+                            select tahun, bulan, supbln suplesi, ci mu, jb, account sandi, lokasi lapangan, 0 last_rp, 0 last_dl, sum(coalesce(totpricerp,0)) cur_rp, sum(coalesce(totprice,0)) cur_dl, sum(coalesce(totpricerp,0)) cum_rp, sum(coalesce(totpricedl,0)) cum_dl from fiosd201 where ci='2' and tahun = '$tahun' and tahun||bulan||supbln <= '$thnbln' group by tahun, bulan, supbln, account, jb, ci,lokasi union all 
+                            select tahun, bulan, supbln suplesi, ci mu, jb, account sandi, lokasi lapangan, 0 last_rp, 0 last_dl, sum(coalesce(totpricerp,0)) cur_rp, 0 cur_dl, sum(coalesce(totpricerp,0)) cum_rp, 0 cum_dl from fiosd201 where ci='1' and tahun = '$tahun' and tahun||bulan||supbln <= '$thnbln' group by tahun, bulan, supbln, account, jb, ci,lokasi
+                            ");
+            DB::statement("CREATE VIEW v_neraca AS
+                            select tahun,bulan,suplesi,mu,jb,sandi,lapangan,last_rp,last_dl,cur_rp,cur_dl,cum_rp,cum_dl, m.* from v_report_d5 d, v_main_account m where substr(d.sandi,1,length(m.batas_awal)) between m.batas_awal and m.batas_akhir and strpos(m.lokasi,d.lapangan)>0
+                            ");
+                $data_list = DB::select("
+                    select a.jenis,a.sub_akun,
+                    sum(CASE WHEN a.lapangan ='MD'  THEN c.pengali_tampil*a.cum_rp ELSE '0' END) as mmd,
+                    sum(CASE WHEN a.lapangan ='MS'  THEN c.pengali_tampil*a.cum_rp ELSE '0' END) as mms,
+                    sum(c.pengali_tampil*a.cum_rp) as kons
+                    from v_neraca a join v_sub_class_account b on a.urutan_sc=b.urutan join v_class_account c on b.urutan_cs=c.urutan_sc where $lokasi  group by a.jenis, a.sub_akun order by a.sub_akun asc
+                    ");
+                                    // dd($data_list);
+            if(!empty($data_list)){
+                set_time_limit(1200);
+                $pdf = DomPDF::loadview('report_kontroler.export_neraca_konsolidasi',compact('request','data_list'))->setPaper('a4', 'Portrait');
+                $pdf->output();
+                $dom_pdf = $pdf->getDomPDF();
 
-            $canvas = $dom_pdf ->get_canvas();
-            $canvas->page_text(485, 100, "Halaman {PAGE_NUM} Dari {PAGE_COUNT}", null, 10, array(0, 0, 0)); //lembur landscape
-            // return $pdf->download('rekap_umk_'.date('Y-m-d H:i:s').'.pdf');
-            return $pdf->stream();
+                $canvas = $dom_pdf ->get_canvas();
+                $canvas->page_text(485, 120, "Halaman {PAGE_NUM} Dari {PAGE_COUNT}", null, 10, array(0, 0, 0)); //lembur landscape
+                // return $pdf->download('rekap_umk_'.date('Y-m-d H:i:s').'.pdf');
+                return $pdf->stream();
+            }else{
+                Alert::info("Tidak ditemukan data dengan Bulan/Tahun: $request->bulan/$request->tahun ", 'Failed')->persistent(true);
+                return redirect()->route('neraca_konsolidasi.create_neraca_konsolidasi');
+            }
         }else{
             Alert::info("Tidak ditemukan data dengan Bulan/Tahun: $request->bulan/$request->tahun ", 'Failed')->persistent(true);
             return redirect()->route('neraca_konsolidasi.create_neraca_konsolidasi');
@@ -136,11 +170,67 @@ class ReportKontrolerController extends Controller
     
     public function create_neraca_detail()
     {
-        $data_tahun = DB::select("select max(tahun||bulan||supbln) as sbulan from fiosd201");
+        $data_tahun = DB::select("Select Tahun, Bulan, Suplesi from bulansuplesi where KodeReport='D5'");
         $data_kodelok = DB::select("select kodelokasi,nama from mdms");
-        $data_sanper = DB::select("select kodeacct,descacct from account where length(kodeacct)=6 and kodeacct not like '%X%' order by kodeacct desc");
-        return view('report_kontroler.create_neraca_detail',compact('data_tahun','data_kodelok','data_sanper'));
+        return view('report_kontroler.create_neraca_detail',compact('data_tahun','data_kodelok'));
     }
+    public function exportNeracaDetail(Request $request)
+    {
+        if ($request->lapangan <> "KL") {
+            $lokasi = "a.lapangan = '$request->lapangan'";
+            $tahun = "$request->tahun";
+            $bulan = "$request->bulan";
+            $suplesi = "$request->suplesi";
+            $thnbln = "2019$request->bulan$request->suplesi";
+            $obpsi  = "obpsi_$request->tahun";
+        }else{
+            $lokasi = "a.lapangan in ('MD','MS')";
+            $tahun = "$request->tahun";
+            $bulan = "$request->bulan";
+            $suplesi = "$request->suplesi'";
+            $thnbln = "2019$request->bulan$request->suplesi";
+            $obpsi  = "obpsi_$request->tahun";
+        }
+        $data_cek = DB::select("select a.tablename as vada from pg_tables a where a.tablename = '$obpsi' ");
+        if(!empty($data_cek)){
+        
+            DB::statement("DROP VIEW IF EXISTS v_report_d5 CASCADE");
+            DB::statement("CREATE OR REPLACE VIEW v_report_d5 AS
+                            select tahun, bulan, suplesi, ci mu, jb, account sandi, lokasi lapangan, coalesce(awalrp,0) last_rp, coalesce(awaldl,0) last_dl, pricerp cur_rp, pricedl cur_dl, totpricerp cum_rp, totpricedl cum_dl from $obpsi union all 
+                            select tahun, bulan, supbln suplesi, ci mu, jb, account sandi, lokasi lapangan, 0 last_rp, 0 last_dl, sum(coalesce(totpricerp,0)) cur_rp, sum(coalesce(totprice,0)) cur_dl, sum(coalesce(totpricerp,0)) cum_rp, sum(coalesce(totpricedl,0)) cum_dl from fiosd201 where ci='2' and tahun = '$tahun' and tahun||bulan||supbln <= '$thnbln' group by tahun, bulan, supbln, account, jb, ci,lokasi union all 
+                            select tahun, bulan, supbln suplesi, ci mu, jb, account sandi, lokasi lapangan, 0 last_rp, 0 last_dl, sum(coalesce(totpricerp,0)) cur_rp, 0 cur_dl, sum(coalesce(totpricerp,0)) cum_rp, 0 cum_dl from fiosd201 where ci='1' and tahun = '$tahun' and tahun||bulan||supbln <= '$thnbln' group by tahun, bulan, supbln, account, jb, ci,lokasi
+                            ");
+            DB::statement("CREATE VIEW v_neraca AS
+                            select tahun,bulan,suplesi,mu,jb,sandi,lapangan,last_rp,last_dl,cur_rp,cur_dl,cum_rp,cum_dl, m.* from v_report_d5 d, v_main_account m where substr(d.sandi,1,length(m.batas_awal)) between m.batas_awal and m.batas_akhir and strpos(m.lokasi,d.lapangan)>0
+                            ");
+            $data_list = DB::select("
+                select a.jenis,a.sub_akun,
+                sum(c.pengali_tampil*a.last_rp) as mmd,
+                sum(c.pengali_tampil*a.cur_rp) as mms,
+                sum(c.pengali_tampil*a.cum_rp) as kons
+                from v_neraca a join v_sub_class_account b on a.urutan_sc=b.urutan join v_class_account c on b.urutan_cs=c.urutan_sc where $lokasi  group by a.jenis, a.sub_akun order by a.sub_akun asc
+                ");
+            if(!empty($data_list)){
+                set_time_limit(1200);
+                $pdf = DomPDF::loadview('report_kontroler.export_neraca_detail',compact('request','data_list'))->setPaper('a4', 'Portrait');
+                $pdf->output();
+                $dom_pdf = $pdf->getDomPDF();
+
+                $canvas = $dom_pdf ->get_canvas();
+                $canvas->page_text(485, 120, "Halaman {PAGE_NUM} Dari {PAGE_COUNT}", null, 10, array(0, 0, 0)); //lembur landscape
+                // return $pdf->download('rekap_umk_'.date('Y-m-d H:i:s').'.pdf');
+                return $pdf->stream();
+            }else{
+                Alert::info("Tidak ditemukan data dengan Bulan/Tahun: $request->bulan/$request->tahun ", 'Failed')->persistent(true);
+                return redirect()->route('neraca_konsolidasi.create_neraca_konsolidasi');
+            }
+        }else{
+            Alert::info("Tidak ditemukan data dengan Bulan/Tahun: $request->bulan/$request->tahun ", 'Failed')->persistent(true);
+            return redirect()->route('neraca_konsolidasi.create_neraca_konsolidasi');
+        }
+    }
+
+
     public function create_laba_rugi_konsolidasi()
     {
         $data_tahun = DB::select("select max(tahun||bulan||supbln) as sbulan from fiosd201");
@@ -166,9 +256,9 @@ class ReportKontrolerController extends Controller
                 $obpsi  = "obpsi_$request->tahun";
             }
         $data_list = DB::select("
-        select substr(a.account,1,3) as tigadigit, a.tahun, a.bulan, a.suplesi, a.ci mu, a.jb, a.account sandi,a.lokasi lapangan,coalesce(a.awalrp,0) last_rp, coalesce(a.awaldl,0) last_dl,a.pricerp cur_rp, a.pricedl cur_dl, a.totpricerp cum_rp, a.totpricedl cum_dl, m.* from $obpsi a, v_class_account m where substr(a.account,1,length(m.batas_awal)) between m.batas_awal and m.batas_akhir and strpos(m.lokasi,a.lokasi)>0 and $lokasi union all
-        select substr(b.account,1,3) as tigadigit, b.tahun, b.bulan, b.supbln suplesi, b.ci mu, b.jb, b.account sandi,b.lokasi lapangan,0 last_rp, 0 last_dl,Sum(coalesce(b.TotpriceRp,0)) cur_rp, Sum(coalesce(b.TotPrice,0)) cur_dl, Sum(coalesce(b.TotpriceRp,0)) cum_rp,Sum(coalesce(b.TotpriceDl,0)) cum_dl,m.*  from fiosd201 b, v_class_account m where substr(b.account,1,length(m.batas_awal)) between m.batas_awal and m.batas_akhir and strpos(m.lokasi,b.lokasi)>0 and $lokasi and ci='2'  and $tahun and tahun||bulan||supbln <= '$thnbln' group by b.tahun, b.bulan, b.supbln, b.account, b.jb, b.ci,b.lokasi,m.jenis,m.batas_awal,m.batas_akhir,m.urutan,m.pengali,m.pengali_tampil,m.sub_akun,m.lokasi,m.urutan_sc union all
-        select substr(c.account,1,3) as tigadigit, c.tahun, c.bulan, c.supbln suplesi, c.ci mu, c.jb, c.account sandi,c.lokasi lapangan,0 last_rp, 0 last_dl,Sum(coalesce(c.TotpriceRp,0)) cur_rp, 0 cur_dl, Sum(coalesce(c.TotpriceRp,0)) cum_rp, 0 cum_dl,m.* from fiosd201 c, v_class_account m where substr(c.account,1,length(m.batas_awal)) between m.batas_awal and m.batas_akhir and strpos(m.lokasi,c.lokasi)>0  and $lokasi and ci='1'  and $tahun and tahun||bulan||supbln <= '$thnbln' group by c.tahun, c.bulan, c.supbln, c.account, c.jb, c.ci,c.lokasi,m.jenis,m.batas_awal,m.batas_akhir,m.urutan,m.pengali,m.pengali_tampil,m.sub_akun,m.lokasi,m.urutan_sc
+        select substr(a.account,1,3) as tigadigit, a.tahun, a.bulan, a.suplesi, a.ci mu, a.jb, a.account sandi,a.lokasi lapangan,coalesce(a.awalrp,0) last_rp, coalesce(a.awaldl,0) last_dl,a.pricerp cur_rp, a.pricedl cur_dl, a.totpricerp cum_rp, a.totpricedl cum_dl, m.* from $obpsi a, v_class_account m where substr(a.account,1,length(m.batas_awal)) between m.batas_awal and m.batas_akhir and strpos(m.lokasi,a.lokasi)>=0 and $lokasi union all
+        select substr(b.account,1,3) as tigadigit, b.tahun, b.bulan, b.supbln suplesi, b.ci mu, b.jb, b.account sandi,b.lokasi lapangan,0 last_rp, 0 last_dl,Sum(coalesce(b.TotpriceRp,0)) cur_rp, Sum(coalesce(b.TotPrice,0)) cur_dl, Sum(coalesce(b.TotpriceRp,0)) cum_rp,Sum(coalesce(b.TotpriceDl,0)) cum_dl,m.*  from fiosd201 b, v_class_account m where substr(b.account,1,length(m.batas_awal)) between m.batas_awal and m.batas_akhir and strpos(m.lokasi,b.lokasi)>=0 and $lokasi and ci='2'  and $tahun and tahun||bulan||supbln <= '$thnbln' group by b.tahun, b.bulan, b.supbln, b.account, b.jb, b.ci,b.lokasi,m.jenis,m.batas_awal,m.batas_akhir,m.urutan,m.pengali,m.pengali_tampil,m.sub_akun,m.lokasi,m.urutan_sc union all
+        select substr(c.account,1,3) as tigadigit, c.tahun, c.bulan, c.supbln suplesi, c.ci mu, c.jb, c.account sandi,c.lokasi lapangan,0 last_rp, 0 last_dl,Sum(coalesce(c.TotpriceRp,0)) cur_rp, 0 cur_dl, Sum(coalesce(c.TotpriceRp,0)) cum_rp, 0 cum_dl,m.* from fiosd201 c, v_class_account m where substr(c.account,1,length(m.batas_awal)) between m.batas_awal and m.batas_akhir and strpos(m.lokasi,c.lokasi)>=0  and $lokasi and ci='1'  and $tahun and tahun||bulan||supbln <= '$thnbln' group by c.tahun, c.bulan, c.supbln, c.account, c.jb, c.ci,c.lokasi,m.jenis,m.batas_awal,m.batas_akhir,m.urutan,m.pengali,m.pengali_tampil,m.sub_akun,m.lokasi,m.urutan_sc
         ");
         if (!empty($data_list)) {
             set_time_limit(1200);

@@ -74,8 +74,9 @@
         <!-- Wrap the content of your PDF inside a main tag -->
         <main>
             <!-- <font style="font-size: 8pt;font-weight: bold"> -->
+            
             <table width="100%" style="font-family: sans-serif;table-layout: fixed;width: 100%; border-collapse: collapse;">
-            <thead>
+                <thead>
                     <tr>
                         <th>
                             <table style="font-size: 8pt;font-weight: bold">
@@ -95,9 +96,9 @@
                     <tr style="font-size: 8pt;">
                         <th width="70%" style="text-align:right;padding-right:40%x;border:1px solid black;">KETERANGAN</th>
                         <tH width="15%" style="text-align:center;border:1px solid black;">SUB<br> AKUN</tH>
-                        <th width="30%" style="text-align:center;border:1px solid black;">MD</th>
-                        <th width="30%" style="text-align:center;border:1px solid black;">MS</th>
-                        <th width="30%" style="text-align:right;padding-right:20px;border:1px solid black;">KONSOLIDASI</th>
+                        <th width="30%" style="text-align:center;border:1px solid black;">KUMULASI LALU</th>
+                        <th width="30%" style="text-align:center;border:1px solid black;">TRANSAKSI BERJALAN</th>
+                        <th width="30%" style="text-align:right;padding-right:20px;border:1px solid black;">KUM. BERJALAN</th>
                     </tr>
                 <thead>
                 <tbody style="border: 1px solid black;">

@@ -40,7 +40,7 @@
 		</div>
 	</div>
 	<div class="kt-portlet__body">
-		<form class="kt-form kt-form--label-right" action="{{route('kas_bank.cetak1')}}" method="post">
+		<form class="kt-form kt-form--label-right" action="{{route('neraca_detail.export')}}" method="post">
 			{{csrf_field()}}
 			<div class="kt-portlet__body">
 				<input class="form-control" type="hidden" name="userid" value="{{Auth::user()->userid}}">
@@ -50,9 +50,9 @@
 				<div class="col-4">
 						<?php 
 						foreach($data_tahun as $data){ 
-							$tahun = substr($data->sbulan, 0, 4);
-							$bulan = substr($data->sbulan, 4, 2);
-							$suplesi = substr($data->sbulan, 6);
+							$tahun = $data->tahun;
+							$bulan = $data->bulan;
+							$suplesi = $data->suplesi;
 							$lapangan = "KL";
 						}
 						?>
@@ -83,7 +83,7 @@
 				<div class="form-group row">
 					<label for="dari-input" class="col-2 col-form-label">Lapangan<span style="color:red;">*</span></label>
 					<div class="col-10">
-						<select name="lp" class="form-control kt-select2" required oninvalid="this.setCustomValidity('Lapangan Harus Diisi..')" onchange="setCustomValidity('')">
+						<select name="lapangan" class="form-control kt-select2" required oninvalid="this.setCustomValidity('Lapangan Harus Diisi..')" onchange="setCustomValidity('')">
 							<option value="">- Pilih -</option>
 							@foreach($data_kodelok as $data_kode)
 							<option value="{{$data_kode->kodelokasi}}" <?php if($lapangan  == $data_kode->kodelokasi ) echo 'selected' ; ?>>{{$data_kode->kodelokasi}} -- {{$data_kode->nama}}</option>
