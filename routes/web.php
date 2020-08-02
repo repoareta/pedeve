@@ -1250,7 +1250,7 @@ Route::group(['middleware'=> ['auth','checkRole:1,0']], function () {
         // Route assigned name "d2_perbulan.index"...
         Route::name('d2_perbulan.')->group(function () {
             Route::get('d2_perbulan', 'ReportKontrolerController@create_d2_perbulan')->name('create_d2_perbulan');
-            // Route::post('d2_perbulan/index/search', 'ReportKontrolerController@searchIndex')->name('search.index');
+            Route::get('d2_perbulan/export', 'ReportKontrolerController@d2PerBulanExport')->name('export');
         });
         //end d2_perbulan
 
@@ -1258,7 +1258,7 @@ Route::group(['middleware'=> ['auth','checkRole:1,0']], function () {
         // Route assigned name "d2_periode.index"...
         Route::name('d2_periode.')->group(function () {
             Route::get('d2_periode', 'ReportKontrolerController@create_d2_periode')->name('create_d2_periode');
-            // Route::post('d2_periode/index/search', 'ReportKontrolerController@searchIndex')->name('search.index');
+            Route::get('d2_periode/export', 'ReportKontrolerController@d2PerPeriodeExport')->name('export');
         });
         //end d2_periode
 

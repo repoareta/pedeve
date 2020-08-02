@@ -40,8 +40,7 @@
 		</div>
 	</div>
 	<div class="kt-portlet__body">
-		<form class="kt-form kt-form--label-right" action="{{route('kas_bank.cetak1')}}" method="post">
-			{{csrf_field()}}
+		<form class="kt-form kt-form--label-right" action="{{route('d2_perbulan.export')}}" method="GET" target="_blank">
 			<div class="kt-portlet__body">
 				<input class="form-control" type="hidden" name="userid" value="{{Auth::user()->userid}}">
 				<div class="form-group row">
