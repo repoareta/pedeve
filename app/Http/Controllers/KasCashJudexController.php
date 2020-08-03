@@ -252,7 +252,7 @@ class KasCashJudexController extends Controller
         $tahun = $request->tahun;
         $kurs = $request->kurs;
         $mulai = $request->mulai;
-        $akhir = $request->akhir;
+        $sampai = $request->sampai;
         
         $data_list = null;
 
@@ -260,7 +260,7 @@ class KasCashJudexController extends Controller
             'data_list',
             'tahun',
             'mulai',
-            'akhir'
+            'sampai'
         ))
         ->setPaper('a4', 'Portrait');
         $pdf->output();
