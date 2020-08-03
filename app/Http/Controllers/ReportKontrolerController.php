@@ -118,7 +118,7 @@ class ReportKontrolerController extends Controller
             $suplesi = "$request->suplesi";
             $thnbln = "2019$request->bulan$request->suplesi";
             $obpsi  = "obpsi_$request->tahun";
-        }else{
+        } else {
             $lokasi = "a.lapangan in ('MD','MS')";
             $tahun = "$request->tahun";
             $bulan = "$request->bulan";
@@ -127,8 +127,7 @@ class ReportKontrolerController extends Controller
             $obpsi  = "obpsi_$request->tahun";
         }
         $data_cek = DB::select("select a.tablename as vada from pg_tables a where a.tablename = '$obpsi' ");
-        if(!empty($data_cek)){
-        
+        if (!empty($data_cek)) {
             DB::statement("DROP VIEW IF EXISTS v_report_d5 CASCADE");
             DB::statement("CREATE OR REPLACE VIEW v_report_d5 AS
                             select tahun, bulan, suplesi, ci mu, jb, account sandi, lokasi lapangan, coalesce(awalrp,0) last_rp, coalesce(awaldl,0) last_dl, pricerp cur_rp, pricedl cur_dl, totpricerp cum_rp, totpricedl cum_dl from $obpsi union all 
@@ -138,17 +137,17 @@ class ReportKontrolerController extends Controller
             DB::statement("CREATE VIEW v_neraca AS
                             select tahun,bulan,suplesi,mu,jb,sandi,lapangan,last_rp,last_dl,cur_rp,cur_dl,cum_rp,cum_dl, m.* from v_report_d5 d, v_main_account m where substr(d.sandi,1,length(m.batas_awal)) between m.batas_awal and m.batas_akhir and strpos(m.lokasi,d.lapangan)>0
                             ");
-                $data_list = DB::select("
+            $data_list = DB::select("
                     select a.jenis,a.sub_akun,
                     sum(CASE WHEN a.lapangan ='MD'  THEN c.pengali_tampil*a.cum_rp ELSE '0' END) as mmd,
                     sum(CASE WHEN a.lapangan ='MS'  THEN c.pengali_tampil*a.cum_rp ELSE '0' END) as mms,
                     sum(c.pengali_tampil*a.cum_rp) as kons
                     from v_neraca a join v_sub_class_account b on a.urutan_sc=b.urutan join v_class_account c on b.urutan_cs=c.urutan_sc where $lokasi  group by a.jenis, a.sub_akun order by a.sub_akun asc
                     ");
-                                    // dd($data_list);
-            if(!empty($data_list)){
+            // dd($data_list);
+            if (!empty($data_list)) {
                 set_time_limit(1200);
-                $pdf = DomPDF::loadview('report_kontroler.export_neraca_konsolidasi',compact('request','data_list'))->setPaper('a4', 'Portrait');
+                $pdf = DomPDF::loadview('report_kontroler.export_neraca_konsolidasi', compact('request', 'data_list'))->setPaper('a4', 'Portrait');
                 $pdf->output();
                 $dom_pdf = $pdf->getDomPDF();
 
@@ -156,15 +155,14 @@ class ReportKontrolerController extends Controller
                 $canvas->page_text(485, 120, "Halaman {PAGE_NUM} Dari {PAGE_COUNT}", null, 10, array(0, 0, 0)); //lembur landscape
                 // return $pdf->download('rekap_umk_'.date('Y-m-d H:i:s').'.pdf');
                 return $pdf->stream();
-            }else{
+            } else {
                 Alert::info("Tidak ditemukan data dengan Bulan/Tahun: $request->bulan/$request->tahun ", 'Failed')->persistent(true);
                 return redirect()->route('neraca_konsolidasi.create_neraca_konsolidasi');
             }
-        }else{
-            Alert::info("Tidak ditemukan data dengan Bulan/Tahun: $request->bulan/$request->tahun ", 'Failed')->persistent(true);
-            return redirect()->route('neraca_konsolidasi.create_neraca_konsolidasi');
-        }
-        
+          } else {
+                Alert::info("Tidak ditemukan data dengan Bulan/Tahun: $request->bulan/$request->tahun ", 'Failed')->persistent(true);
+                return redirect()->route('neraca_konsolidasi.create_neraca_konsolidasi');
+          }
     }
     
     
@@ -172,7 +170,7 @@ class ReportKontrolerController extends Controller
     {
         $data_tahun = DB::select("Select Tahun, Bulan, Suplesi from bulansuplesi where KodeReport='D5'");
         $data_kodelok = DB::select("select kodelokasi,nama from mdms");
-        return view('report_kontroler.create_neraca_detail',compact('data_tahun','data_kodelok'));
+        return view('report_kontroler.create_neraca_detail', compact('data_tahun', 'data_kodelok'));
     }
     public function exportNeracaDetail(Request $request)
     {
@@ -183,7 +181,7 @@ class ReportKontrolerController extends Controller
             $suplesi = "$request->suplesi";
             $thnbln = "2019$request->bulan$request->suplesi";
             $obpsi  = "obpsi_$request->tahun";
-        }else{
+        } else {
             $lokasi = "a.lapangan in ('MD','MS')";
             $tahun = "$request->tahun";
             $bulan = "$request->bulan";
@@ -192,8 +190,7 @@ class ReportKontrolerController extends Controller
             $obpsi  = "obpsi_$request->tahun";
         }
         $data_cek = DB::select("select a.tablename as vada from pg_tables a where a.tablename = '$obpsi' ");
-        if(!empty($data_cek)){
-        
+        if (!empty($data_cek)) {
             DB::statement("DROP VIEW IF EXISTS v_report_d5 CASCADE");
             DB::statement("CREATE OR REPLACE VIEW v_report_d5 AS
                             select tahun, bulan, suplesi, ci mu, jb, account sandi, lokasi lapangan, coalesce(awalrp,0) last_rp, coalesce(awaldl,0) last_dl, pricerp cur_rp, pricedl cur_dl, totpricerp cum_rp, totpricedl cum_dl from $obpsi union all 
@@ -210,9 +207,9 @@ class ReportKontrolerController extends Controller
                 sum(c.pengali_tampil*a.cum_rp) as kons
                 from v_neraca a join v_sub_class_account b on a.urutan_sc=b.urutan join v_class_account c on b.urutan_cs=c.urutan_sc where $lokasi  group by a.jenis, a.sub_akun order by a.sub_akun asc
                 ");
-            if(!empty($data_list)){
+            if (!empty($data_list)) {
                 set_time_limit(1200);
-                $pdf = DomPDF::loadview('report_kontroler.export_neraca_detail',compact('request','data_list'))->setPaper('a4', 'Portrait');
+                $pdf = DomPDF::loadview('report_kontroler.export_neraca_detail', compact('request', 'data_list'))->setPaper('a4', 'Portrait');
                 $pdf->output();
                 $dom_pdf = $pdf->getDomPDF();
 
@@ -220,11 +217,11 @@ class ReportKontrolerController extends Controller
                 $canvas->page_text(485, 120, "Halaman {PAGE_NUM} Dari {PAGE_COUNT}", null, 10, array(0, 0, 0)); //lembur landscape
                 // return $pdf->download('rekap_umk_'.date('Y-m-d H:i:s').'.pdf');
                 return $pdf->stream();
-            }else{
+            } else {
                 Alert::info("Tidak ditemukan data dengan Bulan/Tahun: $request->bulan/$request->tahun ", 'Failed')->persistent(true);
                 return redirect()->route('neraca_konsolidasi.create_neraca_konsolidasi');
             }
-        }else{
+        } else {
             Alert::info("Tidak ditemukan data dengan Bulan/Tahun: $request->bulan/$request->tahun ", 'Failed')->persistent(true);
             return redirect()->route('neraca_konsolidasi.create_neraca_konsolidasi');
         }
@@ -397,11 +394,27 @@ class ReportKontrolerController extends Controller
             'totpricedl',
             'keterangan'
         )
-        ->where('tahun', $request->tahun)
-        ->where('bulan', $request->bulan)
-        ->where('supbln', $request->suplesi)
-        ->where('lokasi', $request->lp)
-        ->where('jk', $request->jk)
+        ->when(request('bulan'), function ($query) {
+            return $query->where('bulan', request('bulan'));
+        })
+        ->when(request('tahun'), function ($query) {
+            return $query->where('tahun', request('tahun'));
+        })
+        ->when(request('suplesi'), function ($query) {
+            return $query->where('supbln', request('suplesi'));
+        })
+        ->when(request('lp'), function ($query) {
+            return $query->where('lokasi', request('lp'));
+        })
+        ->when(request('jk') == 1, function ($query) {
+            return $query->whereIn('jk', [10, 11, 13]);
+        })
+        ->when(request('jk') == 2, function ($query) {
+            return $query->whereIn('jk', [15, 18]);
+        })
+        ->when(request('jk') == 3, function ($query) {
+            return $query->whereIn('jk', [10, 11, 13, 15, 18]);
+        })
         ->orderBy('tahun', 'DESC')
         ->orderBy('bulan', 'DESC')
         ->orderBy('supbln', 'DESC')
@@ -410,16 +423,21 @@ class ReportKontrolerController extends Controller
         ->orderBy('store', 'DESC')
         ->orderBy('vc', 'DESC')
         ->orderBy('ci', 'DESC')
-        // ->limit(25)
         ->get();
 
-        $pdf = DomPDF::loadview('report_kontroler.export_d2_perbulan_pdf', compact(
+        // $header = view()->make('')->render();
+
+        $pdf = PDF::loadview('report_kontroler.export_d2_perbulan_pdf', compact(
             'd2_list',
             'tahun',
             'bulan'
         ))
         ->setPaper('a4', 'landscape')
-        ->setOptions(['isPhpEnabled' => true]);
+        ->setOption('footer-right', 'Halaman [page] dari [toPage]')
+        ->setOption('footer-font-size', 7);
+        // ->setOption('header-html', view('report_kontroler.header'))
+        // ->setOption('margin-top', 10)
+        // ->setOption('margin-bottom', 10);
 
         return $pdf->stream('rekap_d2_perbulan_'.date('Y-m-d H:i:s').'.pdf');
     }
