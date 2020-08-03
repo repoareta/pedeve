@@ -88,7 +88,17 @@
                     </tr>
                 <thead>
                 <tbody>
-                    
+                    <tr>
+                        <td>
+                            A. ARUS KAS DARI AKTIVITAS OPERASI
+                        </td>
+                        <td>
+                            B. ARUS KAS DARI AKTIVITAS INVESTASI
+                        </td>
+                        <td>
+                            C. ARUS KAS DARI AKTIVITAS PENDANAAN
+                        </td>
+                    </tr>
                 <tbody>
             </table>
         </main>
