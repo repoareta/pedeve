@@ -1021,6 +1021,14 @@ Route::group(['middleware'=> ['auth','checkRole:1,0']], function () {
         });
         //end rekap_harian_kas
 
+        //Rekap Harian Kas
+        // Route assigned name "rekap_periode_kas.index"...
+        Route::name('rekap_periode_kas.')->group(function () {
+            Route::get('rekap_periode_kas/create', 'RekapPeriodeKasController@RekapPeriode')->name('create');
+            Route::post('rekap_periode_kas/export', 'RekapPeriodeKasController@exportPeriode')->name('exportperiode');
+        });
+        //end rekap_harian_kas
+
 
         //Report Kas Kas Bank
         // Route assigned name "report_kas_bank.index"...
@@ -1281,12 +1289,12 @@ Route::group(['middleware'=> ['auth','checkRole:1,0']], function () {
             Route::post('neraca_konsolidasi/export', 'ReportKontrolerController@exportNeracaKonsolidasi')->name('export');
         });
         //end neraca_konsolidasi
-
+        
         //neraca_detail
         // Route assigned name "neraca_detail.index"...
         Route::name('neraca_detail.')->group(function () {
             Route::get('neraca_detail', 'ReportKontrolerController@create_neraca_detail')->name('create_neraca_detail');
-            // Route::post('neraca_detail/index/search', 'ReportKontrolerController@searchIndex')->name('search.index');
+            Route::post('neraca_detail/export', 'ReportKontrolerController@exportNeracaDetail')->name('export');
         });
         //end neraca_detail
 

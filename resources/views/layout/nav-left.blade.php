@@ -564,12 +564,16 @@
                     'rekap_harian_kas.edit',
                     'rekap_harian_kas.rekap',
                 ); // isi nama semua route rekap harian
+                $rekapperiodekas = array(
+                    'rekap_periode_kas.create',
+                ); // isi nama semua route rekap periode
                 $rekapdeposito = array(
                     'penempatan_deposito.rekap',
                 ); // isi nama semua route rekap deposito
 
                 $rekap_perbendaharaan = array_merge(
                     $rekaphariankas,
+                    $rekapperiodekas,
                     $rekapdeposito
                 ); //isi nama Subdomain rekap perbendaharaan
 
@@ -1742,7 +1746,7 @@
                             </a>
                             <div class="kt-menu__submenu "><span class="kt-menu__arrow"></span>
                                 <ul class="kt-menu__subnav">
-                                    <!-- <li class="kt-menu__item kt-menu__item{{ set_active_submenu($rekaphariankas) }}" aria-haspopup="true">
+                                    <li class="kt-menu__item kt-menu__item{{ set_active_submenu($rekaphariankas) }}" aria-haspopup="true">
                                         <a href="{{ route('rekap_harian_kas.index') }}" class="kt-menu__link">
                                             <i class="kt-menu__link-bullet kt-menu__link-bullet--line">
                                                 <span></span>
@@ -1750,15 +1754,15 @@
                                             <span class="kt-menu__link-text">Rekap Harian Kas</span>
                                         </a>
                                     </li>
-                                    <li class="kt-menu__item " aria-haspopup="true">
-                                        <a href="custom/apps/user/list-default.html" class="kt-menu__link">
+                                    <li class="kt-menu__item kt-menu__item{{ set_active_submenu($rekapperiodekas) }} " aria-haspopup="true">
+                                        <a href="{{ route('rekap_periode_kas.create') }}" class="kt-menu__link">
                                             <i class="kt-menu__link-bullet kt-menu__link-bullet--line">
                                                 <span></span>
                                             </i>
                                             <span class="kt-menu__link-text">Rekap Periode</span>
                                         </a>
                                     </li>
-                                    <li class="kt-menu__item kt-menu__item{{ set_active_submenu($rekapdeposito) }}" aria-haspopup="true">
+                                    <!-- <li class="kt-menu__item kt-menu__item{{ set_active_submenu($rekapdeposito) }}" aria-haspopup="true">
                                         <a href="{{ route('penempatan_deposito.rekap') }}" class="kt-menu__link">
                                             <i class="kt-menu__link-bullet kt-menu__link-bullet--line">
                                                 <span></span>
