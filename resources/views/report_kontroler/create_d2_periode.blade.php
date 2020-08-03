@@ -40,31 +40,27 @@
 		</div>
 	</div>
 	<div class="kt-portlet__body">
-		<form class="kt-form kt-form--label-right" action="{{route('kas_bank.cetak1')}}" method="post">
-			{{csrf_field()}}
+		<form class="kt-form kt-form--label-right" action="{{route('d2_periode.export')}}" method="GET" target="_blank">
 			<div class="kt-portlet__body">
-				<input class="form-control" type="hidden" name="userid" value="{{Auth::user()->userid}}">
 				<div class="form-group row">
 					<label for="" class="col-2 col-form-label">JK<span style="color:red;">*</span></label>
 					<div class="col-10">
 						<div class="kt-radio-inline">
 							<label class="kt-radio kt-radio--solid">
-								<input value="1" type="radio"  name="jk" >[10,11,13]
+								<input value="1" type="radio" name="jk" >[10,11,13]
 								<span></span>
 							</label>
 							<label class="kt-radio kt-radio--solid">
-								<input value="2" type="radio"    name="jk">[15,18]
+								<input value="2" type="radio" name="jk">[15,18]
 								<span></span>
 							</label>
 							<label class="kt-radio kt-radio--solid">
-								<input value="3" type="radio"    name="jk" checked>All
+								<input value="3" type="radio" name="jk" checked>All
 								<span></span>
 							</label>
 						</div>
 					</div>
 				</div>
-
-
 				<div class="form-group row">
 				<label for="spd-input" class="col-2 col-form-label">Bulan<span style="color:red;">*</span></label>
 				<div class="col-4">
@@ -76,7 +72,7 @@
 							$lapangan = "KL";
 						}
 						?>
-						<select class="form-control kt-select2" name="bulan">
+						<select class="form-control kt-select2" name="bulan_mulai">
 							<option value="01" <?php if($bulan  == '01' ) echo 'selected' ; ?>>Januari</option>
 							<option value="02" <?php if($bulan  == '02' ) echo 'selected' ; ?>>Februari</option>
 							<option value="03" <?php if($bulan  == '03' ) echo 'selected' ; ?>>Maret</option>
@@ -93,7 +89,7 @@
 				</div>
 				<label for="spd-input" class="col-1 col-form-label">S/D</label>
 				<div class="col-5">
-						<select class="form-control kt-select2" name="bulan2">
+						<select class="form-control kt-select2" name="bulan_sampai">
 							<option value="01" <?php if($bulan  == '01' ) echo 'selected' ; ?>>Januari</option>
 							<option value="02" <?php if($bulan  == '02' ) echo 'selected' ; ?>>Februari</option>
 							<option value="03" <?php if($bulan  == '03' ) echo 'selected' ; ?>>Maret</option>
@@ -113,9 +109,6 @@
 				<label for="spd-input" class="col-2 col-form-label">Tahun<span style="color:red;">*</span></label>
 					<div class="col-10" >
 						<input class="form-control" type="text" value="{{$tahun}}"   name="tahun" size="4" maxlength="4" onkeypress="return hanyaAngka(event)" autocomplete='off' required> 
-					</div>
-					<div class="col-3" >
-						<input class="form-control" type="hidden" name="tanggal" value="{{ date('d-m-Y') }}" size="15" maxlength="15" autocomplete='off'>
 					</div>
 				</div>
 				<div class="form-group row">
@@ -141,18 +134,12 @@
 						</select>								
 					</div>
 				</div>
-				<div class="form-group row">
-				<label for="spd-input" class="col-2 col-form-label">Perintah Kerja</label>
-					<div class="col-10" >
-						<input class="form-control" type="text" value=""   name="wo" size="6" maxlength="6" autocomplete='off' > 
-					</div>
-				</div>
 				<div class="kt-form__actions">
 					<div class="row">
 						<div class="col-2"></div>
 						<div class="col-10">
-							<a  href="#" class="btn btn-warning"><i class="fa fa-reply" aria-hidden="true"></i>Cancel</a>
-							<button type="submit" id="btn-save" onclick="$('form').attr('target', '_blank')" class="btn btn-brand"><i class="fa fa-print" aria-hidden="true"></i>Cetak</button>
+							<a href="{{ url()->previous() }}" class="btn btn-warning"><i class="fa fa-reply" aria-hidden="true"></i>Cancel</a>
+							<button type="submit" id="btn-save" class="btn btn-brand"><i class="fa fa-print" aria-hidden="true"></i>Cetak</button>
 						</div>
 					</div>
 				</div>
