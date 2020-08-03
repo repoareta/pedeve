@@ -27,7 +27,11 @@ table {
 
 td {
     vertical-align: top;
-    padding: 3px, 5px, 3px, 5px;
+    padding: 5px;
+}
+
+th {
+    padding: 7px;
 }
 
 thead { 
@@ -90,21 +94,21 @@ tr {
                         <td>{{ $d2->kk }}</td>
                         <td class="text-right">
                             @if ($d2->totpricerp < 0)
-                            ({{ float_two(abs($d2->totpricerp)) }})
+                            ({{ number_format(float_two(abs($d2->totpricerp)), 2) }})
                             @else
-                            {{ float_two($d2->totpricerp) }}
+                            {{ number_format(float_two($d2->totpricerp), 2) }}
                             @endif
                         </td>
                         <td class="text-right">
                             @if ($d2->totpricedl < 0)
-                            ({{ float_two(abs($d2->totpricedl)) }})
+                            ({{ number_format(float_two(abs($d2->totpricedl)), 2) }})
                             @else
-                            {{ float_two($d2->totpricedl) }}
+                            {{ number_format(float_two($d2->totpricedl), 2) }}
                             @endif
                         </td>
                         <td class="text-right">
                             @if ($d2->mu != 1)
-                            {{ float_two($d2->kurs) }}
+                            {{ number_format(float_two($d2->kurs), 2) }}
                             @endif
                         </td>
                         <td>{{ $d2->keterangan }}</td>
@@ -143,20 +147,32 @@ tr {
                     <tr>
                         <td colspan="6" class="text-right">Total Debet :</td>
                         <td colspan="4"></td>
-                        <td class="text-right">jml_rupiah</td>
-                        <td class="text-right">jml_rupiah_dollar</td>
+                        <td class="text-right">{{ number_format($d2_total->total_debet_rp, 2) }}</td>
+                        <td class="text-right">{{ number_format($d2_total->total_debet_dl, 2) }}</td>
                     </tr>
                     <tr>
                         <td colspan="6" class="text-right">Total Kredit :</td>
                         <td colspan="4"></td>
-                        <td class="text-right">jml_rupiah</td>
-                        <td class="text-right">jml_rupiah_dollar</td>
+                        <td class="text-right">({{ number_format(abs($d2_total->total_kredit_rp), 2) }})</td>
+                        <td class="text-right">({{ number_format(abs($d2_total->total_kredit_dl), 2) }})</td>
                     </tr>
                     <tr>
                         <td colspan="6" class="text-right">Saldo :</td>
                         <td colspan="4"></td>
-                        <td class="text-right">jml_rupiah</td>
-                        <td class="text-right">jml_rupiah_dollar</td>
+                        <td class="text-right">
+                            @if ($d2_total->saldo_rp < 0)
+                            ({{ number_format(abs($d2_total->saldo_rp), 2) }})
+                            @else
+                            {{ number_format($d2_total->saldo_rp, 2) }}
+                            @endif
+                        </td>
+                        <td class="text-right">
+                            @if ($d2_total->saldo_dl < 0)
+                            ({{ number_format(abs($d2_total->saldo_dl), 2) }})
+                            @else
+                            {{ number_format($d2_total->saldo_dl, 2) }}
+                            @endif
+                        </td>
                     </tr>
                 </tbody>
             </table>
