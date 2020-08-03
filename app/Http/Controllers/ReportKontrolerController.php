@@ -159,10 +159,10 @@ class ReportKontrolerController extends Controller
                 Alert::info("Tidak ditemukan data dengan Bulan/Tahun: $request->bulan/$request->tahun ", 'Failed')->persistent(true);
                 return redirect()->route('neraca_konsolidasi.create_neraca_konsolidasi');
             }
-          } else {
-                Alert::info("Tidak ditemukan data dengan Bulan/Tahun: $request->bulan/$request->tahun ", 'Failed')->persistent(true);
-                return redirect()->route('neraca_konsolidasi.create_neraca_konsolidasi');
-          }
+        } else {
+            Alert::info("Tidak ditemukan data dengan Bulan/Tahun: $request->bulan/$request->tahun ", 'Failed')->persistent(true);
+            return redirect()->route('neraca_konsolidasi.create_neraca_konsolidasi');
+        }
     }
     
     
@@ -382,10 +382,6 @@ class ReportKontrolerController extends Controller
             'wono AS pk',
             'jb',
             'cj AS kk',
-            // decode(-sign(totpricerp),1,0,totpricerp) debet_rp,
-            // decode(sign(totpricerp),-1,totpricerp,0) kredit_rp,
-            // decode(-sign(totpricedl),1,0,totpricedl) debet_dl,
-            // decode(sign(totpricedl),-1,totpricedl,0) kredit_dl,
             'rate AS kurs',
             'rate_trans AS kurs_trans',
             'rate_pajak AS kurs_pajak',
@@ -415,6 +411,9 @@ class ReportKontrolerController extends Controller
         ->when(request('jk') == 3, function ($query) {
             return $query->whereIn('jk', [10, 11, 13, 15, 18]);
         })
+        ->when(request('sanper'), function ($query) {
+            return $query->where('account', request('sanper'));
+        })
         ->orderBy('tahun', 'DESC')
         ->orderBy('bulan', 'DESC')
         ->orderBy('supbln', 'DESC')
@@ -425,19 +424,53 @@ class ReportKontrolerController extends Controller
         ->orderBy('ci', 'DESC')
         ->get();
 
-        // $header = view()->make('')->render();
+        $d2_total = DB::table('fiosd201')
+        ->select(
+            DB::raw('SUM(round(totpricerp, 2)) AS saldo_rp'),
+            DB::raw('SUM(round(totpricedl, 2)) AS saldo_dl'),
+            DB::raw('SUM((case when totpricerp > 0 then round(totpricerp, 2) end)) AS total_debet_rp'),
+            DB::raw('SUM((case when totpricerp < 0 then round(totpricerp, 2) end)) AS total_kredit_rp'),
+            DB::raw('SUM((case when totpricedl > 0 then round(totpricedl, 2) end)) AS total_debet_dl'),
+            DB::raw('SUM((case when totpricedl < 0 then round(totpricedl, 2) end)) AS total_kredit_dl')
+        )
+        ->when(request('bulan'), function ($query) {
+            return $query->where('bulan', request('bulan'));
+        })
+        ->when(request('tahun'), function ($query) {
+            return $query->where('tahun', request('tahun'));
+        })
+        ->when(request('suplesi'), function ($query) {
+            return $query->where('supbln', request('suplesi'));
+        })
+        ->when(request('lp'), function ($query) {
+            return $query->where('lokasi', request('lp'));
+        })
+        ->when(request('jk') == 1, function ($query) {
+            return $query->whereIn('jk', [10, 11, 13]);
+        })
+        ->when(request('jk') == 2, function ($query) {
+            return $query->whereIn('jk', [15, 18]);
+        })
+        ->when(request('jk') == 3, function ($query) {
+            return $query->whereIn('jk', [10, 11, 13, 15, 18]);
+        })
+        ->when(request('sanper'), function ($query) {
+            return $query->where('account', request('sanper'));
+        })
+        ->first();
 
         $pdf = PDF::loadview('report_kontroler.export_d2_perbulan_pdf', compact(
             'd2_list',
+            'd2_total',
             'tahun',
             'bulan'
         ))
         ->setPaper('a4', 'landscape')
         ->setOption('footer-right', 'Halaman [page] dari [toPage]')
-        ->setOption('footer-font-size', 7);
-        // ->setOption('header-html', view('report_kontroler.header'))
-        // ->setOption('margin-top', 10)
-        // ->setOption('margin-bottom', 10);
+        ->setOption('footer-font-size', 7)
+        ->setOption('header-html', view('report_kontroler.export_d2_perbulan_pdf_header', compact('bulan', 'tahun')))
+        ->setOption('margin-top', 30)
+        ->setOption('margin-bottom', 10);
 
         return $pdf->stream('rekap_d2_perbulan_'.date('Y-m-d H:i:s').'.pdf');
     }
@@ -462,10 +495,6 @@ class ReportKontrolerController extends Controller
             'wono AS pk',
             'jb',
             'cj AS kk',
-            // decode(-sign(totpricerp),1,0,totpricerp) debet_rp,
-            // decode(sign(totpricerp),-1,totpricerp,0) kredit_rp,
-            // decode(-sign(totpricedl),1,0,totpricedl) debet_dl,
-            // decode(sign(totpricedl),-1,totpricedl,0) kredit_dl,
             'rate AS kurs',
             'rate_trans AS kurs_trans',
             'rate_pajak AS kurs_pajak',
