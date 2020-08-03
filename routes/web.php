@@ -1037,6 +1037,10 @@ Route::group(['middleware'=> ['auth','checkRole:1,0']], function () {
             Route::post('kas_bank/report/cetak5', 'KasCashJudexController@Cetak5')->name('cetak5');
             Route::get('kas_bank/report/create6', 'KasCashJudexController@Create6')->name('create6');
             Route::post('kas_bank/report/cetak6', 'KasCashJudexController@Cetak6')->name('cetak6');
+            Route::get('kas_bank/report/create7', 'KasCashJudexController@Create7')->name('create7');
+            Route::get('kas_bank/report/cetak7', 'KasCashJudexController@Cetak7')->name('cetak7');
+            Route::get('kas_bank/report/create8', 'KasCashJudexController@Create8')->name('create8');
+            Route::get('kas_bank/report/cetak8', 'KasCashJudexController@Cetak8')->name('cetak8');
         });
         //end report_kas_bank
     });
@@ -1250,7 +1254,7 @@ Route::group(['middleware'=> ['auth','checkRole:1,0']], function () {
         // Route assigned name "d2_perbulan.index"...
         Route::name('d2_perbulan.')->group(function () {
             Route::get('d2_perbulan', 'ReportKontrolerController@create_d2_perbulan')->name('create_d2_perbulan');
-            // Route::post('d2_perbulan/index/search', 'ReportKontrolerController@searchIndex')->name('search.index');
+            Route::get('d2_perbulan/export', 'ReportKontrolerController@d2PerBulanExport')->name('export');
         });
         //end d2_perbulan
 
@@ -1258,7 +1262,7 @@ Route::group(['middleware'=> ['auth','checkRole:1,0']], function () {
         // Route assigned name "d2_periode.index"...
         Route::name('d2_periode.')->group(function () {
             Route::get('d2_periode', 'ReportKontrolerController@create_d2_periode')->name('create_d2_periode');
-            // Route::post('d2_periode/index/search', 'ReportKontrolerController@searchIndex')->name('search.index');
+            Route::get('d2_periode/export', 'ReportKontrolerController@d2PerPeriodeExport')->name('export');
         });
         //end d2_periode
 
@@ -1306,7 +1310,7 @@ Route::group(['middleware'=> ['auth','checkRole:1,0']], function () {
         // Route assigned name "laporan_keuangan.index"...
         Route::name('laporan_keuangan.')->group(function () {
             Route::get('laporan_keuangan', 'ReportKontrolerController@create_laporan_keuangan')->name('create_laporan_keuangan');
-            // Route::post('laporan_keuangan/index/search', 'ReportKontrolerController@searchIndex')->name('search.index');
+            Route::get('laporan_keuangan/export', 'ReportKontrolerController@laporanKeuanganExport')->name('export');
         });
         //end laporan_keuangan
 
