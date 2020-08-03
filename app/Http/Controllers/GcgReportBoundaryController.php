@@ -4,7 +4,14 @@ namespace App\Http\Controllers;
 
 use Illuminate\Http\Request;
 
-use SnappyPDF;
+// Load Model
+use App\Models\GcgGratifikasi;
+
+//load export CSV
+use App\Exports\ReportBoundary;
+
+//load plugin
+use Excel;
 
 class GcgReportBoundaryController extends Controller
 {
@@ -15,7 +22,16 @@ class GcgReportBoundaryController extends Controller
      */
     public function index()
     {
-        $pdf = SnappyPDF::loadView('gcg.report_boundary.index');
-        return $pdf->stream('invoice.pdf');
+        $report_list = GcgGratifikasi::with('userpdv')
+        ->get();
+        
+        $bulan = date('m');
+        $tahun = date('Y');
+
+        return Excel::download(new ReportBoundary(
+            $report_list,
+            $bulan,
+            $tahun
+        ), 'gcg_report_boundary'.date('Y-m-d H:i:s').".xlsx");
     }
 }
