@@ -311,7 +311,15 @@ class ReportKontrolerController extends Controller
         ->where('supbln', $request->suplesi)
         ->where('lokasi', $request->lp)
         ->where('jk', $request->jk)
-        ->limit(5)
+        ->orderBy('tahun', 'DESC')
+        ->orderBy('bulan', 'DESC')
+        ->orderBy('supbln', 'DESC')
+        ->orderBy('account', 'DESC')
+        ->orderBy('jk', 'DESC')
+        ->orderBy('store', 'DESC')
+        ->orderBy('vc', 'DESC')
+        ->orderBy('ci', 'DESC')
+        // ->limit(25)
         ->get();
 
         $pdf = DomPDF::loadview('report_kontroler.export_d2_perbulan_pdf', compact(

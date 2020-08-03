@@ -35,10 +35,17 @@ table {
     text-align: right;
 }
 
-th, tr {
-    white-space: nowrap;
+.text-left {
+    text-align: left;
 }
 
+/* th, tr {
+    white-space: nowrap;
+} */
+
+td {
+    vertical-align: top;
+}
 header { 
     position: fixed; 
     left: 0px; 
@@ -63,7 +70,7 @@ header {
                     RINCIAN TRANSAKSI (D-2)
                     </b>
                     <br>
-                    BULAN BUKU: MEI 2020
+                    BULAN BUKU: {{ $bulan." ".$tahun }}
                 </p>
             </div>
     
@@ -76,22 +83,22 @@ header {
     <main>
         <div class="row">
             <table style="width:100%;" class="table">
-                <thead>
+                <thead style="border-top: 1px solid black; border-bottom: 1px solid black;">
                     <tr>
-                        <th>JK</th>
-                        <th>ST</th>
-                        <th>VC</th>
-                        <th>CI</th>
-                        <th>LP</th>
-                        <th>SANDI</th>
-                        <th>BAGIAN</th>
-                        <th>PK</th>
-                        <th>JB</th>
+                        <th width="50px" class="text-left">JK</th>
+                        <th width="30px" class="text-left">ST</th>
+                        <th width="50px">VC</th>
+                        <th width="30px">CI</th>
+                        <th width="30px">LP</th>
+                        <th width="70px">SANDI</th>
+                        <th width="70px">BAGIAN</th>
+                        <th width="50px">PK</th>
+                        <th width="50px">JB</th>
                         <th>CJ</th>
-                        <th>JUMLAH RUPIAH</th>
-                        <th>JUMLAH DOLLAR</th>
-                        <th>KURS</th>
-                        <th>KETERANGAN</th>
+                        <th width="120px">JUMLAH RUPIAH</th>
+                        <th width="120px">JUMLAH DOLLAR</th>
+                        <th width="50px">KURS</th>
+                        <th class="text-left">KETERANGAN</th>
                     </tr>
                 </thead>
                 <tbody>
@@ -99,20 +106,84 @@ header {
                     <tr>
                         <td>{{ $d2->jk }}</td>
                         <td>{{ $d2->lokasi }}</td>
-                        <td>{{ $d2->voucher }}</td>
-                        <td>{{ $d2->mu }}</td>
+                        <td class="text-center">{{ $d2->voucher }}</td>
+                        <td class="text-center">{{ $d2->mu }}</td>
                         <td>{{ $d2->lapangan }}</td>
                         <td>{{ $d2->sandi }}</td>
                         <td>{{ $d2->bagian }}</td>
                         <td>{{ $d2->pk }}</td>
                         <td>{{ $d2->jb }}</td>
                         <td>{{ $d2->kk }}</td>
-                        <td>{{ $d2->totpricerp }}</td>
-                        <td>{{ $d2->totpricedl }}</td>
-                        <td>{{ $d2->kurs }}</td>
+                        <td class="text-right">
+                            @if ($d2->totpricerp < 0)
+                            ({{ float_two(abs($d2->totpricerp)) }})
+                            @else
+                            {{ float_two($d2->totpricerp) }}
+                            @endif
+                        </td>
+                        <td class="text-right">
+                            @if ($d2->totpricedl < 0)
+                            ({{ float_two(abs($d2->totpricedl)) }})
+                            @else
+                            {{ float_two($d2->totpricedl) }}
+                            @endif
+                        </td>
+                        <td>
+                            @if ($d2->mu != 1)
+                                {{ $d2->kurs }}
+                            @endif
+                        </td>
                         <td>{{ $d2->keterangan }}</td>
                     </tr>
+                    {{-- <tr>
+                        <td colspan="6" class="text-right">Total CI :</td>
+                        <td colspan="4">{{ $d2->mu }}</td>
+                        <td class="text-right">jml_rupiah</td>
+                        <td class="text-right">jml_rupiah_dollar</td>
+                    </tr>
+                    <tr>
+                        <td colspan="6" class="text-right">Total JB :</td>
+                        <td colspan="4">{{ $d2->jb }}</td>
+                        <td class="text-right">jml_rupiah</td>
+                        <td class="text-right">jml_rupiah_dollar</td>
+                    </tr>
+                    <tr>
+                        <td colspan="6" class="text-right">Total SANDI :</td>
+                        <td colspan="4">{{ $d2->sandi }}</td>
+                        <td class="text-right">jml_rupiah</td>
+                        <td class="text-right">jml_rupiah_dollar</td>
+                    </tr>
+                    <tr>
+                        <td colspan="6" class="text-right">Total MAIN :</td>
+                        <td colspan="4">{{ substr($d2->sandi, 0, 3) }}</td>
+                        <td class="text-right">jml_rupiah</td>
+                        <td class="text-right">jml_rupiah_dollar</td>
+                    </tr>
+                    <tr>
+                        <td colspan="6" class="text-right">Total CLASS :</td>
+                        <td colspan="4">{{ substr($d2->sandi, 0, 1) }}</td>
+                        <td class="text-right">jml_rupiah</td>
+                        <td class="text-right">jml_rupiah_dollar</td>
+                    </tr> --}}
                     @endforeach
+                    <tr>
+                        <td colspan="6" class="text-right">Total Debet :</td>
+                        <td colspan="4"></td>
+                        <td class="text-right">jml_rupiah</td>
+                        <td class="text-right">jml_rupiah_dollar</td>
+                    </tr>
+                    <tr>
+                        <td colspan="6" class="text-right">Total Kredit :</td>
+                        <td colspan="4"></td>
+                        <td class="text-right">jml_rupiah</td>
+                        <td class="text-right">jml_rupiah_dollar</td>
+                    </tr>
+                    <tr>
+                        <td colspan="6" class="text-right">Saldo :</td>
+                        <td colspan="4"></td>
+                        <td class="text-right">jml_rupiah</td>
+                        <td class="text-right">jml_rupiah_dollar</td>
+                    </tr>
                 </tbody>
             </table>
         </div>
