@@ -1025,6 +1025,7 @@ Route::group(['middleware'=> ['auth','checkRole:1,0']], function () {
         // Route assigned name "rekap_periode_kas.index"...
         Route::name('rekap_periode_kas.')->group(function () {
             Route::get('rekap_periode_kas/create', 'RekapPeriodeKasController@RekapPeriode')->name('create');
+            Route::post('rekap_periode_kas/export', 'RekapPeriodeKasController@exportPeriode')->name('exportperiode');
         });
         //end rekap_harian_kas
 
