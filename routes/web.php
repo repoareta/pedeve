@@ -908,6 +908,8 @@ Route::group(['middleware'=> ['auth','checkRole:1,0']], function () {
             Route::get('perhitungan_bagihasil', 'PerhitunganBagiHasilController@index')->name('index');
             Route::post('perhitungan_bagihasil/search', 'PerhitunganBagiHasilController@index')->name('index.search');
             Route::delete('perhitungan_bagihasil/delete', 'PerhitunganBagiHasilController@delete')->name('delete');
+            Route::get('perhitungan_bagihasil/rekap', 'PerhitunganBagiHasilController@RekapPerhitungan')->name('rekap');
+            Route::post('perhitungan_bagihasil/export', 'PerhitunganBagiHasilController@exportPerhitungan')->name('export');
         });
         //end perhitungan_bagihasil
 
@@ -1026,6 +1028,8 @@ Route::group(['middleware'=> ['auth','checkRole:1,0']], function () {
         Route::name('rekap_periode_kas.')->group(function () {
             Route::get('rekap_periode_kas/create', 'RekapPeriodeKasController@RekapPeriode')->name('create');
             Route::post('rekap_periode_kas/export', 'RekapPeriodeKasController@exportPeriode')->name('exportperiode');
+            Route::post('rekap_periode_kas/json/nokas', 'RekapPeriodeKasController@nokasJson')->name('nokas.json');
+            Route::post('rekap_periode_kas/json/jk', 'RekapPeriodeKasController@jkJson')->name('jk.json');
         });
         //end rekap_harian_kas
 

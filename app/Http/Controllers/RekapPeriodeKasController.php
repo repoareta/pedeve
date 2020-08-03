@@ -20,11 +20,20 @@ class RekapPeriodeKasController extends Controller
         return view('rekap_periode_kas.rekap');
     }
 
+    public function nokasJson(Request $request)
+    {
+        $data= DB::select("select distinct a.store,b.namabank,b.norekening from kasdoc a,storejk b where a.store=b.kodestore and a.PAID='Y' and b.jeniskartu='$request->jk' and paiddate between '$request->tanggal' and '$request->tanggal2' order by a.store");
+        return response()->json($data);
+    }
+    public function jkJson(Request $request)
+    {
+        $data= DB::select("select distinct jk from kasdoc where paid='Y' and paiddate between '$request->tanggal' and '$request->tanggal2'  order by jk");
+        return response()->json($data);
+    }
+
      public function RekapPeriode()
     {
-        $data_jk  = DB::select("select distinct jk from kasdoc where paid='Y'");
-        $data_nokas  = DB::select("select distinct a.store,b.namabank,b.norekening from kasdoc a,storejk b where a.store=b.kodestore and a.PAID='Y'");
-        return view('rekap_periode_kas.rekap',compact('data_jk','data_nokas'));
+        return view('rekap_periode_kas.rekap');
     }
     public function exportPeriode(Request $request)
     {
@@ -36,7 +45,6 @@ class RekapPeriodeKasController extends Controller
                 $v_d1 = date_format($a, 'Y-m-d');
                 $b = date_create($data_vdd->v_d2);
                 $v_d2 = date_format($b, 'Y-m-d');
-                // dd($v_d1);
                 if (is_null($data_vdd->v_d1)) {
                     $v_saw =0;
                 }else{
@@ -66,8 +74,8 @@ class RekapPeriodeKasController extends Controller
                 }
             }
         }else{
-            Alert::info("Data Tidak Ditemukan", 'Failed')->persistent(true);
-            return redirect()->route('rekap_periode_kas.create');
+            $v_saw =0;
+            $v_sak =0;
         }
 
 
@@ -82,7 +90,7 @@ class RekapPeriodeKasController extends Controller
             $dom_pdf = $pdf->getDomPDF();
 
             $canvas = $dom_pdf ->get_canvas();
-            $canvas->page_text(430, 115, "({PAGE_NUM}) Dari {PAGE_COUNT}", null, 8, array(0, 0, 0)); //lembur landscape
+            $canvas->page_text(400, 115, "({PAGE_NUM}) Dari {PAGE_COUNT}", null, 8, array(0, 0, 0)); //lembur landscape
             // return $pdf->download('rekap_umk_'.date('Y-m-d H:i:s').'.pdf');
             return $pdf->stream();
         }else{

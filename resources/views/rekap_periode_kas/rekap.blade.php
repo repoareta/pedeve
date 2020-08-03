@@ -44,13 +44,22 @@
 			{{csrf_field()}}
 			<div class="kt-portlet__body">
 				<div class="form-group row">
+					<label for="dari-input" class="col-2 col-form-label">Mulai Tanggal<span style="color:red;">*</span></label>
+					<div class="col-10">
+						<div class="input-daterange input-group" id="date_range_picker">
+							<input type="text" class="form-control" name="tanggal" id="tanggal" autocomplete="off" required oninvalid="this.setCustomValidity('Mulai Harus Diisi..')" onchange="setCustomValidity('')"/>
+							<div class="input-group-append">
+								<span class="input-group-text">Sampai</span>
+							</div>
+							<input type="text" class="form-control" name="tanggal2" id="tanggal2" autocomplete="off" required oninvalid="this.setCustomValidity('Sampai Harus Diisi..')" onchange="setCustomValidity('')"/>
+						</div>
+					</div>
+				</div>
+				<div class="form-group row">
 					<label for="dari-input" class="col-2 col-form-label">Jenis Kartu<span style="color:red;">*</span></label>
 					<div class="col-10">
-						<select class="form-control kt-select2"  name="jk" required oninvalid="this.setCustomValidity('Jenis Kartu Harus Diisi..')" onchange="setCustomValidity('')">
+						<select class="form-control kt-select2"  name="jk" id="jk" required oninvalid="this.setCustomValidity('Jenis Kartu Harus Diisi..')" onchange="setCustomValidity('')">
 							<option value="">- Pilih -</option>
-							@foreach($data_jk as $data)
-							<option value="{{ $data->jk }}">{{ $data->jk }}</option>
-							@endforeach
 						</select>
 					</div>
 				</div>
@@ -58,24 +67,9 @@
 				<div class="form-group row">
 					<label for="dari-input" class="col-2 col-form-label">No.Kas/Bank<span style="color:red;">*</span></label>
 					<div class="col-10">
-						<select class="form-control kt-select2"  name="nokas" required oninvalid="this.setCustomValidity('No.Kas/Bank Harus Diisi..')" onchange="setCustomValidity('')">
+						<select class="form-control kt-select2"  name="nokas" id="nokas" required oninvalid="this.setCustomValidity('No.Kas/Bank Harus Diisi..')" onchange="setCustomValidity('')">
 							<option value="">- Pilih -</option>
-							@foreach($data_nokas as $data)
-							<option value="{{ $data->store }}">{{ $data->store }} -- {{ $data->namabank }} -- {{ $data->norekening }}</option>
-							@endforeach
 						</select>
-					</div>
-				</div>
-				<div class="form-group row">
-					<label for="dari-input" class="col-2 col-form-label">Mulai Tanggal<span style="color:red;">*</span></label>
-					<div class="col-10">
-						<div class="input-daterange input-group" id="date_range_picker">
-							<input type="text" class="form-control" name="tanggal" autocomplete="off" required oninvalid="this.setCustomValidity('Mulai Harus Diisi..')" onchange="setCustomValidity('')"/>
-							<div class="input-group-append">
-								<span class="input-group-text">Sampai</span>
-							</div>
-							<input type="text" class="form-control" name="tanggal2" autocomplete="off" required oninvalid="this.setCustomValidity('Sampai Harus Diisi..')" onchange="setCustomValidity('')"/>
-						</div>
 					</div>
 				</div>
 				
@@ -114,9 +108,103 @@ $(document).ready(function () {
 	});
    
 	$('#date_range_picker').datepicker({
-        todayHighlight: true,
+		todayHighlight: true,
+		autoclose: true,
         format   : 'yyyy-mm-dd',
-    });
+	});
+	
+
+	$("#tanggal").on("change", function(e){
+		e.preventDefault();
+		var tanggal = $('#tanggal').val();
+		var tanggal2 = $('#tanggal2').val();
+		$.ajax({
+			url : "{{route('rekap_periode_kas.jk.json')}}",
+			type : "POST",
+			dataType: 'json',
+			data : {
+				tanggal:tanggal,
+				tanggal2:tanggal2,
+				},
+			headers: {
+				'X-CSRF-Token': '{{ csrf_token() }}',
+				},
+			success : function(data){
+						var html = '';
+						var i;
+						html += '<option value="">- Pilih - </option>';
+						for(i=0; i<data.length; i++){
+							html += '<option value="'+data[i].jk+'">'+data[i].jk+'</option>';
+						}
+						$('#jk').html(html);		
+			},
+			error : function(){
+				alert("Ada kesalahan controller!");
+			}
+		})
+	});
+
+	$("#tanggal2").on("change", function(e){
+		e.preventDefault();
+		var tanggal = $('#tanggal').val();
+		var tanggal2 = $('#tanggal2').val();
+		$.ajax({
+			url : "{{route('rekap_periode_kas.jk.json')}}",
+			type : "POST",
+			dataType: 'json',
+			data : {
+				tanggal:tanggal,
+				tanggal2:tanggal2,
+				},
+			headers: {
+				'X-CSRF-Token': '{{ csrf_token() }}',
+				},
+			success : function(data){
+						var html = '';
+						var i;
+						html += '<option value="">- Pilih - </option>';
+						for(i=0; i<data.length; i++){
+							html += '<option value="'+data[i].jk+'">'+data[i].jk+'</option>';
+						}
+						$('#jk').html(html);		
+			},
+			error : function(){
+				alert("Ada kesalahan controller!");
+			}
+		})
+	});
+
+	$("#jk").on("change", function(e){
+		e.preventDefault();
+		var tanggal = $('#tanggal').val();
+		var tanggal2 = $('#tanggal2').val();
+		var jk = $('#jk').val();
+		$.ajax({
+			url : "{{route('rekap_periode_kas.nokas.json')}}",
+			type : "POST",
+			dataType: 'json',
+			data : {
+				tanggal:tanggal,
+				tanggal2:tanggal2,
+				jk:jk
+				},
+			headers: {
+				'X-CSRF-Token': '{{ csrf_token() }}',
+				},
+			success : function(data){
+						var html = '';
+						var i;
+						html += '<option value="">- Pilih - </option>';
+						for(i=0; i<data.length; i++){
+							html += '<option value="'+data[i].store+'">'+data[i].store+' -- '+data[i].namabank+' -- '+data[i].norekening+'</option>';
+						}
+						$('#nokas').html(html);		
+			},
+			error : function(){
+				alert("Ada kesalahan controller!");
+			}
+		})
+	});
 });
 		function hanyaAngka(evt) {
 			  var charCode = (evt.which) ? evt.which : event.keyCode

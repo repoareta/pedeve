@@ -40,10 +40,12 @@
 							<i class="fas fa-trash"></i>
 						</span>
 						@endif
-						@endforeach
-						<!-- <span style="font-size: 2em;" class="kt-font-info pointer-link" id="exportRow" data-toggle="kt-tooltip" data-placement="top" title="Cetak Data">
+						@if($data_akses->cetak == 1)
+						<span style="font-size: 2em;" class="kt-font-info pointer-link" id="exportRow" data-toggle="kt-tooltip" data-placement="top" title="Cetak Data">
 							<i class="fas fa-print"></i>
-						</span> -->
+						</span>
+						@endif
+						@endforeach
 					</div>
 				</div>
 			</div>
@@ -223,6 +225,11 @@ $('#deleteRow').click(function(e) {
 	}
 	
 });
+
+		$('#exportRow').click(function(e) {
+			e.preventDefault();
+			location.replace("{{route('perhitungan_bagihasil.rekap')}}");
+		});
 
 
 });
