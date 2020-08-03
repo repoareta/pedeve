@@ -1,4 +1,3 @@
-<?php ini_set('memory_limit', '2048M'); ?>
 <!DOCTYPE html>
 <html lang="en">
 <head>
@@ -9,22 +8,9 @@
 <style media="screen">
 
 table {
-    font: normal 10px Verdana, Arial, sans-serif;
+    font: normal 12px Verdana, Arial, sans-serif;
+    width: 100%;
     border-collapse: collapse;
-}
-
-.table-no-border-all td {
-    border: 0px;
-    padding: 0px;
-}
-
-.row {
-    display: -ms-flexbox;
-    display: flex;
-    -ms-flex-wrap: wrap;
-    flex-wrap: wrap;
-    margin-right: -5px;
-    margin-left: -5px;
 }
 
 .text-center {
@@ -39,66 +25,54 @@ table {
     text-align: left;
 }
 
-/* th, tr {
-    white-space: nowrap;
-} */
-
 td {
     vertical-align: top;
-}
-header { 
-    position: fixed; 
-    left: 0px; 
-    top: -110px;
-    right: 0px;
-    height: 0px;
+    padding: 3px, 5px, 3px, 5px;
 }
 
-@page { 
-    margin: 130px 50px 50px 50px;
+thead { 
+    display: table-header-group;
+    border-top: 1px solid black; 
+    border-bottom: 1px solid black;
+}
+
+tr { 
+    page-break-inside: avoid 
+}
+
+.th-small {
+    width: 40px;
+}
+
+.th-medium {
+    width: 70px;
+}
+
+.th-large {
+    width: 120px;
 }
 
 </style>
-<body>
-    <header id="header">
-        <div class="row">
-            <div class="text-center">
-                <p>
-                    <b>
-                    PT. PERTAMINA PEDEVE INDONESIA
-                    <br>
-                    RINCIAN TRANSAKSI (D-2)
-                    </b>
-                    <br>
-                    BULAN BUKU: {{ $bulan." ".$tahun }}
-                </p>
-            </div>
-    
-            <div>
-                <img align="right" src="{{ public_path() . '/images/pertamina.jpg' }}" width="120px" height="60px" style="padding-top:10px">
-            </div>
-        </div>
-    </header>
-      
+<body style="margin:0px;">
     <main>
         <div class="row">
-            <table style="width:100%;" class="table">
-                <thead style="border-top: 1px solid black; border-bottom: 1px solid black;">
+            <table class="table tree">
+                <thead>
                     <tr>
-                        <th width="50px" class="text-left">JK</th>
-                        <th width="30px" class="text-left">ST</th>
-                        <th width="50px">VC</th>
-                        <th width="30px">CI</th>
-                        <th width="30px">LP</th>
-                        <th width="70px">SANDI</th>
-                        <th width="70px">BAGIAN</th>
-                        <th width="50px">PK</th>
-                        <th width="50px">JB</th>
-                        <th>CJ</th>
-                        <th width="120px">JUMLAH RUPIAH</th>
-                        <th width="120px">JUMLAH DOLLAR</th>
-                        <th width="50px">KURS</th>
-                        <th class="text-left">KETERANGAN</th>
+                        <th class="th-small text-left">JK</th>
+                        <th class="th-small text-left">ST</th>
+                        <th class="th-small">VC</th>
+                        <th class="th-small">CI</th>
+                        <th class="th-small">LP</th>
+                        <th class="th-small">SANDI</th>
+                        <th class="th-medium">BAGIAN</th>
+                        <th class="th-medium">PK</th>
+                        <th class="th-medium">JB</th>
+                        <th class="th-small text-left">CJ</th>
+                        <th class="th-large">JUMLAH RUPIAH</th>
+                        <th class="th-large">JUMLAH DOLLAR</th>
+                        <th class="th-medium">KURS</th>
+                        <th class="th-large text-left">KETERANGAN</th>
                     </tr>
                 </thead>
                 <tbody>
@@ -128,9 +102,9 @@ header {
                             {{ float_two($d2->totpricedl) }}
                             @endif
                         </td>
-                        <td>
+                        <td class="text-right">
                             @if ($d2->mu != 1)
-                                {{ $d2->kurs }}
+                            {{ float_two($d2->kurs) }}
                             @endif
                         </td>
                         <td>{{ $d2->keterangan }}</td>
@@ -189,7 +163,7 @@ header {
         </div>
     </main>
     
-    <script type='text/php'>
+    {{-- <script type='text/php'>
     if ( isset($pdf) ) { 
         $font = null;
         $size = 9;
@@ -197,7 +171,7 @@ header {
         $x = $pdf->get_width() - 103;
         $pdf->page_text($x, $y, 'Halaman {PAGE_NUM} dari {PAGE_COUNT}', $font, $size);
     }
-    </script>
+    </script> --}}
   
 </body>
 </html>

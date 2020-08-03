@@ -42,7 +42,6 @@
 	<div class="kt-portlet__body">
 		<form class="kt-form kt-form--label-right" action="{{route('d2_perbulan.export')}}" method="GET" target="_blank">
 			<div class="kt-portlet__body">
-				<input class="form-control" type="hidden" name="userid" value="{{Auth::user()->userid}}">
 				<div class="form-group row">
 					<label for="" class="col-2 col-form-label">JK<span style="color:red;">*</span></label>
 					<div class="col-10">
@@ -127,7 +126,7 @@
 						<div class="col-2"></div>
 						<div class="col-10">
 							<a  href="#" class="btn btn-warning"><i class="fa fa-reply" aria-hidden="true"></i>Cancel</a>
-							<button type="submit" id="btn-save" onclick="$('form').attr('target', '_blank')" class="btn btn-brand"><i class="fa fa-print" aria-hidden="true"></i>Cetak</button>
+							<button type="submit" class="btn btn-brand"><i class="fa fa-print" aria-hidden="true"></i>Cetak</button>
 						</div>
 					</div>
 				</div>
