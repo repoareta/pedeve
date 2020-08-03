@@ -3,8 +3,17 @@
 namespace App\Http\Controllers;
 
 use Illuminate\Http\Request;
+
+// load model
 use App\Models\Userpdv;
 use App\Models\Usermenu;
+
+// load model for GCG Implementation
+use App\Models\GcgFungsi;
+use App\Models\GcgJabatan;
+use App\Models\Pekerja;
+
+// load plugin
 use Auth;
 use DB;
 use Session;
@@ -24,70 +33,74 @@ class SetUserController extends Controller
         return datatables()->of($data)
         ->addColumn('userid', function ($data) {
             return $data->userid;
-       })
+        })
         ->addColumn('usernm', function ($data) {
             return $data->usernm;
-       })
+        })
         ->addColumn('kode', function ($data) {
             return $data->kode;
-       })
+        })
         ->addColumn('userlv', function ($data) {
-            if($data->userlv == 0){
+            if ($data->userlv == 0) {
                 return "ADMINISTRATOR";
-            }else{
+            } else {
                 return "USER";
             }
-       })
+        })
         ->addColumn('userap', function ($data) {
-            
-            if(substr_count($data->userap,"A") > 0){
-                 $userp1 = "[ KONTROLER ]"; 
-            }else{ 
+            if (substr_count($data->userap, "A") > 0) {
+                $userp1 = "[ KONTROLER ]";
+            } else {
                 $userp1="";
-            } 
-            if(substr_count($data->userap,"B") > 0){
-                 $userp2 = "[ TABUNGAN ]"; 
-            }else{ 
+            }
+            if (substr_count($data->userap, "B") > 0) {
+                $userp2 = "[ TABUNGAN ]";
+            } else {
                 $userp2="";
-            } 
-            if(substr_count($data->userap,"C") > 0){
-                 $userp3 = "[ INVESTASI ]"; 
-            }else{ 
+            }
+            if (substr_count($data->userap, "C") > 0) {
+                $userp3 = "[ INVESTASI ]";
+            } else {
                 $userp3="";
-            } 
-            if(substr_count($data->userap,"D") > 0){ 
-                $userp4 = "[ PERBENDAHARAAN ]"; 
-            }else{ 
+            }
+            if (substr_count($data->userap, "D") > 0) {
+                $userp4 = "[ PERBENDAHARAAN ]";
+            } else {
                 $userp4="";
-            } 
-            if(substr_count($data->userap,"E") > 0){ 
-                $userp5 = "[ UMUM ]"; 
-            }else{ 
+            }
+            if (substr_count($data->userap, "E") > 0) {
+                $userp5 = "[ UMUM ]";
+            } else {
                 $userp5="";
-            } 
-            if(substr_count($data->userap,"F") > 0){ 
-                $userp6 = "[ SDM ]"; 
-            }else{ 
+            }
+            if (substr_count($data->userap, "F") > 0) {
+                $userp6 = "[ SDM ]";
+            } else {
                 $userp6="";
-            } 
+            }
             return $userp1.' '.$userp2.' '.$userp3.' '.$userp4.' '.$userp5.' '.$userp6;
-       })
+        })
         ->addColumn('radio', function ($data) {
-            $radio = '<center><label class="kt-radio kt-radio--bold kt-radio--brand"><input type="radio" kode="'.$data->userid.'" class="btn-radio" name="btn-radio"><span></span></label></center>'; 
+            $radio = '<center><label class="kt-radio kt-radio--bold kt-radio--brand"><input type="radio" kode="'.$data->userid.'" class="btn-radio" name="btn-radio"><span></span></label></center>';
             return $radio;
         })
         ->addColumn('reset', function ($data) {
-            $radio = '<center><a style="color:blue;" href="'. route('set_user.reset',['no' => $data->userid]).'">RESET</a></center>'; 
+            $radio = '<center><a style="color:blue;" href="'. route('set_user.reset', ['no' => $data->userid]).'">RESET</a></center>';
             return $radio;
         })
         ->rawColumns(['radio','userap','reset'])
-        ->make(true); 
+        ->make(true);
     }
 
     public function create()
     {
-        return view('set_user.create');
+        $gcg_fungsi_list = GcgFungsi::all();
+        $gcg_jabatan_list = GcgJabatan::all();
+        $pekerja_list = Pekerja::all();
+
+        return view('set_user.create', compact('gcg_fungsi_list', 'gcg_jabatan_list', 'pekerja_list'));
     }
+
     public function store(Request $request)
     {
         $userid = $request->userid;
@@ -98,16 +111,14 @@ class SetUserController extends Controller
         $usrupd = Auth::user()->userid;
         $kode = $request->kode;
         $data_chkuser = DB::select("select userid from userpdv where userid='$userid'");
-        if(!empty($data_chkuser)){
-            foreach($data_chkuser as $data_ch)
-            {
+        if (!empty($data_chkuser)) {
+            foreach ($data_chkuser as $data_ch) {
                 $data = $data_ch->userid;
                 return response()->json($data);
             }
-        }else{
+        } else {
             $data_tglexp = DB::select("select (date(now()) + INTERVAL  '4' month) as tglexp");
-            foreach($data_tglexp as $data_tgl)
-            {
+            foreach ($data_tglexp as $data_tgl) {
                 $tglexp = $data_tgl->tglexp;
             }
             $tglupd = date('Y-m-d');
@@ -120,12 +131,14 @@ class SetUserController extends Controller
                 'userap' => $userap,
                 'tglupd' => $tglupd,
                 'passexp' => $tglexp,
-                'usrupd' => $usrupd 
+                'usrupd' => $usrupd,
+                'nopeg' => $request->nopeg,
+                'gcg_fungsi_id' => $request->gcg_fungsi,
+                'gcg_jabatan_id' => $request->gcg_jabatan
             ]);
             $data_menu = DB::select("select distinct(menuid) as menuid from dftmenu");
-                foreach($data_menu as $data_m)
-                {
-                    Usermenu::insert([
+            foreach ($data_menu as $data_m) {
+                Usermenu::insert([
                         'userid' => $userid,
                         'menuid' => $data_m->menuid,
                         'cetak' => '0',
@@ -134,26 +147,47 @@ class SetUserController extends Controller
                         'lihat' => '0',
                         'hapus' => '0'
                     ]);
-                }
+            }
         }
-            $data = 1;
-            return response()->json($data);
+        $data = 1;
+        return response()->json($data);
     }
 
     public function edit($no)
     {
         $data_user = DB::select("select * from userpdv where userid='$no'");
-        foreach($data_user as $data)
-        {
+        foreach ($data_user as $data) {
             $userid = $data->userid;
-            $userpw  = $data->userpw; 
+            $userpw  = $data->userpw;
             $usernm = $data->usernm;
             $kode = $data->kode;
             $userlv = $data->userlv;
             $userap = $data->userap;
             $usrupd = $data->usrupd;
+            $nopeg = $data->nopeg;
+            $gcg_fungsi_id = $data->gcg_fungsi_id;
+            $gcg_jabatan_id = $data->gcg_jabatan_id;
         }
-        return view('set_user.edit',compact('userid','userpw','usernm','kode','userlv','userap','usrupd'));
+
+        $gcg_fungsi_list = GcgFungsi::all();
+        $gcg_jabatan_list = GcgJabatan::all();
+        $pekerja_list = Pekerja::all();
+
+        return view('set_user.edit', compact(
+            'userid',
+            'userpw',
+            'usernm',
+            'kode',
+            'userlv',
+            'userap',
+            'usrupd',
+            'gcg_fungsi_list',
+            'gcg_jabatan_list',
+            'pekerja_list',
+            'nopeg',
+            'gcg_fungsi_id',
+            'gcg_jabatan_id'
+        ));
     }
     public function update(Request $request)
     {
@@ -164,41 +198,43 @@ class SetUserController extends Controller
         $tglupd = date('Y-m-d');
         $usrupd = Auth::user()->userid;
         $userap = $request->akt.''.$request->tab.''.$request->inv.''.$request->pbd.''.$request->umu.''.$request->sdm;
-        Userpdv::where('userid',$userid)
+        Userpdv::where('userid', $userid)
         ->update([
             'usernm' => $usernm,
             'kode' => $kode,
             'userlv' => $userlv,
             'userap' => $userap,
             'tglupd' => $tglupd,
-            'usrupd' => $usrupd 
+            'usrupd' => $usrupd,
+            'nopeg' => $request->nopeg,
+            'gcg_fungsi_id' => $request->gcg_fungsi,
+            'gcg_jabatan_id' => $request->gcg_jabatan
         ]);
         return response()->json();
     }
 
     public function delete(Request $request)
     {
-        Userpdv::where('userid',$request->kode)->delete();
-        Usermenu::where('userid',$request->kode)->delete();
+        Userpdv::where('userid', $request->kode)->delete();
+        Usermenu::where('userid', $request->kode)->delete();
         return response()->json();
     }
 
     public function Reset(Request $request)
     {
         $data_tglexp = DB::select("select (date(now()) + INTERVAL  '4' month) as tglexp");
-            foreach ($data_tglexp as $data_tgl) {
-                $tglexp = $data_tgl->tglexp;
-            }
-            $tglupd = date('Y-m-d');
-            $userpw ="v3ntur4";
-            Userpdv::where('userid', $request->no)
+        foreach ($data_tglexp as $data_tgl) {
+            $tglexp = $data_tgl->tglexp;
+        }
+        $tglupd = date('Y-m-d');
+        $userpw ="v3ntur4";
+        Userpdv::where('userid', $request->no)
             ->update([
                 'userpw' => $userpw,
                 'tglupd' => $tglupd,
                 'passexp' => $tglexp
             ]);
-            Alert::success('Password telah di Reset.', 'Berhasil')->persistent(true)->autoClose(2000);
-            return redirect()->route('set_user.index');
+        Alert::success('Password telah di Reset.', 'Berhasil')->persistent(true)->autoClose(2000);
+        return redirect()->route('set_user.index');
     }
-    
 }
