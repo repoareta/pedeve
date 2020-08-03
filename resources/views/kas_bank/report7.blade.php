@@ -6,15 +6,15 @@
 	<div class="kt-container  kt-container--fluid ">
 		<div class="kt-subheader__main">
 			<h3 class="kt-subheader__title">
-				Cetak Laporan Keuangan </h3>
+				Mencetak Per Sanper </h3>
 			<span class="kt-subheader__separator kt-hidden"></span>
 			<div class="kt-subheader__breadcrumbs">
 				<a href="#" class="kt-subheader__breadcrumbs-home"><i class="flaticon2-shelter"></i></a>
 				<span class="kt-subheader__breadcrumbs-separator"></span>
 				<a href="" class="kt-subheader__breadcrumbs-link">
-					Kontroler </a>
+					Perbendaharaan </a>
 				<span class="kt-subheader__breadcrumbs-separator"></span>
-				<span class="kt-subheader__breadcrumbs-link kt-subheader__breadcrumbs-link--active">Cetak Laporan Keuangan</span>
+				<span class="kt-subheader__breadcrumbs-link kt-subheader__breadcrumbs-link--active">Mencetak Per Sanper</span>
 			</div>
 		</div>
 	</div>
@@ -29,7 +29,7 @@
 				<i class="kt-font-brand flaticon2-line-chart"></i>
 			</span>
 			<h3 class="kt-portlet__head-title">
-				Tabel Cetak Laporan Keuangan
+				Cetak Cash Flow Internal
 			</h3>			
 		</div>
 		<div class="kt-portlet__head-toolbar">
@@ -40,23 +40,17 @@
 		</div>
 	</div>
 	<div class="kt-portlet__body">
-		<form class="kt-form kt-form--label-right" action="{{route('laporan_keuangan.export')}}" method="GET" target="_blank">
+		<form class="kt-form kt-form--label-right" action="{{route('kas_bank.cetak7')}}" method="GET" target="_blank">
 			<div class="kt-portlet__body">
-				<input class="form-control" type="hidden" name="userid" value="{{Auth::user()->userid}}">
-
 				<div class="form-group row">
-				<label for="spd-input" class="col-2 col-form-label">Bulan/Tahun<span style="color:red;">*</span></label>
-				<div class="col-4">
+					<label for="spd-input" class="col-2 col-form-label">Bulan/Tahun<span style="color:red;">*</span></label>
+					<div class="col-5">
 						<?php 
-						foreach($data_tahun as $data){ 
-							$tahun = substr($data->sbulan, 0, 4);
-							$bulan = substr($data->sbulan, 4, 2);
-							$suplesi = substr($data->sbulan, 6);
-							$lapangan = "KL";
-						}
+							$tgl = date_create(now());
+							$tahun = date_format($tgl, 'Y'); 
+							$bulan = date_format($tgl, 'm'); 
 						?>
-						<select class="form-control kt-select2" name="bulan">
-							<option value="">-- All --</option>
+						<select class="form-control " name="bulan" required>
 							<option value="01" <?php if($bulan  == '01' ) echo 'selected' ; ?>>Januari</option>
 							<option value="02" <?php if($bulan  == '02' ) echo 'selected' ; ?>>Februari</option>
 							<option value="03" <?php if($bulan  == '03' ) echo 'selected' ; ?>>Maret</option>
@@ -70,24 +64,17 @@
 							<option value="11" <?php if($bulan  == '11' ) echo 'selected' ; ?>>November</option>
 							<option value="12" <?php if($bulan  == '12' ) echo 'selected' ; ?>>Desember</option>
 						</select>
-				</div>
-					<div class="col-4" >
-						<input class="form-control" type="text" value="{{$tahun}}"   name="tahun" size="4" maxlength="4" onkeypress="return hanyaAngka(event)" autocomplete='off' required> 
 					</div>
-					<div class="col-2" >
-						<input class="form-control" type="hidden" name="tanggal" value="{{ date('d-m-Y') }}" size="15" maxlength="15" autocomplete='off'>
-						<input class="form-control" type="text" value="{{$suplesi}}"   name="suplesi" size="4" maxlength="4" onkeypress="return hanyaAngka(event)" autocomplete='off' required>
-					</div>
-				</div>
-				<div class="form-group row">
-					<label for="dari-input" class="col-2 col-form-label">Lapangan<span style="color:red;">*</span></label>
+						<div class="col-5" >
+							<input class="form-control" type="text" value="{{$tahun}}"   name="tahun" size="4" maxlength="4" onkeypress="return hanyaAngka(event)" autocomplete='off' required>
+							<input class="form-control" type="hidden" name="tanggal" value="{{ date('d-m-Y') }}"  id="tanggal" size="15" maxlength="15" autocomplete='off'>
+							<input class="form-control" type="hidden" value="{{Auth::user()->userid}}"  name="userid" autocomplete='off'>
+						</div>
+                </div>
+                <div class="form-group row">
+					<label for="dari-input" class="col-2 col-form-label">Kurs<span style="color:red;">*</span></label>
 					<div class="col-10">
-						<select name="lp" class="form-control kt-select2" required oninvalid="this.setCustomValidity('Lapangan Harus Diisi..')" onchange="setCustomValidity('')">
-							<option value="">- Pilih -</option>
-							@foreach($data_kodelok as $data_kode)
-							<option value="{{$data_kode->kodelokasi}}" <?php if($lapangan  == $data_kode->kodelokasi ) echo 'selected' ; ?>>{{$data_kode->kodelokasi}} -- {{$data_kode->nama}}</option>
-							@endforeach
-						</select>								
+						<input type="text" class="form-control" name="kurs">							
 					</div>
 				</div>
 				<div class="kt-form__actions">
@@ -110,9 +97,6 @@
 <script type="text/javascript">
 $(document).ready(function () {
    
-	$('.kt-select2').select2().on('change', function() {
-			$(this).valid();
-		});
 	$('#tanggal').datepicker({
 		todayHighlight: true,
 		orientation: "bottom left",

@@ -314,7 +314,7 @@ class ReportKontrolerController extends Controller
         ->limit(5)
         ->get();
 
-        $pdf = PDF::loadview('report_kontroler.export_d2_perbulan_pdf', compact(
+        $pdf = DomPDF::loadview('report_kontroler.export_d2_perbulan_pdf', compact(
             'd2_list',
             'tahun',
             'bulan'
@@ -370,6 +370,20 @@ class ReportKontrolerController extends Controller
             'bulan'
         ))
         ->setPaper('a4', 'landscape')
+        ->setOptions(['isPhpEnabled' => true]);
+
+        return $pdf->stream('rekap_d2_perperiode_'.date('Y-m-d H:i:s').'.pdf');
+    }
+
+    public function laporanKeuanganExport(Request $request)
+    {
+        $calk_list = null;
+        $pdf = PDF::loadview('report_kontroler.export_laporan_keuangan_pdf', compact(
+            'calk_list',
+            'tahun',
+            'bulan'
+        ))
+        ->setPaper('a4', 'potrait')
         ->setOptions(['isPhpEnabled' => true]);
 
         return $pdf->stream('rekap_d2_perperiode_'.date('Y-m-d H:i:s').'.pdf');
