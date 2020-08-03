@@ -126,6 +126,39 @@
 							</div>
 						</div>
 						<div class="form-group row">
+							<label for="" class="col-2 col-form-label">Nopeg Pekerja</label>
+							<div class="col-10">
+								<select class="form-control kt-select2" name="nopeg" id="nopeg">
+									<option value="">- Pilih Nopek Pekerja -</option>
+									@foreach ($pekerja_list as $pekerja)
+									<option value="{{ $pekerja->nopeg }}">{{ $pekerja->nopeg." - ".$pekerja->nama }}</option>
+									@endforeach
+								</select>
+							</div>
+						</div>
+						<div class="form-group row">
+							<label for="" class="col-2 col-form-label">GCG Fungsi</label>
+							<div class="col-10">
+								<select class="form-control kt-select2" name="gcg_fungsi" id="gcg_fungsi">
+									<option value="">- Pilih Fungsi -</option>
+									@foreach ($gcg_fungsi_list as $fungsi)
+									<option value="{{ $fungsi->id }}">{{ $fungsi->nama }}</option>
+									@endforeach
+								</select>
+							</div>
+						</div>
+						<div class="form-group row">
+							<label for="" class="col-2 col-form-label">GCG Jabatan</label>
+							<div class="col-10">
+								<select class="form-control kt-select2" name="gcg_jabatan" id="gcg_jabatan">
+									<option value="">- Pilih Jabatan -</option>
+									@foreach ($gcg_jabatan_list as $jabatan)
+									<option value="{{ $jabatan->id }}">{{ $jabatan->nama }}</option>
+									@endforeach
+								</select>
+							</div>
+						</div>
+						<div class="form-group row">
 							<label for="" class="col-2 col-form-label">Last Updated By</label>
 							<div class="col-10">
 								<input class="form-control" type="text" value="" style="background-color:#DCDCDC; cursor:not-allowed" readonly>
@@ -155,6 +188,10 @@
 			scrollX   : true,
 			processing: true,
 			serverSide: false,
+		});
+
+		$('.kt-select2').select2().on('change', function() {
+			$(this).valid();
 		});
 
 		$('#form-create').submit(function(){
