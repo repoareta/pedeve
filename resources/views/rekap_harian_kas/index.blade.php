@@ -56,11 +56,19 @@
 		</div>
 	</div>
 	<div class="kt-portlet__body">
-	<form id="search-form">
-			No. Kas: 	<input style="width:10%;height:35px;border: 1px solid #DCDCDC;border-radius:5px;"  name="nama" id="nama" type="text"  value=""  autocomplete='off'>  
-				<button type="submit" style="font-size: 20px;margin-left:5px;border-radius:10px;border-radius:10px;background-color:white;" class="kt-font-info pointer-link" data-toggle="kt-tooltip" data-placement="top" title="Cari Data"> <i class="fa fa-search"></i></button>  
-				
-		</form>
+	<div class="">
+			<form class="kt-form" id="search-form" >
+				<div class="form-group row col-12">
+					<label for="" class="col-form-label">No. Kas</label>
+					<div class="col-2">
+						<input class="form-control" type="text" name="nokas" value="" size="6" maxlength="6" onkeypress="return hanyaAngka(event)" autocomplete='off'>
+					</div>
+					<div class="col-2">
+						<button type="submit" class="btn btn-brand"><i class="fa fa-search" aria-hidden="true"></i> Cari</button>
+					</div>
+				</div>
+			</form>
+		</div>
 		<!--begin: Datatable -->
 		<table class="table table-striped table-bordered table-hover table-checkable" id="kt_table" width="100%">
 			<thead class="thead-light">
@@ -106,7 +114,7 @@ $(document).ready(function () {
 						'X-CSRF-Token': '{{ csrf_token() }}',
 						},
 						data: function (d) {
-							d.nama = $('input[name=nama]').val();
+							d.nama = $('input[name=nokas]').val();
 						}
 					},
 			columns: [
