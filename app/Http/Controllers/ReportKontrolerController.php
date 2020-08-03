@@ -478,7 +478,8 @@ class ReportKontrolerController extends Controller
     public function d2PerPeriodeExport(Request $request)
     {
         $tahun = $request->tahun;
-        $bulan = $request->bulan;
+        $bulan_mulai = $request->bulan_mulai;
+        $bulan_sampai = $request->bulan_sampai;
 
         $d2_list =  DB::table('fiosd201')
         ->select(
@@ -503,20 +504,82 @@ class ReportKontrolerController extends Controller
             'totpricedl',
             'keterangan'
         )
-        ->where('tahun', $request->tahun)
-        ->where('bulan', $request->bulan)
-        ->where('supbln', $request->suplesi)
-        ->where('lokasi', $request->lp)
-        ->where('jk', $request->jk)
+        ->when(request('bulan_mulai'), function ($query) {
+            return $query->whereBetween('bulan', [request('bulan_mulai'), request('bulan_sampai')]);
+        })
+        ->when(request('tahun'), function ($query) {
+            return $query->where('tahun', request('tahun'));
+        })
+        ->when(request('lp'), function ($query) {
+            return $query->where('lokasi', request('lp'));
+        })
+        ->when(request('jk') == 1, function ($query) {
+            return $query->whereIn('jk', [10, 11, 13]);
+        })
+        ->when(request('jk') == 2, function ($query) {
+            return $query->whereIn('jk', [15, 18]);
+        })
+        ->when(request('jk') == 3, function ($query) {
+            return $query->whereIn('jk', [10, 11, 13, 15, 18]);
+        })
+        ->when(request('sanper'), function ($query) {
+            return $query->where('account', request('sanper'));
+        })
+        ->orderBy('tahun', 'DESC')
+        ->orderBy('bulan', 'DESC')
+        ->orderBy('supbln', 'DESC')
+        ->orderBy('account', 'DESC')
+        ->orderBy('jk', 'DESC')
+        ->orderBy('store', 'DESC')
+        ->orderBy('vc', 'DESC')
+        ->orderBy('ci', 'DESC')
         ->get();
 
-        $pdf = PDF::loadview('report_kontroler.export_d2_perbulan_pdf', compact(
+        $d2_total = DB::table('fiosd201')
+        ->select(
+            DB::raw('SUM(round(totpricerp, 2)) AS saldo_rp'),
+            DB::raw('SUM(round(totpricedl, 2)) AS saldo_dl'),
+            DB::raw('SUM((case when totpricerp > 0 then round(totpricerp, 2) end)) AS total_debet_rp'),
+            DB::raw('SUM((case when totpricerp < 0 then round(totpricerp, 2) end)) AS total_kredit_rp'),
+            DB::raw('SUM((case when totpricedl > 0 then round(totpricedl, 2) end)) AS total_debet_dl'),
+            DB::raw('SUM((case when totpricedl < 0 then round(totpricedl, 2) end)) AS total_kredit_dl')
+        )
+        ->when(request('bulan_mulai'), function ($query) {
+            return $query->whereBetween('bulan', [request('bulan_mulai'), request('bulan_sampai')]);
+        })
+        ->when(request('tahun'), function ($query) {
+            return $query->where('tahun', request('tahun'));
+        })
+        ->when(request('lp'), function ($query) {
+            return $query->where('lokasi', request('lp'));
+        })
+        ->when(request('jk') == 1, function ($query) {
+            return $query->whereIn('jk', [10, 11, 13]);
+        })
+        ->when(request('jk') == 2, function ($query) {
+            return $query->whereIn('jk', [15, 18]);
+        })
+        ->when(request('jk') == 3, function ($query) {
+            return $query->whereIn('jk', [10, 11, 13, 15, 18]);
+        })
+        ->when(request('sanper'), function ($query) {
+            return $query->where('account', request('sanper'));
+        })
+        ->first();
+
+        $pdf = PDF::loadview('report_kontroler.export_d2_perperiode_pdf', compact(
             'd2_list',
+            'd2_total',
             'tahun',
-            'bulan'
+            'bulan_mulai',
+            'bulan_sampai'
         ))
         ->setPaper('a4', 'landscape')
-        ->setOptions(['isPhpEnabled' => true]);
+        ->setOption('footer-right', 'Halaman [page] dari [toPage]')
+        ->setOption('footer-font-size', 7)
+        ->setOption('header-html', view('report_kontroler.export_d2_perperiode_pdf_header', compact('tahun', 'bulan_mulai', 'bulan_sampai')))
+        ->setOption('margin-top', 30)
+        ->setOption('margin-bottom', 10);
 
         return $pdf->stream('rekap_d2_perperiode_'.date('Y-m-d H:i:s').'.pdf');
     }
