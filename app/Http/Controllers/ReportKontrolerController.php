@@ -161,28 +161,10 @@ class ReportKontrolerController extends Controller
                 return redirect()->route('neraca_konsolidasi.create_neraca_konsolidasi');
             }
         }else{
-          $tahun = $request->tahun;
-          $thnblnsp = "$tahun$request->bulan$request->suplesi";
-          $data_list = DB::select("select a.tahun, a.bulan, a.suplesi, a.ci mu, a.jb, a.account sandi,a.lokasi lapangan,coalesce(a.awalrp,0) last_rp, coalesce(a.awaldl,0) last_dl,a.pricerp cur_rp, a.pricedl cur_dl, a.totpricerp cum_rp, a.totpricedl cum_dl, m.* from obpsi_$tahun a, v_main_account m where substr(a.account,1,length(m.batas_awal)) between m.batas_awal and m.batas_akhir and strpos(m.lokasi,a.lokasi)>0 and a.lokasi like '*' union all
-                                  select b.tahun, b.bulan, b.supbln suplesi, b.ci mu, b.jb, b.account sandi,b.lokasi lapangan,0 last_rp, 0 last_dl,Sum(coalesce(b.TotpriceRp,0)) cur_rp, Sum(coalesce(b.TotPrice,0)) cur_dl, Sum(coalesce(b.TotpriceRp,0)) cum_rp,Sum(coalesce(b.TotpriceDl,0)) cum_dl,m.*  from fiosd201 b, v_main_account m where substr(b.account,1,length(m.batas_awal)) between m.batas_awal and m.batas_akhir and strpos(m.lokasi,b.lokasi)>0 and b.lokasi like '*' and ci='2'  and tahun = '$tahun' and tahun||bulan||supbln <= '$thnblnsp' group by b.tahun, b.bulan, b.supbln, b.account, b.jb, b.ci,b.lokasi,m.jenis,m.batas_awal,m.batas_akhir,m.urutan,m.pengali,m.pengali_tampil,m.sub_akun,m.lokasi,m.urutan_sc union all
-                                  select c.tahun, c.bulan, c.supbln suplesi, c.ci mu, c.jb, c.account sandi,c.lokasi lapangan,0 last_rp, 0 last_dl,Sum(coalesce(c.TotpriceRp,0)) cur_rp, 0 cur_dl, Sum(coalesce(c.TotpriceRp,0)) cum_rp, 0 cum_dl,m.* from fiosd201 c, v_main_account m where substr(c.account,1,length(m.batas_awal)) between m.batas_awal and m.batas_akhir and strpos(m.lokasi,c.lokasi)>0  and c.lokasi like 'MD' and ci='1'  and tahun = '$tahun' and tahun||bulan||supbln <= '$thnblnsp' group by c.tahun, c.bulan, c.supbln, c.account, c.jb, c.ci,c.lokasi,m.jenis,m.batas_awal,m.batas_akhir,m.urutan,m.pengali,m.pengali_tampil,m.sub_akun,m.lokasi,m.urutan_sc;
-                                  ");
-          // dd($data_list);
-          if (!empty($data_list)) {
-              set_time_limit(1200);
-              $pdf = DomPDF::loadview('report_kontroler.export_neraca_konsolidasi', compact('request', 'data_list'))->setPaper('a4', 'Portrait');
-              $pdf->output();
-              $dom_pdf = $pdf->getDomPDF();
-
-              $canvas = $dom_pdf ->get_canvas();
-              $canvas->page_text(485, 100, "Halaman {PAGE_NUM} Dari {PAGE_COUNT}", null, 10, array(0, 0, 0)); //lembur landscape
-              // return $pdf->download('rekap_umk_'.date('Y-m-d H:i:s').'.pdf');
-              return $pdf->stream();
-          } else {
-              Alert::info("Tidak ditemukan data dengan Bulan/Tahun: $request->bulan/$request->tahun ", 'Failed')->persistent(true);
-              return redirect()->route('neraca_konsolidasi.create_neraca_konsolidasi');
-          }
-      }
+            Alert::info("Tidak ditemukan data dengan Bulan/Tahun: $request->bulan/$request->tahun ", 'Failed')->persistent(true);
+            return redirect()->route('neraca_konsolidasi.create_neraca_konsolidasi');
+        }
+        
     }
     
     

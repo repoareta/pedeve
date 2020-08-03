@@ -55,53 +55,154 @@
         </header>
         <!-- Wrap the content of your PDF inside a main tag -->
         <main>
-        <table width="100%">
-            <tr>
-                <td>
-                    <table width="100%" style="font-family: sans-serif;border-collapse: collapse;" border="1">
-                        <tr>
-                            <td>a</td>
-                        </tr>
-                    </table>
-                </td>
-                <td>
-                    <table width="100%" style="font-family: sans-serif;border-collapse: collapse;" border="1">
-                        <tr>
-                            <td> HALAMAN</td>
-                        </tr>
-                        <tr>
-                           <td>JENIS KARTU</td>
-                           </tr>
-                        <tr>LOKASI</tr>
-                        <tr>NO. REKENING</tr>
-                        <tr>MATA UANG</tr>
-                    </table>
-                </td>
-            </tr>
-        </table>
-            <!-- <font style="font-size: 10pt;font-style: italic">Tanggal Cetak: {{$request->tglctk}}</font> -->
-            <table width="100%" style="font-family: sans-serif;border-collapse: collapse;" border="1">
+        <table width="100%" style="font-family: sans-serif;border-collapse: collapse;" >
                 <thead>
                     <tr style="text-align:center;font-size: 8pt;">
-                        <td>JK</td>
-                        <td>BLN</td>
-                        <td>CJ</td>
-                        <td>NOBUKTI</td>
-                        <td>PK</td>
-                        <td>ST</td>
-                        <td>SANPER</td>
-                        <td>JB</td>
-                        <td>LP</td>
-                        <td>BAGIAN</td>
-                        <td>NO.URUT</td>
-                        <td>AMOUNT RUPIAH</td>
-                        <td>AMOUNT DOLAR</td>
+                        <td colspan="3" >
+                            <table>
+                            <?php 
+                                foreach($data_list as $data)
+                                {
+                                    $no_rekap = $data->no_rekap;
+                                    $tanggal_rekap = $data->tanggal_rekap;
+                                }
+                            ?>
+                                <tr>
+                                    <td></td>
+                                </tr>
+                                <tr>
+                                    <td colspan="6">BUKU TAMBAHAN KAS / BANK</td>
+                                </tr>
+                                <tr>
+                                    <td >NO. REKAP</td>
+                                    <td>:</td>
+                                    <td>{{$no_rekap}}</td>
+                                </tr>
+                                <tr>
+                                    <td >TANGGAL REKAP</td>
+                                    <td>:</td>
+                                    <td>{{$tanggal_rekap}}</td>
+                                </tr>
+                            </table>
+                        </td>
+                        <td colspan="3">
+                            <table width="100%" style="border: 1px solid black;padding-left:10px;font-size: 8pt;">
+                            <?php 
+                                foreach($data_list as $data)
+                                {
+                                    $jenis_kartu = $data->jenis_kartu;
+                                    $lokasi_kas_bank = $data->lokasi_kas_bank;
+                                    $no_rekening = $data->no_rekening;
+                                    $mata_uang = $data->mata_uang;
+                                }
+                            ?>
+                                <tr>
+                                    <td width="30%">HALAMAN</td>
+                                    <td width="5%">:</td>
+                                    <td></td>
+                                </tr>
+                                <tr>
+                                    <td width="15%">JENIS KARTU</td>
+                                    <td width="5%">:</td>
+                                    <td>{{$jenis_kartu}}</td>
+                                </tr>
+                                <tr>
+                                    <td width="15%">LOKASI</td>
+                                    <td width="5%">:</td>
+                                    <td>{{$lokasi_kas_bank}}</td>
+                                </tr>
+                                <tr>
+                                    <td width="15%">NO. REKENING</td>
+                                    <td width="5%">:</td>
+                                    <td>{{$no_rekening}}</td>
+                                </tr>
+                                <tr>
+                                    <td width="15%">MATA UANG</td>
+                                    <td width="5%">:</td>
+                                    <td>{{$mata_uang}}</td>
+                                </tr>
+                            </table>
+                        </td>
+                    </tr>
+                </thead>
+            </table>
+            <table width="100%" style="font-family: sans-serif;border-collapse: collapse;" >
+                <thead>
+                    <tr style="text-align:center;font-size: 8pt;border: 1px solid black;">
+                        <th width="5%" style="text-align:center;border:1px solid black;">NO.<br>URUT</th>
+                        <th style="text-align:center;border:1px solid black;">NO. DOKUMEN</th>
+                        <th style="text-align:center;border:1px solid black;">NO. BUKTI</th>
+                        <th width="35%" style="text-align:center;border:1px solid black;">URAIAN PENJELASAN</th>
+                        <th style="text-align:center;border:1px solid black;">PENERIMAAN</th>
+                        <th style="text-align:center;border:1px solid black;">PENGELUARAN</th>
                     </tr>
                 <thead>
                 <tbody>
-
+                <?php $no=0; ?>
+                @foreach($data_list as $data)
+                <?php $no++; 
+                    $debet[$no]=$data->debet;
+                    $kredit[$no]=$data->kredit;
+                    $saldo_awal[$no]=$data->saldo_awal;
+                ?>
+                    <tr style="text-align:center;font-size: 8pt;border: 1px solid black;">
+                        <td width="5%" style="text-align:center;border:1px solid black;">{{$no}}</td>
+                        <td style="text-align:center;border:1px solid black;">{{$data->no_dokumen}}</td>
+                        <td style="text-align:center;border:1px solid black;">{{$data->no_bukti}}</td>
+                        <td style="text-align:left;border:1px solid black;">{{$data->uraian_penjelasan}}</td>
+                        <td style="text-align:right;border:1px solid black;">{{number_format($data->debet,2)}}</td>
+                        <td style="text-align:right;border:1px solid black;">{{number_format($data->kredit,2)}}</td>
+                    </tr>
+                @endforeach
+                    <tr style="text-align:center;font-size: 8pt;border: 1px solid black;">
+                        <td colspan="4" style="text-align:center;border:1px solid black;">TOTAL</td>
+                        <td style="text-align:right;border:1px solid black;">{{number_format(array_sum($debet),2)}}</td>
+                        <td style="text-align:right;border:1px solid black;">{{number_format(array_sum($kredit),2)}}</td>
+                    </tr>
                 <tbody>
+            </table>
+            <table  width="100%" style="font-family: sans-serif;border-collapse: collapse;">
+                <tbody>
+                    <tr style="text-align:center;font-size: 8pt;border: 1px solid black;">
+                        <td colspan="2" style="text-align:center;border:1px solid black;">SALDO AWAL</td>
+                        <td style="text-align:right;border:1px solid black;">PENERIMAAN</td>
+                        <td style="text-align:center;border:1px solid black;">PENGELUARAN</td>
+                        <td style="text-align:center;border:1px solid black;">PERUBAHAN</td>
+                        <td style="text-align:center;border:1px solid black;">SALDO AKHIR</td>
+                    </tr>
+                    <tr style="text-align:center;font-size: 8pt;border: 1px solid black;">
+                        <td colspan="2" style="text-align:right;border:1px solid black;">{{number_format(array_sum($saldo_awal),2)}}</td>
+                        <td style="text-align:right;border:1px solid black;">{{number_format(array_sum($debet),2)}}</td>
+                        <td style="text-align:right;border:1px solid black;">{{number_format(array_sum($kredit),2)}}</td>
+                        <td style="text-align:right;border:1px solid black;">
+                        @if((array_sum($debet)-array_sum($kredit)) < 0)
+                                <?php echo number_format((array_sum($debet)-array_sum($kredit)),2) ."CR"; ?>
+                        @else
+                                <?php echo number_format((array_sum($debet)-array_sum($kredit)),2); ?>
 
+                        @endif
+                        </td>
+                        <td style="text-align:right;border:1px solid black;">{{number_format((array_sum($debet)-array_sum($kredit))+array_sum($saldo_awal),2)}}</td>
+                    </tr>
+                </tbody>
+            </table>
+            
+            <table width="100%" style="font-size: 10pt; padding-top:10px;">
+                    <tr>
+                        <td align="center" ></td><td align="center" width="200">JAKARTA, {{date('d/m/Y')}}</td>
+                    </tr>
+                    <tr style="font-size: 10pt;">
+                        <td align="center" width="200">DIBUAT OLEH,</td><td align="center" width="200">DISETUJUI OLEH,</td><br>
+                    </tr>
+                    <tr>
+                        <td></td>
+                        <td></td>
+                    </tr>
+            </table>
+            <table width="100%" style="font-size: 10pt; padding-top:10px;">
+                    <tr style="font-size: 10pt;">
+                        <td align="center" width="200"><u>{{strtoupper($request->dibuat)}}</u></td><td align="center" width="200"><u>{{strtoupper($request->setuju)}}</u></td><br>
+                    </tr>
             </table>
         </main>
         
