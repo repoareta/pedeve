@@ -825,6 +825,7 @@ Route::group(['middleware'=> ['auth','checkRole:1,0']], function () {
             Route::delete('penerimaan_kas/delete', 'PenerimaanKasController@delete')->name('delete');
             Route::delete('penerimaan_kas/deletedetail', 'PenerimaanKasController@deleteDetail')->name('delete.detail');
             Route::get('penerimaan_kas/approv/{id}/{status}', 'PenerimaanKasController@approv')->name('approv');
+            Route::get('penerimaan_kas/export', 'PenerimaanKasController@export')->name('export');
         });
         //end penerimaan kas
 
