@@ -6,6 +6,7 @@ use Illuminate\Http\Request;
 use Illuminate\Database\Schema\Blueprint;
 use Illuminate\Support\Facades\Schema;
 use App\Models\SdmMasterPegawai;
+use App\Models\v_report_d5;
 use DB;
 use DomPDF;
 use PDF;
@@ -102,6 +103,74 @@ class ReportKontrolerController extends Controller
         $data_kodelok = DB::select("select kodelokasi,nama from mdms");
         $data_sanper = DB::select("select kodeacct,descacct from account where length(kodeacct)=6 and kodeacct not like '%X%' order by kodeacct desc");
         return view('report_kontroler.create_d5_report', compact('data_tahun', 'data_kodelok', 'data_sanper'));
+    }
+    public function exportD5(Request $request)
+    {
+        if ($request->lapangan <> "KL") {
+                $lokasi = "a.lapangan = '$request->lapangan'";
+                $tahun = "$request->tahun";
+                $bulan = "$request->bulan";
+                $suplesi = "$request->suplesi";
+                $thnbln = "2019$request->bulan$request->suplesi";
+                $obpsi  = "obpsi_$request->tahun";
+            } else {
+                    $lokasi = "a.lapangan in ('MD','MS')";
+                    $tahun = "$request->tahun";
+                    $bulan = "$request->bulan";
+                    $suplesi = "$request->suplesi'";
+                    $thnbln = "2019$request->bulan$request->suplesi";
+                    $obpsi  = "obpsi_$request->tahun";
+                }
+            $data_cek = DB::select("select a.tablename as vada from pg_tables a where a.tablename = '$obpsi' ");
+            if (!empty($data_cek)) {
+                DB::statement("DROP VIEW IF EXISTS v_report_d5 CASCADE");
+                DB::statement("CREATE OR REPLACE VIEW v_report_d5 AS
+                                select tahun, bulan, suplesi, ci mu, jb, account sandi, lokasi lapangan, coalesce(awalrp,0) last_rp, coalesce(awaldl,0) last_dl, pricerp cur_rp, pricedl cur_dl, totpricerp cum_rp, totpricedl cum_dl from $obpsi union all 
+                                select tahun, bulan, supbln suplesi, ci mu, jb, account sandi, lokasi lapangan, 0 last_rp, 0 last_dl, sum(coalesce(totpricerp,0)) cur_rp, sum(coalesce(totprice,0)) cur_dl, sum(coalesce(totpricerp,0)) cum_rp, sum(coalesce(totpricedl,0)) cum_dl from fiosd201 where ci='2' and tahun = '$tahun' and tahun||bulan||supbln <= '$thnbln' group by tahun, bulan, supbln, account, jb, ci,lokasi union all 
+                                select tahun, bulan, supbln suplesi, ci mu, jb, account sandi, lokasi lapangan, 0 last_rp, 0 last_dl, sum(coalesce(totpricerp,0)) cur_rp, 0 cur_dl, sum(coalesce(totpricerp,0)) cum_rp, 0 cum_dl from fiosd201 where ci='1' and tahun = '$tahun' and tahun||bulan||supbln <= '$thnbln' group by tahun, bulan, supbln, account, jb, ci,lokasi
+                        ");
+                DB::statement("CREATE VIEW v_neraca AS
+                        select tahun,bulan,suplesi,mu,jb,sandi,lapangan,last_rp,last_dl,cur_rp,cur_dl,cum_rp,cum_dl, m.* from v_report_d5 d, v_main_account m where substr(d.sandi,1,length(m.batas_awal)) between m.batas_awal and m.batas_akhir and strpos(m.lokasi,d.lapangan)>0
+                        ");
+            if($request->sandi <> ""){
+                $yyy = "$request->sandi";
+                if($request->lapangan <> "KL"){
+                    $sss = "$request->lapangan";
+                    $data_list = v_report_d5::where('sandi',$yyy)->where('lapangan',$request->lapangan)->orderBy('sandi', 'asc')->get();
+                }else{
+                    $data_list = v_report_d5::where('sandi',$yyy)->where('lapangan','MD')->orWhere('lapangan','MS')->orderBy('sandi', 'asc')->get();
+                }
+            }else{
+                if($request->lapangan <> "KL" ){
+                    $data_list = v_report_d5::where('lapangan',$request->lapangan)->orderBy('sandi', 'asc')->get();
+                }else{
+                    $data_list = v_report_d5::where('lapangan','MD')->orWhere('lapangan','MS')->orderBy('sandi', 'asc')->get();
+                }
+            }
+            if (!empty($data_list)) {
+                foreach($data_list as $data_bln)
+                {
+                        $bulan = $data_bln->bulan;
+                        $tahun = $data_bln->tahun;
+                        $suplesi = $data_bln->suplesi;
+                }
+                $pdf = PDF::loadview('report_kontroler.export_d5_pdf',compact('data_list'))
+                ->setPaper('a4', 'landscape')
+                ->setOption('footer-right', 'Halaman [page] dari [toPage]')
+                ->setOption('footer-font-size', 8)
+                ->setOption('header-html', view('report_kontroler.export_d5_pdf_header',compact('bulan','tahun','suplesi')))
+                ->setOption('margin-top', 30)
+                ->setOption('margin-bottom', 10);
+
+                return $pdf->stream('rekap_d5_'.date('Y-m-d H:i:s').'.pdf');
+            } else {
+                Alert::info("Tidak ditemukan data dengan Bulan/Tahun: $request->bulan/$request->tahun ", 'Failed')->persistent(true);
+                return redirect()->route('d5_report.create_d5_report');
+            }
+        } else {
+            Alert::info("Tidak ditemukan data dengan Bulan/Tahun: $request->bulan/$request->tahun ", 'Failed')->persistent(true);
+            return redirect()->route('d5_report.create_d5_report');
+        }
     }
     public function create_neraca_konsolidasi()
     {

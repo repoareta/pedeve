@@ -1,103 +1,4 @@
 @extends('layout.global')
-<style type="text/css">
- #loader {
-
-position: absolute;
-
-left: 50%;
-
-top: 50%;
-
-z-index: 1;
-
-width: 150px;
-
-height: 150px;
-
-margin: -75px 0 0 -75px;
-
-border: 16px solid #f3f3f3;
-
-border-radius: 50%;
-
-border-top: 16px solid #3498db;
-
-width: 120px;
-
-height: 120px;
-
--webkit-animation: spin 2s linear infinite;
-
-animation: spin 2s linear infinite;
-
-}
-
-
-
-@-webkit-keyframes spin {
-
-0% { -webkit-transform: rotate(0deg); }
-
-100% { -webkit-transform: rotate(360deg); }
-
-}
-
-
-
-@keyframes spin {
-
-0% { transform: rotate(0deg); }
-
-100% { transform: rotate(360deg); }
-
-}
-
-
-
-/* Add animation to "page content" */
-
-.animate-bottom {
-
-position: relative;
-
--webkit-animation-name: animatebottom;
-
--webkit-animation-duration: 1s;
-
-animation-name: animatebottom;
-
-animation-duration: 1s
-
-}
-
-
-
-@-webkit-keyframes animatebottom {
-
-from { bottom:-100px; opacity:0 }
-
-to { bottom:0px; opacity:1 }
-
-}
-
-
-
-@keyframes animatebottom {
-
-from{ bottom:-100px; opacity:0 }
-
-to{ bottom:0; opacity:1 }
-
-}
-
-
-
-#myDiv {
-
-display: none;
-
-}
-</style>
 @section('content')
 <!-- begin:: Subheader -->
 <div class="kt-subheader   kt-grid__item" id="kt_subheader">
@@ -138,7 +39,7 @@ display: none;
 		</div>
 	</div>
 	<div class="kt-portlet__body">
-		<form class="kt-form kt-form--label-right" action="{{route('kas_bank.cetak1')}}" method="post">
+		<form class="kt-form kt-form--label-right" action="{{route('d5_report.export')}}" method="post">
 			{{csrf_field()}}
 			<div class="kt-portlet__body">
 				<input class="form-control" type="hidden" name="userid" value="{{Auth::user()->userid}}">
@@ -181,7 +82,7 @@ display: none;
 				<div class="form-group row">
 					<label for="dari-input" class="col-2 col-form-label">Lapangan<span style="color:red;">*</span></label>
 					<div class="col-10">
-						<select name="lp" class="form-control kt-select2" required oninvalid="this.setCustomValidity('Lapangan Harus Diisi..')" onchange="setCustomValidity('')">
+						<select name="lapangan" class="form-control kt-select2" required oninvalid="this.setCustomValidity('Lapangan Harus Diisi..')" onchange="setCustomValidity('')">
 							<option value="">- Pilih -</option>
 							@foreach($data_kodelok as $data_kode)
 							<option value="{{$data_kode->kodelokasi}}" <?php if($lapangan  == $data_kode->kodelokasi ) echo 'selected' ; ?>>{{$data_kode->kodelokasi}} -- {{$data_kode->nama}}</option>
@@ -192,7 +93,7 @@ display: none;
 				<div class="form-group row">
 					<label for="dari-input" class="col-2 col-form-label">Sandi Perkiraan</label>
 					<div class="col-10">
-						<select name="sanper" class="form-control kt-select2" oninvalid="this.setCustomValidity('Sandi Perkiraan Harus Diisi..')" onchange="setCustomValidity('')">
+						<select name="sandi" class="form-control kt-select2" oninvalid="this.setCustomValidity('Sandi Perkiraan Harus Diisi..')" onchange="setCustomValidity('')">
 							<option value="">- Pilih -</option>
 							@foreach($data_sanper as $data_san)
 							<option value="{{$data_san->kodeacct}}">{{$data_san->kodeacct}} -- {{$data_san->descacct}}</option>
@@ -215,11 +116,6 @@ display: none;
 	</div>
 </div>
 </div>
-<!-- <body onload="myFunction()" style="margin:0;"> -->
-<div id="loader"></div>
-<div style="display:none;" id="myDiv" class="animate-bottom"></div>
-<!-- </body> -->
-
 @endsection
 
 @section('scripts')
