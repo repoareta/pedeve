@@ -203,30 +203,150 @@ function pekerja_status($status)
     }
 }
 
-function vf($tf){
-    if(is_null($tf)){
-         return   $vf = "0";
-    }else{
+function vf($tf)
+{
+    if (is_null($tf)) {
+        return   $vf = "0";
+    } else {
         return $vf = trim($tf);
     }
 }
 
-function stbbuku2($sthnbln, $ssup){
+function stbbuku2($sthnbln, $ssup)
+{
     $data_rsbulan = DB::select("select * from bulankontroller where thnbln='$sthnbln' and suplesi='$ssup'");
-    if(!empty($data_rsbulan)){
-        foreach($data_rsbulan as $data)
-        {
-            if($data->status == 1){
+    if (!empty($data_rsbulan)) {
+        foreach ($data_rsbulan as $data) {
+            if ($data->status == 1) {
                 return 'gtopening';
-            }elseif($data->status == 2){
+            } elseif ($data->status == 2) {
                 return 'gtstopping';
-            }elseif($data->status == 3){
+            } elseif ($data->status == 3) {
                 return 'gtclosing';
-            }else{
+            } else {
                 return 'gtnone';
             }
         }
-    }else{
+    } else {
         return 'gtnone';
     }
 }
+
+function penyebut($nilai)
+{
+    $nilai = abs($nilai);
+    $huruf = array("", "satu", "dua", "tiga", "empat", "lima", "enam", "tujuh", "delapan", "sembilan", "sepuluh", "sebelas");
+    $temp = "";
+    if ($nilai < 12) {
+        $temp = " ". $huruf[$nilai];
+    } elseif ($nilai <20) {
+        $temp = penyebut($nilai - 10). " belas";
+    } elseif ($nilai < 100) {
+        $temp = penyebut($nilai/10)." puluh". penyebut($nilai % 10);
+    } elseif ($nilai < 200) {
+        $temp = " seratus" . penyebut($nilai - 100);
+    } elseif ($nilai < 1000) {
+        $temp = penyebut($nilai/100) . " ratus" . penyebut($nilai % 100);
+    } elseif ($nilai < 2000) {
+        $temp = " seribu" . penyebut($nilai - 1000);
+    } elseif ($nilai < 1000000) {
+        $temp = penyebut($nilai/1000) . " ribu" . penyebut($nilai % 1000);
+    } elseif ($nilai < 1000000000) {
+        $temp = penyebut($nilai/1000000) . " juta" . penyebut($nilai % 1000000);
+    } elseif ($nilai < 1000000000000) {
+        $temp = penyebut($nilai/1000000000) . " milyar" . penyebut(fmod($nilai, 1000000000));
+    } elseif ($nilai < 1000000000000000) {
+        $temp = penyebut($nilai/1000000000000) . " trilyun" . penyebut(fmod($nilai, 1000000000000));
+    }
+    return $temp;
+}
+
+function terbilang($nilai)
+{
+    if ($nilai<0) {
+        $hasil = "minus ". trim(penyebut($nilai));
+    } else {
+        $hasil = trim(penyebut($nilai));
+    }
+    return $hasil;
+}
+
+// function konversi($x)
+// {
+//     $x = abs($x);
+//     $angka = array("","satu", "dua", "tiga", "empat", "lima", "enam", "tujuh", "delapan", "sembilan", "sepuluh", "sebelas");
+//     $temp = "";
+    
+//     if ($x < 12) {
+//         $temp = " ".$angka[$x];
+//     } elseif ($x<20) {
+//         $temp = konversi($x - 10)." belas";
+//     } elseif ($x<100) {
+//         $temp = konversi($x/10)." puluh". konversi($x%10);
+//     } elseif ($x<200) {
+//         $temp = " seratus".konversi($x-100);
+//     } elseif ($x<1000) {
+//         $temp = konversi($x/100)." ratus".konversi($x%100);
+//     } elseif ($x<2000) {
+//         $temp = " seribu".konversi($x-1000);
+//     } elseif ($x<1000000) {
+//         $temp = konversi($x/1000)." ribu".konversi($x%1000);
+//     } elseif ($x<1000000000) {
+//         $temp = konversi($x/1000000)." juta".konversi($x%1000000);
+//     } elseif ($x<1000000000000) {
+//         $temp = konversi($x/1000000000)." milyar".konversi($x%1000000000);
+//     }
+    
+//     return $temp;
+// }
+    
+// function tkoma($x)
+// {
+//     $str = stristr($x, ".");
+//     $ex = explode('.', $x);
+
+//     if (($ex[1]/10) >= 1) {
+//         $a = abs($ex[1]);
+//     }
+//     $string = array("nol", "satu", "dua", "tiga", "empat", "lima", "enam", "tujuh", "delapan",   "sembilan","sepuluh", "sebelas");
+//     $temp = "";
+
+//     $a2 = $ex[1]/10;
+//     $pjg = strlen($str);
+//     $i =1;
+    
+
+//     if ($a>=1 && $a< 12) {
+//         $temp .= " ".$string[$a];
+//     } elseif ($a>12 && $a < 20) {
+//         $temp .= konversi($a - 10)." belas";
+//     } elseif ($a>20 && $a<100) {
+//         $temp .= konversi($a / 10)." puluh". konversi($a % 10);
+//     } else {
+//         if ($a2<1) {
+//             while ($i<$pjg) {
+//                 $char = substr($str, $i, 1);
+//                 $i++;
+//                 $temp .= " ".$string[$char];
+//             }
+//         }
+//     }
+//     return $temp;
+// }
+   
+// function terbilang($x)
+// {
+//     if ($x<0) {
+//         $hasil = "minus ".trim(konversi(x));
+//     } else {
+//         $poin = trim(tkoma($x));
+//         $hasil = trim(konversi($x));
+//     }
+
+//     if ($poin) {
+//         $hasil = $hasil." koma ".$poin;
+//     } else {
+//         $hasil = $hasil;
+//     }
+//     return $hasil;
+// }

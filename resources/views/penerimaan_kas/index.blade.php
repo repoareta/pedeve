@@ -54,6 +54,12 @@
 							<i class="fas fa-times-circle"></i>
 						</span>
 						@endif
+
+						@if($data_akses->cetak == 1)
+						<span style="font-size: 2em;" class="kt-font-info pointer-link" id="exportRow" data-toggle="kt-tooltip" data-placement="top" title="Cetak Data">
+							<i class="fas fa-print"></i>
+						</span>
+						@endif
 						@endforeach
 					</div>
 				</div>
@@ -122,6 +128,71 @@
 	</div>
 </div>
 </div>
+
+<!-- Modal -->
+<div class="modal fade" id="cetakModal" tabindex="-1" role="dialog" aria-labelledby="modelTitleId" aria-hidden="true">
+	<div class="modal-dialog modal-lg" role="document">
+		<div class="modal-content">
+			<div class="modal-header">
+				<h5 class="modal-title">Cetak Data</h5>
+				<button type="button" class="close" data-dismiss="modal" aria-label="Close">
+					<span aria-hidden="true">&times;</span>
+				</button>
+			</div>
+			<form class="kt-form kt-form--label-right" action="{{ route('penerimaan_kas.export') }}" method="GET" id="formCetakData" target="_blank">
+				<div class="modal-body">
+					<div class="form-group row">
+						<label for="" class="col-2 col-form-label">No Dokumen</label>
+						<div class="col-10">
+							<input class="form-control" type="text" readonly name="no_dokumen" id="no_dokumen">
+						</div>
+					</div>
+
+					<div class="form-group row" style="margin:0px;">
+						<label for="" class="col-2 col-form-label"></label>
+						<div class="col-5">Nama</div>
+						<div class="col-5">Jabatan</div>
+					</div>
+
+					<div class="form-group row">
+						<label for="" class="col-2 col-form-label">Pemeriksaan</label>
+						<div class="col-5">
+							<input class="form-control" type="text" name="pemeriksaan_nama" id="pemeriksaan_nama">
+						</div>
+						<div class="col-5">
+							<input class="form-control" type="text" name="pemeriksaan_jabatan" id="pemeriksaan_jabatan">
+						</div>
+					</div>
+					
+                    <div class="form-group row">
+						<label for="" class="col-2 col-form-label">Membukukan</label>
+						<div class="col-5">
+							<input class="form-control" type="text" name="membukukan_nama" id="membukukan_nama">
+						</div>
+						<div class="col-5">
+							<input class="form-control" type="text" name="membukukan_jabatan" id="membukukan_jabatan">
+						</div>
+					</div>
+					
+					<div class="form-group row">
+						<label for="" class="col-2 col-form-label">Kas/Bank</label>
+						<div class="col-5">
+							<input class="form-control" type="text" name="kasbank_nama" id="kasbank_nama">
+						</div>
+						<div class="col-5">
+							<input class="form-control" type="text" name="kasbank_jabatan" id="kasbank_jabatan">
+						</div>
+					</div>					
+				</div>
+				<div class="modal-footer">
+					<button type="button" class="btn btn-warning" data-dismiss="modal"><i class="fa fa-reply" aria-hidden="true"></i> Batal</button>
+					<button type="submit" class="btn btn-primary"><i class="fa fa-check" aria-hidden="true"></i> Cetak Data</button>
+				</div>
+			</form>
+		</div>
+	</div>
+</div>
+<!-- Modal End -->
 @endsection
 
 @section('scripts')
@@ -164,95 +235,115 @@ $(document).ready(function () {
 			]
 			
 	});
+
 	$('#search-form').on('submit', function(e) {
 		t.draw();
 		e.preventDefault();
 	});
 
-// edit Kas/Bank Otomatis
-$('#editRow').click(function(e) {
-	e.preventDefault();
+	// edit Kas/Bank Otomatis
+	$('#editRow').click(function(e) {
+		e.preventDefault();
 
-	if($('input[type=radio]').is(':checked')) { 
-		$("input[type=radio]:checked").each(function(){
-			var nodok = $(this).val().split("/").join("-");
+		if($('input[type=radio]').is(':checked')) { 
+			$("input[type=radio]:checked").each(function(){
+				var nodok = $(this).val().split("/").join("-");
 
-			// var nodok = $(this).attr('nodok');
-			location.replace("{{url('perbendaharaan/penerimaan_kas/edit')}}"+ '/' +nodok);
-		});
-	} else {
-		swalAlertInit('ubah');
-	}
-});
+				// var nodok = $(this).attr('nodok');
+				location.replace("{{url('perbendaharaan/penerimaan_kas/edit')}}"+ '/' +nodok);
+			});
+		} else {
+			swalAlertInit('ubah');
+		}
+	});
 
-// delete Kas/Bank otomatis
-$('#deleteRow').click(function(e) {
-e.preventDefault();
-if($('input[type=radio]').is(':checked')) { 
-	$("input[type=radio]:checked").each(function() {
-		var nodok = $(this).val();
-		// delete stuff
-		const swalWithBootstrapButtons = Swal.mixin({
-			customClass: {
-				confirmButton: 'btn btn-primary',
-				cancelButton: 'btn btn-danger'
-			},
-				buttonsStyling: false
-			})
-			swalWithBootstrapButtons.fire({
-				title: "Data yang akan dihapus?",
-				text: "No Dokumen: "+nodok,
-				type: 'warning',
-				showCancelButton: true,
-				reverseButtons: true,
-				confirmButtonText: 'Ya, hapus',
-				cancelButtonText: 'Batalkan'
-			})
-			.then((result) => {
-			if (result.value) {
-				$.ajax({
-					url: "{{ route('penerimaan_kas.delete') }}",
-					type: 'DELETE',
-					dataType: 'json',
-					data: {
-						"nodok": nodok,
-						"_token": "{{ csrf_token() }}",
+	// delete Kas/Bank otomatis
+	$('#deleteRow').click(function(e) {
+		e.preventDefault();
+		if($('input[type=radio]').is(':checked')) { 
+			$("input[type=radio]:checked").each(function() {
+				var nodok = $(this).val();
+				// delete stuff
+				const swalWithBootstrapButtons = Swal.mixin({
+					customClass: {
+						confirmButton: 'btn btn-primary',
+						cancelButton: 'btn btn-danger'
 					},
-					success: function (data) {
-						if(data == 1){
-							Swal.fire({
-								type  : 'success',
-								title : "No Dokumen: "+nodok,
-								text  : 'Berhasil',
-								timer : 2000
-							}).then(function() {
-								location.reload();
-							});
-						}else if(data == 2){
-							Swal.fire({
-								type  : 'info',
-								title : 'Penghapusan gagal,data tidak dalam status Opening.',
-								text  : 'Failed',
-							});
-						}else{
-							Swal.fire({
-								type  : 'info',
-								title : 'Sebelum dihapus,status bayar harus dibatalkan dulu.',
-								text  : 'Failed',
-							});
-						}
-					},
-					error: function () {
-						alert("Terjadi kesalahan, coba lagi nanti");
+						buttonsStyling: false
+					})
+					swalWithBootstrapButtons.fire({
+						title: "Data yang akan dihapus?",
+						text: "No Dokumen: "+nodok,
+						type: 'warning',
+						showCancelButton: true,
+						reverseButtons: true,
+						confirmButtonText: 'Ya, hapus',
+						cancelButtonText: 'Batalkan'
+					})
+					.then((result) => {
+					if (result.value) {
+						$.ajax({
+							url: "{{ route('penerimaan_kas.delete') }}",
+							type: 'DELETE',
+							dataType: 'json',
+							data: {
+								"nodok": nodok,
+								"_token": "{{ csrf_token() }}",
+							},
+							success: function (data) {
+								if(data == 1){
+									Swal.fire({
+										type  : 'success',
+										title : "No Dokumen: "+nodok,
+										text  : 'Berhasil',
+										timer : 2000
+									}).then(function() {
+										location.reload();
+									});
+								}else if(data == 2){
+									Swal.fire({
+										type  : 'info',
+										title : 'Penghapusan gagal,data tidak dalam status Opening.',
+										text  : 'Failed',
+									});
+								}else{
+									Swal.fire({
+										type  : 'info',
+										title : 'Sebelum dihapus,status bayar harus dibatalkan dulu.',
+										text  : 'Failed',
+									});
+								}
+							},
+							error: function () {
+								alert("Terjadi kesalahan, coba lagi nanti");
+							}
+						});
 					}
 				});
-			}
-		});
+			});
+		} else {
+			swalAlertInit('hapus');
+		}
 	});
-} else {
-	swalAlertInit('hapus');
-}
-});
+
+	
+
+	$('#exportRow').click(function(e) {
+		e.preventDefault();
+		if($('input[type=radio]').is(':checked')) { 
+			$("input[type=radio]:checked").each(function() {
+				var id = $(this).val();
+
+				// open modal
+				$('#cetakModal').modal('show');
+
+				// fill no_panjar to no_panjar field
+				$('#no_dokumen').val(id);
+			});
+		} else {
+			swalAlertInit('cetak');
+		}
+	});
 });
 
 function hanyaAngka(evt) {
