@@ -1283,7 +1283,7 @@ Route::group(['middleware'=> ['auth','checkRole:1,0']], function () {
         // Route assigned name "d5_report.index"...
         Route::name('d5_report.')->group(function () {
             Route::get('d5_report', 'ReportKontrolerController@create_d5_report')->name('create_d5_report');
-            // Route::post('d5_report/index/search', 'ReportKontrolerController@searchIndex')->name('search.index');
+            Route::post('d5_report/export', 'ReportKontrolerController@exportD5')->name('export');
         });
         //end d5_report
 
