@@ -201,7 +201,7 @@ class ReportKontrolerController extends Controller
             DB::statement("DROP VIEW IF EXISTS v_class_account CASCADE");
             DB::statement("DROP VIEW IF EXISTS v_sub_class_account CASCADE");
             DB::statement("CREATE VIEW v_class_account AS
-                        select m.*, substring(m.urutan from 1 for 3) urutan_sc from main_account m where length(urutan)>=3");
+                        select m.*, substring(m.urutan from 1 for 1) urutan_sc from main_account m where length(urutan)>=3");
                          DB::statement("CREATE VIEW v_sub_class_account AS
                          select jenis,batas_awal,batas_akhir,urutan, substring(urutan from 1 for 1) urutan_cs from main_account where length(urutan)=3");
             DB::statement("CREATE OR REPLACE VIEW v_report_d5 AS
