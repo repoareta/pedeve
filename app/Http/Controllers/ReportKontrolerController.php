@@ -198,12 +198,6 @@ class ReportKontrolerController extends Controller
         $data_cek = DB::select("select a.tablename as vada from pg_tables a where a.tablename = '$obpsi' ");
         if (!empty($data_cek)) {
             DB::statement("DROP VIEW IF EXISTS v_report_d5 CASCADE");
-            DB::statement("DROP VIEW IF EXISTS v_class_account CASCADE");
-            DB::statement("DROP VIEW IF EXISTS v_sub_class_account CASCADE");
-            DB::statement("CREATE VIEW v_class_account AS
-                        select m.*, substring(m.urutan from 1 for 1) urutan_sc from main_account m where length(urutan)>=3");
-                         DB::statement("CREATE VIEW v_sub_class_account AS
-                         select jenis,batas_awal,batas_akhir,urutan, substring(urutan from 1 for 1) urutan_cs from main_account where length(urutan)=3");
             DB::statement("CREATE OR REPLACE VIEW v_report_d5 AS
                             select tahun, bulan, suplesi, ci mu, jb, account sandi, lokasi lapangan, coalesce(awalrp,0) last_rp, coalesce(awaldl,0) last_dl, pricerp cur_rp, pricedl cur_dl, totpricerp cum_rp, totpricedl cum_dl from $obpsi union all 
                             select tahun, bulan, supbln suplesi, ci mu, jb, account sandi, lokasi lapangan, 0 last_rp, 0 last_dl, sum(coalesce(totpricerp,0)) cur_rp, sum(coalesce(totprice,0)) cur_dl, sum(coalesce(totpricerp,0)) cum_rp, sum(coalesce(totpricedl,0)) cum_dl from fiosd201 where ci='2' and tahun = '$tahun' and tahun||bulan||supbln <= '$thnbln' group by tahun, bulan, supbln, account, jb, ci,lokasi union all 
