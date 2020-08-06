@@ -49,15 +49,15 @@
 					<div class="col-10">
 						<div class="kt-radio-inline">
 							<label class="kt-radio kt-radio--solid">
-								<input value="1" type="radio"  name="jk" >[10,11,13]
+								<input value="1" type="radio"  name="status" >[10,11,13]
 								<span></span>
 							</label>
 							<label class="kt-radio kt-radio--solid">
-								<input value="2" type="radio"    name="jk">[15,18]
+								<input value="2" type="radio"    name="status">[15,18]
 								<span></span>
 							</label>
 							<label class="kt-radio kt-radio--solid">
-								<input value="3" type="radio"    name="jk" checked>All
+								<input value="3" type="radio"    name="status" checked>All
 								<span></span>
 							</label>
 						</div>
@@ -76,7 +76,7 @@
 							$lapangan = "KL";
 						}
 						?>
-						<select class="form-control" name="bulan">
+						<select class="form-control kt-select2" name="bulan">
 							<option value="">-- All --</option>
 							<option value="01" <?php if($bulan  == '01' ) echo 'selected' ; ?>>Januari</option>
 							<option value="02" <?php if($bulan  == '02' ) echo 'selected' ; ?>>Februari</option>
@@ -103,7 +103,7 @@
 				<div class="form-group row">
 					<label for="dari-input" class="col-2 col-form-label">Lapangan<span style="color:red;">*</span></label>
 					<div class="col-10">
-						<select name="lp" id="select-debetdari" class="form-control selectpicker" data-live-search="true" required oninvalid="this.setCustomValidity('Lapangan Harus Diisi..')" onchange="setCustomValidity('')">
+						<select name="lapangan"  class="form-control kt-select2"  required oninvalid="this.setCustomValidity('Lapangan Harus Diisi..')" onchange="setCustomValidity('')">
 							<option value="">- Pilih -</option>
 							@foreach($data_kodelok as $data_kode)
 							<option value="{{$data_kode->kodelokasi}}" <?php if($lapangan  == $data_kode->kodelokasi ) echo 'selected' ; ?>>{{$data_kode->kodelokasi}} -- {{$data_kode->nama}}</option>
@@ -114,7 +114,7 @@
 				<div class="form-group row">
 					<label for="dari-input" class="col-2 col-form-label">Sandi Perkiraan</label>
 					<div class="col-10">
-						<select name="sanper" id="select-debetdari" class="form-control selectpicker" data-live-search="true" oninvalid="this.setCustomValidity('Sandi Perkiraan Harus Diisi..')" onchange="setCustomValidity('')">
+						<select name="sanper"  class="form-control kt-select2" oninvalid="this.setCustomValidity('Sandi Perkiraan Harus Diisi..')" onchange="setCustomValidity('')">
 							<option value="">- Pilih -</option>
 							@foreach($data_sanper as $data_san)
 							<option value="{{$data_san->kodeacct}}">{{$data_san->kodeacct}} -- {{$data_san->descacct}}</option>
@@ -143,6 +143,9 @@
 <script type="text/javascript">
 $(document).ready(function () {
    
+	$('.kt-select2').select2().on('change', function() {
+			$(this).valid();
+	});
 	$('#tanggal').datepicker({
 		todayHighlight: true,
 		orientation: "bottom left",

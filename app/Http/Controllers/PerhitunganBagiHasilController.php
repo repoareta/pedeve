@@ -58,14 +58,14 @@ class PerhitunganBagiHasilController extends Controller
             ");
             $data_bankrp = DB::select("
                 select 
-                sum(CASE WHEN kurs=1 and lokasi='MD' and kdbank='110123' or kdbank='110122' or kdbank='110125' or kdbank='110130'  THEN nominal ELSE '0' END) as brimd,
+                sum(CASE WHEN kurs=1 and lokasi='MD' and kdbank='110123' or kdbank='110201' or kdbank='110107' or kdbank='110101'  THEN nominal ELSE '0' END) as brimd,
                 sum(CASE WHEN kurs=1 and lokasi='MD' and kdbank='110201' or kdbank='110107' or kdbank='110101'  THEN nominal ELSE '0' END) as bnimd,
                 sum(CASE WHEN kurs=1 and lokasi='MD' and kdbank='110100' or kdbank='110200' THEN nominal ELSE '0' END) as mandirimd,
                 sum(CASE WHEN kurs=1 and lokasi='MD' and kdbank='110218' or kdbank='110118' or kdbank='110700' or kdbank='110120' or kdbank='110126' THEN nominal ELSE '0' END) as btnmd,
                 sum(CASE WHEN kurs=1 and lokasi='MD' and kdbank='110153' THEN nominal ELSE '0' END) as agromd,
                 sum(CASE WHEN kurs=1 and lokasi='MD' and kdbank='110121' THEN nominal ELSE '0' END) as mantapmd,
                 sum(CASE WHEN kurs=1 and lokasi='MD' and kdbank='110154' THEN nominal ELSE '0' END) as bnisyamd,
-                sum(CASE WHEN kurs=1 and lokasi='MS' and kdbank='110201' or kdbank='110107' or kdbank='110101'  THEN nominal ELSE '0' END) as brims,
+                sum(CASE WHEN kurs=1 and lokasi='MS' and kdbank='110123' or kdbank='110201' or kdbank='110107' or kdbank='110101'  THEN nominal ELSE '0' END) as brims,
                 sum(CASE WHEN kurs=1 and lokasi='MS' and kdbank='110201' or kdbank='110107' or kdbank='110101'  THEN nominal ELSE '0' END) as bnims,
                 sum(CASE WHEN kurs=1 and lokasi='MS' and kdbank='110100' or kdbank='110200' THEN nominal ELSE '0' END) as mandirims,
                 sum(CASE WHEN kurs=1 and lokasi='MS' and kdbank='110218' or kdbank='110118' or kdbank='110700' or kdbank='110120' or kdbank='110126' THEN nominal ELSE '0' END) as btnms,
@@ -111,7 +111,7 @@ class PerhitunganBagiHasilController extends Controller
             $dom_pdf = $pdf->getDomPDF();
 
             $canvas = $dom_pdf ->get_canvas();
-            $canvas->page_text(390, 115, "({PAGE_NUM}) Dari {PAGE_COUNT}", null, 8, array(0, 0, 0)); //lembur landscape
+            $canvas->page_text(520, 110, "{PAGE_NUM} Dari {PAGE_COUNT}", null, 8, array(0, 0, 0)); //lembur landscape
             // return $pdf->download('rekap_umk_'.date('Y-m-d H:i:s').'.pdf');
             return $pdf->stream();
         }else{

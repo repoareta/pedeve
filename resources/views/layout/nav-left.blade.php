@@ -550,6 +550,7 @@
                 $perhitungan = array(
                     'perhitungan_bagihasil.index',
                     'perhitungan_bagihasil.index.search',
+                    'perhitungan_bagihasil.rekap',
                 ); // isi nama semua route perhitungan bagi hasil
                 $deposito = array_merge(
                     $penempatan,
@@ -1788,7 +1789,7 @@
                             </a>
                             <div class="kt-menu__submenu "><span class="kt-menu__arrow"></span>
                                 <ul class="kt-menu__subnav">
-                                    <!-- <li class="kt-menu__item kt-menu__item{{ set_active_submenu($kas_bank) }}" aria-haspopup="true">
+                                    <li class="kt-menu__item kt-menu__item{{ set_active_submenu($kas_bank) }}" aria-haspopup="true">
                                         <a href="{{ route('kas_bank.create1') }}" class="kt-menu__link">
                                             <i class="kt-menu__link-bullet kt-menu__link-bullet--line">
                                                 <span></span>
@@ -1796,7 +1797,7 @@
                                             <span class="kt-menu__link-text">D2 Kas Bank</span>
                                         </a>
                                     </li>
-                                    <li class="kt-menu__item kt-menu__item{{ set_active_submenu($kas_balancing) }}" aria-haspopup="true">
+                                   <!--  <li class="kt-menu__item kt-menu__item{{ set_active_submenu($kas_balancing) }}" aria-haspopup="true">
                                         <a href="{{ route('kas_bank.create2') }}" class="kt-menu__link">
                                             <i class="kt-menu__link-bullet kt-menu__link-bullet--line">
                                                 <span></span>
