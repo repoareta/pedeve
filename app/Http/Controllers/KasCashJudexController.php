@@ -5,6 +5,7 @@ namespace App\Http\Controllers;
 use Illuminate\Http\Request;
 use App\Models\SdmMasterPegawai;
 use App\Models\V_d2kasbank;
+use App\Models\ViewReportCashFlow;
 use DB;
 use DomPDF;
 use PDF;
@@ -233,16 +234,25 @@ class KasCashJudexController extends Controller
         $bulan = $request->bulan;
         $kurs = $request->kurs;
         
-        $data_list = null;
+        $data_list = ViewReportCashFlow::when(request('bulan'), function ($query) {
+            return $query->where('bulan', request('bulan'));
+        })
+        ->when(request('tahun'), function ($query) {
+            return $query->where('tahun', request('tahun'));
+        })
+        ->when(request('kurs'), function ($query) {
+            return $query->where('nilai_kurs', request('kurs'));
+        })
+        ->get();
 
+        dd($data_list);
+
+        // return default PDF
         $pdf = DomPDF::loadview('kas_bank.export_report7', compact('data_list', 'tahun', 'bulan'))
-        ->setPaper('a4', 'Portrait');
-        $pdf->output();
-        $dom_pdf = $pdf->getDomPDF();
+        ->setPaper('a4', 'Portrait')
+        ->setOptions(['isPhpEnabled' => true]);
 
-        $canvas = $dom_pdf ->get_canvas();
-        $canvas->page_text(485, 100, "Halaman {PAGE_NUM} Dari {PAGE_COUNT}", null, 10, array(0, 0, 0));
-        return $pdf->stream();
+        return $pdf->stream('laporan_arus_kas_internal_'.date('Y-m-d H:i:s').'.pdf');
     }
 
     // Report Cash Flow Per Periode
