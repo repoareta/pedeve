@@ -4,8 +4,10 @@ namespace App\Http\Controllers;
 
 use Illuminate\Http\Request;
 use App\Models\SdmMasterPegawai;
+use App\Models\V_d2kasbank;
 use DB;
 use DomPDF;
+use PDF;
 use Excel;
 use Alert;
 
@@ -20,66 +22,74 @@ class KasCashJudexController extends Controller
     }
     public function Cetak1(Request $request)
     {
-        $thnbln = $request->tahun.''.$request->bulan;
-        if ($request->jk == "1") {
-            $jk = "in ('10','11','13')";
-        } elseif ($request->jk == "2") {
-            $jk = "in ('15','18')";
-        } else {
-            $jk = "in ('10','11','13','15','18')";
+        if ($request->status == "1") {
+            $xxx =['10','11','13'];
+        }elseif($request->status == "2"){
+            $xxx =['15','18'];
+        }else{
+            $xxx =['10','11','13','15','18'];
         }
 
-        if ($request->lp == "KL") {
-            $tahun = $request->tahun;
+        if($request->lapangan == "KL"){
+            $yyy = "$request->tahun";
             if ($request->bulan <> "") {
-                $bulan ="in ('$request->bulan')";
-            } else {
-                $bulan ="in ('01','02','03','04','05','06','07','08','09','10','11','12')";
+                $sss =[$request->bulan];
+            }else{
+                $sss =['01','02','03','04','05','06','07','08','09','10','11','12'];
             }
-
-            if ($request->sanper == "") {
-                $data_list = DB::select("select b.docno,substring(b.thnbln from 1 for 4) as tahun,substring(b.thnbln from 5 for 2) as bulan,b.jk,b.store,b.voucher,b.ci,b.paiddate as tglbayar,b.rate,a.lineno,a.account,a.lokasi,a.bagian,a.cj,round(a.totprice,2) as totprice,a.keterangan 
-                                        from kasline a join kasdoc b on b.docno=a.docno 
-                                        where b.jk $jk and substring(b.thnbln from 1 for 4)='$tahun' and substring(b.thnbln from 5 for 2) $bulan and a.keterangan <> 'penutup'");
-            } else {
-                $sanper = "like '$request->sanper'";
-                $data_list = DB::select("select b.docno,substring(b.thnbln from 1 for 4) as tahun,substring(b.thnbln from 5 for 2) as bulan,b.jk,b.store,b.voucher,b.ci,b.paiddate as tglbayar,b.rate,a.lineno,a.account,a.lokasi,a.bagian,a.cj,round(a.totprice,2) as totprice,a.keterangan 
-                                        from kasline a join kasdoc b on b.docno=a.docno 
-                                        where b.jk $jk and substring(b.thnbln from 1 for 4)='$tahun' and substring(b.thnbln from 5 for 2) $bulan and a.account $sanper and a.keterangan <> 'penutup'");
+            
+            if($request->sanper == ""){
+                $data_list = V_d2kasbank::where('tahun',$yyy)->whereIn('bulan',$sss)->whereIn('jk',$xxx)->orderBy('account', 'asc')->get();
+            }else{
+                $ddd = "$request->sanper";
+                $data_list = V_d2kasbank::where('tahun',$yyy)->whereIn('bulan',$sss)->where('account',$ddd)->whereIn('jk',$xxx)->orderBy('account', 'asc')->get();
             }
-        } else {
-            $lp = "$request->lp";
-            $tahun = "$request->tahun";
+            
+        }else{
+            $bbb = "$request->lapangan";
+            $yyy = "$request->tahun";
             if ($request->bulan <> "") {
-                $bulan = "in ('$request->bulan')";
-            } else {
-                $bulan ="in ('01','02','03','04','05','06','07','08','09','10','11','12')";
+                $sss = [$request->bulan];
+            }else{
+                $sss =['01','02','03','04','05','06','07','08','09','10','11','12'];
             }
+            
             if ($request->sanper == "") {
-                $data_list = DB::select("select b.docno,substring(b.thnbln from 1 for 4) as tahun,substring(b.thnbln from 5 for 2) as bulan,b.jk,b.store,b.voucher,b.ci,b.paiddate as tglbayar,b.rate,a.lineno,a.account,a.lokasi,a.bagian,a.cj,round(a.totprice,2) as totprice,a.keterangan 
-                                        from kasline a join kasdoc b on b.docno=a.docno 
-                                        where b.jk $jk and substring(b.thnbln from 1 for 4)='$tahun' and substring(b.thnbln from 5 for 2) $bulan and a.lokasi='$lp' and a.keterangan <> 'penutup'");
-            } else {
-                $sanper = "like '$request->sanper'";
-                $data_list = DB::select("select b.docno,substring(b.thnbln from 1 for 4) as tahun,substring(b.thnbln from 5 for 2) as bulan,b.jk,b.store,b.voucher,b.ci,b.paiddate as tglbayar,b.rate,a.lineno,a.account,a.lokasi,a.bagian,a.cj,round(a.totprice,2) as totprice,a.keterangan 
-                                        from kasline a join kasdoc b on b.docno=a.docno 
-                                        where b.jk $jk and substring(b.thnbln from 1 for 4)='$tahun' and substring(b.thnbln from 5 for 2) $bulan and a.account $sanper and a.lokasi='$lp' and a.keterangan <> 'penutup'");
+                $data_list = V_d2kasbank::where('lokasi',$bbb)->where('tahun',$yyy)->whereIn('bulan',$sss)->whereIn('jk',$xxx)->orderBy('account', 'asc')->get();
+            }else{
+                $ddd = "$request->sanper";
+                $data_list = V_d2kasbank::where('lokasi',$bbb)->where('tahun',$yyy)->where('account',$ddd)->whereIn('bulan',$sss)->whereIn('jk',$xxx)->orderBy('account', 'asc')->get();
             }
+        
         }
-        // dd($data_list);
-        if (!empty($data_list)) {
-            set_time_limit(1200);
-            // return view('kas_bank.export_report1',compact('request','data_list'));
-            $pdf = DomPDF::loadview('kas_bank.export_report1', compact('request', 'data_list'))->setPaper('a4', 'Portrait');
-            $pdf->output();
-            $dom_pdf = $pdf->getDomPDF();
 
-            $canvas = $dom_pdf ->get_canvas();
-            $canvas->page_text(485, 100, "Halaman {PAGE_NUM} Dari {PAGE_COUNT}", null, 10, array(0, 0, 0)); //lembur landscape
-            // return $pdf->download('rekap_umk_'.date('Y-m-d H:i:s').'.pdf');
-            return $pdf->stream();
+        if($request->bulan <> ""){
+            $export_d2_kas_bank = 'export_d2_kas_bank_bulan_pdf' ;
+            $export_d2_kas_bank_header = 'export_d2_kas_bank_bulan_pdf_header';
+        }else{
+            $export_d2_kas_bank = 'export_d2_kas_bank_tahun_pdf' ;
+            $export_d2_kas_bank_header = 'export_d2_kas_bank_tahun_pdf_header';
+        }
+
+        if ($data_list->count() > 0) {
+            foreach($data_list as $data)
+            {
+                $bulan = $data->bulan;
+                $tahun = $data->tahun;
+            }
+            $pdf = PDF::loadview("kas_bank.$export_d2_kas_bank", compact(
+                'data_list', 'tahun'
+            ))
+            ->setPaper('a4', 'landscape')
+            ->setOption('footer-right', 'Halaman [page] dari [toPage]')
+            ->setOption('footer-font-size', 7)
+            ->setOption('header-html', view("kas_bank.$export_d2_kas_bank_header",compact('bulan','tahun')))
+            ->setOption('margin-top', 30)
+            ->setOption('margin-bottom', 10);
+    
+            return $pdf->stream('rekap_d2_kas_bank_'.date('Y-m-d H:i:s').'.pdf');
         } else {
-            Alert::info("Tidak ditemukan data dengan Bulan/Tahun: $request->bulan/$request->tahun ", 'Failed')->persistent(true);
+            Alert::info("Tidak ditemukan data yang di cari", 'Failed')->persistent(true);
             return redirect()->route('kas_bank.create1');
         }
     }

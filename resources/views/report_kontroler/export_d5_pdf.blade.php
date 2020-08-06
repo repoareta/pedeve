@@ -364,10 +364,10 @@ tr {
                             $mu =  $data_list[$key+1]['mu'];
                             $lapangan =  $data_list[$key+1]['lapangan'];
                         }else{
-                            $sandi =  $data_list[0]['sandi'];
+                            $sandi =  substr($data_list[$key]['sandi'],0,2);
                             $san =  $data_list[$key]['sandi'];
-                            $mu =  $data_list[$key]['mu'];
-                            $lapangan =  $data_list[$key]['lapangan'];
+                            $mu =  $data_list[$key]['mu']*2;
+                            $lapangan =  substr($data_list[$key]['lapangan'],0,1);
                             $sanmain =  substr($data_list[$key]['sandi'],0,4);
                             $sanclass =  substr($data_list[$key]['sandi'],0,2);
                         }

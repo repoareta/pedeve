@@ -147,7 +147,7 @@ class ReportKontrolerController extends Controller
                     $data_list = v_report_d5::where('lapangan','MD')->orWhere('lapangan','MS')->orderBy('sandi', 'asc')->get();
                 }
             }
-            if (!empty($data_list)) {
+            if ($data_list->count() > 0) {
                 foreach($data_list as $data_bln)
                 {
                         $bulan = $data_bln->bulan;
@@ -164,11 +164,11 @@ class ReportKontrolerController extends Controller
 
                 return $pdf->stream('rekap_d5_'.date('Y-m-d H:i:s').'.pdf');
             } else {
-                Alert::info("Tidak ditemukan data dengan Bulan/Tahun: $request->bulan/$request->tahun ", 'Failed')->persistent(true);
+                Alert::info("Tidak ditemukan data yang di cari", 'Failed')->persistent(true);
                 return redirect()->route('d5_report.create_d5_report');
             }
         } else {
-            Alert::info("Tidak ditemukan data dengan Bulan/Tahun: $request->bulan/$request->tahun ", 'Failed')->persistent(true);
+            Alert::info("Tidak ditemukan data yang di cari", 'Failed')->persistent(true);
             return redirect()->route('d5_report.create_d5_report');
         }
     }
