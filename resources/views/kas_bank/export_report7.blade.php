@@ -13,7 +13,7 @@
             }
             
             .table {
-                font: normal 12px Verdana, Arial, sans-serif;
+                font: normal 10px Verdana, Arial, sans-serif;
                 border-collapse: collapse;
                 border: 1px solid black;
             }
@@ -58,12 +58,11 @@
 
             td.border-less-dashed {
                 border-bottom: dashed; 
-                border-width: 2px;
+                border-top: dashed; 
+                border-width: 1.5px;
                 border-left: 1px solid black;
                 border-right: 1px solid black;
             }
-
-            
 
             .tab-1 {
                 padding-left:10%;
@@ -72,442 +71,712 @@
             .tab-2 {
                 padding-left:15%;
             }
+
+            header { 
+                position: fixed; 
+                left: 0px; 
+                top: -110px;
+                right: 0px;
+                height: 0px;
+            }
+
+            @page { 
+                margin: 130px 50px 50px 50px;
+            }
         </style>
     </head>
     <body>
-        <div class="row">
-            <div class="text-center">
-              <p>
-                <b>
-                    PT. PERTAMINA PEDEVE INDONESIA
-                </b>
-                <br>
-                <b>
-                    LAPORAN - ARUS KAS
-                </b>
-                <br>
-                <b>
-                    PERIODE: AGUSTUS 2020 
-                </b>
-              </p>
+        <header id="header">
+            <div class="row">
+                <div class="text-center">
+                    <p>
+                        <b>
+                            PT. PERTAMINA PEDEVE INDONESIA
+                        </b>
+                        <br>
+                        <b>
+                            LAPORAN - ARUS KAS
+                        </b>
+                        <br>
+                        <b>
+                            PERIODE: AGUSTUS 2020 
+                        </b>
+                    </p>
+                </div>
+        
+                <div>
+                    <img align="right" src="{{public_path() . '/images/pertamina.jpg'}}" width="120px" height="60px" style="padding-top:10px">
+                </div>
             </div>
-  
-            <div>
-              <img align="right" src="{{public_path() . '/images/pertamina.jpg'}}" width="120px" height="60px">
-            </div>
-          </div>
+        </header>
+    
         <!-- Wrap the content of your PDF inside a main tag -->
         <main>
-            <table width="100%" class="table">
-                <thead>
-                    <tr>
-                        <th rowspan="2">KETERANGAN</th>
-                        <th colspan="4">TOTAL</th>
-                    </tr>
-                    <tr>
-                        <th>RUPIAH</th>
-                        <th>US$</th>
-                        <th>EKIV US$</th>
-                        <th nowrap>JML RP + EKIV US$</th>
-                    </tr>
-                <thead>
-                <tbody>
-                    {{-- A. ARUS KAS DARI AKTIVITAS OPERASI START --}}
-                    <tr>
-                        <td nowrap>
-                            <b>
-                                A. ARUS KAS DARI AKTIVITAS OPERASI
-                            </b>
-                        </td>
-                        <td></td>
-                        <td></td>
-                        <td></td>
-                        <td></td>
-                    </tr>
-                    <tr>
-                        <td class="tab-1 border-less-top-bottom">
-                            <b><i>PENERIMAAN</i></b>
-                        </td>
-                        <td class="border-less-top-bottom"></td>
-                        <td class="border-less-top-bottom"></td>
-                        <td class="border-less-top-bottom"></td>
-                        <td class="border-less-top-bottom"></td>
-                    </tr>
-                    <tr>
-                        <td class="tab-2 border-less-dashed" valign="top">
-                            PIUTANG PEGAWAI
-                        </td>
-                        <td class="text-right border-less-dashed" valign="top">
-                            0.00
-                        </td>
-                        <td class="text-right border-less-dashed" valign="top">
-                            0.00
-                        </td>
-                        <td class="text-right border-less-dashed" valign="top">
-                            0.00
-                        </td>
-                        <td class="text-right border-less-dashed" valign="top">
-                            0.00
-                        </td>
-                    </tr>
-                    <tr>
-                        <td class="tab-1">
-                            <b><i>JUMLAH PENERIMAAN</i></b>
-                        </td>
-                        <td class="text-right">220,690,969,986.60</td>
-                        <td class="text-right">1,080,258.70</td>
-                        <td class="text-right">15,959,743,504.08</td>
-                        <td class="text-right">236,650,713,490.68</td>
-                    </tr>
-                    <tr>
-                        <td class="tab-1 border-less-top-bottom">
-                            <b><i>PENGELUARAN</i></b>
-                        </td>
-                        <td class="border-less-top-bottom"></td>
-                        <td class="border-less-top-bottom"></td>
-                        <td class="border-less-top-bottom"></td>
-                        <td class="border-less-top-bottom"></td>
-                    </tr>
-                    <tr>
-                        <td class="tab-2 border-less-dashed" valign="top">
-                            PENGEMBALIAN INVESTASI BERMASALAH
-                        </td>
-                        <td class="text-right border-less-dashed" valign="top">
-                            0.00
-                        </td>
-                        <td class="text-right border-less-dashed" valign="top">
-                            0.00
-                        </td>
-                        <td class="text-right border-less-dashed" valign="top">
-                            0.00
-                        </td>
-                        <td class="text-right border-less-dashed" valign="top">
-                            0.00
-                        </td>
-                    </tr>
-                    <tr>
-                        <td class="tab-1">
-                            <b><i>JUMLAH PENGELUARAN</i></b>
-                        </td>
-                        <td class="text-right">220,690,969,986.60</td>
-                        <td class="text-right">1,080,258.70</td>
-                        <td class="text-right">15,959,743,504.08</td>
-                        <td class="text-right">236,650,713,490.68</td>
-                    </tr>
-                    <tr>
-                        <td class="border-less-top-bottom">
-                            <b>
-                                A. ARUS KAS DARI AKTIVITAS OPERASI
-                            </b>
-                        </td>
-                        <td class="text-right border-less-top-bottom">
-                            (560,903,009.47)
-                        </td>
-                        <td class="text-right border-less-top-bottom">
-                            646.28
-                        </td>
-                        <td class="text-right border-less-top-bottom">
-                            9,547,890.60
-                        </td>
-                        <td class="text-right border-less-top-bottom">
-                            (551,355,118.85)
-                        </td>
-                    </tr>
-                    {{-- A. ARUS KAS DARI AKTIVITAS OPERASI END --}}
+            <div class="row">
+                <table width="100%" class="table">
+                    <thead>
+                        <tr>
+                            <th rowspan="2" style="border-bottom:2px solid black;">KETERANGAN</th>
+                            <th colspan="4">TOTAL</th>
+                        </tr>
+                        <tr>
+                            <th style="border-bottom:2px solid black;">RUPIAH</th>
+                            <th style="border-bottom:2px solid black;">US$</th>
+                            <th style="border-bottom:2px solid black;">EKIV US$</th>
+                            <th style="border-bottom:2px solid black;">JML RP + EKIV US$</th>
+                        </tr>
+                    <thead>
+                    <tbody>
+                        {{-- A. ARUS KAS DARI AKTIVITAS OPERASI START --}}
+                        @if ($arus_kas_aktivitas_koperasi)
+                        <tr>
+                            <td nowrap>
+                                <b>
+                                    A. ARUS KAS DARI AKTIVITAS OPERASI
+                                </b>
+                            </td>
+                            <td></td>
+                            <td></td>
+                            <td></td>
+                            <td></td>
+                        </tr>
+                        {{-- PENERIMAAN START --}}
+                        @php
+                            $total_akak_penerimaan_nilai = 0;
+                            $total_akak_penerimaan_nilai_dl = 0;
+                            $total_akak_penerimaan_nilai_dl_rp = 0;
+                            $total_akak_penerimaan_ekiv = 0;
+                        @endphp
+                        @if ($arus_kas_aktivitas_koperasi_penerimaan !== null)
+                        <tr>
+                            <td class="tab-1 border-less-top-bottom">
+                                <b><i>PENERIMAAN</i></b>
+                            </td>
+                            <td class="border-less-top-bottom"></td>
+                            <td class="border-less-top-bottom"></td>
+                            <td class="border-less-top-bottom"></td>
+                            <td class="border-less-top-bottom"></td>
+                        </tr>
+                        @foreach ($arus_kas_aktivitas_koperasi_penerimaan as $value)
+                        <tr>
+                            <td class="tab-2 border-less-dashed" valign="top">
+                                {{ $value->keterangan }}
+                            </td>
+                            <td class="text-right border-less-dashed" valign="top">
+                                {{ number_format(abs($value->nilai), 2) }}
+                            </td>
+                            <td class="text-right border-less-dashed" valign="top">
+                                {{ number_format(abs($value->nilai_dl), 2) }}
+                            </td>
+                            <td class="text-right border-less-dashed" valign="top">
+                                {{ number_format(abs($value->nilai_dl_rp), 2) }}
+                            </td>
+                            <td class="text-right border-less-dashed" valign="top">
+                                {{ number_format(abs($value->nilai + $value->nilai_dl_rp), 2) }}
+                            </td>
+                        </tr>
+                        @php
+                            $total_akak_penerimaan_nilai += abs($value->nilai);
+                            $total_akak_penerimaan_nilai_dl += abs($value->nilai_dl);
+                            $total_akak_penerimaan_nilai_dl_rp += abs($value->nilai_dl_rp);
+                            $total_akak_penerimaan_ekiv += abs(($value->nilai + $value->nilai_dl_rp));
+                        @endphp
+                        @endforeach
+                        <tr>
+                            <td class="tab-1">
+                                <b><i>JUMLAH PENERIMAAN</i></b>
+                            </td>
+                            <td class="text-right">
+                                @if ($total_akak_penerimaan_nilai < 0)
+                                ({{ number_format(abs($total_akak_penerimaan_nilai), 2) }})
+                                @else
+                                {{ number_format(abs($total_akak_penerimaan_nilai), 2) }}
+                                @endif
+                            </td>
+                            <td class="text-right">{{ number_format(abs($total_akak_penerimaan_nilai_dl), 2) }}</td>
+                            <td class="text-right">{{ number_format(abs($total_akak_penerimaan_nilai_dl_rp), 2) }}</td>
+                            <td class="text-right">{{ number_format(abs($total_akak_penerimaan_ekiv), 2) }}</td>
+                        </tr>
+                        @endif
+                        {{-- PENERIMAAN END --}}
+                        
+                        {{-- PENGELUARAN START --}}
+                        @if ($arus_kas_aktivitas_koperasi_pengeluaran !== null)
+                        <tr>
+                            <td class="tab-1 border-less-top-bottom">
+                                <b><i>PENGELUARAN</i></b>
+                            </td>
+                            <td class="border-less-top-bottom"></td>
+                            <td class="border-less-top-bottom"></td>
+                            <td class="border-less-top-bottom"></td>
+                            <td class="border-less-top-bottom"></td>
+                        </tr>
+                        @php
+                            $total_akak_pengeluaran_nilai = 0;
+                            $total_akak_pengeluaran_nilai_dl = 0;
+                            $total_akak_pengeluaran_nilai_dl_rp = 0;
+                            $total_akak_pengeluaran_ekiv = 0;
+                        @endphp
+                        @foreach ($arus_kas_aktivitas_koperasi_pengeluaran as $value)
+                        <tr>
+                            <td class="tab-2 border-less-dashed" valign="top">
+                                {{ $value->keterangan }}
+                            </td>
+                            <td class="text-right border-less-dashed" valign="top">
+                                @if ($value->nilai < 0)
+                                ({{ number_format(abs($value->nilai), 2) }})
+                                @else
+                                {{ number_format($value->nilai, 2) }}
+                                @endif
+                            </td>
+                            <td class="text-right border-less-dashed" valign="top">
+                                @if ($value->nilai_dl < 0)
+                                ({{ number_format(abs($value->nilai_dl), 2) }})
+                                @else
+                                {{ number_format($value->nilai_dl, 2) }}
+                                @endif
+                            </td>
+                            <td class="text-right border-less-dashed" valign="top">
+                                @if ($value->nilai_dl_rp < 0)
+                                ({{ number_format(abs($value->nilai_dl_rp), 2) }})
+                                @else
+                                {{ number_format($value->nilai_dl_rp, 2) }}
+                                @endif
+                            </td>
+                            <td class="text-right border-less-dashed" valign="top">
+                                @if (($value->nilai + $value->nilai_dl_rp) < 0)
+                                ({{ number_format(abs(($value->nilai + $value->nilai_dl_rp)), 2) }})
+                                @else
+                                {{ number_format(($value->nilai + $value->nilai_dl_rp), 2) }}
+                                @endif
+                            </td>
+                        </tr>
+                        @php
+                            $total_akak_pengeluaran_nilai += $value->nilai;
+                            $total_akak_pengeluaran_nilai_dl += $value->nilai_dl;
+                            $total_akak_pengeluaran_nilai_dl_rp += $value->nilai_dl_rp;
+                            $total_akak_pengeluaran_ekiv += ($value->nilai + $value->nilai_dl_rp);
+                        @endphp
+                        @endforeach
+                        <tr>
+                            <td class="tab-1">
+                                <b><i>JUMLAH PENGELUARAN</i></b>
+                            </td>
+                            <td class="text-right">
+                                @if ($total_akak_pengeluaran_nilai < 0)
+                                ({{ number_format(abs($total_akak_pengeluaran_nilai), 2) }})
+                                @else
+                                {{ number_format(abs($total_akak_pengeluaran_nilai), 2) }}
+                                @endif
+                            </td>
+                            <td class="text-right">
+                                @if ($total_akak_pengeluaran_nilai_dl < 0)
+                                ({{ number_format(abs($total_akak_pengeluaran_nilai_dl), 2) }})
+                                @else
+                                {{ number_format(abs($total_akak_pengeluaran_nilai_dl), 2) }}
+                                @endif
+                            </td>
+                            <td class="text-right">
+                                @if ($total_akak_pengeluaran_nilai_dl_rp < 0)
+                                ({{ number_format(abs($total_akak_pengeluaran_nilai_dl_rp), 2) }})
+                                @else
+                                {{ number_format(abs($total_akak_pengeluaran_nilai_dl_rp), 2) }}
+                                @endif
+                            </td>
+                            <td class="text-right">
+                                @if ($total_akak_pengeluaran_ekiv < 0)
+                                ({{ number_format(abs($total_akak_pengeluaran_ekiv), 2) }})
+                                @else
+                                {{ number_format(abs($total_akak_pengeluaran_ekiv), 2) }}
+                                @endif
+                            </td>
+                        </tr>
+                        @endif
+                        {{-- PENGELUARAN END --}}
+                        <tr>
+                            <td class="border-less-top-bottom">
+                                <b>
+                                    A. ARUS KAS DARI AKTIVITAS OPERASI
+                                </b>
+                            </td>
+                            <td class="text-right border-less-top-bottom">
+                                {{ number_format(abs($total_akak_pengeluaran_nilai - $total_akak_penerimaan_nilai), 2) }}
+                            </td>
+                            <td class="text-right border-less-top-bottom">
+                                {{ number_format(abs($total_akak_pengeluaran_nilai_dl - $total_akak_penerimaan_nilai_dl), 2) }}
+                            </td>
+                            <td class="text-right border-less-top-bottom">
+                                {{ number_format(abs($total_akak_pengeluaran_nilai_dl_rp - $total_akak_penerimaan_nilai_dl_rp), 2) }}
+                            </td>
+                            <td class="text-right border-less-top-bottom">
+                                {{ number_format(abs($total_akak_pengeluaran_ekiv - $total_akak_penerimaan_ekiv), 2) }}
+                            </td>
+                        </tr>
+                        @endif
+                        {{-- A. ARUS KAS DARI AKTIVITAS OPERASI END --}}
 
-                    {{-- B. ARUS KAS DARI AKTIVITAS INVESTASI START --}}
-                    <tr>
-                        <td nowrap>
-                            <b>
-                                B. ARUS KAS DARI AKTIVITAS INVESTASI
-                            </b>
-                        </td>
-                        <td></td>
-                        <td></td>
-                        <td></td>
-                        <td></td>
-                    </tr>
-                    <tr>
-                        <td class="tab-1 border-less-top-bottom">
-                            <b><i>PENERIMAAN</i></b>
-                        </td>
-                        <td class="border-less-top-bottom"></td>
-                        <td class="border-less-top-bottom"></td>
-                        <td class="border-less-top-bottom"></td>
-                        <td class="border-less-top-bottom"></td>
-                    </tr>
-                    <tr>
-                        <td class="tab-2 border-less-dashed" valign="top">
-                            PIUTANG PEGAWAI
-                        </td>
-                        <td class="text-right border-less-dashed" valign="top">
-                            0.00
-                        </td>
-                        <td class="text-right border-less-dashed" valign="top">
-                            0.00
-                        </td>
-                        <td class="text-right border-less-dashed" valign="top">
-                            0.00
-                        </td>
-                        <td class="text-right border-less-dashed" valign="top">
-                            0.00
-                        </td>
-                    </tr>
-                    <tr>
-                        <td class="tab-1">
-                            <b><i>JUMLAH PENERIMAAN</i></b>
-                        </td>
-                        <td class="text-right">220,690,969,986.60</td>
-                        <td class="text-right">1,080,258.70</td>
-                        <td class="text-right">15,959,743,504.08</td>
-                        <td class="text-right">236,650,713,490.68</td>
-                    </tr>
-                    <tr>
-                        <td class="tab-1 border-less-top-bottom">
-                            <b><i>PENGELUARAN</i></b>
-                        </td>
-                        <td class="border-less-top-bottom"></td>
-                        <td class="border-less-top-bottom"></td>
-                        <td class="border-less-top-bottom"></td>
-                        <td class="border-less-top-bottom"></td>
-                    </tr>
-                    <tr>
-                        <td class="tab-2 border-less-dashed" valign="top">
-                            PEMBELIAN AKTIVA TETAP
-                        </td>
-                        <td class="text-right border-less-dashed" valign="top">
-                            0.00
-                        </td>
-                        <td class="text-right border-less-dashed" valign="top">
-                            0.00
-                        </td>
-                        <td class="text-right border-less-dashed" valign="top">
-                            0.00
-                        </td>
-                        <td class="text-right border-less-dashed" valign="top">
-                            0.00
-                        </td>
-                    </tr>
-                    <tr>
-                        <td class="tab-1">
-                            <b><i>JUMLAH PENGELUARAN</i></b>
-                        </td>
-                        <td class="text-right">220,690,969,986.60</td>
-                        <td class="text-right">1,080,258.70</td>
-                        <td class="text-right">15,959,743,504.08</td>
-                        <td class="text-right">236,650,713,490.68</td>
-                    </tr>
-                    <tr>
-                        <td class="border-less-top-bottom">
-                            <b>
-                                B. ARUS KAS DARI AKTIVITAS INVESTASI
-                            </b>
-                        </td>
-                        <td class="text-right border-less-top-bottom">
-                            (560,903,009.47)
-                        </td>
-                        <td class="text-right border-less-top-bottom">
-                            646.28
-                        </td>
-                        <td class="text-right border-less-top-bottom">
-                            9,547,890.60
-                        </td>
-                        <td class="text-right border-less-top-bottom">
-                            (551,355,118.85)
-                        </td>
-                    </tr>
-                    {{-- B. ARUS KAS DARI AKTIVITAS INVESTASI END --}}
+                        {{-- B. ARUS KAS DARI AKTIVITAS INVESTASI START --}}
+                        @if ($arus_kas_aktivitas_investasi)
+                        <tr>
+                            <td nowrap>
+                                <b>
+                                    B. ARUS KAS DARI AKTIVITAS INVESTASI
+                                </b>
+                            </td>
+                            <td></td>
+                            <td></td>
+                            <td></td>
+                            <td></td>
+                        </tr>
+                        {{-- PENERIMAAN START --}}
+                        @php
+                            $total_akai_penerimaan_nilai = 0;
+                            $total_akai_penerimaan_nilai_dl = 0;
+                            $total_akai_penerimaan_nilai_dl_rp = 0;
+                            $total_akai_penerimaan_ekiv = 0;
+                        @endphp
+                        @if ($arus_kas_aktivitas_investasi_penerimaan !== null)
+                        <tr>
+                            <td class="tab-1 border-less-top-bottom">
+                                <b><i>PENERIMAAN</i></b>
+                            </td>
+                            <td class="border-less-top-bottom"></td>
+                            <td class="border-less-top-bottom"></td>
+                            <td class="border-less-top-bottom"></td>
+                            <td class="border-less-top-bottom"></td>
+                        </tr>
+                        @foreach ($arus_kas_aktivitas_investasi_penerimaan as $value)
+                        <tr>
+                            <td class="tab-2 border-less-dashed" valign="top">
+                                {{ $value->keterangan }}
+                            </td>
+                            <td class="text-right border-less-dashed" valign="top">
+                                {{ number_format(abs($value->nilai), 2) }}
+                            </td>
+                            <td class="text-right border-less-dashed" valign="top">
+                                {{ number_format(abs($value->nilai_dl), 2) }}
+                            </td>
+                            <td class="text-right border-less-dashed" valign="top">
+                                {{ number_format(abs($value->nilai_dl_rp), 2) }}
+                            </td>
+                            <td class="text-right border-less-dashed" valign="top">
+                                {{ number_format(abs($value->nilai + $value->nilai_dl_rp), 2) }}
+                            </td>
+                        </tr>
+                        @php
+                            $total_akai_penerimaan_nilai += abs($value->nilai);
+                            $total_akai_penerimaan_nilai_dl += abs($value->nilai_dl);
+                            $total_akai_penerimaan_nilai_dl_rp += abs($value->nilai_dl_rp);
+                            $total_akai_penerimaan_ekiv += abs(($value->nilai + $value->nilai_dl_rp));
+                        @endphp
+                        @endforeach
+                        <tr>
+                            <td class="tab-1">
+                                <b><i>JUMLAH PENERIMAAN</i></b>
+                            </td>
+                            <td class="text-right">
+                                @if ($total_akai_penerimaan_nilai < 0)
+                                ({{ number_format(abs($total_akai_penerimaan_nilai), 2) }})
+                                @else
+                                {{ number_format(abs($total_akai_penerimaan_nilai), 2) }}
+                                @endif
+                            </td>
+                            <td class="text-right">{{ number_format(abs($total_akai_penerimaan_nilai_dl), 2) }}</td>
+                            <td class="text-right">{{ number_format(abs($total_akai_penerimaan_nilai_dl_rp), 2) }}</td>
+                            <td class="text-right">{{ number_format(abs($total_akai_penerimaan_ekiv), 2) }}</td>
+                        </tr>
+                        @endif
+                        {{-- PENERIMAAN END --}}
+                        
+                        {{-- PENGELUARAN START --}}
+                        @if ($arus_kas_aktivitas_investasi_pengeluaran !== null)
+                        <tr>
+                            <td class="tab-1 border-less-top-bottom">
+                                <b><i>PENGELUARAN</i></b>
+                            </td>
+                            <td class="border-less-top-bottom"></td>
+                            <td class="border-less-top-bottom"></td>
+                            <td class="border-less-top-bottom"></td>
+                            <td class="border-less-top-bottom"></td>
+                        </tr>
+                        @php
+                            $total_akai_pengeluaran_nilai = 0;
+                            $total_akai_pengeluaran_nilai_dl = 0;
+                            $total_akai_pengeluaran_nilai_dl_rp = 0;
+                            $total_akai_pengeluaran_ekiv = 0;
+                        @endphp
+                        @foreach ($arus_kas_aktivitas_investasi_pengeluaran as $value)
+                        <tr>
+                            <td class="tab-2 border-less-dashed" valign="top">
+                                {{ $value->keterangan }}
+                            </td>
+                            <td class="text-right border-less-dashed" valign="top">
+                                @if ($value->nilai < 0)
+                                ({{ number_format(abs($value->nilai), 2) }})
+                                @else
+                                {{ number_format($value->nilai, 2) }}
+                                @endif
+                            </td>
+                            <td class="text-right border-less-dashed" valign="top">
+                                @if ($value->nilai_dl < 0)
+                                ({{ number_format(abs($value->nilai_dl), 2) }})
+                                @else
+                                {{ number_format($value->nilai_dl, 2) }}
+                                @endif
+                            </td>
+                            <td class="text-right border-less-dashed" valign="top">
+                                @if ($value->nilai_dl_rp < 0)
+                                ({{ number_format(abs($value->nilai_dl_rp), 2) }})
+                                @else
+                                {{ number_format($value->nilai_dl_rp, 2) }}
+                                @endif
+                            </td>
+                            <td class="text-right border-less-dashed" valign="top">
+                                @if (($value->nilai + $value->nilai_dl_rp) < 0)
+                                ({{ number_format(abs(($value->nilai + $value->nilai_dl_rp)), 2) }})
+                                @else
+                                {{ number_format(($value->nilai + $value->nilai_dl_rp), 2) }}
+                                @endif
+                            </td>
+                        </tr>
+                        @php
+                            $total_akai_pengeluaran_nilai += $value->nilai;
+                            $total_akai_pengeluaran_nilai_dl += $value->nilai_dl;
+                            $total_akai_pengeluaran_nilai_dl_rp += $value->nilai_dl_rp;
+                            $total_akai_pengeluaran_ekiv += ($value->nilai + $value->nilai_dl_rp);
+                        @endphp
+                        @endforeach
+                        <tr>
+                            <td class="tab-1">
+                                <b><i>JUMLAH PENGELUARAN</i></b>
+                            </td>
+                            <td class="text-right">
+                                @if ($total_akai_pengeluaran_nilai < 0)
+                                ({{ number_format(abs($total_akai_pengeluaran_nilai), 2) }})
+                                @else
+                                {{ number_format(abs($total_akai_pengeluaran_nilai), 2) }}
+                                @endif
+                            </td>
+                            <td class="text-right">
+                                @if ($total_akai_pengeluaran_nilai_dl < 0)
+                                ({{ number_format(abs($total_akai_pengeluaran_nilai_dl), 2) }})
+                                @else
+                                {{ number_format(abs($total_akai_pengeluaran_nilai_dl), 2) }}
+                                @endif
+                            </td>
+                            <td class="text-right">
+                                @if ($total_akai_pengeluaran_nilai_dl_rp < 0)
+                                ({{ number_format(abs($total_akai_pengeluaran_nilai_dl_rp), 2) }})
+                                @else
+                                {{ number_format(abs($total_akai_pengeluaran_nilai_dl_rp), 2) }}
+                                @endif
+                            </td>
+                            <td class="text-right">
+                                @if ($total_akai_pengeluaran_ekiv < 0)
+                                ({{ number_format(abs($total_akai_pengeluaran_ekiv), 2) }})
+                                @else
+                                {{ number_format(abs($total_akai_pengeluaran_ekiv), 2) }}
+                                @endif
+                            </td>
+                        </tr>
+                        @endif
+                        {{-- PENGELUARAN END --}}
+                        <tr>
+                            <td class="border-less-top-bottom">
+                                <b>
+                                    B. ARUS KAS DARI AKTIVITAS INVESTASI
+                                </b>
+                            </td>
+                            <td class="text-right border-less-top-bottom">
+                                {{ number_format(abs($total_akai_pengeluaran_nilai - $total_akai_penerimaan_nilai), 2) }}
+                            </td>
+                            <td class="text-right border-less-top-bottom">
+                                {{ number_format(abs($total_akai_pengeluaran_nilai_dl - $total_akai_penerimaan_nilai_dl), 2) }}
+                            </td>
+                            <td class="text-right border-less-top-bottom">
+                                {{ number_format(abs($total_akai_pengeluaran_nilai_dl_rp - $total_akai_penerimaan_nilai_dl_rp), 2) }}
+                            </td>
+                            <td class="text-right border-less-top-bottom">
+                                {{ number_format(abs($total_akai_pengeluaran_ekiv - $total_akai_penerimaan_ekiv), 2) }}
+                            </td>
+                        </tr>
+                        @endif
+                        {{-- B. ARUS KAS DARI AKTIVITAS INVESTASI END --}}
 
-                    {{-- C. ARUS KAS DARI AKTIVITAS PENDANAAN START --}}
-                    <tr>
-                        <td nowrap>
-                            <b>
-                                C. ARUS KAS DARI AKTIVITAS PENDANAAN
-                            </b>
-                        </td>
-                        <td></td>
-                        <td></td>
-                        <td></td>
-                        <td></td>
-                    </tr>
-                    <tr>
-                        <td class="tab-1 border-less-top-bottom">
-                            <b><i>PENERIMAAN</i></b>
-                        </td>
-                        <td class="border-less-top-bottom"></td>
-                        <td class="border-less-top-bottom"></td>
-                        <td class="border-less-top-bottom"></td>
-                        <td class="border-less-top-bottom"></td>
-                    </tr>
-                    <tr>
-                        <td class="tab-2 border-less-dashed" valign="top">
-                            IURAN MMD
-                        </td>
-                        <td class="text-right border-less-dashed" valign="top">
-                            0.00
-                        </td>
-                        <td class="text-right border-less-dashed" valign="top">
-                            0.00
-                        </td>
-                        <td class="text-right border-less-dashed" valign="top">
-                            0.00
-                        </td>
-                        <td class="text-right border-less-dashed" valign="top">
-                            0.00
-                        </td>
-                    </tr>
-                    <tr>
-                        <td class="tab-1">
-                            <b><i>JUMLAH PENERIMAAN</i></b>
-                        </td>
-                        <td class="text-right">220,690,969,986.60</td>
-                        <td class="text-right">1,080,258.70</td>
-                        <td class="text-right">15,959,743,504.08</td>
-                        <td class="text-right">236,650,713,490.68</td>
-                    </tr>
-                    <tr>
-                        <td class="tab-1 border-less-top-bottom">
-                            <b><i>PENGELUARAN</i></b>
-                        </td>
-                        <td class="border-less-top-bottom"></td>
-                        <td class="border-less-top-bottom"></td>
-                        <td class="border-less-top-bottom"></td>
-                        <td class="border-less-top-bottom"></td>
-                    </tr>
-                    <tr>
-                        <td class="tab-2 border-less-dashed" valign="top">
-                            PENGEMBALIAN POKOK MMD
-                        </td>
-                        <td class="text-right border-less-dashed" valign="top">
-                            0.00
-                        </td>
-                        <td class="text-right border-less-dashed" valign="top">
-                            0.00
-                        </td>
-                        <td class="text-right border-less-dashed" valign="top">
-                            0.00
-                        </td>
-                        <td class="text-right border-less-dashed" valign="top">
-                            0.00
-                        </td>
-                    </tr>
-                    <tr>
-                        <td class="tab-1">
-                            <b><i>JUMLAH PENGELUARAN</i></b>
-                        </td>
-                        <td class="text-right">220,690,969,986.60</td>
-                        <td class="text-right">1,080,258.70</td>
-                        <td class="text-right">15,959,743,504.08</td>
-                        <td class="text-right">236,650,713,490.68</td>
-                    </tr>
-                    <tr>
-                        <td class="border-less">
-                            <b>
-                                C. ARUS KAS DARI AKTIVITAS PENDANAAN
-                            </b>
-                        </td>
-                        <td class="text-right border-less">
-                            (560,903,009.47)
-                        </td>
-                        <td class="text-right border-less">
-                            646.28
-                        </td>
-                        <td class="text-right border-less">
-                            9,547,890.60
-                        </td>
-                        <td class="text-right border-less">
-                            (551,355,118.85)
-                        </td>
-                    </tr>
-                    {{-- C. ARUS KAS DARI AKTIVITAS PENDANAAN END --}}
 
-                    <tr>
-                        <td>
-                            KENAIKAN (PENURUNAN) KAS BERSIH
-                        </td>
-                        <td class="text-right">
-                            560,903,009.47
-                        </td>
-                        <td class="text-right">
-                            560,903,009.47
-                        </td>
-                        <td class="text-right">
-                            560,903,009.47
-                        </td>
-                        <td class="text-right">
-                            560,903,009.47
-                        </td>
-                    </tr>
-                    <tr>
-                        <td class="border-less">
-                            SALDO KAS & BANK - AWAL PERIODE
-                        </td>
-                        <td class="border-less text-right">
-                            560,903,009.47
-                        </td>
-                        <td class="border-less text-right">
-                            560,903,009.47
-                        </td>
-                        <td class="border-less text-right">
-                            560,903,009.47
-                        </td>
-                        <td class="border-less text-right">
-                            560,903,009.47
-                        </td>
-                    </tr>
-                    <tr>
-                        <td class="border-less">
-                            SALDO KAS & BANK - AKHIR PERIODE
-                        </td>
-                        <td class="border-less text-right">
-                            560,903,009.47
-                        </td>
-                        <td class="border-less text-right">
-                            560,903,009.47
-                        </td>
-                        <td class="border-less text-right">
-                            560,903,009.47
-                        </td>
-                        <td class="border-less text-right">
-                            560,903,009.47
-                        </td>
-                    </tr>
-                    <tr>
-                        <td>
-                            SELISIH KURS : Rp.14,684.00
-                        </td>
-                        <td class="text-right">
-                            560,903,009.47
-                        </td>
-                        <td class="text-right">
-                            560,903,009.47
-                        </td>
-                        <td class="text-right">
-                            560,903,009.47
-                        </td>
-                        <td class="text-right">
-                            560,903,009.47
-                        </td>
-                    </tr>
-                    <tr>
-                        <td>
-                            SALDO AKHIR SETELAH SELISIH KURS
-                        </td>
-                        <td class="text-right">
-                            560,903,009.47
-                        </td>
-                        <td class="text-right">
-                            560,903,009.47
-                        </td>
-                        <td class="text-right">
-                            560,903,009.47
-                        </td>
-                        <td class="text-right">
-                            560,903,009.47
-                        </td>
-                    </tr>
-                <tbody>
-            </table>
+                        {{-- C. ARUS KAS DARI AKTIVITAS PENDANAAN START --}}
+                        @if ($arus_kas_aktivitas_pendanaan)
+                        <tr>
+                            <td nowrap>
+                                <b>
+                                    C. ARUS KAS DARI AKTIVITAS PENDANAAN
+                                </b>
+                            </td>
+                            <td></td>
+                            <td></td>
+                            <td></td>
+                            <td></td>
+                        </tr>
+                        {{-- PENERIMAAN START --}}
+                        @php
+                            $total_akap_penerimaan_nilai = 0;
+                            $total_akap_penerimaan_nilai_dl = 0;
+                            $total_akap_penerimaan_nilai_dl_rp = 0;
+                            $total_akap_penerimaan_ekiv = 0;
+                        @endphp
+                        @if ($arus_kas_aktivitas_pendanaan_penerimaan !== null)
+                        <tr>
+                            <td class="tab-1 border-less-top-bottom">
+                                <b><i>PENERIMAAN</i></b>
+                            </td>
+                            <td class="border-less-top-bottom"></td>
+                            <td class="border-less-top-bottom"></td>
+                            <td class="border-less-top-bottom"></td>
+                            <td class="border-less-top-bottom"></td>
+                        </tr>
+                        @foreach ($arus_kas_aktivitas_pendanaan_penerimaan as $value)
+                        <tr>
+                            <td class="tab-2 border-less-dashed" valign="top">
+                                {{ $value->keterangan }}
+                            </td>
+                            <td class="text-right border-less-dashed" valign="top">
+                                {{ number_format(abs($value->nilai), 2) }}
+                            </td>
+                            <td class="text-right border-less-dashed" valign="top">
+                                {{ number_format(abs($value->nilai_dl), 2) }}
+                            </td>
+                            <td class="text-right border-less-dashed" valign="top">
+                                {{ number_format(abs($value->nilai_dl_rp), 2) }}
+                            </td>
+                            <td class="text-right border-less-dashed" valign="top">
+                                {{ number_format(abs($value->nilai + $value->nilai_dl_rp), 2) }}
+                            </td>
+                        </tr>
+                        @php
+                            $total_akap_penerimaan_nilai += abs($value->nilai);
+                            $total_akap_penerimaan_nilai_dl += abs($value->nilai_dl);
+                            $total_akap_penerimaan_nilai_dl_rp += abs($value->nilai_dl_rp);
+                            $total_akap_penerimaan_ekiv += abs(($value->nilai + $value->nilai_dl_rp));
+                        @endphp
+                        @endforeach
+                        <tr>
+                            <td class="tab-1">
+                                <b><i>JUMLAH PENERIMAAN</i></b>
+                            </td>
+                            <td class="text-right">
+                                @if ($total_akap_penerimaan_nilai < 0)
+                                ({{ number_format(abs($total_akap_penerimaan_nilai), 2) }})
+                                @else
+                                {{ number_format(abs($total_akap_penerimaan_nilai), 2) }}
+                                @endif
+                            </td>
+                            <td class="text-right">{{ number_format(abs($total_akap_penerimaan_nilai_dl), 2) }}</td>
+                            <td class="text-right">{{ number_format(abs($total_akap_penerimaan_nilai_dl_rp), 2) }}</td>
+                            <td class="text-right">{{ number_format(abs($total_akap_penerimaan_ekiv), 2) }}</td>
+                        </tr>
+                        @endif
+                        {{-- PENERIMAAN END --}}
+                        
+                        {{-- PENGELUARAN START --}}
+                        @if ($arus_kas_aktivitas_pendanaan_pengeluaran !== null)
+                        <tr>
+                            <td class="tab-1 border-less-top-bottom">
+                                <b><i>PENGELUARAN</i></b>
+                            </td>
+                            <td class="border-less-top-bottom"></td>
+                            <td class="border-less-top-bottom"></td>
+                            <td class="border-less-top-bottom"></td>
+                            <td class="border-less-top-bottom"></td>
+                        </tr>
+                        @php
+                            $total_akap_pengeluaran_nilai = 0;
+                            $total_akap_pengeluaran_nilai_dl = 0;
+                            $total_akap_pengeluaran_nilai_dl_rp = 0;
+                            $total_akap_pengeluaran_ekiv = 0;
+                        @endphp
+                        @foreach ($arus_kas_aktivitas_pendanaan_pengeluaran as $value)
+                        <tr>
+                            <td class="tab-2 border-less-dashed" valign="top">
+                                {{ $value->keterangan }}
+                            </td>
+                            <td class="text-right border-less-dashed" valign="top">
+                                @if ($value->nilai < 0)
+                                ({{ number_format(abs($value->nilai), 2) }})
+                                @else
+                                {{ number_format($value->nilai, 2) }}
+                                @endif
+                            </td>
+                            <td class="text-right border-less-dashed" valign="top">
+                                @if ($value->nilai_dl < 0)
+                                ({{ number_format(abs($value->nilai_dl), 2) }})
+                                @else
+                                {{ number_format($value->nilai_dl, 2) }}
+                                @endif
+                            </td>
+                            <td class="text-right border-less-dashed" valign="top">
+                                @if ($value->nilai_dl_rp < 0)
+                                ({{ number_format(abs($value->nilai_dl_rp), 2) }})
+                                @else
+                                {{ number_format($value->nilai_dl_rp, 2) }}
+                                @endif
+                            </td>
+                            <td class="text-right border-less-dashed" valign="top">
+                                @if (($value->nilai + $value->nilai_dl_rp) < 0)
+                                ({{ number_format(abs(($value->nilai + $value->nilai_dl_rp)), 2) }})
+                                @else
+                                {{ number_format(($value->nilai + $value->nilai_dl_rp), 2) }}
+                                @endif
+                            </td>
+                        </tr>
+                        @php
+                            $total_akap_pengeluaran_nilai += $value->nilai;
+                            $total_akap_pengeluaran_nilai_dl += $value->nilai_dl;
+                            $total_akap_pengeluaran_nilai_dl_rp += $value->nilai_dl_rp;
+                            $total_akap_pengeluaran_ekiv += ($value->nilai + $value->nilai_dl_rp);
+                        @endphp
+                        @endforeach
+                        <tr>
+                            <td class="tab-1">
+                                <b><i>JUMLAH PENGELUARAN</i></b>
+                            </td>
+                            <td class="text-right">
+                                @if ($total_akap_pengeluaran_nilai < 0)
+                                ({{ number_format(abs($total_akap_pengeluaran_nilai), 2) }})
+                                @else
+                                {{ number_format(abs($total_akap_pengeluaran_nilai), 2) }}
+                                @endif
+                            </td>
+                            <td class="text-right">
+                                @if ($total_akap_pengeluaran_nilai_dl < 0)
+                                ({{ number_format(abs($total_akap_pengeluaran_nilai_dl), 2) }})
+                                @else
+                                {{ number_format(abs($total_akap_pengeluaran_nilai_dl), 2) }}
+                                @endif
+                            </td>
+                            <td class="text-right">
+                                @if ($total_akap_pengeluaran_nilai_dl_rp < 0)
+                                ({{ number_format(abs($total_akap_pengeluaran_nilai_dl_rp), 2) }})
+                                @else
+                                {{ number_format(abs($total_akap_pengeluaran_nilai_dl_rp), 2) }}
+                                @endif
+                            </td>
+                            <td class="text-right">
+                                @if ($total_akap_pengeluaran_ekiv < 0)
+                                ({{ number_format(abs($total_akap_pengeluaran_ekiv), 2) }})
+                                @else
+                                {{ number_format(abs($total_akap_pengeluaran_ekiv), 2) }}
+                                @endif
+                            </td>
+                        </tr>
+                        @endif
+                        {{-- PENGELUARAN END --}}
+                        <tr>
+                            <td class="border-less-top-bottom">
+                                <b>
+                                    C. ARUS KAS DARI AKTIVITAS PENDANAAN
+                                </b>
+                            </td>
+                            <td class="text-right border-less-top-bottom">
+                                {{ number_format(abs($total_akap_pengeluaran_nilai - $total_akap_penerimaan_nilai), 2) }}
+                            </td>
+                            <td class="text-right border-less-top-bottom">
+                                {{ number_format(abs($total_akap_pengeluaran_nilai_dl - $total_akap_penerimaan_nilai_dl), 2) }}
+                            </td>
+                            <td class="text-right border-less-top-bottom">
+                                {{ number_format(abs($total_akap_pengeluaran_nilai_dl_rp - $total_akap_penerimaan_nilai_dl_rp), 2) }}
+                            </td>
+                            <td class="text-right border-less-top-bottom">
+                                {{ number_format(abs($total_akap_pengeluaran_ekiv - $total_akap_penerimaan_ekiv), 2) }}
+                            </td>
+                        </tr>
+                        @endif
+                        {{-- C. ARUS KAS DARI AKTIVITAS PENDANAAN END --}}
+    
+                        <tr>
+                            <td>
+                                KENAIKAN (PENURUNAN) KAS BERSIH
+                            </td>
+                            <td class="text-right">
+                                560,903,009.47
+                            </td>
+                            <td class="text-right">
+                                560,903,009.47
+                            </td>
+                            <td class="text-right">
+                                560,903,009.47
+                            </td>
+                            <td class="text-right">
+                                560,903,009.47
+                            </td>
+                        </tr>
+                        <tr>
+                            <td class="border-less">
+                                SALDO KAS & BANK - AWAL PERIODE
+                            </td>
+                            <td class="border-less text-right">
+                                560,903,009.47
+                            </td>
+                            <td class="border-less text-right">
+                                560,903,009.47
+                            </td>
+                            <td class="border-less text-right">
+                                560,903,009.47
+                            </td>
+                            <td class="border-less text-right">
+                                560,903,009.47
+                            </td>
+                        </tr>
+                        <tr>
+                            <td class="border-less">
+                                SALDO KAS & BANK - AKHIR PERIODE
+                            </td>
+                            <td class="border-less text-right">
+                                560,903,009.47
+                            </td>
+                            <td class="border-less text-right">
+                                560,903,009.47
+                            </td>
+                            <td class="border-less text-right">
+                                560,903,009.47
+                            </td>
+                            <td class="border-less text-right">
+                                560,903,009.47
+                            </td>
+                        </tr>
+                        <tr>
+                            <td>
+                                SELISIH KURS : Rp.14,684.00
+                            </td>
+                            <td class="text-right">
+                            </td>
+                            <td class="text-right">
+                            </td>
+                            <td class="text-right">
+                                (4,662,014.73)
+                            </td>
+                            <td class="text-right">
+                            </td>
+                        </tr>
+                        <tr>
+                            <td>
+                                SALDO AKHIR SETELAH SELISIH KURS
+                            </td>
+                            <td class="text-right">
+                                560,903,009.47
+                            </td>
+                            <td class="text-right">
+                                560,903,009.47
+                            </td>
+                            <td class="text-right">
+                                560,903,009.47
+                            </td>
+                            <td class="text-right">
+                                560,903,009.47
+                            </td>
+                        </tr>
+                    <tbody>
+                </table>
+            </div>
         </main>
 
         <script type='text/php'>

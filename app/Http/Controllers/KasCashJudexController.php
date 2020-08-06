@@ -25,66 +25,64 @@ class KasCashJudexController extends Controller
     {
         if ($request->status == "1") {
             $xxx =['10','11','13'];
-        }elseif($request->status == "2"){
+        } elseif ($request->status == "2") {
             $xxx =['15','18'];
-        }else{
+        } else {
             $xxx =['10','11','13','15','18'];
         }
 
-        if($request->lapangan == "KL"){
+        if ($request->lapangan == "KL") {
             $yyy = "$request->tahun";
             if ($request->bulan <> "") {
                 $sss =[$request->bulan];
-            }else{
-                $sss =['01','02','03','04','05','06','07','08','09','10','11','12'];
-            }
-            
-            if($request->sanper == ""){
-                $data_list = V_d2kasbank::where('tahun',$yyy)->whereIn('bulan',$sss)->whereIn('jk',$xxx)->orderBy('account', 'asc')->get();
-            }else{
-                $ddd = "$request->sanper";
-                $data_list = V_d2kasbank::where('tahun',$yyy)->whereIn('bulan',$sss)->where('account',$ddd)->whereIn('jk',$xxx)->orderBy('account', 'asc')->get();
-            }
-            
-        }else{
-            $bbb = "$request->lapangan";
-            $yyy = "$request->tahun";
-            if ($request->bulan <> "") {
-                $sss = [$request->bulan];
-            }else{
+            } else {
                 $sss =['01','02','03','04','05','06','07','08','09','10','11','12'];
             }
             
             if ($request->sanper == "") {
-                $data_list = V_d2kasbank::where('lokasi',$bbb)->where('tahun',$yyy)->whereIn('bulan',$sss)->whereIn('jk',$xxx)->orderBy('account', 'asc')->get();
-            }else{
+                $data_list = V_d2kasbank::where('tahun', $yyy)->whereIn('bulan', $sss)->whereIn('jk', $xxx)->orderBy('account', 'asc')->get();
+            } else {
                 $ddd = "$request->sanper";
-                $data_list = V_d2kasbank::where('lokasi',$bbb)->where('tahun',$yyy)->where('account',$ddd)->whereIn('bulan',$sss)->whereIn('jk',$xxx)->orderBy('account', 'asc')->get();
+                $data_list = V_d2kasbank::where('tahun', $yyy)->whereIn('bulan', $sss)->where('account', $ddd)->whereIn('jk', $xxx)->orderBy('account', 'asc')->get();
             }
-        
+        } else {
+            $bbb = "$request->lapangan";
+            $yyy = "$request->tahun";
+            if ($request->bulan <> "") {
+                $sss = [$request->bulan];
+            } else {
+                $sss =['01','02','03','04','05','06','07','08','09','10','11','12'];
+            }
+            
+            if ($request->sanper == "") {
+                $data_list = V_d2kasbank::where('lokasi', $bbb)->where('tahun', $yyy)->whereIn('bulan', $sss)->whereIn('jk', $xxx)->orderBy('account', 'asc')->get();
+            } else {
+                $ddd = "$request->sanper";
+                $data_list = V_d2kasbank::where('lokasi', $bbb)->where('tahun', $yyy)->where('account', $ddd)->whereIn('bulan', $sss)->whereIn('jk', $xxx)->orderBy('account', 'asc')->get();
+            }
         }
 
-        if($request->bulan <> ""){
+        if ($request->bulan <> "") {
             $export_d2_kas_bank = 'export_d2_kas_bank_bulan_pdf' ;
             $export_d2_kas_bank_header = 'export_d2_kas_bank_bulan_pdf_header';
-        }else{
+        } else {
             $export_d2_kas_bank = 'export_d2_kas_bank_tahun_pdf' ;
             $export_d2_kas_bank_header = 'export_d2_kas_bank_tahun_pdf_header';
         }
 
         if ($data_list->count() > 0) {
-            foreach($data_list as $data)
-            {
+            foreach ($data_list as $data) {
                 $bulan = $data->bulan;
                 $tahun = $data->tahun;
             }
             $pdf = PDF::loadview("kas_bank.$export_d2_kas_bank", compact(
-                'data_list', 'tahun'
+                'data_list',
+                'tahun'
             ))
             ->setPaper('a4', 'landscape')
             ->setOption('footer-right', 'Halaman [page] dari [toPage]')
             ->setOption('footer-font-size', 7)
-            ->setOption('header-html', view("kas_bank.$export_d2_kas_bank_header",compact('bulan','tahun')))
+            ->setOption('header-html', view("kas_bank.$export_d2_kas_bank_header", compact('bulan', 'tahun')))
             ->setOption('margin-top', 30)
             ->setOption('margin-bottom', 10);
     
@@ -234,7 +232,38 @@ class KasCashJudexController extends Controller
         $bulan = $request->bulan;
         $kurs = $request->kurs;
         
-        $data_list = ViewReportCashFlow::when(request('bulan'), function ($query) {
+        $data_list = ViewReportCashFlow::select(
+            DB::raw('
+                SUBSTR(cj_code, 1, 1) AS cj_code_1,
+                SUBSTR(cj_code, 1, 2) AS cj_code_2,
+                tahun,
+                class,
+                ket_clas,
+                cj_code,
+                cj_level,
+                bulan,
+                nilai_lalu,
+                nilai_lalu_dl,
+                nilai_lalu_dl_rp,
+                saldo_awal_lalu,
+                saldo_awal_lalu_dl,
+                saldo_awal_lalu_dl_rp,
+                saldo_awal,
+                saldo_awal_dl,
+                saldo_awal_dl_rp,
+                nilai,
+                nilai_dl,
+                nilai_dl_rp,
+                saldo_akhir,
+                saldo_akhir_dl,
+                saldo_akhir_dl_rp,
+                nilai_kurs,
+                saldo_awal_kurs,
+                saldo_akhir_kurs,
+                keterangan
+            ')
+        )
+        ->when(request('bulan'), function ($query) {
             return $query->where('bulan', request('bulan'));
         })
         ->when(request('tahun'), function ($query) {
@@ -245,10 +274,109 @@ class KasCashJudexController extends Controller
         })
         ->get();
 
-        dd($data_list);
+        
+        // dd($data_list);
+        $arus_kas_aktivitas_koperasi = null;
+        $arus_kas_aktivitas_koperasi_penerimaan = null;
+        $arus_kas_aktivitas_koperasi_pengeluaran = null;
+        
+        $arus_kas_aktivitas_investasi = null;
+        $arus_kas_aktivitas_investasi_penerimaan = null;
+        $arus_kas_aktivitas_investasi_pengeluaran = null;
+
+        $arus_kas_aktivitas_pendanaan = null;
+        $arus_kas_aktivitas_pendanaan_penerimaan = null;
+        $arus_kas_aktivitas_pendanaan_pengeluaran = null;
+
+        // A. ARUS KAS DARI AKTIVITAS OPERASI START
+        if (count(array_intersect(['1','2','3','4','5','6'], array_column($data_list->toArray(), 'cj_code_1'))) > 0 || count(array_intersect(['74','75','93'], array_column($data_list->toArray(), 'cj_code_2'))) > 0) {
+            $arus_kas_aktivitas_koperasi = $data_list->filter(function ($value, $key) {
+                return
+                    in_array($value->cj_code_1, ['1','2','3','4','5','6'])
+                    ||
+                    in_array($value->cj_code_2, ['74','75','93']);
+            });
+            // collect penerimaan
+            $arus_kas_aktivitas_operasi_penerimaan = $arus_kas_aktivitas_koperasi->filter(function ($value, $key) {
+                return
+                    in_array($value->cj_code_1, ['1','3','4']);
+            });
+
+            $arus_kas_aktivitas_koperasi_penerimaan = $arus_kas_aktivitas_operasi_penerimaan->all();
+
+            // collect pengeluaran
+            $arus_kas_aktivitas_koperasi_pengeluaran = $arus_kas_aktivitas_koperasi->filter(function ($value, $key) {
+                return
+                    in_array($value->cj_code_1, ['2','5','6'])
+                    ||
+                    in_array($value->cj_code_2, ['74','75','93']);
+            });
+
+            $arus_kas_aktivitas_koperasi_pengeluaran = $arus_kas_aktivitas_koperasi_pengeluaran->all();
+        }
+
+        // B. ARUS KAS DARI AKTIVITAS INVESTASI START
+        if (count(array_intersect(['9'], array_column($data_list->toArray(), 'cj_code_1'))) > 0) {
+            $arus_kas_aktivitas_investasi = $data_list->filter(function ($value, $key) {
+                return
+                    in_array($value->cj_code_1, ['9']);
+            });
+
+            // collect penerimaan
+            $arus_kas_aktivitas_investasi_penerimaan = $arus_kas_aktivitas_investasi->filter(function ($value, $key) {
+                return
+                    in_array($value->cj_code_2, ['90']);
+            });
+
+            $arus_kas_aktivitas_investasi_penerimaan = $arus_kas_aktivitas_investasi_penerimaan->all();
+
+            // collect pengeluaran
+            $arus_kas_aktivitas_investasi_pengeluaran = $arus_kas_aktivitas_investasi->filter(function ($value, $key) {
+                return
+                    in_array($value->cj_code_2, ['91']);
+            });
+
+            $arus_kas_aktivitas_investasi_pengeluaran = $arus_kas_aktivitas_investasi_pengeluaran->all();
+        }
+
+        // C. ARUS KAS DARI AKTIVITAS PENDANAAN
+        if (count(array_intersect(['7', '8'], array_column($data_list->toArray(), 'cj_code_1'))) > 0) {
+            $arus_kas_aktivitas_pendanaan = $data_list->filter(function ($value, $key) {
+                return
+                    in_array($value->cj_code_1, ['7', '8']);
+            });
+
+            // collect penerimaan
+            $arus_kas_aktivitas_pendanaan_penerimaan = $arus_kas_aktivitas_pendanaan->filter(function ($value, $key) {
+                return
+                    in_array($value->cj_code_2, ['70']);
+            });
+
+            $arus_kas_aktivitas_pendanaan_penerimaan = $arus_kas_aktivitas_pendanaan_penerimaan->all();
+
+            // collect pengeluaran
+            $arus_kas_aktivitas_pendanaan_pengeluaran = $arus_kas_aktivitas_pendanaan->filter(function ($value, $key) {
+                return
+                    in_array($value->cj_code_2, ['71','72','79']);
+            });
+
+            $arus_kas_aktivitas_pendanaan_pengeluaran = $arus_kas_aktivitas_pendanaan_pengeluaran->all();
+        }
 
         // return default PDF
-        $pdf = DomPDF::loadview('kas_bank.export_report7', compact('data_list', 'tahun', 'bulan'))
+        $pdf = DomPDF::loadview('kas_bank.export_report7', compact(
+            'tahun',
+            'bulan',
+            'arus_kas_aktivitas_koperasi',
+            'arus_kas_aktivitas_koperasi_penerimaan',
+            'arus_kas_aktivitas_koperasi_pengeluaran',
+            'arus_kas_aktivitas_investasi',
+            'arus_kas_aktivitas_investasi_penerimaan',
+            'arus_kas_aktivitas_investasi_pengeluaran',
+            'arus_kas_aktivitas_pendanaan',
+            'arus_kas_aktivitas_pendanaan_penerimaan',
+            'arus_kas_aktivitas_pendanaan_pengeluaran',
+        ))
         ->setPaper('a4', 'Portrait')
         ->setOptions(['isPhpEnabled' => true]);
 
