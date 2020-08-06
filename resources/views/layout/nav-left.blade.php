@@ -550,6 +550,7 @@
                 $perhitungan = array(
                     'perhitungan_bagihasil.index',
                     'perhitungan_bagihasil.index.search',
+                    'perhitungan_bagihasil.rekap',
                 ); // isi nama semua route perhitungan bagi hasil
                 $deposito = array_merge(
                     $penempatan,
