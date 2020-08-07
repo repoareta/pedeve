@@ -99,7 +99,7 @@
                         </b>
                         <br>
                         <b>
-                            PERIODE: AGUSTUS 2020 
+                            PERIODE: {{ strtoupper(bulan($bulan))." ".$tahun }}
                         </b>
                     </p>
                 </div>
@@ -697,16 +697,44 @@
                                 KENAIKAN (PENURUNAN) KAS BERSIH
                             </td>
                             <td class="text-right">
-                                560,903,009.47
+                                @php
+                                    $kpkb_rp = $data_list->sum('nilai');
+                                @endphp
+                                @if ($kpkb_rp < 0)
+                                ({{ number_format(abs($kpkb_rp), 2) }})
+                                @else
+                                {{ number_format(abs($kpkb_rp), 2) }}
+                                @endif
                             </td>
                             <td class="text-right">
-                                560,903,009.47
+                                @php
+                                    $kpkb_dl = $data_list->sum('nilai_dl');
+                                @endphp
+                                @if ($kpkb_dl < 0)
+                                ({{ number_format(abs($kpkb_dl), 2) }})
+                                @else
+                                {{ number_format(abs($kpkb_dl), 2) }}
+                                @endif
                             </td>
                             <td class="text-right">
-                                560,903,009.47
+                                @php
+                                    $kpkb_dl_rp = $data_list->sum('nilai_dl_rp');
+                                @endphp
+                                @if ($kpkb_dl_rp < 0)
+                                ({{ number_format(abs($kpkb_dl_rp), 2) }})
+                                @else
+                                {{ number_format(abs($kpkb_dl_rp), 2) }}
+                                @endif
                             </td>
                             <td class="text-right">
-                                560,903,009.47
+                                @php
+                                    $kpkb_total_ekiv = $kpkb_rp + $kpkb_dl_rp;
+                                @endphp
+                                @if ($kpkb_total_ekiv < 0)
+                                ({{ number_format(abs($kpkb_total_ekiv), 2) }})
+                                @else
+                                {{ number_format(abs($kpkb_total_ekiv), 2) }}
+                                @endif
                             </td>
                         </tr>
                         <tr>
@@ -714,16 +742,28 @@
                                 SALDO KAS & BANK - AWAL PERIODE
                             </td>
                             <td class="border-less text-right">
-                                560,903,009.47
+                                @php
+                                    $skbawp_rp = abs($data_list->sum('saldo_awal'));
+                                @endphp
+                                {{ number_format($skbawp_rp, 2) }}
                             </td>
                             <td class="border-less text-right">
-                                560,903,009.47
+                                @php
+                                    $skbawp_dl = abs($data_list->sum('saldo_awal_dl'));
+                                @endphp
+                                {{ number_format($skbawp_dl, 2) }}
                             </td>
                             <td class="border-less text-right">
-                                560,903,009.47
+                                @php
+                                    $skbawp_dl_rp = abs($data_list->sum('saldo_awal_dl_rp'));
+                                @endphp
+                                {{ number_format($skbawp_dl_rp, 2) }}
                             </td>
                             <td class="border-less text-right">
-                                560,903,009.47
+                                @php
+                                    $skbawp_total_ekiv = abs($skbawp_rp + $skbawp_dl_rp);
+                                @endphp
+                                {{ number_format($skbawp_total_ekiv, 2) }}
                             </td>
                         </tr>
                         <tr>
@@ -731,47 +771,106 @@
                                 SALDO KAS & BANK - AKHIR PERIODE
                             </td>
                             <td class="border-less text-right">
-                                560,903,009.47
+                                @php
+                                    $skbap = $kpkb_rp + $skbawp_rp;
+                                @endphp
+                                @if ($skbap < 0)
+                                ({{ number_format(abs($skbap), 2) }})
+                                @else
+                                {{ number_format(abs($skbap), 2) }}
+                                @endif
                             </td>
                             <td class="border-less text-right">
-                                560,903,009.47
+                                @php
+                                    $skbap_dl = $kpkb_dl + $skbawp_dl;
+                                @endphp
+                                @if ($skbap_dl < 0)
+                                ({{ number_format(abs($skbap_dl), 2) }})
+                                @else
+                                {{ number_format(abs($skbap_dl), 2) }}
+                                @endif
                             </td>
                             <td class="border-less text-right">
-                                560,903,009.47
+                                @php
+                                    $skbap_dl_rp = $kpkb_dl_rp + $skbawp_dl_rp;
+                                @endphp
+                                @if ($skbap_dl_rp < 0)
+                                ({{ number_format(abs($skbap_dl_rp), 2) }})
+                                @else
+                                {{ number_format(abs($skbap_dl_rp), 2) }}
+                                @endif
                             </td>
                             <td class="border-less text-right">
-                                560,903,009.47
+                                @php
+                                    $skbap_total_ekiv = $kpkb_total_ekiv + $skbawp_total_ekiv;
+                                @endphp
+                                @if ($skbap_total_ekiv < 0)
+                                ({{ number_format(abs($skbap_total_ekiv), 2) }})
+                                @else
+                                {{ number_format(abs($skbap_total_ekiv), 2) }}
+                                @endif
                             </td>
                         </tr>
                         <tr>
                             <td>
-                                SELISIH KURS : Rp.14,684.00
+                                SELISIH KURS :
+                                @if (request('kurs'))
+                                Rp. {{ number_format(request('kurs'), 2) }}
+                                @else
+                                Rp. 0.00
+                                @endif
                             </td>
+                            <td></td>
+                            <td></td>
                             <td class="text-right">
+                                @php
+                                    $kurs_ekiv = request('kurs') * $skbap_dl - $skbap_dl_rp;
+                                @endphp
+                                @if ($kurs_ekiv < 0)
+                                ({{ number_format(abs($kurs_ekiv), 2) }})
+                                @else
+                                {{ number_format(abs($kurs_ekiv), 2) }}
+                                @endif
                             </td>
-                            <td class="text-right">
-                            </td>
-                            <td class="text-right">
-                                (4,662,014.73)
-                            </td>
-                            <td class="text-right">
-                            </td>
+                            <td></td>
                         </tr>
                         <tr>
                             <td>
                                 SALDO AKHIR SETELAH SELISIH KURS
                             </td>
                             <td class="text-right">
-                                560,903,009.47
+                                @if ($skbap < 0)
+                                ({{ number_format(abs($skbap), 2) }})
+                                @else
+                                {{ number_format(abs($skbap), 2) }}
+                                @endif
                             </td>
                             <td class="text-right">
-                                560,903,009.47
+                                @if ($skbap_dl < 0)
+                                ({{ number_format(abs($skbap_dl), 2) }})
+                                @else
+                                {{ number_format(abs($skbap_dl), 2) }}
+                                @endif
                             </td>
                             <td class="text-right">
-                                560,903,009.47
+                                @php
+                                    $total_ekiv_us = $kurs_ekiv + $skbap_dl_rp;
+                                @endphp
+                                @if ($total_ekiv_us < 0)
+                                ({{ number_format(abs($total_ekiv_us), 2) }})
+                                @else
+                                {{ number_format(abs($total_ekiv_us), 2) }}
+                                @endif
                             </td>
                             <td class="text-right">
-                                560,903,009.47
+                                @php
+                                    $total_ekivalen = $kurs_ekiv + $skbap_total_ekiv;
+                                @endphp
+                                @if ($total_ekivalen < 0)
+                                ({{ number_format(abs($total_ekivalen), 2) }})
+                                @else
+                                {{ number_format(abs($total_ekivalen), 2) }}
+                                @endif
                             </td>
                         </tr>
                     <tbody>

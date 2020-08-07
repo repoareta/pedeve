@@ -269,9 +269,6 @@ class KasCashJudexController extends Controller
         ->when(request('tahun'), function ($query) {
             return $query->where('tahun', request('tahun'));
         })
-        ->when(request('kurs'), function ($query) {
-            return $query->where('nilai_kurs', request('kurs'));
-        })
         ->get();
 
         
@@ -365,6 +362,7 @@ class KasCashJudexController extends Controller
 
         // return default PDF
         $pdf = DomPDF::loadview('kas_bank.export_report7', compact(
+            'data_list',
             'tahun',
             'bulan',
             'arus_kas_aktivitas_koperasi',
