@@ -95,7 +95,18 @@
                 <tbody>
                     <?php $a=0; ?>
                     @foreach($data_list as $data)
-                    <?php $a++ ?>
+                    <?php $a++;
+                        if ($data->rate <= 0) {
+                            $rupiah = $data->totprice;
+                        }else{
+                            $rupiah = $data->totprice*$data->rate;
+                        }
+                        if ($data->ci == 2) {
+                            $dolar = $data->totprice;
+                        }else{
+                            $dolar = 0;
+                        }
+                    ?>
                     <tr style="text-align:center;font-size: 8pt;">
                         <td>{{$data->jk}}</td>
                         <td>{{$data->bulan}}</td>
@@ -108,12 +119,12 @@
                         <td>{{$data->lokasi}}</td>
                         <td>{{$data->bagian}}</td>
                         <td>{{$data->lineno}}</td>
-                        <td style="text-align:right;">{{$data->rate <= 0 ? number_format($data->totprice,0) : number_format($data->totprice)}}</td>
-                        <td style="text-align:right;">{{$data->ci == 2 ? number_format($data->totprice) : '0'}}</td>
+                        <td style="text-align:right;">{{$rupiah < 0 ? '('.number_format($rupiah*-1,2).')' : number_format($rupiah,2)}}</td>
+                        <td style="text-align:right;">{{$dolar < 0 ? '('.number_format($dolar*-1,2).')' : number_format($dolar,2)}}</td>
                     </tr>
                     <?php 
-                        $rup[$a] = $data->rate <= 0 ? number_format($data->totprice,0) : number_format($data->totprice);
-                        $dol[$a] = $data->ci == 2 ? number_format($data->totprice) : '0';
+                        $rup[$a] = $rupiah;
+                        $dol[$a] = $dolar;
                       ?>
                     @endforeach
                     <tr>
@@ -122,18 +133,18 @@
                         $total_dol= array_sum($dol);  
                      ?>
                         <td colspan="11" style="font-size: 8pt;text-align:right;">TOTAL PER SANPER</td>
-                        <td style="font-size: 8pt;text-align:right;">{{ number_format($total_rup,0)}}</td>
-                        <td style="font-size: 8pt;text-align:right;">{{ number_format($total_dol,0)}}</td>
+                        <td style="font-size: 8pt;text-align:right;">{{$total_rup < 0 ? '('.number_format($total_rup*-1,2).')' : number_format($total_rup,2)}}</td>
+                        <td style="font-size: 8pt;text-align:right;">{{$total_dol < 0 ? '('.number_format($total_dol*-1,2).')' : number_format($total_dol,2)}}</td>
                     </tr>
                     <tr>
                         <td colspan="11" style="font-size: 8pt;text-align:right;">TOTAL PER CJ</td>
-                        <td style="font-size: 8pt;text-align:right;">{{ number_format($total_rup,0)}}</td>
-                        <td style="font-size: 8pt;text-align:right;">{{ number_format($total_dol,0)}}</td>
+                        <td style="font-size: 8pt;text-align:right;">{{$total_rup < 0 ? '('.number_format($total_rup*-1,2).')' : number_format($total_rup,2)}}</td>
+                        <td style="font-size: 8pt;text-align:right;">{{$total_dol < 0 ? '('.number_format($total_dol*-1,2).')' : number_format($total_dol,2)}}</td>
                     </tr>
                     <tr>
                         <td colspan="11" style="font-size: 8pt;text-align:right;">GRAND TOTAL</td>
-                        <td style="font-size: 8pt;text-align:right;">{{ number_format($total_rup,0)}}</td>
-                        <td style="font-size: 8pt;text-align:right;">{{ number_format($total_dol,0)}}</td>
+                        <td style="font-size: 8pt;text-align:right;">{{$total_rup < 0 ? '('.number_format($total_rup*-1,2).')' : number_format($total_rup,2)}}</td>
+                        <td style="font-size: 8pt;text-align:right;">{{$total_dol < 0 ? '('.number_format($total_dol*-1,2).')' : number_format($total_dol,2)}}</td>
                     </tr>
                 <tbody>
 
