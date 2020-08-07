@@ -46,7 +46,7 @@
 				<div class="form-group row">
 					<label for="dari-input" class="col-2 col-form-label">C.Judex<span style="color:red;">*</span></label>
 					<div class="col-10">
-						<select name="cj" id="select-debetdari" class="form-control selectpicker" data-live-search="true" required oninvalid="this.setCustomValidity('C.Judex Harus Diisi..')" onchange="setCustomValidity('')">
+						<select name="cj" class="form-control kt-select2"  required oninvalid="this.setCustomValidity('C.Judex Harus Diisi..')" onchange="setCustomValidity('')">
 							<option value="">- Pilih -</option>
 							@foreach($data_judex as $data)
 							<option value="{{$data->kode}}">{{$data->kode}} -- {{$data->nama}}</option>
@@ -62,7 +62,7 @@
 							$tahun = date_format($tgl, 'Y'); 
 							$bulan = date_format($tgl, 'm'); 
 						?>
-						<select class="form-control " name="bulan" required>
+						<select class="form-control kt-select2" name="bulan" required>
 							<option value="01" <?php if($bulan  == '01' ) echo 'selected' ; ?>>Januari</option>
 							<option value="02" <?php if($bulan  == '02' ) echo 'selected' ; ?>>Februari</option>
 							<option value="03" <?php if($bulan  == '03' ) echo 'selected' ; ?>>Maret</option>
@@ -102,7 +102,9 @@
 @section('scripts')
 <script type="text/javascript">
 $(document).ready(function () {
-   
+	$('.kt-select2').select2().on('change', function() {
+			$(this).valid();
+	});
 	$('#tanggal').datepicker({
 		todayHighlight: true,
 		orientation: "bottom left",
