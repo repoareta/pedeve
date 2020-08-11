@@ -147,26 +147,26 @@
                     </tr>
                 @endforeach
                     <tr style="text-align:center;font-size: 7pt;border: 1px solid black;">
-                        <td colspan="4" style="text-align:center;border:1px solid black;">TOTAL</td>
-                        <td style="text-align:right;border:1px solid black;">{{number_format(array_sum($debet),2)}}</td>
-                        <td style="text-align:right;border:1px solid black;">{{number_format(array_sum($kredit),2)}}</td>
-                        <td style="text-align:right;border:1px solid black;">{{number_format((array_sum($debet)-array_sum($kredit)+array_sum($saldo_awal)),2)}}</td>
-                        <td style="text-align:center;border:1px solid black;"></td>
-                        <td style="text-align:center;border:1px solid black;"></td>
+                        <th colspan="4" style="text-align:center;border:1px solid black;">TOTAL</th>
+                        <th style="text-align:right;border:1px solid black;">{{number_format(array_sum($debet),2)}}</th>
+                        <th style="text-align:right;border:1px solid black;">{{number_format(array_sum($kredit),2)}}</th>
+                        <th style="text-align:right;border:1px solid black;">{{number_format((array_sum($debet)-array_sum($kredit)+array_sum($saldo_awal)),2)}}</th>
+                        <th style="text-align:center;border:1px solid black;"></th>
+                        <th style="text-align:center;border:1px solid black;"></th>
                     </tr>                    
                     <tr style="text-align:center;font-size: 7pt;border: 1px solid black;">
-                        <td colspan="2" style="text-align:center;border:1px solid black;">SALDO AWAL</td>
-                        <td style="text-align:right;border:1px solid black;">PENERIMAAN</td>
-                        <td colspan="2" style="text-align:center;border:1px solid black;">PENGELUARAN</td>
-                        <td colspan="2" style="text-align:center;border:1px solid black;">PERUBAHAN</td>
-                        <td colspan="2" style="text-align:center;border:1px solid black;">SALDO AKHIR</td>
+                        <th colspan="2" style="text-align:center;border:1px solid black;">SALDO AWAL</th>
+                        <th colspan="2" style="text-align:right;border:1px solid black;">PENERIMAAN</th>
+                        <th style="text-align:center;border:1px solid black;">PENGELUARAN</th>
+                        <th colspan="2" style="text-align:center;border:1px solid black;">PERUBAHAN</th>
+                        <th colspan="2" style="text-align:center;border:1px solid black;">SALDO AKHIR</th>
                     </tr>
                     <tr style="text-align:center;font-size: 7pt;border: 1px solid black;">
-                        <td colspan="2" style="text-align:right;border:1px solid black;">{{number_format(array_sum($saldo_awal),2)}}</td>
-                        <td colspan="2" style="text-align:right;border:1px solid black;">{{number_format(array_sum($debet),2)}}</td>
-                        <td style="text-align:right;border:1px solid black;">{{number_format(array_sum($kredit),2)}}</td>
-                        <td colspan="2" style="text-align:right;border:1px solid black;">{{number_format((array_sum($debet)-array_sum($kredit)),2)}}</td>
-                        <td colspan="2" style="text-align:right;border:1px solid black;">{{number_format((array_sum($debet)-array_sum($kredit))+array_sum($saldo_awal),2)}}</td>
+                        <th colspan="2" style="text-align:right;border:1px solid black;">{{number_format(array_sum($saldo_awal),2)}}</th>
+                        <th colspan="2" style="text-align:right;border:1px solid black;">{{number_format(array_sum($debet),2)}}</th>
+                        <th style="text-align:right;border:1px solid black;">{{number_format(array_sum($kredit),2)}}</th>
+                        <th colspan="2" style="text-align:right;border:1px solid black;">{{number_format((array_sum($debet)-array_sum($kredit)),2)}}</th>
+                        <th colspan="2" style="text-align:right;border:1px solid black;">{{number_format((array_sum($debet)-array_sum($kredit))+array_sum($saldo_awal),2)}}</th>
                     </tr>
                 <tbody>
             </table>
