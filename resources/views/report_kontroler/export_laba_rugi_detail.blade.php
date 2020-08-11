@@ -117,34 +117,34 @@
                     @foreach($data_list as $data)
                     <?php $a++; ?>
                         <?php
-                            if($data->tigadigit == 400 and $data->lapangan=='MD'){
+                            if(substr($data->sandi, 0, 3) == 400 and $data->lapangan=='MD'){
                                 $mdupah1[$a] =  $data->pengali_tampil*$data->last_rp ;
                             }else{ 
                                 $mdupah1[$a] = "0";
                             }
-                            if($data->tigadigit == 400 and $data->lapangan=='MS'){
+                            if(substr($data->sandi, 0, 3) == 400 and $data->lapangan=='MS'){
                                 $msupah1[$a] =  $data->pengali_tampil*$data->cur_rp ;
                             }else{ 
                                 $msupah1[$a] = "0";
                             }
                             
-                            if($data->tigadigit == 409 and $data->lapangan=='MD'){
+                            if(substr($data->sandi, 0, 3) == 409 and $data->lapangan=='MD'){
                                 $mdupah2[$a] =  $data->pengali_tampil*$data->last_rp ;
                             }else{ 
                                 $mdupah2[$a] = "0";
                             }
-                            if($data->tigadigit == 409 and $data->lapangan=='MS'){
+                            if(substr($data->sandi, 0, 3) == 409 and $data->lapangan=='MS'){
                                 $msupah2[$a] =  $data->pengali_tampil*$data->cur_rp ;
                             }else{ 
                                 $msupah2[$a] = "0";
                             }
 
-                            if($data->tigadigit == 420 and $data->lapangan=='MD'){
+                            if(substr($data->sandi, 0, 3) == 420 and $data->lapangan=='MD'){
                                 $mdupah3[$a] =  $data->pengali_tampil*$data->last_rp ;
                             }else{ 
                                 $mdupah3[$a] = "0";
                             }
-                            if($data->tigadigit == 420 and $data->lapangan=='MS'){
+                            if(substr($data->sandi, 0, 3) == 420 and $data->lapangan=='MS'){
                                 $msupah3[$a] =  $data->pengali_tampil*$data->cur_rp ;
                             }else{ 
                                 $msupah3[$a] = "0";
@@ -154,23 +154,23 @@
                     <tr style="font-size: 9pt;">
                         <td width="70%" style="padding-left:25%x;border-left:1px solid black;">BUNGA DEPOSITO</td>
                         <td width="15%" style="text-align:center;border-left:1px solid black;">400</td>
-                        <td width="30%" style="text-align:right;border-left:1px solid black;">{{array_sum($mdupah1) == 0 ? '0.00' : number_format(array_sum($mdupah1),2)}}</td>
-                        <td width="30%" style="text-align:right;border-left:1px solid black;">{{array_sum($msupah1) == 0 ? '0.00' : number_format(array_sum($msupah1),2)}}</td>
-                        <td width="30%" style="text-align:right;padding-left:20px;border-left:1px solid black;">{{number_format(array_sum($mdupah1) + array_sum($msupah1),2)}}</td>
+                        <td width="30%" style="text-align:right;border-left:1px solid black;">{{array_sum($mdupah1) < 0 ? "(".number_format(array_sum($mdupah1)*-1,2).")" : number_format(array_sum($mdupah1),2)}}</td>
+                        <td width="30%" style="text-align:right;border-left:1px solid black;">{{array_sum($msupah1) < 0 ? "(".number_format(array_sum($msupah1)*-1,2).")" : number_format(array_sum($msupah1),2)}}</td>
+                        <td width="30%" style="text-align:right;padding-left:20px;border-left:1px solid black;">{{number_format(array_sum($mdupah1) + array_sum($msupah1),2) < 0  ? "(".number_format((array_sum($mdupah1) + array_sum($msupah1)*-1),2).")" : number_format(array_sum($mdupah1) + array_sum($msupah1),2)}}</td>
                     </tr>
                     <tr style="font-size: 9pt;">
                         <td width="70%" style="padding-left:25%x; border-left:1px solid black;">JASA GIRO</td>
                         <td width="15%" style="text-align:center;border-left:1px solid black;">409</td>
-                        <td width="30%" style="text-align:right;border-left:1px solid black;">{{array_sum($mdupah2) == 0 ? '0.00' : number_format(array_sum($mdupah2),2)}}</td>
-                        <td width="30%" style="text-align:right;border-left:1px solid black;">{{array_sum($msupah2) == 0 ? '0.00' : number_format(array_sum($msupah2),2)}}</td>
-                        <td width="30%" style="text-align:right;padding-left:20px;border-left:1px solid black;">{{number_format(array_sum($mdupah2) + array_sum($msupah2),2)}}</td>
+                        <td width="30%" style="text-align:right;border-left:1px solid black;">{{array_sum($mdupah2) < 0 ? "(".number_format(array_sum($mdupah2)*-1,2).")" : number_format(array_sum($mdupah2),2)}}</td>
+                        <td width="30%" style="text-align:right;border-left:1px solid black;">{{array_sum($msupah2) < 0 ? "(".number_format(array_sum($msupah2)*-1,2).")" : number_format(array_sum($msupah2),2)}}</td>
+                        <td width="30%" style="text-align:right;padding-left:20px;border-left:1px solid black;">{{number_format(array_sum($mdupah2) + array_sum($msupah2),2) < 0 ? "(".number_format((array_sum($mdupah2) + array_sum($msupah2))*-1,2).")" : number_format(array_sum($mdupah2) + array_sum($msupah2),2)}}</td>
                     </tr>
                     <tr style="font-size: 9pt;">
                         <td width="70%" style="padding-left:25%x;border-left:1px solid black;padding-bottom:10px;">HASIL LAIN-LAIN</td>
                         <td width="15%" style="text-align:center;border-left:1px solid black;padding-bottom:10px;">420</td>
-                        <td width="30%" style="text-align:right;border-left:1px solid black;">{{array_sum($mdupah3) == 0 ? '0.00' : number_format(array_sum($mdupah3),2)}}</td>
-                        <td width="30%" style="text-align:right;border-left:1px solid black;">{{array_sum($msupah3) == 0 ? '0.00' : number_format(array_sum($msupah3),2)}}</td>
-                        <td width="30%" style="text-align:right;padding-left:20px;border-left:1px solid black;">{{number_format(array_sum($mdupah3) + array_sum($msupah3),2)}}</td>
+                        <td width="30%" style="text-align:right;border-left:1px solid black;">{{array_sum($mdupah3) < 0 ? "(".number_format(array_sum($mdupah3)*-1,2).")" : number_format(array_sum($mdupah3),2)}}</td>
+                        <td width="30%" style="text-align:right;border-left:1px solid black;">{{array_sum($msupah3) < 0 ? "(".number_format(array_sum($msupah3)*-1,2).")" : number_format(array_sum($msupah3),2)}}</td>
+                        <td width="30%" style="text-align:right;padding-left:20px;border-left:1px solid black;">{{number_format(array_sum($mdupah3) + array_sum($msupah3),2) < 0 ? "(".number_format((array_sum($mdupah3) + array_sum($msupah3))*-1,2).")" : number_format(array_sum($mdupah3) + array_sum($msupah3),2)}}</td>
                     </tr>
                     <tr >
                     <?php
@@ -179,44 +179,44 @@
                         ?>
                         <td width="70%" style="text-align:left;font-size: 9pt;font-weight: bold; border:1px solid black;padding-left:10px;"><u>JUMLAH</u></td>
                         <td width="15%" style="text-align:right;border:1px solid black;" ></td>
-                        <th width="20%" style="text-align:right;font-size: 9pt;font-weight: bold;border:1px solid black;">{{$subtotalmd == 0 ? '0.00' : number_format($subtotalmd,2)}}</th>
-                        <th width="20%" style="text-align:right;font-size: 9pt;font-weight: bold;border:1px solid black;">{{$subtotalms == 0 ? '0.00' : number_format($subtotalms,2)}}</th>
-                        <th width="20%" style="text-align:right;font-size: 9pt;font-weight: bold;border:1px solid black;">{{$subtotalmd+$subtotalms == 0 ? '0.00' : number_format($subtotalmd+$subtotalms,2)}}</th>
+                        <th width="20%" style="text-align:right;font-size: 9pt;font-weight: bold;border:1px solid black;">{{$subtotalmd < 0 ? "(".number_format($subtotalmd*-1,2).")" : number_format($subtotalmd,2)}}</th>
+                        <th width="20%" style="text-align:right;font-size: 9pt;font-weight: bold;border:1px solid black;">{{$subtotalms < 0 ? "(".number_format($subtotalms*-1,2).")" : number_format($subtotalms,2)}}</th>
+                        <th width="20%" style="text-align:right;font-size: 9pt;font-weight: bold;border:1px solid black;">{{$subtotalmd+$subtotalms < 0 ? "(".number_format(($subtotalmd+$subtotalms)*-1,2).")" : number_format($subtotalmd+$subtotalms,2)}}</th>
                     </tr>
 
                     <?php $a=0; ?>
                     @foreach($data_list as $data)
                     <?php $a++; ?>
                         <?php
-                            if($data->tigadigit == 500 and $data->lapangan=='MD'){
+                            if(substr($data->sandi, 0, 3) == 500 and $data->lapangan=='MD'){
                                 $mdupah4[$a] =  $data->pengali_tampil*$data->last_rp ;
                             }else{ 
                                 $mdupah4[$a] = "0";
                             }
-                            if($data->tigadigit == 500 and $data->lapangan=='MS'){
+                            if(substr($data->sandi, 0, 3) == 500 and $data->lapangan=='MS'){
                                 $msupah4[$a] =  $data->pengali_tampil*$data->cur_rp ;
                             }else{ 
                                 $msupah4[$a] = "0";
                             }
 
-                            if($data->tigadigit == 510 and $data->lapangan=='MD'){
+                            if(substr($data->sandi, 0, 3) == 510 and $data->lapangan=='MD'){
                                 $mdupah5[$a] =  $data->pengali_tampil*$data->last_rp ;
                             }else{ 
                                 $mdupah5[$a] = "0";
                             }
-                            if($data->tigadigit == 510 and $data->lapangan=='MS'){
+                            if(substr($data->sandi, 0, 3) == 510 and $data->lapangan=='MS'){
                                 $msupah5[$a] =  $data->pengali_tampil*$data->cur_rp ;
                             }else{ 
                                 $msupah5[$a] = "0";
                             }
                             
-                            if ($data->tigadigit == 512 and $data->sub_akun== 510 and $data->lapangan=='MD') {
+                            if (substr($data->sandi, 0, 3) == 512 and $data->sub_akun== 510 and $data->lapangan=='MD') {
                                 if ($data->sandi =='512011') {
                                     $mdupah6[$a] =  $data->pengali_tampil*$data->last_rp ;
                                 } else {
                                     $mdupah6[$a] =  "0" ;
                                 }
-                            }elseif($data->tigadigit == 512 and $data->sub_akun== 512 and $data->lapangan=='MD'){
+                            }elseif(substr($data->sandi, 0, 3) == 512 and $data->sub_akun== 512 and $data->lapangan=='MD'){
                                     if ($data->sandi =='512011') {
                                         $mdupah6[$a] =  "0" ;
                                     } else {
@@ -225,13 +225,13 @@
                             }else{ 
                                 $mdupah6[$a] = "0";
                             }
-                            if ($data->tigadigit == 512 and $data->sub_akun== 510 and $data->lapangan=='MS') {
+                            if (substr($data->sandi, 0, 3) == 512 and $data->sub_akun== 510 and $data->lapangan=='MS') {
                                 if ($data->sandi =='512011') {
                                     $msupah6[$a] =  $data->pengali_tampil*$data->cur_rp ;
                                 } else {
                                     $msupah6[$a] =  "0" ;
                                 }
-                            }elseif($data->tigadigit == 512 and $data->sub_akun== 512 and $data->lapangan=='MS'){
+                            }elseif(substr($data->sandi, 0, 3) == 512 and $data->sub_akun== 512 and $data->lapangan=='MS'){
                                     if ($data->sandi =='512011') {
                                         $msupah6[$a] =  "0" ;
                                     } else {
@@ -242,34 +242,34 @@
                                 $msupah6[$a] = "0";
                             }
                             
-                            if($data->tigadigit == 516 and $data->lapangan=='MD'){
+                            if(substr($data->sandi, 0, 3) == 516 and $data->lapangan=='MD'){
                                 $mdupah7[$a] =  $data->pengali_tampil*$data->last_rp ;
                             }else{ 
                                 $mdupah7[$a] = "0";
                             }
-                            if($data->tigadigit == 516 and $data->lapangan=='MS'){
+                            if(substr($data->sandi, 0, 3) == 516 and $data->lapangan=='MS'){
                                 $msupah7[$a] =  $data->pengali_tampil*$data->cur_rp ;
                             }else{ 
                                 $msupah7[$a] = "0";
                             }
 
-                            if($data->tigadigit == 530 and $data->lapangan=='MD'){
+                            if(substr($data->sandi, 0, 3) == 530 and $data->lapangan=='MD'){
                                 $mdupah8[$a] =  $data->pengali_tampil*$data->last_rp ;
                             }else{ 
                                 $mdupah8[$a] = "0";
                             }
-                            if($data->tigadigit == 530 and $data->lapangan=='MS'){
+                            if(substr($data->sandi, 0, 3) == 530 and $data->lapangan=='MS'){
                                 $msupah8[$a] =  $data->pengali_tampil*$data->cur_rp ;
                             }else{ 
                                 $msupah8[$a] = "0";
                             }
 
-                            if($data->tigadigit == 540 and $data->lapangan=='MD'){
+                            if(substr($data->sandi, 0, 3) == 540 and $data->lapangan=='MD'){
                                 $mdupah9[$a] =  $data->pengali_tampil*$data->last_rp ;
                             }else{ 
                                 $mdupah9[$a] = "0";
                             }
-                            if($data->tigadigit == 540 and $data->lapangan=='MS'){
+                            if(substr($data->sandi, 0, 3) == 540 and $data->lapangan=='MS'){
                                 $msupah9[$a] =  $data->pengali_tampil*$data->cur_rp ;
                             }else{ 
                                 $msupah9[$a] = "0";

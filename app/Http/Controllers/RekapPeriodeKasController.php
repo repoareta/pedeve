@@ -90,7 +90,7 @@ class RekapPeriodeKasController extends Controller
             $dom_pdf = $pdf->getDomPDF();
 
             $canvas = $dom_pdf ->get_canvas();
-            $canvas->page_text(400, 115, "({PAGE_NUM}) Dari {PAGE_COUNT}", null, 8, array(0, 0, 0)); //lembur landscape
+            $canvas->page_text(420, 115, "({PAGE_NUM}) Dari {PAGE_COUNT}", null, 8, array(0, 0, 0)); //lembur landscape
             // return $pdf->download('rekap_umk_'.date('Y-m-d H:i:s').'.pdf');
             return $pdf->stream();
         }else{
