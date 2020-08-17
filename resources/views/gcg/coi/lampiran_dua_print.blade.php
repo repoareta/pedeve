@@ -34,13 +34,13 @@
           <p>
 						Yang bertanda tangan dibawah ini:
 						<br>
-						Nama: {{ Auth::user()->usernm }}
+						Nama: {{ Auth::user()->pekerja->nama }}
 						<br>
 						Nomor Pekerja: {{ Auth::user()->nopeg }}
 						<br>
-						Jabatan: {{ $jabatan->keterangan }}
+						Jabatan: {{ Auth::user()->fungsi_jabatan->nama }}
 						<br>
-						Fungsi: {{ $jabatan->keterangan }}
+						Fungsi: {{ Auth::user()->fungsi->nama }}
 					</p>
 
           <p class="text-justify">
@@ -86,15 +86,29 @@
 
           <br>
           <br>
-          <br>
+		<div style="text-align:right;">
+			{{ ucwords($tempat).', '.$tanggal_efektif }}
+		</div>
+		  
+		<div style="text-align:left;">
+		Mengetahui,
+		<br>
+		Atasan
+		<span style="float:right;">
+			Pekerja
+		</span>
+		</div>
+		<br>
+		<br>
+		<br>
+		<div style="text-align: left">
+			{{ Auth::user()->pekerja->nama.' - '.Auth::user()->fungsi_jabatan->nama }}
+
+			<span style="float:right;">
+				{{ Auth::user()->pekerja->nama.' - '.Auth::user()->fungsi_jabatan->nama }}
+			</span>
+		</div>
           
-          {{ ucwords($tempat).', '.$tanggal_efektif }}
-          <br>
-          <br>
-          <br>
-          <br>
-          <br>
-          {{ Auth::user()->usernm.' - '.$jabatan->keterangan }}
         </div>
     </body>
 </html>

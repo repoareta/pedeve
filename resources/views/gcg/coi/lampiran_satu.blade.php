@@ -42,7 +42,8 @@
 		<div class="row">
 			<form class="kt-form" id="formPrint" 
 			@if(Request::get('tempat'))action="{{ route('gcg.coi.lampiran_satu.print') }}" @endif
-			 method="get">
+			@if(Request::get('tempat')) method="POST" @else method="GET" @endif>
+			@csrf
 				<div class="col-md-12">
 					<p>
 						<center>
@@ -53,7 +54,7 @@
 					</p>
 					<p>
 						Yang bertanda tangan dibawah ini, Saya 
-						<b>{{ Auth::user()->usernm }}</b> 
+						<b>{{ Auth::user()->pekerja->nama }}</b> 
 						Nomor Pekerja 
 						<b>{{ Auth::user()->nopeg }}</b>
 						, menyatakan bahwa :
@@ -132,7 +133,7 @@
 					<br>
 					<br>
 
-					{{ Auth::user()->usernm.' - '.$jabatan->keterangan }}
+					{{ Auth::user()->pekerja->nama.' - '.Auth::user()->fungsi_jabatan->nama }}
 
 					<br>
 					<br>
