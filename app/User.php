@@ -42,6 +42,11 @@ class User extends Authenticatable
         return $this->userpw;
     }
 
+    public function pekerja()
+    {
+        return $this->belongsTo('App\Models\Pekerja', 'nopeg', 'nopeg');
+    }
+
    
  
     // public function validateCredentials(UserContract $user, array $credentials)
