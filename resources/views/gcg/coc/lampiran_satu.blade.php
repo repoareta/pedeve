@@ -42,7 +42,8 @@
 		<div class="row">
 			<form class="kt-form" id="formPrint" 
 			@if(Request::get('tempat'))action="{{ route('gcg.coc.lampiran_satu.print') }}" @endif
-			 method="get">
+			@if(Request::get('tempat')) method="POST" @else method="GET" @endif>
+			@csrf
 				<div class="col-md-12">
 					<p>
 						<center><b>SURAT PERNYATAAN INSAN PERTAMINA DANA VENTURA</b></center>
@@ -87,7 +88,7 @@
 						<br>
 						<br>
 						
-						{{ Auth::user()->usernm }} - Sekretaris PERSEROAN
+						{{ Auth::user()->pekerja->nama }} - {{ Auth::user()->fungsi->nama }}
 						
 						<br>
 						<br>

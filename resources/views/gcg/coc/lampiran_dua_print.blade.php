@@ -79,11 +79,11 @@
             <br>
             <br>
 
-						Nama: {{ ucwords(strtolower(Auth::user()->usernm)) }}
+						Nama: {{ ucwords(strtolower(Auth::user()->pekerja->nama)) }}
 
 						<br>
 
-						Jabatan: Sekretaris Perseroan
+						Jabatan: {{ ucwords(strtolower(Auth::user()->fungsi->nama)) }} - {{ ucwords(strtolower(Auth::user()->fungsi_jabatan->nama)) }}
           </p>
         </div>
     </body>
