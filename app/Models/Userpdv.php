@@ -12,8 +12,9 @@ class Userpdv extends Model
     protected $table="userpdv";
 
     protected $primaryKey = 'userid';
+    protected $keyType    = 'string';
     public $incrementing = false;
-    public $timestamps = false;
+    public $timestamps   = false;
 
     protected $dates = ['deleted_at'];
 
@@ -30,5 +31,10 @@ class Userpdv extends Model
     public function fungsi_jabatan()
     {
         return $this->belongsTo('App\Models\GcgJabatan', 'gcg_jabatan_id', 'id');
+    }
+
+    public function pekerja()
+    {
+        return $this->belongsTo('App\Models\Pekerja', 'nopeg', 'nopeg');
     }
 }

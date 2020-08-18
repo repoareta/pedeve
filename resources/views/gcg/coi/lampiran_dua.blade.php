@@ -42,7 +42,8 @@
 		<div class="row">
 			<form class="kt-form" id="formPrint" 
 			@if(Request::get('tempat'))action="{{ route('gcg.coi.lampiran_dua.print') }}" @endif
-			 method="get">
+			@if(Request::get('tempat')) method="POST" @else method="GET" @endif>
+			@csrf
 				<div class="col-md-12">
 					<p>
 						<center>
@@ -55,13 +56,13 @@
 					<p>
 						Yang bertanda tangan dibawah ini:
 						<br>
-						Nama: {{ Auth::user()->usernm }}
+						Nama: {{ Auth::user()->pekerja->nama }}
 						<br>
 						Nomor Pekerja: {{ Auth::user()->nopeg }}
 						<br>
-						Jabatan: {{ $jabatan->keterangan }}
+						Jabatan: {{ Auth::user()->fungsi_jabatan->nama }}
 						<br>
-						Fungsi: {{ $jabatan->keterangan }}
+						Fungsi: {{ Auth::user()->fungsi->nama }}
 					</p>
 
 					<p>
@@ -124,7 +125,7 @@
 					<br>
 					<br>
 
-					{{ Auth::user()->usernm.' - '.$jabatan->keterangan }}
+					{{ Auth::user()->pekerja->nama.' - '.Auth::user()->fungsi_jabatan->nama }}
 
 					<br>
 					<br>

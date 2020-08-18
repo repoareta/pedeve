@@ -50,7 +50,7 @@
             <br>
 
             <b>
-              {{ ucwords(strtolower(Auth::user()->usernm)) }} - SEKRETARIS PERSEROAN
+              {{ ucwords(strtolower(Auth::user()->pekerja->nama)) }} - {{ Auth::user()->fungsi->nama }}
             </b>
           </p>
         </div>

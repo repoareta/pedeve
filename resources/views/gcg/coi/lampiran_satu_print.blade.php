@@ -33,7 +33,7 @@
 
           <p>
 						Yang bertanda tangan dibawah ini, Saya 
-						<b>{{ Auth::user()->usernm }}</b> 
+						<b>{{ Auth::user()->pekerja->nama }}</b> 
 						Nomor Pekerja 
 						<b>{{ Auth::user()->nopeg }}</b>
 						, menyatakan bahwa :
@@ -101,7 +101,7 @@
           <br>
           <br>
           <br>
-          {{ Auth::user()->usernm.' - '.$jabatan->keterangan }}
+          {{ Auth::user()->pekerja->nama.' - '.Auth::user()->fungsi_jabatan->nama }}
         </div>
     </body>
 </html>

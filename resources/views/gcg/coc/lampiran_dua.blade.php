@@ -41,8 +41,9 @@
 		</div>
 		<div class="row">
 			<form class="kt-form" id="formPrint" 
-			@if(Request::get('orang'))action="{{ route('gcg.coc.lampiran_dua.print') }}" @endif
-			 method="get">
+			@if(Request::get('orang')) action="{{ route('gcg.coc.lampiran_dua.print') }}" @endif
+			@if(Request::get('orang')) method="POST" @else method="GET" @endif>
+			@csrf
 				<div class="col-md-12">
 					<p>
 						<center>
@@ -95,11 +96,11 @@
 						<br>
 						<br>
 
-						Nama: {{ ucwords(strtolower(Auth::user()->usernm)) }}
+						Nama: {{ ucwords(strtolower(Auth::user()->pekerja->nama)) }}
 
 						<br>
 
-						Jabatan: Sekretaris Perseroan
+						Jabatan: {{ ucwords(strtolower(Auth::user()->fungsi->nama)) }} - {{ ucwords(strtolower(Auth::user()->fungsi_jabatan->nama)) }}
 						
 						<br>
 						<br>

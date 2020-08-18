@@ -22,9 +22,13 @@ class GcgController extends Controller
     public function index()
     {
         $jabatan_latest = Jabatan::where('nopeg', Auth::user()->nopeg)->latest()->first();
-        $jabatan = KodeJabatan::where('kdbag', $jabatan_latest->kdbag)
-        ->where('kdjab', $jabatan_latest->kdjab)
-        ->first();
+        if (!$jabatan_latest) {
+            $jabatan = null;
+        } else {
+            $jabatan = KodeJabatan::where('kdbag', $jabatan_latest->kdbag)
+            ->where('kdjab', $jabatan_latest->kdjab)
+            ->first();
+        }
 
         $gratifikasi_list = GcgGratifikasi::selectRaw("
             extract(year from tgl_gratifikasi) AS year, 
