@@ -406,7 +406,8 @@
                 ); // isi nama semua route absensi implementasi GCG
 
                 $gcg_sosialisasi = array(
-                    'gcg.sosialisasi.index'
+                    'gcg.sosialisasi.index',
+                    'gcg.sosialisasi.create',
                 ); // isi nama semua route absensi implementasi GCG
 
                 $gcg_lhkpn = array(

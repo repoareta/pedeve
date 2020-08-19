@@ -794,6 +794,8 @@ Route::group(['middleware'=> ['auth','checkRole:1,0']], function () {
             Route::post('gcg/gratifikasi/update/{gratifikasi}', 'GcgGratifikasiController@update')->name('gratifikasi.update');
 
             Route::get('gcg/sosialisasi', 'GcgSosialisasiController@index')->name('sosialisasi.index');
+            Route::get('gcg/sosialisasi/create', 'GcgSosialisasiController@create')->name('sosialisasi.create');
+            Route::post('gcg/sosialisasi/store', 'GcgSosialisasiController@store')->name('sosialisasi.store');
 
             Route::get('gcg/lhkpn', 'GcgLhkpnController@index')->name('lhkpn.index');
             
