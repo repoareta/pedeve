@@ -22,6 +22,11 @@ class GcgReportBoundaryController extends Controller
      */
     public function index()
     {
+        return view('gcg.report_boundary.index');
+    }
+
+    public function export(Request $request)
+    {
         $report_list = GcgGratifikasi::with('userpdv')
         ->get();
         

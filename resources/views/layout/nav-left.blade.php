@@ -406,7 +406,8 @@
                 ); // isi nama semua route absensi implementasi GCG
 
                 $gcg_sosialisasi = array(
-                    'gcg.sosialisasi.index'
+                    'gcg.sosialisasi.index',
+                    'gcg.sosialisasi.create',
                 ); // isi nama semua route absensi implementasi GCG
 
                 $gcg_lhkpn = array(
@@ -1493,7 +1494,7 @@
                                             <span class="kt-menu__link-text">Gratifikasi</span>
                                         </a>
                                     </li>
-                                    {{-- <li class="kt-menu__item kt-menu__item{{ set_active_submenu($gcg_sosialisasi) }}" aria-haspopup="true">
+                                    <li class="kt-menu__item kt-menu__item{{ set_active_submenu($gcg_sosialisasi) }}" aria-haspopup="true">
                                         <a href="{{route('gcg.sosialisasi.index')}}" class="kt-menu__link">
                                             <i class="kt-menu__link-bullet kt-menu__link-bullet--line">
                                                 <span></span>
@@ -1508,7 +1509,7 @@
                                             </i>
                                             <span class="kt-menu__link-text">LHKPN</span>
                                         </a>
-                                    </li> --}}
+                                    </li>
                                     <li class="kt-menu__item kt-menu__item{{ set_active_submenu($gcg_report_boundary) }}" aria-haspopup="true">
                                         <a href="{{route('gcg.report_boundary.index')}}" class="kt-menu__link">
                                             <i class="kt-menu__link-bullet kt-menu__link-bullet--line">
