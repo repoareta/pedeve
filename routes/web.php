@@ -900,6 +900,8 @@ Route::group(['middleware'=> ['auth','checkRole:1,0']], function () {
             Route::get('penempatan_deposito/rekap', 'PenempatanDepositoController@rekap')->name('rekap');
             Route::post('penempatan_deposito/ctkdepo', 'PenempatanDepositoController@ctkdepo')->name('ctkdepo');
             Route::get('penempatan_deposito/rekaprc/{no}/{id}', 'PenempatanDepositoController@rekaprc')->name('rekaprc');
+            Route::get('penempatan_deposito/rekap_rc/{no}/{id}', 'PenempatanDepositoController@rekap_Rc')->name('rekap_rc');
+            Route::post('penempatan_deposito/exportrc', 'PenempatanDepositoController@exportRc')->name('export_rc');
         });
         //end penempatan_deposito
 
@@ -934,6 +936,10 @@ Route::group(['middleware'=> ['auth','checkRole:1,0']], function () {
             Route::delete('pembayaran_gaji/deletedetail', 'PembayaranGajiController@deleteDetail')->name('delete.detail');
             Route::delete('pembayaran_gaji/deletedetail/all', 'PembayaranGajiController@deleteDetailall')->name('delete.detail.all');
             Route::get('pembayaran_gaji/approv/{id}/{status}', 'PembayaranGajiController@approv')->name('approv');
+            Route::get('pembayaran_gaji/rekap/{docno}', 'PembayaranGajiController@rekap')->name('rekap');
+            Route::post('pembayaran_gaji/export', 'PembayaranGajiController@export')->name('export');
+            Route::get('pembayaran_gaji/rekaprc/{docno}', 'PembayaranGajiController@rekapRc')->name('rekap_rc');
+            Route::post('pembayaran_gaji/exportrc', 'PembayaranGajiController@exportRc')->name('export_rc');
         });
         //end pembayaran_gaji
 
@@ -957,6 +963,10 @@ Route::group(['middleware'=> ['auth','checkRole:1,0']], function () {
             Route::delete('pembayaran_umk/deletedetail', 'PembayaranUmkController@deleteDetail')->name('delete.detail');
             Route::delete('pembayaran_umk/deletedetail/all', 'PembayaranUmkController@deleteDetailall')->name('delete.detail.all');
             Route::get('pembayaran_umk/approv/{id}/{status}', 'PembayaranUmkController@approv')->name('approv');
+            Route::get('pembayaran_umk/rekap/{docno}', 'PembayaranUmkController@rekap')->name('rekap');
+            Route::post('pembayaran_umk/export', 'PembayaranUmkController@export')->name('export');
+            Route::get('pembayaran_umk/rekaprc/{docno}', 'PembayaranUmkController@rekapRc')->name('rekap_rc');
+            Route::post('pembayaran_umk/exportrc', 'PembayaranUmkController@exportRc')->name('export_rc');
         });
         //end pembayaran_umk
 
@@ -981,6 +991,10 @@ Route::group(['middleware'=> ['auth','checkRole:1,0']], function () {
             Route::delete('pembayaran_jumk/deletedetail', 'PembayaranJumkController@deleteDetail')->name('delete.detail');
             Route::delete('pembayaran_jumk/deletedetail/all', 'PembayaranJumkController@deleteDetailall')->name('delete.detail.all');
             Route::get('pembayaran_jumk/approv/{id}/{status}', 'PembayaranJumkController@approv')->name('approv');
+            Route::get('pembayaran_jumk/rekap/{docno}', 'PembayaranJumkController@rekap')->name('rekap');
+            Route::post('pembayaran_jumk/export', 'PembayaranJumkController@export')->name('export');
+            Route::get('pembayaran_jumk/rekaprc/{docno}', 'PembayaranJumkController@rekapRc')->name('rekap_rc');
+            Route::post('pembayaran_jumk/exportrc', 'PembayaranJumkController@exportRc')->name('export_rc');
         });
         //end pembayaran_jumk
 
@@ -1004,6 +1018,12 @@ Route::group(['middleware'=> ['auth','checkRole:1,0']], function () {
             Route::delete('pembayaran_pbayar/deletedetail', 'PembayaranPbayarController@deleteDetail')->name('delete.detail');
             Route::delete('pembayaran_pbayar/deletedetail/all', 'PembayaranPbayarController@deleteDetailall')->name('delete.detail.all');
             Route::get('pembayaran_pbayar/approv/{id}/{status}', 'PembayaranPbayarController@approv')->name('approv');
+            Route::get('pembayaran_pbayar/rekap/{docno}', 'PembayaranPbayarController@rekap')->name('rekap');
+            Route::post('pembayaran_pbayar/export', 'PembayaranPbayarController@export')->name('export');
+            Route::get('pembayaran_pbayar/rekaprc/{docno}', 'PembayaranPbayarController@rekapRc')->name('rekap_rc');
+            Route::post('pembayaran_pbayar/exportrc', 'PembayaranPbayarController@exportRc')->name('export_rc');
+            Route::get('pembayaran_pbayar/rekaprc/{docno}', 'PembayaranPbayarController@rekapRc')->name('rekap_rc');
+            Route::post('pembayaran_pbayar/exportrc', 'PembayaranPbayarController@exportRc')->name('export_rc');
         });
         //end pembayaran_pbayar
 

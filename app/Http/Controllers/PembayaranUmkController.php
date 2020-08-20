@@ -170,7 +170,7 @@ class PembayaranUmkController extends Controller
             return $nilai;
        })
         ->addColumn('radio', function ($data) {
-            $radio = '<center><label class="kt-radio kt-radio--bold kt-radio--brand"><input type="radio" value="'.$data->docno.'" class="btn-radio" name="btn-radio"><span></span></label></center>'; 
+            $radio = '<center><label class="kt-radio kt-radio--bold kt-radio--brand"><input type="radio" value="'.$data->docno.'" docno="'. str_replace('/', '-', $data->docno).'" class="btn-radio" name="btn-radio"><span></span></label></center>'; 
             return $radio;
         })
         ->addColumn('action', function ($data) {
@@ -754,5 +754,244 @@ class PembayaranUmkController extends Controller
                 }
             }
         }
+    }
+
+    public function rekap($docs)
+    {
+        $doc = str_replace('-', '/', $docs);   
+        $data_list = DB::select("select * from kasdoc where docno='$doc'");
+        foreach($data_list as $data_kasd)
+        {
+            $docno = $data_kasd->docno;
+            $thnbln = $data_kasd->thnbln;
+            $jk = $data_kasd->jk;
+            $store = $data_kasd->store;
+            $ci = $data_kasd->ci;
+            $voucher = $data_kasd->voucher;
+            $kepada = $data_kasd->kepada;
+            $rate = $data_kasd->rate;
+            $nilai_dok = $data_kasd->nilai_dok;
+            $ket1 = $data_kasd->ket1;
+            $ket2 = $data_kasd->ket2;
+            $ket3 = $data_kasd->ket3;
+            $mp =  substr($data_kasd->docno,0,1);
+            $kd_kepada = $data_kasd->kd_kepada; 
+        
+        
+            if (Auth::user()->userid == "ITA") {
+                $id = "I";
+            }elseif(Auth::user()->userid == "BAMBANG"){
+                $id = "F";
+            }elseif(Auth::user()->userid == "AA"){
+                $id = "A";
+            }else{
+                $id = "K";
+            }
+            
+            $data_pbd = DB::select("select a.* from pbd_tbl_param a where id='$id'");
+            foreach($data_pbd as $rsparam)
+            {            
+                if ($mp == "P" or $mp == "p") {
+                    $minta1 = $rsparam->minta1;
+                    $nminta1 = $rsparam->nminta1;
+                    $verifikasi1 = $rsparam->verifikasi1;
+                    $nverifikasi1 = $rsparam->nverifikasi1;
+                    $setuju1 = $rsparam->setuju1;
+                    $nsetuju1 = $rsparam->nsetuju1;
+                    $buku1 = $rsparam->buku1;
+                    $nbuku1 = $rsparam->nbuku1;
+                    $setuju2 ="";
+                    $nsetuju2 = "";
+                    $buku2 = "";
+                    $nbuku2 = "";
+                    $kas2 = "";
+                    $nkas2 = "";
+                }else{
+                    $minta1 = "";
+                    $nminta1 = "";
+                    $verifikasi1 = "";
+                    $nverifikasi1 = "";
+                    $setuju1 = "";
+                    $nsetuju1 = "";
+                    $buku1 = "";
+                    $nbuku1 = "";
+                    $setuju2 = $rsparam->setuju2;
+                    $nsetuju2 = $rsparam->nsetuju2;
+                    $buku2 = $rsparam->buku2;
+                    $nbuku2 = $rsparam->nbuku2;
+                    $kas2 = $rsparam->kas2;
+                    $nkas2 = $rsparam->nkas2;
+                }
+            }
+        } 
+        return view('pembayaran_umk.rekap',compact(
+            'docs',
+            'minta1',
+            'nminta1',
+            'verifikasi1',
+            'nverifikasi1',
+            'setuju1',
+            'nsetuju1',
+            'buku1',
+            'nbuku1',
+            'setuju2',            
+            'nsetuju2',
+            'buku2',          
+            'nbuku2',           
+            'kas2',         
+            'nkas2',
+            'docno',
+            'nilai_dok',
+            'ci',
+            'kd_kepada',
+            'mp'    
+         ));
+    }
+
+    public function export(Request $request)
+    {
+            
+        $docno = str_replace('-', '/', $request->docno);   
+        Kasdoc::where('docno', $docno)
+        ->update([
+            'tgl_kurs' =>  $request->tanggal,
+        ]);
+        $data_list= DB::select("select a.nilai_dok,a.mrs_no,a.kepada,a.tgl_kurs,a.jk,right(a.thnbln,2) bulan, left(a.thnbln, 4) tahun,a.store,a.ci,a.rate,a.ket1,a.ket2,a.ket3, b.*,a.voucher from kasdoc a join kasline b on a.docno=b.docno where a.docno='$docno'");    
+    
+        if(!empty($data_list)){
+            foreach($data_list as $data){
+                $jk = $data->jk;
+                $tahun = $data->tahun;
+                $bulan = $data->bulan;
+                $store = $data->store;
+                $voucher = $data->voucher;
+                $ci = $data->ci;
+                $rate = $data->rate;
+                $ket1 = $data->ket1;
+                $ket2 = $data->ket2;
+                $ket3 = $data->ket3;
+                $mrs_no = $data->mrs_no;
+                $tgl_kurs = $data->tgl_kurs;
+                $kepada = $data->kepada;
+                $nilai_dok = $data->nilai_dok;
+            }
+            $mp = substr($docno,0,1);
+            if($mp == "M" or $mp == "m"){
+                $reportname = "export_merah";
+            }else{
+                $reportname = "export_putih";
+            }
+            $pdf = DomPDF::loadview("pembayaran_umk.$reportname",compact(
+                'request',
+                'data_list',
+                'jk',
+                'bulan',
+                'tahun',
+                'store',
+                'voucher',
+                'ci',
+                'rate',
+                'ket1',
+                'ket2',
+                'ket3',
+                'mrs_no',
+                'tgl_kurs',
+                'kepada',
+                'nilai_dok'
+                ))->setPaper('A4', 'Portrait');
+            $pdf->output();
+            $dom_pdf = $pdf->getDomPDF();
+        
+            $canvas = $dom_pdf ->get_canvas();
+            $canvas->page_text(105, 75,"", null, 10, array(0, 0, 0)); //slip Gaji landscape
+            // return $pdf->download('rekap_umk_'.date('Y-m-d H:i:s').'.pdf');
+            return $pdf->stream();
+        }else{
+            Alert::info("Tidak ditemukan data", 'Failed')->persistent(true);
+            return redirect()->route('pembayaran_umk.index');
+        }
+    }
+
+    public function rekapRc($docno)
+    {
+        $doc = str_replace('-', '/', $docno);   
+        $data_list = DB::select("select a.*, b.keterangan from kasdoc a join umu_bayar_header b on a.docno=b.no_kas where a.docno='$doc'");
+        if(!empty($data_list)){
+            foreach ($data_list as $objrs) {
+                $jumangka = $objrs->nilai_dok;
+                $ci = $objrs->ci;
+                $lokasi = $objrs->store;
+                $kepada = $objrs->kepada;
+                $keterangan = $objrs->keterangan;
+                $ci = $objrs->ci;
+            }
+            
+            $lampiran = "-";
+            $perihal = "Transfer/ Pemindah-bukuan";
+            if ($lokasi == "36") {
+                $norek = "0558-01-000019-30-3";
+                $bank = "Bank Rakyat Indonesia";
+                $cabang = "KCP Pertamina";
+                $alamat = "Jl.Ir.Perwira No. 2-4";
+                $kota = "Jakarta Pusat";
+                $up = "Ka.Cabang";
+                $jabkir = "Dir. Utama";
+                $jabkan = "Dir. Keu & Inv";
+                $namkir = "Sjahril Samad";
+                $namkan = "";
+                $reg = "-";
+            }else{
+                if($ci == "1"){
+                    $norek = "119-0003122155";
+                }else{
+                    $norek = "119-0002122164";
+                }
+                $bank = "Bank Mandiri (Persero)";
+                $cabang = "Cabang Juanda";
+                $alamat = "Jl.Ir.H.Juanda";
+                $kota = "Jakarta";
+                $up = "Bpk. Rizky Ginanjar D";
+                $jabkir = "PJ Dir.Utama";
+                $jabkan = "Manager Finance";
+                $namkir = "Sjahril Samad";
+                $namkan = "Wasono H";
+                $reg = "-";
+            }
+            return view('pembayaran_umk.rekap_rc',compact(
+                'docno',
+                'lampiran',
+                'perihal',
+                'norek',
+                'bank',
+                'cabang',
+                'alamat',
+                'kota',
+                'up',
+                'jabkir',
+                'jabkan',
+                'namkir',
+                'namkan',
+                'reg',
+                'jumangka',
+                'kepada',
+                'keterangan',
+                'ci'
+            ));
+        }else{
+            Alert::info("Tidak ditemukan data", 'Failed')->persistent(true);
+            return redirect()->route('pembayaran_umk.index');
+        }
+    }
+
+    public function exportRc(Request $request)
+    {
+            $pdf = DomPDF::loadview('pembayaran_umk.export_rc',compact('request'))->setPaper('A4', 'Portrait');
+            $pdf->output();
+            $dom_pdf = $pdf->getDomPDF();
+        
+            $canvas = $dom_pdf ->get_canvas();
+            $canvas->page_text(105, 75, "", null, 10, array(0, 0, 0)); //slip Gaji landscape
+            // return $pdf->download('rekap_umk_'.date('Y-m-d H:i:s').'.pdf');
+            return $pdf->stream();
     }
 }

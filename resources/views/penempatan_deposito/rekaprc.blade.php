@@ -103,6 +103,7 @@
 						<div class="col-10">
 							<a  href="{{route('penempatan_deposito.index')}}" class="btn btn-warning"><i class="fa fa-reply" aria-hidden="true"></i>Cancel</a>
 							<button type="submit" id="btn-save" onclick="$('form').attr('target', '_blank')" class="btn btn-brand"><i class="fa fa-print" aria-hidden="true"></i>Cetak</button>
+							<a  href="{{url('perbendaharaan/penempatan_deposito/rekap_rc')}}/{{$no}}/{{$id}}" class="btn btn-primary"><i class="fa fa-print" aria-hidden="true"></i>Cetak RC</a>
 						</div>
 					</div>
 				</div>
