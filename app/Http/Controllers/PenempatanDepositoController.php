@@ -775,6 +775,85 @@ class PenempatanDepositoController extends Controller
         $lineno=$id;
         $data_bank = DB::select("select distinct(a.kdbank),b.descacct from mtrdeposito a, account b where b.kodeacct=a.kdbank");
         $data_lapang = DB::select("select kodelokasi,nama from lokasi");
-        return view('penempatan_deposito.rekaprc',compact('data_bank','data_lapang'));
+        return view('penempatan_deposito.rekaprc',compact('data_bank','data_lapang','no','id'));
+    }
+
+    public function rekap_Rc($docs, $lineno)
+    {
+        $docno = str_replace('-', '/', $docs);   
+        $lampiran = "-";
+        $perihal = "Penempatan Deposito";
+        $data_cari = DB::select("select a.* from v_ctkrctempatdepo a where a.docno = '$docno' and a.lineno='$lineno'");
+        foreach($data_cari as $carinominal){
+            $jumangka = $carinominal->nominal;
+            $bank = $carinominal->nama;
+            $cabang = $carinominal->cabang;
+            $norek = $carinominal->rekening;
+            $tmt = $carinominal->tgldep;
+            $bunga = $carinominal->bungatahun;
+            $ci = $carinominal->ci;
+            $alamat = "-";
+            $kota = "-";
+            $up = "-";
+            $jabkir = "Dir. Utama";
+            $jabkan = "Man. Kontroler";
+            $namkir = "Sjahril Samad";
+            $namkan = "Wasono";
+            $reg = "-";
+            if ($carinominal->range <> 0) {
+                $jangka =$carinominal->range." bulan";
+            }else{
+                $jangka = $carinominal->jmlhari." hari";
+            }
+        } 
+        return view('pembayaran_umk.rekap_rc',compact(
+            'docs',
+            'lampiran',
+            'perihal',
+            'bank',
+            'cabang',
+            'norek',
+            'tmt',
+            'bunga',
+            'ci',
+            'alamat',
+            'kota',
+            'up',
+            'jabkir',
+            'jabkan',
+            'namkir',
+            'namkan',
+            'reg',
+            'jumangka',
+            'jangka'
+        ));
+    }
+
+    public function exportRc(Request $request)
+    {
+            $docno = str_replace('-', '/', $request->docno);   
+            $data_list= DB::select("select right(a.thnbln,2) bulan,  left(a.thnbln, 4) tahun,a.jk as jka,a.ci as cia,a.voucher as vouchera,a.keterangan, b.* from jurumdoc a join jurumline b on a.docno=b.docno where a.docno='$docno'");
+        if(!empty($data_list)){
+            foreach($data_list as $dataa)
+            {
+                $jk = $dataa->jka;
+                $ci = $dataa->cia;
+                $voucher = $dataa->vouchera;
+                $docno = $dataa->docno;
+                $bulan = $dataa->bulan;
+                $tahun = $dataa->tahun;
+            }
+            $pdf = DomPDF::loadview('pembayaran_umk.expor_rct',compact('request','data_list','jk','ci','voucher','docno','bulan','tahun'))->setPaper('letter', 'landscape');
+            $pdf->output();
+            $dom_pdf = $pdf->getDomPDF();
+        
+            $canvas = $dom_pdf ->get_canvas();
+            $canvas->page_text(105, 75, "{PAGE_NUM} Dari {PAGE_COUNT}", null, 10, array(0, 0, 0)); //slip Gaji landscape
+            // return $pdf->download('rekap_umk_'.date('Y-m-d H:i:s').'.pdf');
+            return $pdf->stream();
+        }else{
+            Alert::info("Tidak ditemukan data", 'Failed')->persistent(true);
+            return redirect()->route('pembayaran_umk.index_rc');
+        }
     }
 }

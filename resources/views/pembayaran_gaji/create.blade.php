@@ -112,7 +112,7 @@
 						<div class="form-group row">
 							<label for="jenis-dinas-input" class="col-2 col-form-label">Lokasi<span style="color:red;">*</span></label>
 							<div class="col-4">
-								<select name="lokasi" id="lokasi" class="form-control" data-live-search="true" required oninvalid="this.setCustomValidity('Lokasi Harus Diisi..')" onchange="setCustomValidity('')">
+								<select name="lokasi" id="lokasi" class="form-control kt-select2" required oninvalid="this.setCustomValidity('Lokasi Harus Diisi..')" onchange="setCustomValidity('')">
 									<option value="">- Pilih -</option>
 									
 								</select>
@@ -233,6 +233,10 @@
 	<script type="text/javascript">
 	$(document).ready(function () {
 
+		$('.kt-select2').select2().on('change', function() {
+			$(this).valid();
+		});
+		
 		$("#jk").on("change", function(){ 
 		var ci = $(this).val();
 		console.log(ci);

@@ -504,7 +504,9 @@
                     'pembayaran_gaji.create',
                     'pembayaran_gaji.edit',
                     'pembayaran_gaji.edit.detail',
-                    'pembayaran_gaji.approv'
+                    'pembayaran_gaji.approv',
+                    'pembayaran_gaji.rekap',
+                    'pembayaran_gaji.rekap_rc'
                 ); // isi nama semua route pembayaran gaji
                 $pembayaran_umk = array(
                     'pembayaran_umk.index',
@@ -513,7 +515,9 @@
                     'pembayaran_umk.create',
                     'pembayaran_umk.edit',
                     'pembayaran_umk.edit.detail',
-                    'pembayaran_umk.approv'
+                    'pembayaran_umk.approv',
+                    'pembayaran_umk.rekap',
+                    'pembayaran_umk.rekap_rc'
                 ); // isi nama semua route pembayaran umk
                 $pembayaran_jumk = array(
                     'pembayaran_jumk.index',
@@ -522,7 +526,9 @@
                     'pembayaran_jumk.create',
                     'pembayaran_jumk.edit',
                     'pembayaran_jumk.edit.detail',
-                    'pembayaran_jumk.approv'
+                    'pembayaran_jumk.approv',
+                    'pembayaran_jumk.rekap',
+                    'pembayaran_jumk.rekap_rc'
                 ); // isi nama semua route pembayaran jumk
                 $pembayaran_pbayar = array(
                     'pembayaran_pbayar.index',
@@ -531,7 +537,9 @@
                     'pembayaran_pbayar.create',
                     'pembayaran_pbayar.edit',
                     'pembayaran_pbayar.edit.detail',
-                    'pembayaran_pbayar.approv'
+                    'pembayaran_pbayar.approv',
+                    'pembayaran_pbayar.rekap',
+                    'pembayaran_pbayar.rekap_rc'
                 ); // isi nama semua route pembayaran pbayar
                 $pembayaran = array_merge(
                     $pembayaran_gaji,
@@ -546,7 +554,7 @@
                     'penempatan_deposito.create',
                     'penempatan_deposito.edit',
                     'penempatan_deposito.depopjg',
-                    'penempatan_deposito.rekaprc',
+                    'penempatan_deposito.rekaprc'
                 ); // isi nama semua route penempatan deposito
                 $perhitungan = array(
                     'perhitungan_bagihasil.index',
@@ -1638,7 +1646,7 @@
 
                         @foreach(DB::table('usermenu')->where('userid',Auth::user()->userid)->where('menuid',508)->limit(1)->get() as $data_umu)
                         @if($data_umu->ability == 1)
-                        <li class="kt-menu__item kt-menu__item--submenu {{ set_active($tool) }}" aria-haspopup="true" data-ktmenu-submenu-toggle="hover">
+                        {{--<li class="kt-menu__item kt-menu__item--submenu {{ set_active($tool) }}" aria-haspopup="true" data-ktmenu-submenu-toggle="hover">
                             <a href="javascript:;" class="kt-menu__link kt-menu__toggle">
                                 <i class="kt-menu__link-bullet kt-menu__link-bullet--dot">
                                     <span></span>
@@ -1666,7 +1674,7 @@
                                     </li>
                                 </ul>
                             </div>
-                        </li>
+                        </li>--}}
                         @endif
                         @endforeach
 
@@ -1698,7 +1706,7 @@
                                                 <span></span>
                                             </i>
                                             <span class="kt-menu__link-text">
-                                                Perhitungan Bagi Hasil
+                                                Rata Tertimbang
                                             </span>
                                         </a>
                                     </li>

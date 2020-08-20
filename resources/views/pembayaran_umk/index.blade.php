@@ -54,6 +54,12 @@
 							<i class="fas fa-times-circle" id="deleteRow"></i>
 						</span>
 						@endif
+
+						@if($data_akses->cetak == 1)
+						<span style="font-size: 2em;" class="kt-font-info pointer-link" data-toggle="kt-tooltip" data-placement="top" title="Cetak Data">
+							<i class="fas fa-print" id="exportRow"></i>
+						</span>
+						@endif
 						@endforeach
 					</div>
 				</div>
@@ -251,6 +257,20 @@ $(document).ready(function () {
 			} else {
 				swalAlertInit('hapus');
 			}
+			});
+
+			//export 
+			$('#exportRow').click(function(e) {
+				e.preventDefault();
+
+				if($('input[class=btn-radio]').is(':checked')) { 
+					$("input[class=btn-radio]:checked").each(function(){
+						var docno = $(this).attr('docno');
+						location.replace("{{url('perbendaharaan/pembayaran_umk/rekap')}}"+ '/' +docno);
+					});
+				} else {
+					swalAlertInit('cetak');
+				}
 			});
 });
 

@@ -123,7 +123,7 @@
 						<div class="form-group row">
 							<label for="jenis-dinas-input" class="col-2 col-form-label">Lokasi<span style="color:red;">*</span></label>
 							<div class="col-4">
-								<select name="lokasi" id="lokasi" class="form-control" data-live-search="true">
+								<select name="lokasi" id="lokasi" class="form-control kt-select2" data-live-search="true">
 									<option value="">- Pilih -</option>
 									
 								</select>
@@ -511,6 +511,10 @@
 			processing: true,
 			serverSide: false,
 		});
+
+	$('.kt-select2').select2().on('change', function() {
+		$(this).valid();
+	});
 
 		var jk = $('#jk').val();
 	if(jk == '13'){
