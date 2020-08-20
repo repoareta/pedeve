@@ -763,14 +763,14 @@ Route::group(['middleware'=> ['auth','checkRole:1,0']], function () {
             Route::get('gcg', 'GcgController@index')->name('index');
 
             Route::get('gcg/coc', 'GcgCocController@index')->name('coc.lampiran_satu');
-            Route::get('gcg/coc/lampiran_satu_print', 'GcgCocController@lampiranSatuPrint')->name('coc.lampiran_satu.print');
+            Route::post('gcg/coc/lampiran_satu_print', 'GcgCocController@lampiranSatuPrint')->name('coc.lampiran_satu.print');
             Route::get('gcg/coc/lampiran_dua', 'GcgCocController@lampiranDua')->name('coc.lampiran_dua');
-            Route::get('gcg/coc/lampiran_dua_print', 'GcgCocController@lampiranDuaPrint')->name('coc.lampiran_dua.print');
+            Route::post('gcg/coc/lampiran_dua_print', 'GcgCocController@lampiranDuaPrint')->name('coc.lampiran_dua.print');
             
             Route::get('gcg/coi', 'GcgCoiController@index')->name('coi.lampiran_satu');
-            Route::get('gcg/coi/lampiran_satu_print', 'GcgCoiController@lampiranSatuPrint')->name('coi.lampiran_satu.print');
+            Route::post('gcg/coi/lampiran_satu_print', 'GcgCoiController@lampiranSatuPrint')->name('coi.lampiran_satu.print');
             Route::get('gcg/coi/lampiran_dua', 'GcgCoiController@lampiranDua')->name('coi.lampiran_dua');
-            Route::get('gcg/coi/lampiran_dua_print', 'GcgCoiController@lampiranDuaPrint')->name('coi.lampiran_dua.print');
+            Route::post('gcg/coi/lampiran_dua_print', 'GcgCoiController@lampiranDuaPrint')->name('coi.lampiran_dua.print');
 
             Route::get('gcg/gratifikasi', 'GcgGratifikasiController@index')->name('gratifikasi.index');
             Route::get('gcg/gratifikasi/penerimaan', 'GcgGratifikasiController@penerimaan')->name('gratifikasi.penerimaan');
@@ -794,10 +794,13 @@ Route::group(['middleware'=> ['auth','checkRole:1,0']], function () {
             Route::post('gcg/gratifikasi/update/{gratifikasi}', 'GcgGratifikasiController@update')->name('gratifikasi.update');
 
             Route::get('gcg/sosialisasi', 'GcgSosialisasiController@index')->name('sosialisasi.index');
+            Route::get('gcg/sosialisasi/create', 'GcgSosialisasiController@create')->name('sosialisasi.create');
+            Route::post('gcg/sosialisasi/store', 'GcgSosialisasiController@store')->name('sosialisasi.store');
 
             Route::get('gcg/lhkpn', 'GcgLhkpnController@index')->name('lhkpn.index');
             
             Route::get('gcg/report_boundary', 'GcgReportBoundaryController@index')->name('report_boundary.index');
+            Route::get('gcg/report_boundary/export', 'GcgReportBoundaryController@export')->name('report_boundary.export');
         });
         //end GCG
     });

@@ -8,6 +8,10 @@ use Illuminate\Http\Request;
 use App\Models\Jabatan;
 use App\Models\KodeJabatan;
 
+
+// Load Model
+use App\Models\GcgCoi;
+
 // Load Plugin
 use Carbon\Carbon;
 use Session;
@@ -46,7 +50,7 @@ class GcgCoiController extends Controller
         return view('gcg.coi.lampiran_dua', compact('jabatan'));
     }
 
-    public function lampiranSatuPrint(Request $request)
+    public function lampiranSatuPrint(Request $request, GcgCoi $gcgCoi)
     {
         $konflik = $request->konflik;
         $tempat = $request->tempat;
@@ -55,6 +59,12 @@ class GcgCoiController extends Controller
         $jabatan = KodeJabatan::where('kdbag', $jabatan_latest->kdbag)
         ->where('kdjab', $jabatan_latest->kdjab)
         ->first();
+
+        // insert to COI
+        $gcgCoi->lampiran = 1;
+        $gcgCoi->catatan = $konflik;
+        $gcgCoi->nopeg = Auth::user()->nopeg;
+        $gcgCoi->save();
 
         $pdf = DomPDF::loadview('gcg.coi.lampiran_satu_print', compact(
             'konflik',
@@ -66,7 +76,7 @@ class GcgCoiController extends Controller
         return $pdf->stream('coi_lampiran_satu'.date('Y-m-d H:i:s').'.pdf');
     }
 
-    public function lampiranDuaPrint(Request $request)
+    public function lampiranDuaPrint(Request $request, GcgCoi $gcgCoi)
     {
         $tempat = $request->tempat;
         $tanggal_efektif = $request->tanggal_efektif;
@@ -74,6 +84,11 @@ class GcgCoiController extends Controller
         $jabatan = KodeJabatan::where('kdbag', $jabatan_latest->kdbag)
         ->where('kdjab', $jabatan_latest->kdjab)
         ->first();
+
+        // insert to COI
+        $gcgCoi->lampiran = 2;
+        $gcgCoi->nopeg = Auth::user()->nopeg;
+        $gcgCoi->save();
 
         $pdf = DomPDF::loadview('gcg.coi.lampiran_dua_print', compact(
             'tempat',

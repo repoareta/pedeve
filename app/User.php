@@ -42,6 +42,26 @@ class User extends Authenticatable
         return $this->userpw;
     }
 
+    public function pekerja()
+    {
+        return $this->belongsTo('App\Models\Pekerja', 'nopeg', 'nopeg');
+    }
+
+    public function jabatan_latest()
+    {
+        return $this->hasMany('App\Models\Jabatan', 'nopeg')->latest()->first();
+    }
+
+    public function fungsi()
+    {
+        return $this->belongsTo('App\Models\GcgFungsi', 'gcg_fungsi_id', 'id');
+    }
+
+    public function fungsi_jabatan()
+    {
+        return $this->belongsTo('App\Models\GcgJabatan', 'gcg_jabatan_id', 'id');
+    }
+
    
  
     // public function validateCredentials(UserContract $user, array $credentials)

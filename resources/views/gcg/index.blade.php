@@ -28,8 +28,8 @@
 				<i class="kt-font-brand flaticon2-line-chart"></i>
 			</span>
 			<h3 class="kt-portlet__head-title">
-				{{ Auth::user()->usernm.' - '.$jabatan->keterangan }}
-			</h3>			
+				{{ optional(Auth::user()->pekerja)->nama.' - '.optional($jabatan)->keterangan }}
+			</h3>
 		</div>
 	</div>
 	<div class="kt-portlet__body">

@@ -12,7 +12,7 @@
 				<a href="#" class="kt-subheader__breadcrumbs-home"><i class="flaticon2-shelter"></i></a>
 				<span class="kt-subheader__breadcrumbs-separator"></span>
 				<a href="" class="kt-subheader__breadcrumbs-link">
-                    CoI 
+                    Sosialisasi
                 </a>
 			</div>
 		</div>
@@ -21,61 +21,65 @@
 <!-- end:: Subheader -->
 
 <div class="kt-container  kt-container--fluid  kt-grid__item kt-grid__item--fluid">
-<div class="kt-portlet kt-portlet--mobile">
-	<div class="kt-portlet__head kt-portlet__head--lg">
-		<div class="kt-portlet__head-label">
-			<span class="kt-portlet__head-icon">
-				<i class="kt-font-brand flaticon2-line-chart"></i>
-			</span>
-			<h3 class="kt-portlet__head-title">
-				CoI (Code of Interest)
-			</h3>			
-		</div>
-	</div>
-	<div class="kt-portlet__body">
-		<div class="row">
-			<div class="col-md-12 text-center">
-				<a name="" id="" class="btn btn-primary" href="#" role="button">Lampiran 1</a>
-				<a name="" id="" class="btn btn-primary" href="{{ route('gcg.coi.lampiran_dua') }}" role="button">Lampiran 2</a>
+	<div class="kt-portlet kt-portlet--mobile">
+		<div class="kt-portlet__head kt-portlet__head--lg">
+			<div class="kt-portlet__head-label">
+				<span class="kt-portlet__head-icon">
+					<i class="kt-font-brand flaticon2-line-chart"></i>
+				</span>
+				<h3 class="kt-portlet__head-title">
+					Sosialisasi
+				</h3>	
+				
+				<div class="kt-portlet__head-actions" style="font-size: 2rem">
+					<a href="{{ route('gcg.sosialisasi.create') }}">
+						<span class="kt-font-success" data-toggle="kt-tooltip" data-placement="top" title="Tambah Data">
+							<i class="fas fa-plus-circle"></i>
+						</span>
+					</a>
+				</div>
 			</div>
 		</div>
-		<div class="row">
-			<form action="" class="form-horizontal">
-				<div class="col-md-12">
-					<p>
-						<center>SURAT PERNYATAAN INSAN PERTAMINA DANA VENTURA</center>
-					</p>
-					<p>
-						Yang bertanda tangan dibawah ini 
-						Dengan ini saya menyatakan telah menerima, membaca dan memahami
-		
-						Etika Usaha dan Tata Perilaku (Code of Conduct) PT. Pertamina DANA VENTURA
-		
-						Tanggal (Efektif) 2020-02-01 12:12:00 dan bersedia untuk mematuhi semua ketentuan yang tercantum di dalamnya dan menerima sanksi atas pelanggaran (jika ada) yang saya lakukan.
-						<br>
-						<br>
-						(Tempat)
-						<br>
-						<input type="text" class="form-control">, 20-02-01 8:28:25
-						<br>
-						<br>
-						I Made Sunarta - Sekretaris PERSEROAN
-						<br>
-						<br>
-						<button type="button" class="btn btn-primary">Simpan</button>
-					</p>
-				</div>
-			</form>
+		<div class="kt-portlet__body">
+			<table class="table table-striped table-bordered table-hover table-checkable" id="kt_table" width="100%">
+				<thead class="thead-light">
+					<tr>
+						<th>
+							Keterangan
+						</th>
+						<th>
+							Dokumen
+						</th>
+						<th>
+							Tanggal Dibuat
+						</th>
+						<th>
+							Dibuat Oleh
+						</th>
+					</tr>
+				</thead>
+				<tbody>
+					@foreach ($sosialisasi_list as $sosialisasi)
+						<tr>
+							<td>{{ $sosialisasi->keterangan }}</td>
+							<td>
+								<a href="{{ asset('storage/sosialisasi/'.$sosialisasi->dokumen) }}" target="_blank">{{ $sosialisasi->dokumen }}</a>
+							</td>
+							<td>{{ Carbon\Carbon::parse($sosialisasi->created_at)->translatedFormat('d F Y') }}</td>
+							<td>{{ $sosialisasi->pekerja->nama }}</td>
+						</tr>
+					@endforeach
+				</tbody>
+			</table>
 		</div>
 	</div>
-</>
 </div>
 @endsection
 
 @section('scripts')
 	<script type="text/javascript">
-	$(document).ready(function () {
-		$('#kt_table').DataTable();
-	});
+		$(document).ready(function () {
+			$('#kt_table').DataTable();
+		});
 	</script>
 @endsection

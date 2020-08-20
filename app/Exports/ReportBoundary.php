@@ -56,8 +56,8 @@ class ReportBoundary implements FromView, WithDrawings, WithEvents, ShouldAutoSi
     {
         return [
             AfterSheet::class    => function (AfterSheet $event) {
-                $cellRange = 'A5:Q7'; // All headers
-                $highestRow = $event->sheet->getHighestRow();
+                $cellRange = 'A5:U7'; // All headers
+                $highestRow = $event->sheet->getHighestRow() - 14;
                 $styleArray = [
                     'borders' => [
                         // 'outline' => [
@@ -79,10 +79,17 @@ class ReportBoundary implements FromView, WithDrawings, WithEvents, ShouldAutoSi
                         'horizontal' => \PhpOffice\PhpSpreadsheet\Style\Alignment::HORIZONTAL_CENTER,
                     ],
                 ];
+
+                $styleArrayFooter = [
+                    'alignment' => [
+                        'horizontal' => \PhpOffice\PhpSpreadsheet\Style\Alignment::HORIZONTAL_RIGHT,
+                    ],
+                ];
                 $event->sheet->getDelegate()->getStyle($cellRange)->getFont()->setSize(12);
                 $event->sheet->getDelegate()->getStyle($cellRange)->applyFromArray($styleArrayHeader);
                 $event->sheet->getDelegate()->getStyle($cellRange)->getFill()->setFillType(\PhpOffice\PhpSpreadsheet\Style\Fill::FILL_SOLID)->getStartColor()->setARGB('e8e6e6');
-                $event->sheet->getDelegate()->getStyle('A5:Q'.$highestRow)->applyFromArray($styleArray);
+                $event->sheet->getDelegate()->getStyle('A5:U'.$highestRow)->applyFromArray($styleArray);
+                $event->sheet->getDelegate()->getStyle('A'.$highestRow.':U'.$highestRow)->applyFromArray($styleArrayFooter);
             },
         ];
     }
