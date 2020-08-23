@@ -29,7 +29,15 @@
 				</span>
 				<h3 class="kt-portlet__head-title">
 					LHKPN
-				</h3>			
+				</h3>
+
+				<div class="kt-portlet__head-actions" style="font-size: 2rem">
+					<a href="{{ route('gcg.lhkpn.create') }}">
+						<span class="kt-font-success" data-toggle="kt-tooltip" data-placement="top" title="Tambah Data">
+							<i class="fas fa-plus-circle"></i>
+						</span>
+					</a>
+				</div>
 			</div>
 		</div>
 		<div class="kt-portlet__body">
@@ -38,12 +46,18 @@
 					<table class="table" id="kt_table">
 						<thead>
 							<tr>
-								<td>
-									Dokumen
-								</td>
-								<td>
+								<th>
+									Status LHKPN
+								</th>
+								<th>
+									Tanggal LHKPN
+								</th>
+								<th>
+									Dokumen LHKPN
+								</th>
+								<th>
 									Tanggal Dibuat
-								</td>
+								</th>
 							</tr>
 						</thead>
 						<tbody>
