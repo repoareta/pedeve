@@ -22,7 +22,8 @@ class GcgLhkpnController extends Controller
      */
     public function index()
     {
-        return view('gcg.lhkpn.index');
+        $lhkpn_list = GcgLhkpn::all();
+        return view('gcg.lhkpn.index', compact('lhkpn_list'));
     }
 
     public function create()
