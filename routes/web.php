@@ -798,6 +798,8 @@ Route::group(['middleware'=> ['auth','checkRole:1,0']], function () {
             Route::post('gcg/sosialisasi/store', 'GcgSosialisasiController@store')->name('sosialisasi.store');
 
             Route::get('gcg/lhkpn', 'GcgLhkpnController@index')->name('lhkpn.index');
+            Route::get('gcg/lhkpn/create', 'GcgLhkpnController@create')->name('lhkpn.create');
+            Route::post('gcg/lhkpn/store', 'GcgLhkpnController@store')->name('lhkpn.store');
             
             Route::get('gcg/report_boundary', 'GcgReportBoundaryController@index')->name('report_boundary.index');
             Route::get('gcg/report_boundary/export', 'GcgReportBoundaryController@export')->name('report_boundary.export');

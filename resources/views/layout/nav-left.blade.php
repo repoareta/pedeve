@@ -411,7 +411,8 @@
                 ); // isi nama semua route absensi implementasi GCG
 
                 $gcg_lhkpn = array(
-                    'gcg.lhkpn.index'
+                    'gcg.lhkpn.index',
+                    'gcg.lhkpn.create',
                 ); // isi nama semua route absensi implementasi GCG
 
                 $gcg_report_boundary = array(
