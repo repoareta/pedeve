@@ -95,24 +95,6 @@
 							</select>
 						</div>
 					</div>
-
-					<div class="form-group row">
-							<label for="" class="col-2 col-form-label">Menggunakan Kuasa Hukum</label>
-							<div class="col-8">
-								<div class="kt-radio-inline">
-									<label class="kt-radio kt-radio--solid">
-										<input value="1" type="radio"  name="kuasa" id="kuasa" onclick="displayResult(1)" checked> Ya
-										<span></span>
-									</label>
-									<label class="kt-radio kt-radio--solid">
-										<input value="2" type="radio"    name="kuasa" id="kuasa" onclick="displayResult(2)"> Tidak
-										<span></span>
-									</label>
-								</div>
-							</div>
-						</div>
-                    
-				</div>
 				<div class="modal-footer">
 					<button type="button" class="btn btn-warning" data-dismiss="modal"><i class="fa fa-reply" aria-hidden="true"></i> Batal</button>
 					<button type="submit" class="btn btn-primary"><i class="fa fa-check" aria-hidden="true"></i> Simpan</button>
@@ -171,7 +153,7 @@
 				success : function(data){
 					Swal.fire({
 							type : 'success',
-							title: "swal_title",
+							title: "Data Berhasil Ditambah",
 							text : 'Success',
 							timer: 2000
 						});
