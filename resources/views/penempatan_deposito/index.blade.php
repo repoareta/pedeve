@@ -1,6 +1,11 @@
 @extends('layout.global')
-
 @section('content')
+<style>
+/* td{
+        font-weight: bold;
+        background-color: #666666;
+    } */
+</style>
 <!-- begin:: Subheader -->
 <div class="kt-subheader   kt-grid__item" id="kt_subheader">
 	<div class="kt-container  kt-container--fluid ">
@@ -111,11 +116,11 @@
 					<th></th>
 					<th>NO.SERI</th>
 					<th>NAMA BANK</th>
-					<th>ASAL DANA</th>
 					<th>NOMINAL</th>
 					<th>TGL.DEPOSITO</th>
 					<th>TGL.JTH TEMPO</th>
 					<th>HARI BUNGA</th>
+					<th>RATE</th>
 					<th>BUNGA %/THN</th>
 					<th>BUNGA/BULAN</th>
 					<th>PPH 20%/BLN</th>
@@ -143,6 +148,9 @@
 			serverSide: true,
 			searching: false,
 			lengthChange: false,
+			pageLength: 100,
+			scrollY:        "500px",
+			scrollCollapse: true,
 			language: {
 			processing: '<i class="fa fa-spinner fa-spin fa-2x fa-fw"></i> <br> Loading...'
 			},
@@ -162,18 +170,33 @@
 				{data: 'radio', name: 'radio'},
 				{data: 'noseri', name: 'noseri'},
 				{data: 'namabank', name: 'namabank'},
-				{data: 'asal', name: 'asal'},
 				{data: 'nominal', name: 'nominal'},
 				{data: 'tgldep', name: 'tgldep'},
 				{data: 'tgltempo', name: 'tgltempo'},
 				{data: 'haribunga', name: 'haribunga'},
+				{data: 'rate', name: 'rate'},
 				{data: 'bungatahun', name: 'bungatahun'},
 				{data: 'bungabulan', name: 'bungabulan'},
 				{data: 'pph20', name: 'pph20'},
 				{data: 'netbulan', name: 'netbulan'},
 				{data: 'accharibunga', name: 'accharibunga'},
 				{data: 'accnetbulan', name: 'accnetbulan'},
-			]
+			],
+			columnDefs: [
+                        {"className": "dt-center", "targets": "_all"}
+                      ],
+			createdRow: function( row, data, dataIndex ) {
+                if(data["warna"] == 1){
+					$( row ).css( "background-color", "#FF0000" );
+					$('td', row ).css( "color", "#FFFEFE" );
+				}else if(data["warna"] == 2){
+					$( row ).css( "background-color", "#666666" );
+					$('td', row ).css( "color", "#FFFEFE" );
+				}else{
+					$( row ).css( "background-color", "#000000" );
+					$('td', row ).css( "color", "#FFFEFE" );
+				}
+            },
 			
 	});
 	$('#search-form').on('submit', function(e) {

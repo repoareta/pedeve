@@ -66,14 +66,14 @@
 									<input class="form-control" type="hidden" value=""   name="kurs" id="kurs" size="6" maxlength="6" readonly style="background-color:#DCDCDC; cursor:not-allowed">
 									<input class="form-control" type="hidden" value=""   name="lineno" id="lineno" size="6" maxlength="6" readonly style="background-color:#DCDCDC; cursor:not-allowed">
 									<input class="form-control" type="hidden" value=""   name="keterangan" id="keterangan" size="50" maxlength="50" readonly style="background-color:#DCDCDC; cursor:not-allowed">
+									<input  class="form-control" type="hidden" value="" id="asal" name="asal" size="2" maxlength="2" onkeyup="this.value = this.value.toUpperCase()" required oninvalid="this.setCustomValidity('Asal Harus Diisi..')" oninput="setCustomValidity('')" autocomplete='off' >
 							</div>
 						</div>
-						<div class="form-group row">
+						{{--<div class="form-group row">
 							<label for="spd-input" class="col-2 col-form-label">Asal<span style="color:red;">*</span></label>
 							<div class="col-10">
-								<input  class="form-control" type="text" value="" id="asal" name="asal" size="2" maxlength="2" onkeyup="this.value = this.value.toUpperCase()" required oninvalid="this.setCustomValidity('Asal Harus Diisi..')" oninput="setCustomValidity('')" autocomplete='off' >
 							</div>
-						</div>
+						</div>--}}
 						<div class="form-group row">
 							<label for="spd-input" class="col-2 col-form-label">Bank<span style="color:red;">*</span></label>
 							<div class="col-10">

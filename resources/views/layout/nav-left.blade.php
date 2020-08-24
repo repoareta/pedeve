@@ -554,7 +554,8 @@
                     'penempatan_deposito.create',
                     'penempatan_deposito.edit',
                     'penempatan_deposito.depopjg',
-                    'penempatan_deposito.rekaprc'
+                    'penempatan_deposito.rekaprc',
+                    'penempatan_deposito.rekap_rc'
                 ); // isi nama semua route penempatan deposito
                 $perhitungan = array(
                     'perhitungan_bagihasil.index',
@@ -760,6 +761,17 @@
                     $treassury,
                     $report_kontroler,
                     $tabel
+                ); // array merge semua submenu
+
+                $data_perkara = array(
+                    'data_perkara.index',
+                    'data_perkara.create',
+                    'data_perkara.edit',                    
+                    'data_perkara.detail'                    
+                ); // isi nama semua route data_perkara
+                
+                $customer_management = array_merge(
+                    $data_perkara
                 ); // array merge semua submenu
 
 
@@ -2136,8 +2148,9 @@
                 </div>
             </li>
             @endif
+
             @if(substr_count(Auth::user()->userap,"B") > 0)            
-            <li class="kt-menu__item  kt-menu__item--submenu" aria-haspopup="true" data-ktmenu-submenu-toggle="hover">
+            <li class="kt-menu__item  kt-menu__item--submenu {{ set_active($customer_management) }}" aria-haspopup="true" data-ktmenu-submenu-toggle="hover">
                 <a href="javascript:;" class="kt-menu__link kt-menu__toggle">
                     <span class="kt-menu__link-icon">
                         <i class="fa fa-handshake"></i>
@@ -2148,67 +2161,19 @@
                 </a>
                 <div class="kt-menu__submenu "><span class="kt-menu__arrow"></span>
                     <ul class="kt-menu__subnav">
-                        <li class="kt-menu__item  kt-menu__item--parent" aria-haspopup="true">
-                            <span class="kt-menu__link">
-                                <span class="kt-menu__link-text">
-                                    Customer Management
-                                </span>
-                            </span>
-                        </li>
-                        <li class="kt-menu__item " aria-haspopup="true">
-                            <a href="{{ route('perjalanan_dinas.index') }}" class="kt-menu__link">
+                        <li class="kt-menu__item kt-menu__item{{ set_active_submenu($data_perkara) }}" aria-haspopup="true">
+                            <a href="{{route('data_perkara.index')}}" class="kt-menu__link">
                                 <i class="kt-menu__link-bullet kt-menu__link-bullet--dot">
                                     <span></span>
                                 </i>
-                                <span class="kt-menu__link-text">
-                                    Legalitas Customer
-                                </span>
-                            </a>
-                        </li>
-                        <li class="kt-menu__item " aria-haspopup="true">
-                            <a href="{{ route('perjalanan_dinas.index') }}" class="kt-menu__link">
-                                <i class="kt-menu__link-bullet kt-menu__link-bullet--dot">
-                                    <span></span>
-                                </i>
-                                <span class="kt-menu__link-text">
-                                    Perjanjian-Perjanjian
-                                </span>
-                            </a>
-                        </li>
-                        <li class="kt-menu__item " aria-haspopup="true">
-                            <a href="{{ route('perjalanan_dinas.index') }}" class="kt-menu__link">
-                                <i class="kt-menu__link-bullet kt-menu__link-bullet--dot">
-                                    <span></span>
-                                </i>
-                                <span class="kt-menu__link-text">
-                                    Litigasi
-                                </span>
-                            </a>
-                        </li>
-                        <li class="kt-menu__item " aria-haspopup="true">
-                            <a href="{{ route('perjalanan_dinas.index') }}" class="kt-menu__link">
-                                <i class="kt-menu__link-bullet kt-menu__link-bullet--dot">
-                                    <span></span>
-                                </i>
-                                <span class="kt-menu__link-text">
-                                    Tabel Master
-                                </span>
-                            </a>
-                        </li>
-                        <li class="kt-menu__item " aria-haspopup="true">
-                            <a href="{{ route('perjalanan_dinas.index') }}" class="kt-menu__link">
-                                <i class="kt-menu__link-bullet kt-menu__link-bullet--dot">
-                                    <span></span>
-                                </i>
-                                <span class="kt-menu__link-text">
-                                    Report Customer
-                                </span>
+                                <span class="kt-menu__link-text">Data Perkara</span>
                             </a>
                         </li>
                     </ul>
                 </div>
             </li>
             @endif
+
             @if(Auth::user()->userlv == 0 or Auth::user()->userlv == 1) 
             <li class="kt-menu__item  kt-menu__item--submenu {{ set_active($administrator) }}" aria-haspopup="true" data-ktmenu-submenu-toggle="hover">
                 <a href="javascript:;" class="kt-menu__link kt-menu__toggle">
