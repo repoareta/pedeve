@@ -41,7 +41,7 @@ class GcgSosialisasiController extends Controller
         if ($file) {
             $file_name = $file->getClientOriginalName();
             $file_ext = $file->getClientOriginalExtension();
-            $sosialisasi->dokumen = $file_name.".".$file_ext;
+            $sosialisasi->dokumen = $file_name;
             $file_path = $file->storeAs('sosialisasi', $sosialisasi->dokumen, 'public');
         }
 
