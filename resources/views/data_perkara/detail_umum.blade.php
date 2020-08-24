@@ -181,7 +181,7 @@
         <tr>
             <th style="background-color:#F4F6F6;" width="20%">Ringkasan Perkara</th><td style="text-align:justify;">
             <?php 
-                $pecah = explode("\r\n\r\n", $data->r_perkara);
+                $pecah = explode("\r\n\r\n", nl2br($data->r_perkara));
     
                 // string kosong inisialisasi
                 $text = "";
@@ -199,7 +199,7 @@
         <tr>
             <th style="background-color:#F4F6F6;" width="20%">Ringkasan Petitum</th><td style="text-align:justify;">
             <?php 
-                $pecah = explode("\r\n\r\n", $data->r_patitum);
+                $pecah = explode("\r\n\r\n", nl2br($data->r_patitum));
     
                 // string kosong inisialisasi
                 $text = "";
@@ -217,7 +217,7 @@
         <tr>
             <th style="background-color:#F4F6F6;" width="20%">Ringkasan Putusan</th><td style="text-align:justify;">
             <?php 
-                $pecah = explode("\r\n\r\n", $data->r_putusan);
+                $pecah = explode("\r\n\r\n", nl2br($data->r_putusan));
     
                 // string kosong inisialisasi
                 $text = "";
