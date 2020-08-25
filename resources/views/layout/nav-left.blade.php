@@ -770,9 +770,17 @@
                     'data_perkara.edit',                    
                     'data_perkara.detail'                    
                 ); // isi nama semua route data_perkara
+
+                $perusahaan_afiliasi = array(
+                    'perusahaan_afiliasi.index',
+                    'perusahaan_afiliasi.create',
+                    'perusahaan_afiliasi.edit',                    
+                    'perusahaan_afiliasi.detail'                    
+                ); // isi nama semua route perusahaan_afiliasi
                 
                 $customer_management = array_merge(
-                    $data_perkara
+                    $data_perkara,
+                    $perusahaan_afiliasi,
                 ); // array merge semua submenu
 
 
@@ -2168,6 +2176,15 @@
                                     <span></span>
                                 </i>
                                 <span class="kt-menu__link-text">Data Perkara</span>
+                            </a>
+                        </li>
+
+                        <li class="kt-menu__item kt-menu__item{{ set_active_submenu($perusahaan_afiliasi) }}" aria-haspopup="true">
+                            <a href="{{route('perusahaan_afiliasi.index')}}" class="kt-menu__link">
+                                <i class="kt-menu__link-bullet kt-menu__link-bullet--dot">
+                                    <span></span>
+                                </i>
+                                <span class="kt-menu__link-text">Perusahaan Afiliasi</span>
                             </a>
                         </li>
                     </ul>
