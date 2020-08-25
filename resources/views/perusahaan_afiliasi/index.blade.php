@@ -34,7 +34,7 @@
 			<div class="kt-portlet__head-actions" style="font-size: 2rem;">
 				@foreach(DB::table('usermenu')->where('userid',Auth::user()->userid)->where('menuid',703)->limit(1)->get() as $data_akses)
 				@if($data_akses->tambah == 1)
-				<a href="{{ route('perjalanan_dinas.create') }}">
+				<a href="{{ route('perusahaan_afiliasi.create') }}">
 					<span class="kt-font-success" data-toggle="kt-tooltip" data-placement="top" title="Tambah Data">
 						<i class="fas fa-plus-circle"></i>
 					</span>
@@ -107,7 +107,7 @@
 			if($('input[type=radio]').is(':checked')) { 
 				$("input[type=radio]:checked").each(function() {
 					var id = $(this).val().split("/").join("-");
-					var url = '{{ route("perjalanan_dinas.edit", ":no_panjar") }}';
+					var url = '{{ route("perusahaan_afiliasi.edit", ":no_panjar") }}';
 					// go to page edit
 					window.location.href = url.replace(':no_panjar',id);
 				});
@@ -142,7 +142,7 @@
 					.then((result) => {
 						if (result.value) {
 							$.ajax({
-								url: "{{ route('perjalanan_dinas.delete') }}",
+								url: "{{ route('perusahaan_afiliasi.delete') }}",
 								type: 'DELETE',
 								dataType: 'json',
 								data: {
@@ -169,63 +169,7 @@
 			} else {
 				swalAlertInit('hapus');
 			}
-		});
-
-		$('#exportRowData').click(function(e) {
-			e.preventDefault();
-			if($('input[type=radio]').is(':checked')) { 
-				$("input[type=radio]:checked").each(function() {
-					var id = $(this).val();
-					
-					const swalWithBootstrapButtons = Swal.mixin({
-					customClass: {
-						confirmButton: 'btn btn-primary',
-						cancelButton: 'btn btn-danger'
-					},
-						buttonsStyling: false
-					})
-
-					swalWithBootstrapButtons.fire({
-						title: "Data yang akan dicetak?",
-						text: "No. Panjar : " + id,
-						type: 'warning',
-						showCancelButton: true,
-						reverseButtons: true,
-						confirmButtonText: 'Cetak',
-						cancelButtonText: 'Batalkan'
-					})
-					.then((result) => {
-						if (result.value) {
-							var id = $(this).val().split("/").join("-");
-							// go to page edit
-							var url = "{{ url('umum/perjalanan_dinas/export') }}" + '/' + id;
-							window.open(url, '_blank');
-						}
-					});
-				});
-			} else {
-				swalAlertInit('cetak');
-			}
-		});
-
-		$('#exportRow').click(function(e) {
-			e.preventDefault();
-			if($('input[type=radio]').is(':checked')) { 
-				$("input[type=radio]:checked").each(function() {
-					var id = $(this).val();
-
-					// str.replace("Microsoft", "W3Schools");
-
-					// open modal
-					$('#cetakModal').modal('show');
-
-					// fill no_panjar to no_panjar field
-					$('#no_panjar_dinas').val(id);
-				});
-			} else {
-				swalAlertInit('cetak');
-			}
-		});
+		});		
 	});
 	</script>
 @endsection

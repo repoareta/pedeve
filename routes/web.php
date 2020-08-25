@@ -1397,6 +1397,7 @@ Route::group(['middleware'=> ['auth','checkRole:1,0']], function () {
             Route::get('perusahaan_afiliasi/create', 'PerusahaanAfiliasiController@create')->name('create');
             Route::get('perusahaan_afiliasi/edit/{perusahaan_afiliasi}', 'PerusahaanAfiliasiController@edit')->name('edit');
             Route::get('perusahaan_afiliasi/detail/{perusahaan_afiliasi}', 'PerusahaanAfiliasiController@detail')->name('detail');
+            Route::delete('perusahaan_afiliasi/delete', 'PerusahaanAfiliasiController@delete')->name('delete');
         });
         // perusahaan afiliasi END
     });
