@@ -123,7 +123,7 @@
             <tr>
                 <td style="padding-bottom:3%;">Keterangan</td>
                 <td>:</td>
-                <td>{{ucwords($request->keterangan)}}</td>
+                <td>{{ucwords(strtolower($request->keterangan))}}</td>
             </tr>
         </table>
         <table width="100%">

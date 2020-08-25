@@ -47,7 +47,7 @@
 				<div class="form-group row">
 					<label for="dari-input" class="col-2 col-form-label">Bank</label>
 					<div class="col-10">
-						<select name="sanper" id="select-debetdari" class="form-control selectpicker" data-live-search="true" oninvalid="this.setCustomValidity('Bank Harus Diisi..')" onchange="setCustomValidity('')">
+						<select name="sanper" class="form-control kt-select2"  oninvalid="this.setCustomValidity('Bank Harus Diisi..')" onchange="setCustomValidity('')">
 							<option value="">- All -</option>
 							@foreach($data_bank as $data)
 							<option value="{{$data->kdbank}}">{{$data->kdbank}} -- {{$data->descacct}}</option>
@@ -61,10 +61,9 @@
 						<?php 
 							$tahun = date('Y');
 							$bulan = date('m');
-							$lapangan = "MD";
 							$kurs = 1;
 						?>
-						<select class="form-control" name="bulan">
+						<select class="form-control kt-select2" name="bulan">
 							<option value="01" <?php if($bulan  == '01' ) echo 'selected' ; ?>>Januari</option>
 							<option value="02" <?php if($bulan  == '02' ) echo 'selected' ; ?>>Februari</option>
 							<option value="03" <?php if($bulan  == '03' ) echo 'selected' ; ?>>Maret</option>
@@ -87,12 +86,18 @@
 					</div>
 				</div>
 				<div class="form-group row">
-					<label for="dari-input" class="col-2 col-form-label">Lapangan<span style="color:red;">*</span></label>
+					<label for="dari-input" class="col-2 col-form-label">Kurs<span style="color:red;">*</span></label>
 					<div class="col-10">
-						<select name="lp" id="select-debetdari" class="form-control selectpicker" data-live-search="true" required oninvalid="this.setCustomValidity('Lapangan Harus Diisi..')" onchange="setCustomValidity('')">
-							<option value="">- Pilih -</option>
+						<input class="form-control" type="text" name="kurs" value="{{$kurs}}" size="15" maxlength="15" autocomplete='off' onkeypress="return hanyaAngka(event)" required oninvalid="this.setCustomValidity('Kurs Harus Diisi..')" oninput="setCustomValidity('')">				
+					</div>
+				</div>
+				<div class="form-group row">
+					<label for="dari-input" class="col-2 col-form-label">Lapangan</label>
+					<div class="col-10">
+						<select name="lapangan" id="select-debetdari" class="form-control kt-select2">
+							<option value="">- All -</option>
 							@foreach($data_lapang as $data_l)
-							<option value="{{$data_l->kodelokasi}}"  <?php if($data_l->kodelokasi  == $lapangan ) echo 'selected' ; ?>>{{$data_l->kodelokasi}} -- {{$data_l->nama}}</option>
+							<option value="{{$data_l->kodelokasi}}">{{$data_l->kodelokasi}} -- {{$data_l->nama}}</option>
 							@endforeach
 						</select>								
 					</div>
@@ -117,7 +122,9 @@
 @section('scripts')
 <script type="text/javascript">
 $(document).ready(function () {
-   
+	$('.kt-select2').select2().on('change', function() {
+			$(this).valid();
+	});
 	$('#tanggal').datepicker({
 		todayHighlight: true,
 		orientation: "bottom left",

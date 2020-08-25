@@ -1364,6 +1364,35 @@ Route::group(['middleware'=> ['auth','checkRole:1,0']], function () {
     
     
     //Administrator
+    Route::prefix('customer_management')->group(function () {
+
+        //set_user
+        // Route assigned name "set_user.index"...
+        Route::name('data_perkara.')->group(function () {
+            Route::get('data_perkara', 'DataPerkaraController@index')->name('index');
+            Route::post('data_perkara/index/search', 'DataPerkaraController@searchIndex')->name('search.index');
+            Route::get('data_perkara/create', 'DataPerkaraController@create')->name('create');
+            Route::post('data_perkara/store', 'DataPerkaraController@store')->name('store');
+            Route::get('data_perkara/edit/{no}', 'DataPerkaraController@edit')->name('edit');
+            Route::get('data_perkara/detail/{no}', 'DataPerkaraController@detail')->name('detail');
+            Route::post('data_perkara/update', 'DataPerkaraController@update')->name('update');
+            Route::delete('data_perkara/delete', 'DataPerkaraController@delete')->name('delete');
+            Route::get('data_perkara/pihak/search', 'DataPerkaraController@searchpihak')->name('search.pihak');
+            Route::post('data_perkara/show', 'DataPerkaraController@showpihak')->name('show.pihak.json');
+            Route::post('data_perkara/pihak', 'DataPerkaraController@pihak')->name('store.pihak');
+            Route::delete('data_perkara/delete/pihak', 'DataPerkaraController@deletepihak')->name('delete.pihak');
+
+            Route::get('data_perkara/hakim/search', 'DataPerkaraController@searchhakim')->name('search.hakim');
+            Route::post('data_perkara/show/hakim', 'DataPerkaraController@showhakim')->name('show.json');
+            Route::post('data_perkara/hakim', 'DataPerkaraController@hakim')->name('store.hakim');
+            Route::post('data_perkara/hakim/pihak', 'DataPerkaraController@pihakJson')->name('pihakJson');
+            Route::delete('data_perkara/delete/hakim', 'DataPerkaraController@deletehakim')->name('delete.hakim');
+        });
+        //end data_perkara
+
+    });
+
+    //Administrator
     Route::prefix('administrator')->group(function () {
 
         //set_user

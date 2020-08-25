@@ -67,7 +67,7 @@
 						<div class="form-group row">
 							<label class="col-2 col-form-label">User Group</label>
 							<div class="col-10">
-								<select name="kode" class="form-control selectpicker" data-live-search="true">
+								<select name="kode" class="form-control kt-select2">
 									<option value="KONTROLER">KONTROLER</option>		
 									<option value="TABUNGAN">TABUNGAN</option>
 									<option value="PERBENDAHARAAN">PERBENDAHARAAN</option>

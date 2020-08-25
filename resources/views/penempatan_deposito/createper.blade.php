@@ -63,13 +63,13 @@
 									<input class="form-control" type="hidden" value="{{$data->keterangan}}"   name="keterangan" id="keterangan" size="50" maxlength="50" readonly style="background-color:#DCDCDC; cursor:not-allowed">
 							</div>
 						</div>
-						<div class="form-group row">
+						{{--<div class="form-group row">
 							<label for="spd-input" class="col-2 col-form-label">Asal<span style="color:red;">*</span></label>
 							<div class="col-10">
 								<input  class="form-control" type="text" value="{{$data->asal}}" id="asal" name="asal" size="2" maxlength="2" onkeyup="this.value = this.value.toUpperCase()" required oninvalid="this.setCustomValidity('Asal Harus Diisi..')" oninput="setCustomValidity('')" autocomplete='off' >
 								<input  class="form-control" type="hidden" value="{{$data->perpanjangan}}" id="perpanjangan" name="perpanjangan" size="2" maxlength="2" onkeyup="this.value = this.value.toUpperCase()" required oninvalid="this.setCustomValidity('Asal Harus Diisi..')" oninput="setCustomValidity('')" autocomplete='off' >
 							</div>
-						</div>
+						</div>--}}
 						<div class="form-group row">
 							<label for="spd-input" class="col-2 col-form-label">Bank<span style="color:red;">*</span></label>
 							<div class="col-10">
