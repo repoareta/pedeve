@@ -770,7 +770,11 @@
                     'data_perkara.edit',                    
                     'data_perkara.detail'                    
                 ); // isi nama semua route data_perkara
-
+                $monitoring_kinerja = array(
+                    'monitoring_kinerja.index',
+                    'monitoring_kinerja.create',
+                    'monitoring_kinerja.edit'                   
+                ); // isi nama semua route monitoring_kinerja
                 $perusahaan_afiliasi = array(
                     'perusahaan_afiliasi.index',
                     'perusahaan_afiliasi.create',
@@ -781,6 +785,7 @@
                 $customer_management = array_merge(
                     $data_perkara,
                     $perusahaan_afiliasi,
+                    $monitoring_kinerja
                 ); // array merge semua submenu
 
 
@@ -2185,6 +2190,18 @@
                                     <span></span>
                                 </i>
                                 <span class="kt-menu__link-text">Perusahaan Afiliasi</span>
+                            </a>
+                        </li>
+                    </ul>
+                </div>
+                <div class="kt-menu__submenu "><span class="kt-menu__arrow"></span>
+                    <ul class="kt-menu__subnav">
+                        <li class="kt-menu__item kt-menu__item{{ set_active_submenu($monitoring_kinerja) }}" aria-haspopup="true">
+                            <a href="{{route('monitoring_kinerja.index')}}" class="kt-menu__link">
+                                <i class="kt-menu__link-bullet kt-menu__link-bullet--dot">
+                                    <span></span>
+                                </i>
+                                <span class="kt-menu__link-text">Monitoring Kinerja</span>
                             </a>
                         </li>
                     </ul>

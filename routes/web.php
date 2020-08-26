@@ -1366,8 +1366,8 @@ Route::group(['middleware'=> ['auth','checkRole:1,0']], function () {
     //Administrator
     Route::prefix('customer_management')->group(function () {
 
-        //set_user
-        // Route assigned name "set_user.index"...
+        //data_perkara
+        // Route assigned name "data_perkara.index"...
         Route::name('data_perkara.')->group(function () {
             Route::get('data_perkara', 'DataPerkaraController@index')->name('index');
             Route::post('data_perkara/index/search', 'DataPerkaraController@searchIndex')->name('search.index');
@@ -1389,6 +1389,20 @@ Route::group(['middleware'=> ['auth','checkRole:1,0']], function () {
             Route::delete('data_perkara/delete/hakim', 'DataPerkaraController@deletehakim')->name('delete.hakim');
         });
         //end data_perkara
+
+        //monitoring_kinerja
+        // Route assigned name "monitoring_kinerja.index"...
+        Route::name('monitoring_kinerja.')->group(function () {
+            Route::get('monitoring_kinerja', 'MonitoringKinerjaController@index')->name('index');
+            Route::post('monitoring_kinerja/index/search', 'MonitoringKinerjaController@indexJson')->name('index.json');
+            Route::get('monitoring_kinerja/create', 'MonitoringKinerjaController@create')->name('create');
+            Route::post('monitoring_kinerja/store', 'MonitoringKinerjaController@store')->name('store');
+            Route::get('monitoring_kinerja/edit/{no}', 'MonitoringKinerjaController@edit')->name('edit');
+            Route::get('monitoring_kinerja/detail/{no}', 'MonitoringKinerjaController@detail')->name('detail');
+            Route::post('monitoring_kinerja/update', 'MonitoringKinerjaController@update')->name('update');
+            Route::delete('monitoring_kinerja/delete', 'MonitoringKinerjaController@delete')->name('delete');
+        });
+        //end monitoring_kinerja
 
         // perusahaan afiliasi START
         // Route assigned name "perusahaan_afiliasi.index"...
@@ -1412,7 +1426,7 @@ Route::group(['middleware'=> ['auth','checkRole:1,0']], function () {
             Route::post('set_user/index/search', 'SetUserController@searchIndex')->name('search.index');
             Route::get('set_user/create', 'SetUserController@create')->name('create');
             Route::post('set_user/store', 'SetUserController@store')->name('store');
-            Route::get('set_user/edit/{no}', 'SetUserController@edit')->name('edit');
+            Route::get('set_user/edit/{id}', 'SetUserController@edit')->name('edit');
             Route::get('set_user/reset', 'SetUserController@Reset')->name('reset');
             Route::post('set_user/update', 'SetUserController@update')->name('update');
             Route::delete('set_user/delete', 'SetUserController@delete')->name('delete');
