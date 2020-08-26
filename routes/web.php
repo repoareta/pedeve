@@ -1404,6 +1404,16 @@ Route::group(['middleware'=> ['auth','checkRole:1,0']], function () {
         });
         //end monitoring_kinerja
 
+        // perusahaan afiliasi START
+        // Route assigned name "perusahaan_afiliasi.index"...
+        Route::name('perusahaan_afiliasi.')->group(function () {
+            Route::get('perusahaan_afiliasi', 'PerusahaanAfiliasiController@index')->name('index');
+            Route::get('perusahaan_afiliasi/create', 'PerusahaanAfiliasiController@create')->name('create');
+            Route::get('perusahaan_afiliasi/edit/{perusahaan_afiliasi}', 'PerusahaanAfiliasiController@edit')->name('edit');
+            Route::get('perusahaan_afiliasi/detail/{perusahaan_afiliasi}', 'PerusahaanAfiliasiController@detail')->name('detail');
+            Route::delete('perusahaan_afiliasi/delete', 'PerusahaanAfiliasiController@delete')->name('delete');
+        });
+        // perusahaan afiliasi END
     });
 
     //Administrator
