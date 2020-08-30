@@ -5,10 +5,12 @@ namespace App\Http\Controllers;
 use Illuminate\Http\Request;
 
 // Load Model
+use App\Models\PerusahaanAfiliasi;
 use App\Models\PemegangSaham;
 
 //load form request (for validation)
 use App\Http\Requests\PemegangSahamStore;
+use App\Http\Requests\PemegangSahamUpdate;
 
 class PemegangSahamController extends Controller
 {
@@ -31,24 +33,27 @@ class PemegangSahamController extends Controller
     }
 
     /**
-     * Show the form for creating a new resource.
+     * Undocumented function
      *
-     * @return \Illuminate\Http\Response
+     * @param PemegangSahamStore $request
+     * @param PerusahaanAfiliasi $perusahaan_afiliasi
+     * @param PemegangSaham $pemegang_saham
+     * @return void
      */
-    public function create()
-    {
-        //
-    }
+    public function store(
+        PemegangSahamStore $request,
+        PerusahaanAfiliasi $perusahaan_afiliasi,
+        PemegangSaham $pemegang_saham
+    ) {
+        $pemegang_saham->perusahaan_afiliasi_id = $perusahaan_afiliasi->id;
+        $pemegang_saham->nama = $request->nama_pemegang_saham;
+        $pemegang_saham->kepemilikan = $request->kepemilikan;
+        $pemegang_saham->jumlah_lembar_saham = $request->jumlah_lembar_saham;
+        $pemegang_saham->created_by = auth()->user()->nopeg;
 
-    /**
-     * Store a newly created resource in storage.
-     *
-     * @param  \Illuminate\Http\Request  $request
-     * @return \Illuminate\Http\Response
-     */
-    public function store(Request $request)
-    {
-        //
+        $pemegang_saham->save();
+
+        return response()->json($pemegang_saham, 200);
     }
 
     /**

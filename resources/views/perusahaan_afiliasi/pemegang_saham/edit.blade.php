@@ -2,7 +2,7 @@
 <div class="kt-portlet__head kt-portlet__head">
     <div class="kt-portlet__head-label">
         <span class="kt-portlet__head-icon">
-            <i class="kt-font-brand flaticon2-line-chart"></i>
+            <i class="kt-font-brand flaticon2-chart2"></i>
         </span>
         <h3 class="kt-portlet__head-title">
             Pemegang Saham
@@ -61,7 +61,7 @@
 					<div class="form-group row">
 						<label for="spd-input" class="col-2 col-form-label">% Kepemilikan</label>
 						<div class="col-10">
-							<input class="form-control" type="number" name="kepemilikan" id="kepemilikan" min="0">
+							<input class="form-control" type="number" name="kepemilikan" id="kepemilikan" min="0" max="100">
 						</div>
                     </div>
                     
