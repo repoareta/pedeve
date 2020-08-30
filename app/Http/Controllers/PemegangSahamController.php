@@ -33,7 +33,7 @@ class PemegangSahamController extends Controller
     }
 
     /**
-     * Undocumented function
+     * Insert Pemegang Saham Ke Database
      *
      * @param PemegangSahamStore $request
      * @param PerusahaanAfiliasi $perusahaan_afiliasi
@@ -57,14 +57,15 @@ class PemegangSahamController extends Controller
     }
 
     /**
-     * Display the specified resource.
+     * menampilkan detail satu data pemegang saham
      *
-     * @param  int  $id
-     * @return \Illuminate\Http\Response
+     * @param PerusahaanAfiliasi $perusahaan_afiliasi
+     * @param PemegangSaham $pemegang_saham
+     * @return void
      */
-    public function show($id)
+    public function show(PerusahaanAfiliasi $perusahaan_afiliasi, PemegangSaham $pemegang_saham)
     {
-        //
+        return response()->json($pemegang_saham, 200);
     }
 
     /**
@@ -80,7 +81,15 @@ class PemegangSahamController extends Controller
         PerusahaanAfiliasi $perusahaan_afiliasi,
         PemegangSaham $pemegang_saham
     ) {
-        //
+        $pemegang_saham->perusahaan_afiliasi_id = $perusahaan_afiliasi->id;
+        $pemegang_saham->nama = $request->nama_pemegang_saham;
+        $pemegang_saham->kepemilikan = $request->kepemilikan;
+        $pemegang_saham->jumlah_lembar_saham = $request->jumlah_lembar_saham_pemegang_saham;
+        $pemegang_saham->created_by = auth()->user()->nopeg;
+
+        $pemegang_saham->save();
+
+        return response()->json($pemegang_saham, 200);
     }
 
     /**
@@ -92,7 +101,7 @@ class PemegangSahamController extends Controller
     public function delete(PerusahaanAfiliasi $perusahaan_afiliasi, PemegangSaham $pemegang_saham)
     {
         $pemegang_saham->delete();
-        
+
         return response()->json(['delete' => true], 200);
     }
 }

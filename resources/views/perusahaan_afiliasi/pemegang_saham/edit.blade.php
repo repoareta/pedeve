@@ -30,7 +30,7 @@
                 <th></th>
                 <th>Nama PT</th>
                 <th>% Kepemilikan</th>
-                <th>Jumlah Saham (lembar)</th>
+                <th>Jumlah Lembar Saham</th>
             </tr>
         </thead>
         <tbody>
@@ -52,22 +52,22 @@
 			<form class="kt-form kt-form--label-right" action="" method="POST" id="formPemegangSahamStore">
 				<div class="modal-body">
 					<div class="form-group row">
-						<label for="spd-input" class="col-2 col-form-label">Nama</label>
-						<div class="col-10">
+						<label for="spd-input" class="col-3 col-form-label">Nama</label>
+						<div class="col-9">
 							<input class="form-control" type="text" name="nama_pemegang_saham" id="nama_pemegang_saham">
 						</div>
 					</div>
 
 					<div class="form-group row">
-						<label for="spd-input" class="col-2 col-form-label">% Kepemilikan</label>
-						<div class="col-10">
+						<label for="spd-input" class="col-3 col-form-label">% Kepemilikan</label>
+						<div class="col-9">
 							<input class="form-control" type="number" name="kepemilikan" id="kepemilikan" min="0" max="100">
 						</div>
                     </div>
                     
                     <div class="form-group row">
-						<label for="spd-input" class="col-2 col-form-label">Jumlah Lembar Saham</label>
-						<div class="col-10">
+						<label for="spd-input" class="col-3 col-form-label">Jumlah Lembar Saham</label>
+						<div class="col-9">
 							<input class="form-control" type="number" name="jumlah_lembar_saham_pemegang_saham" id="jumlah_lembar_saham_pemegang_saham" min="0">
 						</div>
 					</div>
@@ -120,7 +120,7 @@
 
 			if(state == 'add'){
 				url = "{{ route('perusahaan_afiliasi.pemegang_saham.store', ['perusahaan_afiliasi' => $perusahaan_afiliasi]) }}";
-				swal_title = "Tambah Detail Pemegang Saham";
+				swal_title = "Tambah Pemegang Saham";
 			} else {
 				url = "{{ route('perusahaan_afiliasi.pemegang_saham.update', 
 					[
@@ -128,9 +128,9 @@
 						'pemegang_saham' => ':id',
 					]) }}";
 				url = url
-				.replace(':id', $('#id').data('id'));
+				.replace(':id', $('#title_modal').data('id'));
 
-				swal_title = "Update Detail Upah Tetap";
+				swal_title = "Update Pemegang Saham";
 			}
 
 			$.ajax({
@@ -230,37 +230,37 @@
 
 	
 
-	$('#editRowUpahTetap').click(function(e) {
+	$('#editPemegangSaham').click(function(e) {
 		e.preventDefault();
 
 		if($('input[name=radio_pemegang_saham]').is(':checked')) { 
 			$("input[name=radio_pemegang_saham]:checked").each(function() {
 				// get value from row					
-				var id = $(this).val().split('-')[0];
-				var ut = $(this).val().split('-')[1];
+				var id = $(this).val();
+				var nama = $(this).attr('nama');
+
+                var url = "{{ route('perusahaan_afiliasi.pemegang_saham.show.json', 
+					[
+						'perusahaan_afiliasi' => $perusahaan_afiliasi,
+						'pemegang_saham' => ':id',
+					]) }}";
+				url = url.replace(':id', id);
 
 				$.ajax({
-					url: "{{ route('perusahaan_afiliasi.pemegang_saham.show.json') }}",
+					url: url,
 					type: 'GET',
-					data: {
-						"id" : "{{ $perusahaan_afiliasi }}",
-						"ut"    : ut,
-						"_token": "{{ csrf_token() }}",
-					},
 					success: function (response) {
 						console.log(response);
 						// update stuff
-						// append value						
-						$('#id_pemegang_saham').val(response.ut);
-						$('#mulai_pemegang_saham').val(response.mulai);
-						$('#sampai_pemegang_saham').val(response.sampai);
-						$('#keterangan_pemegang_saham').val(response.keterangan);
+						// append value
+						$('#nama_pemegang_saham').val(response.nama);
+						$('#kepemilikan').val(response.kepemilikan);
+						$('#jumlah_lembar_saham_pemegang_saham').val(response.jumlah_lembar_saham);
 						
 						// title
-						$('#title_modal').text('Ubah Detail Upah Tetap');
+						$('#title_modal').text('Ubah Pemegang Saham');
 						$('#title_modal').data('state', 'update');
-						// for url update
-						$('#id_pemegang_saham').data('id', response.ut);
+						$('#title_modal').data('id', id);
 						// open modal
 						$('#pemegangSahamModal').modal('show');
 					},

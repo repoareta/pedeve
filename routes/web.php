@@ -1433,12 +1433,15 @@ Route::group(['middleware'=> ['auth','checkRole:1,0']], function () {
             Route::delete('perusahaan_afiliasi/delete', 'PerusahaanAfiliasiController@delete')->name('delete');
 
             // Route assigned name "perusahaan_afiliasi.pemegang_saham.index"...
-            Route::name('pemegang_saham.')->group(function () {
-                Route::get('perusahaan_afiliasi/{perusahaan_afiliasi}/pemegang_saham', 'PemegangSahamController@indexJson')->name('index.json');
-                Route::get('perusahaan_afiliasi/pemegang_saham/show', 'PemegangSahamController@show')->name('show.json');
-                Route::post('perusahaan_afiliasi/{perusahaan_afiliasi}/pemegang_saham/store', 'PemegangSahamController@store')->name('store');
-                Route::post('perusahaan_afiliasi/{perusahaan_afiliasi}/pemegang_saham/update/{pemegang_saham}', 'PemegangSahamController@update')->name('update');
-                Route::delete('perusahaan_afiliasi/{perusahaan_afiliasi}/pemegang_saham/{pemegang_saham}', 'PemegangSahamController@delete')->name('delete');
+            // Matches The "/perusahaan_afiliasi/xxx" URL
+            Route::prefix('perusahaan_afiliasi')->group(function () {
+                Route::name('pemegang_saham.')->group(function () {
+                    Route::get('{perusahaan_afiliasi}/pemegang_saham', 'PemegangSahamController@indexJson')->name('index.json');
+                    Route::get('{perusahaan_afiliasi}/pemegang_saham/{pemegang_saham}', 'PemegangSahamController@show')->name('show.json');
+                    Route::post('{perusahaan_afiliasi}/pemegang_saham/store', 'PemegangSahamController@store')->name('store');
+                    Route::post('{perusahaan_afiliasi}/pemegang_saham/update/{pemegang_saham}', 'PemegangSahamController@update')->name('update');
+                    Route::delete('{perusahaan_afiliasi}/pemegang_saham/{pemegang_saham}', 'PemegangSahamController@delete')->name('delete');
+                });
             });
         });
         // perusahaan afiliasi END
