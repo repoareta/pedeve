@@ -1438,7 +1438,7 @@ Route::group(['middleware'=> ['auth','checkRole:1,0']], function () {
                 Route::get('perusahaan_afiliasi/pemegang_saham/show', 'PemegangSahamController@show')->name('show.json');
                 Route::post('perusahaan_afiliasi/{perusahaan_afiliasi}/pemegang_saham/store', 'PemegangSahamController@store')->name('store');
                 Route::post('perusahaan_afiliasi/{perusahaan_afiliasi}/pemegang_saham/update/{pemegang_saham}', 'PemegangSahamController@update')->name('update');
-                Route::delete('perusahaan_afiliasi/{perusahaan_afiliasi}/pemegang_saham/delete', 'PemegangSahamController@delete')->name('delete');
+                Route::delete('perusahaan_afiliasi/{perusahaan_afiliasi}/pemegang_saham/{pemegang_saham}', 'PemegangSahamController@delete')->name('delete');
             });
         });
         // perusahaan afiliasi END

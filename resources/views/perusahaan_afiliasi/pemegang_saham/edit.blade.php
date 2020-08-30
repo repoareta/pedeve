@@ -13,11 +13,11 @@
                 <i class="fas fa-plus-circle"></i>
             </span>
 
-            <span class="kt-font-warning pointer-link" id="editRow" data-toggle="kt-tooltip" data-placement="top" title="Ubah Data">
+            <span class="kt-font-warning pointer-link" id="editPemegangSaham" data-toggle="kt-tooltip" data-placement="top" title="Ubah Data">
                 <i class="fas fa-edit"></i>
             </span>
 
-            <span class="kt-font-danger pointer-link" id="deleteRow" data-toggle="kt-tooltip" data-placement="top" title="Hapus Data">
+            <span class="kt-font-danger pointer-link" id="deletePemegangSaham" data-toggle="kt-tooltip" data-placement="top" title="Hapus Data">
                 <i class="fas fa-times-circle"></i>
             </span>
         </div>
@@ -68,7 +68,7 @@
                     <div class="form-group row">
 						<label for="spd-input" class="col-2 col-form-label">Jumlah Lembar Saham</label>
 						<div class="col-10">
-							<input class="form-control" type="number" name="jumlah_lembar_saham" id="jumlah_lembar_saham" min="0">
+							<input class="form-control" type="number" name="jumlah_lembar_saham_pemegang_saham" id="jumlah_lembar_saham_pemegang_saham" min="0">
 						</div>
 					</div>
 				</div>
@@ -165,13 +165,21 @@
 		return false;
 	});
 
-	$('#deleteRowUpahTetap').click(function(e) {
+	$('#deletePemegangSaham').click(function(e) {
 		e.preventDefault();
 		if($('input[name=radio_pemegang_saham]').is(':checked')) { 
 			$("input[name=radio_pemegang_saham]:checked").each(function() {
 				var id = $(this).val();
 				var nama = $(this).attr('nama');
-				
+
+                var url = "{{ route('perusahaan_afiliasi.pemegang_saham.delete', 
+					[
+						'perusahaan_afiliasi' => $perusahaan_afiliasi,
+						'pemegang_saham' => ':id',
+					]) }}";
+				url = url
+				.replace(':id', id);
+
 				const swalWithBootstrapButtons = Swal.mixin({
 				customClass: {
 					confirmButton: 'btn btn-primary',
@@ -182,7 +190,7 @@
 
 				swalWithBootstrapButtons.fire({
 					title: "Data yang akan dihapus?",
-					text: "Pemegang Saham : " + ut,
+					text: "Pemegang Saham : " + nama,
 					type: 'warning',
 					showCancelButton: true,
 					reverseButtons: true,
@@ -192,19 +200,17 @@
 				.then((result) => {
 					if (result.value) {
 						$.ajax({
-							url: "{{ route('perusahaan_afiliasi.pemegang_saham.delete', ['perusahaan_afiliasi' => $perusahaan_afiliasi]) }}",
+							url: url,
 							type: 'DELETE',
 							dataType: 'json',
 							data: {
-								"id": id,
-								"ut": ut,
 								"_token": "{{ csrf_token() }}",
 							},
 							success: function () {
 								Swal.fire({
 									type  : 'success',
-									title : 'Hapus Detail Upah Tetap ' + ut,
-									text  : 'Success',
+									title : 'Hapus Detail Pemegang Saham ' + nama,
+									text  : 'Berhasil',
 									timer : 2000
 								}).then(function() {
 									t.ajax.reload();
