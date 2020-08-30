@@ -1428,8 +1428,18 @@ Route::group(['middleware'=> ['auth','checkRole:1,0']], function () {
             Route::get('perusahaan_afiliasi/create', 'PerusahaanAfiliasiController@create')->name('create');
             Route::post('perusahaan_afiliasi/store', 'PerusahaanAfiliasiController@store')->name('store');
             Route::get('perusahaan_afiliasi/edit/{perusahaan_afiliasi}', 'PerusahaanAfiliasiController@edit')->name('edit');
+            Route::post('perusahaan_afiliasi/update/{perusahaan_afiliasi}', 'PerusahaanAfiliasiController@update')->name('update');
             Route::get('perusahaan_afiliasi/detail/{perusahaan_afiliasi}', 'PerusahaanAfiliasiController@detail')->name('detail');
             Route::delete('perusahaan_afiliasi/delete', 'PerusahaanAfiliasiController@delete')->name('delete');
+
+            // Route assigned name "perusahaan_afiliasi.pemegang_saham.index"...
+            Route::name('pemegang_saham.')->group(function () {
+                Route::get('perusahaan_afiliasi/{perusahaan_afiliasi}/pemegang_saham', 'PemegangSahamController@indexJson')->name('index.json');
+                Route::get('perusahaan_afiliasi/pemegang_saham/show', 'PemegangSahamController@show')->name('show.json');
+                Route::post('perusahaan_afiliasi/{perusahaan_afiliasi}/pemegang_saham/store', 'PemegangSahamController@store')->name('store');
+                Route::post('perusahaan_afiliasi/{perusahaan_afiliasi}/pemegang_saham/update/{pemegang_saham}', 'PemegangSahamController@update')->name('update');
+                Route::delete('perusahaan_afiliasi/{perusahaan_afiliasi}/pemegang_saham/delete', 'PemegangSahamController@delete')->name('delete');
+            });
         });
         // perusahaan afiliasi END
     });
