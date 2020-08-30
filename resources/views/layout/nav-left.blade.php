@@ -489,9 +489,17 @@
                     'data_pajak.index',
                     'data_pajak.create',
                     'data_pajak.edit',
-                ); // isi nama semua route Informasi saldo
+                ); // isi nama semua route data pajak
+                $proses_pajak = array(
+                    'proses_pajak.rekap',
+                ); // isi nama semua route proses pajak
+                $laporan_pajak = array(
+                    'laporan_pajak.rekap',
+                ); // isi nama semua route laporan pajak
                 $pajak_tahunan = array_merge(
-                    $data_pajak
+                    $data_pajak,
+                    $proses_pajak,
+                    $laporan_pajak
                 ); //isi nama Subdomain Tool
 
                 $saldo = array_merge(
@@ -1761,6 +1769,26 @@
                                             </i>
                                             <span class="kt-menu__link-text">
                                                 Data Pajak
+                                            </span>
+                                        </a>
+                                    </li>
+                                    <li class="kt-menu__item kt-menu__item--submenu {{ set_active($proses_pajak) }}" aria-haspopup="true" data-ktmenu-submenu-toggle="hover">
+                                        <a href="{{ route('proses_pajak.rekap') }}" class="kt-menu__link">
+                                            <i class="kt-menu__link-bullet kt-menu__link-bullet--dot">
+                                                <span></span>
+                                            </i>
+                                            <span class="kt-menu__link-text">
+                                                Form 1721-A1
+                                            </span>
+                                        </a>
+                                    </li>
+                                    <li class="kt-menu__item kt-menu__item--submenu {{ set_active($laporan_pajak) }}" aria-haspopup="true" data-ktmenu-submenu-toggle="hover">
+                                        <a href="{{ route('laporan_pajak.rekap') }}" class="kt-menu__link">
+                                            <i class="kt-menu__link-bullet kt-menu__link-bullet--dot">
+                                                <span></span>
+                                            </i>
+                                            <span class="kt-menu__link-text">
+                                                SPT Tahunan 21
                                             </span>
                                         </a>
                                     </li>

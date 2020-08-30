@@ -141,7 +141,7 @@ tr {
                             }
                             ?>
                         </td>
-                        <td class="text-center">echo $row->accharibunga;</td>
+                        <td class="text-center">{{$row->accharibunga}}</td>
                         <td class="text-right">
                             <?php
                             if($row->ci == 2){
