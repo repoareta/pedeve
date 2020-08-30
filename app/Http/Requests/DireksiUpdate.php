@@ -24,7 +24,9 @@ class DireksiUpdate extends FormRequest
     public function rules()
     {
         return [
-            //
+            'nama_direksi'  => 'required',
+            'tmt_dinas' => 'required|date',
+            'akhir_masa_dinas' => 'required|date',
         ];
     }
 }

@@ -83,8 +83,8 @@ class DireksiController extends Controller
     ) {
         $direksi->perusahaan_afiliasi_id = $perusahaan_afiliasi->id;
         $direksi->nama = $request->nama_direksi;
-        $direksi->kepemilikan = $request->kepemilikan;
-        $direksi->jumlah_lembar_saham = $request->jumlah_lembar_saham_direksi;
+        $direksi->tmt_dinas = $request->tmt_dinas;
+        $direksi->akhir_masa_dinas = $request->akhir_masa_dinas;
         $direksi->created_by = auth()->user()->nopeg;
 
         $direksi->save();

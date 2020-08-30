@@ -23,11 +23,10 @@ class DireksiStore extends FormRequest
      */
     public function rules()
     {
-        dd(request('akhir_masa_dinas'));
         return [
             'nama_direksi'  => 'required',
-            'tmt_dinas' => 'required|date|before:'.$this->input('akhir_masa_dinas'),
-            'akhir_masa_dinas' => 'required|date|after:tmt_dinas',
+            'tmt_dinas' => 'required|date',
+            'akhir_masa_dinas' => 'required|date',
         ];
     }
 }

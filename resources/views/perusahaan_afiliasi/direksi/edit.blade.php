@@ -61,14 +61,14 @@
 					<div class="form-group row">
 						<label for="tmt_dinas" class="col-3 col-form-label">TMT Dinas</label>
 						<div class="col-9">
-							<input class="form-control datepicker" type="text" name="tmt_dinas" id="tmt_dinas">
+							<input class="form-control datepicker" type="text" name="tmt_dinas" id="tmt_dinas" autocomplete="off">
 						</div>
                     </div>
                     
                     <div class="form-group row">
 						<label for="akhir_masa_dinas" class="col-3 col-form-label">Akhir Masa Dinas</label>
 						<div class="col-9">
-							<input class="form-control datepicker" type="text" name="akhir_masa_dinas" id="akhir_masa_dinas">
+							<input class="form-control datepicker" type="text" name="akhir_masa_dinas" id="akhir_masa_dinas" autocomplete="off">
 						</div>
 					</div>
 				</div>
@@ -129,7 +129,7 @@
 
 			if(state == 'add'){
 				url = "{{ route('perusahaan_afiliasi.direksi.store', ['perusahaan_afiliasi' => $perusahaan_afiliasi]) }}";
-				swal_title = "Tambah Pemegang Saham";
+				swal_title = "Tambah Direksi";
 			} else {
 				url = "{{ route('perusahaan_afiliasi.direksi.update', 
 					[
@@ -139,7 +139,7 @@
 				url = url
 				.replace(':id', $('#title_modal').data('id'));
 
-				swal_title = "Update Pemegang Saham";
+				swal_title = "Update Direksi";
 			}
 
 			$.ajax({
@@ -199,7 +199,7 @@
 
 				swalWithBootstrapButtons.fire({
 					title: "Data yang akan dihapus?",
-					text: "Pemegang Saham : " + nama,
+					text: "Direksi : " + nama,
 					type: 'warning',
 					showCancelButton: true,
 					reverseButtons: true,
@@ -218,7 +218,7 @@
 							success: function () {
 								Swal.fire({
 									type  : 'success',
-									title : 'Hapus Detail Pemegang Saham ' + nama,
+									title : 'Hapus Detail Direksi ' + nama,
 									text  : 'Berhasil',
 									timer : 2000
 								}).then(function() {
@@ -263,11 +263,11 @@
 						// update stuff
 						// append value
 						$('#nama_direksi').val(response.nama);
-						$('#kepemilikan').val(response.kepemilikan);
-						$('#jumlah_lembar_saham_direksi').val(response.jumlah_lembar_saham);
+						$('#tmt_dinas').val(response.tmt_dinas);
+						$('#akhir_masa_dinas').val(response.akhir_masa_dinas);
 						
 						// title
-						$('#title_modal').text('Ubah Pemegang Saham');
+						$('#title_modal').text('Ubah Direksi');
 						$('#title_modal').data('state', 'update');
 						$('#title_modal').data('id', id);
 						// open modal
