@@ -4,81 +4,104 @@ namespace App\Http\Controllers;
 
 use Illuminate\Http\Request;
 
+// Load Model
+use App\Models\PerusahaanAfiliasi;
+use App\Models\Komisaris;
+
+//load form request (for validation)
+use App\Http\Requests\KomisarisStore;
+use App\Http\Requests\KomisarisUpdate;
+
 class KomisarisController extends Controller
 {
     /**
-     * Display a listing of the resource.
+     * Menampilkan daftar komisaris perusahaan tersebut
      *
-     * @return \Illuminate\Http\Response
+     * @return void
      */
-    public function index()
+    public function indexJson($perusahaan_afiliasi)
     {
-        //
+        $komisaris_list = Komisaris::where('perusahaan_afiliasi_id', $perusahaan_afiliasi);
+
+        return datatables()->of($komisaris_list)
+            ->addColumn('action', function ($row) {
+                $radio = '<label class="kt-radio kt-radio--bold kt-radio--brand"><input type="radio" name="radio_komisaris" nama="'.$row->nama.'" value="'.$row->id.'"><span></span></label>';
+                return $radio;
+            })
+            ->rawColumns(['action'])
+            ->make(true);
     }
 
     /**
-     * Show the form for creating a new resource.
+     * Insert Pemegang Saham Ke Database
      *
-     * @return \Illuminate\Http\Response
+     * @param KomisarisStore $request
+     * @param PerusahaanAfiliasi $perusahaan_afiliasi
+     * @param Komisaris $komisaris
+     * @return void
      */
-    public function create()
-    {
-        //
+    public function store(
+        KomisarisStore $request,
+        PerusahaanAfiliasi $perusahaan_afiliasi,
+        Komisaris $komisaris
+    ) {
+        $komisaris->perusahaan_afiliasi_id = $perusahaan_afiliasi->id;
+        $komisaris->nama = $request->nama_komisaris;
+        $komisaris->tmt_dinas = $request->tmt_dinas_komisaris;
+        $komisaris->akhir_masa_dinas = $request->akhir_masa_dinas_komisaris;
+        $komisaris->created_by = auth()->user()->nopeg;
+
+        $komisaris->save();
+
+        return response()->json($komisaris, 200);
     }
 
     /**
-     * Store a newly created resource in storage.
+     * menampilkan detail satu data pemegang saham
      *
-     * @param  \Illuminate\Http\Request  $request
-     * @return \Illuminate\Http\Response
+     * @param PerusahaanAfiliasi $perusahaan_afiliasi
+     * @param Komisaris $komisaris
+     * @return void
      */
-    public function store(Request $request)
+    public function show(PerusahaanAfiliasi $perusahaan_afiliasi, Komisaris $komisaris)
     {
-        //
+        return response()->json($komisaris, 200);
     }
 
     /**
-     * Display the specified resource.
+     * Undocumented function
      *
-     * @param  int  $id
-     * @return \Illuminate\Http\Response
+     * @param KomisarisUpdate $request
+     * @param PerusahaanAfiliasi $perusahaan_afiliasi
+     * @param Komisaris $komisaris
+     * @return void
      */
-    public function show($id)
-    {
-        //
+    public function update(
+        KomisarisUpdate $request,
+        PerusahaanAfiliasi $perusahaan_afiliasi,
+        Komisaris $komisaris
+    ) {
+        $komisaris->perusahaan_afiliasi_id = $perusahaan_afiliasi->id;
+        $komisaris->nama = $request->nama_komisaris;
+        $komisaris->tmt_dinas = $request->tmt_dinas_komisaris;
+        $komisaris->akhir_masa_dinas = $request->akhir_masa_dinas_komisaris;
+        $komisaris->created_by = auth()->user()->nopeg;
+
+        $komisaris->save();
+
+        return response()->json($komisaris, 200);
     }
 
     /**
-     * Show the form for editing the specified resource.
+     * Delete Pemegang Saham
      *
-     * @param  int  $id
-     * @return \Illuminate\Http\Response
+     * @param Komisaris $komisaris
+     * @return void
      */
-    public function edit($id)
+    public function delete(PerusahaanAfiliasi $perusahaan_afiliasi, Komisaris $komisaris)
     {
-        //
-    }
+        $komisaris->delete();
 
-    /**
-     * Update the specified resource in storage.
-     *
-     * @param  \Illuminate\Http\Request  $request
-     * @param  int  $id
-     * @return \Illuminate\Http\Response
-     */
-    public function update(Request $request, $id)
-    {
-        //
-    }
-
-    /**
-     * Remove the specified resource from storage.
-     *
-     * @param  int  $id
-     * @return \Illuminate\Http\Response
-     */
-    public function destroy($id)
-    {
-        //
+        return response()->json(['delete' => true], 200);
     }
 }
