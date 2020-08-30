@@ -139,6 +139,9 @@ $(document).ready(function () {
 			serverSide: true,
 			searching: false,
 			lengthChange: false,
+			pageLength: 100,
+			scrollY: "500px",
+			scrollCollapse: true,
 			language: {
 				processing: '<i class="fa fa-spinner fa-spin fa-2x fa-fw"></i> <br> Loading...'
 			},

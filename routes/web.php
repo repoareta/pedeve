@@ -861,6 +861,22 @@ Route::group(['middleware'=> ['auth','checkRole:1,0']], function () {
         });
         //end data_pajak
 
+        //proses pajak
+        // Route assigned name "proses_pajak.rekap"...
+        Route::name('proses_pajak.')->group(function () {
+            Route::get('proses_pajak', 'PajakTahunanController@RekapPostPajak')->name('rekap');
+            Route::post('proses_pajak/export', 'PajakTahunanController@ExportProses')->name('export.proses');
+        });
+        //end proses_pajak
+        
+        //laporan pajak
+        // Route assigned name "laporan_pajak.rekap"...
+        Route::name('laporan_pajak.')->group(function () {
+            Route::get('laporan_pajak', 'PajakTahunanController@RekapLaporanPajak')->name('rekap');
+            Route::post('laporan_pajak/export', 'PajakTahunanController@ExportLaporan')->name('export.laporan');
+        });
+        //end laporan_pajak
+
         //bulan_perbendaharaan
         // Route assigned name "bulan_perbendaharaan.index"...
         Route::name('bulan_perbendaharaan.')->group(function () {
