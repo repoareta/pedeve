@@ -27,7 +27,7 @@ class PerizinanUpdate extends FormRequest
             'keterangan_perizinan' => 'required',
             'nomor_perizinan' => 'required',
             'masa_berlaku_akhir_perizinan' => 'required|date',
-            'dokumen_perizinan' => 'required|mimes:pdf',
+            'dokumen_perizinan' => 'mimes:pdf',
         ];
     }
 }

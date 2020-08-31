@@ -12,6 +12,9 @@ use App\Models\Perizinan;
 use App\Http\Requests\PerizinanStore;
 use App\Http\Requests\PerizinanUpdate;
 
+//load plugin
+use Storage;
+
 class PerizinanController extends Controller
 {
     /**
@@ -99,10 +102,26 @@ class PerizinanController extends Controller
         Perizinan $perizinan
     ) {
         $perizinan->perusahaan_afiliasi_id = $perusahaan_afiliasi->id;
-        $perizinan->nama = $request->nama_perizinan;
-        $perizinan->tmt_dinas = $request->tmt_dinas;
-        $perizinan->akhir_masa_dinas = $request->akhir_masa_dinas;
+        $perizinan->keterangan = $request->keterangan_perizinan;
+        $perizinan->nomor = $request->nomor_perizinan;
+        $perizinan->masa_berlaku_akhir = $request->masa_berlaku_akhir_perizinan;
         $perizinan->created_by = auth()->user()->nopeg;
+
+        $file = $request->file('dokumen_perizinan');
+
+        if ($file) {
+            // Value is not URL but directory file path
+            $file_path = "public/$perusahaan_afiliasi->id/perizinan/$perizinan->dokumen";
+            Storage::delete($file_path);
+        
+            $file_name = $file->getClientOriginalName();
+            $perizinan->dokumen = $file_name;
+            $file_path = $file->storeAs(
+                $perusahaan_afiliasi->id.'/perizinan',
+                $perizinan->dokumen,
+                'public'
+            );
+        }
 
         $perizinan->save();
 

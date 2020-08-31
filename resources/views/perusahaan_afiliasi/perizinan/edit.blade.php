@@ -277,12 +277,11 @@
 					url: url,
 					type: 'GET',
 					success: function (response) {
-						console.log(response);
 						// update stuff
 						// append value
-						$('#nama_perizinan').val(response.nama);
-						$('#tmt_dinas').val(response.tmt_dinas);
-						$('#akhir_masa_dinas').val(response.akhir_masa_dinas);
+						$('#keterangan_perizinan').val(response.keterangan);
+						$('#nomor_perizinan').val(response.nomor);
+						$('#masa_berlaku_akhir_perizinan').val(response.masa_berlaku_akhir);
 						
 						// title
 						$('#title_modal').text('Ubah Perizinan');
