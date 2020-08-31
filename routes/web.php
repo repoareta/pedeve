@@ -1471,6 +1471,15 @@ Route::group(['middleware'=> ['auth','checkRole:1,0']], function () {
                     Route::post('{perusahaan_afiliasi}/perizinan/update/{perizinan}', 'PerizinanController@update')->name('update');
                     Route::delete('{perusahaan_afiliasi}/perizinan/{perizinan}', 'PerizinanController@delete')->name('delete');
                 });
+
+                // Route assigned name "perusahaan_afiliasi.akta.index"...
+                Route::name('akta.')->group(function () {
+                    Route::get('{perusahaan_afiliasi}/akta', 'AktaController@indexJson')->name('index.json');
+                    Route::get('{perusahaan_afiliasi}/akta/{akta}', 'AktaController@show')->name('show.json');
+                    Route::post('{perusahaan_afiliasi}/akta/store', 'AktaController@store')->name('store');
+                    Route::post('{perusahaan_afiliasi}/akta/update/{akta}', 'AktaController@update')->name('update');
+                    Route::delete('{perusahaan_afiliasi}/akta/{akta}', 'AktaController@delete')->name('delete');
+                });
             });
         });
         // perusahaan afiliasi END
