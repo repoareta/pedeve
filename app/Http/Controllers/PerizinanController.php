@@ -25,10 +25,15 @@ class PerizinanController extends Controller
 
         return datatables()->of($perizinan_list)
             ->addColumn('action', function ($row) {
-                $radio = '<label class="kt-radio kt-radio--bold kt-radio--brand"><input type="radio" name="radio_perizinan" nama="'.$row->nama.'" value="'.$row->id.'"><span></span></label>';
+                $radio = '<label class="kt-radio kt-radio--bold kt-radio--brand"><input type="radio" name="radio_perizinan" nama="'.$row->keterangan.'" value="'.$row->id.'"><span></span></label>';
                 return $radio;
             })
-            ->rawColumns(['action'])
+            ->addColumn('dokumen', function ($row) {
+                $file_path = asset("storage/$row->perusahaan_afiliasi_id/perizinan/$row->dokumen");
+                $dokumen = '<a href="'.$file_path.'" target=_blank>'.$row->dokumen.'</a>';
+                return $dokumen;
+            })
+            ->rawColumns(['action', 'dokumen'])
             ->make(true);
     }
 
@@ -112,6 +117,10 @@ class PerizinanController extends Controller
      */
     public function delete(PerusahaanAfiliasi $perusahaan_afiliasi, Perizinan $perizinan)
     {
+        // Value is not URL but directory file path
+        $file_path = "public/$perusahaan_afiliasi->id/perizinan/$perizinan->dokumen";
+        Storage::delete($file_path);
+
         $perizinan->delete();
 
         return response()->json(['delete' => true], 200);
