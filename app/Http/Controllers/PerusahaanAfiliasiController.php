@@ -7,12 +7,11 @@ use Illuminate\Http\Request;
 // Load Model
 use App\Models\PerusahaanAfiliasi;
 
-
 //load form request (for validation)
 use App\Http\Requests\PerusahaanAfiliasiStore;
+use App\Http\Requests\PerusahaanAfiliasiUpdate;
 
 // Load Plugin
-use Carbon\Carbon;
 use Alert;
 
 class PerusahaanAfiliasiController extends Controller
@@ -112,9 +111,22 @@ class PerusahaanAfiliasiController extends Controller
      * @param  int  $id
      * @return \Illuminate\Http\Response
      */
-    public function update(Request $request, PerusahaanAfiliasi $perusahaan_afiliasi)
+    public function update(PerusahaanAfiliasiUpdate $request, PerusahaanAfiliasi $perusahaan_afiliasi)
     {
-        dd($request->all());
+        $perusahaan_afiliasi->nama = $request->nama_perusahaan;
+        $perusahaan_afiliasi->telepon = $request->no_telepon;
+        $perusahaan_afiliasi->alamat = $request->alamat;
+        $perusahaan_afiliasi->bidang_usaha = $request->bidang_usaha;
+        $perusahaan_afiliasi->modal_dasar = $request->modal_dasar;
+        $perusahaan_afiliasi->modal_disetor = $request->modal_disetor;
+        $perusahaan_afiliasi->jumlah_lembar_saham = $request->jumlah_lembar_saham;
+        $perusahaan_afiliasi->nilai_nominal_per_saham = $request->nilai_nominal_per_saham;
+        $perusahaan_afiliasi->created_by = auth()->user()->nopeg;
+
+        $perusahaan_afiliasi->save();
+
+        Alert::success('Update Perusahaan Afiliasi', 'Berhasil')->persistent(true)->autoClose(2000);
+        return redirect()->route('perusahaan_afiliasi.index');
     }
 
     /**

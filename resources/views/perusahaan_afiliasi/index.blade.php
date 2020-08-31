@@ -66,6 +66,7 @@
 					<th>Perusahaan</th>
 					<th>Telepon</th>
 					<th>Alamat</th>
+					<th>Bidang Usaha</th>
 				</tr>
 			</thead>
 			<tbody>
@@ -90,7 +91,8 @@
 				{data: 'action', name: 'aksi', orderable: false, searchable: false, class:'radio-button', width:'5px', class:'text-center radio-button'},
 				{data: 'nama', name: 'nama', class:'no-wrap'},
 				{data: 'telepon', name: 'telepon'},
-				{data: 'alamat', name: 'alamat'}
+				{data: 'alamat', name: 'alamat'},
+				{data: 'bidang_usaha', name: 'bidang_usaha'}
 			]
 		});
 
