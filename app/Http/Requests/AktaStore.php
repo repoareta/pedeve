@@ -24,7 +24,13 @@ class AktaStore extends FormRequest
     public function rules()
     {
         return [
-            //
+            'jenis_akta' => 'required',
+            'nomor_akta' => 'required',
+            'notaris' => 'required',
+            'tanggal_akta' => 'required|date',
+            'tmt_berlaku' => 'required|date',
+            'tmt_berakhir' => 'required|date',
+            'dokumen_akta' => 'required|mimes:pdf',
         ];
     }
 }

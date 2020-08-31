@@ -105,9 +105,12 @@ class AktaController extends Controller
         Akta $akta
     ) {
         $akta->perusahaan_afiliasi_id = $perusahaan_afiliasi->id;
-        $akta->keterangan = $request->keterangan_akta;
-        $akta->nomor = $request->nomor_akta;
-        $akta->masa_berlaku_akhir = $request->masa_berlaku_akhir_akta;
+        $akta->jenis = $request->jenis_akta;
+        $akta->nomor_akta = $request->nomor_akta;
+        $akta->tanggal = $request->tanggal_akta;
+        $akta->notaris = $request->notaris;
+        $akta->tmt_mulai = $request->tmt_berlaku;
+        $akta->tmt_akhir = $request->tmt_berakhir;
         $akta->created_by = auth()->user()->nopeg;
 
         $file = $request->file('dokumen_akta');

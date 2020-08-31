@@ -306,12 +306,15 @@
 					success: function (response) {
 						// update stuff
 						// append value
-						$('#keterangan_akta').val(response.keterangan);
-						$('#nomor_akta').val(response.nomor);
-						$('#masa_berlaku_akhir_akta').val(response.masa_berlaku_akhir);
+						$('#jenis_akta').val(response.jenis);
+						$('#nomor_akta').val(response.nomor_akta);
+						$('#tanggal_akta').val(response.tanggal);
+						$('#notaris').val(response.notaris);
+						$('#tmt_berlaku').val(response.tmt_mulai);
+						$('#tmt_berakhir').val(response.tmt_akhir);
 						
 						// title
-						$('#title_modal').text('Ubah Akta');
+						$('#title_modal').text('Ubah Akta' + response.jenis);
 						$('#title_modal').data('state', 'update');
 						$('#title_modal').data('id', id);
 						// open modal
