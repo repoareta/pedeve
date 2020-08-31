@@ -21,7 +21,7 @@
         "laravel/tinker": "^2.0",
         "maatwebsite/excel": "^3.1",
         "phpoffice/phpspreadsheet": "^1.11",
-        "proengsoft/laravel-jsvalidation": "^3.0",
+        "proengsoft/laravel-jsvalidation": "^4.0",
         "realrashid/sweet-alert": "^3.1",
         "tuta/terbilang": "dev-master",
         "wemersonjanuario/wkhtmltopdf-windows": "0.12.2.3",

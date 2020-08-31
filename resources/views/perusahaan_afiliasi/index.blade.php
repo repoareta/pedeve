@@ -6,15 +6,11 @@
 	<div class="kt-container  kt-container--fluid ">
 		<div class="kt-subheader__main">
 			<h3 class="kt-subheader__title">
-				Panjar Dinas </h3>
+				Customer Management </h3>
 			<span class="kt-subheader__separator kt-hidden"></span>
 			<div class="kt-subheader__breadcrumbs">
 				<a href="#" class="kt-subheader__breadcrumbs-home"><i class="flaticon2-shelter"></i></a>
-				<span class="kt-subheader__breadcrumbs-separator"></span>
-				<a href="" class="kt-subheader__breadcrumbs-link">
-					Umum </a>
-				<span class="kt-subheader__breadcrumbs-separator"></span>
-				<span class="kt-subheader__breadcrumbs-link kt-subheader__breadcrumbs-link--active">Perjalanan Dinas</span>
+				<span class="kt-subheader__breadcrumbs-link kt-subheader__breadcrumbs-link--active">Perusahaan Afiliasi</span>
 			</div>
 		</div>
 	</div>
@@ -70,7 +66,7 @@
 					<th>Perusahaan</th>
 					<th>Telepon</th>
 					<th>Alamat</th>
-					<th>Aksi</th>
+					<th>Bidang Usaha</th>
 				</tr>
 			</thead>
 			<tbody>
@@ -90,17 +86,15 @@
 			scrollX   : true,
 			processing: true,
 			serverSide: true,
-			ajax      : "{{ route('perjalanan_dinas.index.json') }}",
+			ajax      : "{{ route('perusahaan_afiliasi.index.json') }}",
 			columns: [
-				{data: 'action', name: 'aksi', orderable: false, searchable: false, class:'radio-button'},
-				{data: 'no_panjar', name: 'no_panjar', class:'no-wrap'},
-				{data: 'no_umk', name: 'no_umk'},
-				{data: 'jenis_dinas', name: 'jenis'},
-				{data: 'mulai', name: 'mulai', class:'no-wrap'}
+				{data: 'action', name: 'aksi', orderable: false, searchable: false, class:'radio-button', width:'5px', class:'text-center radio-button'},
+				{data: 'nama', name: 'nama', class:'no-wrap'},
+				{data: 'telepon', name: 'telepon'},
+				{data: 'alamat', name: 'alamat'},
+				{data: 'bidang_usaha', name: 'bidang_usaha'}
 			]
 		});
-
-		
 
 		$('#editRow').click(function(e) {
 			e.preventDefault();
@@ -121,6 +115,7 @@
 			if($('input[type=radio]').is(':checked')) { 
 				$("input[type=radio]:checked").each(function() {
 					var id = $(this).val();
+					var nama = $(this).attr('nama');
 					// delete stuff
 					const swalWithBootstrapButtons = Swal.mixin({
 					customClass: {
@@ -132,7 +127,7 @@
 
 					swalWithBootstrapButtons.fire({
 						title: "Data yang akan dihapus?",
-						text: "No. Panjar : " + id,
+						text: "Nama Perusahaan : " + nama,
 						type: 'warning',
 						showCancelButton: true,
 						reverseButtons: true,
@@ -152,7 +147,7 @@
 								success: function () {
 									Swal.fire({
 										type  : 'success',
-										title : 'Hapus No. Panjar ' + id,
+										title : 'Hapus Perusahaan ' + nama,
 										text  : 'Berhasil',
 										timer : 2000
 									}).then(function() {
