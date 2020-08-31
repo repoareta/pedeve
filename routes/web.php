@@ -873,7 +873,7 @@ Route::group(['middleware'=> ['auth','checkRole:1,0']], function () {
         // Route assigned name "laporan_pajak.rekap"...
         Route::name('laporan_pajak.')->group(function () {
             Route::get('laporan_pajak', 'PajakTahunanController@RekapLaporanPajak')->name('rekap');
-            Route::post('laporan_pajak/export', 'PajakTahunanController@ExportLaporan')->name('export.laporan');
+            Route::post('laporan_pajak/export', 'PajakTahunanController@ExportLaporan')->name('export.laporankas');
         });
         //end laporan_pajak
 
@@ -1095,6 +1095,10 @@ Route::group(['middleware'=> ['auth','checkRole:1,0']], function () {
             Route::get('kas_bank/report/cetak7', 'KasCashJudexController@Cetak7')->name('cetak7');
             Route::get('kas_bank/report/create8', 'KasCashJudexController@Create8')->name('create8');
             Route::get('kas_bank/report/cetak8', 'KasCashJudexController@Cetak8')->name('cetak8');
+            Route::get('kas_bank/report/create9', 'KasCashJudexController@Create9')->name('create9');
+            Route::get('kas_bank/report/cetak9', 'KasCashJudexController@Cetak9')->name('cetak9');
+            Route::get('kas_bank/report/create10', 'KasCashJudexController@Create10')->name('create10');
+            Route::get('kas_bank/report/cetak10', 'KasCashJudexController@Cetak10')->name('cetak10');
         });
         //end report_kas_bank
     });

@@ -624,6 +624,13 @@
                     'kas_bank.create8',
                 ); // isi nama semua route kas_flow_internal
 
+                $proyeksi_cashflow = array(
+                    'kas_bank.create9',
+                ); // isi nama semua route proyeksi_cashflow
+                $per_cash_judex = array(
+                    'kas_bank.create10',
+                ); // isi nama semua route per_cash_judex
+
                 $report_perbendaharaan = array_merge(
                     $kas_bank,
                     $kas_balancing,
@@ -632,7 +639,9 @@
                     $kas_biaya,
                     $kas_sandi,
                     $kas_flow_internal,
-                    $kas_flow_periode
+                    $kas_flow_periode,
+                    $proyeksi_cashflow,
+                    $per_cash_judex
                 ); //isi nama Subdomain report perbendaharaan
                 $perbendaharaan = array_merge(
                     $penerimaan_kas,
@@ -1867,7 +1876,7 @@
                                             </i>
                                             <span class="kt-menu__link-text">Balancing Kas/Bank</span>
                                         </a>
-                                    </li>
+                                    </li>-->
                                     <li class="kt-menu__item kt-menu__item{{ set_active_submenu($kas_judex) }}" aria-haspopup="true">
                                         <a href="{{ route('kas_bank.create3') }}" class="kt-menu__link">
                                             <i class="kt-menu__link-bullet kt-menu__link-bullet--line">
@@ -1876,14 +1885,14 @@
                                             <span class="kt-menu__link-text">Kas/Bank Per Cash Judex</span>
                                         </a>
                                     </li>
-                                    <li class="kt-menu__item kt-menu__item{{ set_active_submenu($kas_bagian) }}" aria-haspopup="true">
+                                   <!-- <li class="kt-menu__item kt-menu__item{{ set_active_submenu($kas_bagian) }}" aria-haspopup="true">
                                         <a href="{{ route('kas_bank.create4') }}" class="kt-menu__link">
                                             <i class="kt-menu__link-bullet kt-menu__link-bullet--line">
                                                 <span></span>
                                             </i>
                                             <span class="kt-menu__link-text">Cash Judex Per Bagian</span>
                                         </a>
-                                    </li> -->
+                                    </li> 
                                     <li class="kt-menu__item kt-menu__item{{ set_active_submenu($kas_biaya) }}" aria-haspopup="true">
                                         <a href="{{ route('kas_bank.create5') }}" class="kt-menu__link">
                                             <i class="kt-menu__link-bullet kt-menu__link-bullet--line">
@@ -1899,7 +1908,7 @@
                                             </i>
                                             <span class="kt-menu__link-text">Per Cash Judex Per Sandi</span>
                                         </a>
-                                    </li>
+                                    </li>-->
                                     <li class="kt-menu__item kt-menu__item{{ set_active_submenu($kas_flow_internal) }}" aria-haspopup="true">
                                         <a href="{{ route('kas_bank.create7') }}" class="kt-menu__link">
                                             <i class="kt-menu__link-bullet kt-menu__link-bullet--line">
@@ -1914,6 +1923,22 @@
                                                 <span></span>
                                             </i>
                                             <span class="kt-menu__link-text">Cash Flow Per Periode</span>
+                                        </a>
+                                    </li>
+                                    <li class="kt-menu__item kt-menu__item{{ set_active_submenu($proyeksi_cashflow) }}" aria-haspopup="true">
+                                        <a href="{{ route('kas_bank.create9') }}" class="kt-menu__link">
+                                            <i class="kt-menu__link-bullet kt-menu__link-bullet--line">
+                                                <span></span>
+                                            </i>
+                                            <span class="kt-menu__link-text">Report Proyeksi Cashflow</span>
+                                        </a>
+                                    </li>
+                                    <li class="kt-menu__item kt-menu__item{{ set_active_submenu($per_cash_judex) }}" aria-haspopup="true">
+                                        <a href="{{ route('kas_bank.create10') }}" class="kt-menu__link">
+                                            <i class="kt-menu__link-bullet kt-menu__link-bullet--line">
+                                                <span></span>
+                                            </i>
+                                            <span class="kt-menu__link-text">Report Per Cash Judex</span>
                                         </a>
                                     </li>
                                 </ul>

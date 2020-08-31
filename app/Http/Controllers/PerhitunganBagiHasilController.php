@@ -104,7 +104,7 @@ class PerhitunganBagiHasilController extends Controller
                 sum(CASE WHEN kurs<>1 and lokasi='MS' and kdbank='110154' THEN nominal*kurs ELSE '0' END) as bnisyams2
                 from v_reportdeposito where to_char(tglcair,'yyyy/mm/dd') > '$request->tanggal' and to_char(tgldepo,'yyyy/mm/dd') <= '$request->tanggal'
             ");
-            // dd($data_list);
+            // dd($data_bankrp);
         if(!empty($data_list)){
             $pdf = DomPDF::loadview('perhitungan_bagihasil.export',compact('request','data_list','data_bankrp'))->setPaper('a4', 'Portrait');
             $pdf->output();
