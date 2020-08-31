@@ -1,93 +1,82 @@
 <!DOCTYPE html>
-<html>
-    <head>
-        <style>
-            /** 
-                Set the margins of the page to 0, so the footer and the header
-                can be of the full height and width !
-             **/
-            @page {
-                margin: 0cm 0cm;
-            }
+<html lang="en">
+<head>
+    <title>
+        RINCIAN KAS BANK PER CASH JUDEX
+    </title>
+</head>
+<style media="screen">
 
-            /** Define now the real margins of every page in the PDF **/
-            body {
-                margin-top: 4cm;
-                margin-left: 1cm;
-                margin-right: 1cm;
-                margin-bottom: 2cm;
-            }
+table {
+    width: 100%;
+    border-collapse: collapse;
+    padding-top:40%;
+    border:1;
+}
 
-            /** Define the header rules **/
-            header {
-                position: fixed;
-                top: 1cm;
-                left: 0cm;
-                right: 0cm;
-                height: 3cm;
-            }
+.text-center {
+    text-align: center;
+}
 
+.text-right {
+    text-align: right;
+}
 
+.text-left {
+    text-align: left;
+}
 
-            /** Define the footer rules **/
-            footer {
-                position: fixed; 
-                bottom: 0cm; 
-                left: 0cm; 
-                right: 0cm;
-                height: 2cm;
-            }
-        </style>
-    </head>
-    <body>
-        <!-- Define header and footer blocks before your content -->
-        <header>
-            <table width="100%" >
-            <?php 
-                    $array_bln	 = array (
-                        1 =>   'Januari',
-                        'Februari',
-                        'Maret',
-                        'April',
-                        'Mei',
-                        'Juni',
-                        'Juli',
-                        'Agustus',
-                        'September',
-                        'Oktober',
-                        'November',
-                        'Desember'
-                    );
-                    
-                    $bulan= strtoupper($array_bln[ltrim($request->bulan,0)]);
-                ?>
-                <tr>
-                    <td align="left" style="padding-left:100px;font-family: sans-serif">
-                        <table>
-                            <tr>
-                                <td><font style="font-size: 10pt;font-weight: bold ">PT. PERTAMINA DANA VENTURA</font></td>
-                            </tr>
-                            <tr>
-                                <td><font style="font-size: 10pt;font-weight: bold ">RINCIAN KAS/BANK PER CASH JUDEX </font></td>
-                            </tr>
-                            <tr>
-                                <td><font style="font-size: 10pt;font-weight: bold ">BULAN {{strtoupper($bulan)}} {{$request->tahun}}</font></td>
-                            </tr>
-                        </table>
-                    </td>
-                   
-                    <td align="center" style="">
-                        <img align="right" src="{{public_path() . '/images/pertamina.jpg'}}" width="160px" height="80px"  style="padding-right:45px;">
-                    </td>
-                </tr>
-            </table>
-        </header>
-        <!-- Wrap the content of your PDF inside a main tag -->
-        <main>
-            <font style="font-size: 10pt;font-style: italic">Tanggal Cetak: {{$request->tanggal}}</font>
-            <table width="100%"  style="border-collapse: collapse;padding-bottom:3%;font-family: sans-serif" border="1">
+td {
+    vertical-align: top;
+    padding: 5px;
+    border: 1px solid black; 
+
+}
+.row-td{
+    vertical-align: top;
+    padding: 5px;
+    border-left: 1px solid black; 
+    border-right: 1px solid black; 
+    width: 11%;
+    font: normal 12px Verdana, Arial, sans-serif;
+
+}
+
+th {
+    padding: 7px;
+    border: 1px solid black; 
+}
+
+thead { 
+    border-left: 1px solid black; 
+    border-right: 1px solid black; 
+    display: table-header-group;
+    font: normal 14px Verdana, Arial, sans-serif;
+}
+
+tr { 
+    page-break-inside: avoid 
+}
+
+.th-small {
+    width: 40px;
+}
+
+.th-medium {
+    width: 70px;
+}
+
+.th-large {
+    width: 70%;
+}
+
+</style>
+<body style="margin:0px">
+    <main>
+        <div class="row">
+            <table >
                 <thead>
-                    <tr style="text-align:center;font-size: 8pt;">
+                    <tr>
                         <th>JK</th>
                         <th>BLTH</th>
                         <th>ST</th>
@@ -152,8 +141,9 @@
                         <td colspan="8" style="font-size: 10pt;text-align:right;">Total</td>
                         <td style="font-size: 10pt;text-align:right;">{{$cr_total < 0 ? '('.number_format($cr_total*-1,0).')'  : number_format($cr_total,0)}}-{{$cr_total < 0 ? 'CR'  : ''}}<span style="color:red;">**** </span> <span style="color:red;"> **</span></td>
                     </tr>
-                <tbody>
+                </tbody>
             </table>
-        </main>        
-    </body>
+        </div>
+    </main>
+</body>
 </html>

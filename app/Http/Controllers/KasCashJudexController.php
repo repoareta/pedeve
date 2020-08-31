@@ -7,6 +7,8 @@ use App\Models\SdmMasterPegawai;
 use App\Models\V_d2kasbank;
 use App\Models\ViewReportCashFlow;
 use App\Models\Vkas;
+use App\Models\v_cashflowpercjreport;
+use App\Models\v_repcashjudex;
 use DB;
 use DomPDF;
 use PDF;
@@ -112,7 +114,7 @@ class KasCashJudexController extends Controller
             // return $pdf->download('rekap_umk_'.date('Y-m-d H:i:s').'.pdf');
             return $pdf->stream();
         } else {
-            Alert::info("Tidak ditemukan data dengan Nopeg: $request->nopek Bulan/Tahun: $request->bulan/$request->tahun ", 'Failed')->persistent(true);
+            Alert::info("Tidak ditemukan data yang di cari ", 'Failed')->persistent(true);
             return redirect()->route('kas_bank.Cetak2');
         }
     }
@@ -124,19 +126,21 @@ class KasCashJudexController extends Controller
     }
     public function Cetak3(Request $request)
     {
-        $thnbln = $request->tahun.''.$request->bulan;
-        $data_list = DB::select("select a.docno ,a.voucher ,a.rekapdate ,substring(a.thnbln from 1  for 4 ) as tahun,substring(a.thnbln  from 5  for 2 ) as bulan,b.lineno ,b.keterangan ,a.jk ,a.store ,a.ci ,a.rate ,a.voucher ,b.account ,coalesce(b.totprice,1)*CASE WHEN a.rate=0 THEN 1 WHEN a.rate IS NULL THEN 1  ELSE a.rate END as totprice ,b.area,b.lokasi ,b.bagian ,b.jb ,b.pk ,b.cj,a.rekap from kasdoc a join kasline b on a.docno=b.docno where  a.thnbln='$thnbln' AND (coalesce(a.paid,'N') = 'Y' ) and coalesce(b.penutup,'N')<>'Y'");
+        $data_list = DB::select("select a.* from vkas a join kasdoc b on a.docno=b.docno where a.tahun='$request->tahun' and bulan='$request->bulan'");
         if (!empty($data_list)) {
-            $pdf = DomPDF::loadview('kas_bank.export_report3', compact('request', 'data_list'))->setPaper('a4', 'Portrait');
-            $pdf->output();
-            $dom_pdf = $pdf->getDomPDF();
+            $pdf = PDF::loadview('kas_bank.export_report3',compact('request', 'data_list'))
+                ->setPaper('a4', 'portrait')
+                ->setOption('footer-right', 'Halaman [page] dari [toPage]')
+                ->setOption('footer-font-size', 10)
+                ->setOption('header-html', view('kas_bank.export_report3_pdf_header',compact('request')))
+                ->setOption('margin-top', 30)
+                ->setOption('margin-left', 5)
+                ->setOption('margin-right', 5)
+                ->setOption('margin-bottom', 10);
 
-            $canvas = $dom_pdf ->get_canvas();
-            $canvas->page_text(485, 100, "Halaman {PAGE_NUM} Dari {PAGE_COUNT}", null, 10, array(0, 0, 0)); //lembur landscape
-            // return $pdf->download('rekap_umk_'.date('Y-m-d H:i:s').'.pdf');
-            return $pdf->stream('message-'.time());
+            return $pdf->stream('Rincian Kas Bank Per Cash Judex_'.date('Y-m-d H:i:s').'.pdf');
         } else {
-            Alert::info("Tidak ditemukan data dengan Bulan/Tahun: $request->bulan/$request->tahun ", 'Failed')->persistent(true);
+            Alert::info("Tidak ditemukan data yang di cari", 'Failed')->persistent(true);
             return redirect()->route('kas_bank.Cetak3');
         }
     }
@@ -161,7 +165,7 @@ class KasCashJudexController extends Controller
             // return $pdf->download('rekap_umk_'.date('Y-m-d H:i:s').'.pdf');
             return $pdf->stream();
         } else {
-            Alert::info("Tidak ditemukan data dengan Bulan/Tahun: $request->bulan/$request->tahun ", 'Failed')->persistent(true);
+            Alert::info("Tidak ditemukan data yang di cari", 'Failed')->persistent(true);
             return redirect()->route('kas_bank.create4');
         }
     }
@@ -186,7 +190,7 @@ class KasCashJudexController extends Controller
             // return $pdf->download('rekap_umk_'.date('Y-m-d H:i:s').'.pdf');
             return $pdf->stream();
         } else {
-            Alert::info("Tidak ditemukan data dengan Bulan/Tahun: $request->bulan/$request->tahun ", 'Failed')->persistent(true);
+            Alert::info("Tidak ditemukan data yang di cari ", 'Failed')->persistent(true);
             return redirect()->route('kas_bank.create5');
         }
     }
@@ -209,7 +213,7 @@ class KasCashJudexController extends Controller
             // return $pdf->download('rekap_umk_'.date('Y-m-d H:i:s').'.pdf');
             return $pdf->stream();
         } else {
-            Alert::info("Tidak ditemukan data dengan Bulan/Tahun: $request->bulan/$request->tahun ", 'Failed')->persistent(true);
+            Alert::info("Tidak ditemukan data yang di cari ", 'Failed')->persistent(true);
             return redirect()->route('kas_bank.create6');
         }
     }
@@ -219,13 +223,6 @@ class KasCashJudexController extends Controller
     {
         return view('kas_bank.report7');
     }
-
-    /**
-     * Cetak Report Cash Flow Internal
-     *
-     * @param Request $request
-     * @return void
-     */
     public function Cetak7(Request $request)
     {
         $tahun = $request->tahun;
@@ -373,7 +370,7 @@ class KasCashJudexController extends Controller
             'arus_kas_aktivitas_investasi_pengeluaran',
             'arus_kas_aktivitas_pendanaan',
             'arus_kas_aktivitas_pendanaan_penerimaan',
-            'arus_kas_aktivitas_pendanaan_pengeluaran',
+            'arus_kas_aktivitas_pendanaan_pengeluaran'
         ))
         ->setPaper('a4', 'Portrait')
         ->setOptions(['isPhpEnabled' => true]);
@@ -387,12 +384,7 @@ class KasCashJudexController extends Controller
         return view('kas_bank.report8');
     }
 
-    /**
-     * Cetak Report Cash Flow Internal
-     *
-     * @param Request $request
-     * @return void
-     */
+
     public function Cetak8(Request $request)
     {
         $tahun = $request->tahun;
@@ -415,5 +407,77 @@ class KasCashJudexController extends Controller
         $canvas = $dom_pdf ->get_canvas();
         $canvas->page_text(485, 100, "Halaman {PAGE_NUM} Dari {PAGE_COUNT}", null, 10, array(0, 0, 0));
         return $pdf->stream();
+    }
+
+    public function Create9()
+    {
+        return view('kas_bank.report9');
+    }
+
+
+    public function Cetak9(Request $request)
+    {
+        $data_list = v_cashflowpercjreport::select('*')->where('tahun',$request->tahun)->where('bulan',$request->bulan)->orderBy('status','asc')->get();
+        $data_total = DB::select("select
+        SUM((case when status = 1 then nilai end)) - SUM((case when status = 2 then nilai end)) AS status_1,
+        SUM((case when status = 1 then totreal end)) - SUM((case when status = 2 then totreal end)) AS totreal_1
+        from v_cashflowpercjreport where tahun='$request->tahun' and bulan='$request->bulan'");
+        if ($data_list->count() > 0) {
+            $pdf = PDF::loadview('kas_bank.export_proyeksi_cashflow_pajak_pdf',compact('data_list','data_total','request'))
+            ->setPaper('A4', 'portrait')
+            ->setOption('footer-right', 'Halaman [page] dari [toPage]')
+            ->setOption('footer-font-size', 7)
+            ->setOption('margin-top',10)
+            ->setOption('margin-bottom', 10);
+        
+            return $pdf->stream('Cetak Proyeksi Cashflow_'.date('Y-m-d H:i:s').'.pdf');
+        } else {
+            Alert::info("Tidak ditemukan data yang di cari ", 'Failed')->persistent(true);
+            return redirect()->route('kas_bank.create9');
+        }        
+    }
+
+    public function Create10()
+    {
+        $data_judex = DB::select("select kode,nama from cashjudex");
+        return view('kas_bank.report10',compact('data_judex'));
+    }
+
+
+    public function Cetak10(Request $request)
+    {
+        $cjudex = $request->cjudex;
+        $tanggal = $request->tanggal;
+        $tanggal2 = $request->tanggal2;
+        $tgl_1 = date_create($tanggal);
+        $thn1 = date_format($tgl_1, 'Y');
+        $bln1 = date_format($tgl_1, 'm');
+        $tgl_2 = date_create($tanggal2);
+        $thn2 = date_format($tgl_2, 'Y');
+        $bln2 = date_format($tgl_2, 'm');
+        $thnbln1 = $thn1.''.$bln1;
+        $thnbln2 = $thn2.''.$bln2;
+        if ($request->cjudex <> "") {
+            $yyy = "thnbln >= '$thnbln1' and thnbln <= '$thnbln2' and cj ='$cjudex'";
+        }else{
+            $yyy = "thnbln >= '$thnbln1' and thnbln <= '$thnbln2'";
+        }
+        $data_list = DB::select("select * from v_repcashjudex where $yyy order by docno asc");
+        if (!empty($data_list)) {
+            $pdf = PDF::loadview('kas_bank.export_cash_judex_pdf',compact('data_list','request'))
+                ->setPaper('a4', 'portrait')
+                ->setOption('footer-right', 'Halaman [page] dari [toPage]')
+                ->setOption('footer-font-size', 10)
+                ->setOption('header-html', view('kas_bank.export_cash_judex_pdf_header',compact('request')))
+                ->setOption('margin-top', 30)
+                ->setOption('margin-left', 5)
+                ->setOption('margin-right', 5)
+                ->setOption('margin-bottom', 10);
+
+            return $pdf->stream('Report Cash Judex Periode_'.date('Y-m-d H:i:s').'.pdf');
+        } else {
+            Alert::info("Tidak ditemukan data yang di cari ", 'Failed')->persistent(true);
+            return redirect()->route('kas_bank.create9');
+        }
     }
 }

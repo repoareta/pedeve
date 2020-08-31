@@ -241,7 +241,7 @@ foreach($data_list as $key=>$row){
             </thead>
         </table>     
 
-        <table>
+        {{--<table>
             <tr>
                 <td>0.00</td>
                 <td>{{number_format($row->data_1,2) < 0 ? "(".number_format($row->data_1*-1,2).")" : number_format($row->data_1,2)}}</td>
@@ -251,7 +251,7 @@ foreach($data_list as $key=>$row){
                 <td>{{number_format($row->data_4,2) < 0 ? "(".number_format($row->data_4*-1,2).")" : number_format($row->data_4,2)}}</td>
                 <td>{{number_format($row->data_5,2) < 0 ? "(".number_format($row->data_5*-1,2).")" : number_format($row->data_5,2)}}</td>
             </tr>
-        </table>
+        </table>--}}
         
         <table border="1">
             <thead style="border-bottom:1px solid black;">

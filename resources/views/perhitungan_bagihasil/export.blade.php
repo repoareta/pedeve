@@ -126,7 +126,8 @@
                             }else{
                                 $ideneki = 0;
                             }
-                            $sumtot = $ideneki + $idenrup;
+                            $tato = $ideneki + $idenrup;
+                            $sumtot = $tato <= 0 ? 1 : $tato;
                             $total_rupiah[$no] = $idenrup;
                             $total_dolar[$no] = $idendl;
                             $total_eki[$no] = $ideneki;
@@ -230,7 +231,7 @@
                     </tr>
                     @endforeach
             </table>
-            <table width="100%" style="font-size: 8pt; padding-top:10px;">
+            <table width="100%" style="font-size: 8pt; padding-top:10px;font-weight: bold">
                     <tr style="font-size: 8pt;">
                         <td width="50%" colspa="5"></td>
                         <td align="right" >TOTAL RUPIAH </td>

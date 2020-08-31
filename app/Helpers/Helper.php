@@ -68,7 +68,7 @@ function pajak($nilai)
     $sisapokok = $nilaikenapajak;
     $data_sdmprogresif = DB::select("select * from sdm_tbl_progressif order by awal asc");
     // SdmTblProgressif::orderBy('awal','asc');
-    // $pph21ok = 0;
+    $pph21ok = 0;
     foreach ($data_sdmprogresif as $data_prog) {
         $awal = $data_prog->awal;
         $akhir = $data_prog->akhir;
@@ -91,6 +91,34 @@ function pajak($nilai)
         $pph21ok =  $pph21r;
         $sisapokok = $sisapokok1 - $range;
         return   $pajakbulan = ($pph21ok/12);
+    }
+}
+function pph21ok($pokok)
+{
+    $pphrss=DB::select("select * from sdm_tbl_progressif order by awal asc");
+    $pph21ok = 0;
+    $sisapokok = $pokok; 
+    foreach ($pphrss as $pphrs) {
+        $awal=($pphrs->awal);
+        $akhir=($pphrs->akhir);
+        $persen = ($pphrs->prosen);
+        $prosen=($persen)/100;
+        $range = $akhir - $awal;
+        if ($sisapokok > 0) {
+            $sisapokok1 = $sisapokok;
+            if ($sisapokok1 > 0 and $sisapokok1 < $range) {
+                $pph21r = $sisapokok1 * $prosen;
+            } elseif ($sisapokok1 > 0 and $sisapokok1 >= $range) {
+                $pph21r = $range * $prosen;
+            } elseif ($sisapokok1 < 0) {
+                $pph21r = 0;
+            }
+        } elseif ($sisapokok < 0) {
+            $pph21r = 0;
+            $sisapokok1 = 0;
+        }
+        $sisapokok = $sisapokok1 - $range;
+        return $pph21ok = $pph21ok + $pph21r;
     }
 }
 
