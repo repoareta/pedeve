@@ -752,8 +752,8 @@ class PenempatanDepositoController extends Controller
     
             return $pdf->stream('rekap_d2_perperiode_'.date('Y-m-d H:i:s').'.pdf');
         }else{
-            Alert::info("Tidak ditemukan data dengan Bulan/Tahun: $request->bulan/$request->tahun ", 'Failed')->persistent(true);
-            return redirect()->route('penempatan_deposito.rekaprc');
+            Alert::info("Tidak ditemukan data yang di cari ", 'Failed')->persistent(true);
+            return redirect()->route('penempatan_deposito.index');
         }
     }
 
