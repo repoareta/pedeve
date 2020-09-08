@@ -873,7 +873,7 @@ Route::group(['middleware'=> ['auth','checkRole:1,0']], function () {
         // Route assigned name "laporan_pajak.rekap"...
         Route::name('laporan_pajak.')->group(function () {
             Route::get('laporan_pajak', 'PajakTahunanController@RekapLaporanPajak')->name('rekap');
-            Route::post('laporan_pajak/export', 'PajakTahunanController@ExportLaporan')->name('export.laporankas');
+            Route::post('laporan_pajak/export', 'PajakTahunanController@ExportLaporan')->name('export.laporan');
         });
         //end laporan_pajak
 
