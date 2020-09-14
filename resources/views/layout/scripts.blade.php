@@ -48,7 +48,10 @@
 
     $( document ).ready(function() {
         // alert (localStorage ['minimize']);
+        // replace
+        $("a[href='#']").attr('href','{{ url()->current() }}');
 
+        // cek kt menu settings
         if (localStorage ['minimize'] == 'true') {
             $('#body-style').addClass('kt-aside--minimize');
         } else {
