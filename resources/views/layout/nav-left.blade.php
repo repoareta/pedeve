@@ -624,6 +624,18 @@
                     'kas_bank.create8',
                 ); // isi nama semua route kas_flow_internal
 
+                $kas_flow_mutasi = array(
+                    'cash_flow.mutasi',
+                ); // isi nama semua route kas_flow_internal
+
+                $kas_flow_permatauang = array(
+                    'cash_flow.permatauang',
+                ); // isi nama semua route kas_flow_internal
+
+                $kas_flow_lengkap = array(
+                    'cash_flow.lengkap',
+                ); // isi nama semua route kas_flow_internal
+
                 $proyeksi_cashflow = array(
                     'kas_bank.create9',
                 ); // isi nama semua route proyeksi_cashflow
@@ -640,9 +652,13 @@
                     $kas_sandi,
                     $kas_flow_internal,
                     $kas_flow_periode,
+                    $kas_flow_mutasi,
+                    $kas_flow_permatauang,
+                    $kas_flow_lengkap,
                     $proyeksi_cashflow,
                     $per_cash_judex
                 ); //isi nama Subdomain report perbendaharaan
+
                 $perbendaharaan = array_merge(
                     $penerimaan_kas,
                     $saldo,
@@ -1923,6 +1939,30 @@
                                                 <span></span>
                                             </i>
                                             <span class="kt-menu__link-text">Cash Flow Per Periode</span>
+                                        </a>
+                                    </li>
+                                    <li class="kt-menu__item kt-menu__item{{ set_active_submenu($kas_flow_mutasi) }}" aria-haspopup="true">
+                                        <a href="{{ route('cash_flow.mutasi') }}" class="kt-menu__link">
+                                            <i class="kt-menu__link-bullet kt-menu__link-bullet--line">
+                                                <span></span>
+                                            </i>
+                                            <span class="kt-menu__link-text">Cash Flow Mutasi</span>
+                                        </a>
+                                    </li>
+                                    <li class="kt-menu__item kt-menu__item{{ set_active_submenu($kas_flow_permatauang) }}" aria-haspopup="true">
+                                        <a href="{{ route('cash_flow.permatauang') }}" class="kt-menu__link">
+                                            <i class="kt-menu__link-bullet kt-menu__link-bullet--line">
+                                                <span></span>
+                                            </i>
+                                            <span class="kt-menu__link-text">Cash Flow Per Mata Uang</span>
+                                        </a>
+                                    </li>
+                                    <li class="kt-menu__item kt-menu__item{{ set_active_submenu($kas_flow_lengkap) }}" aria-haspopup="true">
+                                        <a href="{{ route('cash_flow.lengkap') }}" class="kt-menu__link">
+                                            <i class="kt-menu__link-bullet kt-menu__link-bullet--line">
+                                                <span></span>
+                                            </i>
+                                            <span class="kt-menu__link-text">Cash Flow Lengkap</span>
                                         </a>
                                     </li>
                                     <li class="kt-menu__item kt-menu__item{{ set_active_submenu($proyeksi_cashflow) }}" aria-haspopup="true">

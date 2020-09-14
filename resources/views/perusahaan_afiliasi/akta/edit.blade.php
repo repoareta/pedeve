@@ -49,11 +49,11 @@
 	<div class="modal-dialog modal-lg" role="document">
 		<div class="modal-content">
 			<div class="modal-header">
-				<h5 class="modal-title" id="title_modal" data-state="add">Tambah Akta</h5>
+				<h5 class="modal-title" id="title_modal_akta" data-state="add">Tambah Akta</h5>
 				<button type="button" class="close" data-dismiss="modal" aria-label="Close">
 				</button>
 			</div>
-			<form class="kt-form kt-form--label-right" action="" method="POST" id="formAktaStore">
+			<form class="kt-form kt-form--label-right formAkta" action="" method="POST" id="formAktaStore">
 				<div class="modal-body">
 					<div class="form-group row">
 						<label for="" class="col-3 col-form-label">Jenis</label>
@@ -155,17 +155,17 @@
 	$('#addAkta').click(function(e) {
 		e.preventDefault();
 		$('#aktaModal').modal('show');
-		$('#title_modal').data('state', 'add');
+		$('#title_modal_akta').data('state', 'add');
 	});
 
-	$("#formAktaStore").on('submit', function(){
+	$("#formAktaStore, #formAktaUpdate").on('submit', function(){
 
         if ($('#dokumen_akta-error').length){
 			$("#dokumen_akta-error").insertAfter("#dokumen_akta-nya");
 		}
 
 		if($(this).valid()) {
-			var state = $('#title_modal').data('state');
+			var state = $('#title_modal_akta').data('state');
 
 			var url, swal_title;
 
@@ -179,7 +179,7 @@
 						'akta' => ':id',
 					]) }}";
 				url = url
-				.replace(':id', $('#title_modal').data('id'));
+				.replace(':id', $('#title_modal_akta').data('id'));
 
 				swal_title = "Update Akta";
 			}
@@ -283,9 +283,8 @@
 	});
 
 	
-
-	$('#editAkta').click(function(e) {
-		e.preventDefault();
+	$("#editAkta").on('click', function() {
+		// e.preventDefault();
 
 		if($('input[name=radio_akta]').is(':checked')) { 
 			$("input[name=radio_akta]:checked").each(function() {
@@ -314,9 +313,10 @@
 						$('#tmt_berakhir').val(response.tmt_akhir);
 						
 						// title
-						$('#title_modal').text('Ubah Akta' + response.jenis);
-						$('#title_modal').data('state', 'update');
-						$('#title_modal').data('id', id);
+						$('#title_modal_akta').text('Ubah Akta ' + response.jenis);
+						$('#title_modal_akta').data('state', 'update');
+						$('#title_modal_akta').data('id', id);
+                        $(".formAkta").attr('id','formAktaUpdate');
 						// open modal
 						$('#aktaModal').modal('show');
 					},

@@ -45,7 +45,7 @@
 	<div class="modal-dialog modal-lg" role="document">
 		<div class="modal-content">
 			<div class="modal-header">
-				<h5 class="modal-title" id="title_modal" data-state="add">Tambah Direksi</h5>
+				<h5 class="modal-title" id="title_modal_direksi" data-state="add">Tambah Direksi</h5>
 				<button type="button" class="close" data-dismiss="modal" aria-label="Close">
 				</button>
 			</div>
@@ -118,12 +118,12 @@
 	$('#addDireksi').click(function(e) {
 		e.preventDefault();
 		$('#direksiModal').modal('show');
-		$('#title_modal').data('state', 'add');
+		$('#title_modal_direksi').data('state', 'add');
 	});
 
 	$("#formDireksiStore").on('submit', function(){
 		if($(this).valid()) {
-			var state = $('#title_modal').data('state');
+			var state = $('#title_modal_direksi').data('state');
 
 			var url, swal_title;
 
@@ -137,7 +137,7 @@
 						'direksi' => ':id',
 					]) }}";
 				url = url
-				.replace(':id', $('#title_modal').data('id'));
+				.replace(':id', $('#title_modal_direksi').data('id'));
 
 				swal_title = "Update Direksi";
 			}
@@ -267,9 +267,9 @@
 						$('#akhir_masa_dinas').val(response.akhir_masa_dinas);
 						
 						// title
-						$('#title_modal').text('Ubah Direksi');
-						$('#title_modal').data('state', 'update');
-						$('#title_modal').data('id', id);
+						$('#title_modal_direksi').text('Ubah Direksi');
+						$('#title_modal_direksi').data('state', 'update');
+						$('#title_modal_direksi').data('id', id);
 						// open modal
 						$('#direksiModal').modal('show');
 					},

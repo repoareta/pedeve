@@ -29,7 +29,7 @@ class AktaUpdate extends FormRequest
             'notaris' => 'required',
             'tanggal_akta' => 'required|date',
             'tmt_berlaku' => 'required|date',
-            'tmt_berakhir' => 'required|date',
+            'tmt_berakhir' => 'date',
             'dokumen_akta' => 'mimes:pdf',
         ];
     }
