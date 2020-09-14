@@ -30,8 +30,11 @@ Route::get('/migration_clear', function () {
 
 //MODUL UMUM
 Route::group(['middleware'=> ['auth','checkRole:1,0']], function () {
-    Route::prefix('umum')->group(function () {
+    Route::name('default.')->group(function () {
+        Route::get('default', 'defaultController@index')->name('index');
+    });
 
+    Route::prefix('umum')->group(function () {
         // UMK
         // Route assigned name "uang_muka_kerja.index"...
         Route::name('uang_muka_kerja.')->group(function () {

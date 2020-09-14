@@ -106,7 +106,7 @@ class SetUserController extends Controller
         $userid = $request->userid;
         $usernm = $request->usernm;
         $userlv = $request->userlv;
-        $userap = $request->akt.''.$request->tab.''.$request->inv.''.$request->pbd.''.$request->umu.''.$request->sdm;
+        $userap = $request->akt.''.$request->cm.''.$request->pbd.''.$request->umu.''.$request->sdm;
         $userpw = "v3ntur4";
         $usrupd = Auth::user()->userid;
         $kode = $request->kode;
@@ -197,7 +197,7 @@ class SetUserController extends Controller
         $kode = $request->kode;
         $tglupd = date('Y-m-d');
         $usrupd = Auth::user()->userid;
-        $userap = $request->akt.''.$request->tab.''.$request->inv.''.$request->pbd.''.$request->umu.''.$request->sdm;
+        $userap = $request->akt.''.$request->cm.''.$request->pbd.''.$request->umu.''.$request->sdm;
         Userpdv::where('userid', $userid)
         ->update([
             'usernm' => $usernm,

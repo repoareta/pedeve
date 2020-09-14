@@ -29,14 +29,19 @@
 	<!-- end::Head -->
 
 	<!-- begin::Body -->
-	<body class="kt-quick-panel--right kt-demo-panel--right kt-offcanvas-panel--right kt-header--fixed kt-header-mobile--fixed kt-subheader--enabled kt-subheader--fixed kt-subheader--solid kt-aside--enabled kt-aside--fixed kt-page--loading">
+	<body style="background-image: url('{{ asset('images/logo-login.png')}}');
+				-webkit-background-size: 100% 100%;
+                -moz-background-size: 100% 100%;
+                -o-background-size: 100% 100%;
+                background-size: 90% 80%;
+				background-repeat: no-repeat;" class="kt-quick-panel--right kt-demo-panel--right kt-offcanvas-panel--right kt-header--fixed kt-header-mobile--fixed kt-subheader--enabled kt-subheader--fixed kt-subheader--solid kt-aside--enabled kt-aside--fixed kt-page--loading">
 
 		<!-- begin:: Page -->
 
 		<!-- begin:: Header Mobile -->
 		<div id="kt_header_mobile" class="kt-header-mobile  kt-header-mobile--fixed ">
 			<div class="kt-header-mobile__logo">
-				<a href="{{ url()->current() }}">
+				<a href="{{ route('default.index') }}">
 					<img alt="Logo" src="{{ asset('assets/media/logos/pedeve.png') }}" />
 				</a>
 			</div>
@@ -56,7 +61,7 @@
 					<!-- begin:: Aside -->
 					<div class="kt-aside__brand kt-grid__item " id="kt_aside_brand">
 						<div class="kt-aside__brand-logo">
-							<a href="{{ url()->current() }}">
+							<a href="{{ route('default.index') }}">
 								<img alt="Logo" src="{{ asset('assets/media/logos/pedeve.png') }}" />
 							</a>
 						</div>

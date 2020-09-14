@@ -60,7 +60,7 @@
                 <div class="row">
                     <div class="col-2"></div>
                     <div class="col-10">
-                        <a  href="{{ route('permintaan_bayar.index') }}" class="btn btn-warning"><i class="fa fa-reply" aria-hidden="true"></i> Batal</a>
+                        <a  href="{{ route('default.index') }}" class="btn btn-warning"><i class="fa fa-reply" aria-hidden="true"></i> Batal</a>
                         <button type="submit" name="submit" value="pdf" onclick="$('form').attr('target', '_blank')" class="btn btn-danger"><i class="fa fa-file-pdf" aria-hidden="true"></i> Export .PDF</button>
                         <button type="submit" name="submit" value="csv" class="btn btn-success"><i class="fa fa-file-csv" aria-hidden="true"></i> Export .CSV</button>
                         <button type="submit" name="submit" value="xlsx" class="btn btn-info"><i class="fa fa-file-excel" aria-hidden="true"></i> Export .EXCEL</button>

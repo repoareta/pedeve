@@ -24,10 +24,9 @@ class AuthController extends Controller
             $loginid = $request->userid;
             $password = $request->userpw;
             $GetTerminalName=substr(gethostbyaddr($_SERVER['REMOTE_ADDR']),0,15);
-            // $UserIPAddress =substr($_SERVER['REMOTE_ADDR'],0,3);
-            $UserIPAddress ='192';
+            $UserIPAddress =substr($_SERVER['REMOTE_ADDR'],0,3);
             if(Auth::attempt($request->only('userid','userpw'))){
-                $data_user = DB::select("select userid,usernm,kode,userpw,userlv,userap,host from userpdv where userid='$loginid'");
+                $data_user = DB::select("select userid,usernm,kode,userpw,userlv,userap,coalesce(host,'192') host from userpdv where userid='$loginid'");
                 foreach($data_user as $rsuser)
                 {
                     $sUserId = $rsuser->userid;
@@ -36,16 +35,11 @@ class AuthController extends Controller
                     $sUserLevel = $rsuser->userlv;
                     $sUserAplikasi = $rsuser->userap;
                     $sUserPassword = $rsuser->userpw;
-                    if($rsuser->host == null){
-                        $sUserHost = '192';
-                    }else{
-                        $sUserHost = $rsuser->host;
-                    }
-                
-                        if ($password <> $rsuser->userpw) {
+                    $sUserHost = $rsuser->host;  
+                    if ($password <> $rsuser->userpw) {
                             return redirect('/error')->with('notif', "Your password not allowed...");
                         }else{
-                            if ($sUserHost<>"%" and $UserIPAddress <> $sUserHost) {
+                            if (($sUserHost<>"%") and ($UserIPAddress <> $sUserHost)) {
                                 return redirect('/error')->with('notif', "You are not allowed to access from there...");
                             }else{
                                 $rsUserLogin = DB::select("select userid from userlogin where terminal='$GetTerminalName' and userid='$loginid'");
@@ -83,12 +77,12 @@ class AuthController extends Controller
                                             $tglex = date_format($tgl, 'd F Y');
                                             $request->session()->put('tglex',$tglex);    
                                             $request->session()->put('remain',$objRS->remain);    
-                                            return redirect()->route('perjalanan_dinas.index');
+                                            return redirect()->route('default.index');
                                         }else{
                                             if($objRS->status == "exp"){
                                                 return redirect('/error')->with('notif',"Password Anda Sudah Expired");	
                                             }else{
-                                            return redirect()->route('perjalanan_dinas.index');
+                                            return redirect()->route('default.index');
                                             }
                                         }
                                     }
