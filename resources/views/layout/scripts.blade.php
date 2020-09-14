@@ -45,6 +45,34 @@
 <!--end::Page Vendors -->
 
 <script type="text/javascript">
+
+    $( document ).ready(function() {
+        // alert (localStorage ['minimize']);
+
+        if (localStorage ['minimize'] == 'true') {
+            $('#body-style').addClass('kt-aside--minimize');
+        } else {
+            $('#body-style').removeClass('kt-aside--minimize');
+        }
+    });
+
+    function kt_minimize() {
+        if(typeof(Storage) == "undefined") {
+            alert ("local storage not supported by this Broswer");
+        } 
+        
+        else if(localStorage ['minimize'] == 'true') {
+            localStorage ['minimize'] = 'false';
+            $('#body-style').removeClass('kt-aside--minimize');
+        }
+
+        else {
+            localStorage ['minimize'] = 'true';
+        }
+
+        // alert (localStorage ['minimize']);
+    }
+
     function swalAlertInit(text) {
 		Swal.fire({
 			type: 'warning',
