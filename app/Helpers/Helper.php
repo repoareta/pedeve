@@ -57,6 +57,16 @@ function float_two($angka)
     return str_replace(',', '', number_format($angka, 2));
 }
 
+/**
+ * membuat format mata uang rupiah
+ * @param  [type] $angka [description]
+ * @return [type]        [description]
+ */
+function nominal_abs($angka)
+{
+    return number_format(abs($angka), 2);
+}
+
 
 function pajak($nilai)
 {

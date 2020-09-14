@@ -1101,6 +1101,22 @@ Route::group(['middleware'=> ['auth','checkRole:1,0']], function () {
             Route::get('kas_bank/report/cetak10', 'KasCashJudexController@Cetak10')->name('cetak10');
         });
         //end report_kas_bank
+
+        // Report CashFlow START
+        // Route assigned name "cash_flow.index"...
+        Route::name('cash_flow.')->group(function () {
+            Route::get('cash_flow/report/internal', 'CashFlowController@internal')->name('internal');
+            Route::get('cash_flow/report/internal/export', 'CashFlowController@internalExport')->name('internal.export');
+            Route::get('cash_flow/report/perperiode', 'CashFlowController@perPeriode')->name('perperiode');
+            Route::get('cash_flow/report/perperiode/export', 'CashFlowController@perPeriode')->name('perperiode.export');
+            Route::get('cash_flow/report/mutasi', 'CashFlowController@mutasi')->name('mutasi');
+            Route::get('cash_flow/report/mutasi/export', 'CashFlowController@mutasiExport')->name('mutasi.export');
+            Route::get('cash_flow/report/permatauang', 'CashFlowController@perMataUang')->name('permatauang');
+            Route::get('cash_flow/report/permatauang/export', 'CashFlowController@perMataUang')->name('permatauang.export');
+            Route::get('cash_flow/report/lengkap', 'CashFlowController@lengkap')->name('lengkap');
+            Route::get('cash_flow/report/lengkap/export', 'CashFlowController@lengkap')->name('lengkap.export');
+        });
+        // Report CashFlow END
     });
 
     //Kontroler
