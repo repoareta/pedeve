@@ -129,7 +129,7 @@
 										<span></span>
 									</label>
 									<label class="kt-checkbox kt-checkbox--solid">
-										<input type="checkbox"    name="tab" value="G" <?php if($userp2  == 'G' ) echo 'checked' ; ?>> Customer Management
+										<input type="checkbox"    name="cm" value="G" <?php if($userp2  == 'G' ) echo 'checked' ; ?>> Customer Management
 										<span></span>
 									</label>
 									<label class="kt-checkbox kt-checkbox--solid">
