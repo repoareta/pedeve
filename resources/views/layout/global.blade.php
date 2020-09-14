@@ -34,7 +34,9 @@
                 -moz-background-size: 100% 100%;
                 -o-background-size: 100% 100%;
                 background-size: 90% 80%;
-				background-repeat: no-repeat;" class="kt-quick-panel--right kt-demo-panel--right kt-offcanvas-panel--right kt-header--fixed kt-header-mobile--fixed kt-subheader--enabled kt-subheader--fixed kt-subheader--solid kt-aside--enabled kt-aside--fixed kt-page--loading">
+				background-repeat: no-repeat;" 
+				class="kt-quick-panel--right kt-demo-panel--right kt-offcanvas-panel--right kt-header--fixed kt-header-mobile--fixed kt-subheader--enabled kt-subheader--fixed kt-subheader--solid kt-aside--enabled kt-aside--fixed kt-page--loading"
+				id="body-style">
 
 		<!-- begin:: Page -->
 
@@ -67,7 +69,7 @@
 						</div>
 
 						<div class="kt-aside__brand-tools">
-							<button class="kt-aside__brand-aside-toggler" id="kt_aside_toggler">
+							<button class="kt-aside__brand-aside-toggler" id="kt_aside_toggler" onclick="kt_minimize()">
 								<span><svg xmlns="http://www.w3.org/2000/svg" xmlns:xlink="http://www.w3.org/1999/xlink" width="24px" height="24px" viewBox="0 0 24 24" version="1.1" class="kt-svg-icon">
 										<g stroke="none" stroke-width="1" fill="none" fill-rule="evenodd">
 											<polygon points="0 0 24 0 24 24 0 24" />
