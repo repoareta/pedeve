@@ -69,9 +69,8 @@
 							<div class="col-10">
 								<select name="kode" class="form-control kt-select2">
 									<option value="KONTROLER">KONTROLER</option>		
-									<option value="TABUNGAN">TABUNGAN</option>
+									<option value="CUSTOMER MANAGEMENT">CUSTOMER MANAGEMENT</option>
 									<option value="PERBENDAHARAAN">PERBENDAHARAAN</option>
-									<option value="INVESTASI">INVESTASI</option>
 									<option value="SDM">SDM</option>
 									<option value="UMUM">UMUM</option>
 									<option value="ADMIN">SYSTEM ADMINISTRATOR</option>									
@@ -103,11 +102,7 @@
 										<span></span>
 									</label>
 									<label class="kt-checkbox kt-checkbox--solid">
-										<input type="checkbox"    name="tab" value="B"> Tabungan
-										<span></span>
-									</label>
-									<label class="kt-checkbox kt-checkbox--solid">
-										<input type="checkbox"    name="inv" value="C"> Investasi
+										<input type="checkbox"  name="cm" value="G" > Customer Management
 										<span></span>
 									</label>
 									<label class="kt-checkbox kt-checkbox--solid">
