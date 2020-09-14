@@ -2216,7 +2216,7 @@
             </li>
             @endif
 
-            @if(substr_count(Auth::user()->userap,"B") > 0)            
+            @if(substr_count(Auth::user()->userap,"G") > 0)            
             <li class="kt-menu__item  kt-menu__item--submenu {{ set_active($customer_management) }}" aria-haspopup="true" data-ktmenu-submenu-toggle="hover">
                 <a href="javascript:;" class="kt-menu__link kt-menu__toggle">
                     <span class="kt-menu__link-icon">

@@ -69,9 +69,8 @@
 							<div class="col-10">
 								<select name="kode" class="form-control kt-select2">
 									<option value="KONTROLER" <?php if($kode  == 'KONTROLER' ) echo 'selected' ; ?>>KONTROLER</option>		
-									<option value="TABUNGAN" <?php if($kode  == 'TABUNGAN' ) echo 'selected' ; ?>>TABUNGAN</option>
+									<option value="CUSTOMER MANAGEMENT" <?php if($kode  == 'CUSTOMER MANAGEMENT' ) echo 'selected' ; ?>>CUSTOMER MANAGEMENT</option>
 									<option value="PERBENDAHARAAN" <?php if($kode  == 'PERBENDAHARAAN' ) echo 'selected' ; ?>>PERBENDAHARAAN</option>
-									<option value="INVESTASI" <?php if($kode  == 'INVESTASI' ) echo 'selected' ; ?>>INVESTASI</option>
 									<option value="SDM" <?php if($kode  == 'SDM' ) echo 'selected' ; ?>>SDM</option>
 									<option value="UMUM" <?php if($kode  == 'UMUM' ) echo 'selected' ; ?>>UMUM</option>
 									<option value="ADMIN" <?php if($kode  == 'ADMIN' ) echo 'selected' ; ?>>SYSTEM ADMINISTRATOR</option>									
@@ -104,15 +103,10 @@
 								}else{ 
 									$userp1="";
 								} 
-								if(substr_count($userap,"B") > 0){
-									$userp2 = "B"; 
+								if(substr_count($userap,"G") > 0){
+									$userp2 = "G"; 
 								}else{ 
 									$userp2="";
-								} 
-								if(substr_count($userap,"C") > 0){
-									$userp3 = "C"; 
-								}else{ 
-									$userp3="";
 								} 
 								if(substr_count($userap,"D") > 0){ 
 									$userp4 = "D"; 
@@ -135,11 +129,7 @@
 										<span></span>
 									</label>
 									<label class="kt-checkbox kt-checkbox--solid">
-										<input type="checkbox"    name="tab" value="B" <?php if($userp2  == 'B' ) echo 'checked' ; ?>> Tabungan
-										<span></span>
-									</label>
-									<label class="kt-checkbox kt-checkbox--solid">
-										<input type="checkbox"    name="inv" value="C" <?php if($userp3  == 'C' ) echo 'checked' ; ?>> Investasi
+										<input type="checkbox"    name="cm" value="G" <?php if($userp2  == 'G' ) echo 'checked' ; ?>> Customer Management
 										<span></span>
 									</label>
 									<label class="kt-checkbox kt-checkbox--solid">

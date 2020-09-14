@@ -215,7 +215,7 @@ tr {
 ?>
                 @if ($row->nopek != $nopek)
                 @foreach(DB::table('v_reportpajak_total')->where('nopek',$row->nopek)->get() as $data_peg)
-                    <tr>
+                    <tr style="text-align: left; padding-left:20px;font: normal 12px Verdana, Arial, sans-serif">
                         <th class="text-left">TOTA</th>
                         <th class="text-right">{{$data_peg->data_1 < 0 ? "(".number_format($data_peg->data_1*-1,2).")" : number_format($data_peg->data_1,2)}}</th>
                         <th class="text-right">{{$data_peg->data_2 < 0 ? "(".number_format($data_peg->data_2*-1,2).")" : number_format($data_peg->data_2,2)}}</th>
