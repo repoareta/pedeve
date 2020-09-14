@@ -4,7 +4,7 @@ namespace App\Models;
 
 use Illuminate\Database\Eloquent\Model;
 
-class ViewCashFLowMutasi extends Model
+class ViewCashFlowMutasi extends Model
 {
     protected $table = 'v_cashflow_mutasi';
 }
