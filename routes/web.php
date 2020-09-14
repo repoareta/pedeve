@@ -31,7 +31,7 @@ Route::get('/migration_clear', function () {
 //MODUL UMUM
 Route::group(['middleware'=> ['auth','checkRole:1,0']], function () {
     Route::name('default.')->group(function () {
-        Route::get('default', 'defaultController@index')->name('index');
+        Route::get('default', 'DefaultController@index')->name('index');
     });
 
     Route::prefix('umum')->group(function () {
