@@ -1115,7 +1115,7 @@ Route::group(['middleware'=> ['auth','checkRole:1,0']], function () {
             Route::get('cash_flow/report/mutasi', 'CashFlowController@mutasi')->name('mutasi');
             Route::get('cash_flow/report/mutasi/export', 'CashFlowController@mutasiExport')->name('mutasi.export');
             Route::get('cash_flow/report/permatauang', 'CashFlowController@perMataUang')->name('permatauang');
-            Route::get('cash_flow/report/permatauang/export', 'CashFlowController@perMataUang')->name('permatauang.export');
+            Route::get('cash_flow/report/permatauang/export', 'CashFlowController@perMataUangExport')->name('permatauang.export');
             Route::get('cash_flow/report/lengkap', 'CashFlowController@lengkap')->name('lengkap');
             Route::get('cash_flow/report/lengkap/export', 'CashFlowController@lengkapExport')->name('lengkap.export');
         });

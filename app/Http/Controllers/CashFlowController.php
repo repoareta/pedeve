@@ -104,4 +104,49 @@ class CashFlowController extends Controller
 
         return $pdf->stream('laporan_arus_kas_lengkap_'.date('Y-m-d H:i:s').'.pdf');
     }
+
+    public function perMataUang()
+    {
+        return view('cash_flow.report_per_mata_uang');
+    }
+
+    public function perMataUangExport(Request $request)
+    {
+        $tahun = $request->tahun;
+        $bulan = $request->bulan;
+        $kurs  = $request->kurs;
+        
+        $data_list = ViewCashFlowMutasi::select(
+            DB::raw('
+                status,
+                urutan,
+                jenis,
+                tahun,
+                bulan,
+                totpricerp
+            ')
+        )
+        ->when(request('bulan'), function ($query) {
+            return $query->where('bulan', request('bulan'));
+        })
+        ->when(request('tahun'), function ($query) {
+            return $query->where('tahun', request('tahun'));
+        })
+        ->orderBy('status', 'asc')
+        ->orderBy(DB::raw('cast(urutan as integer)'), 'asc')
+        ->get();
+
+        // dd($data_list);
+
+        // return default PDF
+        $pdf = DomPDF::loadview('cash_flow.export_per_mata_uang', compact(
+            'tahun',
+            'bulan',
+            'data_list'
+        ))
+        ->setPaper('a4', 'Portrait')
+        ->setOptions(['isPhpEnabled' => true]);
+
+        return $pdf->stream('laporan_arus_kas_per_mata_uang_'.date('Y-m-d H:i:s').'.pdf');
+    }
 }
