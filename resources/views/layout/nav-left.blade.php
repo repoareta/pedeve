@@ -1925,7 +1925,7 @@
                                             <span class="kt-menu__link-text">Per Cash Judex Per Sandi</span>
                                         </a>
                                     </li>-->
-                                    <li class="kt-menu__item kt-menu__item{{ set_active_submenu($kas_flow_internal) }}" aria-haspopup="true">
+                                    {{-- <li class="kt-menu__item kt-menu__item{{ set_active_submenu($kas_flow_internal) }}" aria-haspopup="true">
                                         <a href="{{ route('kas_bank.create7') }}" class="kt-menu__link">
                                             <i class="kt-menu__link-bullet kt-menu__link-bullet--line">
                                                 <span></span>
@@ -1940,7 +1940,7 @@
                                             </i>
                                             <span class="kt-menu__link-text">Cash Flow Per Periode</span>
                                         </a>
-                                    </li>
+                                    </li> --}}
                                     <li class="kt-menu__item kt-menu__item{{ set_active_submenu($kas_flow_mutasi) }}" aria-haspopup="true">
                                         <a href="{{ route('cash_flow.mutasi') }}" class="kt-menu__link">
                                             <i class="kt-menu__link-bullet kt-menu__link-bullet--line">
