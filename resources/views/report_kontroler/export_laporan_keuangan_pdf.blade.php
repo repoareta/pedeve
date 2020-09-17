@@ -11,11 +11,12 @@
 table {
     font: normal 10px Verdana, Arial, sans-serif;
     border-collapse: collapse;
+    border: 1px solid black;
 }
 
-.table-no-border-all td {
-    border: 0px;
-    padding: 0px;
+th, td {
+    border: 1px solid black;
+    padding: 5px;
 }
 
 .row {
@@ -35,10 +36,6 @@ table {
     text-align: right;
 }
 
-th, tr {
-    white-space: nowrap;
-}
-
 header { 
     position: fixed; 
     left: 0px; 
@@ -49,6 +46,14 @@ header {
 
 @page { 
     margin: 130px 50px 50px 50px;
+}
+
+.tab-1 {
+    padding-left:5%;
+}
+
+.tab-2 {
+    padding-left:10%;
 }
 
 </style>
@@ -63,7 +68,7 @@ header {
                     CATATAN ATAS LAPORAN KEUANGAN
                     </b>
                     <br>
-                    BULAN BUKU: MEI 2020
+                    BULAN BUKU: {{ strtoupper(bulan($bulan))." ".$tahun }}
                 </p>
             </div>
     
@@ -86,8 +91,78 @@ header {
                     </tr>
                 </thead>
                 <tbody>
+                    @foreach ($calk_list as $row)
+                    <tr>
+                        <td class="tab-2" style="white-space: nowrap;">{{ $row->descacct }}</td>
+                        <td class="text-center">{{ $row->sandi }}</td>
+                        <td class="text-right">
+                            @if ($row->lapangan == 'MS')
+                                @if ($row->pengali_tampil*$row->cum_rp < 0)
+                                ({{ nominal_abs($row->pengali_tampil*$row->cum_rp) }})
+                                @else
+                                {{ nominal_abs($row->pengali_tampil*$row->cum_rp) }}
+                                @endif
+                            @else
+                            0.00
+                            @endif
+                        </td>
+                        <td class="text-right">
+                            @if ($row->lapangan == 'MD')
+                                @if ($row->pengali_tampil*$row->cum_rp < 0)
+                                    ({{ nominal_abs($row->pengali_tampil*$row->cum_rp) }})
+                                @else
+                                    {{ nominal_abs($row->pengali_tampil*$row->cum_rp) }}
+                                @endif
+                            @else
+                            0.00
+                            @endif
+                        </td>
+                        <td class="text-right">
+                            @if ($row->pengali_tampil*$row->cum_rp < 0)
+                                ({{ nominal_abs($row->pengali_tampil*$row->cum_rp) }})
+                            @else
+                                {{ nominal_abs($row->pengali_tampil*$row->cum_rp) }}
+                            @endif
+                        </td>
+                    </tr>
+                    @endforeach
+                    <tr>
+                        <td class="tab-2"><b>JUMLAH</b></td>
+                        <td></td>
+                        <td class="text-right">0.00</td>
+                        <td class="text-right">0.00</td>
+                        <td class="text-right">0.00</td>
+                    </tr>
+                    <tr>
+                        <td class="tab-1"><b>JUMLAH</b></td>
+                        <td></td>
+                        <td class="text-right">0.00</td>
+                        <td class="text-right">0.00</td>
+                        <td class="text-right">0.00</td>
+                    </tr>
+                    <tr>
+                        <td><b>JUMLAH</b></td>
+                        <td></td>
+                        <td class="text-right">0.00</td>
+                        <td class="text-right">0.00</td>
+                        <td class="text-right">0.00</td>
+                    </tr>
                 </tbody>
             </table>
+        </div>
+
+        <br>
+        <br>
+        <br>
+        <div class="text-right">
+            <span style="padding-right:18px;">Jakarta, {{ date('d M Y') }}</span>
+            <br>
+            <br>
+            <br>
+            <br>
+            <u>( Wasono Hastoatmodjo )</u>
+            <br>
+            <span style="padding-right:25px">Manajer Kontroler</span>
         </div>
     </main>  
 </body>
