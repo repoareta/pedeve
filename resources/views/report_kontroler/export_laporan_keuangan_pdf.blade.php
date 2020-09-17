@@ -232,7 +232,7 @@ th {
                         @endforeach
 
                         <tr>
-                            <td class="tab-2"><b>JUMLAH {{ $row_account->urutan }}</b></td>
+                            <td class="tab-2"><b>JUMLAH</b></td>
                             <td></td>
                             <td class="text-right">
                                 <b>
@@ -273,8 +273,8 @@ th {
                         </tr>
                     @endforeach
                     <tr>
-                        <td class="tab-1"><b>JUMLAH PER SUB ACCOUNT</b></td>
-                        <td class="text-center"><b>{{ $row_sc->urutan_sc }}</b></td>
+                        <td class="tab-1"><b>JUMLAH</b></td>
+                        <td class="text-center"></td>
                         <td class="text-right">
                             <b>
                                 @php
@@ -314,7 +314,7 @@ th {
                     </tr>
                     @endforeach
                     <tr>
-                        <td class=""><b>JUMLAH TOTAL</b></td>
+                        <td class=""><b>JUMLAH</b></td>
                         <td></td>
                         <td class="text-right">
                             <b>
