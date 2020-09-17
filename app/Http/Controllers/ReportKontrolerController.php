@@ -721,10 +721,21 @@ class ReportKontrolerController extends Controller
         ->get();
 
         // dd($calk_list);
+        $class_account = ViewClassAccount::with(['neraca' => function ($q) use ($lp) {
+            $q->where('bulan', request('bulan'));
+            $q->where('tahun', request('tahun'));
+            $q->where('suplesi', request('suplesi'));
+            $q->where('lokasi', $lp);
+            $q->orderBy('sandi'); // default ASC
+        }])
+        ->orderBy('urutan')
+        ->orderBy('jenis')
+        ->get();
 
+        // dd($class_account);
 
         $pdf = DomPDF::loadview('report_kontroler.export_laporan_keuangan_pdf', compact(
-            'calk_list',
+            'class_account',
             'tahun',
             'bulan'
         ))

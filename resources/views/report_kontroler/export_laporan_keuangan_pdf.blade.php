@@ -91,48 +91,149 @@ header {
                     </tr>
                 </thead>
                 <tbody>
-                    @foreach ($calk_list as $row)
+                    @foreach ($class_account as $row_account)
                     <tr>
-                        <td class="tab-2" style="white-space: nowrap;">{{ $row->descacct }}</td>
-                        <td class="text-center">{{ $row->sandi }}</td>
-                        <td class="text-right">
-                            @if ($row->lapangan == 'MS')
-                                @if ($row->pengali_tampil*$row->cum_rp < 0)
-                                ({{ nominal_abs($row->pengali_tampil*$row->cum_rp) }})
-                                @else
-                                {{ nominal_abs($row->pengali_tampil*$row->cum_rp) }}
-                                @endif
-                            @else
-                            0.00
-                            @endif
+                        <td class="tab-2" style="white-space: nowrap;">
+                            <b>{{ $row_account->jenis }}</b>
                         </td>
-                        <td class="text-right">
-                            @if ($row->lapangan == 'MD')
-                                @if ($row->pengali_tampil*$row->cum_rp < 0)
-                                    ({{ nominal_abs($row->pengali_tampil*$row->cum_rp) }})
-                                @else
-                                    {{ nominal_abs($row->pengali_tampil*$row->cum_rp) }}
-                                @endif
-                            @else
-                            0.00
-                            @endif
-                        </td>
-                        <td class="text-right">
-                            @if ($row->pengali_tampil*$row->cum_rp < 0)
-                                ({{ nominal_abs($row->pengali_tampil*$row->cum_rp) }})
-                            @else
-                                {{ nominal_abs($row->pengali_tampil*$row->cum_rp) }}
-                            @endif
-                        </td>
-                    </tr>
-                    @endforeach
-                    <tr>
-                        <td class="tab-2"><b>JUMLAH</b></td>
+                        <td class="text-center"><b>{{ $row_account->batas_awal }}</b></td>
                         <td></td>
-                        <td class="text-right">0.00</td>
-                        <td class="text-right">0.00</td>
-                        <td class="text-right">0.00</td>
+                        <td></td>
+                        <td></td>
                     </tr>
+
+                    @foreach ($row_account->neraca as $row_neraca)
+                        <tr>
+                            <td class="tab-2" style="white-space: nowrap;">
+                                {{ $row_neraca->andet->descacct }}
+                            </td>
+                            <td class="text-center">{{ $row_neraca->andet->sandi }}</td>
+                            <td class="text-right">
+                                @if ($row_neraca->lapangan == 'MD')
+                                    @php
+                                        $md_row = $row_account->pengali_tampil * $row_neraca->cum_rp;
+                                    @endphp
+                                    @if ($md_row < 0)
+                                        ({{ nominal_abs($md_row) }}) 
+                                    @else
+                                        {{ nominal_abs($md_row) }}
+                                    @endif
+                                @else
+                                    0,00
+                                @endif
+                            </td>
+                            <td class="text-right">
+                                @if ($row_neraca->lapangan == 'MS')
+                                    @php
+                                        $ms_row = $row_account->pengali_tampil * $row_neraca->cum_rp;
+                                    @endphp
+                                    @if ($ms_row < 0)
+                                        ({{ nominal_abs($ms_row) }}) 
+                                    @else
+                                        {{ nominal_abs($ms_row) }}
+                                    @endif
+                                @else
+                                    0,00
+                                @endif
+                            </td>
+                            <td class="text-right">
+                                @if ($row_account->pengali_tampil * $row_neraca->cum_rp < 0)
+                                    ({{ nominal_abs($row_account->pengali_tampil * $row_neraca->cum_rp) }}) 
+                                @else
+                                    {{ nominal_abs($row_account->pengali_tampil * $row_neraca->cum_rp) }}
+                                @endif
+                            </td>
+                        </tr>
+                    @endforeach
+
+                    <tr>
+                        <td></td>
+                        <td class="text-center"><b>{{ $row_account->batas_awal }}</b></td>
+                        <td class="text-right">
+                            <b>
+                                @php
+                                    $md_cum = $row_account->neraca->filter(function($value, $key) {
+                                        return $value->lapangan == 'MD';
+                                    })->sum(function($row_md_cum) {
+                                        return $row_md_cum->cum_rp * 2;
+                                    });
+                                @endphp
+                                @if ($md_cum < 0)
+                                ({{ nominal_abs($md_cum) }})
+                                @else
+                                {{ nominal_abs($md_cum) }}
+                                @endif
+                                
+                            </b>
+                        </td>
+                        <td class="text-right">
+                            <b>
+                                @php
+                                    $ms_cum = $row_account->neraca->filter(function($value, $key) {
+                                        return $value->lapangan == 'MS';
+                                    })->sum('cum_rp');
+                                @endphp
+                                @if ($ms_cum < 0)
+                                ({{ nominal_abs($ms_cum) }})
+                                @else
+                                {{ nominal_abs($ms_cum) }}
+                                @endif
+                            </b>
+                        </td>
+                        <td class="text-right">
+                            <b>
+                                @if (($md_cum + $ms_cum) < 0)
+                                ({{ nominal_abs($md_cum + $ms_cum) }})
+                                @else
+                                {{ nominal_abs($md_cum + $ms_cum) }}
+                                @endif
+                            </b>
+                        </td>
+                    </tr>
+
+                    <tr>
+                        <td class="tab-2"><b>JUMLAH NERACA</b></td>
+                        <td></td>
+                        <td class="text-right">
+                            <b>
+                                @php
+                                    $md_cum = $row_account->neraca->filter(function($value, $key) {
+                                        return $value->lapangan == 'MD';
+                                    })->sum('cum_rp');
+                                @endphp
+                                @if ($md_cum < 0)
+                                ({{ nominal_abs($md_cum) }})
+                                @else
+                                {{ nominal_abs($md_cum) }}
+                                @endif
+                                
+                            </b>
+                        </td>
+                        <td class="text-right">
+                            <b>
+                                @php
+                                    $ms_cum = $row_account->neraca->filter(function($value, $key) {
+                                        return $value->lapangan == 'MS';
+                                    })->sum('cum_rp');
+                                @endphp
+                                @if ($ms_cum < 0)
+                                ({{ nominal_abs($ms_cum) }})
+                                @else
+                                {{ nominal_abs($ms_cum) }}
+                                @endif
+                            </b>
+                        </td>
+                        <td class="text-right">
+                            <b>
+                                @if (($md_cum + $ms_cum) < 0)
+                                ({{ nominal_abs($md_cum + $ms_cum) }})
+                                @else
+                                {{ nominal_abs($md_cum + $ms_cum) }}
+                                @endif
+                            </b>
+                        </td>
+                    </tr>
+
                     <tr>
                         <td class="tab-1"><b>JUMLAH</b></td>
                         <td></td>
@@ -140,13 +241,7 @@ header {
                         <td class="text-right">0.00</td>
                         <td class="text-right">0.00</td>
                     </tr>
-                    <tr>
-                        <td><b>JUMLAH</b></td>
-                        <td></td>
-                        <td class="text-right">0.00</td>
-                        <td class="text-right">0.00</td>
-                        <td class="text-right">0.00</td>
-                    </tr>
+                    @endforeach
                 </tbody>
             </table>
         </div>
