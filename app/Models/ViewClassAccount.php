@@ -17,4 +17,14 @@ class ViewClassAccount extends Model
     {
         return $this->hasMany('App\Models\ViewNeraca', 'sub_akun', 'batas_awal');
     }
+
+    public function class_account()
+    {
+        return $this->hasMany('App\Models\ViewClassAccount', 'urutan_sc', 'urutan_sc');
+    }
+
+    public function class_account_by_sc()
+    {
+        return $this->hasMany('App\Models\ViewClassAccount', 'urutan_class', 'urutan_class');
+    }
 }

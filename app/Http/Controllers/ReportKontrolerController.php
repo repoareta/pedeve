@@ -690,52 +690,85 @@ class ReportKontrolerController extends Controller
             $lp = "MS,MD";
         }
 
-        $calk_list = DB::table('v_class_account AS vca')
-        ->select(
-            'vca.jenis',
-            'vca.batas_awal',
-            'vn.sandi',
-            'va.descacct',
-            'vca.pengali_tampil',
-            'vn.cum_rp',
-            'vn.sub_akun',
-            'vn.lapangan'
-        )
-        ->join('v_neraca AS vn', 'vn.batas_awal', 'vca.batas_awal')
-        ->join('v_andet AS va', 'va.sandi', 'vn.sandi')
-        ->whereNotNull('vca.pengali_tampil')
-        ->when(request('bulan'), function ($query) {
-            return $query->where('vn.bulan', request('bulan'));
-        })
-        ->when(request('tahun'), function ($query) {
-            return $query->where('vn.tahun', request('tahun'));
-        })
-        ->when($lp, function ($query, $lp) {
-            return $query->where('vn.lokasi', $lp);
-        })
-        ->when(request('suplesi'), function ($query) {
-            return $query->where('vn.suplesi', request('suplesi'));
-        })
-        ->orderBy('vn.sub_akun', 'ASC')
-        ->orderBy('va.descacct', 'ASC')
-        ->get();
+        // $calk_list = DB::table('v_class_account AS vca')
+        // ->select(
+        //     'vca.jenis',
+        //     'vca.batas_awal',
+        //     'vn.sandi',
+        //     'va.descacct',
+        //     'vca.pengali_tampil',
+        //     'vn.cum_rp',
+        //     'vn.sub_akun',
+        //     'vn.lapangan'
+        // )
+        // ->join('v_neraca AS vn', 'vn.batas_awal', 'vca.batas_awal')
+        // ->join('v_andet AS va', 'va.sandi', 'vn.sandi')
+        // ->whereNotNull('vca.pengali_tampil')
+        // ->when(request('bulan'), function ($query) {
+        //     return $query->where('vn.bulan', request('bulan'));
+        // })
+        // ->when(request('tahun'), function ($query) {
+        //     return $query->where('vn.tahun', request('tahun'));
+        // })
+        // ->when($lp, function ($query, $lp) {
+        //     return $query->where('vn.lokasi', $lp);
+        // })
+        // ->when(request('suplesi'), function ($query) {
+        //     return $query->where('vn.suplesi', request('suplesi'));
+        // })
+        // ->orderBy('vn.sub_akun', 'ASC')
+        // ->orderBy('va.descacct', 'ASC')
+        // ->get();
 
         // dd($calk_list);
-        $class_account = ViewClassAccount::with(['neraca' => function ($q) use ($lp) {
-            $q->where('bulan', request('bulan'));
-            $q->where('tahun', request('tahun'));
-            $q->where('suplesi', request('suplesi'));
-            $q->where('lokasi', $lp);
-            $q->orderBy('sandi'); // default ASC
+        // $class_account = ViewClassAccount::with(['neraca' => function ($q) use ($lp) {
+        //     $q->where('bulan', request('bulan'));
+        //     $q->where('tahun', request('tahun'));
+        //     $q->where('suplesi', request('suplesi'));
+        //     $q->where('lokasi', $lp);
+        //     $q->orderBy('sandi'); // default ASC
+        // }])
+        // ->orderBy('urutan')
+        // ->orderBy('jenis')
+        // ->get();
+
+        // $class_account = ViewClassAccount::where(DB::raw('LENGTH(urutan)'), '>', 3)
+        // ->orderBy('urutan_sc')
+        // ->orderBy('urutan')
+        // ->get();
+
+        $account_sc = ViewClassAccount::select('urutan_sc')
+        ->with(['class_account' => function ($q) {
+            $q->where(DB::raw('LENGTH(urutan)'), '=', 3);
+            $q->orderBy('urutan_sc');
+            $q->orderBy('urutan');
+            $q->with(['class_account_by_sc' => function ($q_two) {
+                $q_two->where(DB::raw('LENGTH(urutan)'), '>', 3);
+                $q_two->orderBy('urutan_sc');
+                $q_two->orderBy('urutan');
+                $q_two->with(['neraca' => function ($q_three) {
+                    $q_three->where('bulan', request('bulan'));
+                    $q_three->where('tahun', request('tahun'));
+                    $q_three->where('suplesi', request('suplesi'));
+                    $q_three->when(request('lp'), function ($q_where) {
+                        if (request('lp') == 'KL') {
+                            return $q_where->where('lokasi', "MS,MD");
+                        }
+
+                        return $q_where->where('lokasi', request('lp'));
+                    });
+                    $q_three->orderBy('sandi');
+                }]);
+            }]);
         }])
-        ->orderBy('urutan')
-        ->orderBy('jenis')
+        ->groupBy('urutan_sc')
+        ->orderBy('urutan_sc') // default ASC
         ->get();
 
-        // dd($class_account);
+        // dd($account_sc);
 
         $pdf = DomPDF::loadview('report_kontroler.export_laporan_keuangan_pdf', compact(
-            'class_account',
+            'account_sc',
             'tahun',
             'bulan'
         ))
