@@ -1705,7 +1705,7 @@
 
                         @foreach(DB::table('usermenu')->where('userid',Auth::user()->userid)->where('menuid',508)->limit(1)->get() as $data_umu)
                         @if($data_umu->ability == 1)
-                        {{--<li class="kt-menu__item kt-menu__item--submenu {{ set_active($tool) }}" aria-haspopup="true" data-ktmenu-submenu-toggle="hover">
+                        <li class="kt-menu__item kt-menu__item--submenu {{ set_active($tool) }}" aria-haspopup="true" data-ktmenu-submenu-toggle="hover">
                             <a href="javascript:;" class="kt-menu__link kt-menu__toggle">
                                 <i class="kt-menu__link-bullet kt-menu__link-bullet--dot">
                                     <span></span>
@@ -1733,7 +1733,7 @@
                                     </li>
                                 </ul>
                             </div>
-                        </li>--}}
+                        </li>
                         @endif
                         @endforeach
 
