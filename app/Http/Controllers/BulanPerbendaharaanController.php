@@ -19,7 +19,7 @@ class BulanPerbendaharaanController extends Controller
 
     public function searchIndex(Request $request)
     {
-        $data = Timetrans::orderBy('thnbln', 'desc')->get();
+        $data = Timetrans::orderBy('thnbln', 'asc')->get();
         return datatables()->of($data)
         ->addColumn('thnbln', function ($data) {
             return $data->thnbln;
