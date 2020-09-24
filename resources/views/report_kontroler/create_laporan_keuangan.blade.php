@@ -42,8 +42,6 @@
 	<div class="kt-portlet__body">
 		<form class="kt-form kt-form--label-right" action="{{route('laporan_keuangan.export')}}" method="GET" target="_blank">
 			<div class="kt-portlet__body">
-				<input class="form-control" type="hidden" name="userid" value="{{Auth::user()->userid}}">
-
 				<div class="form-group row">
 				<label for="spd-input" class="col-2 col-form-label">Bulan/Tahun<span style="color:red;">*</span></label>
 				<div class="col-4">
@@ -75,7 +73,6 @@
 						<input class="form-control" type="text" value="{{$tahun}}"   name="tahun" size="4" maxlength="4" onkeypress="return hanyaAngka(event)" autocomplete='off' required> 
 					</div>
 					<div class="col-2" >
-						<input class="form-control" type="hidden" name="tanggal" value="{{ date('d-m-Y') }}" size="15" maxlength="15" autocomplete='off'>
 						<input class="form-control" type="text" value="{{$suplesi}}"   name="suplesi" size="4" maxlength="4" onkeypress="return hanyaAngka(event)" autocomplete='off' required>
 					</div>
 				</div>
