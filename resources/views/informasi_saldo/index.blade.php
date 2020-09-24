@@ -96,7 +96,7 @@ var t = $('#kt_table').DataTable({
 				}
 			},
 	columns: [
-		{data: 'action', name: 'action'},
+		{data: 'action', name: 'aksi', orderable: false, searchable: false, class:'radio-button'},
 		{data: 'kodestore', name: 'kodestore'},
 		{data: 'ak', name: 'ak'},
 	]

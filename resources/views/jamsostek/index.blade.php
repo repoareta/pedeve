@@ -101,7 +101,7 @@
 			},
 			ajax      : "{{ route('jamsostek.index.json') }}",
 			columns: [
-				{data: 'action', name: 'action'},
+				{data: 'action', name: 'aksi', orderable: false, searchable: false, class:'radio-button'},
 				{data: 'pribadi', name: 'pribadi'},
 				{data: 'accident', name: 'accident'},
 				{data: 'pensiun', name: 'pensiun'},

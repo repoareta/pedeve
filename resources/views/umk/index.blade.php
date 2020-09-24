@@ -155,7 +155,7 @@ $(document).ready(function(){
 				}
 			},
 	columns: [
-		{data: 'radio', name: 'radio'},
+		{data: 'radio', name: 'aksi', orderable: false, searchable: false, class:'radio-button'},
 		{data: 'tgl_panjar', name: 'tgl_panjar'},
 		{data: 'no_umk', name: 'no_umk'},
 		{data: 'no_kas', name: 'no_kas'},

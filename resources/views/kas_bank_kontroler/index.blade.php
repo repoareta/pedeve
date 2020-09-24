@@ -109,7 +109,7 @@ $(document).ready(function () {
 						}
 					},
 			columns: [
-				{data: 'radio', name: 'radio'},
+				{data: 'radio', name: 'aksi', orderable: false, searchable: false, class:'radio-button'},
 				{data: 'jeniskartu', name: 'jeniskartu'},
 				{data: 'kodestore', name: 'kodestore'},
 				{data: 'namabank', name: 'namabank'},

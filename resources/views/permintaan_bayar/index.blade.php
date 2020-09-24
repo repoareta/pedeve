@@ -153,7 +153,7 @@
 					}
 				},
 			columns: [
-				{data: 'radio', name: 'radio'},
+				{data: 'radio', name: 'aksi', orderable: false, searchable: false, class:'radio-button'},
 				{data: 'no_bayar', name: 'no_bayar'},
 				{data: 'no_kas', name: 'no_kas'},
 				{data: 'kepada', name: 'kepada'},

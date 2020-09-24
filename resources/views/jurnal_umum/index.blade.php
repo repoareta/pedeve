@@ -148,7 +148,7 @@ $(document).ready(function () {
 						}
 					},
 			columns: [
-				{data: 'radio', name: 'radio'},
+				{data: 'radio', name: 'aksi', orderable: false, searchable: false, class:'radio-button'},
 				{data: 'docno', name: 'docno'},
 				{data: 'keterangan', name: 'keterangan'},
 				{data: 'jk', name: 'jk'},

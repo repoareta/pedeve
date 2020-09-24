@@ -96,7 +96,7 @@ $(document).ready(function () {
 						}
 					},
 			columns: [
-				{data: 'radio', name: 'radio'},
+				{data: 'radio', name: 'aksi', orderable: false, searchable: false, class:'radio-button'},
 				{data: 'menuid', name: 'menuid'},
 				{data: 'menunm', name: 'menunm'},
 				{data: 'userap', name: 'userap'},

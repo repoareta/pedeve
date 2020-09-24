@@ -90,7 +90,7 @@
 			},
 			ajax      : "{{ route('master_perusahaan.index.json') }}",
 			columns: [
-				{data: 'radio', name: 'radio'},
+				{data: 'radio', name: 'aksi', orderable: false, searchable: false, class:'radio-button'},
 				{data: 'kode', name: 'kode'},
 				{data: 'nama', name: 'nama'},
 			]
