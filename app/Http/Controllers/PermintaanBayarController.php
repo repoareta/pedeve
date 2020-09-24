@@ -24,7 +24,17 @@ class PermintaanBayarController extends Controller
      */
     public function index(Request $request)
     {
-        return view('permintaan_bayar.index');
+        $data_tahunbulan = DB::select("select max(thnbln) as bulan_buku from timetrans where status='1' and length(thnbln)='6'");
+        if(!empty($data_tahunbulan)) {
+            foreach ($data_tahunbulan as $data_bul) {
+                $bulan = substr($data_bul->bulan_buku,4,2);
+                $tahun = substr($data_bul->bulan_buku,0,4);
+            }
+        }else{
+            $bulan =date('m');
+            $tahun =date('Y');
+        }
+        return view('permintaan_bayar.index', compact('bulan','tahun'));
     }
 
     public function searchIndex(Request $request)

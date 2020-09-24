@@ -886,7 +886,7 @@ Route::group(['middleware'=> ['auth','checkRole:1,0']], function () {
             Route::get('bulan_perbendaharaan', 'BulanPerbendaharaanController@index')->name('index');
             Route::post('bulan_perbendaharaan/index/search', 'BulanPerbendaharaanController@searchIndex')->name('search.index');
             Route::get('bulan_perbendaharaan/create', 'BulanPerbendaharaanController@create')->name('create');
-            Route::get('bulan_perbendaharaan/store', 'BulanPerbendaharaanController@store')->name('store');
+            Route::post('bulan_perbendaharaan/store', 'BulanPerbendaharaanController@store')->name('store');
             Route::get('bulan_perbendaharaan/edit/{no}', 'BulanPerbendaharaanController@edit')->name('edit');
             Route::post('bulan_perbendaharaan/update', 'BulanPerbendaharaanController@update')->name('update');
             Route::delete('bulan_perbendaharaan/delete', 'BulanPerbendaharaanController@delete')->name('delete');

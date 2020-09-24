@@ -130,7 +130,7 @@ $(document).ready(function () {
 						}
 					},
 			columns: [
-				{data: 'radio', name: 'radio'},
+				{data: 'radio', name: 'aksi', orderable: false, searchable: false, class:'radio-button'},
 				{data: 'noseri', name: 'noseri'},
 				{data: 'namabank', name: 'namabank'},
 				{data: 'asal', name: 'asal'},

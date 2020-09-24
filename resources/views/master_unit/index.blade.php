@@ -94,7 +94,7 @@
 			},
 			ajax      : "{{ route('master_unit.index.json') }}",
 			columns: [
-				{data: 'radio', name: 'radio'},
+				{data: 'radio', name: 'aksi', orderable: false, searchable: false, class:'radio-button'},
 				{data: 'namaprshn', name: 'namaprshn'},
 				{data: 'kode', name: 'kode'},
 				{data: 'nama', name: 'nama'},

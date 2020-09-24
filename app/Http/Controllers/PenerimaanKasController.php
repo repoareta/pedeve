@@ -28,17 +28,15 @@ class PenerimaanKasController extends Controller
     public function index()
     {
         $data_tahunbulan = DB::select("select max(thnbln) as bulan_buku from timetrans where status='1' and length(thnbln)='6'");
-        if (!empty($data_tahunbulan)) {
+        if(!empty($data_tahunbulan)) {
             foreach ($data_tahunbulan as $data_bul) {
-                // $tahun = substr($data_bul->bulan_buku, 0, -2);
-                // $bulan = substr($data_bul->bulan_buku, 4);
+                $bulan = substr($data_bul->bulan_buku,4,2);
+                $tahun = substr($data_bul->bulan_buku,0,4);
             }
-        } else {
-            // $bulan ='00';
-            // $tahun ='0000';
+        }else{
+            $bulan =date('m');
+            $tahun =date('Y');
         }
-        $bulan = date('m');
-        $tahun =date('Y');
         return view('penerimaan_kas.index', compact('tahun', 'bulan'));
     }
 
