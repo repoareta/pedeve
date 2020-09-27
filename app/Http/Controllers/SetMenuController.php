@@ -135,7 +135,14 @@ class SetMenuController extends Controller
 
     public function edit($no)
     {
-        $data_user = DB::select("select  a.ability,a.userid,a.menuid, b.menunm from usermenu a join dftmenu b on  b.menuid=a.menuid where a.userid='$no' order by a.menuid");
+        $data_user = DB::table('usermenu')
+        ->join('dftmenu', 'usermenu.menuid', '=', 'dftmenu.menuid')
+        ->select('usermenu.ability','usermenu.userid','usermenu.menuid','dftmenu.userap', 'dftmenu.menunm')
+        ->where('usermenu.userid', $no)
+        ->whereNotIn('dftmenu.userap', ['INV','TAB'])
+        ->orderBy('dftmenu.userap' ,'asc')
+        ->get();
+        
         foreach($data_user as $data)
         {
             $userid  = $data->userid; 
