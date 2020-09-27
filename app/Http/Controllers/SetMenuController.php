@@ -40,37 +40,32 @@ class SetMenuController extends Controller
        })
         ->addColumn('userap', function ($data) {
             
-            if(substr_count($data->userap,"A") > 0){
-                 $userp1 = "[ KONTROLER ]"; 
-            }else{ 
+            if (substr_count($data->userap, "A") > 0) {
+                $userp1 = "[ KONTROLER ]";
+            } else {
                 $userp1="";
-            } 
-            if(substr_count($data->userap,"B") > 0){
-                 $userp2 = "[ TABUNGAN ]"; 
-            }else{ 
+            }
+            if (substr_count($data->userap, "G") > 0) {
+                $userp2 = "[ CUSTOMER MANAGEMENT ]";
+            } else {
                 $userp2="";
-            } 
-            if(substr_count($data->userap,"C") > 0){
-                 $userp3 = "[ INVESTASI ]"; 
-            }else{ 
-                $userp3="";
-            } 
-            if(substr_count($data->userap,"D") > 0){ 
-                $userp4 = "[ PERBENDAHARAAN ]"; 
-            }else{ 
+            }
+            if (substr_count($data->userap, "D") > 0) {
+                $userp4 = "[ PERBENDAHARAAN ]";
+            } else {
                 $userp4="";
-            } 
-            if(substr_count($data->userap,"E") > 0){ 
-                $userp5 = "[ UMUM ]"; 
-            }else{ 
+            }
+            if (substr_count($data->userap, "E") > 0) {
+                $userp5 = "[ UMUM ]";
+            } else {
                 $userp5="";
-            } 
-            if(substr_count($data->userap,"F") > 0){ 
-                $userp6 = "[ SDM ]"; 
-            }else{ 
+            }
+            if (substr_count($data->userap, "F") > 0) {
+                $userp6 = "[ SDM ]";
+            } else {
                 $userp6="";
-            } 
-            return $userp1.' '.$userp2.' '.$userp3.' '.$userp4.' '.$userp5.' '.$userp6;
+            }
+            return $userp1.' '.$userp2.' '.$userp4.' '.$userp5.' '.$userp6;
        })
         ->addColumn('radio', function ($data) {
             $radio = '<center><label class="kt-radio kt-radio--bold kt-radio--brand"><input type="radio" kode="'.$data->userid.'" class="btn-radio" name="btn-radio"><span></span></label></center>'; 
