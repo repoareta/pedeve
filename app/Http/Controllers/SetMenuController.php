@@ -20,7 +20,7 @@ class SetMenuController extends Controller
 
     public function searchIndex(Request $request)
     {
-        $data = DB::select("select * from userpdv order by userid");
+        $data = Userpdv::orderBy('userid','asc')->get();
         return datatables()->of($data)
         ->addColumn('userid', function ($data) {
             return $data->userid;
