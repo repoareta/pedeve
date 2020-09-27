@@ -131,7 +131,32 @@ class SetUserController extends Controller
                 'gcg_fungsi_id' => $request->gcg_fungsi,
                 'gcg_jabatan_id' => $request->gcg_jabatan
             ]);
-            $data_menu = DB::select("select distinct(menuid) as menuid from dftmenu");
+            if($request->akt == 'A'){
+                $akt = 'AKT';
+            }else{
+                $akt = '';
+            }
+            if($request->cm == 'G'){
+                $cm = 'CM';
+            }else{
+                $cm = '';
+            }
+            if($request->pbd == 'D'){
+                $pbd = 'PBD';
+            }else{
+                $pbd = '';
+            }
+            if($request->umu == 'E'){
+                $umu = 'UMU';
+            }else{
+                $umu = '';
+            }
+            if($request->sdm == 'F'){
+                $sdm = 'SDM';
+            }else{
+                $sdm = '';
+            }
+            $data_menu = DB::select("select distinct(menuid) as menuid from dftmenu where userap in ('$akt','$cm','$pbd','$umu','$sdm')");
             foreach ($data_menu as $data_m) {
                 Usermenu::insert([
                         'userid' => $userid,
@@ -205,6 +230,45 @@ class SetUserController extends Controller
             'gcg_fungsi_id' => $request->gcg_fungsi,
             'gcg_jabatan_id' => $request->gcg_jabatan
         ]);
+
+        if($request->akt == 'A'){
+            $akt = 'AKT';
+        }else{
+            $akt = '';
+        }
+        if($request->cm == 'G'){
+            $cm = 'CM';
+        }else{
+            $cm = '';
+        }
+        if($request->pbd == 'D'){
+            $pbd = 'PBD';
+        }else{
+            $pbd = '';
+        }
+        if($request->umu == 'E'){
+            $umu = 'UMU';
+        }else{
+            $umu = '';
+        }
+        if($request->sdm == 'F'){
+            $sdm = 'SDM';
+        }else{
+            $sdm = '';
+        }
+        Usermenu::where('userid', $userid)->delete();
+        $data_menu = DB::select("select distinct(menuid) as menuid from dftmenu where userap in ('$akt','$cm','$pbd','$umu','$sdm')");
+        foreach ($data_menu as $data_m) {
+            Usermenu::insert([
+                    'userid' => $userid,
+                    'menuid' => $data_m->menuid,
+                    'cetak' => '0',
+                    'tambah' => '0',
+                    'rubah' => '0',
+                    'lihat' => '0',
+                    'hapus' => '0'
+                ]);
+        }
         return response()->json();
     }
 

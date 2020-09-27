@@ -139,14 +139,12 @@ class SetMenuController extends Controller
         ->join('dftmenu', 'usermenu.menuid', '=', 'dftmenu.menuid')
         ->select('usermenu.ability','usermenu.userid','usermenu.menuid','dftmenu.userap', 'dftmenu.menunm')
         ->where('usermenu.userid', $no)
+        ->where('usermenu.deleted_at', null)
         ->whereNotIn('dftmenu.userap', ['INV','TAB'])
         ->orderBy('dftmenu.userap' ,'asc')
         ->get();
         
-        foreach($data_user as $data)
-        {
-            $userid  = $data->userid; 
-        }
+            $userid  = $no; 
         $data_jum = DB::select("select  count(a.userid) as jumlah from usermenu a join dftmenu b on  b.menuid=a.menuid where a.userid='$no'");
         foreach($data_jum as $data_ju)
         {

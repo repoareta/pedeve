@@ -119,7 +119,7 @@ $(document).ready(function () {
 						})
 						swalWithBootstrapButtons.fire({
 							title: "Data yang akan dihapus?",
-							text: "Jenis  : " +kode,
+							text: "User ID  : " +kode,
 							type: 'warning',
 							showCancelButton: true,
 							reverseButtons: true,
@@ -139,7 +139,7 @@ $(document).ready(function () {
 								success: function (data) {
 									Swal.fire({
 										type  : 'success',
-										title : "Data Set Menu dengan jenis  : " +kode+" Berhasil Dihapus.",
+										title : "Data Set Menu dengan User ID  : " +kode+" Berhasil Dihapus.",
 										text  : 'Berhasil',
 										
 									}).then(function() {
