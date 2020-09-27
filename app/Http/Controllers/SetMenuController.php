@@ -144,7 +144,7 @@ class SetMenuController extends Controller
         ->orderBy('dftmenu.userap' ,'asc')
         ->get();
         
-            $userid  = $no; 
+        $userid  = $no; 
         $data_jum = DB::select("select  count(a.userid) as jumlah from usermenu a join dftmenu b on  b.menuid=a.menuid where a.userid='$no'");
         foreach($data_jum as $data_ju)
         {
