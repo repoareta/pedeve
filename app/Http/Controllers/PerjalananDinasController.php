@@ -19,7 +19,6 @@ use App\Exports\RekapSPD;
 
 // Load Plugin
 use Carbon\Carbon;
-use Session;
 use DomPDF;
 use Excel;
 use Alert;
@@ -59,7 +58,13 @@ class PerjalananDinasController extends Controller
                 return currency_idr($row->jum_panjar);
             })
             ->addColumn('action', function ($row) {
-                $radio = '<label class="kt-radio kt-radio--bold kt-radio--brand"><input type="radio" name="radio1" value="'.$row->no_panjar.'"><span></span></label>';
+                if (optional($row->ppanjar_header)->no_panjar) {
+                    $ppanjar_header = "true";
+                } else {
+                    $ppanjar_header = "false";
+                }
+
+                $radio = '<label class="kt-radio kt-radio--bold kt-radio--brand"><input type="radio" name="radio1" data-ppanjar="'.$ppanjar_header.'" value="'.$row->no_panjar.'"><span></span></label>';
                 return $radio;
             })
             ->rawColumns(['action'])
@@ -172,6 +177,11 @@ class PerjalananDinasController extends Controller
         $no_panjar = str_replace('-', '/', $no_panjar);
         $panjar_header = PanjarHeader::where('no_panjar', $no_panjar)->first();
 
+        if (optional($panjar_header->ppanjar_header)->no_panjar) {
+            Alert::warning('Data Panjar Dinas Tidak Bisa Diubah', 'Gagal')->persistent(true)->autoClose(2000);
+            return redirect()->route('perjalanan_dinas.index');
+        }
+
         $pegawai_list = SdmMasterPegawai::where('status', '<>', 'P')
         ->orderBy('nama', 'ASC')
         ->get();
@@ -234,7 +244,10 @@ class PerjalananDinasController extends Controller
      */
     public function delete(Request $request)
     {
-        PanjarHeader::where('no_panjar', $request->id)->delete();
+        $panjar_header = PanjarHeader::where('no_panjar', $request->id)->first();
+        if (is_null(optional($panjar_header->ppanjar_header)->no_panjar)) {
+            $panjar_header->delete();
+        }
 
         return response()->json();
     }
