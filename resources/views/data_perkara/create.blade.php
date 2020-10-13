@@ -134,24 +134,10 @@
 						<div class="form-group row">
 							<label for="" class="col-2 col-form-label">Nilai Perkara<span style="color:red;">*</span></label>
 							<div class="col-8">
-								<input class="form-control" type="text" value="" name="nilai_perkara"  size="25" maxlength="20" title="Nilai Perkara" autocomplete='off' onkeypress="return hanyaAngka(event)" autocomplete='off required oninvalid="this.setCustomValidity('User Name Harus Diisi...')" oninput="setCustomValidity('')">
+								<input class="form-control" type="text" value="" name="nilai_perkara" id="rupiah" size="25" maxlength="20" title="Nilai Perkara" autocomplete='off' onkeypress="return hanyaAngka(event)" autocomplete='off required oninvalid="this.setCustomValidity('User Name Harus Diisi...')" oninput="setCustomValidity('')">
 							</div>
 						</div>
-						<div class="form-group row">
-							<label for="" class="col-2 col-form-label">Dokumen Perkara<span style="color:red;">*</span></label>
-							<div class="col-8">
-								<input class="form-control" type="file" value="" name="file" title="Dokumen" accept=".pdf,.jpg,.jpeg">
-								@if(count($errors) > 0)
-									@foreach ($errors->all() as $error)
-									<span style="color:red;">Frotmat harus pdf or jpg</span>
-									@endforeach
-								@else
-									<span>Frotmat file pdf or jpg size 2 MB</span>
-								@endif
-							</div>
-						</div>
-						
-												
+																		
 						<div class="kt-form__actions">
 							<div class="row">
 								<div class="col-2"></div>
@@ -182,7 +168,7 @@
 			$(this).valid();
 		});
 
-		
+			
 		$("input[name=ci]:checked").each(function() {  
 			var ci = $(this).val();
 			if(ci == 1)
@@ -248,7 +234,7 @@
 			orientation: "bottom left",
 			autoclose: true,
 			// language : 'id',
-			format   : 'yyyy-mm-dd'
+			format   : 'dd-mm-yyyy'
 		});
 	});
 	
@@ -281,6 +267,32 @@
  
 		    return false;
 		  return true;
+		}
+
+		var rupiah = document.getElementById('rupiah');
+		rupiah.addEventListener('keyup', function(e){
+			// tambahkan 'Rp.' pada saat form di ketik
+			// gunakan fungsi formatRupiah() untuk mengubah angka yang di ketik menjadi format angka
+			rupiah.value = formatRupiah(this.value, '');
+		});
+
+		/* Fungsi formatRupiah */
+		function formatRupiah(angka, prefix){
+			var number_string = angka.replace(/[^,\d]/g, '').toString(),
+			split   		= number_string.split(','),
+			sisa     		= split[0].length % 3,
+			rupiah     		= split[0].substr(0, sisa),
+			ribuan     		= split[0].substr(sisa).match(/\d{3}/gi);
+
+			// tambahkan titik jika yang di input sudah menjadi angka ribuan
+			if(ribuan){
+				separator = sisa ? '.' : '';
+				rupiah += separator + ribuan.join('.');
+			}
+
+			rupiah = split[1] != undefined ? rupiah + ',' + split[1] : rupiah;
+			$a= prefix == undefined ? rupiah : (rupiah ? rupiah: '');
+         return $a;
 		}
 </script>
 

@@ -55,20 +55,20 @@
 						<div class="form-group row">
 							<label for="" class="col-2 col-form-label">PASSWORD LAMA<span style="color:red;">*</span></label>
 							<div class="col-10">
-								<input class="form-control" type="password" value="" name="userpw" id="userpw" size="10" maxlength="10" title="PASSWORD LAMA" autocomplete='off' required oninvalid="this.setCustomValidity('PASSWORD LAMA Harus Diisi...')" oninput="setCustomValidity('')">
+								<input class="form-control" type="password" value="" name="userpw" id="userpw" size="50" maxlength="50" title="PASSWORD LAMA" autocomplete='off' required oninvalid="this.setCustomValidity('PASSWORD LAMA Harus Diisi...')" oninput="setCustomValidity('')">
 							</div>
 						</div>
 						<div class="form-group row">
 							<label for="" class="col-2 col-form-label">PASSWORD BARU<span style="color:red;">*</span></label>
 							<div class="col-10">
-								<input class="form-control" type="password" value="" name="newpw" id="newpw" size="10" maxlength="10" title="PASSWORD BARU" autocomplete='off' required oninvalid="this.setCustomValidity('PASSWORD BARU Harus Diisi...')" oninput="setCustomValidity('')">
-								<span style="display:none;color:red;" class="error"> Password harus terdiri dari huruf, angka dan minimal 6 karakter !</span>							</div>
+								<input class="form-control" type="password" value="" name="newpw" id="newpw" size="50" maxlength="50" title="PASSWORD BARU" autocomplete='off' required oninvalid="this.setCustomValidity('PASSWORD BARU Harus Diisi...')" oninput="setCustomValidity('')">
+								<span style="display:none;color:red;" class="error"> Password harus terdiri dari huruf, angka dan minimal 8 karakter !</span>							</div>
 							</div>
 						</div>
 						<div class="form-group row">
 							<label for="" class="col-2 col-form-label">CONFIRM PASSWORD<span style="color:red;">*</span></label>
 							<div class="col-10">
-								<input class="form-control" type="password" value="" name="newpw1" id="newpw1" size="10" maxlength="10" title="CONFIRM PASSWORD" autocomplete='off' required oninvalid="this.setCustomValidity('CONFIRM PASSWORD Harus Diisi...')" oninput="setCustomValidity('')">
+								<input class="form-control" type="password" value="" name="newpw1" id="newpw1" size="50" maxlength="50" title="CONFIRM PASSWORD" autocomplete='off' required oninvalid="this.setCustomValidity('CONFIRM PASSWORD Harus Diisi...')" oninput="setCustomValidity('')">
 								<span style="display:none;color:red;" class="errorConfirm"> Password dan Confirm Password tidak .</span>
 							</div>
 						</div>

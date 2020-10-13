@@ -78,16 +78,7 @@ class DataPerkaraController extends Controller
 
     public function store(Request $request)
     {
-        $this->validate($request, [
-            'file' => 'required|mimes:pdf,jpg,jpeg|max:2048',
-        ]);
-
-        // menyimpan data file yang diupload ke variabel $file
-        $file = $request->file('file');
-        $nama_file = time()."_".$file->getClientOriginalName();
-          // isi dengan nama folder tempat kemana file diupload
-        $tujuan_upload = 'data_perkara';
-        $file->move($tujuan_upload,$nama_file);
+        
         
         // dd($nama_file);
         DB::table('tbl_perkara')->insert([
@@ -99,8 +90,8 @@ class DataPerkaraController extends Controller
         'r_perkara' => $request->ringkasan_perkara,
         'r_patitum' => $request->ringkasan_petitum,
         'r_putusan' => $request->ringkasan_putusan,
-        'nilai_perkara' => $request->nilai_perkara,
-        'file' => $nama_file,
+        'nilai_perkara' => str_replace('.', '', $request->nilai_perkara),
+        'file' => '0',
         'rate' => $request->kurs,
         'ci' => $request->ci,
         ]);
@@ -234,17 +225,17 @@ class DataPerkaraController extends Controller
     public function hakim(Request $request)
     {
         
-        if ($request->cek == 'A') {
+        if ($request->cekhakim == 'A') {
             DB::table('tbl_hakim')->where('kd_hakim', $request->kd_hakim)
                 ->update([
-                    'kd_pihak' => $request->kd_pihak,
+                'kd_pihak' => $request->kd_pihak,
                 'nama' => $request->nama,
                 'alamat' => $request->alamat,
                 'telp' => $request->telp,
                 'keterangan' => $request->keterangan,
                 'status' => $request->status,
                 ]);
-                return response()->json();
+                return response()->json(1);
         } else {
                 $data = DB::select("select * from tbl_hakim a  where status='$request->status' and kd_pihak='$request->kd_pihak'");
                 if (!empty($data)) {
@@ -335,8 +326,18 @@ class DataPerkaraController extends Controller
 
     public function delete(Request $request)
     {
-        DB::table('tbl_perkara')->where('no_perkara', $request->no_perkara)->delete();
-        File::delete('data_perkara/'.$request->file_1);
+        $data_pihak = DB::select("select * from tbl_pihak where no_perkara='$request->kode'");
+        foreach($data_pihak as $data)
+        {
+            $data_p = $data->kd_pihak;
+            DB::table('tbl_hakim')->where('kd_pihak', $data_p)->delete();
+        }
+        DB::table('tbl_perkara')->where('no_perkara', $request->kode)->delete();
+        DB::table('tbl_pihak')->where('no_perkara', $request->kode)->delete();
+        DB::table('tbl_dokumen_perkara')->where('no_perkara', $request->kode)->delete();
+        if(File::isDirectory(public_path('/data_perkara/'.$request->kode))){
+            File::deleteDirectory(public_path('/data_perkara/'.$request->kode));
+        }
         return response()->json();
     }
 
@@ -357,4 +358,63 @@ class DataPerkaraController extends Controller
         Alert::success('Password telah di Reset.', 'Berhasil')->persistent(true)->autoClose(2000);
         return redirect()->route('data_perkara.index');
     }
+
+    public function searchdokumen(Request $request)
+    {
+        $data = DB::select("select *  from tbl_dokumen_perkara where no_perkara='$request->no_perkara'");
+        return datatables()->of($data)
+        ->addColumn('nama', function ($data) {
+            $dat= '<embed width="200" height="110" src="'.asset('/data_perkara/'.$data->no_perkara.'/'.$data->file).'" type="application/pdf"></embed>';
+            return $dat;
+        })
+        ->addColumn('file', function ($data) {
+            return $data->file;
+        })
+        ->addColumn('radio', function ($data) {
+            $radio = '<label  class="kt-radio kt-radio--bold kt-radio--brand"><input type="radio" class="btn-radio" no-perkara="'.$data->no_perkara.'" data-id="'.$data->kd_dok.'" file-id="'.$data->file.'" name="btn-radio"><span></span></label>';
+        return $radio;
+        })
+        
+        
+        ->rawColumns(['radio','nama'])
+        ->make(true);
+    }
+
+    public function dokumen(Request $request)
+    {
+        $this->validate($request, [
+            'file' => 'required|mimes:pdf,jpg,jpeg,png',
+        ]);
+        
+        $folderPath = public_path('/data_perkara/'.$request->no_perkara);
+
+        if(!File::isDirectory($folderPath)){
+
+            File::makeDirectory($folderPath, 0777, true, true);
+    
+        }
+
+        if($request->hasfile('filedok'))
+         {
+            foreach($request->file('filedok') as $key=>$file)
+            {
+                $name = time().$key.'_'.$file->getClientOriginalName();
+                $tujuan_upload = $folderPath;
+                $file->move($tujuan_upload, $name);  
+                $data = $name; 
+                DB::table('tbl_dokumen_perkara')->insert([
+                   'no_perkara' => $request->no_perkara,
+                   'file' => $data,
+               ]);
+            }
+         }
+        return response()->json();
+    }
+    public function deletedokumen(Request $request)
+    {
+        DB::table('tbl_dokumen_perkara')->where('kd_dok', $request->kd_dok)->delete();
+        File::delete('data_perkara/'.$request->noperkara.'/'.$request->filed);
+        return response()->json();
+    }
+
 }

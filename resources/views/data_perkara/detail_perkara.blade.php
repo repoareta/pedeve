@@ -72,7 +72,7 @@
 							</a>
 						</li>
 						<li class="nav-item">
-							<a class="nav-link" data-toggle="tab" href="#detail_dokumen" role="tab" aria-selected="false">
+							<a class="nav-link" data-toggle="tab" href="#detail_dokumen" id="reload-dokumen" role="tab" aria-selected="false">
 							Dokumen Perkara
 							</a>
 						</li>
@@ -189,6 +189,7 @@ function hanyaAngka(evt) {
 }
 
 </script>
+@yield('detail_dokumen_script')
 @yield('detail_pihak_script')
 @yield('detail_hakim_script')
 @yield('detail_umum_script')

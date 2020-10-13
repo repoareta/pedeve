@@ -19,7 +19,7 @@ class TabelMenuController extends Controller
 
     public function searchIndex(Request $request)
     {
-        $data = DB::select("select * from dftmenu order by menuid asc");
+        $data = Dftmenu::orderBy('userap', 'asc')->whereNotIn('userap', ['INV','TAB'])->get();
         return datatables()->of($data)
         ->addColumn('menuid', function ($data) {
             return $data->menuid;
@@ -28,7 +28,18 @@ class TabelMenuController extends Controller
             return $data->menunm;
        })
         ->addColumn('userap', function ($data) {
-            return $data->userap;
+            if($data->userap == 'UMU'){
+                $userap = 'UMUM';
+            }elseif($data->userap == 'SDM'){
+                $userap = 'SDM & Payroll';
+            }elseif($data->userap == 'PBD'){
+                $userap = 'PERBENDAHARAAN';
+            }elseif($data->userap == 'AKT'){
+                $userap = 'KONTROLER';
+            }else{
+                $userap = 'CUSTOMER MANAGEMENT';
+            }
+            return $userap;
        })
         ->addColumn('radio', function ($data) {
             $radio = '<center><label class="kt-radio kt-radio--bold kt-radio--brand"><input type="radio" kode="'.$data->menuid.'" class="btn-radio" name="btn-radio"><span></span></label></center>'; 

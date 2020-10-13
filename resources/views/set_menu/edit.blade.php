@@ -58,6 +58,7 @@
 					</th>
 					<th>MENU ID</th>
 					<th>MENU NAME  </th>
+					<th>USER APPLICATION</th>
 				</tr>
 			</thead>
 			<tbody>
@@ -73,6 +74,22 @@
 				</td>
 				<td>{{$data->menuid}}</td>
 				<td>{{$data->menunm}}</td>
+				<td>
+				<?php
+					if($data->userap == 'UMU'){
+						$userap = 'UMUM';
+					}elseif($data->userap == 'SDM'){
+						$userap = 'SDM & Payroll';
+					}elseif($data->userap == 'PBD'){
+						$userap = 'PERBENDAHARAAN';
+					}elseif($data->userap == 'AKT'){
+						$userap = 'KONTROLER';
+					}else{
+						$userap = 'CUSTOMER MANAGEMENT';
+					}
+					echo $userap;
+				?>
+				</td>
 			</tr>
 			@endforeach
 			</tbody>

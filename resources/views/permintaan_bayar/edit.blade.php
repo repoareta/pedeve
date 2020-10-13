@@ -61,7 +61,7 @@
 
 							<label for="spd-input" class="col-2 col-form-label">Tanggal<span style="color:red;">*</span></label>
 							<div class="col-3">
-								<input class="form-control" type="text" name="tanggal" id="tanggal" value="<?php echo date("Y-m-d", strtotime($data_bayar->tgl_bayar)) ?>">
+								<input class="form-control" type="text" name="tanggal" id="tanggal" value="<?php echo date("d-m-Y", strtotime($data_bayar->tgl_bayar)) ?>">
 							</div>
 						</div>
 						<div class="form-group row">
@@ -112,7 +112,7 @@
 							</div>
 							<label class="col-2 col-form-label">Tgl Debet<span style="color:red;">*</span></label>
 							<div class="col-3" >
-								<input class="form-control" type="text" name="tgldebet" value="<?php echo date("Y-m-d", strtotime($data_bayar->debet_tgl)) ?>" id="tgldebet" size="15" maxlength="15" required oninvalid="this.setCustomValidity('Tgl Debet Harus Diisi..')" onchange="setCustomValidity('')">
+								<input class="form-control" type="text" name="tgldebet" value="<?php echo date("d-m-Y", strtotime($data_bayar->debet_tgl)) ?>" id="tgldebet" size="15" maxlength="15" required oninvalid="this.setCustomValidity('Tgl Debet Harus Diisi..')" onchange="setCustomValidity('')">
 							</div>
 						</div>
 						<div class="form-group row">
@@ -142,11 +142,11 @@
 							<label for="mulai-input" class="col-2 col-form-label">Periode<span style="color:red;">*</span></label>
 							<div class="col-10">
 								<div class="input-daterange input-group" id="date_range_picker">
-									<input type="text" class="form-control" name="mulai" value="<?php echo date("Y-m-d", strtotime($data_bayar->mulai)) ?>" />
+									<input type="text" class="form-control" name="mulai" value="<?php echo date("d-m-Y", strtotime($data_bayar->mulai)) ?>" />
 									<div class="input-group-append">
 										<span class="input-group-text">s/d</span>
 									</div>
-									<input type="text" class="form-control" name="sampai"  value="<?php echo date("Y-m-d", strtotime($data_bayar->sampai)) ?>"/>
+									<input type="text" class="form-control" name="sampai"  value="<?php echo date("d-m-Y", strtotime($data_bayar->sampai)) ?>"/>
 								</div>
 							</div>
 						</div>
@@ -777,7 +777,7 @@ var demos = function () {
 		templates: arrows,
 		// autoclose: true,
 		// language : 'id',
-		format   : 'yyyy-mm-dd'
+		format   : 'dd-mm-yyyy'
 	});
 
 	// minimum setup
@@ -788,7 +788,7 @@ var demos = function () {
 		templates: arrows,
 		autoclose: true,
 		// language : 'id',
-		format   : 'yyyy-mm-dd'
+		format   : 'dd-mm-yyyy'
 	});
 	// minimum setup
 	$('#tgldebet').datepicker({
@@ -798,7 +798,7 @@ var demos = function () {
 		templates: arrows,
 		autoclose: true,
 		// language : 'id',
-		format   : 'yyyy-mm-dd'
+		format   : 'dd-mm-yyyy'
 	});
 	$('#bulanbuku').datepicker({
         weekStart: 1,
