@@ -67,7 +67,14 @@
 						<div class="form-group row">
 							<label for="" class="col-2 col-form-label">User AP<span style="color:red;">*</span></label>
 							<div class="col-10">
-								<input class="form-control" type="text" value="" name="userap"  size="4" maxlength="4" title="Nama Menu" onkeyup="this.value = this.value.toUpperCase()" autocomplete='off' required oninvalid="this.setCustomValidity('Nama Menu Harus Diisi...')" oninput="setCustomValidity('')">
+								<select class="form-control kt-select2" name="userap" required oninvalid="this.setCustomValidity('User AP Kepada Harus Diisi..')" onchange="setCustomValidity('')">
+									<option value="">- Pilih -</option>
+									<option value="UMU">UMUM</option>
+									<option value="SDM">SDM & Payroll</option>
+									<option value="PBD">PERBENDAHARAAN</option>
+									<option value="AKT">KONTROLER</option>
+									<option value="CM">CUSTOMER MANAGEMENT</option>
+								</select>
 							</div>
 						</div>
 						
@@ -91,6 +98,10 @@
 @section('scripts')
 	<script type="text/javascript">
 	$(document).ready(function () {
+		$('.kt-select2').select2().on('change', function() {
+			$(this).valid();
+		});
+
 		$('#form-create').submit(function(){
 			$.ajax({
 				url  : "{{route('tabel_menu.store')}}",

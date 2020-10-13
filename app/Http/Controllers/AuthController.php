@@ -44,9 +44,27 @@ class AuthController extends Controller
                             }else{
                                 $rsUserLogin = DB::select("select userid from userlogin where terminal='$GetTerminalName' and userid='$loginid'");
                                 Userlogin::where('terminal',$GetTerminalName)->where('userid',$loginid)->delete();
-                                
                                 if(!empty($rsUserLogin)){
-                                    return redirect('/error')->with('notif', "User $loginid in use...");
+                                    $userid = Auth::user()->userid;
+                                    $dLogin = session()->get('log');
+                                    $login = date('Y-m-d H:i:s');
+                                    Userlog::where('userid', $userid)
+                                    ->where('login', $dLogin)
+                                    ->update([
+                                        'login' => $login
+                                        ]);
+                                    Userlogin::insert([
+                                        'userid' => $loginid,
+                                        'usernm' => $sUserName,
+                                        'login' => $login,
+                                        'terminal' => $GetTerminalName
+                                    ]);
+                                    session()->forget('log');
+                                    session()->forget('tgltrans');
+                                    $request->session()->put('log',$login);
+                                    $request->session()->put('tgltrans',$login);
+                                    
+                                    return redirect()->route('default.index');
                                 }else{
                                     $dLogin = date('Y-m-d H:i:s');
                                     Userlogin::insert([
@@ -133,6 +151,10 @@ class AuthController extends Controller
         return redirect('/login');
     }
 	public function error(){
+        session()->forget('log');
+        session()->forget('tgltrans');
+        session()->forget('tglex');
+        session()->forget('remain');
         Auth::logout();
         return view('login');
     }

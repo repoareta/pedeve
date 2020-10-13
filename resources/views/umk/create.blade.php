@@ -60,7 +60,7 @@
 					<div class="form-group row">
 						<label for="nopek-input" class="col-2 col-form-label">Tanggal<span style="color:red;">*</span></label>
 						<div class="col-10">
-							<input class="form-control" type="text" name="tgl_panjar" value="{{ date('Y-m-d') }}" id="datepicker" id="tgl_panjar" size="15" maxlength="15" required>
+							<input class="form-control" type="text" name="tgl_panjar" value="{{ date('d-m-Y') }}" id="datepicker" id="tgl_panjar" size="15" maxlength="15" required>
 
 						</div>
 					</div>
@@ -266,7 +266,7 @@ var demos = function () {
 		templates: arrows,
 		autoclose: true,
 		// language : 'id',
-		format   : 'yyyy-mm-dd'
+		format   : 'dd-mm-yyyy'
 	});
 	// minimum setup
 	$('#bulan_buku').datepicker({

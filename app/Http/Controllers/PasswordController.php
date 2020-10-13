@@ -24,7 +24,7 @@ class PasswordController extends Controller
         $lowercase = preg_match('@[a-z]@', $pass);
         $number    = preg_match('@[0-9]@', $pass);
 
-        if(!$lowercase || !$number || strlen($pass)<=6){
+        if(!$lowercase || !$number || strlen($pass)<=8){
             return response()->json(1);
         }else{
             return response()->json(2);

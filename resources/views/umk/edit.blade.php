@@ -58,7 +58,7 @@
 					<div class="form-group row">
 						<label for="nopek-input" class="col-2 col-form-label">Tanggal<span style="color:red;">*</span></label>
 						<div class="col-10">
-                            <input class="form-control" type="text" name="tgl_panjar" id="tgl_panjar" value="<?php echo date("Y-m-d", strtotime($data_umk->tgl_panjar)) ?>" size="15" maxlength="15">
+                            <input class="form-control" type="text" name="tgl_panjar" id="tgl_panjar" value="<?php echo date("d-m-Y", strtotime($data_umk->tgl_panjar)) ?>" size="15" maxlength="15">
 						</div>
 					</div>
 					<div class="form-group row">
@@ -335,7 +335,7 @@
 						<label for="example-text-input" class="col-2 col-form-label">Jumlah<span style="color:red;">*</span></label>
 						<label for="example-text-input" class=" col-form-label">:</label>
 						<div class="col-8">
-							<input  class="form-control" type="text" value="" name="nilai" onkeypress="return hanyaAngka(event)" required oninvalid="this.setCustomValidity('Jumlah Harus Diisi..')" oninput="setCustomValidity('')" autocomplete='off'>
+							<input  class="form-control" type="text" value="" name="nilai" id="rupiah" onkeypress="return hanyaAngka(event)" required oninvalid="this.setCustomValidity('Jumlah Harus Diisi..')" oninput="setCustomValidity('')" autocomplete='off'>
 						</div>
 					</div>
 
@@ -732,7 +732,7 @@ $('#tgl_panjar').datepicker({
 	templates: arrows,
 	autoclose: true,
 	// language : 'id',
-	format   : 'yyyy-mm-dd'
+	format   : 'dd-mm-yyyy'
 });
 // minimum setup
 $('#bulan_buku').datepicker({
@@ -774,12 +774,39 @@ function displayResult(ci){
 			$('#kurs').css("cursor","text");
 		}
 	}
-function hanyaAngka(evt) {
-		  var charCode = (evt.which) ? evt.which : event.keyCode
-		   if (charCode > 31 && (charCode < 48 || charCode > 57))
- 
-		    return false;
-		  return true;
+
+	function hanyaAngka(evt) {
+		var charCode = (evt.which) ? evt.which : event.keyCode
+		if (charCode > 31 && (charCode < 48 || charCode > 57))
+
+		return false;
+		return true;
+	}
+
+	var rupiah = document.getElementById('rupiah');
+		rupiah.addEventListener('keyup', function(e){
+			// tambahkan 'Rp.' pada saat form di ketik
+			// gunakan fungsi formatRupiah() untuk mengubah angka yang di ketik menjadi format angka
+			rupiah.value = formatRupiah(this.value, '');
+		});
+
+		/* Fungsi formatRupiah */
+		function formatRupiah(angka, prefix){
+			var number_string = angka.replace(/[^,\d]/g, '').toString(),
+			split   		= number_string.split(','),
+			sisa     		= split[0].length % 3,
+			rupiah     		= split[0].substr(0, sisa),
+			ribuan     		= split[0].substr(sisa).match(/\d{3}/gi);
+
+			// tambahkan titik jika yang di input sudah menjadi angka ribuan
+			if(ribuan){
+				separator = sisa ? '.' : '';
+				rupiah += separator + ribuan.join('.');
+			}
+
+			rupiah = split[1] != undefined ? rupiah + ',' + split[1] : rupiah;
+			$a= prefix == undefined ? rupiah : (rupiah ? rupiah: '');
+         return $a;
 		}
 </script>
 @endsection

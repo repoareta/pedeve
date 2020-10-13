@@ -20,7 +20,7 @@ class SetMenuController extends Controller
 
     public function searchIndex(Request $request)
     {
-        $data = DB::select("select * from userpdv order by userid");
+        $data = Userpdv::orderBy('userid','asc')->get();
         return datatables()->of($data)
         ->addColumn('userid', function ($data) {
             return $data->userid;
@@ -40,37 +40,32 @@ class SetMenuController extends Controller
        })
         ->addColumn('userap', function ($data) {
             
-            if(substr_count($data->userap,"A") > 0){
-                 $userp1 = "[ KONTROLER ]"; 
-            }else{ 
+            if (substr_count($data->userap, "A") > 0) {
+                $userp1 = "[ KONTROLER ]";
+            } else {
                 $userp1="";
-            } 
-            if(substr_count($data->userap,"B") > 0){
-                 $userp2 = "[ TABUNGAN ]"; 
-            }else{ 
+            }
+            if (substr_count($data->userap, "G") > 0) {
+                $userp2 = "[ CUSTOMER MANAGEMENT ]";
+            } else {
                 $userp2="";
-            } 
-            if(substr_count($data->userap,"C") > 0){
-                 $userp3 = "[ INVESTASI ]"; 
-            }else{ 
-                $userp3="";
-            } 
-            if(substr_count($data->userap,"D") > 0){ 
-                $userp4 = "[ PERBENDAHARAAN ]"; 
-            }else{ 
+            }
+            if (substr_count($data->userap, "D") > 0) {
+                $userp4 = "[ PERBENDAHARAAN ]";
+            } else {
                 $userp4="";
-            } 
-            if(substr_count($data->userap,"E") > 0){ 
-                $userp5 = "[ UMUM ]"; 
-            }else{ 
+            }
+            if (substr_count($data->userap, "E") > 0) {
+                $userp5 = "[ UMUM ]";
+            } else {
                 $userp5="";
-            } 
-            if(substr_count($data->userap,"F") > 0){ 
-                $userp6 = "[ SDM ]"; 
-            }else{ 
+            }
+            if (substr_count($data->userap, "F") > 0) {
+                $userp6 = "[ SDM ]";
+            } else {
                 $userp6="";
-            } 
-            return $userp1.' '.$userp2.' '.$userp3.' '.$userp4.' '.$userp5.' '.$userp6;
+            }
+            return $userp1.' '.$userp2.' '.$userp4.' '.$userp5.' '.$userp6;
        })
         ->addColumn('radio', function ($data) {
             $radio = '<center><label class="kt-radio kt-radio--bold kt-radio--brand"><input type="radio" kode="'.$data->userid.'" class="btn-radio" name="btn-radio"><span></span></label></center>'; 
@@ -140,11 +135,16 @@ class SetMenuController extends Controller
 
     public function edit($no)
     {
-        $data_user = DB::select("select  a.ability,a.userid,a.menuid, b.menunm from usermenu a join dftmenu b on  b.menuid=a.menuid where a.userid='$no' order by a.menuid");
-        foreach($data_user as $data)
-        {
-            $userid  = $data->userid; 
-        }
+        $data_user = DB::table('usermenu')
+        ->join('dftmenu', 'usermenu.menuid', '=', 'dftmenu.menuid')
+        ->select('usermenu.ability','usermenu.userid','usermenu.menuid','dftmenu.userap', 'dftmenu.menunm')
+        ->where('usermenu.userid', $no)
+        ->where('usermenu.deleted_at', null)
+        ->whereNotIn('dftmenu.userap', ['INV','TAB'])
+        ->orderBy('dftmenu.userap' ,'asc')
+        ->get();
+        
+        $userid  = $no; 
         $data_jum = DB::select("select  count(a.userid) as jumlah from usermenu a join dftmenu b on  b.menuid=a.menuid where a.userid='$no'");
         foreach($data_jum as $data_ju)
         {

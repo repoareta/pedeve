@@ -34,10 +34,10 @@
 			<div class="kt-portlet__head-toolbar">
 				<div class="kt-portlet__head-wrapper">
 					<div class="kt-portlet__head-actions">
-						<span style="font-size: 2em;" class="kt-font-primary pointer-link" data-toggle="kt-tooltip" data-placement="top" title="Function Administration">
+						<span style="font-size: 2em;" class="kt-font-primary pointer-link" data-toggle="kt-tooltip" data-placement="top" title="Akses Function">
 							<i class="fas fa-edit" id="addRow"></i>
 						</span>
-						<span style="font-size: 2em;" class="kt-font-warning pointer-link" data-toggle="kt-tooltip" data-placement="top" title="Menu Administration">
+						<span style="font-size: 2em;" class="kt-font-warning pointer-link" data-toggle="kt-tooltip" data-placement="top" title="Akses Menu">
 							<i class="fas fa-edit" id="editRow"></i>
 						</span>
 					</div>
@@ -119,7 +119,7 @@ $(document).ready(function () {
 						})
 						swalWithBootstrapButtons.fire({
 							title: "Data yang akan dihapus?",
-							text: "Jenis  : " +kode,
+							text: "User ID  : " +kode,
 							type: 'warning',
 							showCancelButton: true,
 							reverseButtons: true,
@@ -139,7 +139,7 @@ $(document).ready(function () {
 								success: function (data) {
 									Swal.fire({
 										type  : 'success',
-										title : "Data Set Menu dengan jenis  : " +kode+" Berhasil Dihapus.",
+										title : "Data Set Menu dengan User ID  : " +kode+" Berhasil Dihapus.",
 										text  : 'Berhasil',
 										
 									}).then(function() {
