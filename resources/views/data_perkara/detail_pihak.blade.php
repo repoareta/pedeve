@@ -43,7 +43,7 @@
 	<div class="modal-dialog modal-lg" role="document">
 		<div class="modal-content">
 			<div class="modal-header">
-				<h5 class="modal-title" id="title_modal_jabatan" data-state="add">Tambah pihak</h5>
+				<h5 class="modal-title" id="title_modal_pihak" data-state="add"></h5>
 				<button type="button" class="close" data-dismiss="modal" aria-label="Close">
 				</button>
 			</div>
@@ -54,6 +54,7 @@
 						<div class="col-10">
 							<input class="form-control" type="text"  name="nama" id="nama_pihak" size="100" maxlength="100" autocomplete='off'>
 							<input class="form-control" type="hidden"  name="kd_pihak" id="kd_pihak">
+							<input class="form-control" type="hidden"  name="cek" id="cek">
 							@foreach($data_list as $data)
 							<input class="form-control" type="hidden" value="{{$data->no_perkara}}"  name="no_perkara" id="no_perkara">
 							@endforeach
@@ -140,7 +141,8 @@
 			$('#cek').trigger('reset');
 			$('#cek').val('B');
 			$('#pihakModal').modal('show');
-			$('#title_modal_jabatan').data('state', 'add');
+			$('#title_modal_pihak').text('Tambah Pihak');
+			$('#title_modal_pihak').data('state', 'add');
 		});
 		$('#form-create').submit(function(){
 			$.ajax({
@@ -182,6 +184,8 @@
 					var kd = $(this).attr('data-id');
 					$('#cek').trigger('reset');
 					$('#cek').val('A');
+					$('#title_modal_pihak').text('Ubah Pihak');
+					$('#title_modal_pihak').data('state', 'update');
 
 					$.ajax({
 						url: "{{ route('data_perkara.show.pihak.json') }}",

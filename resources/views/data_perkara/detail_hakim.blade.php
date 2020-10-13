@@ -44,7 +44,7 @@
 	<div class="modal-dialog modal-lg" role="document">
 		<div class="modal-content">
 			<div class="modal-header">
-				<h5 class="modal-title" id="title_modal_jabatan" data-state="add">Tambah Kuasa Hukum</h5>
+				<h5 class="modal-title" id="title_modal_hakim" data-state="add"></h5>
 				<button type="button" class="close" data-dismiss="modal" aria-label="Close">
 				</button>
 			</div>
@@ -55,7 +55,7 @@
 						<div class="col-10">
 							<input class="form-control" type="text"  name="nama" id="nama_hakim" size="100" maxlength="100" autocomplete='off'>
 							<input class="form-control" type="hidden" value=""  name="kd_hakim" id="kd_hakim">
-							<input class="form-control" type="hidden" value=""  name="cek" id="cek">
+							<input class="form-control" type="hidden" value=""  name="cekhakim" id="cekhakim">
 							@foreach($data_list as $data)
 							<input class="form-control" type="hidden" value="{{$data->no_perkara}}"  name="no_perkara" id="no_perkara_hakim">
 							@endforeach
@@ -151,10 +151,11 @@
 		$('#addRowhakim').click(function(e) {
 			e.preventDefault();
 			$('#form-create-hakim').trigger('reset');
-			$('#cek').trigger('reset');
-			$('#cek').val('B');
+			$('#cekhakim').trigger('reset');
+			$('#cekhakim').val('B');
+			$('#title_modal_hakim').text('Tambah Kuasa Hukum');
 			$('#hakimModal').modal('show');
-			$('#title_modal_jabatan').data('state', 'add');
+			$('#title_modal_hakim').data('state', 'add');
 		});
 		$('#form-create-hakim').submit(function(){
 			$.ajax({
@@ -166,7 +167,21 @@
 				'X-CSRF-Token': '{{ csrf_token() }}',
 				},
 				success : function(data){
-					if(data == 2){
+					if(data == 1){
+						Swal.fire({
+							type : 'success',
+							title: "Berhasil di ubah",
+							text : 'Success',
+							timer: 2000
+						});
+						$('#hakimModal').modal('toggle');
+						// clear form
+						$('#hakimModal').on('hidden.bs.modal', function () {
+							$('#status_hakim').trigger('reset');
+						});
+						// append to datatable
+						t.ajax.reload();
+					}else if(data == 2){
 						Swal.fire({
 							type : 'success',
 							title: "Berhasil di tambah",
@@ -236,8 +251,10 @@
 				$("input[name=btn-radio]:checked").each(function() {
 					// get value from row					
 					var kd = $(this).attr('data-id');
-					$('#cek').trigger('reset');
-					$('#cek').val('A');
+					$('#cekhakim').trigger('reset');
+					$('#cekhakim').val('A');
+					$('#title_modal_hakim').text('Ubah Kuasa Hukum');
+					$('#title_modal_hakim').data('state', 'update');
 
 
 					$.ajax({

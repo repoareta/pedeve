@@ -1426,6 +1426,13 @@ Route::group(['middleware'=> ['auth','checkRole:1,0']], function () {
             Route::post('data_perkara/hakim', 'DataPerkaraController@hakim')->name('store.hakim');
             Route::post('data_perkara/hakim/pihak', 'DataPerkaraController@pihakJson')->name('pihakJson');
             Route::delete('data_perkara/delete/hakim', 'DataPerkaraController@deletehakim')->name('delete.hakim');
+            
+            
+            Route::get('data_perkara/dokumen/search', 'DataPerkaraController@searchdokumen')->name('search.dokumen');
+            Route::post('data_perkara/dokumen', 'DataPerkaraController@dokumen')->name('store.dokumen');
+            Route::post('data_perkara/dokumen/pihak', 'DataPerkaraController@pihakJson')->name('pihakJson');
+            Route::delete('data_perkara/delete/dokumen', 'DataPerkaraController@deletedokumen')->name('delete.dokumen');
+
         });
         //end data_perkara
 
