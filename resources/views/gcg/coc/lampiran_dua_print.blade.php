@@ -34,7 +34,7 @@
           <br>
 
           <p class="text-justify">
-            Sehubungan dengan pemberitahuan Etika Usaha dan Tata Perilaku (Code of Conduct) PT. PERTAMINA DANA VENTURA
+            Sehubungan dengan pemberitahuan Etika Usaha dan Tata Perilaku (Code of Conduct) PT. PERTAMINA PEDEVE INDONESIA
 
 						<br>
 						<br>
@@ -47,13 +47,13 @@
             <br>
 						<br>
 
-						1. telah mendistribusikan Etika Usaha dan Tata Perilaku (Code of Conduct) telah diterima dan ditandatangani oleh seluruh insan PERTAMINA DANA VENTURA di fungsi krja yang menjadi tanggung jawab saya;
+						1. telah mendistribusikan Etika Usaha dan Tata Perilaku (Code of Conduct) telah diterima dan ditandatangani oleh seluruh insan PERTAMINA PEDEVE INDONESIA di fungsi krja yang menjadi tanggung jawab saya;
 
 						<br>
 
 						2. setelah mengkoordinasikan pelaksanaan sosialisasi dan internalisasi dengan Sekretaris Perseroan untuk 
             {{ $orang }}
-						(orang) insan PERTAMINA DANA VENTURA dengan daftar terlampir;
+						(orang) insan PERTAMINA PEDEVE INDONESIA dengan daftar terlampir;
 
 						<br>
 
