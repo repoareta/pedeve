@@ -63,8 +63,8 @@
 				</div>
 				<div class="form-group row">
 					<label for="spd-input" class="col-2 col-form-label">Bulan Gaji</label>
-					<div class="col-2">
-						<select class="form-control" name="bulan">
+					<div class="col-6">
+						<select class="form-control kt-select2" style="width: 100% !important;" name="bulan">
 							<option value="1" <?php if($data_li->bulan  == 1 ) echo 'selected' ; ?>>Januari</option>
 							<option value="2" <?php if($data_li->bulan  == 2 ) echo 'selected' ; ?>>Februari</option>
 							<option value="3" <?php if($data_li->bulan  == 3 ) echo 'selected' ; ?>>Maret</option>
@@ -79,7 +79,7 @@
 							<option value="12" <?php if($data_li->bulan  == 12 ) echo 'selected' ; ?>>Desember</option>
 						</select>
 					</div>
-							<div class="col-2" >
+							<div class="col-4" >
 								<input class="form-control" type="text" value="{{$data_li->tahun}}"   name="tahun" size="4" maxlength="4" onkeypress="return hanyaAngka(event)" autocomplete='off' >
 							</div>
 				</div>
@@ -142,7 +142,9 @@
 @section('scripts')
 <script type="text/javascript">
 $(document).ready(function () {
-
+$('.kt-select2').select2().on('change', function() {
+	// $(this).valid();
+});
 //edit lembur
 $('#form-edit').submit(function(){
 $.ajax({

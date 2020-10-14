@@ -827,6 +827,10 @@ Route::group(['middleware'=> ['auth','checkRole:1,0']], function () {
         Route::name('penerimaan_kas.')->group(function () {
             Route::get('penerimaan_kas', 'PenerimaanKasController@index')->name('index');
             Route::post('penerimaan_kas/search', 'PenerimaanKasController@searchIndex')->name('search.index');
+            Route::get('penerimaan_kas/search/account', 'UangMukaKerjaController@searchAccount')->name('search.account');
+            Route::get('penerimaan_kas/search/bagian', 'UangMukaKerjaController@searchBagian')->name('search.bagian');
+            Route::get('penerimaan_kas/search/jb', 'UangMukaKerjaController@searchJb')->name('search.jb');
+            Route::get('penerimaan_kas/search/cj', 'UangMukaKerjaController@searchCj')->name('search.cj');
             Route::get('penerimaan_kas/createmp', 'PenerimaanKasController@createmp')->name('createmp');
             Route::post('penerimaan_kas/create', 'PenerimaanKasController@create')->name('create');
             Route::post('penerimaan_kas/create/json', 'PenerimaanKasController@createJson')->name('createJson');
