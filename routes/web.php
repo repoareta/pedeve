@@ -40,6 +40,10 @@ Route::group(['middleware'=> ['auth','checkRole:1,0']], function () {
         Route::name('uang_muka_kerja.')->group(function () {
             Route::get('uang_muka_kerja', 'UangMukaKerjaController@index')->name('index');
             Route::post('uang_muka_kerja/search_json', 'UangMukaKerjaController@searchIndex')->name('search.index');
+            Route::get('uang_muka_kerja/search/account', 'UangMukaKerjaController@searchAccount')->name('search.account');
+            Route::get('uang_muka_kerja/search/bagian', 'UangMukaKerjaController@searchBagian')->name('search.bagian');
+            Route::get('uang_muka_kerja/search/jb', 'UangMukaKerjaController@searchJb')->name('search.jb');
+            Route::get('uang_muka_kerja/search/cj', 'UangMukaKerjaController@searchCj')->name('search.cj');
             Route::get('uang_muka_kerja/create', 'UangMukaKerjaController@create')->name('create');
             Route::post('uang_muka_kerja/store', 'UangMukaKerjaController@store')->name('store');
             Route::post('uang_muka_kerja/store_detail', 'UangMukaKerjaController@storeDetail')->name('store.detail');
