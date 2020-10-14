@@ -141,7 +141,7 @@ class PotonganManualController extends Controller
             'aard' => $request->aard,
             'jmlcc' => $request->jmlcc,
             'ccl' => $request->ccl,
-            'nilai' => $request->nilai,
+            'nilai' => str_replace('.', '', $request->nilai),
             'userid' => $request->userid,            
             ]);
             $data = 1;
@@ -190,7 +190,7 @@ class PotonganManualController extends Controller
             ->update([
                 'jmlcc' => $request->jmlcc,
                 'ccl' => $request->ccl,
-                'nilai' => $request->nilai,
+                'nilai' => str_replace('.', '', $request->nilai),
                 'userid' => $request->userid,
             ]);
             return response()->json();
