@@ -145,6 +145,10 @@ Route::group(['middleware'=> ['auth','checkRole:1,0']], function () {
         Route::name('permintaan_bayar.')->group(function () {
             Route::get('permintaan_bayar', 'PermintaanBayarController@index')->name('index');
             Route::post('permintaan_bayar/search_index', 'PermintaanBayarController@searchIndex')->name('search.index');
+            Route::get('permintaan_bayar/search/account', 'UangMukaKerjaController@searchAccount')->name('search.account');
+            Route::get('permintaan_bayar/search/bagian', 'UangMukaKerjaController@searchBagian')->name('search.bagian');
+            Route::get('permintaan_bayar/search/jb', 'UangMukaKerjaController@searchJb')->name('search.jb');
+            Route::get('permintaan_bayar/search/cj', 'UangMukaKerjaController@searchCj')->name('search.cj');
             Route::get('permintaan_bayar/create', 'PermintaanBayarController@create')->name('create');
             Route::post('permintaan_bayar/store', 'PermintaanBayarController@store')->name('store');
             Route::post('permintaan_bayar/store_detail', 'PermintaanBayarController@storeDetail')->name('store.detail');
