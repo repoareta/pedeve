@@ -222,14 +222,19 @@ class LemburController extends Controller
     }
     public function rekapExport(Request $request)
     {
-        $data_list = DB::select("select a.*, b.* from pay_lembur a join sdm_master_pegawai b on a.nopek=b.nopeg where a.tahun='2020' and a.bulan='4'");
-        $pdf = DomPDF::loadview('lembur.export_lembur',compact('request','data_list'))->setPaper('a4', 'landscape');
-        $pdf->output();
-        $dom_pdf = $pdf->getDomPDF();
+        $data_list = DB::select("select a.*, b.* from pay_lembur a join sdm_master_pegawai b on a.nopek=b.nopeg where a.tahun='$request->tahun' and a.bulan='$request->bulan'");
+        if (!empty($data_list)) {
+            $pdf = DomPDF::loadview('lembur.export_lembur', compact('request', 'data_list'))->setPaper('a4', 'landscape');
+            $pdf->output();
+            $dom_pdf = $pdf->getDomPDF();
 
-        $canvas = $dom_pdf ->get_canvas();
-        $canvas->page_text(740, 115, "Halaman {PAGE_NUM} Dari {PAGE_COUNT}", null, 10, array(0, 0, 0)); //lembur landscape
-        // return $pdf->download('rekap_umk_'.date('Y-m-d H:i:s').'.pdf');
-        return $pdf->stream();
+            $canvas = $dom_pdf ->get_canvas();
+            $canvas->page_text(740, 115, "Halaman {PAGE_NUM} Dari {PAGE_COUNT}", null, 10, array(0, 0, 0)); //lembur landscape
+            // return $pdf->download('rekap_umk_'.date('Y-m-d H:i:s').'.pdf');
+            return $pdf->stream();
+        } else {
+            Alert::error('Tidak Ada Data Yang Dicari', 'Failed')->persistent(true);
+            return redirect()->route('lembur.ctkrekaplembur');
+        }
     }
 }
