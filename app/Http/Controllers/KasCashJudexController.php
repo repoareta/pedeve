@@ -24,6 +24,14 @@ class KasCashJudexController extends Controller
         $data_sanper = DB::select("select kodeacct,descacct from account where length(kodeacct)=6 and kodeacct not like '%x%' order by kodeacct desc");
         return view('kas_bank.report1', compact('data_kodelok', 'data_sanper', 'data_tahun'));
     }
+    public function searchAccount(Request $request)
+    {
+        if ($request->has('q')) {
+            $cari = strtoupper($request->q);
+            $data_account = DB::select("select kodeacct,descacct from account where length(kodeacct)=6 and kodeacct not like '%x%' and (kodeacct like '$cari%' or descacct like '$cari%') order by kodeacct desc");
+            return response()->json($data_account);
+        }
+    }
     public function Cetak1(Request $request)
     {
         if ($request->status == "1") {
@@ -441,6 +449,14 @@ class KasCashJudexController extends Controller
     {
         $data_judex = DB::select("select kode,nama from cashjudex");
         return view('kas_bank.report10',compact('data_judex'));
+    }
+    public function searchCj(Request $request)
+    {
+        if ($request->has('q')) {
+            $cari = strtoupper($request->q);
+            $data_cj = DB::select("select kode,nama from cashjudex where kode like '$cari%' or nama like '$cari%' order by kode");
+            return response()->json($data_cj);
+        }
     }
 
 

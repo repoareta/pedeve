@@ -30,6 +30,14 @@ class ReportKontrolerController extends Controller
         $data_sanper = DB::select("select kodeacct,descacct from account where length(kodeacct)=6 and kodeacct not like '%X%' order by kodeacct desc");
         return view('report_kontroler.create_d2_perbulan', compact('data_tahun', 'data_kodelok', 'data_sanper'));
     }
+    public function searchAccount(Request $request)
+    {
+        if ($request->has('q')) {
+            $cari = strtoupper($request->q);
+            $data_account = DB::select("select kodeacct,descacct from account where length(kodeacct)=6 and kodeacct not like '%x%' and (kodeacct like '$cari%' or descacct like '$cari%') order by kodeacct desc");
+            return response()->json($data_account);
+        }
+    }
     public function Cetak1(Request $request)
     {
         $thnbln = $request->tahun.''.$request->bulan;

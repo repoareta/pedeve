@@ -1095,6 +1095,7 @@ Route::group(['middleware'=> ['auth','checkRole:1,0']], function () {
         // Route assigned name "report_kas_bank.index"...
         Route::name('kas_bank.')->group(function () {
             Route::get('kas_bank/report/create1', 'KasCashJudexController@Create1')->name('create1');
+            Route::get('kas_bank/search/account', 'KasCashJudexController@searchAccount')->name('search.account');
             Route::post('kas_bank/report/cetak1', 'KasCashJudexController@cetak1')->name('cetak1');
             Route::get('kas_bank/report/create2', 'KasCashJudexController@Create2')->name('create2');
             Route::post('kas_bank/report/cetak2', 'KasCashJudexController@Cetak2')->name('cetak2');
@@ -1113,6 +1114,7 @@ Route::group(['middleware'=> ['auth','checkRole:1,0']], function () {
             Route::get('kas_bank/report/create9', 'KasCashJudexController@Create9')->name('create9');
             Route::get('kas_bank/report/cetak9', 'KasCashJudexController@Cetak9')->name('cetak9');
             Route::get('kas_bank/report/create10', 'KasCashJudexController@Create10')->name('create10');
+            Route::get('kas_bank/search/cj', 'KasCashJudexController@searchCj')->name('search.cj');
             Route::get('kas_bank/report/cetak10', 'KasCashJudexController@Cetak10')->name('cetak10');
         });
         //end report_kas_bank
@@ -1343,22 +1345,25 @@ Route::group(['middleware'=> ['auth','checkRole:1,0']], function () {
         // Route assigned name "d2_perbulan.index"...
         Route::name('d2_perbulan.')->group(function () {
             Route::get('d2_perbulan', 'ReportKontrolerController@create_d2_perbulan')->name('create_d2_perbulan');
+            Route::get('d2_perbulan/search/account', 'ReportKontrolerController@searchAccount')->name('search.account');
             Route::get('d2_perbulan/export', 'ReportKontrolerController@d2PerBulanExport')->name('export');
         });
         //end d2_perbulan
-
+        
         //d2_periode
         // Route assigned name "d2_periode.index"...
         Route::name('d2_periode.')->group(function () {
             Route::get('d2_periode', 'ReportKontrolerController@create_d2_periode')->name('create_d2_periode');
+            Route::get('d2_periode/search/account', 'ReportKontrolerController@searchAccount')->name('search.account');
             Route::get('d2_periode/export', 'ReportKontrolerController@d2PerPeriodeExport')->name('export');
         });
         //end d2_periode
-
+        
         //d5_report
         // Route assigned name "d5_report.index"...
         Route::name('d5_report.')->group(function () {
             Route::get('d5_report', 'ReportKontrolerController@create_d5_report')->name('create_d5_report');
+            Route::get('d5_report/search/account', 'ReportKontrolerController@searchAccount')->name('search.account');
             Route::post('d5_report/export', 'ReportKontrolerController@exportD5')->name('export');
         });
         //end d5_report

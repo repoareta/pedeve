@@ -176,21 +176,21 @@
 			orientation: "bottom left",
 			autoclose: true,
 			// language : 'id',
-			format   : 'yyyy-mm-dd'
+			format   : 'dd-mm-yyyy'
 		});
 		$('#tanggal2').datepicker({
 			todayHighlight: true,
 			orientation: "bottom left",
 			autoclose: true,
 			// language : 'id',
-			format   : 'yyyy-mm-dd'
+			format   : 'dd-mm-yyyy'
 		});
 		$('#tanggal3').datepicker({
 			todayHighlight: true,
 			orientation: "bottom left",
 			autoclose: true,
 			// language : 'id',
-			format   : 'yyyy-mm-dd'
+			format   : 'dd-mm-yyyy'
 		});
 	});
 	

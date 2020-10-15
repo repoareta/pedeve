@@ -110,7 +110,7 @@ $(document).ready(function () {
 	$('#date_range_picker').datepicker({
 		todayHighlight: true,
 		autoclose: true,
-        format   : 'yyyy-mm-dd',
+        format   : 'dd-mm-yyyy',
 	});
 	
 

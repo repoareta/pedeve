@@ -111,7 +111,7 @@ $('#tanggal').datepicker({
 	orientation: "bottom left",
 	autoclose: true,
 	// language : 'id',
-	format   : 'yyyy-mm-dd'
+	format   : 'dd-mm-yyyy'
 });
 
 });

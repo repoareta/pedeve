@@ -93,13 +93,7 @@
 				<div class="form-group row">
 					<label for="dari-input" class="col-2 col-form-label">Sandi Perkiraan</label>
 					<div class="col-10">
-						<select name="sandi" class="form-control kt-select2" oninvalid="this.setCustomValidity('Sandi Perkiraan Harus Diisi..')" onchange="setCustomValidity('')">
-							<option value="">- Pilih -</option>
-							@foreach($data_sanper as $data_san)
-							<option value="{{$data_san->kodeacct}}">{{$data_san->kodeacct}} -- {{$data_san->descacct}}</option>
-							@endforeach
-							
-						</select>								
+						<select class="cariaccount form-control" style="width: 100% !important;" name="sandi"></select>
 					</div>
 				</div>
 				<div class="kt-form__actions">
@@ -124,7 +118,31 @@ $(document).ready(function () {
    
 	$('.kt-select2').select2().on('change', function() {
 			$(this).valid();
-		});
+	});
+	$('.cariaccount').select2({
+		placeholder: '-Pilih-',
+		allowClear: true,
+		ajax: {
+			url: "{{ route('d5_report.search.account') }}",
+			type : "get",
+			dataType : "JSON",
+			headers: {
+			'X-CSRF-Token': '{{ csrf_token() }}',
+			},
+			delay: 250,
+		processResults: function (data) {
+			return {
+			results:  $.map(data, function (item) {
+				return {
+				text: item.kodeacct +'--'+ item.descacct,
+				id: item.kodeacct
+				}
+			})
+			};
+		},
+		cache: true
+		}
+	});
 	$('#tanggal').datepicker({
 		todayHighlight: true,
 		orientation: "bottom left",

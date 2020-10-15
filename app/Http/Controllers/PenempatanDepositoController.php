@@ -26,15 +26,13 @@ class PenempatanDepositoController extends Controller
         $data_tahunbulan = DB::select("select max(thnbln) as bulan_buku from timetrans where status='1' and length(thnbln)='6'");
             if(!empty($data_tahunbulan)) {
                 foreach ($data_tahunbulan as $data_bul) {
-                    // $tahun = substr($data_bul->bulan_buku,0,-2); 
-                    // $bulan = substr($data_bul->bulan_buku,4); 
+                    $bulan = substr($data_bul->bulan_buku,4,2);
+                    $tahun = substr($data_bul->bulan_buku,0,4);
                 }
             }else{
-                // $bulan ='00';
-                // $tahun ='0000';
+                $bulan = date('m');
+                $tahun =date('Y');
             }
-            $bulan = date('m');
-            $tahun =date('Y');
         return view('penempatan_deposito.index',compact('tahun','bulan'));
     }
 
@@ -170,7 +168,7 @@ class PenempatanDepositoController extends Controller
         $tgltempo = $request->tanggal2;
         $tahunbunga = $request->tahunbunga;
         $noseri = $request->noseri;
-        $nominal = $request->nominal;
+        $nominal = str_replace('.', '', $request->nominal);
         $namabank = $request->namabank;
         $perpanjangan = $request->perpanjangan;
         $keterangan = $request->keterangan;
@@ -356,7 +354,7 @@ class PenempatanDepositoController extends Controller
         $tgltempo = $request->tanggal2;
         $tahunbunga = $request->tahunbunga;
         $noseri = $request->noseri;
-        $nominal = $request->nominal;
+        $nominal = str_replace('.', '', $request->nominal);
         $namabank = $request->namabank;
         $perpanjangan = $request->perpanjangan;
         $keterangan = $request->keterangan;
@@ -550,7 +548,7 @@ class PenempatanDepositoController extends Controller
         $tgltempo = $request->tanggal2;
         $tahunbunga = $request->tahunbunga;
         $noseri = $request->noseri;
-        $nominal = $request->nominal;
+        $nominal = str_replace('.', '', $request->nominal);
         $namabank = $request->namabank;
         $perpanjangan = $request->perpanjangan+1;
         $keterangan = $request->keterangan;

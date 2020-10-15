@@ -137,19 +137,19 @@ class BulanPerbendaharaanController extends Controller
                     $status  =     $data->status;
                     if($data->opendate<>""){
                         $tgl = date_create($data->opendate);
-                        $tanggal  =   date_format($tgl, 'Y-m-d');
+                        $tanggal  =   date_format($tgl, 'd-m-Y');
                     }else{
                         $tanggal  =   "";
                     }
                     if($data->stopdate<>""){
                         $tgl2 = date_create($data->stopdate);
-                        $tanggal2 =   date_format($tgl2, 'Y-m-d');
+                        $tanggal2 =   date_format($tgl2, 'd-m-Y');
                     }else{
                         $tanggal2 =   "";
                     }
                     if($data->closedate<>""){
                         $tgl3 = date_create($data->closedate);
-                        $tanggal3 =  date_format($tgl3, 'Y-m-d');
+                        $tanggal3 =  date_format($tgl3, 'd-m-Y');
                     }else{
                         $tanggal3 =  "";
                     }

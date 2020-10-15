@@ -59,7 +59,7 @@
 								$tahun = date_format($tgl, 'Y'); 
 								$bulan = date_format($tgl, 'n'); 
 							?>
-								<select class="form-control selectpicker" data-live-search="true" name="bulan">
+								<select class="form-control kt-select2" style="width: 100% !important;" name="bulan">
 									<option value="01" <?php if($bulan  == 1 ) echo 'selected' ; ?>>Januari</option>
 									<option value="02" <?php if($bulan  == 2 ) echo 'selected' ; ?>>Februari</option>
 									<option value="03" <?php if($bulan  == 3 ) echo 'selected' ; ?>>Maret</option>
@@ -158,6 +158,10 @@
 			processing: true,
 			serverSide: false,
 		});
+		$('.kt-select2').select2().on('change', function() {
+			// $(this).valid();
+		});
+
 
 		$('#form-create').submit(function(){
 			$.ajax({
@@ -199,21 +203,21 @@
 			orientation: "bottom left",
 			autoclose: true,
 			// language : 'id',
-			format   : 'yyyy-mm-dd'
+			format   : 'dd-mm-yyyy'
 		});
 		$('#tanggal2').datepicker({
 			todayHighlight: true,
 			orientation: "bottom left",
 			autoclose: true,
 			// language : 'id',
-			format   : 'yyyy-mm-dd'
+			format   : 'dd-mm-yyyy'
 		});
 		$('#tanggal3').datepicker({
 			todayHighlight: true,
 			orientation: "bottom left",
 			autoclose: true,
 			// language : 'id',
-			format   : 'yyyy-mm-dd'
+			format   : 'dd-mm-yyyy'
 		});
 	});
 	

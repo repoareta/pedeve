@@ -26,10 +26,10 @@ class InformasiSaldoController extends Controller
         if($request->tanggal <> ""){
             $tanggal = $request->tanggal;
         }else{
-            $tanggal=date('Y-m-d');
+            $tanggal=date('d-m-Y');
         }
         
-            $data_set = DB::select("select max(to_char(a.tglrekap,'yyyy-mm-dd')) as maxtglrek, max(to_char(now(),'yyyy-mm-dd')) as tglnow from rekapkas a,storejk b where a.store=b.kodestore and a.jk=b.jeniskartu");
+            $data_set = DB::select("select max(to_char(a.tglrekap,'dd-mm-yyyy')) as maxtglrek, max(to_char(now(),'dd-mm-yyyy')) as tglnow from rekapkas a,storejk b where a.store=b.kodestore and a.jk=b.jeniskartu");
             foreach($data_set as $data_s)
             {
                 $maxtglrek = $data_s->maxtglrek;
@@ -37,12 +37,12 @@ class InformasiSaldoController extends Controller
                 if($tanggal < $tglnow){  //kalo melihat saldo di tanggal sebelumnya
                     $data =  DB::select("select a.saldoawal as sa,a.debet as db,a.kredit as kr,a.saldoakhir as ak, b.kodestore,b.jeniskartu 
                                         from rekapkas a,storejk b 
-                                        where a.store=b.kodestore and a.jk=b.jeniskartu  and a.tglrekap = (select max(c.tglrekap) from rekapkas c,storejk d where to_char( c.tglrekap,'yyyy-mm-dd') = '$request->tanggal' and c.store=d.kodestore and c.jk=d.jeniskartu )");
+                                        where a.store=b.kodestore and a.jk=b.jeniskartu  and a.tglrekap = (select max(c.tglrekap) from rekapkas c,storejk d where to_char( c.tglrekap,'dd-mm-yyyy') = '$request->tanggal' and c.store=d.kodestore and c.jk=d.jeniskartu )");
                     if(!empty($data)){
                     }else{
                         $data =  DB::select("select a.saldoawal as sa,a.debet as db,a.kredit as kr,a.saldoakhir as ak, b.kodestore,b.jeniskartu 
                                         from rekapkas a,storejk b 
-                                        where a.store=b.kodestore and a.jk=b.jeniskartu  and a.tglrekap = (select max(c.tglrekap) from rekapkas c,storejk d where to_char( c.tglrekap,'yyyy-mm-dd') < '$request->tanggal' and c.store=d.kodestore and c.jk=d.jeniskartu )");
+                                        where a.store=b.kodestore and a.jk=b.jeniskartu  and a.tglrekap = (select max(c.tglrekap) from rekapkas c,storejk d where to_char( c.tglrekap,'dd-mm-yyyy') < '$request->tanggal' and c.store=d.kodestore and c.jk=d.jeniskartu )");
 
                     }
                 }else{
@@ -72,70 +72,5 @@ class InformasiSaldoController extends Controller
                 ->rawColumns(['action'])
                 ->make(true);
             
-    }
-    /**
-     * Show the form for creating a new resource.
-     *
-     * @return \Illuminate\Http\Response
-     */
-    public function create()
-    {
-        //
-    }
-
-    /**
-     * Store a newly created resource in storage.
-     *
-     * @param  \Illuminate\Http\Request  $request
-     * @return \Illuminate\Http\Response
-     */
-    public function store(Request $request)
-    {
-        //
-    }
-
-    /**
-     * Display the specified resource.
-     *
-     * @param  int  $id
-     * @return \Illuminate\Http\Response
-     */
-    public function show($id)
-    {
-        //
-    }
-
-    /**
-     * Show the form for editing the specified resource.
-     *
-     * @param  int  $id
-     * @return \Illuminate\Http\Response
-     */
-    public function edit($id)
-    {
-        //
-    }
-
-    /**
-     * Update the specified resource in storage.
-     *
-     * @param  \Illuminate\Http\Request  $request
-     * @param  int  $id
-     * @return \Illuminate\Http\Response
-     */
-    public function update(Request $request, $id)
-    {
-        //
-    }
-
-    /**
-     * Remove the specified resource from storage.
-     *
-     * @param  int  $id
-     * @return \Illuminate\Http\Response
-     */
-    public function destroy($id)
-    {
-        //
     }
 }

@@ -45,12 +45,7 @@
 				<div class="form-group row">
 					<label for="dari-input" class="col-2 col-form-label">C.Judex</label>
 					<div class="col-10">
-						<select name="cjudex" class="form-control kt-select2">
-							<option value="">- Pilih -</option>
-							@foreach($data_judex as $data)
-							<option value="{{$data->kode}}">{{$data->kode}} -- {{$data->nama}}</option>
-							@endforeach
-						</select>								
+						<select class="caricj form-control" style="width: 100% !important;" name="cjudex"></select>
 					</div>
 				</div>
                 <div class="form-group row">
@@ -87,6 +82,30 @@
 $(document).ready(function () {
 	$('.kt-select2').select2().on('change', function() {
 			$(this).valid();
+	});
+	$('.caricj').select2({
+		placeholder: '-Pilih-',
+		allowClear: true,
+		ajax: {
+			url: "{{ route('kas_bank.search.cj') }}",
+			type : "get",
+			dataType : "JSON",
+			headers: {
+			'X-CSRF-Token': '{{ csrf_token() }}',
+			},
+			delay: 250,
+		processResults: function (data) {
+			return {
+			results:  $.map(data, function (item) {
+				return {
+				text: item.kode +'--'+ item.nama,
+				id: item.kode
+				}
+			})
+			};
+		},
+		cache: true
+		}
 	});
 	$('#tanggal').datepicker({
 		todayHighlight: true,
