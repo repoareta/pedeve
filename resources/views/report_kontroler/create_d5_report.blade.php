@@ -119,6 +119,7 @@ $(document).ready(function () {
 	$('.kt-select2').select2().on('change', function() {
 			$(this).valid();
 	});
+	
 	$('.cariaccount').select2({
 		placeholder: '-Pilih-',
 		allowClear: true,
