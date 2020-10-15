@@ -750,7 +750,7 @@ $(".btn-radio:checked").each(function() {
 		swalAlertInit('ubah'); 
 	}  else { 
 		$.ajax({
-			url :"{{('umum/permintaan_bayar/editdetail')}}"+ '/' +dataid+ '/' +datano,
+			url :"{{url('umum/permintaan_bayar/editdetail')}}"+ '/' +dataid+ '/' +datano,
 			type : 'get',
 			dataType:"json",
 			headers: {
