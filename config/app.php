@@ -184,6 +184,7 @@ return [
         Tuta\Terbilang\TerbilangServiceProvider::class,
         Maatwebsite\Excel\ExcelServiceProvider::class,
         RealRashid\SweetAlert\SweetAlertServiceProvider::class,
+        Barryvdh\LaravelIdeHelper\IdeHelperServiceProvider::class,
     ],
 
     /*

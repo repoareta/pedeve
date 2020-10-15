@@ -48,7 +48,7 @@
 					<p>
 						<center>
 							<b>
-								SURAT PERNYATAAAN INSAN PERTAMINA DANA VENTURA
+								SURAT PERNYATAAAN INSAN PERTAMINA PEDEVE INDONESIA
 							</b>
 						</center>
 					</p>
@@ -66,39 +66,39 @@
 					</p>
 
 					<p>
-						Dengan ini menyatakan dan menjamin bahwa SAYA tidak mempunyai benturan kepentingan terhadap PT. Pertamina Dana Ventura yang membuat SAYA tidak patut untuk melakukan tindakan berikut ini : 
+						Dengan ini menyatakan dan menjamin bahwa SAYA tidak mempunyai benturan kepentingan terhadap PT. Pertamina Pedeve Indonesia yang membuat SAYA tidak patut untuk melakukan tindakan berikut ini : 
 						
 						<ul>
 							<li>
-								Melaksanakan jasa apapun atau memiliki peran apapun dalam perusahaan lain atau usaha pesaing yang sedang atau akan melakukan kerjasama usaha dengan PT. Pertamina Dana Ventura.
+								Melaksanakan jasa apapun atau memiliki peran apapun dalam perusahaan lain atau usaha pesaing yang sedang atau akan melakukan kerjasama usaha dengan PT. Pertamina Pedeve Indonesia.
 							</li>
 							<li>
-								Memiliki kepentingan ekonomi secara langsung maupun tidak langsunh terhadap persahaan atau organisasi manapun yang saat ini sedang melakukan kerjasama dengan PT. Pertamina Dana Ventura atau ingin melakukan kerjasama dengan PT. Pertamina Dana Ventura.
+								Memiliki kepentingan ekonomi secara langsung maupun tidak langsunh terhadap persahaan atau organisasi manapun yang saat ini sedang melakukan kerjasama dengan PT. Pertamina Pedeve Indonesia atau ingin melakukan kerjasama dengan PT. Pertamina Pedeve Indonesia.
 							</li>
 							<li>
-								Memiliki anggota keluarga atau teman yang memiliki kepentingan ekonomi secara langsung maupun tidak langsung terhadap perusahaan atau organisasi yang saat ini melakukan usaha dengan PT. Pertamina Dana Ventura.
+								Memiliki anggota keluarga atau teman yang memiliki kepentingan ekonomi secara langsung maupun tidak langsung terhadap perusahaan atau organisasi yang saat ini melakukan usaha dengan PT. Pertamina Pedeve Indonesia.
 							</li>
 							<li>
-								Melakukan transaksi dan/atau menggunakan harta/fasilitas PT. Pertamina Dana Ventura untuk kepentingan diri sendiri, keluarga, atau golongan.
+								Melakukan transaksi dan/atau menggunakan harta/fasilitas PT. Pertamina Pedeve Indonesia untuk kepentingan diri sendiri, keluarga, atau golongan.
 							</li>
 							<li>
-								Mewakili PT. Pertamina Dana Ventura dalam transaksi dengan perusahaan lain dimana SAYA atau anggota keluarga SAYA atau teman SAYA memiliki kepentingan.
+								Mewakili PT. Pertamina Pedeve Indonesia dalam transaksi dengan perusahaan lain dimana SAYA atau anggota keluarga SAYA atau teman SAYA memiliki kepentingan.
 							</li>
 							<li>
-								Menerima hadiah, uang atau hiburan dari pemasok atau mitra usaha, atau dari agen manapun atau bertindak sebagai atau mewakili pemasok atau mitra usaha dalam transaksinya dengan PT. Pertamina Dana Ventura selain daripada yang diuraikan dalam kebijakan PT. Pertamina Dana Ventura mengenai Hadiah dan Hiburan.
+								Menerima hadiah, uang atau hiburan dari pemasok atau mitra usaha, atau dari agen manapun atau bertindak sebagai atau mewakili pemasok atau mitra usaha dalam transaksinya dengan PT. Pertamina Pedeve Indonesia selain daripada yang diuraikan dalam kebijakan PT. Pertamina Pedeve Indonesia mengenai Hadiah dan Hiburan.
 							</li>
 							<li>
-								Menggunakan informasi rahasia dan data bisnis PT. Pertamina Dana Ventura untuk kepentingan pribadi atau dengan cara yang merugikan kepentingan PT. Pertamina Dana Ventura. 
+								Menggunakan informasi rahasia dan data bisnis PT. Pertamina Pedeve Indonesia untuk kepentingan pribadi atau dengan cara yang merugikan kepentingan PT. Pertamina Pedeve Indonesia. 
 							</li>
 							<li>
-								Mengungkapkan kepada individu atau organisasi atau pihak manapun di luar PT. Pertamina Dana Ventura setiap informasi, program, data keuangan, formula, proses atau "Know-How" rahasia milik PT. Pertamina Dana Ventura atau yang dikembangkan oleh SAYA dalam memenuhi tanggung jawab SAYA terhadap PT. Pertamina Dana Ventura.
+								Mengungkapkan kepada individu atau organisasi atau pihak manapun di luar PT. Pertamina Pedeve Indonesia setiap informasi, program, data keuangan, formula, proses atau "Know-How" rahasia milik PT. Pertamina Pedeve Indonesia atau yang dikembangkan oleh SAYA dalam memenuhi tanggung jawab SAYA terhadap PT. Pertamina Pedeve Indonesia.
 							</li>
 							<li>
-								Melaksanakan setiap tindakan lainnya, yang tidak disebutkan secara spesifik diatas ini, yang dianggap merugikan bagi kepentingan PT. Pertamina Dana Ventura. 
+								Melaksanakan setiap tindakan lainnya, yang tidak disebutkan secara spesifik diatas ini, yang dianggap merugikan bagi kepentingan PT. Pertamina Pedeve Indonesia. 
 							</li>
 						</ul>
 
-						SAYA mengerti bahwa apabila SAYA memiliki benturan kepentingan dan sebelumnya SAYA tidak melaporkan hal tersebut kepada atasan atau pihak yang berwenang di PT. Pertamina Dana Ventura. SAYA dapat dikenakan tindakan disiplin sebagaimana yang tercantum dalam peraturan perusahaan PT. Pertamina Dana Ventura yang mana SAYA telah memahami peraturan tersebut.
+						SAYA mengerti bahwa apabila SAYA memiliki benturan kepentingan dan sebelumnya SAYA tidak melaporkan hal tersebut kepada atasan atau pihak yang berwenang di PT. Pertamina Pedeve Indonesia. SAYA dapat dikenakan tindakan disiplin sebagaimana yang tercantum dalam peraturan perusahaan PT. Pertamina Pedeve Indonesia yang mana SAYA telah memahami peraturan tersebut.
 						
 						<br>
 						<br>

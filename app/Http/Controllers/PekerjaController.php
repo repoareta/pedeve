@@ -22,7 +22,6 @@ use App\Http\Requests\PekerjaUpdate;
 // Load Plugin
 use Carbon\Carbon;
 use Alert;
-use Auth;
 use Storage;
 
 class PekerjaController extends Controller
@@ -42,13 +41,21 @@ class PekerjaController extends Controller
      *
      * @return \Illuminate\Http\Response
      */
-    public function indexJson()
+    public function indexJson(Request $request)
     {
         $pekerja_list = Pekerja::orderBy('tglentry', 'desc')
-        ->with('jabatan')
-        ->get();
+        ->with('jabatan');
 
         return datatables()->of($pekerja_list)
+            ->filter(function ($query) use ($request) {
+                if (request('nopeg')) {
+                    $query->where('nopeg', request('nopeg'));
+                }
+
+                if (request('status')) {
+                    $query->where('status', request('status'));
+                }
+            })
             ->addColumn('action', function ($row) {
                 $radio = '<label class="kt-radio kt-radio--bold kt-radio--brand"><input type="radio" name="radio1" value="'.$row->nopeg.'"><span></span></label>';
                 return $radio;
@@ -69,6 +76,38 @@ class PekerjaController extends Controller
                 $nama_jabatan = optional($jabatan)->keterangan ? ' - '.optional($jabatan)->keterangan : null;
                 
                 return $kode_jabatan.$nama_jabatan;
+            })
+            ->addColumn('status', function ($row) {
+                $status = $row->status;
+                switch ($status) {
+                    case "B":
+                        return "Perbantuan";
+                        break;
+                    case "K":
+                        return "Kontrak";
+                        break;
+                    case "C":
+                        return "Aktif";
+                        break;
+                    case "P":
+                        return "Pensiun";
+                        break;
+                    case "U":
+                        return "Komisaris";
+                        break;
+                    case "D":
+                        return "Direksi";
+                        break;
+                    case "N":
+                        return "Pekerja Baru";
+                        break;
+                    case "O":
+                        return "Komite";
+                        break;
+                    default:
+                        return "Status tidak di temukan";
+                        break;
+                }
             })
             ->rawColumns(['action'])
             ->make(true);
@@ -126,7 +165,7 @@ class PekerjaController extends Controller
         $pekerja->nohp         = $request->no_handphone;
         $pekerja->gender       = $request->jenis_kelamin;
         $pekerja->npwp         = $request->npwp;
-        $pekerja->userid       = Auth::user()->userid;
+        $pekerja->userid       = auth()->user()->userid;
         $pekerja->tglentry     = Carbon::now();
         $pekerja->fasilitas    = null;
         $pekerja->noktp        = $request->ktp;
@@ -230,7 +269,7 @@ class PekerjaController extends Controller
         $pekerja->nohp         = $request->no_handphone;
         $pekerja->gender       = $request->jenis_kelamin;
         $pekerja->npwp         = $request->npwp;
-        $pekerja->userid       = Auth::user()->userid;
+        $pekerja->userid       = auth()->user()->userid;
         $pekerja->tglentry     = Carbon::now();
         $pekerja->fasilitas    = null;
         $pekerja->noktp        = $request->ktp;

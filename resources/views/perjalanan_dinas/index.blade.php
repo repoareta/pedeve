@@ -187,10 +187,20 @@
 			e.preventDefault();
 			if($('input[type=radio]').is(':checked')) { 
 				$("input[type=radio]:checked").each(function() {
-					var id = $(this).val().split("/").join("-");
-					var url = '{{ route("perjalanan_dinas.edit", ":no_panjar") }}';
-					// go to page edit
-					window.location.href = url.replace(':no_panjar',id);
+					var data_ppanjar = $(this).data('ppanjar');
+					if (data_ppanjar === true) {
+						Swal.fire({
+							type: 'warning',
+							timer: 2000,
+							title: 'Oops...',
+							text: 'Data tidak bisa diubah'
+						});
+					} else {
+						var id = $(this).val().split("/").join("-");
+						var url = '{{ route("perjalanan_dinas.edit", ":no_panjar") }}';
+						// go to page edit
+						window.location.href = url.replace(':no_panjar',id);
+					}
 				});
 			} else {
 				swalAlertInit('ubah');
@@ -201,51 +211,61 @@
 			e.preventDefault();
 			if($('input[type=radio]').is(':checked')) { 
 				$("input[type=radio]:checked").each(function() {
-					var id = $(this).val();
-					// delete stuff
-					const swalWithBootstrapButtons = Swal.mixin({
-					customClass: {
-						confirmButton: 'btn btn-primary',
-						cancelButton: 'btn btn-danger'
-					},
-						buttonsStyling: false
-					})
+					var data_ppanjar = $(this).data('ppanjar');
+					if (data_ppanjar === true) {
+						Swal.fire({
+							type: 'warning',
+							timer: 2000,
+							title: 'Oops...',
+							text: 'Data tidak bisa dihapus'
+						});
+					} else {
+						var id = $(this).val();
+						// delete stuff
+						const swalWithBootstrapButtons = Swal.mixin({
+						customClass: {
+							confirmButton: 'btn btn-primary',
+							cancelButton: 'btn btn-danger'
+						},
+							buttonsStyling: false
+						})
 
-					swalWithBootstrapButtons.fire({
-						title: "Data yang akan dihapus?",
-						text: "No. Panjar : " + id,
-						type: 'warning',
-						showCancelButton: true,
-						reverseButtons: true,
-						confirmButtonText: 'Ya, hapus',
-						cancelButtonText: 'Batalkan'
-					})
-					.then((result) => {
-						if (result.value) {
-							$.ajax({
-								url: "{{ route('perjalanan_dinas.delete') }}",
-								type: 'DELETE',
-								dataType: 'json',
-								data: {
-									"id": id,
-									"_token": "{{ csrf_token() }}",
-								},
-								success: function () {
-									Swal.fire({
-										type  : 'success',
-										title : 'Hapus No. Panjar ' + id,
-										text  : 'Berhasil',
-										timer : 2000
-									}).then(function() {
-										t.ajax.reload();
-									});
-								},
-								error: function () {
-									alert("Terjadi kesalahan, coba lagi nanti");
-								}
-							});
-						}
-					});
+						swalWithBootstrapButtons.fire({
+							title: "Data yang akan dihapus?",
+							text: "No. Panjar : " + id,
+							type: 'warning',
+							showCancelButton: true,
+							reverseButtons: true,
+							confirmButtonText: 'Ya, hapus',
+							cancelButtonText: 'Batalkan'
+						})
+						.then((result) => {
+							if (result.value) {
+								$.ajax({
+									url: "{{ route('perjalanan_dinas.delete') }}",
+									type: 'DELETE',
+									dataType: 'json',
+									data: {
+										"id": id,
+										"_token": "{{ csrf_token() }}",
+									},
+									success: function () {
+										Swal.fire({
+											type  : 'success',
+											title : 'Hapus No. Panjar ' + id,
+											text  : 'Berhasil',
+											timer : 2000
+										}).then(function() {
+											t.ajax.reload();
+										});
+									},
+									error: function () {
+										alert("Terjadi kesalahan, coba lagi nanti");
+									}
+								});
+							}
+						});
+					}
 				});
 			} else {
 				swalAlertInit('hapus');
