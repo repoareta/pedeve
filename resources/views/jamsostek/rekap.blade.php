@@ -52,7 +52,7 @@
 						$jabatan = "CS & Business Support";
 						$nama = "Ali Syamsul R";
 					?>
-					<select class="form-control" name="bulan" required>
+					<select class="form-control kt-select2" style="width: 100% !important;" name="bulan" required>
 						<option value="1" <?php if($bulan  == 1 ) echo 'selected' ; ?>>Januari</option>
 						<option value="2" <?php if($bulan  == 2 ) echo 'selected' ; ?>>Februari</option>
 						<option value="3" <?php if($bulan  == 3 ) echo 'selected' ; ?>>Maret</option>
@@ -123,7 +123,9 @@
 @section('scripts')
 <script type="text/javascript">
 $(document).ready(function () {
-   
+	$('.kt-select2').select2().on('change', function() {
+			// $(this).valid();
+	});
 	$('#tanggal').datepicker({
 		todayHighlight: true,
 		orientation: "bottom left",

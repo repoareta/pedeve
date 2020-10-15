@@ -218,6 +218,7 @@ class ProsesInsentifController extends Controller
                                             }
                                         }else {
                                             $pph21rpt = 0;
+                                            $sisapokok1pt = 0;
                                         }
                                         $sisapokokpt = $sisapokok1pt - $rangept;
                                         $pph21okpt =  $pph21rpt;
@@ -1055,7 +1056,7 @@ class ProsesInsentifController extends Controller
             // return $pdf->download('rekap_umk_'.date('Y-m-d H:i:s').'.pdf');
             return $pdf->stream();
         }else{
-            Alert::info("Tidak ditemukan data dengan Nopeg: $request->nopek Bulan/Tahun: $request->bulan/$request->tahun ", 'Failed')->persistent(true);
+            Alert::info("Tidak ditemukan data dengan Bulan/Tahun: $request->bulan/$request->tahun ", 'Failed')->persistent(true);
             return redirect()->route('proses_insentif.ctkrekapinsentif');
         }
     }
