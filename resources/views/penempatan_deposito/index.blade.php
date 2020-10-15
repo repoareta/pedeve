@@ -83,7 +83,7 @@
 				<div class="form-group row col-12">
 					<label for="" class="col-form-label">Bulan</label>
 					<div class="col-2">
-						<select name="bulan" class="form-control selectpicker" data-live-search="true">
+						<select name="bulan" class="form-control kt-select2" style="width: 100% !important;">
 							<option value="" >-- Pilih --</option>
 							<option value="01" <?php if($bulan  == '01' ) echo 'selected' ; ?>>Januari</option>
 							<option value="02" <?php if($bulan  == '02' ) echo 'selected' ; ?>>Februari</option>
@@ -94,6 +94,7 @@
 							<option value="07" <?php if($bulan  == '07' ) echo 'selected' ; ?>>Juli</option>
 							<option value="08" <?php if($bulan  == '08' ) echo 'selected' ; ?>>Agustus</option>
 							<option value="09" <?php if($bulan  == '09' ) echo 'selected' ; ?>>September</option>
+							<option value="10" <?php if($bulan  == '10' ) echo 'selected' ; ?>>Oktober</option>
 							<option value="11" <?php if($bulan  == '11' ) echo 'selected' ; ?>>November</option>
 							<option value="12" <?php if($bulan  == '12' ) echo 'selected' ; ?>>Desember</option>
 						</select>
@@ -202,6 +203,9 @@
 	$('#search-form').on('submit', function(e) {
 		t.draw();
 		e.preventDefault();
+	});
+	$('.kt-select2').select2().on('change', function() {
+			// $(this).valid();
 	});
 		
 

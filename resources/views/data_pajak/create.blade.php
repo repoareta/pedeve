@@ -68,7 +68,7 @@
 						<div class="form-group row">
 							<label for="jenis-dinas-input" class="col-2 col-form-label">Pegawai<span style="color:red;">*</span></label>
 							<div class="col-10">
-								<select name="nopek" class="form-control selectpicker" data-live-search="true" required oninvalid="this.setCustomValidity('Pegawai Harus Diisi..')" onchange="setCustomValidity('')">
+								<select name="nopek" class="form-control kt-select2" style="width: 100% !important;" required oninvalid="this.setCustomValidity('Pegawai Harus Diisi..')" onchange="setCustomValidity('')">
 									<option value="">- Pilih -</option>
 									@foreach($data_pegawai as $data)
 									<option value="{{$data->nopeg}}">{{$data->nopeg}} -- {{$data->nama}}</option>
@@ -80,7 +80,7 @@
 						<div class="form-group row">
 							<label for="jenis-dinas-input" class="col-2 col-form-label">Jenis<span style="color:red;">*</span></label>
 							<div class="col-10">
-								<select name="jenis"  class="form-control selectpicker" data-live-search="true" required oninvalid="this.setCustomValidity('Jenis Harus Diisi..')" onchange="setCustomValidity('')">
+								<select name="jenis"  class="form-control kt-select2" style="width: 100% !important;" required oninvalid="this.setCustomValidity('Jenis Harus Diisi..')" onchange="setCustomValidity('')">
 									<option value="" >-Pilih Jenis-</option>
 									<option value="24">Bonus</option>
 									<option value="25">THR</option>
@@ -96,13 +96,13 @@
 						<div class="form-group row">
 							<label for="jenis-dinas-input" class="col-2 col-form-label">Nilai</label>
 							<div class="col-10">
-								<input class="form-control" name="nilai" type="text" value="" size="15" maxlength="15" onkeypress="return hanyaAngka(event)" autocomplete='off'>
+								<input class="form-control" name="nilai" id="nilai" type="text" value="" size="15" maxlength="15" onkeypress="return hanyaAngka(event)" autocomplete='off'>
 							</div>
 						</div>
 						<div class="form-group row">
 							<label for="jenis-dinas-input" class="col-2 col-form-label">Pajak</label>
 							<div class="col-10">
-								<input class="form-control" name="pajak" type="text" value="" size="15" maxlength="15" onkeypress="return hanyaAngka(event)" autocomplete='off'>
+								<input class="form-control" name="pajak" id="pajak" type="text" value="" size="15" maxlength="15" onkeypress="return hanyaAngka(event)" autocomplete='off'>
 							</div>
 						</div>
 
@@ -126,7 +126,9 @@
 @section('scripts')
 	<script type="text/javascript">
 	$(document).ready(function () {
-
+		$('.kt-select2').select2().on('change', function() {
+			// $(this).valid();
+		});
 		$('#form-create').submit(function(){
 			$.ajax({
 				url  : "{{route('data_pajak.store')}}",
@@ -169,6 +171,58 @@
  
 		    return false;
 		  return true;
+		}
+
+		var nilai = document.getElementById('nilai');
+		nilai.addEventListener('keyup', function(e){
+			// tambahkan 'Rp.' pada saat form di ketik
+			// gunakan fungsi formatnilai() untuk mengubah angka yang di ketik menjadi format angka
+			nilai.value = formatRupiah(this.value, '');
+		});
+
+		/* Fungsi formatRupiah */
+		function formatRupiah(angka, prefix){
+			var number_string = angka.replace(/[^,\d]/g, '').toString(),
+			split   		= number_string.split(','),
+			sisa     		= split[0].length % 3,
+			nilai     		= split[0].substr(0, sisa),
+			ribuan     		= split[0].substr(sisa).match(/\d{3}/gi);
+
+			// tambahkan titik jika yang di input sudah menjadi angka ribuan
+			if(ribuan){
+				separator = sisa ? '.' : '';
+				nilai += separator + ribuan.join('.');
+			}
+
+			nilai = split[1] != undefined ? nilai + ',' + split[1] : nilai;
+			$a= prefix == undefined ? nilai : (nilai ? nilai: '');
+         return $a;
+		}
+
+		var pajak = document.getElementById('pajak');
+		pajak.addEventListener('keyup', function(e){
+			// tambahkan 'Rp.' pada saat form di ketik
+			// gunakan fungsi formatpajak() untuk mengubah angka yang di ketik menjadi format angka
+			pajak.value = formatRupiah1(this.value, '');
+		});
+
+		/* Fungsi formatRupiah1 */
+		function formatRupiah1(angka, prefix){
+			var number_string = angka.replace(/[^,\d]/g, '').toString(),
+			split   		= number_string.split(','),
+			sisa     		= split[0].length % 3,
+			nilai     		= split[0].substr(0, sisa),
+			ribuan     		= split[0].substr(sisa).match(/\d{3}/gi);
+
+			// tambahkan titik jika yang di input sudah menjadi angka ribuan
+			if(ribuan){
+				separator = sisa ? '.' : '';
+				nilai += separator + ribuan.join('.');
+			}
+
+			nilai = split[1] != undefined ? nilai + ',' + split[1] : nilai;
+			$a= prefix == undefined ? nilai : (nilai ? nilai: '');
+         return $a;
 		}
 </script>
 

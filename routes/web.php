@@ -40,6 +40,10 @@ Route::group(['middleware'=> ['auth','checkRole:1,0']], function () {
         Route::name('uang_muka_kerja.')->group(function () {
             Route::get('uang_muka_kerja', 'UangMukaKerjaController@index')->name('index');
             Route::post('uang_muka_kerja/search_json', 'UangMukaKerjaController@searchIndex')->name('search.index');
+            Route::get('uang_muka_kerja/search/account', 'UangMukaKerjaController@searchAccount')->name('search.account');
+            Route::get('uang_muka_kerja/search/bagian', 'UangMukaKerjaController@searchBagian')->name('search.bagian');
+            Route::get('uang_muka_kerja/search/jb', 'UangMukaKerjaController@searchJb')->name('search.jb');
+            Route::get('uang_muka_kerja/search/cj', 'UangMukaKerjaController@searchCj')->name('search.cj');
             Route::get('uang_muka_kerja/create', 'UangMukaKerjaController@create')->name('create');
             Route::post('uang_muka_kerja/store', 'UangMukaKerjaController@store')->name('store');
             Route::post('uang_muka_kerja/store_detail', 'UangMukaKerjaController@storeDetail')->name('store.detail');
@@ -141,6 +145,10 @@ Route::group(['middleware'=> ['auth','checkRole:1,0']], function () {
         Route::name('permintaan_bayar.')->group(function () {
             Route::get('permintaan_bayar', 'PermintaanBayarController@index')->name('index');
             Route::post('permintaan_bayar/search_index', 'PermintaanBayarController@searchIndex')->name('search.index');
+            Route::get('permintaan_bayar/search/account', 'UangMukaKerjaController@searchAccount')->name('search.account');
+            Route::get('permintaan_bayar/search/bagian', 'UangMukaKerjaController@searchBagian')->name('search.bagian');
+            Route::get('permintaan_bayar/search/jb', 'UangMukaKerjaController@searchJb')->name('search.jb');
+            Route::get('permintaan_bayar/search/cj', 'UangMukaKerjaController@searchCj')->name('search.cj');
             Route::get('permintaan_bayar/create', 'PermintaanBayarController@create')->name('create');
             Route::post('permintaan_bayar/store', 'PermintaanBayarController@store')->name('store');
             Route::post('permintaan_bayar/store_detail', 'PermintaanBayarController@storeDetail')->name('store.detail');
@@ -819,6 +827,10 @@ Route::group(['middleware'=> ['auth','checkRole:1,0']], function () {
         Route::name('penerimaan_kas.')->group(function () {
             Route::get('penerimaan_kas', 'PenerimaanKasController@index')->name('index');
             Route::post('penerimaan_kas/search', 'PenerimaanKasController@searchIndex')->name('search.index');
+            Route::get('penerimaan_kas/search/account', 'UangMukaKerjaController@searchAccount')->name('search.account');
+            Route::get('penerimaan_kas/search/bagian', 'UangMukaKerjaController@searchBagian')->name('search.bagian');
+            Route::get('penerimaan_kas/search/jb', 'UangMukaKerjaController@searchJb')->name('search.jb');
+            Route::get('penerimaan_kas/search/cj', 'UangMukaKerjaController@searchCj')->name('search.cj');
             Route::get('penerimaan_kas/createmp', 'PenerimaanKasController@createmp')->name('createmp');
             Route::post('penerimaan_kas/create', 'PenerimaanKasController@create')->name('create');
             Route::post('penerimaan_kas/create/json', 'PenerimaanKasController@createJson')->name('createJson');
@@ -1083,6 +1095,7 @@ Route::group(['middleware'=> ['auth','checkRole:1,0']], function () {
         // Route assigned name "report_kas_bank.index"...
         Route::name('kas_bank.')->group(function () {
             Route::get('kas_bank/report/create1', 'KasCashJudexController@Create1')->name('create1');
+            Route::get('kas_bank/search/account', 'KasCashJudexController@searchAccount')->name('search.account');
             Route::post('kas_bank/report/cetak1', 'KasCashJudexController@cetak1')->name('cetak1');
             Route::get('kas_bank/report/create2', 'KasCashJudexController@Create2')->name('create2');
             Route::post('kas_bank/report/cetak2', 'KasCashJudexController@Cetak2')->name('cetak2');
@@ -1101,6 +1114,7 @@ Route::group(['middleware'=> ['auth','checkRole:1,0']], function () {
             Route::get('kas_bank/report/create9', 'KasCashJudexController@Create9')->name('create9');
             Route::get('kas_bank/report/cetak9', 'KasCashJudexController@Cetak9')->name('cetak9');
             Route::get('kas_bank/report/create10', 'KasCashJudexController@Create10')->name('create10');
+            Route::get('kas_bank/search/cj', 'KasCashJudexController@searchCj')->name('search.cj');
             Route::get('kas_bank/report/cetak10', 'KasCashJudexController@Cetak10')->name('cetak10');
         });
         //end report_kas_bank
@@ -1331,22 +1345,25 @@ Route::group(['middleware'=> ['auth','checkRole:1,0']], function () {
         // Route assigned name "d2_perbulan.index"...
         Route::name('d2_perbulan.')->group(function () {
             Route::get('d2_perbulan', 'ReportKontrolerController@create_d2_perbulan')->name('create_d2_perbulan');
+            Route::get('d2_perbulan/search/account', 'ReportKontrolerController@searchAccount')->name('search.account');
             Route::get('d2_perbulan/export', 'ReportKontrolerController@d2PerBulanExport')->name('export');
         });
         //end d2_perbulan
-
+        
         //d2_periode
         // Route assigned name "d2_periode.index"...
         Route::name('d2_periode.')->group(function () {
             Route::get('d2_periode', 'ReportKontrolerController@create_d2_periode')->name('create_d2_periode');
+            Route::get('d2_periode/search/account', 'ReportKontrolerController@searchAccount')->name('search.account');
             Route::get('d2_periode/export', 'ReportKontrolerController@d2PerPeriodeExport')->name('export');
         });
         //end d2_periode
-
+        
         //d5_report
         // Route assigned name "d5_report.index"...
         Route::name('d5_report.')->group(function () {
             Route::get('d5_report', 'ReportKontrolerController@create_d5_report')->name('create_d5_report');
+            Route::get('d5_report/search/account', 'ReportKontrolerController@searchAccount')->name('search.account');
             Route::post('d5_report/export', 'ReportKontrolerController@exportD5')->name('export');
         });
         //end d5_report

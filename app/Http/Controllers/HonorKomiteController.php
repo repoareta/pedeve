@@ -124,7 +124,7 @@ class HonorKomiteController extends Controller
             $data=0;
             return response()->json($data);
         }else {
-        $nilai = $request->nilai;
+        $nilai = str_replace('.', '', $request->nilai);
         $pajak = (35/65) * $nilai;
         $data_tahun = $request->tahun;
         $data_bulan = $request->bulan;
@@ -192,7 +192,7 @@ class HonorKomiteController extends Controller
     {
         $data_tahun = $request->tahun;
         $data_bulan = $request->bulan;
-        $nilai = $request->nilai;
+        $nilai = str_replace('.', '', $request->nilai);
         $nopek = $request->nopek;
         $pajak = (35/65) * $nilai;
 

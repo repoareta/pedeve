@@ -126,7 +126,7 @@ class PotonganInsentifController extends Controller
             'tahun' => $data_tahun,
             'bulan' => $data_bulan,
             'nopek' => $request->nopek,
-            'nilai' => $request->nilai,
+            'nilai' => str_replace('.', '', $request->nilai),
             'userid' => $request->userid,            
             ]);
             $data = 1;
@@ -172,7 +172,7 @@ class PotonganInsentifController extends Controller
             ->where('bulan',$request->bulan)
             ->where('nopek',$request->nopek)
             ->update([
-                'nilai' => $request->nilai,
+                'nilai' => str_replace('.', '', $request->nilai),
                 'userid' => $request->userid,
             ]);
             return response()->json();

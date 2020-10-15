@@ -218,78 +218,43 @@
 
 	});
 
-function displayResult(ci){ 
-	if(ci == 1)
-	{
-		$('#kurs').val(1);
-		$('#simbol-kurs').hide();
-		$( "#kurs" ).prop( "required", false );
-		$( "#kurs" ).prop( "readonly", true );
-		$('#kurs').css("background-color","#DCDCDC");
-		$('#kurs').css("cursor","not-allowed");
+	function displayResult(ci){ 
+		if(ci == 1)
+		{
+			$('#kurs').val(1);
+			$('#simbol-kurs').hide();
+			$( "#kurs" ).prop( "required", false );
+			$( "#kurs" ).prop( "readonly", true );
+			$('#kurs').css("background-color","#DCDCDC");
+			$('#kurs').css("cursor","not-allowed");
 
-	}else{
-		$('#kurs').val("");
-		$('#simbol-kurs').show();
-		$( "#kurs" ).prop( "required", true );
-		$( "#kurs" ).prop( "readonly", false );
-		$('#kurs').css("background-color","#ffffff");
-		$('#kurs').css("cursor","text");
+		}else{
+			$('#kurs').val("");
+			$('#simbol-kurs').show();
+			$( "#kurs" ).prop( "required", true );
+			$( "#kurs" ).prop( "readonly", false );
+			$('#kurs').css("background-color","#ffffff");
+			$('#kurs').css("cursor","text");
+		}
 	}
-}
-
-
-// Class definition
-var KTBootstrapDatepicker = function () {
-
-var arrows;
-if (KTUtil.isRTL()) {
-	arrows = {
-		leftArrow: '<i class="la la-angle-right"></i>',
-		rightArrow: '<i class="la la-angle-left"></i>'
-	}
-} else {
-	arrows = {
-		leftArrow: '<i class="la la-angle-left"></i>',
-		rightArrow: '<i class="la la-angle-right"></i>'
-	}
-}
-
-// Private functions
-var demos = function () {
 
 	// minimum setup
 	$('#datepicker').datepicker({
-		rtl: KTUtil.isRTL(),
 		todayHighlight: true,
 		orientation: "bottom left",
-		templates: arrows,
 		autoclose: true,
 		// language : 'id',
 		format   : 'dd-mm-yyyy'
 	});
 	// minimum setup
 	$('#bulan_buku').datepicker({
-		rtl: KTUtil.isRTL(),
 		todayHighlight: true,
 		orientation: "bottom left",
-		templates: arrows,
 		autoclose: true,
 		// language : 'id',
 		format   : 'yyyymm'
 	});
-};
 
-return {
-	// public functions
-	init: function() {
-		demos(); 
-	}
-};
-}();
-
-KTBootstrapDatepicker.init();
-	
 	//create
 	$('#form-create-umk').submit(function(){
         var no_umk = $("#noumk").val();

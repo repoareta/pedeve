@@ -64,7 +64,7 @@
 					<div class="form-group row">
 						<label for="jenis-dinas-input" class="col-2 col-form-label">Dibayar Kepada<span style="color:red;">*</span></label>
 						<div class="col-10">
-								<select name="kepada" id="kepada" class="form-control selectpicker" data-live-search="true" required oninvalid="this.setCustomValidity('Dibayar Kepada Harus Diisi..')" onchange="setCustomValidity('')">
+								<select name="kepada" id="kepada" class="form-control kt-select2" style="width: 100% !important;" required oninvalid="this.setCustomValidity('Dibayar Kepada Harus Diisi..')" onchange="setCustomValidity('')">
 									<option value="">- Pilih -</option>
 									@foreach ($vendor as $row)
 									<option value="{{ $row->nama }}"  <?php if($row->nama  == $data_umk->kepada ) echo 'selected' ; ?>>{{ $row->nama }}</option>
@@ -274,12 +274,7 @@
 						<label for="example-text-input" class="col-2 col-form-label">Account</label>
 						<label for="example-text-input" class=" col-form-label">:</label>
 						<div  class="col-8" >
-							<select name="acc"  class="form-control selectpicker" data-live-search="true">
-								<option value="">-Pilih-</option>
-									@foreach($data_account as $row)
-								<option value="{{$row->kodeacct}}">{{$row->kodeacct}} - {{$row->descacct}}</option>
-									@endforeach
-							</select>
+							<select class="cariaccount form-control" style="width: 100% !important;" name="acc"></select>
 						</div>
 					</div>
 
@@ -287,12 +282,7 @@
 						<label for="example-text-input" class="col-2 col-form-label">Kode Bagian</label>
 						<label for="example-text-input" class=" col-form-label">:</label>
 						<div  class="col-8">
-							<select name="bagian"  class="form-control selectpicker" data-live-search="true">
-								<option value="">-Pilih-</option>
-									@foreach($data_bagian as $row)
-								<option value="{{$row->kode}}" >{{$row->kode}} - {{$row->nama}}</option>
-									@endforeach
-							</select>
+							<select class="caribagian form-control" style="width: 100% !important;" name="bagian"></select>
 						</div>
 					</div>
 
@@ -308,12 +298,7 @@
 						<label for="example-text-input" class="col-2 col-form-label">Jenis Biaya</label>
 						<label for="example-text-input" class=" col-form-label">:</label>
 						<div  class="col-8">
-							<select name="jb"  class="form-control selectpicker" data-live-search="true">
-								<option value="">-Pilih-</option>
-									@foreach($data_jenisbiaya as $row)
-								<option value="{{$row->kode}}" >{{$row->kode}} - {{$row->keterangan}}</option>
-									@endforeach
-							</select>
+							<select class="carijb form-control" style="width: 100% !important;" name="jb"></select>
 						</div>
 					</div>
 
@@ -321,12 +306,7 @@
 						<label for="example-text-input" class="col-2 col-form-label">C. Judex</label>
 						<label for="example-text-input" class=" col-form-label">:</label>
 						<div class="col-8">
-							<select name="cj" class="form-control selectpicker" data-live-search="true">
-								<option value="">-Pilih-</option>
-									@foreach($data_cj as $row)
-								<option value="{{$row->kode}}">{{$row->kode}} - {{$row->nama}}</option>
-									@endforeach
-							</select>
+							<select class="caricj form-control" style="width: 100% !important;" name="cj"></select>
 						</div>
 					</div>
 									
@@ -393,7 +373,7 @@
 						<label for="example-text-input" class="col-2 col-form-label">Account</label>
 						<label for="example-text-input" class=" col-form-label">:</label>
 						<div id="div-acc" class="col-8">
-							<select name="acc" id="select-acc" class="form-control selectpicker" data-live-search="true">
+							<select name="acc" id="select-acc" class="cariaccount form-control" style="width: 100% !important;">
 								<option value="">-Pilih-</option>
 									@foreach($data_account as $row)
 								<option value="{{$row->kodeacct}}">{{$row->kodeacct}} - {{$row->descacct}}</option>
@@ -406,7 +386,7 @@
 						<label for="example-text-input" class="col-2 col-form-label">Kode Bagian</label>
 						<label for="example-text-input" class=" col-form-label">:</label>
 						<div id="div-bagian" class="col-8">
-							<select name="bagian" id="select-bagian"  class="form-control selectpicker" data-live-search="true">
+							<select name="bagian" id="select-bagian"  class="caribagian form-control kt-select2" style="width: 100% !important;">
 								<option value="">-Pilih-</option>
 									@foreach($data_bagian as $row)
 								<option value="{{$row->kode}}" <?php if( '<input value="$row->kode">' == '<input id="bagian">' ) echo 'selected' ; ?>>{{$row->kode}} - {{$row->nama}}</option>
@@ -427,7 +407,7 @@
 						<label for="example-text-input" class="col-2 col-form-label">Jenis Biaya</label>
 						<label for="example-text-input" class=" col-form-label">:</label>
 						<div id="div-jb" class="col-8">
-							<select name="jb" id="select-jb"  class="form-control selectpicker" data-live-search="true">
+							<select name="jb" id="select-jb"  class="carijb form-control kt-select2" style="width: 100% !important;">
 								<option value="">-Pilih-</option>
 									@foreach($data_jenisbiaya as $row)
 								<option value="{{$row->kode}}" >{{$row->kode}} - {{$row->keterangan}}</option>
@@ -440,7 +420,7 @@
 						<label for="example-text-input" class="col-2 col-form-label">C. Judex</label>
 						<label for="example-text-input" class=" col-form-label">:</label>
 						<div class="col-8" id="div-cj">
-							<select name="cj" id="select-cj" class="form-control selectpicker" data-live-search="true">
+							<select name="cj" id="select-cj" class="caricj form-control kt-select2" style="width: 100% !important;">
 								<option value="">-Pilih-</option>
 									@foreach($data_cj as $row)
 								<option value="{{$row->kode}}">{{$row->kode}} - {{$row->nama}}</option>
@@ -488,6 +468,110 @@ $(document).ready(function () {
 			serverSide: false,
 		});
 
+		$('.kt-select2').select2().on('change', function() {
+			// $(this).valid();
+		});
+
+		$('.cariaccount').select2({
+			placeholder: '-Pilih-',
+			allowClear: true,
+			ajax: {
+				url: "{{ route('uang_muka_kerja.search.account') }}",
+				type : "get",
+				dataType : "JSON",
+				headers: {
+				'X-CSRF-Token': '{{ csrf_token() }}',
+				},
+				delay: 250,
+			processResults: function (data) {
+				return {
+				results:  $.map(data, function (item) {
+					return {
+					text: item.kodeacct +'--'+ item.descacct,
+					id: item.kodeacct
+					}
+				})
+				};
+			},
+			cache: true
+			}
+		});
+
+		$('.caribagian').select2({
+			placeholder: '-Pilih-',
+			allowClear: true,
+			ajax: {
+				url: "{{ route('uang_muka_kerja.search.bagian') }}",
+				type : "get",
+				dataType : "JSON",
+				headers: {
+				'X-CSRF-Token': '{{ csrf_token() }}',
+				},
+				delay: 250,
+			processResults: function (data) {
+				return {
+				results:  $.map(data, function (item) {
+					return {
+					text: item.kode +'--'+ item.nama,
+					id: item.kode
+					}
+				})
+				};
+			},
+			cache: true
+			}
+		});
+
+		$('.carijb').select2({
+			placeholder: '-Pilih-',
+			allowClear: true,
+			ajax: {
+				url: "{{ route('uang_muka_kerja.search.jb') }}",
+				type : "get",
+				dataType : "JSON",
+				headers: {
+				'X-CSRF-Token': '{{ csrf_token() }}',
+				},
+				delay: 250,
+			processResults: function (data) {
+				return {
+				results:  $.map(data, function (item) {
+					return {
+					text: item.kode +'--'+ item.keterangan,
+					id: item.kode
+					}
+				})
+				};
+			},
+			cache: true
+			}
+		});
+
+		$('.caricj').select2({
+			placeholder: '-Pilih-',
+			allowClear: true,
+			ajax: {
+				url: "{{ route('uang_muka_kerja.search.cj') }}",
+				type : "get",
+				dataType : "JSON",
+				headers: {
+				'X-CSRF-Token': '{{ csrf_token() }}',
+				},
+				delay: 250,
+			processResults: function (data) {
+				return {
+				results:  $.map(data, function (item) {
+					return {
+					text: item.kode +'--'+ item.nama,
+					id: item.kode
+					}
+				})
+				};
+			},
+			cache: true
+			}
+		});
+
 		$("input[name=ci]:checked").each(function() {  
 			var ci = $(this).val();
 			if(ci == 1)
@@ -525,7 +609,6 @@ $('#form-update-umk').submit(function(){
             'X-CSRF-Token': '{{ csrf_token() }}',
             },
 			success : function(data){
-			   console.log(data);
 			   Swal.fire({
 					type  : 'success',
 					title : 'Data Berhasil Disimpan',
@@ -627,8 +710,17 @@ $(".btn-radio:checked").each(function() {
 				$('#no').val(data.no);
 				$('#keterangan').val(data.keterangan);
 				$('#pk').val(data.pk);
-				var output=parseInt(data.nilai);
-				$('#nilai').val(output);
+				var bilangan=parseInt(data.nilai);
+				var	number_string = bilangan.toString(),
+					sisa 	= number_string.length % 3,
+					rupiah 	= number_string.substr(0, sisa),
+					ribuan 	= number_string.substr(sisa).match(/\d{3}/g);
+						
+				if (ribuan) {
+					separator = sisa ? '.' : '';
+					rupiah += separator + ribuan.join('.');
+				}
+				$('#nilai').val(rupiah);
 				$('#title-detail').html("Edit Detail Uang Muka Kerja");
 				$('.modal-edit-detail-umk').modal('show');
 				$('#select-bagian').val(data.bagian).trigger('change');
@@ -706,56 +798,25 @@ $(".btn-radio:checked").each(function() {
 		});
 	});
 
-// Class definition
-var KTBootstrapDatepicker = function () {
 
-var arrows;
-if (KTUtil.isRTL()) {
-	arrows = {
-		leftArrow: '<i class="la la-angle-right"></i>',
-		rightArrow: '<i class="la la-angle-left"></i>'
-	}
-} else {
-	arrows = {
-		leftArrow: '<i class="la la-angle-left"></i>',
-		rightArrow: '<i class="la la-angle-right"></i>'
-	}
-}
-// Private functions
-var demos = function () {
-
-// minimum setup
-$('#tgl_panjar').datepicker({
-	rtl: KTUtil.isRTL(),
-	todayHighlight: true,
-	orientation: "bottom left",
-	templates: arrows,
-	autoclose: true,
-	// language : 'id',
-	format   : 'dd-mm-yyyy'
-});
-// minimum setup
-$('#bulan_buku').datepicker({
-	rtl: KTUtil.isRTL(),
-	todayHighlight: true,
-	orientation: "bottom left",
-	templates: arrows,
-	autoclose: true,
-	// language : 'id',
-	format   : 'yyyymm'
-});
-};
-
-return {
-// public functions
-init: function() {
-	demos(); 
-}
-};
-}();
-
-KTBootstrapDatepicker.init();
-function displayResult(ci){ 
+	// minimum setup
+	$('#tgl_panjar').datepicker({
+		todayHighlight: true,
+		orientation: "bottom left",
+		autoclose: true,
+		// language : 'id',
+		format   : 'dd-mm-yyyy'
+	});
+	// minimum setup
+	$('#bulan_buku').datepicker({
+		todayHighlight: true,
+		orientation: "bottom left",
+		autoclose: true,
+		// language : 'id',
+		format   : 'yyyymm'
+	});
+	
+	function displayResult(ci){ 
 		if(ci == 1)
 		{
 			$('#kurs').val(1);
@@ -783,7 +844,7 @@ function displayResult(ci){
 		return true;
 	}
 
-	var rupiah = document.getElementById('rupiah');
+		var rupiah = document.getElementById('rupiah');
 		rupiah.addEventListener('keyup', function(e){
 			// tambahkan 'Rp.' pada saat form di ketik
 			// gunakan fungsi formatRupiah() untuk mengubah angka yang di ketik menjadi format angka
@@ -806,6 +867,32 @@ function displayResult(ci){
 
 			rupiah = split[1] != undefined ? rupiah + ',' + split[1] : rupiah;
 			$a= prefix == undefined ? rupiah : (rupiah ? rupiah: '');
+         return $a;
+		}
+
+		var nilai = document.getElementById('nilai');
+		nilai.addEventListener('keyup', function(e){
+			// tambahkan 'Rp.' pada saat form di ketik
+			// gunakan fungsi formatnilai() untuk mengubah angka yang di ketik menjadi format angka
+			nilai.value = formatRupiah(this.value, '');
+		});
+
+		/* Fungsi formatRupiah */
+		function formatRupiah(angka, prefix){
+			var number_string = angka.replace(/[^,\d]/g, '').toString(),
+			split   		= number_string.split(','),
+			sisa     		= split[0].length % 3,
+			nilai     		= split[0].substr(0, sisa),
+			ribuan     		= split[0].substr(sisa).match(/\d{3}/gi);
+
+			// tambahkan titik jika yang di input sudah menjadi angka ribuan
+			if(ribuan){
+				separator = sisa ? '.' : '';
+				nilai += separator + ribuan.join('.');
+			}
+
+			nilai = split[1] != undefined ? nilai + ',' + split[1] : nilai;
+			$a= prefix == undefined ? nilai : (nilai ? nilai: '');
          return $a;
 		}
 </script>

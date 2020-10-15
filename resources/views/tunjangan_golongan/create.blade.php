@@ -149,52 +149,6 @@
 			}
 		})
 	});
-
-
-
-
-
-
-
-    var KTBootstrapDatepicker = function () {
-
-var arrows;
-if (KTUtil.isRTL()) {
-	arrows = {
-		leftArrow: '<i class="la la-angle-right"></i>',
-		rightArrow: '<i class="la la-angle-left"></i>'
-	}
-} else {
-	arrows = {
-		leftArrow: '<i class="la la-angle-left"></i>',
-		rightArrow: '<i class="la la-angle-right"></i>'
-	}
-}
-
-// Private functions
-var demos = function () {
-
-	// minimum setup
-	$('#tgldebet').datepicker({
-		rtl: KTUtil.isRTL(),
-		todayHighlight: true,
-		orientation: "bottom left",
-		templates: arrows,
-		autoclose: true,
-		// language : 'id',
-		format   : 'mm/yyyy'
-	});
-};
-
-return {
-	// public functions
-	init: function() {
-		demos(); 
-	}
-};
-}();
-
-KTBootstrapDatepicker.init();
 });
 		function hanyaAngka(evt) {
 		  var charCode = (evt.which) ? evt.which : event.keyCode
@@ -202,6 +156,31 @@ KTBootstrapDatepicker.init();
  
 		    return false;
 		  return true;
+		}
+		var nilai = document.getElementById('nilai');
+		nilai.addEventListener('keyup', function(e){
+			// tambahkan 'Rp.' pada saat form di ketik
+			// gunakan fungsi formatnilai() untuk mengubah angka yang di ketik menjadi format angka
+			nilai.value = formatRupiah(this.value, '');
+		});
+
+		/* Fungsi formatRupiah */
+		function formatRupiah(angka, prefix){
+			var number_string = angka.replace(/[^,\d]/g, '').toString(),
+			split   		= number_string.split(','),
+			sisa     		= split[0].length % 3,
+			nilai     		= split[0].substr(0, sisa),
+			ribuan     		= split[0].substr(sisa).match(/\d{3}/gi);
+
+			// tambahkan titik jika yang di input sudah menjadi angka ribuan
+			if(ribuan){
+				separator = sisa ? '.' : '';
+				nilai += separator + ribuan.join('.');
+			}
+
+			nilai = split[1] != undefined ? nilai + ',' + split[1] : nilai;
+			$a= prefix == undefined ? nilai : (nilai ? nilai: '');
+         return $a;
 		}
 </script>
 

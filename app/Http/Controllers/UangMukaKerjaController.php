@@ -189,7 +189,7 @@ class UangMukaKerjaController extends Controller
             'no' => $request->no,
             'keterangan' => $request->keterangan,
             'account' => $request->acc,
-            'nilai' => $request->nilai,
+            'nilai' =>   str_replace('.', '', $request->nilai),
             'cj' => $request->cj,
             'jb' => $request->jb,
             'bagian' => $request->bagian,
@@ -208,7 +208,7 @@ class UangMukaKerjaController extends Controller
             'no' => $request->no,
             'keterangan' => $request->keterangan,
             'account' => $request->acc,
-            'nilai' => $request->nilai,
+            'nilai' =>    str_replace('.', '', $request->nilai),
             'cj' => $request->cj,
             'jb' => $request->jb,
             'bagian' => $request->bagian,
@@ -357,7 +357,7 @@ class UangMukaKerjaController extends Controller
         $no_uruts = DB::select("select max(no) as no from kerja_detail where no_umk = '$noumk'");
         $data_umk_details = DetailUmk::where('no_umk',$noumk)->get();
         $data_account = DB::select("select kodeacct,descacct from account where length(kodeacct)=6 and kodeacct not like '%x%' order by kodeacct desc");
-        $data_bagian = DB::select("SELECT A.kode,A.nama FROM sdm_tbl_kdbag A ORDER BY A.kode");
+        $data_bagian = DB::select("select a.kode,a.nama from sdm_tbl_kdbag a order by a.kode");
         $data_jenisbiaya = DB::select("select kode,keterangan from jenisbiaya order by kode");
         $data_cj = DB::select("select kode,nama from cashjudex order by kode");
         $count= DetailUmk::where('no_umk', $noumk)->select('no_umk')->sum('nilai');
@@ -381,6 +381,39 @@ class UangMukaKerjaController extends Controller
             'count',
             'vendor'
         ));
+    }
+
+    public function searchAccount(Request $request)
+    {
+        if ($request->has('q')) {
+            $cari = strtoupper($request->q);
+            $data_account = DB::select("select kodeacct,descacct from account where length(kodeacct)=6 and kodeacct not like '%x%' and (kodeacct like '$cari%' or descacct like '$cari%') order by kodeacct desc");
+            return response()->json($data_account);
+        }
+    }
+    public function searchBagian(Request $request)
+    {
+        if ($request->has('q')) {
+            $cari = strtoupper($request->q);
+            $data_bagian = DB::select("select kode,nama from sdm_tbl_kdbag where kode like '$cari%' or nama like '$cari%' order by kode");
+            return response()->json($data_bagian);
+        }
+    }
+    public function searchJb(Request $request)
+    {
+        if ($request->has('q')) {
+            $cari = strtoupper($request->q);
+            $data_jenisbiaya = DB::select("select kode,keterangan from jenisbiaya where kode like '$cari%' or keterangan like '$cari%' order by kode");
+            return response()->json($data_jenisbiaya);
+        }
+    }
+    public function searchCj(Request $request)
+    {
+        if ($request->has('q')) {
+            $cari = strtoupper($request->q);
+            $data_cj = DB::select("select kode,nama from cashjudex where kode like '$cari%' or nama like '$cari%' order by kode");
+            return response()->json($data_cj);
+        }
     }
 
     

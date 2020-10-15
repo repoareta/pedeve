@@ -237,20 +237,15 @@ class DataPerkaraController extends Controller
                 ]);
                 return response()->json(1);
         } else {
-                $data = DB::select("select * from tbl_hakim a  where status='$request->status' and kd_pihak='$request->kd_pihak'");
-                if (!empty($data)) {
-                    return response()->json(3);
-                }else{
-                    DB::table('tbl_hakim')->insert([
-                    'kd_pihak' => $request->kd_pihak,
-                    'nama' => $request->nama,
-                    'alamat' => $request->alamat,
-                    'telp' => $request->telp,
-                    'keterangan' => $request->keterangan,
-                    'status' => $request->status,
-                    ]);
-                    return response()->json(2);
-                }
+                DB::table('tbl_hakim')->insert([
+                'kd_pihak' => $request->kd_pihak,
+                'nama' => $request->nama,
+                'alamat' => $request->alamat,
+                'telp' => $request->telp,
+                'keterangan' => $request->keterangan,
+                'status' => $request->status,
+                ]);
+                return response()->json(2);
         }
     }
     public function showhakim(Request $request)
@@ -390,7 +385,7 @@ class DataPerkaraController extends Controller
 
         if(!File::isDirectory($folderPath)){
 
-            File::makeDirectory($folderPath, 0777, true, true);
+            File::makeDirectory($folderPath);
     
         }
 

@@ -135,7 +135,7 @@ class PotonganKoreksiGajiController extends Controller
             'aard' => $request->aard,
             'jmlcc' => 0,
             'ccl' => 0,
-            'nilai' => $request->nilai,
+            'nilai' => str_replace('.', '', $request->nilai),
             'userid' => $request->userid,
             
             // Save Panjar Header
@@ -159,7 +159,7 @@ class PotonganKoreksiGajiController extends Controller
             ->update([
                 'jmlcc' => 0,
                 'ccl' => 0,
-                'nilai' => $request->nilai,
+                'nilai' => str_replace('.', '', $request->nilai),
                 'userid' => $request->userid,
             ]);
             return response()->json();

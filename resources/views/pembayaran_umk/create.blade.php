@@ -78,7 +78,7 @@
 						<div class="form-group row">
 							<label for="jenis-dinas-input" class="col-2 col-form-label">Bagian<span style="color:red;">*</span></label>
 							<div class="col-10">
-								<select name="bagian" id="bagian" class="form-control selectpicker" data-live-search="true" required oninvalid="this.setCustomValidity('Bagian Harus Diisi..')" onchange="setCustomValidity('')">
+								<select name="bagian" id="bagian" class="form-control kt-select2" style="width: 100% !important;" required oninvalid="this.setCustomValidity('Bagian Harus Diisi..')" onchange="setCustomValidity('')">
 									<option value="">- Pilih -</option>
 									@foreach($data_bagian as $data)
 									<option value="{{$data->kode}}">{{$data->kode}} - {{$data->nama}}</option>
@@ -92,7 +92,7 @@
 						<div class="form-group row">
 							<label class="col-2 col-form-label">Jenis Kartu<span style="color:red;">*</span></label>
 							<div class="col-3">
-								<select name="jk" id="jk" class="form-control selectpicker" data-live-search="true" required oninvalid="this.setCustomValidity('Jenis Kartu Harus Diisi..')" onchange="setCustomValidity('')">
+								<select name="jk" id="jk" class="form-control kt-select2" style="width: 100% !important;" required oninvalid="this.setCustomValidity('Jenis Kartu Harus Diisi..')" onchange="setCustomValidity('')">
 									<option value="">- Pilih -</option>
 									<option value="10">Kas(Rupiah)</option>
 									<option value="11">Bank(Rupiah)</option>
@@ -112,7 +112,7 @@
 						<div class="form-group row">
 							<label for="jenis-dinas-input" class="col-2 col-form-label">Lokasi<span style="color:red;">*</span></label>
 							<div class="col-4">
-								<select name="lokasi" id="lokasi" class="form-control" data-live-search="true" required oninvalid="this.setCustomValidity('Lokasi Harus Diisi..')" onchange="setCustomValidity('')">
+								<select name="lokasi" id="lokasi" class="form-control kt-select2" style="width: 100% !important;" required oninvalid="this.setCustomValidity('Lokasi Harus Diisi..')" onchange="setCustomValidity('')">
 									<option value="">- Pilih -</option>
 									
 								</select>
@@ -137,7 +137,7 @@
 						<div class="form-group row">
 							<label class="col-2 col-form-label">Sejumlah</label>
 							<div class="col-10">
-								<input class="form-control" type="text" name="nilai" id="nilai" value="" size="16" maxlength="16" >
+								<input class="form-control" type="text" name="nilai" id="nilai" value="" size="16" maxlength="16" autocomplete='off'>
 								<input class="form-control" type="hidden" name="iklan" value=""  id="iklan" size="4" maxlength="4" readonly style="background-color:#DCDCDC; cursor:not-allowed">
 							</div>
 						</div>
@@ -232,7 +232,9 @@
 @section('scripts')
 	<script type="text/javascript">
 	$(document).ready(function () {
-
+		$('.kt-select2').select2().on('change', function() {
+			// $(this).valid();
+		});
 		$("#jk").on("change", function(){ 
 		var ci = $(this).val();
 		console.log(ci);
@@ -430,26 +432,6 @@ $('#nilai').keyup(function(){
 	}
 });
 
-    var KTBootstrapDatepicker = function () {
-
-var arrows;
-if (KTUtil.isRTL()) {
-	arrows = {
-		leftArrow: '<i class="la la-angle-right"></i>',
-		rightArrow: '<i class="la la-angle-left"></i>'
-	}
-} else {
-	arrows = {
-		leftArrow: '<i class="la la-angle-left"></i>',
-		rightArrow: '<i class="la la-angle-right"></i>'
-	}
-}
-
-// Private functions
-var demos = function () {
-
-
-
 	// minimum setup
 	$('#tanggal').datepicker({
 		rtl: KTUtil.isRTL(),
@@ -458,7 +440,7 @@ var demos = function () {
 		templates: arrows,
 		autoclose: true,
 		// language : 'id',
-		format   : 'yyyy-mm-dd'
+		format   : 'dd-mm-yyyy'
 	});
 	
 	$('#bulanbuku').datepicker({
@@ -470,17 +452,6 @@ var demos = function () {
 		// language : 'id',
 		format   : 'yyyymm'
 	});
-};
-
-return {
-	// public functions
-	init: function() {
-		demos(); 
-	}
-};
-}();
-
-KTBootstrapDatepicker.init();
 });
 
 		function hanyaAngka(evt) {
@@ -489,6 +460,31 @@ KTBootstrapDatepicker.init();
  
 		    return false;
 		  return true;
+		}
+		var nilai = document.getElementById('nilai');
+		nilai.addEventListener('keyup', function(e){
+			// tambahkan 'Rp.' pada saat form di ketik
+			// gunakan fungsi formatnilai() untuk mengubah angka yang di ketik menjadi format angka
+			nilai.value = formatRupiah(this.value, '');
+		});
+
+		/* Fungsi formatRupiah */
+		function formatRupiah(angka, prefix){
+			var number_string = angka.replace(/[^,\d]/g, '').toString(),
+			split   		= number_string.split(','),
+			sisa     		= split[0].length % 3,
+			nilai     		= split[0].substr(0, sisa),
+			ribuan     		= split[0].substr(sisa).match(/\d{3}/gi);
+
+			// tambahkan titik jika yang di input sudah menjadi angka ribuan
+			if(ribuan){
+				separator = sisa ? '.' : '';
+				nilai += separator + ribuan.join('.');
+			}
+
+			nilai = split[1] != undefined ? nilai + ',' + split[1] : nilai;
+			$a= prefix == undefined ? nilai : (nilai ? nilai: '');
+         return $a;
 		}
 </script>
 

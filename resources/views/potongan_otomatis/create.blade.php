@@ -57,7 +57,7 @@
 						<div class="form-group row">
 							<label for="" class="col-2 col-form-label">Pegawai<span style="color:red;">*</span></label>
 							<div class="col-10">
-								<select name="nopek" class="form-control selectpicker" data-live-search="true" required autocomplete='off' oninvalid="this.setCustomValidity('Pegawai Harus Diisi..')" onchange="setCustomValidity('')">
+								<select name="nopek" class="form-control kt-select2" style="width: 100% !important;" required autocomplete='off' oninvalid="this.setCustomValidity('Pegawai Harus Diisi..')" onchange="setCustomValidity('')">
 									<option value="">- Pilih -</option>
 									@foreach($data_pegawai as $data)
 									<option value="{{$data->nopeg}}">{{$data->nopeg}} - {{$data->nama}}</option>
@@ -68,7 +68,7 @@
 						<div class="form-group row">
 							<label for="" class="col-2 col-form-label">Potongan<span style="color:red;">*</span></label>
 							<div class="col-10">
-								<select name="aard" id="aard" class="form-control selectpicker" data-live-search="true" required autocomplete='off' oninvalid="this.setCustomValidity('Potongan Harus Diisi..')" onchange="setCustomValidity('')">
+								<select name="aard" id="aard" class="form-control kt-select2" style="width: 100% !important;" required autocomplete='off' oninvalid="this.setCustomValidity('Potongan Harus Diisi..')" onchange="setCustomValidity('')">
 									<option value="">- Pilih -</option>
 									@foreach($pay_aard as $data)
 									<option value="{{$data->kode}}">{{$data->kode}} - {{$data->nama}}</option>
@@ -84,7 +84,7 @@
 									$tahun = date_format($tgl, 'Y'); 
 									$bulan = date_format($tgl, 'n'); 
 								?>
-								<select class="form-control" name="bulan" required>
+								<select class="form-control kt-select2" style="width: 100% !important;" name="bulan" required>
 									<option value="1" <?php if($bulan  == 1 ) echo 'selected' ; ?>>Januari</option>
 									<option value="2" <?php if($bulan  == 2 ) echo 'selected' ; ?>>Februari</option>
 									<option value="3" <?php if($bulan  == 3 ) echo 'selected' ; ?>>Maret</option>
@@ -145,6 +145,9 @@
 <script type="text/javascript">
 $(document).ready(function () {
 
+	$('.kt-select2').select2().on('change', function() {
+			// $(this).valid();
+	});
 $('#form-create').submit(function(){
 	$.ajax({
 		url  : "{{route('potongan_otomatis.store')}}",
@@ -188,26 +191,6 @@ $('#nilai').keyup(function(){
 });
 
 
-
-
-    var KTBootstrapDatepicker = function () {
-
-var arrows;
-if (KTUtil.isRTL()) {
-	arrows = {
-		leftArrow: '<i class="la la-angle-right"></i>',
-		rightArrow: '<i class="la la-angle-left"></i>'
-	}
-} else {
-	arrows = {
-		leftArrow: '<i class="la la-angle-left"></i>',
-		rightArrow: '<i class="la la-angle-right"></i>'
-	}
-}
-
-// Private functions
-var demos = function () {
-
 	// minimum setup
 	$('#tgldebet').datepicker({
 		rtl: KTUtil.isRTL(),
@@ -218,17 +201,6 @@ var demos = function () {
 		// language : 'id',
 		format   : 'mm/yyyy'
 	});
-};
-
-return {
-	// public functions
-	init: function() {
-		demos(); 
-	}
-};
-}();
-
-KTBootstrapDatepicker.init();
 });
 		function hanyaAngka(evt) {
 		  var charCode = (evt.which) ? evt.which : event.keyCode
@@ -236,6 +208,31 @@ KTBootstrapDatepicker.init();
  
 		    return false;
 		  return true;
+		}
+		var nilai = document.getElementById('nilai');
+		nilai.addEventListener('keyup', function(e){
+			// tambahkan 'Rp.' pada saat form di ketik
+			// gunakan fungsi formatnilai() untuk mengubah angka yang di ketik menjadi format angka
+			nilai.value = formatRupiah(this.value, '');
+		});
+
+		/* Fungsi formatRupiah */
+		function formatRupiah(angka, prefix){
+			var number_string = angka.replace(/[^,\d]/g, '').toString(),
+			split   		= number_string.split(','),
+			sisa     		= split[0].length % 3,
+			nilai     		= split[0].substr(0, sisa),
+			ribuan     		= split[0].substr(sisa).match(/\d{3}/gi);
+
+			// tambahkan titik jika yang di input sudah menjadi angka ribuan
+			if(ribuan){
+				separator = sisa ? '.' : '';
+				nilai += separator + ribuan.join('.');
+			}
+
+			nilai = split[1] != undefined ? nilai + ',' + split[1] : nilai;
+			$a= prefix == undefined ? nilai : (nilai ? nilai: '');
+         return $a;
 		}
 </script>
 

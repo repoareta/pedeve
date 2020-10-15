@@ -75,8 +75,8 @@ class DataPajakController extends Controller
             'bulan' => $request->bulan,
             'nopek' => $request->nopek,
             'jenis' => $request->jenis,
-            'nilai' => $request->nilai,
-            'pajak' => $request->pajak,
+            'nilai' => str_replace('.', '', $request->nilai),
+            'pajak' =>str_replace('.', '', $request->pajak),
             ]);
             $data = 1;
             return response()->json($data);
@@ -106,8 +106,8 @@ class DataPajakController extends Controller
         ->where('jenis',$request->jenis)
         ->where('nopek',$request->nopek)
         ->update([
-            'nilai' => $request->nilai,
-            'pajak' => $request->pajak,
+            'nilai' => str_replace('.', '', $request->nilai),
+            'pajak' =>str_replace('.', '', $request->pajak),
             ]);
             return response()->json();
     }

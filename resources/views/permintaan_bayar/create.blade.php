@@ -291,29 +291,10 @@
 		});
 	
 
-    var KTBootstrapDatepicker = function () {
-
-var arrows;
-if (KTUtil.isRTL()) {
-	arrows = {
-		leftArrow: '<i class="la la-angle-right"></i>',
-		rightArrow: '<i class="la la-angle-left"></i>'
-	}
-} else {
-	arrows = {
-		leftArrow: '<i class="la la-angle-left"></i>',
-		rightArrow: '<i class="la la-angle-right"></i>'
-	}
-}
-
-// Private functions
-var demos = function () {
-
+   
 	// range picker
 	$('#date_range_picker').datepicker({
-		rtl: KTUtil.isRTL(),
 		todayHighlight: true,
-		templates: arrows,
 		autoclose: true,
 		// language : 'id',
 		format   : 'dd-mm-yyyy'
@@ -321,45 +302,29 @@ var demos = function () {
 
 	// minimum setup
 	$('#tanggal').datepicker({
-		rtl: KTUtil.isRTL(),
 		todayHighlight: true,
 		orientation: "bottom left",
-		templates: arrows,
 		autoclose: true,
 		// language : 'id',
 		format   : 'dd-mm-yyyy'
 	});
 	// minimum setup
 	$('#tgldebet').datepicker({
-		rtl: KTUtil.isRTL(),
 		todayHighlight: true,
 		orientation: "bottom left",
-		templates: arrows,
 		autoclose: true,
 		// language : 'id',
 		format   : 'dd-mm-yyyy'
 	});
 	$('#bulanbuku').datepicker({
-		rtl: KTUtil.isRTL(),
 		todayHighlight: true,
 		orientation: "bottom left",
-		templates: arrows,
 		autoclose: true,
 		// language : 'id',
 		format   : 'yyyymm'
 	});
-};
+	});
 
-return {
-	// public functions
-	init: function() {
-		demos(); 
-	}
-};
-}();
-
-KTBootstrapDatepicker.init();
-});
 
 		function displayResult(ci){ 
 			if(ci == 1)
