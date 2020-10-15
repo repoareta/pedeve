@@ -28,4 +28,14 @@ class PanjarHeader extends Model
     {
         return $this->hasMany('App\Models\PanjarDetail', 'no_panjar');
     }
+
+    /**
+     * Kode Jabatan dimiliki Kode Bagian
+     *
+     * @return void
+     */
+    public function ppanjar_header()
+    {
+        return $this->hasOne('App\Models\PPanjarHeader', 'no_panjar');
+    }
 }

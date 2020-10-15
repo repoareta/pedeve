@@ -46,13 +46,13 @@
 			@csrf
 				<div class="col-md-12">
 					<p>
-						<center><b>SURAT PERNYATAAN INSAN PERTAMINA DANA VENTURA</b></center>
+						<center><b>SURAT PERNYATAAN INSAN PERTAMINA PEDEVE INDONESIA</b></center>
 					</p>
 
 					<p class="text-justify">
 						Dengan ini saya menyatakan telah menerima, membaca dan memahami
 		
-						Etika Usaha dan Tata Perilaku (Code of Conduct) PT. Pertamina DANA VENTURA
+						Etika Usaha dan Tata Perilaku (Code of Conduct) PT. Pertamina Pedeve Indonesia
 		
 						Tanggal (Efektif) 
 						@if(Request::get('tanggal_efektif'))

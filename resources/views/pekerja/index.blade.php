@@ -56,6 +56,36 @@
 	</div>
 	<div class="kt-portlet__body">
 
+		<div class="col-12">
+			<form class="kt-form" id="search-form" method="POST">
+				<div class="form-group row">
+					<label for="" class="col-form-label">Nopeg</label>
+					<div class="col-2">
+						<input class="form-control" type="text" name="nopeg" id="nopeg">
+					</div>
+	
+					<label for="" class="col-form-label">Status</label>
+					<div class="col-2">
+						<select class="form-control kt-select2" name="status" id="status">
+							<option value=""> - Pilih Status- </option>
+							<option value="C">Aktif</option>
+							<option value="P">Pensiun</option>									
+							<option value="K">Kontrak</option>
+							<option value="B">Perbantuan</option>
+							<option value="D">Direksi</option>
+							<option value="N">Pekerja Baru</option>
+							<option value="U">Komisaris</option>
+							<option value="O">Komite</option>
+						</select>
+					</div>
+	
+					<div class="col-2">
+						<button type="submit" class="btn btn-brand"><i class="fa fa-search" aria-hidden="true"></i> Cari</button>
+					</div>
+				</div>
+			</form>
+		</div>
+
 		<!--begin: Datatable -->
 		<table class="table table-striped table-bordered table-hover table-checkable" id="kt_table" width="100%">
 			<thead class="thead-light">
@@ -63,6 +93,7 @@
 					<th></th>
 					<th>Nopeg</th>
 					<th>Nama</th>
+					<th>Status</th>
 					<th>Kode & Nama Bagian</th>
 					<th>Kode & Nama Jabatan</th>
 				</tr>
@@ -80,21 +111,36 @@
 @section('scripts')
 	<script type="text/javascript">
 	$(document).ready(function () {
+
+		$('.kt-select2').select2().on('change', function() {
+			$(this).valid();
+		});
+
 		var t = $('#kt_table').DataTable({
 			scrollX   : true,
 			processing: true,
 			serverSide: true,
-			ajax      : "{{ route('pekerja.index.json') }}",
+			ajax      : {
+				url: "{{ route('pekerja.index.json') }}",
+				data: function (d) {
+					d.nopeg = $('input[name=nopeg]').val();
+					d.status = $('select[name=status]').val();
+				}
+			},
 			columns: [
 				{data: 'action', name: 'aksi', orderable: false, searchable: false, class:'radio-button', width: '10'},
 				{data: 'nopeg', name: 'nopeg', class:'no-wrap'},
 				{data: 'nama', name: 'nama', class:'no-wrap'},
+				{data: 'status', name: 'status', class:'no-wrap'},
 				{data: 'bagian', name: 'bagian', class:'no-wrap'},
-				{data: 'jabatan', name: 'jabatan', class:'no-wrap'},
+				{data: 'jabatan', name: 'jabatan', class:'no-wrap'}
 			]
 		});
 
-		
+		$('#search-form').on('submit', function(e) {
+			t.draw();
+			e.preventDefault();
+		});
 
 		$('#editRow').click(function(e) {
 			e.preventDefault();

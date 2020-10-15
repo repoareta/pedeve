@@ -55,12 +55,12 @@
 					<div class="form-group row">
 						<label for="spd-input" class="col-2 col-form-label">No. SPD</label>
 						<div class="col-5">
-							<input class="form-control" type="text" name="no_spd" value="{{ $no_spd }}" id="no_spd">
+							<input class="form-control" type="text" name="no_spd" value="{{ $no_spd }}" id="no_spd" readonly>
 						</div>
 
 						<label for="spd-input" class="col-2 col-form-label">Tanggal Panjar</label>
 						<div class="col-3">
-							<input class="form-control" type="text" name="tanggal" id="tanggal" value="{{ date('Y-m-d') }}">
+							<input class="form-control" type="text" name="tanggal" id="tanggal" value="{{ date('d-m-Y') }}">
 						</div>
 					</div>
 					<div class="form-group row">
@@ -167,7 +167,7 @@
 					<div class="form-group row">
 						<label for="jumlah" class="col-2 col-form-label">Jumlah</label>
 						<div class="col-10">
-							<input class="form-control" type="number" name="jumlah" id="jumlah" value="0.00">
+							<input class="form-control thousands" type="text" name="jumlah" id="jumlah" value="0.00">
 						</div>
 					</div>
 
@@ -311,7 +311,7 @@
 @section('scripts')
 {!! JsValidator::formRequest('App\Http\Requests\PerjalananDinasStore', '#formPanjarDinas') !!}
 {!! JsValidator::formRequest('App\Http\Requests\PerjalananDinasDetailStore', '#formPanjarDinasDetail') !!}
-
+<script src="https://cdnjs.cloudflare.com/ajax/libs/autonumeric/1.8.2/autoNumeric.js"></script>
 <script type="text/javascript">
 
 	function refreshTable() {
@@ -325,7 +325,21 @@
 		});
 	}
 
+	function addCommas(num) {
+		var num_parts = num.toString().split(".");
+		num_parts[0] = num_parts[0].replace(/\B(?=(\d{3})+(?!\d))/g, ",");
+		return num_parts.join(".");
+	}
+
 	$(document).ready(function () {
+
+		$(".thousands").autoNumeric('init', {
+			aSep: ',', 
+			aDec: '.',
+			aForm: true,
+			vMax: '999999999999.99',
+			vMin: '-999999999999.99'
+		});
 
 		$('.kt-select2').select2().on('change', function() {
 			$(this).valid();
@@ -361,7 +375,8 @@
 			todayHighlight: true,
 			// autoclose: true,
 			// language : 'id',
-			format   : 'yyyy-mm-dd'
+			// format   : 'yyyy-mm-dd'
+			format   : 'dd-mm-yyyy'
 		});
 
 		// minimum setup
@@ -370,7 +385,8 @@
 			orientation: "bottom left",
 			autoclose: true,
 			// language : 'id',
-			format   : 'yyyy-mm-dd'
+			// format   : 'yyyy-mm-dd'
+			format   : 'dd-mm-yyyy'
 		});
 
 		$("#formPanjarDinas").on('submit', function(){
