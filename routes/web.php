@@ -1244,6 +1244,8 @@ Route::group(['middleware'=> ['auth','checkRole:1,0']], function () {
         Route::name('tabel_deposito.')->group(function () {
             Route::get('tabel_deposito', 'TabelDepositoController@index')->name('index');
             Route::post('tabel_deposito/index/search', 'TabelDepositoController@searchIndex')->name('search.index');
+            Route::get('tabel_deposito/rekap/{no}/{id}', 'TabelDepositoController@rekap')->name('rekap');
+            Route::post('tabel_deposito/export', 'TabelDepositoController@export')->name('export');
         });
         //end tabel_deposito
 

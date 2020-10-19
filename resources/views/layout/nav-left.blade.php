@@ -696,7 +696,8 @@
                 $tabel_deposito = array(
                     'tabel_deposito.index',
                     'tabel_deposito.create',
-                    'tabel_deposito.edit'
+                    'tabel_deposito.edit',
+                    'tabel_deposito.rekap'
                 ); // isi nama semua route tabel_deposito
                 
                 $treassury = array_merge(
