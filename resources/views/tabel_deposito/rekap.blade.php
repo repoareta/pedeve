@@ -61,7 +61,6 @@
 						<?php 
 							$tahun = date('Y');
 							$bulan = date('m');
-							$lapangan = "MD";
 							$kurs = 1;
 						?>
 						<select class="form-control kt-select2" name="bulan">
@@ -87,12 +86,18 @@
 					</div>
 				</div>
 				<div class="form-group row">
+					<label for="dari-input" class="col-2 col-form-label">Kurs<span style="color:red;">*</span></label>
+					<div class="col-10">
+						<input class="form-control" type="text" name="kurs" value="{{$kurs}}" size="15" maxlength="15" autocomplete='off' onkeypress="return hanyaAngka(event)" required oninvalid="this.setCustomValidity('Kurs Harus Diisi..')" oninput="setCustomValidity('')">				
+					</div>
+				</div>
+				<div class="form-group row">
 					<label for="dari-input" class="col-2 col-form-label">Lapangan</label>
 					<div class="col-10">
-						<select name="lp" class="form-control kt-select2">
-							<option value="">- Pilih -</option>
+						<select name="lapangan" id="select-debetdari" class="form-control kt-select2">
+							<option value="">- All -</option>
 							@foreach($data_lapang as $data_l)
-							<option value="{{$data_l->kodelokasi}}"  <?php if($data_l->kodelokasi  == $lapangan ) echo 'selected' ; ?>>{{$data_l->kodelokasi}} -- {{$data_l->nama}}</option>
+							<option value="{{$data_l->kodelokasi}}">{{$data_l->kodelokasi}} -- {{$data_l->nama}}</option>
 							@endforeach
 						</select>								
 					</div>
@@ -103,6 +108,7 @@
 						<div class="col-10">
 							<a  href="{{route('tabel_deposito.index')}}" class="btn btn-warning"><i class="fa fa-reply" aria-hidden="true"></i>Cancel</a>
 							<button type="submit" id="btn-save" onclick="$('form').attr('target', '_blank')" class="btn btn-brand"><i class="fa fa-print" aria-hidden="true"></i>Cetak</button>
+							{{--<a  href="{{url('perbendaharaan/tabel_deposito/rekap_rc')}}/{{$no}}/{{$id}}" class="btn btn-primary"><i class="fa fa-print" aria-hidden="true"></i>Cetak RC</a>--}}
 						</div>
 					</div>
 				</div>
@@ -116,9 +122,8 @@
 @section('scripts')
 <script type="text/javascript">
 $(document).ready(function () {
-   
 	$('.kt-select2').select2().on('change', function() {
-			// $(this).valid();
+			$(this).valid();
 	});
 	$('#tanggal').datepicker({
 		todayHighlight: true,
