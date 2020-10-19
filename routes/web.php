@@ -1546,6 +1546,7 @@ Route::group(['middleware'=> ['auth','checkRole:1,0']], function () {
             Route::get('set_user/reset', 'SetUserController@Reset')->name('reset');
             Route::post('set_user/update', 'SetUserController@update')->name('update');
             Route::delete('set_user/delete', 'SetUserController@delete')->name('delete');
+            Route::post('set_user/export', 'SetUserController@export')->name('export');
         });
         //end set_user
 
