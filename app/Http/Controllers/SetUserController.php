@@ -257,18 +257,28 @@ class SetUserController extends Controller
         }else{
             $sdm = '';
         }
-        Usermenu::where('userid', $userid)->delete();
+
+        
         $data_menu = DB::select("select distinct(menuid) as menuid from dftmenu where userap in ('$akt','$cm','$pbd','$umu','$sdm')");
         foreach ($data_menu as $data_m) {
-            Usermenu::insert([
+            $data_cek = DB::select("select * from usermenu where userid ='$userid' and menuid='$data_m->menuid'");
+            if(!empty($data_cek)){
+                Usermenu::where('userid',$userid)->where('menuid',$data_m->menuid)
+                ->update([
                     'userid' => $userid,
-                    'menuid' => $data_m->menuid,
-                    'cetak' => '0',
-                    'tambah' => '0',
-                    'rubah' => '0',
-                    'lihat' => '0',
-                    'hapus' => '0'
+                    'menuid' => $data_m->menuid
                 ]);
+            }else{
+                Usermenu::insert([
+                        'userid' => $userid,
+                        'menuid' => $data_m->menuid,
+                        'cetak' => '0',
+                        'tambah' => '0',
+                        'rubah' => '0',
+                        'lihat' => '0',
+                        'hapus' => '0'
+                    ]);
+            }
         }
         return response()->json();
     }
