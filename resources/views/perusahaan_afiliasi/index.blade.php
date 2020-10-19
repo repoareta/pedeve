@@ -28,7 +28,7 @@
 				Perusahaan Afiliasi
 			</h3>
 			<div class="kt-portlet__head-actions" style="font-size: 2rem;">
-				@foreach(DB::table('usermenu')->where('userid',Auth::user()->userid)->where('menuid',703)->limit(1)->get() as $data_akses)
+				@foreach(DB::table('usermenu')->where('userid',Auth::user()->userid)->where('menuid',802)->limit(1)->get() as $data_akses)
 				@if($data_akses->tambah == 1)
 				<a href="{{ route('perusahaan_afiliasi.create') }}">
 					<span class="kt-font-success" data-toggle="kt-tooltip" data-placement="top" title="Tambah Data">
