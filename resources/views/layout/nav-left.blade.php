@@ -691,6 +691,7 @@
                 $cetak_kas_bank = array(
                     'cetak_kas_bank.index',                
                     'cetak_kas_bank.create',                
+                    'cetak_kas_bank.rekap',                
                 ); // isi nama semua route cetak_kas_bank
                 $tabel_deposito = array(
                     'tabel_deposito.index',

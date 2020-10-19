@@ -1234,6 +1234,8 @@ Route::group(['middleware'=> ['auth','checkRole:1,0']], function () {
         Route::name('cetak_kas_bank.')->group(function () {
             Route::get('cetak_kas_bank', 'KasBankKontrolerController@indexCetak')->name('index');
             Route::post('cetak_kas_bank/index/search', 'KasBankKontrolerController@searchIndexCetak')->name('search.cetak.index');
+            Route::get('cetak_kas_bank/rekap/{id}', 'KasBankKontrolerController@rekap')->name('rekap');
+            Route::post('cetak_kas_bank/export', 'KasBankKontrolerController@export')->name('export');
         });
         //end cetak_kas_bank
 
