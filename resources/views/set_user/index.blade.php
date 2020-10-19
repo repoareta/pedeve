@@ -218,6 +218,20 @@ $(document).ready(function () {
 			}
 		});
 
+		//edit 
+		$('#editRow').click(function(e) {
+			e.preventDefault();
+
+			if($('input[class=btn-radio]').is(':checked')) { 
+				$("input[class=btn-radio]:checked").each(function(){
+					var no = $(this).attr('kode');
+					location.replace("{{url('administrator/set_user/edit')}}"+ '/' +no);
+				});
+			} else {
+				swalAlertInit('ubah');
+			}
+		});
+
 		$('#exportRow').click(function(e) {
 			e.preventDefault();
 				$('#cetakModal').modal('show');

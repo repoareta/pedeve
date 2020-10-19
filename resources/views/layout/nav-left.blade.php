@@ -2268,6 +2268,8 @@
                 </a>
                 <div class="kt-menu__submenu "><span class="kt-menu__arrow"></span>
                     <ul class="kt-menu__subnav">
+                        @foreach(DB::table('usermenu')->where('userid',Auth::user()->userid)->where('menuid',801)->limit(1)->get() as $data_umu)
+                        @if($data_umu->ability == 1)
                         <li class="kt-menu__item kt-menu__item{{ set_active_submenu($data_perkara) }}" aria-haspopup="true">
                             <a href="{{route('data_perkara.index')}}" class="kt-menu__link">
                                 <i class="kt-menu__link-bullet kt-menu__link-bullet--dot">
@@ -2276,7 +2278,10 @@
                                 <span class="kt-menu__link-text">Data Perkara</span>
                             </a>
                         </li>
-
+                        @endif
+                        @endforeach
+                        @foreach(DB::table('usermenu')->where('userid',Auth::user()->userid)->where('menuid',802)->limit(1)->get() as $data_umu)
+                        @if($data_umu->ability == 1)
                         <li class="kt-menu__item kt-menu__item{{ set_active_submenu($perusahaan_afiliasi) }}" aria-haspopup="true">
                             <a href="{{route('perusahaan_afiliasi.index')}}" class="kt-menu__link">
                                 <i class="kt-menu__link-bullet kt-menu__link-bullet--dot">
@@ -2285,10 +2290,10 @@
                                 <span class="kt-menu__link-text">Perusahaan Afiliasi</span>
                             </a>
                         </li>
-                    </ul>
-                </div>
-                <div class="kt-menu__submenu "><span class="kt-menu__arrow"></span>
-                    <ul class="kt-menu__subnav">
+                        @endif
+                        @endforeach
+                        @foreach(DB::table('usermenu')->where('userid',Auth::user()->userid)->where('menuid',803)->limit(1)->get() as $data_umu)
+                        @if($data_umu->ability == 1)
                         <li class="kt-menu__item kt-menu__item{{ set_active_submenu($monitoring_kinerja) }}" aria-haspopup="true">
                             <a href="{{route('monitoring_kinerja.index')}}" class="kt-menu__link">
                                 <i class="kt-menu__link-bullet kt-menu__link-bullet--dot">
@@ -2297,6 +2302,8 @@
                                 <span class="kt-menu__link-text">Monitoring Kinerja</span>
                             </a>
                         </li>
+                        @endif
+                        @endforeach
                     </ul>
                 </div>
             </li>

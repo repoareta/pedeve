@@ -64,7 +64,7 @@
                     <th width="30%">USER APPLICATION</th>
                 </tr>
                 @foreach($data_user as $row)
-                <tr style="font-size: 10pt;">
+                <tr style="font-size: 9pt;">
                     <td>{{$row->userid}}</td>
                     <td>{{$row->usernm}}</td>
                     <td>{{$row->kode}}</td>
