@@ -3,6 +3,9 @@
 namespace App\Http\Controllers;
 
 use Illuminate\Http\Request;
+
+// Load Model
+use App\Models\PerusahaanAfiliasi;
 use App\Models\Vendor;
 use Carbon\Carbon;
 use Session;
@@ -23,7 +26,7 @@ class MonitoringKinerjaController extends Controller
     public function indexJson(Request $request)
     {
           
-        $data =DB::select("select * from tbl_monitoring where bulan='$request->bulan' and tahun='$request->tahun'");
+        $data =DB::select("select a.*, b.nama from tbl_monitoring a join cm_perusahaan_afiliasi b on a.kd_perusahaan=b.id where a.bulan='$request->bulan' and a.tahun='$request->tahun'");
         return datatables()->of($data)
         ->addColumn('action', function ($data) {
                 $radio = '<label  class="kt-radio kt-radio--bold kt-radio--brand"><input type="radio" class="btn-radio" data-id="'.$data->kd_monitoring.'" value="'.$data->kd_monitoring.'" name="btn-radio"><span></span></label>';
@@ -61,20 +64,21 @@ class MonitoringKinerjaController extends Controller
 
     public function create()
     {
-        return view('monitoring_kinerja.create');
+        $data_perusahaan = PerusahaanAfiliasi::all();
+        return view('monitoring_kinerja.create',compact('data_perusahaan'));
     }
     public function store(Request $request)
     {
         DB::table('tbl_monitoring')->insert([
-        'nama' => $request->nama,
+        'kd_perusahaan' => $request->nama,
         'ci' => $request->ci,
         'tahun' => $request->tahun,
         'bulan' => $request->bulan,
         'rate' => $request->kurs,
-        'total_aset' => $request->total_aset,
-        'sales' => $request->sales,
-        'laba_bersih' => $request->laba_bersih,
-        'tkp' => $request->tkp,
+        'total_aset' => str_replace('.', '', $request->total_aset),
+        'sales' => str_replace('.', '', $request->sales),
+        'laba_bersih' => str_replace('.', '', $request->laba_bersih),
+        'tkp' => str_replace('.', '', $request->tkp),
         ]);
         return response()->json(1);
     }
@@ -82,7 +86,7 @@ class MonitoringKinerjaController extends Controller
    
     public function edit($id)
     {
-        $data_list =  DB::select("select * from tbl_monitoring where kd_monitoring='$id'");
+        $data_list =  DB::select("select a.*, b.nama from tbl_monitoring a join cm_perusahaan_afiliasi b on a.kd_perusahaan=b.id where kd_monitoring='$id'");
         return view('monitoring_kinerja.edit', compact('data_list'));
     }
 
@@ -91,12 +95,12 @@ class MonitoringKinerjaController extends Controller
     {
             DB::table('tbl_monitoring')->where('kd_monitoring',$request->kd_monitoring)
             ->update([
-            'nama' => $request->nama,
+            'kd_perusahaan' => $request->nama,
             'ci' => $request->ci,
-            'total_aset' => $request->total_aset,
-            'sales' => $request->sales,
-            'laba_bersih' => $request->laba_bersih,
-            'tkp' => $request->tkp,
+            'total_aset' => str_replace('.', '', $request->total_aset),
+            'sales' => str_replace('.', '', $request->sales),
+            'laba_bersih' => str_replace('.', '', $request->laba_bersih),
+            'tkp' => str_replace('.', '', $request->tkp),
             ]);
             return response()->json();
     }

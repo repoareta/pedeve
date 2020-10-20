@@ -1,5 +1,40 @@
 @extends('layout.global')
-
+<style type="text/css">
+	body {
+	color: #5c5c5c;
+	}
+	#mybutton-lama {
+	position: relative;
+	z-index: 1;
+	left: 95%;
+	top: -25px;
+	cursor: pointer;
+	}
+	#mybutton-baru {
+	position: relative;
+	z-index: 1;
+	left: 95%;
+	top: -25px;
+	cursor: pointer;
+	}
+	#mybutton-con-baru {
+	position: relative;
+	z-index: 1;
+	left: 95%;
+	top: -25px;
+	cursor: pointer;
+	}
+	.myform {
+	margin-top: 15%;
+	background: #fafafa;
+	padding: 20px;
+	border: 1px solid #f4f4f4;
+	}
+	.myinput {
+	width: 100%;
+	padding: 5px;
+	}
+</style>
 @section('content')
 <!-- begin:: Subheader -->
 <div class="kt-subheader   kt-grid__item" id="kt_subheader">
@@ -56,19 +91,23 @@
 							<label for="" class="col-2 col-form-label">PASSWORD LAMA<span style="color:red;">*</span></label>
 							<div class="col-10">
 								<input class="form-control" type="password" value="" name="userpw" id="userpw" size="50" maxlength="50" title="PASSWORD LAMA" autocomplete='off' required oninvalid="this.setCustomValidity('PASSWORD LAMA Harus Diisi...')" oninput="setCustomValidity('')">
+								<span id="mybutton-lama" onclick="lama()"><i class="fas fa-eye"></i></span>
 							</div>
 						</div>
 						<div class="form-group row">
 							<label for="" class="col-2 col-form-label">PASSWORD BARU<span style="color:red;">*</span></label>
 							<div class="col-10">
 								<input class="form-control" type="password" value="" name="newpw" id="newpw" size="50" maxlength="50" title="PASSWORD BARU" autocomplete='off' required oninvalid="this.setCustomValidity('PASSWORD BARU Harus Diisi...')" oninput="setCustomValidity('')">
-								<span style="display:none;color:red;" class="error"> Password harus terdiri dari huruf, angka dan minimal 8 karakter !</span>							</div>
+								<span id="mybutton-baru" onclick="baru()"><i class="fas fa-eye"></i></span>
+								<span style="display:none;color:red;" class="error"> Password harus terdiri dari huruf, angka dan minimal 8 karakter !</span>							
+								</div>
 							</div>
 						</div>
 						<div class="form-group row">
 							<label for="" class="col-2 col-form-label">CONFIRM PASSWORD<span style="color:red;">*</span></label>
 							<div class="col-10">
 								<input class="form-control" type="password" value="" name="newpw1" id="newpw1" size="50" maxlength="50" title="CONFIRM PASSWORD" autocomplete='off' required oninvalid="this.setCustomValidity('CONFIRM PASSWORD Harus Diisi...')" oninput="setCustomValidity('')">
+								<span id="mybutton-con-baru" onclick="con_baru()"><i class="fas fa-eye"></i></span>
 								<span style="display:none;color:red;" class="errorConfirm"> Password dan Confirm Password tidak .</span>
 							</div>
 						</div>
@@ -188,6 +227,54 @@
 			})
 		});
 	});
+
+		function lama()
+         {
+            var x = document.getElementById('userpw').type;
+ 
+            if (x == 'password')
+            {
+               document.getElementById('userpw').type = 'text';
+               document.getElementById('mybutton-lama').innerHTML = '<i class="fas fa-eye-slash"></i>';
+            }
+            else
+            {
+               document.getElementById('userpw').type = 'password';
+               document.getElementById('mybutton-lama').innerHTML = '<i class="fas fa-eye"></i>';
+			}
+		 }
+
+		function baru()
+         {
+            var x = document.getElementById('newpw').type;
+ 
+            if (x == 'password')
+            {
+               document.getElementById('newpw').type = 'text';
+               document.getElementById('mybutton-baru').innerHTML = '<i class="fas fa-eye-slash"></i>';
+            }
+            else
+            {
+               document.getElementById('newpw').type = 'password';
+               document.getElementById('mybutton-baru').innerHTML = '<i class="fas fa-eye"></i>';
+			}
+		 }
+		 
+		function con_baru()
+         {
+            var x1 = document.getElementById('newpw1').type;
+ 
+            if (x1 == 'password')
+            {
+               document.getElementById('newpw1').type = 'text';
+               document.getElementById('mybutton-con-baru').innerHTML = '<i class="fas fa-eye-slash"></i>';
+            }
+            else
+            {
+               document.getElementById('newpw1').type = 'password';
+               document.getElementById('mybutton-con-baru').innerHTML = '<i class="fas fa-eye"></i>';
+            }
+         }
 	
 
   

@@ -109,6 +109,7 @@ $(document).ready(function () {
 			scrollX   : true,
 			processing: true,
 			serverSide: false,
+			pageLength: 200,
 		});
 
 		$("#checkedall").change(function() {

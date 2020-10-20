@@ -1234,6 +1234,8 @@ Route::group(['middleware'=> ['auth','checkRole:1,0']], function () {
         Route::name('cetak_kas_bank.')->group(function () {
             Route::get('cetak_kas_bank', 'KasBankKontrolerController@indexCetak')->name('index');
             Route::post('cetak_kas_bank/index/search', 'KasBankKontrolerController@searchIndexCetak')->name('search.cetak.index');
+            Route::get('cetak_kas_bank/rekap/{id}', 'KasBankKontrolerController@rekap')->name('rekap');
+            Route::post('cetak_kas_bank/export', 'KasBankKontrolerController@export')->name('export');
         });
         //end cetak_kas_bank
 
@@ -1242,6 +1244,8 @@ Route::group(['middleware'=> ['auth','checkRole:1,0']], function () {
         Route::name('tabel_deposito.')->group(function () {
             Route::get('tabel_deposito', 'TabelDepositoController@index')->name('index');
             Route::post('tabel_deposito/index/search', 'TabelDepositoController@searchIndex')->name('search.index');
+            Route::get('tabel_deposito/rekap/{no}/{id}', 'TabelDepositoController@rekap')->name('rekap');
+            Route::post('tabel_deposito/export', 'TabelDepositoController@export')->name('export');
         });
         //end tabel_deposito
 
@@ -1546,6 +1550,7 @@ Route::group(['middleware'=> ['auth','checkRole:1,0']], function () {
             Route::get('set_user/reset', 'SetUserController@Reset')->name('reset');
             Route::post('set_user/update', 'SetUserController@update')->name('update');
             Route::delete('set_user/delete', 'SetUserController@delete')->name('delete');
+            Route::post('set_user/export', 'SetUserController@export')->name('export');
         });
         //end set_user
 

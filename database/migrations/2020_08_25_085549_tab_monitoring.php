@@ -11,7 +11,7 @@ class TabMonitoring extends Migration
         if (!Schema::hasTable('tbl_monitoring')) {
             Schema::create('tbl_monitoring', function (Blueprint $table) {
                 $table->increments('kd_monitoring');
-                $table->string('nama',200);
+                $table->integer('kd_perusahaan');
                 $table->char('tahun',4);
                 $table->char('bulan',2);
                 $table->integer('sales')->nullable();
