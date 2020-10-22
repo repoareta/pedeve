@@ -97,9 +97,9 @@
 							</div>
 						</div>
 						<div class="form-group row">
-							<label for="dari-input" class="col-2 col-form-label">Debet Dari<span style="color:red;">*</span></label>
+							<label for="dari-input" class="col-2 col-form-label">Debet Dari</label>
 							<div class="col-10">
-								<select name="debetdari" id="select-debetdari" class="form-control selectpicker" data-live-search="true" required oninvalid="this.setCustomValidity('Debet Dari Harus Diisi..')" onchange="setCustomValidity('')">
+								<select name="debetdari" id="select-debetdari" class="form-control selectpicker" data-live-search="true" >
 									<option value="">- Pilih -</option>
 									@foreach ($debit_nota as $row)
 									<option value="{{ $row->kode }}">{{ $row->kode.' - '.$row->keterangan }}</option>
@@ -109,9 +109,9 @@
 							</div>
 						</div>
 						<div class="form-group row">
-							<label class="col-2 col-form-label">No. Debet<span style="color:red;">*</span></label>
+							<label class="col-2 col-form-label">No. Debet</label>
 							<div class="col-5">
-								<input class="form-control" type="text" name="nodebet" id="nodebet" value="" size="15" maxlength="15" onkeyup="this.value = this.value.toUpperCase()" required oninvalid="this.setCustomValidity('No. Debet Harus Diisi..')" oninput="setCustomValidity('')" autocomplete='off'>
+								<input class="form-control" type="text" name="nodebet" id="nodebet" value="" size="15" maxlength="15" onkeyup="this.value = this.value.toUpperCase()" autocomplete='off'>
 							</div>
 							<label class="col-2 col-form-label">Tgl Debet<span style="color:red;">*</span></label>
 							<div class="col-3" >
