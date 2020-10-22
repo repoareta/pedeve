@@ -97,13 +97,13 @@
 					<div class="form-group row">
 						<label for="spd-input" class="col-2 col-form-label">Angsuran<span style="color:red;">*</span></label>
 						<div class="col-10">
-							<input  class="form-control" type="text" value="{{round($data->angsuran,0)}}"  name="angsuran" size="16" maxlength="16" autocomplete='off' required oninvalid="this.setCustomValidity('Angsuran Harus Diisi..')" oninput="setCustomValidity('')"  onkeypress="return hanyaAngka(event)">
+							<input  class="form-control" type="text" value="{{number_format($data->angsuran,0,',','.')}}"  name="angsuran" id="angsuran" size="16" maxlength="16" autocomplete='off' required oninvalid="this.setCustomValidity('Angsuran Harus Diisi..')" oninput="setCustomValidity('')"  onkeypress="return hanyaAngka(event)">
 						</div>
 					</div>
 					<div class="form-group row">
 						<label for="spd-input" class="col-2 col-form-label">Pinjaman<span style="color:red;">*</span></label>
 						<div class="col-10">
-							<input  class="form-control" type="text" value="{{round($data->jml_pinjaman,0)}}"  name="pinjaman" size="35" maxlength="35" autocomplete='off' required oninvalid="this.setCustomValidity('Pinjaman Harus Diisi..')" oninput="setCustomValidity('')"  onkeypress="return hanyaAngka(event)">
+							<input  class="form-control" type="text" value="{{number_format($data->jml_pinjaman,0,',','.')}}"  name="pinjaman" id="pinjaman" size="35" maxlength="35" autocomplete='off' required oninvalid="this.setCustomValidity('Pinjaman Harus Diisi..')" oninput="setCustomValidity('')"  onkeypress="return hanyaAngka(event)">
 						</div>
 					</div>
 					@endforeach
@@ -265,12 +265,62 @@
 
 
 	function hanyaAngka(evt) {
-		  var charCode = (evt.which) ? evt.which : event.keyCode
-		   if (charCode > 31 && (charCode < 48 || charCode > 57))
- 
-		    return false;
-		  return true;
+		var charCode = (evt.which) ? evt.which : event.keyCode
+		if (charCode > 31 && (charCode < 48 || charCode > 57))
+
+		return false;
+		return true;
+	}
+
+	var angsuran = document.getElementById('angsuran');
+	angsuran.addEventListener('keyup', function(e){
+		// tambahkan 'Rp.' pada saat form di ketik
+		// gunakan fungsi formatangsuran() untuk mengubah angka yang di ketik menjadi format angka
+		angsuran.value = formatangsuran(this.value, '');
+	});
+
+	/* Fungsi formatangsuran */
+	function formatangsuran(angka, prefix){
+		var number_string = angka.replace(/[^,\d]/g, '').toString(),
+		split   		= number_string.split(','),
+		sisa     		= split[0].length % 3,
+		rupiah     		= split[0].substr(0, sisa),
+		ribuan     		= split[0].substr(sisa).match(/\d{3}/gi);
+
+		// tambahkan titik jika yang di input sudah menjadi angka ribuan
+		if(ribuan){
+			separator = sisa ? '.' : '';
+			rupiah += separator + ribuan.join('.');
 		}
+
+		rupiah = split[1] != undefined ? rupiah + ',' + split[1] : rupiah;
+		return prefix == undefined ? rupiah : (rupiah ? rupiah: '');
+	}
+
+	var pinjaman = document.getElementById('pinjaman');
+	pinjaman.addEventListener('keyup', function(e){
+		// tambahkan 'Rp.' pada saat form di ketik
+		// gunakan fungsi formatpinjaman() untuk mengubah angka yang di ketik menjadi format angka
+		pinjaman.value = formatpinjaman(this.value, '');
+	});
+
+	/* Fungsi formatpinjaman */
+	function formatpinjaman(angka, prefix){
+		var number_string = angka.replace(/[^,\d]/g, '').toString(),
+		split   		= number_string.split(','),
+		sisa     		= split[0].length % 3,
+		rupiah     		= split[0].substr(0, sisa),
+		ribuan     		= split[0].substr(sisa).match(/\d{3}/gi);
+
+		// tambahkan titik jika yang di input sudah menjadi angka ribuan
+		if(ribuan){
+			separator = sisa ? '.' : '';
+			rupiah += separator + ribuan.join('.');
+		}
+
+		rupiah = split[1] != undefined ? rupiah + ',' + split[1] : rupiah;
+		return prefix == undefined ? rupiah : (rupiah ? rupiah: '');
+	}
 </script>
 
 @endsection

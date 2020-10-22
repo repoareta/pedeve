@@ -151,11 +151,11 @@ class LemburController extends Controller
                 DB::table('pay_lembur')->insert([
                     'tanggal' => $request->tanggal,
                     'nopek' => $request->nopek, 
-                    'makanpg' => $request->makanpg, 
-                    'makansg' => $request->makansg, 
-                    'makanml' => $request->makanml, 
-                    'transport' => $request->transport,
-                    'lembur' => $request->lembur, 
+                    'makanpg' => str_replace('.', '', $request->makanpg), 
+                    'makansg' => str_replace('.', '', $request->makansg), 
+                    'makanml' => str_replace('.', '', $request->makanml), 
+                    'transport' => str_replace('.', '', $request->transport),
+                    'lembur' => str_replace('.', '', $request->lembur), 
                     'userid' => $request->userid,
                     'bulan' => $request->bulan,
                     'tahun' => $request->tahun,
@@ -199,7 +199,13 @@ class LemburController extends Controller
      */
     public function update(Request $request)
     {
-        DB::update("update pay_lembur set makanpg='$request->makanpg', makansg='$request->makansg', makanml='$request->makanml', transport='$request->transport',lembur='$request->lembur', userid='$request->userid',bulan='$request->bulan',tahun='$request->tahun' where to_char(tanggal, 'dd/mm/YYYY') = '$request->tanggal' and nopek='$request->nopek'");
+        $mapg = str_replace('.', '', $request->makanpg);
+        $masi = str_replace('.', '', $request->makansg);
+        $maml = str_replace('.', '', $request->makanml);
+        $trans = str_replace('.', '', $request->transport);
+        $lem = str_replace('.', '', $request->lembur);
+        DB::update("update pay_lembur set makanpg='$mapg', makansg='$masi', makanml='$maml', transport='$trans',lembur='$lem', userid='$request->userid',bulan='$request->bulan',tahun='$request->tahun' where to_char(tanggal, 'dd/mm/YYYY') = '$request->tanggal' and nopek='$request->nopek'");
+       
         return response()->json();
     }
 

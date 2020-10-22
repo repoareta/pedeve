@@ -114,11 +114,11 @@ class PinjamanPekerjaController extends Controller
             PayMtrpkpp::insert([
             'id_pinjaman' => $request->id_pinjaman,
             'nopek' => $request->nopek,
-            'jml_pinjaman' => $request->pinjaman,
+            'jml_pinjaman' => str_replace('.', '', $request->pinjaman),
             'tenor' => $request->tenor,
             'mulai' => $request->mulai,
             'sampai' => $request->sampai,
-            'angsuran' => $request->angsuran,
+            'angsuran' => str_replace('.', '', $request->angsuran),
             'cair' => 'N',
             'lunas' => 'N',
             'no_kontrak' => $request->no_kontrak
@@ -137,11 +137,11 @@ class PinjamanPekerjaController extends Controller
     {
         PayMtrpkpp::where('id_pinjaman', $request->id_pinjaman)
         ->update([
-            'jml_pinjaman' => $request->pinjaman,
+            'jml_pinjaman' => str_replace('.', '', $request->pinjaman),
             'tenor' => $request->tenor,
             'mulai' => $request->mulai,
             'sampai' => $request->sampai,
-            'angsuran' => $request->angsuran,
+            'angsuran' => str_replace('.', '', $request->angsuran),
             'no_kontrak' => $request->no_kontrak
         ]);
             return response()->json();

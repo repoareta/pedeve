@@ -120,7 +120,7 @@
 								</div>
 							</div>
 						</div>
-						<div class="form-group row">
+						{{-- <div class="form-group row">
 							<label for="" class="col-2 col-form-label">Nopeg Pekerja</label>
 							<div class="col-10">
 								<select class="form-control kt-select2" name="nopeg" id="nopeg">
@@ -152,7 +152,7 @@
 									@endforeach
 								</select>
 							</div>
-						</div>
+						</div> --}}
 						<div class="form-group row">
 							<label for="" class="col-2 col-form-label">Last Updated By</label>
 							<div class="col-10">
