@@ -113,9 +113,9 @@
 							<div class="col-5">
 								<input class="form-control" type="text" name="nodebet" id="nodebet" value="" size="15" maxlength="15" onkeyup="this.value = this.value.toUpperCase()" autocomplete='off'>
 							</div>
-							<label class="col-2 col-form-label">Tgl Debet<span style="color:red;">*</span></label>
+							<label class="col-2 col-form-label">Tgl Debet</label>
 							<div class="col-3" >
-								<input class="form-control" type="text" name="tgldebet" value=""  id="tgldebet" size="15" maxlength="15" required autocomplete='off' oninvalid="this.setCustomValidity('Tgl Debet Harus Diisi..')" onchange="setCustomValidity('')">
+								<input class="form-control" type="text" name="tgldebet" value=""  id="tgldebet" size="15" maxlength="15" autocomplete='off' >
 							</div>
 						</div>
 						<div class="form-group row">

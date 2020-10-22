@@ -94,9 +94,9 @@
 							</div>
 						</div>
 						<div class="form-group row">
-							<label for="dari-input" class="col-2 col-form-label">Debet Dari<span style="color:red;">*</span></label>
+							<label for="dari-input" class="col-2 col-form-label">Debet Dari</label>
 							<div class="col-10">
-								<select name="debetdari" id="select-debetdari" class="form-control selectpicker" data-live-search="true" required oninvalid="this.setCustomValidity('Debet Dari Harus Diisi..')" onchange="setCustomValidity('')">
+								<select name="debetdari" id="select-debetdari" class="form-control selectpicker" data-live-search="true" >
                                     <option value="">- Pilih -</option>
 									@foreach ($debit_nota as $row)
 									<option value="{{ $row->kode }}" <?php if($row->kode == $data_bayar->debet_dari ) echo 'selected' ; ?>>{{ $row->kode.' - '.$row->keterangan }}</option>
@@ -106,13 +106,13 @@
 							</div>
 						</div>
 						<div class="form-group row">
-							<label class="col-2 col-form-label">No. Debet<span style="color:red;">*</span></label>
+							<label class="col-2 col-form-label">No. Debet</label>
 							<div class="col-5">
-								<input class="form-control" type="text" name="nodebet" id="nodebet" value="{{$data_bayar->debet_no}}" size="15" maxlength="15" required oninvalid="this.setCustomValidity('No. Debet Harus Diisi..')" oninput="setCustomValidity('')" autocomplete='off'>
+								<input class="form-control" type="text" name="nodebet" id="nodebet" value="{{$data_bayar->debet_no}}" size="15" maxlength="15" >
 							</div>
-							<label class="col-2 col-form-label">Tgl Debet<span style="color:red;">*</span></label>
+							<label class="col-2 col-form-label">Tgl Debet</label>
 							<div class="col-3" >
-								<input class="form-control" type="text" name="tgldebet" value="<?php echo date("d-m-Y", strtotime($data_bayar->debet_tgl)) ?>" id="tgldebet" size="15" maxlength="15" required oninvalid="this.setCustomValidity('Tgl Debet Harus Diisi..')" onchange="setCustomValidity('')">
+								<input class="form-control" type="text" name="tgldebet" value="<?php echo date("d-m-Y", strtotime($data_bayar->debet_tgl)) ?>" id="tgldebet" size="15" maxlength="15" >
 							</div>
 						</div>
 						<div class="form-group row">

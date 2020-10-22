@@ -440,10 +440,11 @@ class PermintaanBayarController extends Controller
         foreach($bayar_header_list as $data_report)
         {
             $data_report;
+            $data_rek = DB::select("select * from tbl_vendor where nama ='$data_report->kepada'");
         }
         $bayar_detail_list = PermintaanDetail::where('no_bayar', $nobayar)->get();
         $list_acount =PermintaanDetail::where('no_bayar',$nobayar)->select('nilai')->sum('nilai');
-        $pdf = DomPDF::loadview('permintaan_bayar.export', compact('list_acount','data_report','bayar_detail_list','request'))->setPaper('a4', 'Portrait');
+        $pdf = DomPDF::loadview('permintaan_bayar.export', compact('list_acount','data_report','bayar_detail_list','request','data_rek'))->setPaper('a4', 'Portrait');
         // return $pdf->download('rekap_permint_'.date('Y-m-d H:i:s').'.pdf');
         return $pdf->stream();
     }
