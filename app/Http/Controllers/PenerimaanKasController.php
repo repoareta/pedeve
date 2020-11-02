@@ -91,7 +91,7 @@ class PenerimaanKasController extends Controller
                return number_format($data->rate, 2, '.', ',');
            })
            ->addColumn('nilai_dok', function ($data) {
-               return 'Rp. '.number_format($data->nilai_dok, 2, '.', ',');
+               return number_format($data->nilai_dok, 2, '.', ',');
            })
     
             ->addColumn('radio', function ($data) {
@@ -103,7 +103,7 @@ class PenerimaanKasController extends Controller
                     $action = '<p align="center"><span style="font-size: 2em;" class="kt-font-success pointer-link" data-toggle="kt-tooltip" data-placement="top" title="Data Sudah Diverifikasi"><i class="fas fa-check-circle" ></i></span></p>';
                 } else {
                     if ($data->paid == 'Y') {
-                        $action = '<p align="center"><a href="'. route('penerimaan_kas.approv', ['id' => str_replace('/', '-', $data->docno),'status' => $data->paid]).'"><span style="font-size: 2em;" class="kt-font-warning pointer-link" data-toggle="kt-tooltip" data-placement="top"  title="Batalkan Pembayaran"><i class="fas fa-check-circle" ></i></span></a></p>';
+                        $action = '<p align="center"><a href="'. route('penerimaan_kas.approv', ['id' => str_replace('/', '-', $data->docno),'status' => $data->paid]).'"><span style="font-size: 2em;" class="kt-font-success pointer-link" data-toggle="kt-tooltip" data-placement="top"  title="Batalkan Pembayaran"><i class="fas fa-check-circle" ></i></span></a></p>';
                     } else {
                         $action = '<p align="center"><a href="'. route('penerimaan_kas.approv', ['id' => str_replace('/', '-', $data->docno),'status' => $data->paid]).'"><span style="font-size: 2em;" class="kt-font-danger pointer-link" data-toggle="kt-tooltip" data-placement="top" title="Klik Untuk Pembayaran"><i class="fas fa-ban" ></i></span></a></p>';
                     }
@@ -199,6 +199,19 @@ class PenerimaanKasController extends Controller
         return response()->json($data);
     }
 
+    public function kepadaJson(Request $request)
+    {
+        if ($request->has('q')) {
+            $cari = strtoupper($request->q);
+            $data = DB::select("select distinct kepada from kasdoc where kepada like '$cari%' order by kepada asc");
+            if(!empty($data)){
+                return response()->json($data);
+            }else{
+                return response()->json($cari);
+            }
+        }
+    }
+
     /**
      * Store a newly created resource in storage.
      *
@@ -259,7 +272,7 @@ class PenerimaanKasController extends Controller
         $updatedate = $request->tanggal;
         $updatepwd = $request->userid;
         $rate = $request->kurs;
-        $nilai_dok = str_replace('.', '', $request->nilai);
+        $nilai_dok = str_replace(',', '.', $request->nilai);
         $originalby = $request->userid;
         $ket1 = $request->ket1;
         $ket2 = $request->ket2;
@@ -408,7 +421,7 @@ class PenerimaanKasController extends Controller
                 'voucher' =>  $request->nobukti,
                 'kepada' =>  $request->kepada,
                 'rate' =>  $request->kurs,
-                'nilai_dok' =>  str_replace('.', '', $request->nilai),
+                'nilai_dok' =>  str_replace(',', '.', $request->nilai),
                 'ket1' =>  $request->ket1,
                 'ket2' =>  $request->ket2,
                 'ket3' =>  $request->ket3,
@@ -432,7 +445,7 @@ class PenerimaanKasController extends Controller
                 'pk' =>  $request->pk,
                 'jb' =>  $request->jb,
                 'cj' =>  $request->cj,
-                'totprice'  =>  str_replace('.', '', $request->nilai),
+                'totprice'  =>  str_replace(',', '.', $request->nilai),
                 'keterangan'  =>  $request->rincian
                 ]);
             $data = 2;
@@ -443,7 +456,7 @@ class PenerimaanKasController extends Controller
                         'docno' =>  $request->nodok,
                         'lineno' =>  $request->nourut,
                         'kdbank' =>  $request->sanper,
-                        'nominal' =>  str_replace('.', '', $request->nilai),
+                        'nominal' =>  str_replace(',', '.', $request->nilai),
                         'asal' =>  $request->lapangan,
                         'keterangan' =>  $request->rincian,
                         'proses' =>  'N',
@@ -460,7 +473,7 @@ class PenerimaanKasController extends Controller
                 'pk' =>  $request->pk,
                 'jb' =>  $request->jb,
                 'cj' =>  $request->cj,
-                'totprice'  =>  str_replace('.', '', $request->nilai),
+                'totprice'  =>  str_replace(',', '.', $request->nilai),
                 'keterangan'  =>  $request->rincian
                 ]);
             $data = 1;

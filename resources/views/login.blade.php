@@ -59,8 +59,8 @@
 							<div class="login-top">
                                <form action="{{ route('login_user.postlogin') }}" method="post">
                                 {{csrf_field()}}
-									<input type="text" name="userid" class="email" placeholder="Username" title="Username Harus Diisi.." required oninvalid="this.setCustomValidity('Username Harus Diisi..')" oninput="setCustomValidity('')" autocomplete='on'/>
-									<input type="password" name="userpw" class="password" placeholder="Password" title="Password Harus Diisi.." required oninvalid="this.setCustomValidity('Password Harus Diisi..')" oninput="setCustomValidity('')"/>		
+									<input type="text" name="userid" class="email" placeholder="Username" title="Username.." required oninvalid="this.setCustomValidity('Username Harus Diisi..')" oninput="setCustomValidity('')" onkeyup="this.value = this.value.toUpperCase()" autocomplete='on'/>
+									<input type="password" name="userpw" class="password" placeholder="Password" title="Password.." required oninvalid="this.setCustomValidity('Password Harus Diisi..')" oninput="setCustomValidity('')"/>		
 									<div class="login-bottom">
 										<div class="text-center">
 											<button class="btn btn-brand" type="submit">LOGIN</button>

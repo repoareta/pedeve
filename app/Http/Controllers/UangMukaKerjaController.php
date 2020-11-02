@@ -84,7 +84,7 @@ class UangMukaKerjaController extends Controller
             return date_format($tgl, 'd F Y');
        })
         ->addColumn('jumlah', function ($data) {
-             return 'Rp. '.number_format($data->jumlah,2,'.',',');
+             return number_format($data->jumlah,2,'.',',');
        })
 
         ->addColumn('radio', function ($data) {
@@ -104,7 +104,7 @@ class UangMukaKerjaController extends Controller
                 $action = '<p align="center"><span style="font-size: 2em;" class="kt-font-success pointer-link" data-toggle="kt-tooltip" data-placement="top" title="Data Sudah di proses perbendaharaan"><i class="fas fa-check-circle" ></i></span></p>';
             }else{
                 if($data->app_sdm == 'Y'){
-                    $action = '<p align="center"><a href="'. route('uang_muka_kerja.approv',['id' => str_replace('/', '-', $data->no_umk)]).'"><span style="font-size: 2em;" class="kt-font-warning pointer-link" data-toggle="kt-tooltip" data-placement="top"  title="Batalkan Approval"><i class="fas fa-check-circle" ></i></span></a></p>';
+                    $action = '<p align="center"><a href="'. route('uang_muka_kerja.approv',['id' => str_replace('/', '-', $data->no_umk)]).'"><span style="font-size: 2em;" class="kt-font-success pointer-link" data-toggle="kt-tooltip" data-placement="top"  title="Batalkan Approval"><i class="fas fa-check-circle" ></i></span></a></p>';
                 }else{
                     $action = '<p align="center"><a href="'. route('uang_muka_kerja.approv',['id' => str_replace('/', '-', $data->no_umk)]).'"><span style="font-size: 2em;" class="kt-font-danger pointer-link" data-toggle="kt-tooltip" data-placement="top" title="Klik untuk Approval"><i class="fas fa-ban" ></i></span></a></p>';
                 }
@@ -158,7 +158,7 @@ class UangMukaKerjaController extends Controller
             'rate' => $request->kurs,
             'jenis_um' => $request->jenis_um,
             'no_umk' => $request->no_umk,
-            'jumlah' => $request->jumlah
+            'jumlah' => str_replace(',', '.', $request->jumlah)
             ]);
             return response()->json();
         } else {
@@ -173,7 +173,7 @@ class UangMukaKerjaController extends Controller
                 'rate' => $request->kurs,
                 'jenis_um' => $request->jenis_um,
                 'no_umk' => $request->no_umk,
-                'jumlah' => $request->jumlah,
+                'jumlah' => str_replace(',', '.', $request->jumlah),
                 ]);
             return response()->json();
         }
@@ -189,7 +189,7 @@ class UangMukaKerjaController extends Controller
             'no' => $request->no,
             'keterangan' => $request->keterangan,
             'account' => $request->acc,
-            'nilai' =>   str_replace('.', '', $request->nilai),
+            'nilai' =>   str_replace(',', '.', $request->nilai),
             'cj' => $request->cj,
             'jb' => $request->jb,
             'bagian' => $request->bagian,
@@ -208,7 +208,7 @@ class UangMukaKerjaController extends Controller
             'no' => $request->no,
             'keterangan' => $request->keterangan,
             'account' => $request->acc,
-            'nilai' =>    str_replace('.', '', $request->nilai),
+            'nilai' =>    str_replace(',', '.', $request->nilai),
             'cj' => $request->cj,
             'jb' => $request->jb,
             'bagian' => $request->bagian,

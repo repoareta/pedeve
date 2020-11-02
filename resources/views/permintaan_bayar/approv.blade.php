@@ -84,45 +84,14 @@
 <script type="text/javascript">
 $(document).ready(function () {
     // Class definition
-    var KTBootstrapDatepicker = function () {
-
-    var arrows;
-    if (KTUtil.isRTL()) {
-        arrows = {
-            leftArrow: '<i class="la la-angle-right"></i>',
-            rightArrow: '<i class="la la-angle-left"></i>'
-        }
-    } else {
-        arrows = {
-            leftArrow: '<i class="la la-angle-left"></i>',
-            rightArrow: '<i class="la la-angle-right"></i>'
-        }
-    }
-
-    // Private functions
-    var demos = function () {
-
         // range picker
         $('#date_range_picker').datepicker({
-            rtl: KTUtil.isRTL(),
             todayHighlight: true,
-            templates: arrows,
             autoclose: true,
             // language : 'id',
             format   : 'dd-mm-yyyy',
             orientation: 'bottom'
         });
-    };
-
-    return {
-        // public functions
-        init: function() {
-            demos(); 
-        }
-    };
-    }();
-
-    KTBootstrapDatepicker.init(); 
 });
 </script>
 @endsection

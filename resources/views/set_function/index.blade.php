@@ -6,7 +6,7 @@
 	<div class="kt-container  kt-container--fluid ">
 		<div class="kt-subheader__main">
 			<h3 class="kt-subheader__title">
-				Set Menu </h3>
+				Set Function </h3>
 			<span class="kt-subheader__separator kt-hidden"></span>
 			<div class="kt-subheader__breadcrumbs">
 				<a href="#" class="kt-subheader__breadcrumbs-home"><i class="flaticon2-shelter"></i></a>
@@ -14,7 +14,7 @@
 				<a href="" class="kt-subheader__breadcrumbs-link">
 					Administrator </a>
 				<span class="kt-subheader__breadcrumbs-separator"></span>
-				<span class="kt-subheader__breadcrumbs-link kt-subheader__breadcrumbs-link--active">Set Menu</span>
+				<span class="kt-subheader__breadcrumbs-link kt-subheader__breadcrumbs-link--active">Set Function</span>
 			</div>
 		</div>
 	</div>
@@ -29,13 +29,13 @@
 				<i class="kt-font-brand flaticon2-line-chart"></i>
 			</span>
 			<h3 class="kt-portlet__head-title">
-				Tabel Set Menu
+				Tabel Set Function
 			</h3>			
 			<div class="kt-portlet__head-toolbar">
 				<div class="kt-portlet__head-wrapper">
 					<div class="kt-portlet__head-actions">
-						<span style="font-size: 2em;" class="kt-font-warning pointer-link" data-toggle="kt-tooltip" data-placement="top" title="Akses Menu">
-							<i class="fas fa-edit" id="editRow"></i>
+						<span style="font-size: 2em;" class="kt-font-primary pointer-link" data-toggle="kt-tooltip" data-placement="top" title="Akses Function">
+							<i class="fas fa-edit" id="addRow"></i>
 						</span>
 					</div>
 				</div>
@@ -79,7 +79,7 @@ $(document).ready(function () {
 				processing: '<i class="fa fa-spinner fa-spin fa-2x fa-fw"></i> <br> Loading...'
 			},
 			ajax      : {
-						url: "{{ route('set_menu.search.index') }}",
+						url: "{{ route('set_function.search.index') }}",
 						type : "POST",
 						dataType : "JSON",
 						headers: {
@@ -127,7 +127,7 @@ $(document).ready(function () {
 						.then((result) => {
 						if (result.value) {
 							$.ajax({
-								url: "{{ route('set_menu.delete') }}",
+								url: "{{ route('set_function.delete') }}",
 								type: 'DELETE',
 								dataType: 'json',
 								data: {
@@ -163,7 +163,7 @@ $(document).ready(function () {
 			if($('input[class=btn-radio]').is(':checked')) { 
 				$("input[class=btn-radio]:checked").each(function(){
 					var no = $(this).attr('kode');
-					location.replace("{{url('administrator/set_menu/edit')}}"+ '/' +no);
+					location.replace("{{url('administrator/set_function/edit')}}"+ '/' +no);
 				});
 			} else {
 				swalAlertInit('ubah');
@@ -176,7 +176,7 @@ $(document).ready(function () {
 			if($('input[class=btn-radio]').is(':checked')) { 
 				$("input[class=btn-radio]:checked").each(function(){
 					var no = $(this).attr('kode');
-					location.replace("{{url('administrator/set_menu/create')}}"+ '/' +no);
+					location.replace("{{url('administrator/set_function/create')}}"+ '/' +no);
 				});
 			} else {
 				swalAlertInit('ubah');

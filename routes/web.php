@@ -836,6 +836,7 @@ Route::group(['middleware'=> ['auth','checkRole:1,0']], function () {
             Route::post('penerimaan_kas/create/json', 'PenerimaanKasController@createJson')->name('createJson');
             Route::post('penerimaan_kas/lokasi/json', 'PenerimaanKasController@lokasiJson')->name('lokasiJson');
             Route::post('penerimaan_kas/nobukti/json', 'PenerimaanKasController@nobuktiJson')->name('nobuktiJson');
+            Route::post('penerimaan_kas/kepada/json', 'PenerimaanKasController@kepadaJson')->name('kepadaJson');
             Route::post('penerimaan_kas/store', 'PenerimaanKasController@store')->name('store');
             Route::post('penerimaan_kas/store_detail', 'PenerimaanKasController@storeDetail')->name('store.detail');
             Route::post('penerimaan_kas/store_app', 'PenerimaanKasController@storeApp')->name('store.app');
@@ -1567,6 +1568,20 @@ Route::group(['middleware'=> ['auth','checkRole:1,0']], function () {
             Route::delete('set_menu/delete', 'SetMenuController@delete')->name('delete');
         });
         //end set_menu
+        
+        //set_function
+        // Route assigned name "set_function.index"...
+        Route::name('set_function.')->group(function () {
+            Route::get('set_function', 'SetFunctionController@index')->name('index');
+            Route::post('set_function/index/search', 'SetFunctionController@searchIndex')->name('search.index');
+            Route::post('set_function/menuid/json', 'SetFunctionController@menuidJson')->name('menuid.json');
+            Route::get('set_function/create/{no}', 'SetFunctionController@create')->name('create');
+            Route::post('set_function/store', 'SetFunctionController@store')->name('store');
+            Route::get('set_function/edit/{no}', 'SetFunctionController@edit')->name('edit');
+            Route::post('set_function/update', 'SetFunctionController@update')->name('update');
+            Route::delete('set_function/delete', 'SetFunctionController@delete')->name('delete');
+        });
+        //end set_function
 
         //tabel_menu
         // Route assigned name "tabel_menu.index"...

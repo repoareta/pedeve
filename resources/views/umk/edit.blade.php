@@ -75,8 +75,14 @@
 					<div class="form-group row">
 						<label for="example-email-input" class="col-2 col-form-label">Jenis Uang Muka<span style="color:red;">*</span></label>
 						<div class="col-6">
-							<input style=" width: 17px;height: 26px;margin-left:50px;" value="K" <?php if ($data_umk->jenis_um == 'K' )  echo 'checked' ; ?> type="radio" name="jenis_um" />  <label style="font-size:12px; margin-left:10px;">Uang Muka Kerja</label>
-							<input style=" width: 17px;height: 26px;margin-left:50px;" value="D" <?php if ($data_umk->jenis_um == 'D' )  echo 'checked' ; ?> type="radio"  name="jenis_um"/><label style="font-size:12px; margin-left:10px;"> Uang Muka Dinas</label>
+							<label class="kt-radio kt-radio--solid">
+								<input value="K" <?php if ($data_umk->jenis_um == 'K' )  echo 'checked' ; ?> type="radio" name="jenis_um" > Uang Muka Kerja
+								<span></span>
+							</label>
+							<label style="margin-left:50px;" class="kt-radio kt-radio--solid">
+								<input value="D" <?php if ($data_umk->jenis_um == 'D' )  echo 'checked' ; ?> type="radio"  name="jenis_um"> Uang Muka Dinas
+								<span></span>
+							</label>
 						</div>
 					</div>
 					<div class="form-group row">
@@ -88,8 +94,14 @@
 					<div class="form-group row">
 						<label for="dari-input" class="col-2 col-form-label">Mata Uang<span style="color:red;">*</span></label>
 						<div class="col-10">
-							<input   style=" width: 17px;height: 26px;margin-left:50px;" value="1" <?php if ($data_umk->ci == '1' )  echo 'checked' ; ?> type="radio"  name="ci" onclick="displayResult(1)"  />  <label style="font-size:12px; margin-left:10px;">IDR</label>
-							<input  style=" width: 17px;height: 26px;margin-left:50px;" value="2" <?php if ($data_umk->ci == '2' )  echo 'checked' ; ?> type="radio"    name="ci"  onclick="displayResult(2)" /><label style="font-size:12px; margin-left:10px;"> USD</label>
+							<label class="kt-radio kt-radio--solid">
+								<input value="1" <?php if ($data_umk->ci == '1' )  echo 'checked' ; ?> type="radio"  name="ci" onclick="displayResult(1)"> IDR
+								<span></span>
+							</label>
+							<label style="margin-left:50px;" class="kt-radio kt-radio--solid">
+								<input value="2" <?php if ($data_umk->ci == '2' )  echo 'checked' ; ?> type="radio"    name="ci"  onclick="displayResult(2)"> USD
+								<span></span>
+							</label>
 						</div>
 					</div>
 					<div class="form-group row">
@@ -108,8 +120,8 @@
 					<div class="form-group row">
 						<label for="example-datetime-local-input" class="col-2 col-form-label">Jumlah<span style="color:red;">*</span></label>
 						<div class="col-10">
-                            <input style="background-color:#DCDCDC; cursor:not-allowed" class="form-control" type="text" value="Rp. <?php echo number_format($count, 0, ',', '.'); ?>"  size="16" maxlength="16" readonly>
-							<input  class="form-control" type="text" value="<?php echo number_format($count, 0, '', ''); ?>" name="jumlah" id="jumlah" size="16" maxlength="16" hidden readonly>
+                            <input style="background-color:#DCDCDC; cursor:not-allowed" class="form-control" type="text" value="<?php echo number_format($count, 2, '.', ','); ?>"  size="16" maxlength="16" readonly>
+							<input  class="form-control" type="text" value="<?php echo number_format($count, 2, '.', ''); ?>" name="jumlah" id="jumlah" size="16" hidden maxlength="16"  readonly>
 						</div>
 					</div>
 					<?php
@@ -225,13 +237,13 @@
 							<td align="center">{{$data_umk_detail->pk}}</td>
 							<td align="center">{{$data_umk_detail->jb}}</td>
 							<td align="center">{{$data_umk_detail->cj}}</td>
-							<td>Rp. <?php echo number_format($data_umk_detail->nilai, 0, ',', '.'); ?></td>
+							<td><?php echo number_format($data_umk_detail->nilai, 2, '.', ','); ?></td>
 						</tr>
 					@endforeach
 					</tbody>
                         <tr>
                             <td colspan="8" align="right">Jumlah Total : </td>
-                            <td >Rp. <?php echo number_format($count, 0, ',', '.'); ?></td>
+                            <td ><?php echo number_format($count, 2, '.', ','); ?></td>
                         </tr>
 				</table>
 			</div>
@@ -265,7 +277,7 @@
 						<label for="example-text-input" class="col-2 col-form-label">Keterangan<span style="color:red;">*</span></label>
 						<label for="example-text-input" class=" col-form-label">:</label>
 						<div class="col-8">
-							<textarea  class="form-control" type="text" value=""  name="keterangan" required oninvalid="this.setCustomValidity('Keterangan Harus Diisi..')" oninput="setCustomValidity('')"></textarea>
+							<textarea  class="form-control" type="text" value=""  name="keterangan" required oninvalid="this.setCustomValidity('Keterangan Harus Diisi..')" oninput="setCustomValidity('')">-</textarea>
 						</div>
 					</div>
 									
@@ -315,7 +327,7 @@
 						<label for="example-text-input" class="col-2 col-form-label">Jumlah<span style="color:red;">*</span></label>
 						<label for="example-text-input" class=" col-form-label">:</label>
 						<div class="col-8">
-							<input  class="form-control" type="text" value="" name="nilai" id="rupiah" onkeypress="return hanyaAngka(event)" required oninvalid="this.setCustomValidity('Jumlah Harus Diisi..')" oninput="setCustomValidity('')" autocomplete='off'>
+							<input  class="form-control" type="text" value="" name="nilai"   required oninvalid="this.setCustomValidity('Jumlah Harus Diisi..')" oninput="this.value = this.value.replace(/[^0-9\-]+/g, ','); setCustomValidity('')" autocomplete='off'>
 						</div>
 					</div>
 
@@ -434,7 +446,7 @@
 						<label for="example-text-input" class="col-2 col-form-label">Jumlah</label>
 						<label for="example-text-input" class=" col-form-label">:</label>
 						<div class="col-8">
-							<input  class="form-control" type="text" value="" id="nilai" name="nilai" onkeypress="return hanyaAngka(event)" autocomplete='off'>
+							<input  class="form-control" type="text" value=""  name="nilai" id="nilai" oninput="this.value = this.value.replace(/[^0-9\-]+/g, ',');" autocomplete='off'>
 						</div>
 					</div>
 					<div class="kt-form__actions">
@@ -710,16 +722,8 @@ $(".btn-radio:checked").each(function() {
 				$('#no').val(data.no);
 				$('#keterangan').val(data.keterangan);
 				$('#pk').val(data.pk);
-				var bilangan=parseInt(data.nilai);
-				var	number_string = bilangan.toString(),
-					sisa 	= number_string.length % 3,
-					rupiah 	= number_string.substr(0, sisa),
-					ribuan 	= number_string.substr(sisa).match(/\d{3}/g);
-						
-				if (ribuan) {
-					separator = sisa ? '.' : '';
-					rupiah += separator + ribuan.join('.');
-				}
+				var d=parseFloat(data.nilai);
+				var rupiah = d.toFixed(2);
 				$('#nilai').val(rupiah);
 				$('#title-detail').html("Edit Detail Uang Muka Kerja");
 				$('.modal-edit-detail-umk').modal('show');
@@ -843,57 +847,5 @@ $(".btn-radio:checked").each(function() {
 		return false;
 		return true;
 	}
-
-		var rupiah = document.getElementById('rupiah');
-		rupiah.addEventListener('keyup', function(e){
-			// tambahkan 'Rp.' pada saat form di ketik
-			// gunakan fungsi formatRupiah() untuk mengubah angka yang di ketik menjadi format angka
-			rupiah.value = formatRupiah(this.value, '');
-		});
-
-		/* Fungsi formatRupiah */
-		function formatRupiah(angka, prefix){
-			var number_string = angka.replace(/[^,\d]/g, '').toString(),
-			split   		= number_string.split(','),
-			sisa     		= split[0].length % 3,
-			rupiah     		= split[0].substr(0, sisa),
-			ribuan     		= split[0].substr(sisa).match(/\d{3}/gi);
-
-			// tambahkan titik jika yang di input sudah menjadi angka ribuan
-			if(ribuan){
-				separator = sisa ? '.' : '';
-				rupiah += separator + ribuan.join('.');
-			}
-
-			rupiah = split[1] != undefined ? rupiah + ',' + split[1] : rupiah;
-			$a= prefix == undefined ? rupiah : (rupiah ? rupiah: '');
-         return $a;
-		}
-
-		var nilai = document.getElementById('nilai');
-		nilai.addEventListener('keyup', function(e){
-			// tambahkan 'Rp.' pada saat form di ketik
-			// gunakan fungsi formatnilai() untuk mengubah angka yang di ketik menjadi format angka
-			nilai.value = formatRupiah(this.value, '');
-		});
-
-		/* Fungsi formatRupiah */
-		function formatRupiah(angka, prefix){
-			var number_string = angka.replace(/[^,\d]/g, '').toString(),
-			split   		= number_string.split(','),
-			sisa     		= split[0].length % 3,
-			nilai     		= split[0].substr(0, sisa),
-			ribuan     		= split[0].substr(sisa).match(/\d{3}/gi);
-
-			// tambahkan titik jika yang di input sudah menjadi angka ribuan
-			if(ribuan){
-				separator = sisa ? '.' : '';
-				nilai += separator + ribuan.join('.');
-			}
-
-			nilai = split[1] != undefined ? nilai + ',' + split[1] : nilai;
-			$a= prefix == undefined ? nilai : (nilai ? nilai: '');
-         return $a;
-		}
 </script>
 @endsection

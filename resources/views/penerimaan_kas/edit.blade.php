@@ -158,10 +158,10 @@
 							</div>
 						</div>
 						<div class="form-group row">
-							<label class="col-2 col-form-label">Sejumlah<span style="color:red;">*</span></label>
+							<label class="col-2 col-form-label">Sejumlah</label>
 							<div class="col-10">
-								<input class="form-control" type="text"  value="{{number_format($count,2,',','.')}}" size="16" maxlength="16" readonly required oninvalid="this.setCustomValidity('Sejumlah Harus Diisi..')" oninput="setCustomValidity('')" autocomplete='off' onkeypress="return hanyaAngka(event)">
-								<input class="form-control" type="hidden" name="nilai" id="nilai" value="{{number_format($count,0,'','')}}" size="16" maxlength="16" required oninvalid="this.setCustomValidity('Sejumlah Harus Diisi..')" oninput="setCustomValidity('')" autocomplete='off' onkeypress="return hanyaAngka(event)">
+								<input class="form-control" type="text"  value="{{number_format($count,2,',','.')}}" size="16" maxlength="16" readonly autocomplete='off' onkeypress="return hanyaAngka(event)">
+								<input class="form-control" type="hidden" name="nilai" id="nilai" value="{{number_format($count,2,',','.')}}" size="16" maxlength="16" autocomplete='off' onkeypress="return hanyaAngka(event)">
 							</div>
 						</div>
 						<div class="form-group row">
@@ -267,7 +267,7 @@
 						</tbody>
 							<tr>
 								<td colspan="9" align="right">Jumlah Total : </td>
-								<td >Rp. <?php echo number_format($count, 0, '.', ','); ?></td>
+								<td >Rp. <?php echo number_format($count,2, '.', ','); ?></td>
 							</tr>
 					</table>
 				</div>
@@ -495,7 +495,7 @@
 						<label for="example-text-input" class="col-2 col-form-label">Jumlah<span style="color:red;">*</span></label>
 						<label for="example-text-input" class=" col-form-label">:</label>
 						<div class="col-8">
-							<input  class="form-control" type="text" value="" name="nilai" id="nilai1" size="16" maxlength="16"  required oninvalid="this.setCustomValidity('Jumlah Harus Diisi..')" oninput="setCustomValidity('')" autocomplete='off'>
+							<input  class="form-control" type="text" value="" name="nilai" id="nilai1a" oninput="this.value.replace(/[^0-9\-]+/g, ',');" size="16" maxlength="16"  required oninvalid="this.setCustomValidity('Jumlah Harus Diisi..')" oninput="setCustomValidity('')" autocomplete='off'>
 						</div>
 					</div>
 
@@ -943,16 +943,16 @@ if($('input[type=radio]').is(':checked')) {
 					$('#nourut').val(data.lineno);
 					$('#rincian').val(data.keterangan);
 					$('#pk').val(data.pk);
-					var bilangan=parseInt(data.totprice);
-					var	number_string = bilangan.toString(),
-						sisa 	= number_string.length % 3,
-						rupiah 	= number_string.substr(0, sisa),
-						ribuan 	= number_string.substr(sisa).match(/\d{3}/g);
+					var rupiah=parseInt(data.totprice);
+					// var	number_string = bilangan.toString(),
+					// 	sisa 	= number_string.length % 3,
+					// 	rupiah 	= number_string.substr(0, sisa),
+					// 	ribuan 	= number_string.substr(sisa).match(/\d{3}/g);
 							
-					if (ribuan) {
-						separator = sisa ? '.' : '';
-						rupiah += separator + ribuan.join('.');
-					}
+					// if (ribuan) {
+					// 	separator = sisa ? '.' : '';
+					// 	rupiah += separator + ribuan.join('.');
+					// }
 					$('#nilai1').val(rupiah);					
 					$('#title-edit-detail').html("Edit Detail Perbendaharaan - Kas/Bank");
 					$('#select-lapangan').val(data.lokasi).trigger('change');

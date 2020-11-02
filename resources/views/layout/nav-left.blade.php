@@ -834,6 +834,11 @@
                     'set_menu.create',
                     'set_menu.edit'                    
                 ); // isi nama semua route set_menu
+                $set_function = array(
+                    'set_function.index',
+                    'set_function.create',
+                    'set_function.edit'                    
+                ); // isi nama semua route set_function
                 $tabel_menu = array(
                     'tabel_menu.index',
                     'tabel_menu.create',
@@ -845,6 +850,7 @@
                 $administrator = array_merge(
                     $set_user,
                     $set_menu,
+                    $set_function,
                     $tabel_menu,
                     $password_administrator
                 ); // array merge semua submenu
@@ -2336,7 +2342,7 @@
                                 <i class="kt-menu__link-bullet kt-menu__link-bullet--dot">
                                     <span></span>
                                 </i>
-                                <span class="kt-menu__link-text">User Administration</span>
+                                <span class="kt-menu__link-text">Set User</span>
                             </a>
                         </li>
                         <li class="kt-menu__item kt-menu__item{{ set_active_submenu($set_menu) }}" aria-haspopup="true">
@@ -2344,7 +2350,15 @@
                                 <i class="kt-menu__link-bullet kt-menu__link-bullet--dot">
                                     <span></span>
                                 </i>
-                                <span class="kt-menu__link-text">Menu & Function</span>
+                                <span class="kt-menu__link-text">Set Menu</span>
+                            </a>
+                        </li>
+                        <li class="kt-menu__item kt-menu__item{{ set_active_submenu($set_function) }}" aria-haspopup="true">
+                            <a href="{{route('set_function.index')}}" class="kt-menu__link">
+                                <i class="kt-menu__link-bullet kt-menu__link-bullet--dot">
+                                    <span></span>
+                                </i>
+                                <span class="kt-menu__link-text">Set function</span>
                             </a>
                         </li>
                         <li class="kt-menu__item kt-menu__item{{ set_active_submenu($tabel_menu) }}" aria-haspopup="true">
