@@ -160,26 +160,26 @@
 						<div class="form-group row">
 							<label class="col-2 col-form-label">Sejumlah<span style="color:red;">*</span></label>
 							<div class="col-10">
-								<input class="form-control" type="text"  value="{{number_format($data->nilai_dok,0,',','.')}}" size="16" maxlength="16" readonly required oninvalid="this.setCustomValidity('Sejumlah Harus Diisi..')" oninput="setCustomValidity('')" autocomplete='off' onkeypress="return hanyaAngka(event)">
-								<input class="form-control" type="hidden" name="nilai" id="nilai" value="{{number_format($count,0,'','')}}" size="16" maxlength="16" required oninvalid="this.setCustomValidity('Sejumlah Harus Diisi..')" oninput="setCustomValidity('')" autocomplete='off' onkeypress="return hanyaAngka(event)">
+								<input class="form-control" type="text"  value="{{number_format($data->nilai_dok,2,'.',',')}}" size="16" maxlength="16" readonly required oninvalid="this.setCustomValidity('Sejumlah Harus Diisi..')" oninput="setCustomValidity('')" autocomplete='off' onkeypress="return hanyaAngka(event)">
+								<input class="form-control" type="hidden" name="nilai" id="nilai" value="{{number_format($count,2,'.','')}}" size="16" maxlength="16" required oninvalid="this.setCustomValidity('Sejumlah Harus Diisi..')" oninput="setCustomValidity('')" autocomplete='off' onkeypress="return hanyaAngka(event)">
 							</div>
 						</div>
 						<div class="form-group row">
 							<label class="col-2 col-form-label">Catatan 1</label>
 							<div class="col-10">
-								<input class="form-control" type="text" name="ket1" id="ket1" value="{{$data->ket1}}" size="35" maxlength="35"  autocomplete='off'>
+								<textarea class="form-control" type="text" name="ket1" id="ket1" value="{{$data->ket1}}"></textarea>
 							</div>
 						</div>
 						<div class="form-group row">
 							<label class="col-2 col-form-label">Catatan 2</label>
 							<div class="col-10">
-								<input class="form-control" type="text" name="ket2" id="ket2" value="{{$data->ket2}}" size="35" maxlength="35"  autocomplete='off'>
+								<textarea class="form-control" type="text" name="ket2" id="ket2" value="{{$data->ket2}}"></textarea>
 							</div>
 						</div>
 						<div class="form-group row">
 							<label class="col-2 col-form-label">Catatan 3</label>
 							<div class="col-10">
-								<input class="form-control" type="text" name="ket3" id="ket3" value="{{$data->ket3}}" size="35" maxlength="35"  autocomplete='off'>
+								<textarea class="form-control" type="text" name="ket3" id="ket3" value="{{$data->ket3}}"></textarea>
 							</div>
 						</div>
 						@endforeach
@@ -261,13 +261,13 @@
 								<td align="center">{{$data_d->pk}}</td>
 								<td align="center">{{$data_d->jb}}</td>
 								<td align="center">{{$data_d->cj}}</td>
-								<td align="center">{{number_format($data_d->totprice,2,'.',',')}}</td>
+								<td align="right">{{number_format($data_d->totprice,2,'.',',')}}</td>
 							</tr>
 							@endforeach
 						</tbody>
 							<tr>
 								<td colspan="9" align="right">Jumlah Total : </td>
-								<td >Rp. <?php echo number_format($count, 0, '.', ','); ?></td>
+								<td align="right">Rp. <?php echo number_format($count, 0, '.', ','); ?></td>
 							</tr>
 					</table>
 				</div>
@@ -359,7 +359,7 @@
 								<button type="reset"  class="btn btn-warning"  data-dismiss="modal"><i class="fa fa-reply" aria-hidden="true"></i>Cancel</button>
 								@foreach(DB::table('usermenu')->where('userid',Auth::user()->userid)->where('menuid',502)->limit(1)->get() as $data_akses)
 								@if($data_akses->rubah == 1)
-								<button type="submit" class="btn btn-brand"><i class="fa fa-check" aria-hidden="true"></i>Save</button>
+								<button type="submit" class="btn btn-brand"><i class="fa fa-check" aria-hidden="true"></i>Delete</button>
 								@endif
 								@endforeach
 							</div>
@@ -478,7 +478,7 @@
 						<label for="example-text-input" class="col-2 col-form-label">Jumlah<span style="color:red;">*</span></label>
 						<label for="example-text-input" class=" col-form-label">:</label>
 						<div class="col-8">
-							<input  class="form-control" type="text" value="" name="nilai" id="nilai1" size="16" maxlength="16" onkeypress="return hanyaAngka(event)"  required oninvalid="this.setCustomValidity('Jumlah Harus Diisi..')" oninput="setCustomValidity('')" autocomplete='off'>
+							<input  class="form-control" type="text" value="" name="nilai" id="nilai1" size="16" maxlength="16"  required oninvalid="this.setCustomValidity('Jumlah Harus Diisi..')" oninput="this.value = this.value.replace(/[^0-9\-]+/g, ','); setCustomValidity('')" autocomplete='off'>
 						</div>
 					</div>
 
@@ -871,17 +871,8 @@ if($('input[type=radio]').is(':checked')) {
 					$('#nourut').val(data.lineno);
 					$('#rincian').val(data.keterangan);
 					$('#pk').val(data.pk);
-					var bilangan=parseInt(data.totprice);
-					
-					var	number_string = bilangan.toString(),
-						sisa 	= number_string.length % 3,
-						rupiah 	= number_string.substr(0, sisa),
-						ribuan 	= number_string.substr(sisa).match(/\d{3}/g);
-							
-					if (ribuan) {
-						separator = sisa ? '.' : '';
-						rupiah += separator + ribuan.join('.');
-					}
+					var d=parseFloat(data.totprice);
+					var rupiah = d.toFixed(2);
 					$('#nilai1').val(rupiah);
 					$('#title-edit-detail').html("Edit Detail Pembayaran Gaji");
 					$('#select-lapangan').val(data.lokasi).trigger('change');

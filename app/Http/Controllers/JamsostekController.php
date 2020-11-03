@@ -76,11 +76,11 @@ class JamsostekController extends Controller
             return response()->json($data);
         }else {
         PayTblJamsostek::insert([
-            'pribadi' => $request->pribadi,
-            'accident' => $request->accident,
-            'pensiun' => $request->pensiun,
-            'life' => $request->life,
-            'manulife' => $request->manulife
+            'pribadi' => str_replace(',', '.', $request->pribadi),
+            'accident' => str_replace(',', '.', $request->accident),
+            'pensiun' => str_replace(',', '.', $request->pensiun),
+            'life' => str_replace(',', '.', $request->life),
+            'manulife' => str_replace(',', '.', $request->manulife)
             ]);
             $data = 1;
             return response()->json($data);
@@ -121,11 +121,11 @@ class JamsostekController extends Controller
     {
         PayTblJamsostek::where('pribadi', $request->pribadi)
         ->update([
-            'pribadi' => $request->pribadi1,
-            'accident' => $request->accident,
-            'pensiun' => $request->pensiun,
-            'life' => $request->life,
-            'manulife' => $request->manulife,
+            'pribadi' => str_replace(',', '.', $request->pribadi),
+            'accident' => str_replace(',', '.', $request->accident),
+            'pensiun' => str_replace(',', '.', $request->pensiun),
+            'life' => str_replace(',', '.', $request->life),
+            'manulife' => str_replace(',', '.', $request->manulife)
         ]);
         return response()->json();
     }

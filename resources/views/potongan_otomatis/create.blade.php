@@ -120,7 +120,7 @@
 								<div class="form-group row">
 									<label class="col-2 col-form-label">Cicilan/Bulan<span style="color:red;">*</span></label>
 									<div class="col-10">
-										<input class="form-control" name="nilai" type="text" value="0" id="nilai" size="17" maxlength="17" required oninvalid="this.setCustomValidity('Jml Cicilan Harus Diisi..')" oninput="setCustomValidity('')" autocomplete='off' onkeypress="return hanyaAngka(event)">
+										<input class="form-control" name="nilai" type="text" value="0" size="25" maxlength="25" required oninvalid="this.setCustomValidity('Jml Cicilan Harus Diisi..')" oninput="this.value = this.value.replace(/[^0-9\-]+/g, ',');setCustomValidity('')" autocomplete='off'>
 									</div>
 								</div>						
 						<div class="kt-form__actions">

@@ -73,10 +73,10 @@ class PensiunController extends Controller
             return response()->json($data);
         }else {
         PayTblPensiun::insert([
-            'pribadi' => $request->pribadi,
-            'perusahaan' => $request->perusahaan,
-            'perusahaan2' => $request->perusahaan2,
-            'perusahaan3' => $request->perusahaan3,
+            'pribadi' => str_replace(',', '.', $request->pribadi),
+            'perusahaan' => str_replace(',', '.', $request->perusahaan),
+            'perusahaan2' => str_replace(',', '.', $request->perusahaan2),
+            'perusahaan3' => str_replace(',', '.', $request->perusahaan3),
             ]);
             $data = 1;
             return response()->json($data);
@@ -117,10 +117,10 @@ class PensiunController extends Controller
     {
         PayTblPensiun::where('pribadi', $request->pribadi)
         ->update([
-            'pribadi' => $request->pribadi1,
-            'perusahaan' => $request->perusahaan,
-            'perusahaan2' => $request->perusahaan2,
-            'perusahaan3' => $request->perusahaan3,
+            'pribadi' => str_replace(',', '.', $request->pribadi),
+            'perusahaan' => str_replace(',', '.', $request->perusahaan),
+            'perusahaan2' => str_replace(',', '.', $request->perusahaan2),
+            'perusahaan3' => str_replace(',', '.', $request->perusahaan3),
         ]);
         return response()->json();
     }

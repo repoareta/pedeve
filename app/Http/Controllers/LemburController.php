@@ -94,22 +94,22 @@ class LemburController extends Controller
                 return $tangg;
            })
             ->addColumn('makanpg', function ($data) {
-                 return 'Rp. '.number_format($data->makanpg,2,'.',',');
+                 return number_format($data->makanpg,2,'.',',');
            })
             ->addColumn('makansg', function ($data) {
-                 return 'Rp. '.number_format($data->makansg,2,'.',',');
+                 return number_format($data->makansg,2,'.',',');
            })
             ->addColumn('makanml', function ($data) {
-                 return 'Rp. '.number_format($data->makanml,2,'.',',');
+                 return number_format($data->makanml,2,'.',',');
            })
             ->addColumn('transport', function ($data) {
-                 return 'Rp. '.number_format($data->transport,2,'.',',');
+                 return number_format($data->transport,2,'.',',');
            })
             ->addColumn('lembur', function ($data) {
-                 return 'Rp. '.number_format($data->lembur,2,'.',',');
+                 return number_format($data->lembur,2,'.',',');
            })
             ->addColumn('total', function ($data) {
-                 return 'Rp. '.number_format($data->total,2,'.',',');
+                 return number_format($data->total,2,'.',',');
            })
     
             ->addColumn('radio', function ($data) {
@@ -151,11 +151,11 @@ class LemburController extends Controller
                 DB::table('pay_lembur')->insert([
                     'tanggal' => $request->tanggal,
                     'nopek' => $request->nopek, 
-                    'makanpg' => str_replace('.', '', $request->makanpg), 
-                    'makansg' => str_replace('.', '', $request->makansg), 
-                    'makanml' => str_replace('.', '', $request->makanml), 
-                    'transport' => str_replace('.', '', $request->transport),
-                    'lembur' => str_replace('.', '', $request->lembur), 
+                    'makanpg' => str_replace(',', '.', $request->makanpg), 
+                    'makansg' => str_replace(',', '.', $request->makansg), 
+                    'makanml' => str_replace(',', '.', $request->makanml), 
+                    'transport' => str_replace(',', '.', $request->transport),
+                    'lembur' => str_replace(',', '.', $request->lembur), 
                     'userid' => $request->userid,
                     'bulan' => $request->bulan,
                     'tahun' => $request->tahun,
@@ -199,11 +199,11 @@ class LemburController extends Controller
      */
     public function update(Request $request)
     {
-        $mapg = str_replace('.', '', $request->makanpg);
-        $masi = str_replace('.', '', $request->makansg);
-        $maml = str_replace('.', '', $request->makanml);
-        $trans = str_replace('.', '', $request->transport);
-        $lem = str_replace('.', '', $request->lembur);
+        $mapg = str_replace(',', '.', $request->makanpg);
+        $masi = str_replace(',', '.', $request->makansg);
+        $maml = str_replace(',', '.', $request->makanml);
+        $trans = str_replace(',', '.', $request->transport);
+        $lem = str_replace(',', '.', $request->lembur);
         DB::update("update pay_lembur set makanpg='$mapg', makansg='$masi', makanml='$maml', transport='$trans',lembur='$lem', userid='$request->userid',bulan='$request->bulan',tahun='$request->tahun' where to_char(tanggal, 'dd/mm/YYYY') = '$request->tanggal' and nopek='$request->nopek'");
        
         return response()->json();

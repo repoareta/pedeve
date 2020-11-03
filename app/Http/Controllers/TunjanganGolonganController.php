@@ -70,7 +70,7 @@ class TunjanganGolonganController extends Controller
         }else {
         PayTunjangan::insert([
             'golongan' => $request->golongan,
-            'nilai' => str_replace('.', '', $request->nilai),
+            'nilai' => str_replace(',', '.', $request->nilai),
             ]);
             $data = 1;
             return response()->json($data);
@@ -111,7 +111,7 @@ class TunjanganGolonganController extends Controller
     {
         PayTunjangan::where('golongan', $request->golongan)
             ->update([
-                'nilai' => str_replace('.', '', $request->nilai),
+                'nilai' => str_replace(',', '.', $request->nilai),
             ]);
             return response()->json();
     }

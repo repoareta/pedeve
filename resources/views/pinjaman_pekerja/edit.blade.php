@@ -97,13 +97,13 @@
 					<div class="form-group row">
 						<label for="spd-input" class="col-2 col-form-label">Angsuran<span style="color:red;">*</span></label>
 						<div class="col-10">
-							<input  class="form-control" type="text" value="{{number_format($data->angsuran,0,',','.')}}"  name="angsuran" id="angsuran" size="16" maxlength="16" autocomplete='off' required oninvalid="this.setCustomValidity('Angsuran Harus Diisi..')" oninput="setCustomValidity('')"  onkeypress="return hanyaAngka(event)">
+							<input  class="form-control" type="text" value="{{number_format($data->angsuran,2,'.','')}}"  name="angsuran" id="angsuran" size="16" maxlength="16" autocomplete='off' required oninvalid="this.setCustomValidity('Angsuran Harus Diisi..')" oninput="this.value = this.value.replace(/[^0-9\-]+/g, ',');setCustomValidity('')">
 						</div>
 					</div>
 					<div class="form-group row">
 						<label for="spd-input" class="col-2 col-form-label">Pinjaman<span style="color:red;">*</span></label>
 						<div class="col-10">
-							<input  class="form-control" type="text" value="{{number_format($data->jml_pinjaman,0,',','.')}}"  name="pinjaman" id="pinjaman" size="35" maxlength="35" autocomplete='off' required oninvalid="this.setCustomValidity('Pinjaman Harus Diisi..')" oninput="setCustomValidity('')"  onkeypress="return hanyaAngka(event)">
+							<input  class="form-control" type="text" value="{{number_format($data->jml_pinjaman,2,'.','')}}"  name="pinjaman" id="pinjaman" size="35" maxlength="35" autocomplete='off' required oninvalid="this.setCustomValidity('Pinjaman Harus Diisi..')" oninput="this.value = this.value.replace(/[^0-9\-]+/g, ',');setCustomValidity('')">
 						</div>
 					</div>
 					@endforeach
@@ -136,8 +136,8 @@
 					</h3>			
 					<div class="kt-portlet__head-toolbar">
 						<div class="kt-portlet__head-wrapper">
-							<div class="kt-portlet__head-actions">
-								<!-- <span style="font-size: 2em;cursor:not-allowed" class="kt-font-success">
+						{{-- <div class="kt-portlet__head-actions">
+								<span style="font-size: 2em;cursor:not-allowed" class="kt-font-success">
 									<i class="fas fa-plus-circle"></i>
 								</span>
 			
@@ -147,8 +147,8 @@
 			
 								<span style="font-size: 2em;cursor:not-allowed" class="kt-font-danger">
 									<i class="fas fa-times-circle"></i>
-								</span> -->
-							</div>
+								</span>
+							</div> --}}
 						</div>
 					</div>
 				</div>
@@ -179,12 +179,12 @@
 							<td scope="row" align="center">{{$no}}</td>
 							<td align="center">{{$data_d->tahun}}</td>
 							<td align="center">{{$data_d->bulan}}</td>
-							<td>Rp. <?php echo number_format($data_d->pokok, 0, ',', '.'); ?></td>
-							<td>Rp. <?php echo number_format($data_d->bunga, 0, ',', '.'); ?></td>
-							<td>Rp. <?php echo number_format($data_d->jumlah, 0, ',', '.'); ?></td>
-							<td>Rp. <?php echo number_format($data_d->realpokok, 0, ',', '.'); ?></td>
-							<td>Rp. <?php echo number_format($data_d->realbunga, 0, ',', '.'); ?></td>
-							<td>Rp. <?php echo number_format($data_d->jumlah2, 0, ',', '.'); ?></td>
+							<td><?php echo number_format($data_d->pokok, 0, ',', '.'); ?></td>
+							<td><?php echo number_format($data_d->bunga, 0, ',', '.'); ?></td>
+							<td><?php echo number_format($data_d->jumlah, 0, ',', '.'); ?></td>
+							<td><?php echo number_format($data_d->realpokok, 0, ',', '.'); ?></td>
+							<td><?php echo number_format($data_d->realbunga, 0, ',', '.'); ?></td>
+							<td><?php echo number_format($data_d->jumlah2, 0, ',', '.'); ?></td>
 							<td align="center">{{$data_d->nodoc}}</td>
 						</tr>
 					@endforeach
@@ -192,11 +192,11 @@
 					@foreach($count as $data_c)
                         <tr>
                             <td colspan="4" align="right">Jumlah Total : </td>
-                            <td >Rp. <?php echo number_format($data_c->jml, 0, ',', '.'); ?></td>
-                            <td >Rp. <?php echo number_format($data_c->bunga, 0, ',', '.'); ?></td>
+                            <td ><?php echo number_format($data_c->jml, 0, ',', '.'); ?></td>
+                            <td ><?php echo number_format($data_c->bunga, 0, ',', '.'); ?></td>
                             <td ></td>
-                            <td >Rp. <?php echo number_format($data_c->realpokok, 0, ',', '.'); ?></td>
-                            <td >Rp. <?php echo number_format($data_c->realbunga, 0, ',', '.'); ?></td>
+                            <td ><?php echo number_format($data_c->realpokok, 0, ',', '.'); ?></td>
+                            <td ><?php echo number_format($data_c->realbunga, 0, ',', '.'); ?></td>
                             <td colspan="2" ></td>
                         </tr>
 					@endforeach
@@ -270,56 +270,6 @@
 
 		return false;
 		return true;
-	}
-
-	var angsuran = document.getElementById('angsuran');
-	angsuran.addEventListener('keyup', function(e){
-		// tambahkan 'Rp.' pada saat form di ketik
-		// gunakan fungsi formatangsuran() untuk mengubah angka yang di ketik menjadi format angka
-		angsuran.value = formatangsuran(this.value, '');
-	});
-
-	/* Fungsi formatangsuran */
-	function formatangsuran(angka, prefix){
-		var number_string = angka.replace(/[^,\d]/g, '').toString(),
-		split   		= number_string.split(','),
-		sisa     		= split[0].length % 3,
-		rupiah     		= split[0].substr(0, sisa),
-		ribuan     		= split[0].substr(sisa).match(/\d{3}/gi);
-
-		// tambahkan titik jika yang di input sudah menjadi angka ribuan
-		if(ribuan){
-			separator = sisa ? '.' : '';
-			rupiah += separator + ribuan.join('.');
-		}
-
-		rupiah = split[1] != undefined ? rupiah + ',' + split[1] : rupiah;
-		return prefix == undefined ? rupiah : (rupiah ? rupiah: '');
-	}
-
-	var pinjaman = document.getElementById('pinjaman');
-	pinjaman.addEventListener('keyup', function(e){
-		// tambahkan 'Rp.' pada saat form di ketik
-		// gunakan fungsi formatpinjaman() untuk mengubah angka yang di ketik menjadi format angka
-		pinjaman.value = formatpinjaman(this.value, '');
-	});
-
-	/* Fungsi formatpinjaman */
-	function formatpinjaman(angka, prefix){
-		var number_string = angka.replace(/[^,\d]/g, '').toString(),
-		split   		= number_string.split(','),
-		sisa     		= split[0].length % 3,
-		rupiah     		= split[0].substr(0, sisa),
-		ribuan     		= split[0].substr(sisa).match(/\d{3}/gi);
-
-		// tambahkan titik jika yang di input sudah menjadi angka ribuan
-		if(ribuan){
-			separator = sisa ? '.' : '';
-			rupiah += separator + ribuan.join('.');
-		}
-
-		rupiah = split[1] != undefined ? rupiah + ',' + split[1] : rupiah;
-		return prefix == undefined ? rupiah : (rupiah ? rupiah: '');
 	}
 </script>
 

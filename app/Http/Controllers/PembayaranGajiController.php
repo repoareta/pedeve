@@ -338,7 +338,7 @@ class PembayaranGajiController extends Controller
         $updatedate = $request->tanggal;
         $updatepwd = $request->userid;
         $rate = $request->kurs;
-        $nilai_dok = str_replace('.', '', $request->nilai);
+        $nilai_dok = str_replace(',', '.', $request->nilai);
         $originalby = $request->userid;
         $ket1 = $request->ket1;
         $ket2 = $request->ket2;
@@ -447,7 +447,7 @@ class PembayaranGajiController extends Controller
                 'voucher' =>  $request->nobukti,
                 'kepada' =>  $request->kepada,
                 'rate' =>  $request->kurs,
-                'nilai_dok' =>  str_replace('.', '', $request->nilai),
+                'nilai_dok' =>  str_replace(',', '.', $request->nilai),
                 'ket1' =>  $request->ket1,
                 'ket2' =>  $request->ket2,
                 'ket3' =>  $request->ket3,
@@ -742,7 +742,7 @@ class PembayaranGajiController extends Controller
                     'bagian' =>  $request->bagian,
                     'pk' =>  $request->pk,
                     'jb' =>  $request->jb,
-                    'totprice' =>  str_replace('.', '', $request->nilai),
+                    'totprice' =>  str_replace(',', '.', $request->nilai),
                     'cj' =>  $request->cj,
                     'keterangan' =>  $request->rincian,
                 ]);

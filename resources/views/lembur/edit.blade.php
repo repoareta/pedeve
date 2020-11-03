@@ -92,31 +92,31 @@
 				<div class="form-group row">
 					<label for="id-pekerja;-input" class="col-2 col-form-label">Makan Pagi</label>
 					<div class="col-10">
-						<input class="form-control" type="text" value="<?php echo number_format($data_li->makanpg, 0, ',', '.') ?>" id="mapg" name="makanpg" onkeypress="return hanyaAngka(event)" autocomplete='off'>
+						<input class="form-control" type="text" value="<?php echo number_format($data_li->makanpg, 2, '.', '') ?>" id="mapg" name="makanpg" oninput="this.value = this.value.replace(/[^0-9\-]+/g, ',');setCustomValidity('')" autocomplete='off'>
 					</div>
 				</div>
 				<div class="form-group row">
 					<label for="id-pekerja;-input" class="col-2 col-form-label">Makan Siang</label>
 					<div class="col-10">
-						<input class="form-control" type="text" value="<?php echo number_format($data_li->makansg, 0, ',', '.') ?>" id="masi" name="makansg" onkeypress="return hanyaAngka(event)" autocomplete='off'>
+						<input class="form-control" type="text" value="<?php echo number_format($data_li->makansg, 2, '.', '') ?>" id="masi" name="makansg" oninput="this.value = this.value.replace(/[^0-9\-]+/g, ',');setCustomValidity('')" autocomplete='off'>
 					</div>
 				</div>
 				<div class="form-group row">
 					<label for="id-pekerja;-input" class="col-2 col-form-label">Makan Malam</label>
 					<div class="col-10">
-						<input class="form-control" type="text" value="<?php echo number_format($data_li->makanml, 0, ',', '.') ?>" id="maml" name="makanml" onkeypress="return hanyaAngka(event)" autocomplete='off'>
+						<input class="form-control" type="text" value="<?php echo number_format($data_li->makanml, 2, '.', '') ?>" id="maml" name="makanml" oninput="this.value = this.value.replace(/[^0-9\-]+/g, ',');setCustomValidity('')" autocomplete='off'>
 					</div>
 				</div>
 				<div class="form-group row">
 					<label for="id-pekerja;-input" class="col-2 col-form-label">Transport</label>
 					<div class="col-10">
-						<input class="form-control" type="text" value="<?php echo number_format($data_li->transport, 0, ',', '.') ?>" id="trans" name="transport" onkeypress="return hanyaAngka(event)" autocomplete='off'>
+						<input class="form-control" type="text" value="<?php echo number_format($data_li->transport, 2, '.', '') ?>" id="trans" name="transport" oninput="this.value = this.value.replace(/[^0-9\-]+/g, ',');setCustomValidity('')" autocomplete='off'>
 					</div>
 				</div>
 				<div class="form-group row">
 					<label for="id-pekerja;-input" class="col-2 col-form-label">Lembur</label>
 					<div class="col-10">
-						<input class="form-control" type="text" value="<?php echo number_format($data_li->lembur, 0, ',', '.') ?>" id="lem" name="lembur" onkeypress="return hanyaAngka(event)" autocomplete='off'>
+						<input class="form-control" type="text" value="<?php echo number_format($data_li->lembur, 2, '.', '') ?>" id="lem" name="lembur" oninput="this.value = this.value.replace(/[^0-9\-]+/g, ',');setCustomValidity('')" autocomplete='off'>
 					</div>
 				</div>
 				@endforeach
@@ -219,131 +219,5 @@ KTBootstrapDatepicker.init();
 		return false;
 		return true;
 	}
-
-	var mapg = document.getElementById('mapg');
-		mapg.addEventListener('keyup', function(e){
-			// tambahkan 'Rp.' pada saat form di ketik
-			// gunakan fungsi formatmapg() untuk mengubah angka yang di ketik menjadi format angka
-			mapg.value = formatmapg(this.value, '');
-		});
-
-		/* Fungsi formatmapg */
-		function formatmapg(angka, prefix){
-			var number_string = angka.replace(/[^,\d]/g, '').toString(),
-			split   		= number_string.split(','),
-			sisa     		= split[0].length % 3,
-			rupiah     		= split[0].substr(0, sisa),
-			ribuan     		= split[0].substr(sisa).match(/\d{3}/gi);
-
-			// tambahkan titik jika yang di input sudah menjadi angka ribuan
-			if(ribuan){
-				separator = sisa ? '.' : '';
-				rupiah += separator + ribuan.join('.');
-			}
-
-			rupiah = split[1] != undefined ? rupiah + ',' + split[1] : rupiah;
-			return prefix == undefined ? rupiah : (rupiah ? rupiah: '');
-		}
-
-		var masi = document.getElementById('masi');
-		masi.addEventListener('keyup', function(e){
-			// tambahkan 'Rp.' pada saat form di ketik
-			// gunakan fungsi formatmasi() untuk mengubah angka yang di ketik menjadi format angka
-			masi.value = formatmasi(this.value, '');
-		});
-
-		/* Fungsi formatmasi */
-		function formatmasi(angka, prefix){
-			var number_string = angka.replace(/[^,\d]/g, '').toString(),
-			split   		= number_string.split(','),
-			sisa     		= split[0].length % 3,
-			rupiah     		= split[0].substr(0, sisa),
-			ribuan     		= split[0].substr(sisa).match(/\d{3}/gi);
-
-			// tambahkan titik jika yang di input sudah menjadi angka ribuan
-			if(ribuan){
-				separator = sisa ? '.' : '';
-				rupiah += separator + ribuan.join('.');
-			}
-
-			rupiah = split[1] != undefined ? rupiah + ',' + split[1] : rupiah;
-			return prefix == undefined ? rupiah : (rupiah ? rupiah: '');
-		}
-
-
-		var maml = document.getElementById('maml');
-		maml.addEventListener('keyup', function(e){
-			// tambahkan 'Rp.' pada saat form di ketik
-			// gunakan fungsi formatmaml() untuk mengubah angka yang di ketik menjadi format angka
-			maml.value = formatmaml(this.value, '');
-		});
-
-		/* Fungsi formatmaml */
-		function formatmaml(angka, prefix){
-			var number_string = angka.replace(/[^,\d]/g, '').toString(),
-			split   		= number_string.split(','),
-			sisa     		= split[0].length % 3,
-			rupiah     		= split[0].substr(0, sisa),
-			ribuan     		= split[0].substr(sisa).match(/\d{3}/gi);
-
-			// tambahkan titik jika yang di input sudah menjadi angka ribuan
-			if(ribuan){
-				separator = sisa ? '.' : '';
-				rupiah += separator + ribuan.join('.');
-			}
-
-			rupiah = split[1] != undefined ? rupiah + ',' + split[1] : rupiah;
-			return prefix == undefined ? rupiah : (rupiah ? rupiah: '');
-		}
-
-		var trans = document.getElementById('trans');
-		trans.addEventListener('keyup', function(e){
-			// tambahkan 'Rp.' pada saat form di ketik
-			// gunakan fungsi formattrans() untuk mengubah angka yang di ketik menjadi format angka
-			trans.value = formattrans(this.value, '');
-		});
-
-		/* Fungsi formattrans */
-		function formattrans(angka, prefix){
-			var number_string = angka.replace(/[^,\d]/g, '').toString(),
-			split   		= number_string.split(','),
-			sisa     		= split[0].length % 3,
-			rupiah     		= split[0].substr(0, sisa),
-			ribuan     		= split[0].substr(sisa).match(/\d{3}/gi);
-
-			// tambahkan titik jika yang di input sudah menjadi angka ribuan
-			if(ribuan){
-				separator = sisa ? '.' : '';
-				rupiah += separator + ribuan.join('.');
-			}
-
-			rupiah = split[1] != undefined ? rupiah + ',' + split[1] : rupiah;
-			return prefix == undefined ? rupiah : (rupiah ? rupiah: '');
-		}
-
-		var lem = document.getElementById('lem');
-		lem.addEventListener('keyup', function(e){
-			// tambahkan 'Rp.' pada saat form di ketik
-			// gunakan fungsi formatlem() untuk mengubah angka yang di ketik menjadi format angka
-			lem.value = formatlem(this.value, '');
-		});
-
-		/* Fungsi formatlem */
-		function formatlem(angka, prefix){
-			var number_string = angka.replace(/[^,\d]/g, '').toString(),
-			split   		= number_string.split(','),
-			sisa     		= split[0].length % 3,
-			rupiah     		= split[0].substr(0, sisa),
-			ribuan     		= split[0].substr(sisa).match(/\d{3}/gi);
-
-			// tambahkan titik jika yang di input sudah menjadi angka ribuan
-			if(ribuan){
-				separator = sisa ? '.' : '';
-				rupiah += separator + ribuan.join('.');
-			}
-
-			rupiah = split[1] != undefined ? rupiah + ',' + split[1] : rupiah;
-			return prefix == undefined ? rupiah : (rupiah ? rupiah: '');
-		}
 </script>
 @endsection

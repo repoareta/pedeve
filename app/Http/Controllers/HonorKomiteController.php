@@ -86,10 +86,10 @@ class HonorKomiteController extends Controller
             return $data->nopek.' -- '.$data->nama_nopek;
        })
         ->addColumn('nilai', function ($data) {
-             return 'Rp. '.number_format($data->nilai,2,'.',',');
+             return number_format($data->nilai,2,'.',',');
        })
         ->addColumn('pajak', function ($data) {
-             return 'Rp. '.number_format($data->pajak,2,'.',',');
+             return number_format($data->pajak,2,'.',',');
        })
 
         ->addColumn('radio', function ($data) {
@@ -124,7 +124,7 @@ class HonorKomiteController extends Controller
             $data=0;
             return response()->json($data);
         }else {
-        $nilai = str_replace('.', '', $request->nilai);
+        $nilai = str_replace(',', '.', $request->nilai);
         $pajak = (35/65) * $nilai;
         $data_tahun = $request->tahun;
         $data_bulan = $request->bulan;
@@ -192,7 +192,7 @@ class HonorKomiteController extends Controller
     {
         $data_tahun = $request->tahun;
         $data_bulan = $request->bulan;
-        $nilai = str_replace('.', '', $request->nilai);
+        $nilai = str_replace(',', '.', $request->nilai);
         $nopek = $request->nopek;
         $pajak = (35/65) * $nilai;
 

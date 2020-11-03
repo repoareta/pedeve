@@ -350,8 +350,8 @@ class PenerimaanKasController extends Controller
         $data_casj = Cashjudex::all();
         $data_bagian = SdmKdbag::all();
         $data_account = DB::select("select kodeacct,descacct from account where length(kodeacct)=6 and kodeacct not like '%x%'");
-        $count= Kasline::where('docno', $nodoc)->sum('totprice');
-        $data_detail = Kasline::where('docno', $nodoc)->get();
+        $count= Kasline::where('docno', $nodoc)->where('keterangan','<>','PENUTUP')->sum('totprice');
+        $data_detail = DB::select("select * from kasline where docno ='$nodoc' and keterangan <> 'PENUTUP' order by lineno");
         $no_detail = Kasline::where('docno', $nodoc)->max('lineno');
         if ($no_detail <> null) {
             $no_urut = $no_detail + 1;

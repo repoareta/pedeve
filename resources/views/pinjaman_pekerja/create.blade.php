@@ -77,11 +77,11 @@
 						<label for="mulai-input" class="col-2 col-form-label">Mulai</label>
 						<div class="col-10">
 							<div class="input-daterange input-group" id="date_range_picker">
-								<input type="text" class="form-control" name="mulai" autocomplete="off" required oninvalid="this.setCustomValidity('Mulai Harus Diisi..')" onchange="setCustomValidity('')" />
+								<input type="text" class="form-control" value="{{date('d-m-Y')}}" name="mulai" autocomplete="off" required oninvalid="this.setCustomValidity('Mulai Harus Diisi..')" onchange="setCustomValidity('')" />
 								<div class="input-group-append">
 									<span class="input-group-text">Sampai</span>
 								</div>
-								<input type="text" class="form-control" name="sampai" autocomplete="off" required oninvalid="this.setCustomValidity('Sampai Harus Diisi..')" onchange="setCustomValidity('')"/>
+								<input type="text" class="form-control" value="{{date('d-m-Y')}}" name="sampai" autocomplete="off" required oninvalid="this.setCustomValidity('Sampai Harus Diisi..')" onchange="setCustomValidity('')"/>
 							</div>
 							<span class="form-text text-muted">Pilih rentang waktu Pinjaman</span>
 						</div>
@@ -95,13 +95,13 @@
 					<div class="form-group row">
 						<label for="spd-input" class="col-2 col-form-label">Angsuran<span style="color:red;">*</span></label>
 						<div class="col-10">
-							<input  class="form-control" type="text" value=""  name="angsuran" id="angsuran" size="16" maxlength="16" autocomplete='off' required oninvalid="this.setCustomValidity('Angsuran Harus Diisi..')" oninput="setCustomValidity('')"  onkeypress="return hanyaAngka(event)">
+							<input  class="form-control" type="text" value="0"  name="angsuran" id="angsuran" size="25" maxlength="25" autocomplete='off' required oninvalid="this.setCustomValidity('Angsuran Harus Diisi..')" oninput="this.value = this.value.replace(/[^0-9\-]+/g, ',');setCustomValidity('')">
 						</div>
 					</div>
 					<div class="form-group row">
 						<label for="spd-input" class="col-2 col-form-label">Pinjaman<span style="color:red;">*</span></label>
 						<div class="col-10">
-							<input  class="form-control" type="text" value=""  name="pinjaman" id="pinjaman" size="35" maxlength="35" autocomplete='off' required oninvalid="this.setCustomValidity('Pinjaman Harus Diisi..')" oninput="setCustomValidity('')"  onkeypress="return hanyaAngka(event)">
+							<input  class="form-control" type="text" value="0"  name="pinjaman" id="pinjaman" size="35" maxlength="35" autocomplete='off' required oninvalid="this.setCustomValidity('Pinjaman Harus Diisi..')" oninput="this.value = this.value.replace(/[^0-9\-]+/g, ',');setCustomValidity('')">
 						</div>
 					</div>
 					<div class="kt-form__actions">
@@ -247,55 +247,7 @@
 		return true;
 	}
 
-	var angsuran = document.getElementById('angsuran');
-	angsuran.addEventListener('keyup', function(e){
-		// tambahkan 'Rp.' pada saat form di ketik
-		// gunakan fungsi formatangsuran() untuk mengubah angka yang di ketik menjadi format angka
-		angsuran.value = formatangsuran(this.value, '');
-	});
-
-	/* Fungsi formatangsuran */
-	function formatangsuran(angka, prefix){
-		var number_string = angka.replace(/[^,\d]/g, '').toString(),
-		split   		= number_string.split(','),
-		sisa     		= split[0].length % 3,
-		rupiah     		= split[0].substr(0, sisa),
-		ribuan     		= split[0].substr(sisa).match(/\d{3}/gi);
-
-		// tambahkan titik jika yang di input sudah menjadi angka ribuan
-		if(ribuan){
-			separator = sisa ? '.' : '';
-			rupiah += separator + ribuan.join('.');
-		}
-
-		rupiah = split[1] != undefined ? rupiah + ',' + split[1] : rupiah;
-		return prefix == undefined ? rupiah : (rupiah ? rupiah: '');
-	}
-
-	var pinjaman = document.getElementById('pinjaman');
-	pinjaman.addEventListener('keyup', function(e){
-		// tambahkan 'Rp.' pada saat form di ketik
-		// gunakan fungsi formatpinjaman() untuk mengubah angka yang di ketik menjadi format angka
-		pinjaman.value = formatpinjaman(this.value, '');
-	});
-
-	/* Fungsi formatpinjaman */
-	function formatpinjaman(angka, prefix){
-		var number_string = angka.replace(/[^,\d]/g, '').toString(),
-		split   		= number_string.split(','),
-		sisa     		= split[0].length % 3,
-		rupiah     		= split[0].substr(0, sisa),
-		ribuan     		= split[0].substr(sisa).match(/\d{3}/gi);
-
-		// tambahkan titik jika yang di input sudah menjadi angka ribuan
-		if(ribuan){
-			separator = sisa ? '.' : '';
-			rupiah += separator + ribuan.join('.');
-		}
-
-		rupiah = split[1] != undefined ? rupiah + ',' + split[1] : rupiah;
-		return prefix == undefined ? rupiah : (rupiah ? rupiah: '');
-	}
+	
 </script>
 
 @endsection

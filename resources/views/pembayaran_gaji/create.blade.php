@@ -144,19 +144,19 @@
 						<div class="form-group row">
 							<label class="col-2 col-form-label">Catatan 1</label>
 							<div class="col-10">
-								<input class="form-control" type="text" name="ket1" id="ket1" value="" size="35" maxlength="35"  autocomplete='off'>
+								<textarea class="form-control" type="text" name="ket1" id="ket1"></textarea>
 							</div>
 						</div>
 						<div class="form-group row">
 							<label class="col-2 col-form-label">Catatan 2</label>
 							<div class="col-10">
-								<input class="form-control" type="text" name="ket2" id="ket2" value="" size="35" maxlength="35"  autocomplete='off'>
+								<textarea class="form-control" type="text" name="ket2" id="ket2"></textarea>
 							</div>
 						</div>
 						<div class="form-group row">
 							<label class="col-2 col-form-label">Catatan 3</label>
 							<div class="col-10">
-								<input class="form-control" type="text" name="ket3" id="ket3" value="" size="35" maxlength="35"  autocomplete='off'>
+								<textarea class="form-control" type="text" name="ket3" id="ket3"></textarea>
 							</div>
 						</div>
 						<div class="kt-form__actions">
