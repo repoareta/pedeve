@@ -268,8 +268,11 @@
 							<tr>
 								<td colspan="9" align="right">Jumlah Total : </td>
 								<td ><?php 
-								
-								echo number_format($count,2, '.', ','); 
+                                    if ($count <> "") {
+                                        echo number_format($count, 2, '.', ',');
+                                    }else{
+                                        echo '0.00';
+                                    }
 								?></td>
 							</tr>
 					</table>

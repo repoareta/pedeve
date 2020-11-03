@@ -267,7 +267,13 @@
 						</tbody>
 							<tr>
 								<td colspan="9" align="right">Jumlah Total : </td>
-								<td align="right">Rp. <?php echo number_format($count, 0, '.', ','); ?></td>
+								<td align="right"><?php 
+									if ($count <> "") {
+                                        echo number_format($count, 2, '.', ',');
+                                    }else{
+                                        echo '0.00';
+                                    }
+								?></td>
 							</tr>
 					</table>
 				</div>

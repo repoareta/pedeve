@@ -167,19 +167,19 @@
 						<div class="form-group row">
 							<label class="col-2 col-form-label">Catatan 1</label>
 							<div class="col-10">
-								<input class="form-control" type="text" name="ket1" id="ket1" value="{{$data->ket1}}" size="35" maxlength="35"  autocomplete='off'>
+								<textarea class="form-control" type="text" name="ket1" id="ket1" autocomplete='off'>{{$data->ket1}}</textarea>
 							</div>
 						</div>
 						<div class="form-group row">
 							<label class="col-2 col-form-label">Catatan 2</label>
 							<div class="col-10">
-								<input class="form-control" type="text" name="ket2" id="ket2" value="{{$data->ket2}}" size="35" maxlength="35"  autocomplete='off'>
+								<textarea class="form-control" type="text" name="ket2" id="ket2" autocomplete='off'>{{$data->ket2}}</textarea>
 							</div>
 						</div>
 						<div class="form-group row">
 							<label class="col-2 col-form-label">Catatan 3</label>
 							<div class="col-10">
-								<input class="form-control" type="text" name="ket3" id="ket3" value="{{$data->ket3}}" size="35" maxlength="35"  autocomplete='off'>
+								<textarea class="form-control" type="text" name="ket3" id="ket3" autocomplete='off'>{{$data->ket3}}</textarea>
 							</div>
 						</div>
 						@endforeach
@@ -384,7 +384,7 @@
 						<label for="example-text-input" class="col-2 col-form-label">Jumlah<span style="color:red;">*</span></label>
 						<label for="example-text-input" class=" col-form-label">:</label>
 						<div class="col-8">
-							<input  class="form-control" type="number" value="" name="nilai" size="16" maxlength="16"  required oninvalid="this.setCustomValidity('Jumlah Harus Diisi..')" oninput="setCustomValidity('')" autocomplete='off'>
+							<input  class="form-control" type="number" value="" name="nilai" size="25" maxlength="25"  required oninvalid="this.setCustomValidity('Jumlah Harus Diisi..')" oninput="this.value = this.value.replace(/[^0-9\-]+/g, ',');setCustomValidity('')" autocomplete='off'>
 						</div>
 					</div>
 
@@ -516,7 +516,7 @@
 						<label for="example-text-input" class="col-2 col-form-label">Jumlah<span style="color:red;">*</span></label>
 						<label for="example-text-input" class=" col-form-label">:</label>
 						<div class="col-8">
-							<input  class="form-control" type="text" value="" name="nilai" id="nilai1" size="16" maxlength="16"  onkeypress="return hanyaAngka(event)" required oninvalid="this.setCustomValidity('Jumlah Harus Diisi..')" oninput="setCustomValidity('')" autocomplete='off'>
+							<input  class="form-control" type="text" value="" name="nilai" id="nilai1" size="16" maxlength="16" required oninvalid="this.setCustomValidity('Jumlah Harus Diisi..')" oninput="this.value = this.value.replace(/[^0-9\-]+/g, ',');setCustomValidity('')" autocomplete='off'>
 						</div>
 					</div>
 
@@ -905,16 +905,8 @@ if($('input[type=radio]').is(':checked')) {
 					$('#nourut').val(data.lineno);
 					$('#rincian').val(data.keterangan);
 					$('#pk').val(data.pk);
-					var bilangan=parseInt(data.totprice);
-					var	number_string = bilangan.toString(),
-					sisa 	= number_string.length % 3,
-					rupiah 	= number_string.substr(0, sisa),
-					ribuan 	= number_string.substr(sisa).match(/\d{3}/g);
-						
-					if (ribuan) {
-						separator = sisa ? '.' : '';
-						rupiah += separator + ribuan.join('.');
-					}
+					var d=parseFloat(data.totprice);
+					var rupiah = d.toFixed(2);
 					$('#nilai1').val(rupiah);
 					$('#title-edit-detail').html("Edit Detail Pembayaran UMK");
 					$('#select-lapangan').val(data.lokasi).trigger('change');
@@ -1047,31 +1039,7 @@ $('#form-edit-detail').submit(function(){
 		    return false;
 		  return true;
 		}
-		var nilai = document.getElementById('nilai1');
-		nilai.addEventListener('keyup', function(e){
-			// tambahkan 'Rp.' pada saat form di ketik
-			// gunakan fungsi formatnilai() untuk mengubah angka yang di ketik menjadi format angka
-			nilai.value = formatRupiah(this.value, '');
-		});
-
-		/* Fungsi formatRupiah */
-		function formatRupiah(angka, prefix){
-			var number_string = angka.replace(/[^,\d]/g, '').toString(),
-			split   		= number_string.split(','),
-			sisa     		= split[0].length % 3,
-			nilai     		= split[0].substr(0, sisa),
-			ribuan     		= split[0].substr(sisa).match(/\d{3}/gi);
-
-			// tambahkan titik jika yang di input sudah menjadi angka ribuan
-			if(ribuan){
-				separator = sisa ? '.' : '';
-				nilai += separator + ribuan.join('.');
-			}
-
-			nilai = split[1] != undefined ? nilai + ',' + split[1] : nilai;
-			$a= prefix == undefined ? nilai : (nilai ? nilai: '');
-         return $a;
-		}
+		
 </script>
 
 @endsection
