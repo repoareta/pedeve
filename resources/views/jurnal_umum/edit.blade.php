@@ -226,7 +226,7 @@
 							<tr>
 								<th ></th>
 								<th>NO</th>
-								<th>LP</th>	
+								{{-- <th>LP</th>	--}}
 								<th>SANPER</th>
 								<th>BAGIAN</th>
 								<th>PK</th>
@@ -242,7 +242,7 @@
 							<tr>
 								<td scope="row" align="center"><label class="kt-radio kt-radio--bold kt-radio--brand"><input type="radio" name="btn-radio" docno="{{str_replace('/', '-', $data_d->docno)}}" lineno="{{$data_d->lineno}}" class="btn-radio" ><span></span></label></td>
 								<td>{{$data_d->lineno}}</td>
-								<td>{{$data_d->lokasi}}</td>
+								{{-- <td>{{$data_d->lokasi}}</td> --}}
 								<td>{{$data_d->account}}</td>
 								<td>{{$data_d->bagian}}</td>
 								<td>{{$data_d->pk}}</td>
@@ -256,8 +256,9 @@
 						</tbody>
 						<tr>
 							<td colspan="2" align="left"><input id="status2" name="status2" type="checkbox" <?php if($status2  == 'Y' ) echo 'checked' ; ?>> Posting</td>
-							<td colspan="6" align="right">Out of Balance : </td>
-							<td colspan="3" ><?php echo number_format($jumlahnya, 2, ',', '.').' '.$lab2; ?></td>
+							<td colspan="5" align="right">Out of Balance : </td>
+							<td  ><?php echo number_format($jumlahnya, 2, ',', '.').' '.$lab2; ?></td>
+							<td colspan="2"></td>
 						</tr>
 					</table>
 				</div>

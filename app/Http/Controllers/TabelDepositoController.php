@@ -127,13 +127,13 @@ class TabelDepositoController extends Controller
 
     public function export(Request $request)
     {
-            if($request->lapangan == ""){
+            // if($request->lapangan == ""){
                 $lp = "a.asal in ('MD','MS')";
                 $lapangan = "MD,MS";
-            }else{
-                $lp = "a.asal='$request->lapangan'";
-                $lapangan = "$request->lapangan";
-            }
+            // }else{
+            //     $lp = "a.asal='$request->lapangan'";
+            //     $lapangan = "$request->lapangan";
+            // }
             if($request->sanper <> ""){
                 $sanper = $request->sanper;
                 $bulan = ltrim($request->bulan,0);

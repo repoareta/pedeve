@@ -204,11 +204,7 @@ class PenerimaanKasController extends Controller
         if ($request->has('q')) {
             $cari = strtoupper($request->q);
             $data = DB::select("select distinct kepada from kasdoc where kepada like '$cari%' order by kepada asc");
-            if(!empty($data)){
-                return response()->json($data);
-            }else{
-                return response()->json($cari);
-            }
+            return response()->json($data);
         }
     }
 
@@ -259,7 +255,7 @@ class PenerimaanKasController extends Controller
         $store = $request->lokasi;
         $ci = $request->ci;
         $voucher = $request->nobukti;
-        $kepada = $request->kepada;
+        $kepada = strtoupper($request->kepada);
         $debet = "0";
         $kredit = "0";
         $original = "Y";

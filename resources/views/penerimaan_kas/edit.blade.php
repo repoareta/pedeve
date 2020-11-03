@@ -238,7 +238,7 @@
 								<th ></th>
 								<th>No</th>
 								<th>Rincian</th>	
-								<th>KL</th>
+								{{-- <th>KL</th> --}}
 								<th>Sanper</th>
 								<th>Bagian</th>
 								<th>PK</th>
@@ -255,7 +255,7 @@
 								<td scope="row" align="center"><label class="kt-radio kt-radio--bold kt-radio--brand"><input type="radio" name="btn-radio" nodok="{{$data_d->docno}}" nourut="{{$data_d->lineno}}"  class="btn-radio" ><span></span></label></td>
 								<td scope="row" align="center">{{$data_d->lineno}}</td>
 								<td>{{$data_d->keterangan}}</td>
-								<td>{{$data_d->lokasi}}</td>
+								{{-- <td>{{$data_d->lokasi}}</td> --}}
 								<td align="center">{{$data_d->account}}</td>
 								<td align="center">{{$data_d->bagian}}</td>
 								<td align="center">{{$data_d->pk}}</td>
@@ -266,7 +266,7 @@
 							@endforeach
 						</tbody>
 							<tr>
-								<td colspan="9" align="right">Jumlah Total : </td>
+								<td colspan="8" align="right">Jumlah Total : </td>
 								<td ><?php 
                                     if ($count <> "") {
                                         echo number_format($count, 2, '.', ',');
@@ -311,7 +311,7 @@
 							<textarea  class="form-control" type="text" value=""  name="rincian" size="50" maxlength="250"  onkeyup="this.value = this.value.toUpperCase()">-</textarea>
 						</div>
 					</div>
-					<div class="form-group row">
+					{{-- <div class="form-group row">
 						<label for="example-text-input" class="col-2 col-form-label">KD. Lapang</label>
 						<label for="example-text-input" class=" col-form-label">:</label>
 						<div class="col-8">
@@ -322,7 +322,7 @@
 								@endforeach
 							</select>						
 						</div>
-					</div>
+					</div> --}}
 					<div class="form-group row">
 						<label for="example-text-input" class="col-2 col-form-label">Sandi Perkiraan</label>
 						<label for="example-text-input" class=" col-form-label">:</label>
@@ -420,7 +420,7 @@
 							<textarea  class="form-control" type="text" value=""  name="rincian" id="rincian" size="50" maxlength="250" required oninvalid="this.setCustomValidity('Rincian Harus Diisi..')" oninput="setCustomValidity('')" onkeyup="this.value = this.value.toUpperCase()"></textarea>
 						</div>
 					</div>
-					<div class="form-group row">
+					{{-- <div class="form-group row">
 						<label for="example-text-input" class="col-2 col-form-label">KD. Lapang</label>
 						<label for="example-text-input" class=" col-form-label">:</label>
 						<div class="col-8" >
@@ -433,7 +433,7 @@
 							<div id="lapangan"></div>
 
 						</div>
-					</div>
+					</div> --}}
 					<div class="form-group row">
 						<label for="example-text-input" class="col-2 col-form-label">Sandi Perkiraan</label>
 						<label for="example-text-input" class=" col-form-label">:</label>

@@ -131,7 +131,7 @@
 							<label class="col-2 col-form-label">
 							@if($mp == "M") {{$darkep}} @else {{$darkep}} @endif<span style="color:red;">*</span></label>
 							<div class="col-10">
-								<input class="form-control" type="text" name="kepada" id="kepada" value="" size="40" maxlength="40" required oninvalid="this.setCustomValidity('{{$darkep}} Harus Diisi..')" oninput="setCustomValidity('')" autocomplete='off'>
+								<select class="kepada form-control" style="width: 100% !important;" name="kepada" ></select>
 							</div>
 						</div>
 						<div class="form-group row">
@@ -480,11 +480,39 @@ return {
 		demos(); 
 	}
 };
+
 }();
 
 KTBootstrapDatepicker.init();
 });
 
+
+	$('.kepada').select2({
+		placeholder: '-Pilih-',
+		allowClear: true,
+		tags: true,
+		ajax: {
+			url: "{{route('penerimaan_kas.kepadaJson')}}",
+			type : "post",
+			dataType : "JSON",
+			headers: {
+			'X-CSRF-Token': '{{ csrf_token() }}',
+			},
+			delay: 250,
+		processResults: function (data) {
+			console.log(data.length);
+			return {
+			results:  $.map(data, function (item) {
+				return {
+				text: item.kepada,
+				id: item.kepada
+				}
+			})
+			};
+		},
+		cache: true
+		}
+	});
 		function hanyaAngka(evt) {
 		  var charCode = (evt.which) ? evt.which : event.keyCode
 		   if (charCode > 31 && (charCode < 48 || charCode > 57))

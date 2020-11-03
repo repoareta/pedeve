@@ -91,7 +91,7 @@
 						<input class="form-control" type="text" name="kurs" value="{{$kurs}}" size="15" maxlength="15" autocomplete='off' onkeypress="return hanyaAngka(event)" required oninvalid="this.setCustomValidity('Kurs Harus Diisi..')" oninput="setCustomValidity('')">				
 					</div>
 				</div>
-				<div class="form-group row">
+				{{-- <div class="form-group row">
 					<label for="dari-input" class="col-2 col-form-label">Lapangan</label>
 					<div class="col-10">
 						<select name="lapangan" id="select-debetdari" class="form-control kt-select2">
@@ -101,7 +101,7 @@
 							@endforeach
 						</select>								
 					</div>
-				</div>
+				</div> --}}
 				<div class="kt-form__actions">
 					<div class="row">
 						<div class="col-2"></div>
