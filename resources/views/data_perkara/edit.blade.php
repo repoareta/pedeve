@@ -48,13 +48,13 @@
 						<div class="form-group row">
 							<label for="" class="col-2 col-form-label">No. Perkara<span style="color:red;">*</span></label>
 							<div class="col-8">
-								<input class="form-control" type="text" value="{{ $data->no_perkara }}" name="no_perkara" size="100" maxlength="100" title="No. Perkara" autocomplete='off' required oninvalid="this.setCustomValidity('No. Perkara Harus Diisi...')" oninput="setCustomValidity('')">
+								<input class="form-control" type="text" value="{{ $data->no_perkara }}" name="no_perkara" size="100" maxlength="100" title="No. Perkara" autocomplete='off' required oninvalid="this.setCustomValidity('No. Perkara Harus Diisi...')" oninput="setCustomValidity('')" readonly>
 							</div>
 						</div>
 						<div class="form-group row">
 							<label for="" class="col-2 col-form-label">Tanggal Perkara</label>
 							<div class="col-8">
-								<input class="form-control" type="text" value="{{ $data->tgl_perkara }}" name="tanggal" id="tanggal" size="15" maxlength="10" title="Tanggal Perkara" autocomplete='off'>
+								<input class="form-control" type="text" value="{{date_format(date_create($data->tgl_perkara), 'd-m-Y') }}" name="tanggal" id="tanggal" size="15" maxlength="10" title="Tanggal Perkara" autocomplete='off'>
 							</div>
 						</div>
 						<div class="form-group row">
@@ -126,33 +126,18 @@
 								</div>
 							</div>
 						</div>
-						<div class="form-group row">
+						{{-- <div class="form-group row">
 							<label for="" class="col-2 col-form-label">Kurs<span style="color:red;">*</span></label>
 							<div class="col-8">
 								<input class="form-control" type="text" value="{{$data->rate}}" name="kurs" id="kurs"  size="25" maxlength="20" title="Kurs"  autocomplete='off' onkeypress="return hanyaAngka(event)" required oninvalid="this.setCustomValidity('User Name Harus Diisi...')" oninput="setCustomValidity('')">
 							</div>
-						</div>
+						</div> --}}
 						<div class="form-group row">
 							<label for="" class="col-2 col-form-label">Nilai Perkara<span style="color:red;">*</span></label>
 							<div class="col-8">
-								<input class="form-control" type="text" value="{{$data->nilai_perkara}}" name="nilai_perkara"  size="25" maxlength="20" title="Nilai Perkara" autocomplete='off' onkeypress="return hanyaAngka(event)" autocomplete='off required oninvalid="this.setCustomValidity('User Name Harus Diisi...')" oninput="setCustomValidity('')">
+								<input class="form-control" type="text" value="{{number_format($data->nilai_perkara,2,'.','')}}" name="nilai_perkara"  size="25" maxlength="20" title="Nilai Perkara" autocomplete='off' required oninvalid="this.setCustomValidity('User Name Harus Diisi...')" oninput="this.value = this.value.replace(/[^0-9\-]+/g, ',');">
 							</div>
-						</div>
-						<div class="form-group row">
-							<label for="" class="col-2 col-form-label">Dokumen Perkara<span style="color:red;">*</span></label>
-							<div class="col-8">
-								<input class="form-control" type="hidden" value="{{$data->file}}" name="file_1"  title="Dokumen" accept=".pdf,.jpg,.jpeg">
-								<input class="form-control" type="file" value="{{$data->file}}" name="file"  title="Dokumen" accept=".pdf,.jpg,.jpeg">
-								@if(count($errors) > 0)
-									@foreach ($errors->all() as $error)
-									<span style="color:red;">Frotmat harus pdf or jpg</span>
-									@endforeach
-								@else
-									<span>Frotmat file pdf or jpg size 2 MB</span>
-								@endif
-							</div>
-						</div>
-						
+						</div>						
 												
 						<div class="kt-form__actions">
 							<div class="row">
@@ -251,7 +236,7 @@
 			orientation: "bottom left",
 			autoclose: true,
 			// language : 'id',
-			format   : 'yyyy-mm-dd'
+			format   : 'dd-mm-yyyy'
 		});
 	});
 	

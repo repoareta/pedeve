@@ -100,25 +100,25 @@
 							<label for="" class="col-2 col-form-label">Total Aset</label>
 							<div class="col-8">
 								<input class="form-control" type="hidden" value="1" name="kurs" id="kurs"  size="25" maxlength="20" title="Kurs" >
-								<input class="form-control" type="text" value="" name="total_aset" id="total_aset" size="25" maxlength="25" title="Total Aset" onkeypress="return hanyaAngka(event)" autocomplete='off' >
+								<input class="form-control" type="text" value="" name="total_aset" id="total_aset" size="25" maxlength="25" title="Total Aset" oninput="this.value = this.value.replace(/[^0-9\-]+/g, ',');" autocomplete='off' >
 							</div>
 						</div>
 						<div class="form-group row">
 							<label class="col-2 col-form-label">Sales</label>
 							<div class="col-8">						
-								<input class="form-control" type="text" value="{{ old('sales') }}" name="sales" id="sales"  size="200" maxlength="200" title="Sales" onkeypress="return hanyaAngka(event)" autocomplete='off'>
+								<input class="form-control" type="text" value="{{ old('sales') }}" name="sales" id="sales"  size="200" maxlength="200" title="Sales" oninput="this.value = this.value.replace(/[^0-9\-]+/g, ',');" autocomplete='off'>
 							</div>
 						</div>
 						<div class="form-group row">
 							<label for="" class="col-2 col-form-label">Laba Bersih</label>
 							<div class="col-8">
-								<input class="form-control" type="text" value="" name="laba_bersih" id="laba_bersih"  size="25" maxlength="25" title="Laba Bersih" onkeypress="return hanyaAngka(event)" autocomplete='off' >
+								<input class="form-control" type="text" value="" name="laba_bersih" id="laba_bersih"  size="25" maxlength="25" title="Laba Bersih" oninput="this.value = this.value.replace(/[^0-9\-]+/g, ',');" autocomplete='off' >
 							</div>
 						</div>
 						<div class="form-group row">
 							<label class="col-2 col-form-label">TKP</label>
 							<div class="col-8">						
-								<input class="form-control" type="text" value="{{ old('tkp') }}" name="tkp" id="tkp"  title="TKP" onkeypress="return hanyaAngka(event)" autocomplete='off'>
+								<input class="form-control" type="text" value="{{ old('tkp') }}" name="tkp" id="tkp"  title="TKP" oninput="this.value = this.value.replace(/[^0-9\-]+/g, ',');" autocomplete='off'>
 							</div>
 						</div>
 						
@@ -251,99 +251,6 @@
  
 		    return false;
 		  return true;
-		}
-
-		var total_aset = document.getElementById('total_aset');
-		total_aset.addEventListener('keyup', function(e){
-			total_aset.value = formatRupiahtotal_aset(this.value, '');
-		});
-
-		/* Fungsi formatRupiahtotal_aset */
-		function formatRupiahtotal_aset(angka, prefix){
-			var number_string = angka.replace(/[^,\d]/g, '').toString(),
-			split   		= number_string.split(','),
-			sisa     		= split[0].length % 3,
-			nilai     		= split[0].substr(0, sisa),
-			ribuan     		= split[0].substr(sisa).match(/\d{3}/gi);
-
-			// tambahkan titik jika yang di input sudah menjadi angka ribuan
-			if(ribuan){
-				separator = sisa ? '.' : '';
-				nilai += separator + ribuan.join('.');
-			}
-
-			nilai = split[1] != undefined ? nilai + ',' + split[1] : nilai;
-			return prefix == undefined ? nilai : (nilai ? nilai: '');
-		}
-
-		var sales = document.getElementById('sales');
-		sales.addEventListener('keyup', function(e){
-			sales.value = formatRupiahsales(this.value, '');
-		});
-
-		/* Fungsi formatRupiahsales */
-		function formatRupiahsales(angka, prefix){
-			var number_string = angka.replace(/[^,\d]/g, '').toString(),
-			split   		= number_string.split(','),
-			sisa     		= split[0].length % 3,
-			nilai     		= split[0].substr(0, sisa),
-			ribuan     		= split[0].substr(sisa).match(/\d{3}/gi);
-
-			// tambahkan titik jika yang di input sudah menjadi angka ribuan
-			if(ribuan){
-				separator = sisa ? '.' : '';
-				nilai += separator + ribuan.join('.');
-			}
-
-			nilai = split[1] != undefined ? nilai + ',' + split[1] : nilai;
-			return prefix == undefined ? nilai : (nilai ? nilai: '');
-		}
-
-		var laba_bersih = document.getElementById('laba_bersih');
-		laba_bersih.addEventListener('keyup', function(e){
-			laba_bersih.value = formatRupiahlaba_bersih(this.value, '');
-		});
-
-		/* Fungsi formatRupiahlaba_bersih */
-		function formatRupiahlaba_bersih(angka, prefix){
-			var number_string = angka.replace(/[^,\d]/g, '').toString(),
-			split   		= number_string.split(','),
-			sisa     		= split[0].length % 3,
-			nilai     		= split[0].substr(0, sisa),
-			ribuan     		= split[0].substr(sisa).match(/\d{3}/gi);
-
-			// tambahkan titik jika yang di input sudah menjadi angka ribuan
-			if(ribuan){
-				separator = sisa ? '.' : '';
-				nilai += separator + ribuan.join('.');
-			}
-
-			nilai = split[1] != undefined ? nilai + ',' + split[1] : nilai;
-			return prefix == undefined ? nilai : (nilai ? nilai: '');
-		}
-
-
-		var tkp = document.getElementById('tkp');
-		tkp.addEventListener('keyup', function(e){
-			tkp.value = formatRupiahtkp(this.value, '');
-		});
-
-		/* Fungsi formatRupiahtkp */
-		function formatRupiahtkp(angka, prefix){
-			var number_string = angka.replace(/[^,\d]/g, '').toString(),
-			split   		= number_string.split(','),
-			sisa     		= split[0].length % 3,
-			nilai     		= split[0].substr(0, sisa),
-			ribuan     		= split[0].substr(sisa).match(/\d{3}/gi);
-
-			// tambahkan titik jika yang di input sudah menjadi angka ribuan
-			if(ribuan){
-				separator = sisa ? '.' : '';
-				nilai += separator + ribuan.join('.');
-			}
-
-			nilai = split[1] != undefined ? nilai + ',' + split[1] : nilai;
-			return prefix == undefined ? nilai : (nilai ? nilai: '');
 		}
 </script>
 
