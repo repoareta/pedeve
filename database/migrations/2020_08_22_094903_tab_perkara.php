@@ -18,7 +18,7 @@ class TabPerkara extends Migration
                 $table->text('r_perkara')->nullable();
                 $table->text('r_patitum')->nullable();
                 $table->text('r_putusan')->nullable();
-                $table->integer('nilai_perkara')->nullable();
+                $table->decimal('nilai_perkara',38,10)->nullable();
                 $table->string('file',100);
                 $table->integer('rate');
                 $table->integer('ci');

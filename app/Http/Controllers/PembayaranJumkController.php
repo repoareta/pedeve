@@ -339,7 +339,7 @@ class PembayaranJumkController extends Controller
         $updatedate = $request->tanggal;
         $updatepwd = $request->userid;
         $rate = $request->kurs;
-        $nilai_dok = $request->nilai;
+        $nilai_dok = str_replace(',', '.', $request->nilai);
         $originalby = $request->userid;
         $ket1 = $request->ket1;
         $ket2 = $request->ket2;
@@ -443,7 +443,7 @@ class PembayaranJumkController extends Controller
                 'voucher' =>  $request->nobukti,
                 'kepada' =>  $request->kepada,
                 'rate' =>  $request->kurs,
-                'nilai_dok' =>  $request->nilai,
+                'nilai_dok' =>  str_replace(',', '.', $request->nilai),
                 'ket1' =>  $request->ket1,
                 'ket2' =>  $request->ket2,
                 'ket3' =>  $request->ket3,
@@ -474,7 +474,7 @@ class PembayaranJumkController extends Controller
                 'pk' =>  $request->pk,
                 'jb' =>  $request->jb,
                 'cj' =>  $request->cj,
-                'totprice'  =>  $request->nilai,
+                'totprice'  =>  str_replace(',', '.', $request->nilai),
                 'keterangan'  =>  $request->rincian
                 ]);
                 $data_sum = DB::select("select sum(totprice) as v_total from kasline where docno='$docno'");
@@ -506,7 +506,7 @@ class PembayaranJumkController extends Controller
                     'bagian' =>  $request->bagian,
                     'pk' =>  $request->pk,
                     'jb' =>  $request->jb,
-                    'totprice' =>  $request->nilai,
+                    'totprice' =>  str_replace(',', '.', $request->nilai),
                     'cj' =>  $request->cj,
                     'keterangan' =>  $request->rincian,
                 ]);

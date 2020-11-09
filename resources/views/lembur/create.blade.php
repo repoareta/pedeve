@@ -97,31 +97,31 @@
 				<div class="form-group row">
 					<label for="id-pekerja;-input" class="col-2 col-form-label">Makan Pagi</label>
 					<div class="col-10">
-						<input class="form-control" type="text" value="" id="makanpg" name="makanpg" onkeypress="return hanyaAngka(event)" autocomplete='off'>
+						<input class="form-control" type="text" value="0" name="makanpg" id="mapg" oninput="this.value = this.value.replace(/[^0-9\-]+/g, ',');setCustomValidity('')" autocomplete='off'>
 					</div>
 				</div>
 				<div class="form-group row">
 					<label for="id-pekerja;-input" class="col-2 col-form-label">Makan Siang</label>
 					<div class="col-10">
-						<input class="form-control" type="text" value="" id="makansg" name="makansg" onkeypress="return hanyaAngka(event)" autocomplete='off'>
+						<input class="form-control" type="text" value="0" name="makansg" id="masi" oninput="this.value = this.value.replace(/[^0-9\-]+/g, ',');setCustomValidity('')" autocomplete='off'>
 					</div>
 				</div>
 				<div class="form-group row">
-					<label for="id-pekerja;-input" class="col-2 col-form-label">Makan Siang</label>
+					<label for="id-pekerja;-input" class="col-2 col-form-label">Makan Malam</label>
 					<div class="col-10">
-						<input class="form-control" type="text" value="" id="makanml" name="makanml" onkeypress="return hanyaAngka(event)" autocomplete='off'>
+						<input class="form-control" type="text" value="0" name="makanml" id="maml" oninput="this.value = this.value.replace(/[^0-9\-]+/g, ',');setCustomValidity('')" autocomplete='off'>
 					</div>
 				</div>
 				<div class="form-group row">
 					<label for="id-pekerja;-input" class="col-2 col-form-label">Transport</label>
 					<div class="col-10">
-						<input class="form-control" type="text" value="" id="transport" name="transport" onkeypress="return hanyaAngka(event)" autocomplete='off'>
+						<input class="form-control" type="text" value="0" name="transport" id="trans" oninput="this.value = this.value.replace(/[^0-9\-]+/g, ',');setCustomValidity('')" autocomplete='off'>
 					</div>
 				</div>
 				<div class="form-group row">
 					<label for="id-pekerja;-input" class="col-2 col-form-label">Lembur</label>
 					<div class="col-10">
-						<input class="form-control" type="text" value="" id="lembur" name="lembur" onkeypress="return hanyaAngka(event)" autocomplete='off'>
+						<input class="form-control" type="text" value="0"  name="lembur" id="lem" oninput="this.value = this.value.replace(/[^0-9\-]+/g, ',');setCustomValidity('')" autocomplete='off'>
 					</div>
 				</div>
 				<div class="kt-form__actions">
@@ -133,6 +133,7 @@
 						</div>
 					</div>
 				</div>
+			</div>
 		</form>
 	</div>
 </div>
@@ -197,8 +198,6 @@ $('#form-create').submit(function(){
  
 		    return false;
 		  return true;
-		}
-
-		
+		}	
 </script>
 @endsection

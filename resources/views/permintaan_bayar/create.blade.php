@@ -54,28 +54,28 @@
 						</div>
 					
 						<div class="form-group row">
-							<label for="spd-input" class="col-2 col-form-label">No. Permintaan<span style="color:red;">*</span></label>
+							<label for="spd-input" class="col-2 col-form-label">No. Permintaan</label>
 							<div class="col-5">
 							<?php $data_no_bayar = str_replace('/', '-', $permintaan_header_count); ?>
 								<input  class="form-control" type="hidden" value="{{$data_no_bayar}}" id="noumk"  size="25" maxlength="25" readonly>
 								<input style="background-color:#DCDCDC; cursor:not-allowed" class="form-control" type="text" name="nobayar" value="{{ $permintaan_header_count }}" id="nobayar" readonly>
 							</div>
 
-							<label for="spd-input" class="col-2 col-form-label">Tanggal<span style="color:red;">*</span></label>
+							<label for="spd-input" class="col-2 col-form-label">Tanggal</label>
 							<div class="col-3">
 								<input class="form-control" type="text" name="tanggal" id="tanggal" value="{{ date('d-m-Y') }}">
 							</div>
 						</div>
 						<div class="form-group row">
-							<label for="nopek-input" class="col-2 col-form-label">Terlampir<span style="color:red;">*</span></label>
+							<label for="nopek-input" class="col-2 col-form-label">Terlampir</label>
 							<div class="col-10">
-								<textarea class="form-control" type="text" name="lampiran" value=""  id="lampiran" onkeyup="this.value = this.value.toUpperCase()"  required oninvalid="this.setCustomValidity('Terlampir Harus Diisi..')" oninput="setCustomValidity('')"></textarea>
+								<textarea class="form-control" type="text" name="lampiran" value=""  id="lampiran" onkeyup="this.value = this.value.toUpperCase()"  required oninvalid="this.setCustomValidity('Terlampir Harus Diisi..')" oninput="setCustomValidity('')">-</textarea>
 							</div>
 						</div>
 						<div class="form-group row">
-							<label for="id-pekerja;-input" class="col-2 col-form-label">Keterangan<span style="color:red;">*</span></label>
+							<label for="id-pekerja;-input" class="col-2 col-form-label">Keterangan</label>
 							<div class="col-10">
-								<textarea class="form-control" type="text" value=""  id="keterangan" name="keterangan" size="50" maxlength="200" onkeyup="this.value = this.value.toUpperCase()" required oninvalid="this.setCustomValidity('Keterangan Harus Diisi..')" oninput="setCustomValidity('')"></textarea>
+								<textarea class="form-control" type="text" value=""  id="keterangan" name="keterangan" size="50" maxlength="200" onkeyup="this.value = this.value.toUpperCase()" required oninvalid="this.setCustomValidity('Keterangan Harus Diisi..')" oninput="setCustomValidity('')">-</textarea>
 							</div>
 						</div>
 						<div class="form-group row">
@@ -97,9 +97,9 @@
 							</div>
 						</div>
 						<div class="form-group row">
-							<label for="dari-input" class="col-2 col-form-label">Debet Dari<span style="color:red;">*</span></label>
+							<label for="dari-input" class="col-2 col-form-label">Debet Dari</label>
 							<div class="col-10">
-								<select name="debetdari" id="select-debetdari" class="form-control selectpicker" data-live-search="true" required oninvalid="this.setCustomValidity('Debet Dari Harus Diisi..')" onchange="setCustomValidity('')">
+								<select name="debetdari" id="select-debetdari" class="form-control selectpicker" data-live-search="true" >
 									<option value="">- Pilih -</option>
 									@foreach ($debit_nota as $row)
 									<option value="{{ $row->kode }}">{{ $row->kode.' - '.$row->keterangan }}</option>
@@ -109,13 +109,13 @@
 							</div>
 						</div>
 						<div class="form-group row">
-							<label class="col-2 col-form-label">No. Debet<span style="color:red;">*</span></label>
+							<label class="col-2 col-form-label">No. Debet</label>
 							<div class="col-5">
-								<input class="form-control" type="text" name="nodebet" id="nodebet" value="" size="15" maxlength="15" onkeyup="this.value = this.value.toUpperCase()" required oninvalid="this.setCustomValidity('No. Debet Harus Diisi..')" oninput="setCustomValidity('')" autocomplete='off'>
+								<input class="form-control" type="text" name="nodebet" id="nodebet" value="-" size="15" maxlength="15" onkeyup="this.value = this.value.toUpperCase()" autocomplete='off'>
 							</div>
-							<label class="col-2 col-form-label">Tgl Debet<span style="color:red;">*</span></label>
+							<label class="col-2 col-form-label">Tgl Debet</label>
 							<div class="col-3" >
-								<input class="form-control" type="text" name="tgldebet" value=""  id="tgldebet" size="15" maxlength="15" required autocomplete='off' oninvalid="this.setCustomValidity('Tgl Debet Harus Diisi..')" onchange="setCustomValidity('')">
+								<input class="form-control" type="text" name="tgldebet" value="{{ date('d-m-Y') }}"  id="tgldebet" size="15" maxlength="15" autocomplete='off' >
 							</div>
 						</div>
 						<div class="form-group row">
@@ -131,8 +131,14 @@
 						<div class="form-group row">
 							<label for="spd-input" class="col-2 col-form-label">CI</label>
 							<div class="col-5">
-									<input id="ci"   style=" width: 17px;height: 26px;margin-left:50px;" value="1" type="radio"  name="ci" onclick="displayResult(1)"  checked />  <label style="font-size:12px; margin-left:10px;">IDR</label>
-									<input  id="ci" style=" width: 17px;height: 26px;margin-left:50px;" value="2" type="radio"    name="ci"  onclick="displayResult(2)" /><label style="font-size:12px; margin-left:10px;"> USD</label>
+								<label class="kt-radio kt-radio--solid">
+									<input  value="1" type="radio"  name="ci" onclick="displayResult(1)"  checked> IDR
+									<span></span>
+								</label>
+								<label style="margin-left:50px;" class="kt-radio kt-radio--solid">
+									<input  value="2" type="radio"    name="ci"  onclick="displayResult(2)"> USD
+									<span></span>
+								</label>
 							</div>
 							<label for="spd-input" class="col-2 col-form-label">Kurs<span style="color:red;display:none" id="simbol-kurs">*</span></label>
 							<div class="col-3">
@@ -154,7 +160,7 @@
 						<div class="form-group row">
 							<label class="col-2 col-form-label">Total Nilai</label>
 							<div class="col-10">
-								<input style="background-color:#DCDCDC; cursor:not-allowed" class="form-control" type="text" value="Rp. 0" readonly>
+								<input style="background-color:#DCDCDC; cursor:not-allowed" class="form-control" type="text" value="0" readonly>
 								<input style="background-color:#DCDCDC; cursor:not-allowed" class="form-control" name="totalnilai" type="hidden" value="" id="totalnilai"  readonly>
 							</div>
 						</div>

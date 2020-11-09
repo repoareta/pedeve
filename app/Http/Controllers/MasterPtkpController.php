@@ -51,7 +51,7 @@ class MasterPtkpController extends Controller
         }else {
         PayTblPtkp::insert([
             'kdkel' => $request->kdkel,
-            'nilai' => $request->nilai,
+            'nilai' => str_replace(',', '.', $request->nilai),
             ]);
             $data = 1;
             return response()->json($data);
@@ -75,7 +75,7 @@ class MasterPtkpController extends Controller
     {
         PayTblPtkp::where('kdkel', $request->kdkel)
             ->update([
-                'nilai' => $request->nilai,
+                'nilai' => str_replace(',', '.', $request->nilai),
             ]);
             return response()->json();
     }

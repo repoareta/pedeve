@@ -97,13 +97,13 @@
 					<div class="form-group row">
 						<label for="spd-input" class="col-2 col-form-label">Angsuran<span style="color:red;">*</span></label>
 						<div class="col-10">
-							<input  class="form-control" type="text" value="{{round($data->angsuran,0)}}"  name="angsuran" size="16" maxlength="16" autocomplete='off' required oninvalid="this.setCustomValidity('Angsuran Harus Diisi..')" oninput="setCustomValidity('')"  onkeypress="return hanyaAngka(event)">
+							<input  class="form-control" type="text" value="{{number_format($data->angsuran,2,'.','')}}"  name="angsuran" id="angsuran" size="16" maxlength="16" autocomplete='off' required oninvalid="this.setCustomValidity('Angsuran Harus Diisi..')" oninput="this.value = this.value.replace(/[^0-9\-]+/g, ',');setCustomValidity('')">
 						</div>
 					</div>
 					<div class="form-group row">
 						<label for="spd-input" class="col-2 col-form-label">Pinjaman<span style="color:red;">*</span></label>
 						<div class="col-10">
-							<input  class="form-control" type="text" value="{{round($data->jml_pinjaman,0)}}"  name="pinjaman" size="35" maxlength="35" autocomplete='off' required oninvalid="this.setCustomValidity('Pinjaman Harus Diisi..')" oninput="setCustomValidity('')"  onkeypress="return hanyaAngka(event)">
+							<input  class="form-control" type="text" value="{{number_format($data->jml_pinjaman,2,'.','')}}"  name="pinjaman" id="pinjaman" size="35" maxlength="35" autocomplete='off' required oninvalid="this.setCustomValidity('Pinjaman Harus Diisi..')" oninput="this.value = this.value.replace(/[^0-9\-]+/g, ',');setCustomValidity('')">
 						</div>
 					</div>
 					@endforeach
@@ -136,8 +136,8 @@
 					</h3>			
 					<div class="kt-portlet__head-toolbar">
 						<div class="kt-portlet__head-wrapper">
-							<div class="kt-portlet__head-actions">
-								<!-- <span style="font-size: 2em;cursor:not-allowed" class="kt-font-success">
+						{{-- <div class="kt-portlet__head-actions">
+								<span style="font-size: 2em;cursor:not-allowed" class="kt-font-success">
 									<i class="fas fa-plus-circle"></i>
 								</span>
 			
@@ -147,8 +147,8 @@
 			
 								<span style="font-size: 2em;cursor:not-allowed" class="kt-font-danger">
 									<i class="fas fa-times-circle"></i>
-								</span> -->
-							</div>
+								</span>
+							</div> --}}
 						</div>
 					</div>
 				</div>
@@ -179,12 +179,12 @@
 							<td scope="row" align="center">{{$no}}</td>
 							<td align="center">{{$data_d->tahun}}</td>
 							<td align="center">{{$data_d->bulan}}</td>
-							<td>Rp. <?php echo number_format($data_d->pokok, 0, ',', '.'); ?></td>
-							<td>Rp. <?php echo number_format($data_d->bunga, 0, ',', '.'); ?></td>
-							<td>Rp. <?php echo number_format($data_d->jumlah, 0, ',', '.'); ?></td>
-							<td>Rp. <?php echo number_format($data_d->realpokok, 0, ',', '.'); ?></td>
-							<td>Rp. <?php echo number_format($data_d->realbunga, 0, ',', '.'); ?></td>
-							<td>Rp. <?php echo number_format($data_d->jumlah2, 0, ',', '.'); ?></td>
+							<td><?php echo number_format($data_d->pokok, 0, ',', '.'); ?></td>
+							<td><?php echo number_format($data_d->bunga, 0, ',', '.'); ?></td>
+							<td><?php echo number_format($data_d->jumlah, 0, ',', '.'); ?></td>
+							<td><?php echo number_format($data_d->realpokok, 0, ',', '.'); ?></td>
+							<td><?php echo number_format($data_d->realbunga, 0, ',', '.'); ?></td>
+							<td><?php echo number_format($data_d->jumlah2, 0, ',', '.'); ?></td>
 							<td align="center">{{$data_d->nodoc}}</td>
 						</tr>
 					@endforeach
@@ -192,11 +192,11 @@
 					@foreach($count as $data_c)
                         <tr>
                             <td colspan="4" align="right">Jumlah Total : </td>
-                            <td >Rp. <?php echo number_format($data_c->jml, 0, ',', '.'); ?></td>
-                            <td >Rp. <?php echo number_format($data_c->bunga, 0, ',', '.'); ?></td>
+                            <td ><?php echo number_format($data_c->jml, 0, ',', '.'); ?></td>
+                            <td ><?php echo number_format($data_c->bunga, 0, ',', '.'); ?></td>
                             <td ></td>
-                            <td >Rp. <?php echo number_format($data_c->realpokok, 0, ',', '.'); ?></td>
-                            <td >Rp. <?php echo number_format($data_c->realbunga, 0, ',', '.'); ?></td>
+                            <td ><?php echo number_format($data_c->realpokok, 0, ',', '.'); ?></td>
+                            <td ><?php echo number_format($data_c->realbunga, 0, ',', '.'); ?></td>
                             <td colspan="2" ></td>
                         </tr>
 					@endforeach
@@ -265,12 +265,12 @@
 
 
 	function hanyaAngka(evt) {
-		  var charCode = (evt.which) ? evt.which : event.keyCode
-		   if (charCode > 31 && (charCode < 48 || charCode > 57))
- 
-		    return false;
-		  return true;
-		}
+		var charCode = (evt.which) ? evt.which : event.keyCode
+		if (charCode > 31 && (charCode < 48 || charCode > 57))
+
+		return false;
+		return true;
+	}
 </script>
 
 @endsection

@@ -75,7 +75,7 @@ class PermintaanBayarController extends Controller
             return $data->lampiran;
        })
        ->addColumn('nilai', function ($data) {
-            return 'Rp. '.number_format($data->nilai,2,'.',',');
+            return number_format($data->nilai,2,'.',',');
       })
         ->addColumn('radio', function ($data) {
             if($data->app_pbd == 'Y'){
@@ -94,7 +94,7 @@ class PermintaanBayarController extends Controller
                 $action = '<p align="center"><span style="font-size: 2em;" class="kt-font-success pointer-link" data-toggle="kt-tooltip" data-placement="top" title="Data Sudah di proses perbendaharaan"><i class="fas fa-check-circle" ></i></span></p>';
             }else{
                 if($data->app_sdm == 'Y'){
-                    $action = '<p align="center"><a href="'. route('permintaan_bayar.approv',['id' => str_replace('/', '-', $data->no_bayar)]).'"><span style="font-size: 2em;" class="kt-font-warning pointer-link" data-toggle="kt-tooltip" data-placement="top" title="Batalkan Approval"><i class="fas fa-check-circle" ></i></span></a></p>';
+                    $action = '<p align="center"><a href="'. route('permintaan_bayar.approv',['id' => str_replace('/', '-', $data->no_bayar)]).'"><span style="font-size: 2em;" class="kt-font-success pointer-link" data-toggle="kt-tooltip" data-placement="top" title="Batalkan Approval"><i class="fas fa-check-circle" ></i></span></a></p>';
                 }else{
                     $action = '<p align="center"><a href="'. route('permintaan_bayar.approv',['id' => str_replace('/', '-', $data->no_bayar)]).'"><span style="font-size: 2em;" class="kt-font-danger pointer-link" data-toggle="kt-tooltip" data-placement="top" title="Klik untuk Approval"><i class="fas fa-ban" ></i></span></a></p>';
                 }
@@ -199,7 +199,7 @@ class PermintaanBayarController extends Controller
             'no' => $request->no,
             'keterangan' => $request->keterangan,
             'account' => $request->acc,
-            'nilai' => str_replace('.', '', $request->nilai),
+            'nilai' => str_replace(',', '.', $request->nilai),
             'cj' => $request->cj,
             'jb' => $request->jb,
             'bagian' => $request->bagian,
@@ -212,7 +212,7 @@ class PermintaanBayarController extends Controller
             'no' => $request->no,
             'keterangan' => $request->keterangan,
             'account' => $request->acc,
-            'nilai' => str_replace('.', '', $request->nilai),
+            'nilai' => str_replace(',', '.', $request->nilai),
             'cj' => $request->cj,
             'jb' => $request->jb,
             'bagian' => $request->bagian,
@@ -440,10 +440,11 @@ class PermintaanBayarController extends Controller
         foreach($bayar_header_list as $data_report)
         {
             $data_report;
+            $data_rek = DB::select("select * from tbl_vendor where nama ='$data_report->kepada'");
         }
         $bayar_detail_list = PermintaanDetail::where('no_bayar', $nobayar)->get();
         $list_acount =PermintaanDetail::where('no_bayar',$nobayar)->select('nilai')->sum('nilai');
-        $pdf = DomPDF::loadview('permintaan_bayar.export', compact('list_acount','data_report','bayar_detail_list','request'))->setPaper('a4', 'Portrait');
+        $pdf = DomPDF::loadview('permintaan_bayar.export', compact('list_acount','data_report','bayar_detail_list','request','data_rek'))->setPaper('a4', 'Portrait');
         // return $pdf->download('rekap_permint_'.date('Y-m-d H:i:s').'.pdf');
         return $pdf->stream();
     }

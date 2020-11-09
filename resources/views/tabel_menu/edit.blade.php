@@ -67,10 +67,16 @@
 						<div class="form-group row">
 							<label for="" class="col-2 col-form-label">User AP<span style="color:red;">*</span></label>
 							<div class="col-10">
-								<input class="form-control" type="text" value="{{$userap}}" name="userap"  size="4" maxlength="4" title="Nama Menu" onkeyup="this.value = this.value.toUpperCase()" autocomplete='off' required oninvalid="this.setCustomValidity('Nama Menu Harus Diisi...')" oninput="setCustomValidity('')">
+								<select class="form-control kt-select2" name="userap" required oninvalid="this.setCustomValidity('User AP Kepada Harus Diisi..')" onchange="setCustomValidity('')">
+									<option value="">- Pilih -</option>
+									<option value="UMU" <?php if($userap == 'UMU') echo 'selected'; ?>>UMUM</option>
+									<option value="SDM" <?php if($userap == 'SDM') echo 'selected'; ?>>SDM & Payroll</option>
+									<option value="PBD" <?php if($userap == 'PBD') echo 'selected'; ?>>PERBENDAHARAAN</option>
+									<option value="AKT" <?php if($userap == 'AKT') echo 'selected'; ?>>KONTROLER</option>
+									<option value="CM"  <?php if($userap == 'CM') echo 'selected'; ?>>CUSTOMER MANAGEMENT</option>
+								</select>
 							</div>
-						</div>
-						
+						</div>						
 						
 						<div class="kt-form__actions">
 							<div class="row">

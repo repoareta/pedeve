@@ -89,6 +89,15 @@
                     <td width="200px">DIBAYARKAN KEPADA</td><td width="20px">:</td><td>{{strtoupper($data_report->kepada)}}</td>
                 </tr>
         </table>
+        <table width="100%" style="padding-top:15px;" >
+                <tr style="font-size: 10pt;">
+                    <td width="200px">NO REKENING </td><td width="20px">:</td><td>
+                    @foreach($data_rek as $data_r)
+                    {{strtoupper($data_r->norek)}}
+                    @endforeach
+                    </td>
+                </tr>
+        </table>
         
         
         <table width="100%" style="padding-top:10px;" >
@@ -189,6 +198,15 @@
         <table width="100%" style="padding-top:5px;" >
                 <tr style="font-size: 10pt;">
                     <td width="200px">DIBAYARKAN KEPADA</td><td width="20px">:</td><td>{{strtoupper($data_report->kepada)}}</td>
+                </tr>
+        </table>
+        <table width="100%" style="padding-top:15px;" >
+                <tr style="font-size: 10pt;">
+                    <td width="200px">NO REKENING </td><td width="20px">:</td><td>
+                    @foreach($data_rek as $data_r)
+                    {{strtoupper($data_r->norek)}}
+                    @endforeach
+                    </td>
                 </tr>
         </table>
         

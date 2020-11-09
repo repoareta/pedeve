@@ -94,9 +94,9 @@
 							</div>
 						</div>
 						<div class="form-group row">
-							<label for="dari-input" class="col-2 col-form-label">Debet Dari<span style="color:red;">*</span></label>
+							<label for="dari-input" class="col-2 col-form-label">Debet Dari</label>
 							<div class="col-10">
-								<select name="debetdari" id="select-debetdari" class="form-control selectpicker" data-live-search="true" required oninvalid="this.setCustomValidity('Debet Dari Harus Diisi..')" onchange="setCustomValidity('')">
+								<select name="debetdari" id="select-debetdari" class="form-control selectpicker" data-live-search="true" >
                                     <option value="">- Pilih -</option>
 									@foreach ($debit_nota as $row)
 									<option value="{{ $row->kode }}" <?php if($row->kode == $data_bayar->debet_dari ) echo 'selected' ; ?>>{{ $row->kode.' - '.$row->keterangan }}</option>
@@ -106,13 +106,13 @@
 							</div>
 						</div>
 						<div class="form-group row">
-							<label class="col-2 col-form-label">No. Debet<span style="color:red;">*</span></label>
+							<label class="col-2 col-form-label">No. Debet</label>
 							<div class="col-5">
-								<input class="form-control" type="text" name="nodebet" id="nodebet" value="{{$data_bayar->debet_no}}" size="15" maxlength="15" required oninvalid="this.setCustomValidity('No. Debet Harus Diisi..')" oninput="setCustomValidity('')" autocomplete='off'>
+								<input class="form-control" type="text" name="nodebet" id="nodebet" value="{{$data_bayar->debet_no}}" size="15" maxlength="15" >
 							</div>
-							<label class="col-2 col-form-label">Tgl Debet<span style="color:red;">*</span></label>
+							<label class="col-2 col-form-label">Tgl Debet</label>
 							<div class="col-3" >
-								<input class="form-control" type="text" name="tgldebet" value="<?php echo date("d-m-Y", strtotime($data_bayar->debet_tgl)) ?>" id="tgldebet" size="15" maxlength="15" required oninvalid="this.setCustomValidity('Tgl Debet Harus Diisi..')" onchange="setCustomValidity('')">
+								<input class="form-control" type="text" name="tgldebet" value="<?php echo date("d-m-Y", strtotime($data_bayar->debet_tgl)) ?>" id="tgldebet" size="15" maxlength="15" >
 							</div>
 						</div>
 						<div class="form-group row">
@@ -154,7 +154,8 @@
 						<div class="form-group row">
 							<label class="col-2 col-form-label">Total Nilai</label>
 							<div class="col-10">
-								<input style="background-color:#DCDCDC; cursor:not-allowed"  class="form-control" name="totalnilai" type="text" id="totalnilai" value="Rp. <?php echo number_format($count, 0, ',', '.'); ?>"  readonly>
+								<input style="background-color:#DCDCDC; cursor:not-allowed"  class="form-control" value="<?php echo number_format($count, 2, '.', ','); ?>"  readonly>
+								<input style="background-color:#DCDCDC; cursor:not-allowed"  class="form-control" name="totalnilai" type="text" id="totalnilai" value="<?php echo number_format($count, 2, '.', ''); ?>"  hidden>
 							</div>
 						</div>
                         @foreach($data_bayars as $data_bayar)
@@ -274,13 +275,13 @@
                                     <td align="center">{{$data_bayar_detail->jb}}</td>
                                     <td align="center">{{$data_bayar_detail->pk}}</td>
                                     <td align="center">{{$data_bayar_detail->cj}}</td>
-                                    <td>Rp. <?php echo number_format($data_bayar_detail->nilai, 0, ',', '.'); ?></td>
+                                    <td><?php echo number_format($data_bayar_detail->nilai, 2, '.', ','); ?></td>
                                 </tr>
                             @endforeach
                         </tbody>
                                 <tr>
                                     <td colspan="8" align="right">Jumlah Total : </td>
-                                    <td >Rp. <?php echo number_format($count, 0, ',', '.'); ?></td>
+                                    <td ><?php echo number_format($count, 2, '.', ','); ?></td>
                                 </tr>
 						</tbody>
 					</table>
@@ -315,7 +316,7 @@
 						<label for="example-text-input" class="col-2 col-form-label">Keterangan<span style="color:red;">*</span></label>
 						<label for="example-text-input" class=" col-form-label">:</label>
 						<div class="col-8">
-							<textarea  class="form-control" type="text" value=""  name="keterangan" required oninvalid="this.setCustomValidity('Keterangan Harus Diisi..')" oninput="setCustomValidity('')"></textarea>
+							<textarea  class="form-control" type="text" value=""  name="keterangan" required oninvalid="this.setCustomValidity('Keterangan Harus Diisi..')" oninput="setCustomValidity('')">-</textarea>
 						</div>
 					</div>
 									
@@ -366,7 +367,7 @@
 						<label for="example-text-input" class="col-2 col-form-label">Jumlah<span style="color:red;">*</span></label>
 						<label for="example-text-input" class=" col-form-label">:</label>
 						<div class="col-8">
-							<input  class="form-control" type="text" value="" name="nilai" id="rupiah" onkeypress="return hanyaAngka(event)" required oninvalid="this.setCustomValidity('Jumlah Harus Diisi..')" oninput="setCustomValidity('')" autocomplete='off'>
+							<input  class="form-control" type="text" value="" name="nilai"  required oninvalid="this.setCustomValidity('Jumlah Harus Diisi..')" oninput="this.value = this.value.replace(/[^0-9\-]+/g, ','); setCustomValidity('')" autocomplete='off'>
 						</div>
 					</div>
 
@@ -486,7 +487,7 @@
 						<label for="example-text-input" class="col-2 col-form-label">Jumlah<span style="color:red;">*</span></label>
 						<label for="example-text-input" class=" col-form-label">:</label>
 						<div class="col-8">
-							<input  class="form-control" type="text" value="" id="nilai" name="nilai" onkeypress="return hanyaAngka(event)" autocomplete='off'>
+							<input  class="form-control" type="text" value="" name="nilai" id="nilai" oninput="this.value = this.value.replace(/[^0-9\-]+/g, ',');" autocomplete='off'>
 						</div>
 					</div>
 
@@ -761,16 +762,8 @@ $(".btn-radio:checked").each(function() {
 				$('#no').val(data.no);
 				$('#keterangan').val(data.keterangan);
 				$('#pk').val(data.pk);
-				var bilangan=parseInt(data.nilai);
-				var	number_string = bilangan.toString(),
-					sisa 	= number_string.length % 3,
-					rupiah 	= number_string.substr(0, sisa),
-					ribuan 	= number_string.substr(sisa).match(/\d{3}/g);
-						
-				if (ribuan) {
-					separator = sisa ? '.' : '';
-					rupiah += separator + ribuan.join('.');
-				}
+				var d=parseFloat(data.nilai);
+				var rupiah = d.toFixed(2);
 				$('#nilai').val(rupiah);
 				$('.modal-edit-detail-bayar').modal('show');
 				$('#select-bagian').val(data.bagian).trigger('change');

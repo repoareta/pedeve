@@ -82,11 +82,11 @@
 							<div class="col-8">
 								<div class="kt-radio-inline">
 									<label class="kt-radio kt-radio--solid">
-										<input type="radio"  name="userlv" value="0" checked> ADMINISTRATOR
+										<input type="radio"  name="userlv" value="0" > ADMINISTRATOR
 										<span></span>
 									</label>
 									<label class="kt-radio kt-radio--solid">
-										<input type="radio"    name="userlv" value="1"> USER
+										<input type="radio"    name="userlv" value="1" checked> USER
 										<span></span>
 									</label>
 								</div>
@@ -120,7 +120,7 @@
 								</div>
 							</div>
 						</div>
-						<div class="form-group row">
+						{{-- <div class="form-group row">
 							<label for="" class="col-2 col-form-label">Nopeg Pekerja</label>
 							<div class="col-10">
 								<select class="form-control kt-select2" name="nopeg" id="nopeg">
@@ -152,7 +152,7 @@
 									@endforeach
 								</select>
 							</div>
-						</div>
+						</div> --}}
 						<div class="form-group row">
 							<label for="" class="col-2 col-form-label">Last Updated By</label>
 							<div class="col-10">

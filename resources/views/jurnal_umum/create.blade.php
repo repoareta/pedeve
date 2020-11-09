@@ -72,7 +72,7 @@
 									$jabatan = "Sekretaris Perseroan";
 									$nama = "Silahkan Isi";
 									?>
-								<select class="form-control" name="bulan" required>
+								<select class="form-control kt-select2" style="width: 100% !important;" name="bulan" required>
 									<option value="01" <?php if($bulan  == '01' ) echo 'selected' ; ?>>Januari</option>
 									<option value="02" <?php if($bulan  == '02' ) echo 'selected' ; ?>>Februari</option>
 									<option value="03" <?php if($bulan  == '03' ) echo 'selected' ; ?>>Maret</option>
@@ -221,6 +221,10 @@
 			scrollX   : true,
 			processing: true,
 			serverSide: false,
+		});
+
+		$('.kt-select2').select2().on('change', function() {
+			// $(this).valid();
 		});
 
 		$("#jk").on("change", function(){

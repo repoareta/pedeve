@@ -90,7 +90,7 @@ class PotonganKoreksiGajiController extends Controller
             return $data->aard.' -- '.$data->nama_aard;
        })
         ->addColumn('nilai', function ($data) {
-             return 'Rp. '.number_format($data->nilai,2,'.',',');
+             return number_format($data->nilai,2,'.',',');
        })
 
         ->addColumn('radio', function ($data) {
@@ -135,7 +135,7 @@ class PotonganKoreksiGajiController extends Controller
             'aard' => $request->aard,
             'jmlcc' => 0,
             'ccl' => 0,
-            'nilai' => str_replace('.', '', $request->nilai),
+            'nilai' => str_replace(',', '.', $request->nilai),
             'userid' => $request->userid,
             
             // Save Panjar Header
@@ -159,7 +159,7 @@ class PotonganKoreksiGajiController extends Controller
             ->update([
                 'jmlcc' => 0,
                 'ccl' => 0,
-                'nilai' => str_replace('.', '', $request->nilai),
+                'nilai' => str_replace(',', '.', $request->nilai),
                 'userid' => $request->userid,
             ]);
             return response()->json();

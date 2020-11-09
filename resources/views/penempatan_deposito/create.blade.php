@@ -84,7 +84,7 @@
 						<div class="form-group row">
 							<label for="spd-input" class="col-2 col-form-label">Nominal<span style="color:red;">*</span></label>
 							<div class="col-10">
-								<input  class="form-control" type="text5" value="" id="nominal" name="nominal" size="15" maxlength="15" onkeypress="return hanyaAngka(event)" required oninvalid="this.setCustomValidity('Nominal Harus Diisi..')" oninput="setCustomValidity('')" autocomplete='off' >
+								<input  class="form-control" type="text" value=""  name="nominal" size="25" maxlength="25" required oninvalid="this.setCustomValidity('Nominal Harus Diisi..')" oninput="this.value = this.value.replace(/[^0-9\-]+/g, ','); setCustomValidity('')" autocomplete='off' >
 							</div>
 						</div>
 						<div class="form-group row">
@@ -102,7 +102,7 @@
 						<div class="form-group row">
 							<label for="spd-input" class="col-2 col-form-label">Bunga % Tahun<span style="color:red;">*</span></label>
 							<div class="col-10">
-								<input  class="form-control" type="number" value="" id="tahunbunga" name="tahunbunga" size="15" maxlength="15" step="0.01" pattern="^\d+(?:\.\d{1,2})?$" onblur="this.parentNode.parentNode.style.backgroundColor=/^\d+(?:\.\d{1,2})?$/.test(this.value)?'inherit':''" required oninvalid="this.setCustomValidity('Bungan % Tahun Harus Diisi..')" oninput="setCustomValidity('')" autocomplete='off' >
+								<input  class="form-control" type="text" value="" name="tahunbunga" size="15" maxlength="15"  required oninvalid="this.setCustomValidity('Bungan % Tahun Harus Diisi..')" oninput="this.value = this.value.replace(/[^0-9\-]+/g, ','); setCustomValidity('')" autocomplete='off' >
 							</div>
 						</div>
 						<div class="form-group row">
@@ -244,32 +244,6 @@
  
 		    return false;
 		  return true;
-		}
-
-		var nilai = document.getElementById('nominal');
-		nilai.addEventListener('keyup', function(e){
-			// tambahkan 'Rp.' pada saat form di ketik
-			// gunakan fungsi formatnilai() untuk mengubah angka yang di ketik menjadi format angka
-			nilai.value = formatRupiah(this.value, '');
-		});
-
-		/* Fungsi formatRupiah */
-		function formatRupiah(angka, prefix){
-			var number_string = angka.replace(/[^,\d]/g, '').toString(),
-			split   		= number_string.split(','),
-			sisa     		= split[0].length % 3,
-			nilai     		= split[0].substr(0, sisa),
-			ribuan     		= split[0].substr(sisa).match(/\d{3}/gi);
-
-			// tambahkan titik jika yang di input sudah menjadi angka ribuan
-			if(ribuan){
-				separator = sisa ? '.' : '';
-				nilai += separator + ribuan.join('.');
-			}
-
-			nilai = split[1] != undefined ? nilai + ',' + split[1] : nilai;
-			$a= prefix == undefined ? nilai : (nilai ? nilai: '');
-         return $a;
 		}
 </script>
 

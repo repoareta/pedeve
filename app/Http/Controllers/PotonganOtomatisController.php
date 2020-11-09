@@ -145,7 +145,7 @@ class PotonganOtomatisController extends Controller
                     'aard' => $aard,
                     'jmlcc' => $jmlcc,
                     'ccl' => $col,
-                    'nilai' => $request->nilai,
+                    'nilai' => str_replace(',', '.', $request->nilai),
                     'userid' => $request->userid,            
                     ]);
                 $bulannext = $bulannext + 1;
@@ -212,7 +212,7 @@ class PotonganOtomatisController extends Controller
             ->update([
                 'jmlcc' => $request->jmlcc,
                 'ccl' => $request->ccl,
-                'nilai' => $request->nilai,
+                'nilai' => str_replace(',', '.', $request->nilai),
                 'akhir' => $request->akhir,
                 'aardhut' => $request->aardhut,
                 'totalhut' => $request->totalhut,

@@ -42,7 +42,7 @@ class KasCashJudexController extends Controller
             $xxx =['10','11','13','15','18'];
         }
 
-        if ($request->lapangan == "KL") {
+        // if ($request->lapangan == "KL") {
             $yyy = "$request->tahun";
             if ($request->bulan <> "") {
                 $sss =[$request->bulan];
@@ -56,22 +56,22 @@ class KasCashJudexController extends Controller
                 $ddd = "$request->sanper";
                 $data_list = V_d2kasbank::where('tahun', $yyy)->whereIn('bulan', $sss)->where('account', $ddd)->whereIn('jk', $xxx)->orderBy('account', 'asc')->get();
             }
-        } else {
-            $bbb = "$request->lapangan";
-            $yyy = "$request->tahun";
-            if ($request->bulan <> "") {
-                $sss = [$request->bulan];
-            } else {
-                $sss =['01','02','03','04','05','06','07','08','09','10','11','12'];
-            }
+        // } else {
+        //     $bbb = "$request->lapangan";
+        //     $yyy = "$request->tahun";
+        //     if ($request->bulan <> "") {
+        //         $sss = [$request->bulan];
+        //     } else {
+        //         $sss =['01','02','03','04','05','06','07','08','09','10','11','12'];
+        //     }
             
-            if ($request->sanper == "") {
-                $data_list = V_d2kasbank::where('lokasi', $bbb)->where('tahun', $yyy)->whereIn('bulan', $sss)->whereIn('jk', $xxx)->orderBy('account', 'asc')->get();
-            } else {
-                $ddd = "$request->sanper";
-                $data_list = V_d2kasbank::where('lokasi', $bbb)->where('tahun', $yyy)->where('account', $ddd)->whereIn('bulan', $sss)->whereIn('jk', $xxx)->orderBy('account', 'asc')->get();
-            }
-        }
+        //     if ($request->sanper == "") {
+        //         $data_list = V_d2kasbank::where('lokasi', $bbb)->where('tahun', $yyy)->whereIn('bulan', $sss)->whereIn('jk', $xxx)->orderBy('account', 'asc')->get();
+        //     } else {
+        //         $ddd = "$request->sanper";
+        //         $data_list = V_d2kasbank::where('lokasi', $bbb)->where('tahun', $yyy)->where('account', $ddd)->whereIn('bulan', $sss)->whereIn('jk', $xxx)->orderBy('account', 'asc')->get();
+        //     }
+        // }
 
         if ($request->bulan <> "") {
             $export_d2_kas_bank = 'export_d2_kas_bank_bulan_pdf' ;

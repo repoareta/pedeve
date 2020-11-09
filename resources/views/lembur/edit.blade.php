@@ -92,31 +92,31 @@
 				<div class="form-group row">
 					<label for="id-pekerja;-input" class="col-2 col-form-label">Makan Pagi</label>
 					<div class="col-10">
-						<input class="form-control" type="text" value="<?php echo number_format($data_li->makanpg, 0, '', '') ?>" id="makanpg" name="makanpg" onkeypress="return hanyaAngka(event)" autocomplete='off'>
+						<input class="form-control" type="text" value="<?php echo number_format($data_li->makanpg, 2, '.', '') ?>" id="mapg" name="makanpg" oninput="this.value = this.value.replace(/[^0-9\-]+/g, ',');setCustomValidity('')" autocomplete='off'>
 					</div>
 				</div>
 				<div class="form-group row">
 					<label for="id-pekerja;-input" class="col-2 col-form-label">Makan Siang</label>
 					<div class="col-10">
-						<input class="form-control" type="text" value="<?php echo number_format($data_li->makansg, 0, '', '') ?>" id="makansg" name="makansg" onkeypress="return hanyaAngka(event)" autocomplete='off'>
+						<input class="form-control" type="text" value="<?php echo number_format($data_li->makansg, 2, '.', '') ?>" id="masi" name="makansg" oninput="this.value = this.value.replace(/[^0-9\-]+/g, ',');setCustomValidity('')" autocomplete='off'>
 					</div>
 				</div>
 				<div class="form-group row">
-					<label for="id-pekerja;-input" class="col-2 col-form-label">Makan Siang</label>
+					<label for="id-pekerja;-input" class="col-2 col-form-label">Makan Malam</label>
 					<div class="col-10">
-						<input class="form-control" type="text" value="<?php echo number_format($data_li->makanml, 0, '', '') ?>" id="makanml" name="makanml" onkeypress="return hanyaAngka(event)" autocomplete='off'>
+						<input class="form-control" type="text" value="<?php echo number_format($data_li->makanml, 2, '.', '') ?>" id="maml" name="makanml" oninput="this.value = this.value.replace(/[^0-9\-]+/g, ',');setCustomValidity('')" autocomplete='off'>
 					</div>
 				</div>
 				<div class="form-group row">
 					<label for="id-pekerja;-input" class="col-2 col-form-label">Transport</label>
 					<div class="col-10">
-						<input class="form-control" type="text" value="<?php echo number_format($data_li->transport, 0, '', '') ?>" id="transport" name="transport" onkeypress="return hanyaAngka(event)" autocomplete='off'>
+						<input class="form-control" type="text" value="<?php echo number_format($data_li->transport, 2, '.', '') ?>" id="trans" name="transport" oninput="this.value = this.value.replace(/[^0-9\-]+/g, ',');setCustomValidity('')" autocomplete='off'>
 					</div>
 				</div>
 				<div class="form-group row">
 					<label for="id-pekerja;-input" class="col-2 col-form-label">Lembur</label>
 					<div class="col-10">
-						<input class="form-control" type="text" value="<?php echo number_format($data_li->lembur, 0, '', '') ?>" id="lembur" name="lembur" onkeypress="return hanyaAngka(event)" autocomplete='off'>
+						<input class="form-control" type="text" value="<?php echo number_format($data_li->lembur, 2, '.', '') ?>" id="lem" name="lembur" oninput="this.value = this.value.replace(/[^0-9\-]+/g, ',');setCustomValidity('')" autocomplete='off'>
 					</div>
 				</div>
 				@endforeach
@@ -212,12 +212,12 @@ return {
 
 KTBootstrapDatepicker.init();
 });
-function hanyaAngka(evt) {
-		  var charCode = (evt.which) ? evt.which : event.keyCode
-		   if (charCode > 31 && (charCode < 48 || charCode > 57))
- 
-		    return false;
-		  return true;
-		}
+	function hanyaAngka(evt) {
+		var charCode = (evt.which) ? evt.which : event.keyCode
+		if (charCode > 31 && (charCode < 48 || charCode > 57))
+
+		return false;
+		return true;
+	}
 </script>
 @endsection

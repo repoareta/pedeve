@@ -131,32 +131,32 @@
 							<label class="col-2 col-form-label">
 							@if($mp == "M") {{$darkep}} @else {{$darkep}} @endif<span style="color:red;">*</span></label>
 							<div class="col-10">
-								<input class="form-control" type="text" name="kepada" id="kepada" value="" size="40" maxlength="40" required oninvalid="this.setCustomValidity('{{$darkep}} Harus Diisi..')" oninput="setCustomValidity('')" autocomplete='off'>
+								<select class="kepada form-control" style="width: 100% !important;" name="kepada" ></select>
 							</div>
 						</div>
 						<div class="form-group row">
 							<label class="col-2 col-form-label">Sejumlah</label>
 							<div class="col-10">
-								<input class="form-control" type="text" name="nilai" id="nilai" value="0" size="16" maxlength="16" autocomplete='off'>
+								<input class="form-control" type="text" name="nilai" id="nilai" value="0" size="16" maxlength="16" autocomplete='off' readonly>
 								<input class="form-control" type="hidden" name="iklan" value=""  id="iklan" size="4" maxlength="4" readonly style="background-color:#DCDCDC; cursor:not-allowed">
 							</div>
 						</div>
 						<div class="form-group row">
 							<label class="col-2 col-form-label">Catatan 1</label>
 							<div class="col-10">
-								<input class="form-control" type="text" name="ket1" id="ket1" value="" size="35" maxlength="35"  autocomplete='off'>
+								<textarea class="form-control" type="text" name="ket1" id="ket1" value=""  autocomplete='off'></textarea>
 							</div>
 						</div>
 						<div class="form-group row">
 							<label class="col-2 col-form-label">Catatan 2</label>
 							<div class="col-10">
-								<input class="form-control" type="text" name="ket2" id="ket2" value="" size="35" maxlength="35"  autocomplete='off'>
+								<textarea class="form-control" type="text" name="ket2" id="ket2" value=""  autocomplete='off'></textarea>
 							</div>
 						</div>
 						<div class="form-group row">
 							<label class="col-2 col-form-label">Catatan 3</label>
 							<div class="col-10">
-								<input class="form-control" type="text" name="ket3" id="ket3" value="" size="35" maxlength="35"  autocomplete='off'>
+								<textarea class="form-control" type="text" name="ket3" id="ket3" value=""  autocomplete='off'></textarea>
 							</div>
 						</div>
 						<div class="kt-form__actions">
@@ -452,7 +452,34 @@ $('#nilai').keyup(function(){
 		// language : 'id',
 		format   : 'yyyymm'
 	});
+
 });
+	$('.kepada').select2({
+		placeholder: '-Pilih-',
+		allowClear: true,
+		tags: true,
+		ajax: {
+			url: "{{route('penerimaan_kas.kepadaJson')}}",
+			type : "post",
+			dataType : "JSON",
+			headers: {
+			'X-CSRF-Token': '{{ csrf_token() }}',
+			},
+			delay: 250,
+		processResults: function (data) {
+			console.log(data.length);
+			return {
+			results:  $.map(data, function (item) {
+				return {
+				text: item.kepada,
+				id: item.kepada
+				}
+			})
+			};
+		},
+		cache: true
+		}
+	});
 
 		function hanyaAngka(evt) {
 		  var charCode = (evt.which) ? evt.which : event.keyCode
@@ -460,31 +487,6 @@ $('#nilai').keyup(function(){
  
 		    return false;
 		  return true;
-		}
-		var nilai = document.getElementById('nilai');
-		nilai.addEventListener('keyup', function(e){
-			// tambahkan 'Rp.' pada saat form di ketik
-			// gunakan fungsi formatnilai() untuk mengubah angka yang di ketik menjadi format angka
-			nilai.value = formatRupiah(this.value, '');
-		});
-
-		/* Fungsi formatRupiah */
-		function formatRupiah(angka, prefix){
-			var number_string = angka.replace(/[^,\d]/g, '').toString(),
-			split   		= number_string.split(','),
-			sisa     		= split[0].length % 3,
-			nilai     		= split[0].substr(0, sisa),
-			ribuan     		= split[0].substr(sisa).match(/\d{3}/gi);
-
-			// tambahkan titik jika yang di input sudah menjadi angka ribuan
-			if(ribuan){
-				separator = sisa ? '.' : '';
-				nilai += separator + ribuan.join('.');
-			}
-
-			nilai = split[1] != undefined ? nilai + ',' + split[1] : nilai;
-			$a= prefix == undefined ? nilai : (nilai ? nilai: '');
-         return $a;
 		}
 </script>
 

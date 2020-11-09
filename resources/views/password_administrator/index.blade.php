@@ -108,7 +108,7 @@
 							<div class="col-10">
 								<input class="form-control" type="password" value="" name="newpw1" id="newpw1" size="50" maxlength="50" title="CONFIRM PASSWORD" autocomplete='off' required oninvalid="this.setCustomValidity('CONFIRM PASSWORD Harus Diisi...')" oninput="setCustomValidity('')">
 								<span id="mybutton-con-baru" onclick="con_baru()"><i class="fas fa-eye"></i></span>
-								<span style="display:none;color:red;" class="errorConfirm"> Password dan Confirm Password tidak .</span>
+								<span style="display:none;color:red;" class="errorConfirm"> Password dan confirm password tidak sama.</span>
 							</div>
 						</div>
 						

@@ -62,7 +62,7 @@
 						<div class="form-group row">
 							<label class="col-2 col-form-label">Nilai<span style="color:red;">*</span></label>
 							<div class="col-10">
-								<input class="form-control" name="nilai" type="text" value="{{number_format($nilai,0,'','')}}" size="17" maxlength="17"  onkeypress="return hanyaAngka(event)" required oninvalid="this.setCustomValidity('Nilai Harus Diisi..')" oninput="setCustomValidity('')" autocomplete='off'>
+								<input class="form-control" name="nilai" type="text" value="{{number_format($nilai,2,'.','')}}" size="25" maxlength="25" required oninvalid="this.setCustomValidity('Nilai Harus Diisi..')" oninput="this.value = this.value.replace(/[^0-9\-]+/g, ',');setCustomValidity('')" autocomplete='off'>
 							</div>
 						</div>
 											

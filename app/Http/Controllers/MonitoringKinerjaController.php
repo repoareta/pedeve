@@ -75,10 +75,10 @@ class MonitoringKinerjaController extends Controller
         'tahun' => $request->tahun,
         'bulan' => $request->bulan,
         'rate' => $request->kurs,
-        'total_aset' => str_replace('.', '', $request->total_aset),
-        'sales' => str_replace('.', '', $request->sales),
-        'laba_bersih' => str_replace('.', '', $request->laba_bersih),
-        'tkp' => str_replace('.', '', $request->tkp),
+        'total_aset' => str_replace(',', '.', $request->total_aset),
+        'sales' => str_replace(',', '.', $request->sales),
+        'laba_bersih' => str_replace(',', '.', $request->laba_bersih),
+        'tkp' => str_replace(',', '.', $request->tkp),
         ]);
         return response()->json(1);
     }
@@ -97,10 +97,10 @@ class MonitoringKinerjaController extends Controller
             ->update([
             'kd_perusahaan' => $request->nama,
             'ci' => $request->ci,
-            'total_aset' => str_replace('.', '', $request->total_aset),
-            'sales' => str_replace('.', '', $request->sales),
-            'laba_bersih' => str_replace('.', '', $request->laba_bersih),
-            'tkp' => str_replace('.', '', $request->tkp),
+            'total_aset' => str_replace(',', '.', $request->total_aset),
+            'sales' => str_replace(',', '.', $request->sales),
+            'laba_bersih' => str_replace(',', '.', $request->laba_bersih),
+            'tkp' => str_replace(',', '.', $request->tkp),
             ]);
             return response()->json();
     }

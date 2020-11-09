@@ -84,7 +84,7 @@ class PotonganInsentifController extends Controller
             return $data->nopek.' -- '.$data->nama_nopek;
        })
         ->addColumn('nilai', function ($data) {
-             return 'Rp. '.number_format($data->nilai,2,'.',',');
+             return number_format($data->nilai,2,'.',',');
        })
 
         ->addColumn('radio', function ($data) {
@@ -126,7 +126,7 @@ class PotonganInsentifController extends Controller
             'tahun' => $data_tahun,
             'bulan' => $data_bulan,
             'nopek' => $request->nopek,
-            'nilai' => str_replace('.', '', $request->nilai),
+            'nilai' => str_replace(',', '.', $request->nilai),
             'userid' => $request->userid,            
             ]);
             $data = 1;
@@ -172,7 +172,7 @@ class PotonganInsentifController extends Controller
             ->where('bulan',$request->bulan)
             ->where('nopek',$request->nopek)
             ->update([
-                'nilai' => str_replace('.', '', $request->nilai),
+                'nilai' => str_replace(',', '.', $request->nilai),
                 'userid' => $request->userid,
             ]);
             return response()->json();

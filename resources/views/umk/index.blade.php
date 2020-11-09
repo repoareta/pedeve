@@ -138,6 +138,7 @@ $(document).ready(function(){
 			serverSide: true,
 			searching: false,
 			lengthChange: false,
+			pageLength: 200,
 			language: {
             	processing: '<i class="fa fa-spinner fa-spin fa-2x fa-fw"></i> <br> Loading...'
 			},

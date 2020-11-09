@@ -14,11 +14,11 @@ class TabMonitoring extends Migration
                 $table->integer('kd_perusahaan');
                 $table->char('tahun',4);
                 $table->char('bulan',2);
-                $table->integer('sales')->nullable();
-                $table->integer('tkp')->nullable();                
-                $table->integer('total_aset')->nullable();
-                $table->integer('laba_bersih')->nullable();
-                $table->integer('rate')->nullable();;
+                $table->decimal('sales',38,10)->nullable();
+                $table->decimal('tkp',38,10)->nullable();                
+                $table->decimal('total_aset',38,10)->nullable();
+                $table->decimal('laba_bersih',38,10)->nullable();
+                $table->decimal('rate',38,10)->nullable();;
                 $table->integer('ci');
             });
         };
