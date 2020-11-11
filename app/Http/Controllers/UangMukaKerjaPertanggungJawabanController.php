@@ -288,4 +288,11 @@ class UangMukaKerjaPertanggungJawabanController extends Controller
         ]);
         return $pdf->stream('rekap_umk_pertanggungjawaban_'.date('Y-m-d H:i:s').'.pdf');
     }
+
+    public function approv($id)
+    {
+        $no_pumk = str_replace('-', '/', $id);
+        $pumk_header = PUmkHeader::where('no_pumk', $no_pumk)->first();
+        return view('umk_pertanggungjawaban.approv', compact('pumk_header'));
+    }
 }

@@ -50,6 +50,19 @@
 						</div>
 					</div>
 				</div>
+
+
+				@if ($errors->any())
+    <div class="alert alert-danger">
+        <ul>
+            @foreach ($errors->all() as $error)
+                <li>{{ $error }}</li>
+            @endforeach
+        </ul>
+    </div>
+@endif
+
+
 				<form class="kt-form kt-form--label-right" id="formPanjarDinas" action="{{ route('perjalanan_dinas.store') }}" method="POST">
 					@csrf
 					<div class="form-group row">
@@ -78,7 +91,7 @@
 					<div class="form-group row">
 						<label for="example-email-input" class="col-2 col-form-label">Jabatan</label>
 						<div class="col-5">
-							<select class="form-control kt-select2" name="jabatan" id="jabatan">
+							<select class="form-control kt-select2" name="jabatan" id="jabatan" readonly>
 								<option value="">- Pilih Jabatan -</option>
 								@foreach ($jabatan_list as $jabatan)
 									<option value="{{ $jabatan->keterangan }}">{{ $jabatan->keterangan }}</option>
@@ -95,14 +108,13 @@
 					<div class="form-group row">
 						<label for="id-pekerja;-input" class="col-2 col-form-label">KTP/Passport</label>
 						<div class="col-10">
-							<input class="form-control" type="text" name="ktp" id="ktp">
+							<input class="form-control" type="text" name="ktp" id="ktp" value="-">
 						</div>
 					</div>
 					<div class="form-group row">
 						<label for="jenis-dinas-input" class="col-2 col-form-label">Jenis Dinas</label>
 						<div class="col-10">
 							<select class="form-control kt-select2" name="jenis_dinas" id="jenis_dinas">
-								<option value="">- Pilih Jenis Dinas -</option>
 								<option value="DN">PDN-DN</option>
 								<option value="LN">PDN-LN</option>
 								<option value="SIJ">SIJ</option>
@@ -127,11 +139,11 @@
 						<label for="mulai-input" class="col-2 col-form-label">Mulai</label>
 						<div class="col-10">
 							<div class="input-daterange input-group" id="date_range_picker">
-								<input type="text" class="form-control" name="mulai" autocomplete="off" />
+								<input type="text" class="form-control" name="mulai" autocomplete="off" value="{{ date('d-m-Y') }}" />
 								<div class="input-group-append">
 									<span class="input-group-text">Sampai</span>
 								</div>
-								<input type="text" class="form-control" name="sampai" autocomplete="off" />
+								<input type="text" class="form-control" name="sampai" autocomplete="off" value="{{ date('d-m-Y') }}" />
 							</div>
 							<span class="form-text text-muted">Pilih rentang waktu mulai dan sampai</span>
 						</div>
@@ -148,7 +160,6 @@
 						<label for="biaya" class="col-2 col-form-label">Biaya</label>
 						<div class="col-10">
 							<select class="form-control kt-select2" name="biaya" id="biaya">
-								<option value="">- Pilih Biaya -</option>
 								<option value="P">Ditanggung Perusahaan</option>
 								<option value="K">Ditanggung Pribadi</option>
 								<option value="U">Ditanggung PPU</option>
@@ -194,17 +205,15 @@
 				</h3>
 				
 				<div class="kt-portlet__head-actions" style="font-size: 2rem;">
-					<a href="#" id="openDetail">
-						<span class="kt-font-success" data-toggle="kt-tooltip" data-placement="top" title="Tambah Data">
-							<i class="fas fa-plus-circle"></i>
-						</span>
-					</a>
+					<span class="kt-font-dark pointer-link fa-disabled" data-toggle="kt-tooltip" data-placement="top" title="Tambah Data">
+						<i class="fas fa-plus-circle"></i>
+					</span>
 	
-					<span class="kt-font-warning pointer-link" id="editRow" data-toggle="kt-tooltip" data-placement="top" title="Ubah Data">
+					<span class="kt-font-dark pointer-link fa-disabled" data-toggle="kt-tooltip" data-placement="top" title="Ubah Data">
 						<i class="fas fa-edit"></i>
 					</span>
 	
-					<span class="kt-font-danger pointer-link" id="deleteRow" data-toggle="kt-tooltip" data-placement="top" title="Hapus Data">
+					<span class="kt-font-dark pointer-link fa-disabled" data-toggle="kt-tooltip" data-placement="top" title="Hapus Data">
 						<i class="fas fa-times-circle"></i>
 					</span>
 				</div>
@@ -389,7 +398,10 @@
 			format   : 'dd-mm-yyyy'
 		});
 
-		$("#formPanjarDinas").on('submit', function(){
+		$("#formPanjarDinas").on('submit', function(e){
+
+			e.preventDefault();
+
 			if ($('#nopek-error').length){
 				$("#nopek-error").insertAfter("#nopek-nya");
 			}
@@ -409,6 +421,36 @@
 			if ($('#sampai-error').length){
 				$("#sampai-error").addClass("float-right");
 			}
+
+			if($(this).valid()) {
+			const swalWithBootstrapButtons = Swal.mixin({
+			customClass: {
+				confirmButton: 'btn btn-primary',
+				cancelButton: 'btn btn-danger'
+			},
+				buttonsStyling: false
+			})
+
+			swalWithBootstrapButtons.fire({
+				title: "Apakah anda yakin mau menyimpan data ini?",
+				text: "",
+				type: 'warning',
+				showCancelButton: true,
+				reverseButtons: true,
+				confirmButtonText: 'Ya, Simpan Panjar',
+				cancelButtonText: 'Tidak'
+			})
+			.then((result) => {
+				if (result.value) {
+					$(this).append('<input type="hidden" name="url" value="edit" />');
+					$(this).unbind('submit').submit();
+				}
+				else if (result.dismiss === Swal.DismissReason.cancel) {
+					$(this).append('<input type="hidden" name="url" value="pekerja.index" />');
+					$(this).unbind('submit').submit();
+				}
+			});
+		}
 		});
 
 		$("#formPanjarDinasDetail").on('submit', function(){

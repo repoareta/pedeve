@@ -188,6 +188,7 @@ header {
                 <tbody>
                     @php
                         $total = 0;
+                        $total_row = 0;
                     @endphp
                     @foreach ($kasdoc->kasline as $kasline)
                     <tr>
@@ -204,13 +205,14 @@ header {
                             @endif
                             @php
                                 $total += abs($kasline->totprice);
+                                $total_row++;
                             @endphp
                         </td>
                         <td valign="top" class="text-center">{{ $kasline->cj }}</td>
                     </tr>
                     @endforeach
                     <tr>
-                        <td class="border-top-less">
+                        <td class="border-top-less" valign="top" style="height:{{ 565 - ($total_row*50) }}px">
                             <b><u>KETERANGAN :</u></b>
                             <br>
                             {{ $kasdoc->ket1 }}
