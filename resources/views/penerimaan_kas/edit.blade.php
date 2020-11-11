@@ -160,7 +160,7 @@
 						<div class="form-group row">
 							<label class="col-2 col-form-label">Sejumlah</label>
 							<div class="col-10">
-								<input class="form-control" type="text"  value="{{number_format($data->nilai_dok,2,'.',',')}}" size="16" maxlength="16" readonly autocomplete='off' onkeypress="return hanyaAngka(event)">
+								<input class="form-control" type="text"  value="{{number_format($count,2,'.',',')}}" size="16" maxlength="16" readonly autocomplete='off' onkeypress="return hanyaAngka(event)">
 								<input class="form-control" type="hidden" name="nilai" id="nilai" value="{{number_format($count, 2, '.', '')}}" size="16" maxlength="16" autocomplete='off' onkeypress="return hanyaAngka(event)">
 							</div>
 						</div>

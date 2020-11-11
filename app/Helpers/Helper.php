@@ -79,28 +79,28 @@ function pajak($nilai)
     $data_sdmprogresif = DB::select("select * from sdm_tbl_progressif order by awal asc");
     // SdmTblProgressif::orderBy('awal','asc');
     $pph21ok = 0;
-    foreach ($data_sdmprogresif as $data_prog) {
-        $awal = $data_prog->awal;
-        $akhir = $data_prog->akhir;
-        $persen = $data_prog->prosen;
-        $prosen = $persen/100;
-        $range = $akhir - $awal;
-        if ($sisapokok > 0) {
-            $sisapokok1 = $sisapokok;
-            if ($sisapokok1 > 0 and $sisapokok1 < $range) {
-                $pph21r = $sisapokok1 * $prosen;
-            } elseif ($sisapokok1 > 0 and $sisapokok1 >= $range) {
-                $pph21r = $range * $prosen;
-            } else {
-                $pph21r = 0;
-            }
-        } else {
-            $sisapokok1 = $sisapokok;
+    if ($sisapokok > 0) {
+        $sisapokok1 = $sisapokok;
+        if (($sisapokok1 > 0) and ($sisapokok1 < 50000000)) {
+            $pph21r = $sisapokok1 * (5/100);
+            return $pajakbulanpt = ($pph21r/12);
+        } elseif (($sisapokok1 > 0) and ($sisapokok1 < 250000000)) {
+            $pph21r = $sisapokok1 * (15/100);
+            return $pajakbulanpt = ($pph21r/12);
+        } elseif (($sisapokok1 > 0) and ($sisapokok1 < 500000000)) {
+            $pph21r = $sisapokok1 * (25/100);
+            return $pajakbulanpt = ($pph21r/12);
+        } elseif (($sisapokok1 > 0) and ($sisapokok1 >= 500000000)) {
+            $pph21r = $sisapokok1 * (30/100);
+            return $pajakbulanpt = ($pph21r/12);
+        } elseif($sisapokok1 < 0) {
             $pph21r = 0;
+            return $pajakbulanpt = ($pph21r);
         }
-        $pph21ok =  $pph21r;
-        $sisapokok = $sisapokok1 - $range;
-        return   $pajakbulan = ($pph21ok/12);
+    } else {
+        $sisapokok1 = $sisapokok;
+        $pph21r = 0;
+        return $pajakbulanpt = 0;
     }
 }
 function pph21ok($pokok)
@@ -108,27 +108,28 @@ function pph21ok($pokok)
     $pphrss=DB::select("select * from sdm_tbl_progressif order by awal asc");
     $pph21ok = 0;
     $sisapokok = $pokok; 
-    foreach ($pphrss as $pphrs) {
-        $awal=($pphrs->awal);
-        $akhir=($pphrs->akhir);
-        $persen = ($pphrs->prosen);
-        $prosen=($persen)/100;
-        $range = $akhir - $awal;
-        if ($sisapokok > 0) {
-            $sisapokok1 = $sisapokok;
-            if ($sisapokok1 > 0 and $sisapokok1 < $range) {
-                $pph21r = $sisapokok1 * $prosen;
-            } elseif ($sisapokok1 > 0 and $sisapokok1 >= $range) {
-                $pph21r = $range * $prosen;
-            } elseif ($sisapokok1 < 0) {
-                $pph21r = 0;
-            }
-        } elseif ($sisapokok < 0) {
+    if ($sisapokok > 0) {
+        $sisapokok1 = $sisapokok;
+        if (($sisapokok1 > 0) and ($sisapokok1 < 50000000)) {
+            $pph21r = $sisapokok1 * (5/100);
+            return $pajakbulanpt = ($pph21r/12);
+        } elseif (($sisapokok1 > 0) and ($sisapokok1 < 250000000)) {
+            $pph21r = $sisapokok1 * (15/100);
+            return $pajakbulanpt = ($pph21r/12);
+        } elseif (($sisapokok1 > 0) and ($sisapokok1 < 500000000)) {
+            $pph21r = $sisapokok1 * (25/100);
+            return $pajakbulanpt = ($pph21r/12);
+        } elseif (($sisapokok1 > 0) and ($sisapokok1 >= 500000000)) {
+            $pph21r = $sisapokok1 * (30/100);
+            return $pajakbulanpt = ($pph21r/12);
+        } elseif($sisapokok1 < 0) {
             $pph21r = 0;
-            $sisapokok1 = 0;
+            return $pajakbulanpt = ($pph21r);
         }
-        $sisapokok = $sisapokok1 - $range;
-        return $pph21ok = $pph21ok + $pph21r;
+    } else {
+        $sisapokok1 = $sisapokok;
+        $pph21r = 0;
+        return $pajakbulanpt = 0;
     }
 }
 
