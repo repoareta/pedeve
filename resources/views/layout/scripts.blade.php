@@ -44,6 +44,11 @@
 <script type="text/javascript" src="{{ asset('vendor/jsvalidation/js/jsvalidation.js')}}"></script>
 <!--end::Page Vendors -->
 
+
+<!-- treeview JS -->
+<script type="text/javascript" src="{{ asset('tree/jquery.treeview.js')}}"></script>
+<!-- end treeview JS -->
+
 <script type="text/javascript">
 
     $( document ).ready(function() {

@@ -33,3 +33,4 @@
 <!--begin::App Style -->
 <link href="{{ asset('metronic/css/app.css') }}" rel="stylesheet" type="text/css" />
 <!--end::Custom Style -->
+
