@@ -192,7 +192,7 @@
 								</div>
 							</div>
 							<div class="kt-portlet__body">
-								<table class="table table-striped table-bordered table-hover table-checkable" id="tabel-detail-permintaan">
+								<table class="table table-striped table-bordered table-hover table-checkable" id="kt_table">
 									<thead class="thead-light">
 										<tr>
 											<th></th>
@@ -547,26 +547,24 @@
 @section('scripts')
 	<script type="text/javascript">
 	$(document).ready(function () {
-		$('#tabel-detail-permintaan').DataTable({
+		var t = $('#kt_table').DataTable({
 			scrollX   : true,
 			processing: true,
 			serverSide: false,
 		});
-		$('#tabel-verkas-json').DataTable({
-			scrollX   : true,
-			processing: true,
-			serverSide: true,
-			searching: true,
-			lengthChange: false,
-			language: {
-				processing: '<i class="fa fa-spinner fa-spin fa-2x fa-fw"></i> <br> Loading...'
-			},
-			ajax      : "{{ route('postingan_kas_bank.verkasjson') }}",
-			columns: [
-				{data: 'store', name: 'store'},
-				{data: 'docno', name: 'docno'},
-			]
-		});
+
+		$('#kt_table tbody').on( 'click', 'tr', function (event) {
+			if ( $(this).hasClass('selected') ) {
+				$(this).removeClass('selected');
+			} else {
+				t.$('tr.selected').removeClass('selected');
+				// $(':radio', this).trigger('click');
+				if (event.target.type !== 'radio') {
+					$(':radio', this).trigger('click');
+				}
+				$(this).addClass('selected');
+			}
+		} );
 
 		//verifikasi
 		$("#status1").on("change", function(){

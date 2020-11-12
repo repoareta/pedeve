@@ -104,7 +104,7 @@
 			</form>
 		</div>
 		<!--begin: Datatable -->
-		<table id="data-umk-table" class="table table-striped table-bordered table-hover table-checkable" width="100%">
+		<table id="data-umk-table" class="table table-bordered table-hover table-checkable" width="100%">
 			<thead class="thead-light">
 				<tr>
 					<th><input type="radio" hidden name="btn-radio"  data-id="1" class="btn-radio" checked ></th>
@@ -171,7 +171,20 @@ $(document).ready(function(){
 			t.draw();
 			e.preventDefault();
 		});
+		$('#data-umk-table tbody').on( 'click', 'tr', function (event) {
+			if ( $(this).hasClass('selected') ) {
+				$(this).removeClass('selected');
+			} else {
+				t.$('tr.selected').removeClass('selected');
+				// $(':radio', this).trigger('click');
+				if (event.target.type !== 'radio') {
+					$(':radio', this).trigger('click');
+				}
+				$(this).addClass('selected');
+			}
+		} );
 });
+
 
 //report Uang Muka Kerja 
 $('#reportRow').on('click', function(e) {

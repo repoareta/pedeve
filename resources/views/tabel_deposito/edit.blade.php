@@ -213,7 +213,7 @@
 					</div>
 				</div>
 				<div class="kt-portlet__body">
-					<table class="table table-striped table-bordered table-hover table-checkable" id="tabel-detail">
+					<table class="table table-striped table-bordered table-hover table-checkable" id="kt_table">
 						<thead class="thead-light">
 							<tr>
 								<th ></th>
@@ -495,11 +495,23 @@
 @section('scripts')
 	<script type="text/javascript">
 	$(document).ready(function () {
-		$('#tabel-detail').DataTable({
+		$('#kt_table').DataTable({
 			scrollX   : true,
 			processing: true,
 			serverSide: false,
 		});
+		$('#kt_table tbody').on( 'click', 'tr', function (event) {
+			if ( $(this).hasClass('selected') ) {
+				$(this).removeClass('selected');
+			} else {
+				t.$('tr.selected').removeClass('selected');
+				// $(':radio', this).trigger('click');
+				if (event.target.type !== 'radio') {
+					$(':radio', this).trigger('click');
+				}
+				$(this).addClass('selected');
+			}
+		} );
 
 $("#status2").on("change", function(){
 	window.location.replace("{{ route('jurnal_umum.posting', ['no' => $nodok, 'status' =>$status2] ) }}");

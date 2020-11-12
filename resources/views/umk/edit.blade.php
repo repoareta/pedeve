@@ -474,12 +474,23 @@
 @section('scripts')
 <script type="text/javascript">
 $(document).ready(function () {
-		$('#kt_table').DataTable({
+		var t = $('#kt_table').DataTable({
 			scrollX   : true,
 			processing: true,
 			serverSide: false,
 		});
-
+		$('#kt_table tbody').on( 'click', 'tr', function (event) {
+			if ( $(this).hasClass('selected') ) {
+				$(this).removeClass('selected');
+			} else {
+				t.$('tr.selected').removeClass('selected');
+				// $(':radio', this).trigger('click');
+				if (event.target.type !== 'radio') {
+					$(':radio', this).trigger('click');
+				}
+				$(this).addClass('selected');
+			}
+		} );
 		$('.kt-select2').select2().on('change', function() {
 			// $(this).valid();
 		});
