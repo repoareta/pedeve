@@ -73,6 +73,21 @@
 	</div>
 	<div class="kt-portlet__body">
 
+		<div class="col-12">
+			<form class="kt-form" id="search-form" method="POST">
+				<div class="form-group row">
+					<label for="" class="col-form-label">No. PPanjar</label>
+					<div class="col-4">
+						<input class="form-control" type="text" name="noppanjar" id="noppanjar">
+					</div>
+
+					<div class="col-2">
+						<button type="submit" class="btn btn-brand"><i class="fa fa-search" aria-hidden="true"></i> Cari</button>
+					</div>
+				</div>
+			</form>
+		</div>
+
 		<!--begin: Datatable -->
 		<table class="table table-striped table-bordered table-hover table-checkable" id="kt_table" width="100%">
 			<thead class="thead-light">
@@ -103,10 +118,16 @@
 			scrollX   : true,
 			processing: true,
 			serverSide: true,
+			searching : false,
 			language: {
             	processing: '<i class="fa fa-spinner fa-spin fa-2x fa-fw"></i> <br> Loading...'
 			},
-			ajax      : "{{ route('perjalanan_dinas.pertanggungjawaban.index.json') }}",
+			ajax      : {
+				url: "{{ route('perjalanan_dinas.pertanggungjawaban.index.json') }}",
+				data: function (d) {
+					d.noppanjar = $('input[name=noppanjar]').val();
+				}
+			},
 			columns: [
 				{data: 'action', name: 'aksi', orderable: false, searchable: false, class:'radio-button'},
 				{data: 'no_ppanjar', name: 'no_ppanjar', class:'no-wrap'},
@@ -133,6 +154,11 @@
 				$(this).addClass('selected');
 			}
 		} );
+
+		$('#search-form').on('submit', function(e) {
+			t.draw();
+			e.preventDefault();
+		});
 
 		$('#editRow').click(function(e) {
 			e.preventDefault();
