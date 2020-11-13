@@ -40,11 +40,16 @@ class PerjalananDinasController extends Controller
      *
      * @return void
      */
-    public function indexJson()
+    public function indexJson(Request $request)
     {
-        $panjar_list = PanjarHeader::orderBy('tgl_panjar', 'desc')->get();
+        $panjar_list = PanjarHeader::orderBy('tgl_panjar', 'desc');
 
         return datatables()->of($panjar_list)
+            ->filter(function ($query) use ($request) {
+                if (request('nopanjar')) {
+                    $query->where('no_panjar', request('nopanjar'));
+                }
+            })
             ->addColumn('mulai', function ($row) {
                 return Carbon::parse($row->mulai)->translatedFormat('d F Y');
             })
