@@ -288,4 +288,45 @@ class UangMukaKerjaPertanggungJawabanController extends Controller
         ]);
         return $pdf->stream('rekap_umk_pertanggungjawaban_'.date('Y-m-d H:i:s').'.pdf');
     }
+
+    public function approv($id)
+    {
+        $no_pumk = str_replace('-', '/', $id);
+        $pumk_header = PUmkHeader::where('no_pumk', $no_pumk)->first();
+        return view('umk_pertanggungjawaban.approv', compact('pumk_header'));
+    }
+
+    public function storeApp(Request $request)
+    {
+        $no_pumk = $request->no_pumk;
+        $pumk = PUmkHeader::where('no_pumk', $no_pumk)->first();
+
+        // dd($request->userid);
+
+        if ($pumk->app_sdm == 'N') {
+            // Begin APPR_UMUM_PUMK
+            DB::statement("SELECT appr_umum_pumk('$no_pumk', '$request->userid')");
+
+            Alert::success('No. PUMK : '.$no_pumk.' Berhasil Approval', 'Berhasil')->persistent(true)->autoClose(2000);
+        } else {
+            $cek_approval = $pumk->app_pbd;
+            if ($cek_approval == 'Y') {
+                Alert::success('Pembatalan approval gagal,Data sudah di Approv perbendaharaan', 'Gagal')->persistent(true)->autoClose(2000);
+            } else {
+                $rs_batal = $pumk->app_sdm_tgl;
+                if ($rs_batal) {
+                    $tgl_approval = $rs_batal;
+                }
+
+                // Begin APPR_UMUM_PUMK
+                DB::statement("SELECT appr_batal_pumk('$no_pumk', '$request->userid')");
+
+                Alert::success("Pembatalan approval No. PUMK : $no_pumk Tanggal Approval $tgl_approval", 'Berhasil')
+                ->persistent(true)
+                ->autoClose(2000);
+            }
+        }
+
+        return redirect()->route('uang_muka_kerja.pertanggungjawaban.index');
+    }
 }

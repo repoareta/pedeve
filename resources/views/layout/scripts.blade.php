@@ -44,6 +44,9 @@
 <script type="text/javascript" src="{{ asset('vendor/jsvalidation/js/jsvalidation.js')}}"></script>
 <!--end::Page Vendors -->
 
+
+<script src="https://cdnjs.cloudflare.com/ajax/libs/autonumeric/1.8.2/autoNumeric.js"></script>
+
 <script type="text/javascript">
 
     $( document ).ready(function() {
@@ -57,6 +60,14 @@
         } else {
             $('#body-style').removeClass('kt-aside--minimize');
         }
+
+        $(".thousands").autoNumeric('init', {
+			aSep: ',', 
+			aDec: '.',
+			aForm: true,
+			vMax: '999999999999.99',
+			vMin: '-999999999999.99'
+		});
     });
 
     function kt_minimize() {
