@@ -154,7 +154,7 @@
 							<label class="col-2 col-form-label">
 							@if($mp == "M") Dari @else Kepada @endif<span style="color:red;">*</span></label>
 							<div class="col-10">
-								<input class="form-control" type="text" name="kepada" id="kepada" value="{{$data->kepada}}" size="40" maxlength="40" required oninvalid="this.setCustomValidity('<?php if($mp == "M"){ ?> Dari <?php }else{ ?> Kepada <?php } ?> Harus Diisi..')" oninput="setCustomValidity('')" autocomplete='off'>
+								<input class="form-control" type="text" name="kepada" id="kepada" value="{{$data->kepada}}" size="40" maxlength="40" required oninvalid="this.setCustomValidity('<?php if($mp == "M"){ ?> Dari <?php } else { ?> Kepada <?php } ?> Harus Diisi..')" oninput="setCustomValidity('')" autocomplete='off'>
 							</div>
 						</div>
 						<div class="form-group row">
@@ -167,19 +167,19 @@
 						<div class="form-group row">
 							<label class="col-2 col-form-label">Catatan 1</label>
 							<div class="col-10">
-								<input class="form-control" type="text" name="ket1" id="ket1" value="{{$data->ket1}}" size="35" maxlength="35"  autocomplete='off'>
+								<textarea class="form-control" type="text" name="ket1" id="ket1" autocomplete='off'>{{$data->ket1}}</textarea>
 							</div>
 						</div>
 						<div class="form-group row">
 							<label class="col-2 col-form-label">Catatan 2</label>
 							<div class="col-10">
-								<input class="form-control" type="text" name="ket2" id="ket2" value="{{$data->ket2}}" size="35" maxlength="35"  autocomplete='off'>
+								<textarea class="form-control" type="text" name="ket2" id="ket2" autocomplete='off'>{{$data->ket2}}</textarea>
 							</div>
 						</div>
 						<div class="form-group row">
 							<label class="col-2 col-form-label">Catatan 3</label>
 							<div class="col-10">
-								<input class="form-control" type="text" name="ket3" id="ket3" value="{{$data->ket3}}" size="35" maxlength="35"  autocomplete='off'>
+								<textarea class="form-control" type="text" name="ket3" id="ket3" autocomplete='off'>{{$data->ket3}}</textarea>
 							</div>
 						</div>
 						@endforeach
@@ -238,7 +238,7 @@
 								<th ></th>
 								<th>No</th>
 								<th>Rincian</th>	
-								<th>KL</th>
+								{{-- <th>KL</th> --}}
 								<th>Sanper</th>
 								<th>Bagian</th>
 								<th>PK</th>
@@ -255,7 +255,7 @@
 								<td scope="row" align="center"><label class="kt-radio kt-radio--bold kt-radio--brand"><input type="radio" name="btn-radio" nodok="{{$data_d->docno}}" nourut="{{$data_d->lineno}}"  class="btn-radio" ><span></span></label></td>
 								<td scope="row" align="center">{{$data_d->lineno}}</td>
 								<td>{{$data_d->keterangan}}</td>
-								<td>{{$data_d->lokasi}}</td>
+								{{-- <td>{{$data_d->lokasi}}</td> --}}
 								<td align="center">{{$data_d->account}}</td>
 								<td align="center">{{$data_d->bagian}}</td>
 								<td align="center">{{$data_d->pk}}</td>
@@ -266,7 +266,7 @@
 							@endforeach
 						</tbody>
 							<tr>
-								<td colspan="9" align="right">Jumlah Total : </td>
+								<td colspan="8" align="right">Jumlah Total : </td>
 								<td >Rp. <?php echo number_format($count, 0, '.', ','); ?></td>
 							</tr>
 					</table>
@@ -305,7 +305,7 @@
 							<textarea  class="form-control" type="text" value=""  name="rincian" size="50" maxlength="250" required oninvalid="this.setCustomValidity('Rincian Harus Diisi..')" oninput="setCustomValidity('')"></textarea>
 						</div>
 					</div>
-					<div class="form-group row">
+					{{-- <div class="form-group row">
 						<label for="example-text-input" class="col-2 col-form-label">KD. Lapang<span style="color:red;">*</span></label>
 						<label for="example-text-input" class=" col-form-label">:</label>
 						<div class="col-8">
@@ -316,7 +316,7 @@
 								@endforeach
 							</select>						
 						</div>
-					</div>
+					</div> --}}
 					<div class="form-group row">
 						<label for="example-text-input" class="col-2 col-form-label">Sandi Perkiraan<span style="color:red;">*</span></label>
 						<label for="example-text-input" class=" col-form-label">:</label>
@@ -384,7 +384,7 @@
 						<label for="example-text-input" class="col-2 col-form-label">Jumlah<span style="color:red;">*</span></label>
 						<label for="example-text-input" class=" col-form-label">:</label>
 						<div class="col-8">
-							<input  class="form-control" type="number" value="" name="nilai" size="16" maxlength="16"  required oninvalid="this.setCustomValidity('Jumlah Harus Diisi..')" oninput="setCustomValidity('')" autocomplete='off'>
+							<input  class="form-control" type="number" value="" name="nilai" size="25" maxlength="25"  required oninvalid="this.setCustomValidity('Jumlah Harus Diisi..')" oninput="this.value = this.value.replace(/[^0-9\-]+/g, ',');setCustomValidity('')" autocomplete='off'>
 						</div>
 					</div>
 
@@ -437,7 +437,7 @@
 							<textarea  class="form-control" type="text" value=""  name="rincian" id="rincian" size="50" maxlength="250" required oninvalid="this.setCustomValidity('Rincian Harus Diisi..')" oninput="setCustomValidity('')"></textarea>
 						</div>
 					</div>
-					<div class="form-group row">
+					{{-- <div class="form-group row">
 						<label for="example-text-input" class="col-2 col-form-label">KD. Lapang</label>
 						<label for="example-text-input" class=" col-form-label">:</label>
 						<div class="col-8" >
@@ -448,7 +448,7 @@
 								@endforeach
 							</select>
 						</div>
-					</div>
+					</div> --}}
 					<div class="form-group row">
 						<label for="example-text-input" class="col-2 col-form-label">Sandi Perkiraan</label>
 						<label for="example-text-input" class=" col-form-label">:</label>
@@ -516,7 +516,7 @@
 						<label for="example-text-input" class="col-2 col-form-label">Jumlah<span style="color:red;">*</span></label>
 						<label for="example-text-input" class=" col-form-label">:</label>
 						<div class="col-8">
-							<input  class="form-control" type="number" value="" name="nilai" id="nilai1" size="16" maxlength="16"  required oninvalid="this.setCustomValidity('Jumlah Harus Diisi..')" oninput="setCustomValidity('')" autocomplete='off'>
+							<input  class="form-control" type="text" value="" name="nilai" id="nilai1" size="16" maxlength="16" required oninvalid="this.setCustomValidity('Jumlah Harus Diisi..')" oninput="this.value = this.value.replace(/[^0-9\-]+/g, ',');setCustomValidity('')" autocomplete='off'>
 						</div>
 					</div>
 
@@ -905,8 +905,9 @@ if($('input[type=radio]').is(':checked')) {
 					$('#nourut').val(data.lineno);
 					$('#rincian').val(data.keterangan);
 					$('#pk').val(data.pk);
-					var output=parseInt(data.totprice);
-					$('#nilai1').val(output);
+					var d=parseFloat(data.totprice);
+					var rupiah = d.toFixed(2);
+					$('#nilai1').val(rupiah);
 					$('#title-edit-detail').html("Edit Detail Pembayaran UMK");
 					$('#select-lapangan').val(data.lokasi).trigger('change');
 					$('#select-sanper').val(data.account).trigger('change');
@@ -1009,26 +1010,6 @@ $('#form-edit-detail').submit(function(){
 		});
 
 
-    var KTBootstrapDatepicker = function () {
-
-var arrows;
-if (KTUtil.isRTL()) {
-	arrows = {
-		leftArrow: '<i class="la la-angle-right"></i>',
-		rightArrow: '<i class="la la-angle-left"></i>'
-	}
-} else {
-	arrows = {
-		leftArrow: '<i class="la la-angle-left"></i>',
-		rightArrow: '<i class="la la-angle-right"></i>'
-	}
-}
-
-// Private functions
-var demos = function () {
-
-
-
 	// minimum setup
 	$('#tanggal').datepicker({
 		rtl: KTUtil.isRTL(),
@@ -1037,7 +1018,7 @@ var demos = function () {
 		templates: arrows,
 		autoclose: true,
 		// language : 'id',
-		format   : 'yyyy-mm-dd'
+		format   : 'dd-mm-yyyy'
 	});
 	
 	$('#bulanbuku').datepicker({
@@ -1049,17 +1030,6 @@ var demos = function () {
 		// language : 'id',
 		format   : 'yyyymm'
 	});
-};
-
-return {
-	// public functions
-	init: function() {
-		demos(); 
-	}
-};
-}();
-
-KTBootstrapDatepicker.init();
 });
 
 		function hanyaAngka(evt) {
@@ -1069,6 +1039,7 @@ KTBootstrapDatepicker.init();
 		    return false;
 		  return true;
 		}
+		
 </script>
 
 @endsection

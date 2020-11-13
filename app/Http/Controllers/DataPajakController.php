@@ -43,10 +43,10 @@ class DataPajakController extends Controller
                     return $data->jenis.'  -  '.$data->nm_jenis;
                })
                 ->addColumn('nilai', function ($data) {
-                     return 'Rp. '.number_format($data->nilai,2,'.',',');
+                     return number_format($data->nilai,2,'.',',');
                })
                 ->addColumn('pajak', function ($data) {
-                     return 'Rp. '.number_format($data->pajak,2,'.',',');
+                     return number_format($data->pajak,2,'.',',');
                })
                 ->addColumn('action', function ($data) {
                         $radio = '<label  class="kt-radio kt-radio--bold kt-radio--brand"><input type="radio" tahun="'.$data->tahun.'"  bulan="'.$data->bulan.'" jenis="' .$data->jenis.'" nopek="'.$data->nopek.'" class="btn-radio" ><span></span></label>';
@@ -75,8 +75,8 @@ class DataPajakController extends Controller
             'bulan' => $request->bulan,
             'nopek' => $request->nopek,
             'jenis' => $request->jenis,
-            'nilai' => $request->nilai,
-            'pajak' => $request->pajak,
+            'nilai' => str_replace(',', '.', $request->nilai),
+            'pajak' =>str_replace(',', '.', $request->pajak),
             ]);
             $data = 1;
             return response()->json($data);
@@ -106,8 +106,8 @@ class DataPajakController extends Controller
         ->where('jenis',$request->jenis)
         ->where('nopek',$request->nopek)
         ->update([
-            'nilai' => $request->nilai,
-            'pajak' => $request->pajak,
+            'nilai' => str_replace(',', '.', $request->nilai),
+            'pajak' =>str_replace(',', '.', $request->pajak),
             ]);
             return response()->json();
     }

@@ -48,7 +48,7 @@
 						<div class="form-group row">
 							<label class="col-2 col-form-label">Nama Perusahaan</label>
 							<div class="col-8">					
-								<input class="form-control" type="text" value="{{$data->nama}}" name="nama"  size="200" maxlength="200" title="Nama Perusahaan" readonly style="background-color:#DCDCDC; cursor:not-allowed">												
+								<input class="form-control" type="text" value="{{$data->kd_perusahaan}}" name="nama"  size="200" maxlength="200" title="Nama Perusahaan" readonly style="background-color:#DCDCDC; cursor:not-allowed">												
 							</div>
 						</div>
 						<div class="form-group row">
@@ -79,25 +79,25 @@
 						<div class="form-group row">
 							<label for="" class="col-2 col-form-label">Total Aset</label>
 							<div class="col-8">
-								<input class="form-control" type="text" value="{{$data->total_aset}}" name="total_aset"  size="25" maxlength="25" title="Total Aset" autocomplete='off' onkeypress="return hanyaAngka(event)" autocomplete='off' >
+								<input class="form-control" type="text" value="{{number_format($data->total_aset,2,'.','')}}" name="total_aset" id="total_aset"  size="25" maxlength="25" title="Total Aset" autocomplete='off' oninput="this.value = this.value.replace(/[^0-9\-]+/g, ',');" >
 							</div>
 						</div>
 						<div class="form-group row">
 							<label class="col-2 col-form-label">Sales</label>
 							<div class="col-8">						
-								<input class="form-control" type="text" value="{{ $data->sales }}" name="sales"  size="200" maxlength="200" title="Sales" autocomplete='off'>
+								<input class="form-control" type="text" value="{{ number_format($data->sales ,2,'.','')}}" name="sales" id="sales" size="200" maxlength="200" title="Sales" autocomplete='off' oninput="this.value = this.value.replace(/[^0-9\-]+/g, ',');">
 							</div>
 						</div>
 						<div class="form-group row">
 							<label for="" class="col-2 col-form-label">Laba Bersih</label>
 							<div class="col-8">
-								<input class="form-control" type="text" value="{{$data->laba_bersih}}" name="laba_bersih"  size="25" maxlength="25" title="Laba Bersih" autocomplete='off' onkeypress="return hanyaAngka(event)" autocomplete='off' >
+								<input class="form-control" type="text" value="{{number_format($data->laba_bersih,2,'.','')}}" name="laba_bersih" id="laba_bersih" size="25" maxlength="25" title="Laba Bersih" autocomplete='off' oninput="this.value = this.value.replace(/[^0-9\-]+/g, ',');" >
 							</div>
 						</div>
 						<div class="form-group row">
 							<label class="col-2 col-form-label">TKP</label>
 							<div class="col-8">						
-								<input class="form-control" type="text" value="{{ $data->tkp }}" name="tkp"  title="TKP" autocomplete='off'>
+								<input class="form-control" type="text" value="{{ number_format($data->tkp ,2,'.','')}}" name="tkp" id="tkp"  title="TKP" autocomplete='off' oninput="this.value = this.value.replace(/[^0-9\-]+/g, ',');">
 							</div>
 						</div>
 						

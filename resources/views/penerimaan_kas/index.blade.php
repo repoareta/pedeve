@@ -204,8 +204,8 @@ $(document).ready(function () {
 			searching: false,
 			lengthChange: false,
 			pageLength: 200,
-			scrollY:        "500px",
-			scrollCollapse: true,
+			scrollX:        true,
+			
 			language: {
 			processing: '<i class="fa fa-spinner fa-spin fa-2x fa-fw"></i> <br> Loading...'
 			},

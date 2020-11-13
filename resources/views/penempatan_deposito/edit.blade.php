@@ -80,25 +80,25 @@
 						<div class="form-group row">
 							<label for="spd-input" class="col-2 col-form-label">Nominal<span style="color:red;">*</span></label>
 							<div class="col-10">
-								<input  class="form-control" type="number" value="{{number_format($data->nominal,0,'','')}}" id="nominal" name="nominal" size="15" maxlength="15" required oninvalid="this.setCustomValidity('Nominal Harus Diisi..')" oninput="setCustomValidity('')" autocomplete='off' >
+								<input  class="form-control" type="text" value="{{number_format($data->nominal,2,'.','')}}"  name="nominal" size="25" maxlength="25" required oninvalid="this.setCustomValidity('Nominal Harus Diisi..')" oninput="this.value = this.value.replace(/[^0-9\-]+/g, ','); setCustomValidity('')" autocomplete='off' >
 							</div>
 						</div>
 						<div class="form-group row">
 							<label for="spd-input" class="col-2 col-form-label">Tgl Deposito<span style="color:red;">*</span></label>
 							<div class="col-10">
-								<input  class="form-control" type="text" value="<?php $tgl= date_create($data->tgldep); echo date_format($tgl, 'Y-m-d') ?>" id="tanggal" name="tanggal" size="15" maxlength="15" required oninvalid="this.setCustomValidity('Tgl Deposito Harus Diisi..')" onchange="setCustomValidity('')" autocomplete='off' >
+								<input  class="form-control" type="text" value="<?php $tgl= date_create($data->tgldep); echo date_format($tgl, 'd-m-Y') ?>" id="tanggal" name="tanggal" size="15" maxlength="15" required oninvalid="this.setCustomValidity('Tgl Deposito Harus Diisi..')" onchange="setCustomValidity('')" autocomplete='off' >
 							</div>
 						</div>
 						<div class="form-group row">
 							<label for="spd-input" class="col-2 col-form-label">Jatuh Tempo<span style="color:red;">*</span></label>
 							<div class="col-10">
-								<input  class="form-control" type="text" value="<?php $tgl= date_create($data->tgltempo); echo date_format($tgl, 'Y-m-d') ?>" id="tanggal2" name="tanggal2" size="15" maxlength="15" required oninvalid="this.setCustomValidity('Jatuh Tempo Harus Diisi..')" onchange="setCustomValidity('')" autocomplete='off' >
+								<input  class="form-control" type="text" value="<?php $tgl= date_create($data->tgltempo); echo date_format($tgl, 'd-m-Y') ?>" id="tanggal2" name="tanggal2" size="15" maxlength="15" required oninvalid="this.setCustomValidity('Jatuh Tempo Harus Diisi..')" onchange="setCustomValidity('')" autocomplete='off' >
 							</div>
 						</div>
 						<div class="form-group row">
 							<label for="spd-input" class="col-2 col-form-label">Bunga % Tahun<span style="color:red;">*</span></label>
 							<div class="col-10">
-								<input  class="form-control" type="number" value="{{number_format($data->bungatahun,0,'','')}}" id="tahunbunga" name="tahunbunga" size="15" maxlength="15" step="0.01" pattern="^\d+(?:\.\d{1,2})?$" onblur="this.parentNode.parentNode.style.backgroundColor=/^\d+(?:\.\d{1,2})?$/.test(this.value)?'inherit':''" required oninvalid="this.setCustomValidity('Bungan % Tahun Harus Diisi..')" oninput="setCustomValidity('')" autocomplete='off' >
+								<input  class="form-control" type="number" value="{{number_format($data->bungatahun,2,'.','')}}" name="tahunbunga" size="25" required oninvalid="this.setCustomValidity('Bungan % Tahun Harus Diisi..')" oninput="this.value = this.value.replace(/[^0-9\-]+/g, ','); setCustomValidity('')" autocomplete='off' >
 							</div>
 						</div>
 						<div class="form-group row">
@@ -169,14 +169,14 @@
 			orientation: "bottom left",
 			autoclose: true,
 			// language : 'id',
-			format   : 'yyyy-mm-dd'
+			format   : 'dd-mm-yyyy'
 		});
 		$('#tanggal2').datepicker({
 			todayHighlight: true,
 			orientation: "bottom left",
 			autoclose: true,
 			// language : 'id',
-			format   : 'yyyy-mm-dd'
+			format   : 'dd-mm-yyyy'
 		});
 
 
@@ -189,6 +189,7 @@
 		    return false;
 		  return true;
 		}
+		
 </script>
 
 @endsection

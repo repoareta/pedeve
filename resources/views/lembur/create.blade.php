@@ -52,7 +52,7 @@
 				<div class="form-group row">
 					<label for="example-email-input" class="col-2 col-form-label">Tgl. Lembur<span style="color:red;">*</span></label>
 					<div class="col-10">
-						<input class="form-control" type="text" value="{{ date('Y-m-d') }}" id="tanggal" name="tanggal" autocomplete='off' required oninvalid="this.setCustomValidity('Tgl. Lembur Harus Diisi..')" onchange="setCustomValidity('')">
+						<input class="form-control" type="text" value="{{ date('d-m-Y') }}" id="tanggal" name="tanggal" autocomplete='off' required oninvalid="this.setCustomValidity('Tgl. Lembur Harus Diisi..')" onchange="setCustomValidity('')">
 						<input class="form-control" type="hidden" value="{{Auth::user()->userid}}"  name="userid" autocomplete='off'>
 					</div>
 				</div>
@@ -64,7 +64,7 @@
 						$tahun = date_format($tgl, 'Y'); 
 						$bulan = date_format($tgl, 'n'); 
 					?>
-						<select class="form-control" name="bulan" required>
+						<select class="form-control kt-select2" style="width: 100% !important;" name="bulan" required>
 							<option value="1" <?php if($bulan  == 1 ) echo 'selected' ; ?>>Januari</option>
 							<option value="2" <?php if($bulan  == 2 ) echo 'selected' ; ?>>Februari</option>
 							<option value="3" <?php if($bulan  == 3 ) echo 'selected' ; ?>>Maret</option>
@@ -86,7 +86,7 @@
 				<div class="form-group row">
 					<label for="" class="col-2 col-form-label">Pegawai<span style="color:red;">*</span></label>
 					<div class="col-10">
-						<select name="nopek"  class="form-control selectpicker" data-live-search="true" required autocomplete='off' oninvalid="this.setCustomValidity('Pegawai Harus Diisi..')" onchange="setCustomValidity('')">
+						<select name="nopek"  class="form-control kt-select2" style="width: 100% !important;" required autocomplete='off' oninvalid="this.setCustomValidity('Pegawai Harus Diisi..')" onchange="setCustomValidity('')">
 							<option value="">- Pilih -</option>
 							@foreach($data_pegawai as $data)
 							<option value="{{$data->nopeg}}">{{$data->nopeg}} - {{$data->nama}}</option>
@@ -97,31 +97,31 @@
 				<div class="form-group row">
 					<label for="id-pekerja;-input" class="col-2 col-form-label">Makan Pagi</label>
 					<div class="col-10">
-						<input class="form-control" type="text" value="" id="makanpg" name="makanpg" onkeypress="return hanyaAngka(event)" autocomplete='off'>
+						<input class="form-control" type="text" value="0" name="makanpg" id="mapg" oninput="this.value = this.value.replace(/[^0-9\-]+/g, ',');setCustomValidity('')" autocomplete='off'>
 					</div>
 				</div>
 				<div class="form-group row">
 					<label for="id-pekerja;-input" class="col-2 col-form-label">Makan Siang</label>
 					<div class="col-10">
-						<input class="form-control" type="text" value="" id="makansg" name="makansg" onkeypress="return hanyaAngka(event)" autocomplete='off'>
+						<input class="form-control" type="text" value="0" name="makansg" id="masi" oninput="this.value = this.value.replace(/[^0-9\-]+/g, ',');setCustomValidity('')" autocomplete='off'>
 					</div>
 				</div>
 				<div class="form-group row">
-					<label for="id-pekerja;-input" class="col-2 col-form-label">Makan Siang</label>
+					<label for="id-pekerja;-input" class="col-2 col-form-label">Makan Malam</label>
 					<div class="col-10">
-						<input class="form-control" type="text" value="" id="makanml" name="makanml" onkeypress="return hanyaAngka(event)" autocomplete='off'>
+						<input class="form-control" type="text" value="0" name="makanml" id="maml" oninput="this.value = this.value.replace(/[^0-9\-]+/g, ',');setCustomValidity('')" autocomplete='off'>
 					</div>
 				</div>
 				<div class="form-group row">
 					<label for="id-pekerja;-input" class="col-2 col-form-label">Transport</label>
 					<div class="col-10">
-						<input class="form-control" type="text" value="" id="transport" name="transport" onkeypress="return hanyaAngka(event)" autocomplete='off'>
+						<input class="form-control" type="text" value="0" name="transport" id="trans" oninput="this.value = this.value.replace(/[^0-9\-]+/g, ',');setCustomValidity('')" autocomplete='off'>
 					</div>
 				</div>
 				<div class="form-group row">
 					<label for="id-pekerja;-input" class="col-2 col-form-label">Lembur</label>
 					<div class="col-10">
-						<input class="form-control" type="text" value="" id="lembur" name="lembur" onkeypress="return hanyaAngka(event)" autocomplete='off'>
+						<input class="form-control" type="text" value="0"  name="lembur" id="lem" oninput="this.value = this.value.replace(/[^0-9\-]+/g, ',');setCustomValidity('')" autocomplete='off'>
 					</div>
 				</div>
 				<div class="kt-form__actions">
@@ -133,6 +133,7 @@
 						</div>
 					</div>
 				</div>
+			</div>
 		</form>
 	</div>
 </div>
@@ -142,7 +143,9 @@
 @section('scripts')
 <script type="text/javascript">
 $(document).ready(function () {
-
+$('.kt-select2').select2().on('change', function() {
+		// $(this).valid();
+});
 //create lembur
 $('#form-create').submit(function(){
 		$.ajax({
@@ -178,52 +181,23 @@ $('#form-create').submit(function(){
 		return false;
 	});
 	
-var KTBootstrapDatepicker = function () {
-
-var arrows;
-if (KTUtil.isRTL()) {
-	arrows = {
-		leftArrow: '<i class="la la-angle-right"></i>',
-		rightArrow: '<i class="la la-angle-left"></i>'
-	}
-} else {
-	arrows = {
-		leftArrow: '<i class="la la-angle-left"></i>',
-		rightArrow: '<i class="la la-angle-right"></i>'
-	}
-}
-
-// Private functions
-var demos = function () {
 
 	// minimum setup
 	$('#tanggal').datepicker({
-		rtl: KTUtil.isRTL(),
 		todayHighlight: true,
 		orientation: "bottom left",
-		templates: arrows,
 		autoclose: true,
 		// language : 'id',
-		format   : 'yyyy-mm-dd'
+		format   : 'dd-mm-yyyy'
 	});
-};
 
-return {
-	// public functions
-	init: function() {
-		demos(); 
-	}
-};
-}();
-
-KTBootstrapDatepicker.init();
 });
-function hanyaAngka(evt) {
+		function hanyaAngka(evt) {
 		  var charCode = (evt.which) ? evt.which : event.keyCode
 		   if (charCode > 31 && (charCode < 48 || charCode > 57))
  
 		    return false;
 		  return true;
-		}
+		}	
 </script>
 @endsection

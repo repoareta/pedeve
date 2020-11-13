@@ -46,6 +46,9 @@
 						<span style="font-size: 2em;"  class="kt-font-danger pointer-link" data-toggle="kt-tooltip" data-placement="top" title="Hapus Data">
 							<i class="fas fa-times-circle" id="deleteRow"></i>
 						</span>
+						<span style="font-size: 2em;" class="kt-font-info pointer-link" data-toggle="kt-tooltip" data-placement="top" title="Cetak Data">
+								<i class="fas fa-print" id="exportRow"></i>
+						</span>
 					</div>
 				</div>
 			</div>
@@ -73,6 +76,55 @@
 	</div>
 </div>
 </div>
+
+<!-- Modal -->
+<div class="modal fade" id="cetakModal" tabindex="-1" role="dialog" aria-labelledby="modelTitleId" aria-hidden="true">
+	<div class="modal-dialog modal-lg" role="document">
+		<div class="modal-content">
+			<div class="modal-header">
+				<h5 class="modal-title">Cetak Data</h5>
+				<button type="button" class="close" data-dismiss="modal" aria-label="Close">
+					<span aria-hidden="true">&times;</span>
+				</button>
+			</div>
+			<form class="kt-form kt-form--label-right" action="{{ route('set_user.export') }}" method="post" target="_blank">
+			{{csrf_field()}}
+				<div class="modal-body">
+
+					<div class="form-group row">
+						<label for="" class="col-2 col-form-label"></label>
+						<div class="col-8">
+							<div class="kt-radio-inline">
+								<label class="kt-radio kt-radio--solid">
+									<input type="radio"  name="cetak" value="A" onclick="displayResult(1)" checked/> Cetak All
+									<span></span>
+								</label>
+								<label class="kt-radio kt-radio--solid">
+									<input type="radio"    name="cetak" value="B" onclick="displayResult(2)" /> Cetak Per User
+									<span></span>
+								</label>
+							</div>
+						</div>
+					</div>
+					<div class="form-group row">
+						<label for="" class="col-2 col-form-label"></label>
+						<div class="col-8" id="userid">
+							<select name="userid"  class="form-control selectpicker" data-live-search="true" oninvalid="this.setCustomValidity('Dibayar Kepada Harus Diisi..')" onchange="setCustomValidity('')">
+								@foreach ($data as $row)
+								<option value="{{ $row->userid }}">{{ $row->userid }}</option>
+								@endforeach
+							</select>
+						</div>
+					</div>
+					<div class="modal-footer">
+						<button type="button" class="btn btn-warning" data-dismiss="modal"><i class="fa fa-reply" aria-hidden="true"></i> Batal</button>
+						<button type="submit" class="btn btn-primary"><i class="fa fa-check" aria-hidden="true"></i> Cetak Data</button>
+					</div>
+			</form>
+		</div>
+	</div>
+</div>
+<!-- Modal End -->
 @endsection
 
 @section('scripts')
@@ -84,6 +136,7 @@ $(document).ready(function () {
 			serverSide: true,
 			searching: true,
 			lengthChange: true,
+			pageLength: 200,
 			language: {
 				processing: '<i class="fa fa-spinner fa-spin fa-2x fa-fw"></i> <br> Loading...'
 			},
@@ -179,15 +232,32 @@ $(document).ready(function () {
 				swalAlertInit('ubah');
 			}
 		});
-});
 
-function hanyaAngka(evt) {
-	var charCode = (evt.which) ? evt.which : event.keyCode
-	if (charCode > 31 && (charCode < 48 || charCode > 57))
+		$('#exportRow').click(function(e) {
+			e.preventDefault();
+				$('#cetakModal').modal('show');
+				$('#userid').hide();
+		});
 
-	return false;
-	return true;
-}
+	});
+	function displayResult(cetak){ 
+		if(cetak == 1)
+		{
+			$('#userid').val(1);
+			$('#userid').hide();
+		}else{
+			$('#userid').val("");
+			$('#userid').show();
+		}
+	}
+
+	function hanyaAngka(evt) {
+		var charCode = (evt.which) ? evt.which : event.keyCode
+		if (charCode > 31 && (charCode < 48 || charCode > 57))
+
+		return false;
+		return true;
+	}
 
 </script>
 @endsection

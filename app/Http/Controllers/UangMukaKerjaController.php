@@ -84,8 +84,8 @@ class UangMukaKerjaController extends Controller
             return date_format($tgl, 'd F Y');
         })
         ->addColumn('jumlah', function ($data) {
-            return 'Rp. '.number_format($data->jumlah, 2, '.', ',');
-        })
+             return number_format($data->jumlah,2,'.',',');
+       })
 
         ->addColumn('radio', function ($data) {
             if ($data->app_pbd == 'Y') {
@@ -102,11 +102,11 @@ class UangMukaKerjaController extends Controller
         ->addColumn('action', function ($data) {
             if ($data->app_pbd == 'Y') {
                 $action = '<p align="center"><span style="font-size: 2em;" class="kt-font-success pointer-link" data-toggle="kt-tooltip" data-placement="top" title="Data Sudah di proses perbendaharaan"><i class="fas fa-check-circle" ></i></span></p>';
-            } else {
-                if ($data->app_sdm == 'Y') {
-                    $action = '<p align="center"><a href="'. route('uang_muka_kerja.approv', ['id' => str_replace('/', '-', $data->no_umk)]).'"><span style="font-size: 2em;" class="kt-font-warning pointer-link" data-toggle="kt-tooltip" data-placement="top"  title="Batalkan Approval"><i class="fas fa-check-circle" ></i></span></a></p>';
-                } else {
-                    $action = '<p align="center"><a href="'. route('uang_muka_kerja.approv', ['id' => str_replace('/', '-', $data->no_umk)]).'"><span style="font-size: 2em;" class="kt-font-danger pointer-link" data-toggle="kt-tooltip" data-placement="top" title="Klik untuk Approval"><i class="fas fa-ban" ></i></span></a></p>';
+            }else{
+                if($data->app_sdm == 'Y'){
+                    $action = '<p align="center"><a href="'. route('uang_muka_kerja.approv',['id' => str_replace('/', '-', $data->no_umk)]).'"><span style="font-size: 2em;" class="kt-font-success pointer-link" data-toggle="kt-tooltip" data-placement="top"  title="Batalkan Approval"><i class="fas fa-check-circle" ></i></span></a></p>';
+                }else{
+                    $action = '<p align="center"><a href="'. route('uang_muka_kerja.approv',['id' => str_replace('/', '-', $data->no_umk)]).'"><span style="font-size: 2em;" class="kt-font-danger pointer-link" data-toggle="kt-tooltip" data-placement="top" title="Klik untuk Approval"><i class="fas fa-ban" ></i></span></a></p>';
                 }
             }
             return $action;
@@ -158,7 +158,7 @@ class UangMukaKerjaController extends Controller
             'rate' => $request->kurs,
             'jenis_um' => $request->jenis_um,
             'no_umk' => $request->no_umk,
-            'jumlah' => $request->jumlah
+            'jumlah' => str_replace(',', '.', $request->jumlah)
             ]);
             return response()->json();
         } else {
@@ -173,7 +173,7 @@ class UangMukaKerjaController extends Controller
                 'rate' => $request->kurs,
                 'jenis_um' => $request->jenis_um,
                 'no_umk' => $request->no_umk,
-                'jumlah' => $request->jumlah,
+                'jumlah' => str_replace(',', '.', $request->jumlah),
                 ]);
             return response()->json();
         }
@@ -189,7 +189,7 @@ class UangMukaKerjaController extends Controller
             'no' => $request->no,
             'keterangan' => $request->keterangan,
             'account' => $request->acc,
-            'nilai' => $request->nilai,
+            'nilai' =>   str_replace(',', '.', $request->nilai),
             'cj' => $request->cj,
             'jb' => $request->jb,
             'bagian' => $request->bagian,
@@ -208,7 +208,7 @@ class UangMukaKerjaController extends Controller
             'no' => $request->no,
             'keterangan' => $request->keterangan,
             'account' => $request->acc,
-            'nilai' => $request->nilai,
+            'nilai' =>    str_replace(',', '.', $request->nilai),
             'cj' => $request->cj,
             'jb' => $request->jb,
             'bagian' => $request->bagian,
@@ -351,7 +351,7 @@ class UangMukaKerjaController extends Controller
         $no_uruts = DB::select("select max(no) as no from kerja_detail where no_umk = '$noumk'");
         $data_umk_details = DetailUmk::where('no_umk', $noumk)->get();
         $data_account = DB::select("select kodeacct,descacct from account where length(kodeacct)=6 and kodeacct not like '%x%' order by kodeacct desc");
-        $data_bagian = DB::select("SELECT A.kode,A.nama FROM sdm_tbl_kdbag A ORDER BY A.kode");
+        $data_bagian = DB::select("select a.kode,a.nama from sdm_tbl_kdbag a order by a.kode");
         $data_jenisbiaya = DB::select("select kode,keterangan from jenisbiaya order by kode");
         $data_cj = DB::select("select kode,nama from cashjudex order by kode");
         $count= DetailUmk::where('no_umk', $noumk)->select('no_umk')->sum('nilai');
@@ -375,6 +375,39 @@ class UangMukaKerjaController extends Controller
             'count',
             'vendor'
         ));
+    }
+
+    public function searchAccount(Request $request)
+    {
+        if ($request->has('q')) {
+            $cari = strtoupper($request->q);
+            $data_account = DB::select("select kodeacct,descacct from account where length(kodeacct)=6 and kodeacct not like '%x%' and (kodeacct like '$cari%' or descacct like '$cari%') order by kodeacct desc");
+            return response()->json($data_account);
+        }
+    }
+    public function searchBagian(Request $request)
+    {
+        if ($request->has('q')) {
+            $cari = strtoupper($request->q);
+            $data_bagian = DB::select("select kode,nama from sdm_tbl_kdbag where kode like '$cari%' or nama like '$cari%' order by kode");
+            return response()->json($data_bagian);
+        }
+    }
+    public function searchJb(Request $request)
+    {
+        if ($request->has('q')) {
+            $cari = strtoupper($request->q);
+            $data_jenisbiaya = DB::select("select kode,keterangan from jenisbiaya where kode like '$cari%' or keterangan like '$cari%' order by kode");
+            return response()->json($data_jenisbiaya);
+        }
+    }
+    public function searchCj(Request $request)
+    {
+        if ($request->has('q')) {
+            $cari = strtoupper($request->q);
+            $data_cj = DB::select("select kode,nama from cashjudex where kode like '$cari%' or nama like '$cari%' order by kode");
+            return response()->json($data_cj);
+        }
     }
 
     

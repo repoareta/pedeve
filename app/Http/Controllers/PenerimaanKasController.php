@@ -91,7 +91,7 @@ class PenerimaanKasController extends Controller
                return number_format($data->rate, 2, '.', ',');
            })
            ->addColumn('nilai_dok', function ($data) {
-               return 'Rp. '.number_format($data->nilai_dok, 2, '.', ',');
+               return number_format($data->nilai_dok, 2, '.', ',');
            })
     
             ->addColumn('radio', function ($data) {
@@ -103,7 +103,7 @@ class PenerimaanKasController extends Controller
                     $action = '<p align="center"><span style="font-size: 2em;" class="kt-font-success pointer-link" data-toggle="kt-tooltip" data-placement="top" title="Data Sudah Diverifikasi"><i class="fas fa-check-circle" ></i></span></p>';
                 } else {
                     if ($data->paid == 'Y') {
-                        $action = '<p align="center"><a href="'. route('penerimaan_kas.approv', ['id' => str_replace('/', '-', $data->docno),'status' => $data->paid]).'"><span style="font-size: 2em;" class="kt-font-warning pointer-link" data-toggle="kt-tooltip" data-placement="top"  title="Batalkan Pembayaran"><i class="fas fa-check-circle" ></i></span></a></p>';
+                        $action = '<p align="center"><a href="'. route('penerimaan_kas.approv', ['id' => str_replace('/', '-', $data->docno),'status' => $data->paid]).'"><span style="font-size: 2em;" class="kt-font-success pointer-link" data-toggle="kt-tooltip" data-placement="top"  title="Batalkan Pembayaran"><i class="fas fa-check-circle" ></i></span></a></p>';
                     } else {
                         $action = '<p align="center"><a href="'. route('penerimaan_kas.approv', ['id' => str_replace('/', '-', $data->docno),'status' => $data->paid]).'"><span style="font-size: 2em;" class="kt-font-danger pointer-link" data-toggle="kt-tooltip" data-placement="top" title="Klik Untuk Pembayaran"><i class="fas fa-ban" ></i></span></a></p>';
                     }
@@ -199,6 +199,15 @@ class PenerimaanKasController extends Controller
         return response()->json($data);
     }
 
+    public function kepadaJson(Request $request)
+    {
+        if ($request->has('q')) {
+            $cari = strtoupper($request->q);
+            $data = DB::select("select distinct kepada from kasdoc where kepada like '$cari%' order by kepada asc");
+            return response()->json($data);
+        }
+    }
+
     /**
      * Store a newly created resource in storage.
      *
@@ -246,7 +255,7 @@ class PenerimaanKasController extends Controller
         $store = $request->lokasi;
         $ci = $request->ci;
         $voucher = $request->nobukti;
-        $kepada = $request->kepada;
+        $kepada = strtoupper($request->kepada);
         $debet = "0";
         $kredit = "0";
         $original = "Y";
@@ -259,7 +268,7 @@ class PenerimaanKasController extends Controller
         $updatedate = $request->tanggal;
         $updatepwd = $request->userid;
         $rate = $request->kurs;
-        $nilai_dok = $request->nilai;
+        $nilai_dok = str_replace(',', '.', $request->nilai);
         $originalby = $request->userid;
         $ket1 = $request->ket1;
         $ket2 = $request->ket2;
@@ -337,8 +346,8 @@ class PenerimaanKasController extends Controller
         $data_casj = Cashjudex::all();
         $data_bagian = SdmKdbag::all();
         $data_account = DB::select("select kodeacct,descacct from account where length(kodeacct)=6 and kodeacct not like '%x%'");
-        $count= Kasline::where('docno', $nodoc)->sum('totprice');
-        $data_detail = Kasline::where('docno', $nodoc)->get();
+        $count= Kasline::where('docno', $nodoc)->where('keterangan','<>','PENUTUP')->sum('totprice');
+        $data_detail = DB::select("select * from kasline where docno ='$nodoc' and keterangan <> 'PENUTUP' order by lineno");
         $no_detail = Kasline::where('docno', $nodoc)->max('lineno');
         if ($no_detail <> null) {
             $no_urut = $no_detail + 1;
@@ -356,6 +365,38 @@ class PenerimaanKasController extends Controller
             'data_jenis',
             'data_casj'
         ));
+    }
+    public function searchAccount(Request $request)
+    {
+        if ($request->has('q')) {
+            $cari = strtoupper($request->q);
+            $data_account = DB::select("select kodeacct,descacct from account where length(kodeacct)=6 and kodeacct not like '%x%' and (kodeacct like '$cari%' or descacct like '$cari%') order by kodeacct desc");
+            return response()->json($data_account);
+        }
+    }
+    public function searchBagian(Request $request)
+    {
+        if ($request->has('q')) {
+            $cari = strtoupper($request->q);
+            $data_bagian = DB::select("select kode,nama from sdm_tbl_kdbag where kode like '$cari%' or nama like '$cari%' order by kode");
+            return response()->json($data_bagian);
+        }
+    }
+    public function searchJb(Request $request)
+    {
+        if ($request->has('q')) {
+            $cari = strtoupper($request->q);
+            $data_jenisbiaya = DB::select("select kode,keterangan from jenisbiaya where kode like '$cari%' or keterangan like '$cari%' order by kode");
+            return response()->json($data_jenisbiaya);
+        }
+    }
+    public function searchCj(Request $request)
+    {
+        if ($request->has('q')) {
+            $cari = strtoupper($request->q);
+            $data_cj = DB::select("select kode,nama from cashjudex where kode like '$cari%' or nama like '$cari%' order by kode");
+            return response()->json($data_cj);
+        }
     }
 
     /**
@@ -376,7 +417,7 @@ class PenerimaanKasController extends Controller
                 'voucher' =>  $request->nobukti,
                 'kepada' =>  $request->kepada,
                 'rate' =>  $request->kurs,
-                'nilai_dok' =>  $request->nilai,
+                'nilai_dok' =>  str_replace(',', '.', $request->nilai),
                 'ket1' =>  $request->ket1,
                 'ket2' =>  $request->ket2,
                 'ket3' =>  $request->ket3,
@@ -390,6 +431,19 @@ class PenerimaanKasController extends Controller
     {
         $data_cek = DB::select("select * from kasline where docno='$request->nodok' and lineno='$request->nourut'");
         if (!empty($data_cek)) {
+            Kasline::where('docno',$request->nodok)
+            ->where('lineno',$request->nourut)
+            ->update([
+                'account' =>  $request->sanper,
+                'area' =>  '0',
+                'lokasi'  =>  $request->lapangan,
+                'bagian' =>  $request->bagian,
+                'pk' =>  $request->pk,
+                'jb' =>  $request->jb,
+                'cj' =>  $request->cj,
+                'totprice'  =>  str_replace(',', '.', $request->nilai),
+                'keterangan'  =>  $request->rincian
+                ]);
             $data = 2;
             return response()->json($data);
         } else {
@@ -398,7 +452,7 @@ class PenerimaanKasController extends Controller
                         'docno' =>  $request->nodok,
                         'lineno' =>  $request->nourut,
                         'kdbank' =>  $request->sanper,
-                        'nominal' =>  $request->nilai,
+                        'nominal' =>  str_replace(',', '.', $request->nilai),
                         'asal' =>  $request->lapangan,
                         'keterangan' =>  $request->rincian,
                         'proses' =>  'N',
@@ -415,7 +469,7 @@ class PenerimaanKasController extends Controller
                 'pk' =>  $request->pk,
                 'jb' =>  $request->jb,
                 'cj' =>  $request->cj,
-                'totprice'  =>  $request->nilai,
+                'totprice'  =>  str_replace(',', '.', $request->nilai),
                 'keterangan'  =>  $request->rincian
                 ]);
             $data = 1;

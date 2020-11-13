@@ -47,13 +47,13 @@ class PinjamanPekerjaController extends Controller
                 return $data->tenor;
             })
             ->addColumn('angsuran', function ($data) {
-                 return 'Rp. '.number_format($data->angsuran,2,'.',',');
+                 return number_format($data->angsuran,2,'.',',');
            })
             ->addColumn('jml_pinjaman', function ($data) {
-                 return 'Rp. '.number_format($data->jml_pinjaman,2,'.',',');
+                 return number_format($data->jml_pinjaman,2,'.',',');
            })
             ->addColumn('curramount', function ($data) {
-                 return 'Rp. '.number_format($data->curramount,2,'.',',');
+                 return number_format($data->curramount,2,'.',',');
            })
             ->addColumn('no_kontrak', function ($data) {
                  return $data->no_kontrak;
@@ -114,11 +114,11 @@ class PinjamanPekerjaController extends Controller
             PayMtrpkpp::insert([
             'id_pinjaman' => $request->id_pinjaman,
             'nopek' => $request->nopek,
-            'jml_pinjaman' => $request->pinjaman,
+            'jml_pinjaman' => str_replace(',', '.', $request->pinjaman),
             'tenor' => $request->tenor,
             'mulai' => $request->mulai,
             'sampai' => $request->sampai,
-            'angsuran' => $request->angsuran,
+            'angsuran' => str_replace(',', '.', $request->angsuran),
             'cair' => 'N',
             'lunas' => 'N',
             'no_kontrak' => $request->no_kontrak
@@ -137,11 +137,11 @@ class PinjamanPekerjaController extends Controller
     {
         PayMtrpkpp::where('id_pinjaman', $request->id_pinjaman)
         ->update([
-            'jml_pinjaman' => $request->pinjaman,
+            'jml_pinjaman' => str_replace(',', '.', $request->pinjaman),
             'tenor' => $request->tenor,
             'mulai' => $request->mulai,
             'sampai' => $request->sampai,
-            'angsuran' => $request->angsuran,
+            'angsuran' => str_replace(',', '.', $request->angsuran),
             'no_kontrak' => $request->no_kontrak
         ]);
             return response()->json();

@@ -61,7 +61,7 @@
 									$tahun = date_format($tgl, 'Y'); 
 									$bulan = date_format($tgl, 'n'); 
 								?>
-								<select class="form-control" name="bulan" required>
+								<select class="form-control kt-select2" style="width: 100% !important;" name="bulan" required>
 									<option value="1" <?php if($bulan  == 1 ) echo 'selected' ; ?>>Januari</option>
 									<option value="2" <?php if($bulan  == 2 ) echo 'selected' ; ?>>Februari</option>
 									<option value="3" <?php if($bulan  == 3 ) echo 'selected' ; ?>>Maret</option>
@@ -84,7 +84,7 @@
 						<div class="form-group row">
 							<label for="" class="col-2 col-form-label">Pegawai<span style="color:red;">*</span></label>
 							<div class="col-10">
-								<select name="nopek"  class="form-control selectpicker" data-live-search="true" required autocomplete='off' oninvalid="this.setCustomValidity('Pegawai Harus Diisi..')" onchange="setCustomValidity('')">
+								<select name="nopek"  class="form-control kt-select2" style="width: 100% !important;" required autocomplete='off' oninvalid="this.setCustomValidity('Pegawai Harus Diisi..')" onchange="setCustomValidity('')">
 									<option value="">- Pilih -</option>
 									@foreach($data_pegawai as $data)
 									<option value="{{$data->nopeg}}">{{$data->nopeg}} - {{$data->nama}}</option>
@@ -95,7 +95,7 @@
 						<div class="form-group row">
 							<label class="col-2 col-form-label">Nilai<span style="color:red;">*</span></label>
 							<div class="col-10">
-								<input class="form-control" name="nilai" type="text" value="" id="nilai" required oninvalid="this.setCustomValidity('Nilai Harus Diisi..')" oninput="setCustomValidity('')" autocomplete='off' onkeypress="return hanyaAngka(event)">
+								<input class="form-control" name="nilai" type="text" value="" required oninvalid="this.setCustomValidity('Nilai Harus Diisi..')" oninput="this.value = this.value.replace(/[^0-9\-]+/g, ',');setCustomValidity('')" autocomplete='off'>
 								<input type="hidden" value="0" name="pajak" id="pajak">
 							</div>
 						</div>
@@ -122,7 +122,9 @@
 @section('scripts')
 	<script type="text/javascript">
 	$(document).ready(function () {
-
+		$('.kt-select2').select2().on('change', function() {
+			// $(this).valid();
+		});
 		$('#form-create').submit(function(){
 			$.ajax({
 				url  : "{{route('honor_komite.store')}}",
@@ -164,49 +166,6 @@
 			var a =parseInt(pajak);
              $('#pajak').val(a);
         });
-
-
-
-
-    var KTBootstrapDatepicker = function () {
-
-var arrows;
-if (KTUtil.isRTL()) {
-	arrows = {
-		leftArrow: '<i class="la la-angle-right"></i>',
-		rightArrow: '<i class="la la-angle-left"></i>'
-	}
-} else {
-	arrows = {
-		leftArrow: '<i class="la la-angle-left"></i>',
-		rightArrow: '<i class="la la-angle-right"></i>'
-	}
-}
-
-// Private functions
-var demos = function () {
-
-	// minimum setup
-	$('#tgldebet').datepicker({
-		rtl: KTUtil.isRTL(),
-		todayHighlight: true,
-		orientation: "bottom left",
-		templates: arrows,
-		autoclose: true,
-		// language : 'id',
-		format   : 'mm/yyyy'
-	});
-};
-
-return {
-	// public functions
-	init: function() {
-		demos(); 
-	}
-};
-}();
-
-KTBootstrapDatepicker.init();
 });
 		function hanyaAngka(evt) {
 		  var charCode = (evt.which) ? evt.which : event.keyCode

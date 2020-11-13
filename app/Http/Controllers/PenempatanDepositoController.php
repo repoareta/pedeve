@@ -26,15 +26,13 @@ class PenempatanDepositoController extends Controller
         $data_tahunbulan = DB::select("select max(thnbln) as bulan_buku from timetrans where status='1' and length(thnbln)='6'");
             if(!empty($data_tahunbulan)) {
                 foreach ($data_tahunbulan as $data_bul) {
-                    // $tahun = substr($data_bul->bulan_buku,0,-2); 
-                    // $bulan = substr($data_bul->bulan_buku,4); 
+                    $bulan = substr($data_bul->bulan_buku,4,2);
+                    $tahun = substr($data_bul->bulan_buku,0,4);
                 }
             }else{
-                // $bulan ='00';
-                // $tahun ='0000';
+                $bulan = date('m');
+                $tahun =date('Y');
             }
-            $bulan = date('m');
-            $tahun =date('Y');
         return view('penempatan_deposito.index',compact('tahun','bulan'));
     }
 
@@ -168,9 +166,9 @@ class PenempatanDepositoController extends Controller
         $kdbank = $request->kdbank;
         $tgldep = $request->tanggal;
         $tgltempo = $request->tanggal2;
-        $tahunbunga = $request->tahunbunga;
+        $tahunbunga = str_replace(',', '.', $request->tahunbunga);
         $noseri = $request->noseri;
-        $nominal = $request->nominal;
+        $nominal = str_replace(',', '.', $request->nominal);
         $namabank = $request->namabank;
         $perpanjangan = $request->perpanjangan;
         $keterangan = $request->keterangan;
@@ -354,9 +352,9 @@ class PenempatanDepositoController extends Controller
         $kdbank = $request->kdbank;
         $tgldep = $request->tanggal;
         $tgltempo = $request->tanggal2;
-        $tahunbunga = $request->tahunbunga;
+        $tahunbunga = str_replace(',', '.', $request->tahunbunga);
         $noseri = $request->noseri;
-        $nominal = $request->nominal;
+        $nominal = str_replace(',', '.', $request->nominal);
         $namabank = $request->namabank;
         $perpanjangan = $request->perpanjangan;
         $keterangan = $request->keterangan;
@@ -548,9 +546,9 @@ class PenempatanDepositoController extends Controller
         $kdbank = $request->kdbank;
         $tgldep = $request->tanggal;
         $tgltempo = $request->tanggal2;
-        $tahunbunga = $request->tahunbunga;
+        $tahunbunga = str_replace(',', '.', $request->tahunbunga);
         $noseri = $request->noseri;
-        $nominal = $request->nominal;
+        $nominal = str_replace(',', '.', $request->nominal);
         $namabank = $request->namabank;
         $perpanjangan = $request->perpanjangan+1;
         $keterangan = $request->keterangan;
@@ -718,13 +716,13 @@ class PenempatanDepositoController extends Controller
     }
     public function ctkdepo(Request $request)
     {
-            if($request->lapangan == ""){
+            // if($request->lapangan == ""){
                 $lp = "a.asal in ('MD','MS')";
                 $lapangan = "MD,MS";
-            }else{
-                $lp = "a.asal='$request->lapangan'";
-                $lapangan = "$request->lapangan";
-            }
+            // }else{
+            //     $lp = "a.asal='$request->lapangan'";
+            //     $lapangan = "$request->lapangan";
+            // }
             if($request->sanper <> ""){
                 $sanper = $request->sanper;
                 $bulan = ltrim($request->bulan,0);

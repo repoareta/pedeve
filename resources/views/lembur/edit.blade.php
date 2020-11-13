@@ -63,8 +63,8 @@
 				</div>
 				<div class="form-group row">
 					<label for="spd-input" class="col-2 col-form-label">Bulan Gaji</label>
-					<div class="col-2">
-						<select class="form-control" name="bulan">
+					<div class="col-6">
+						<select class="form-control kt-select2" style="width: 100% !important;" name="bulan">
 							<option value="1" <?php if($data_li->bulan  == 1 ) echo 'selected' ; ?>>Januari</option>
 							<option value="2" <?php if($data_li->bulan  == 2 ) echo 'selected' ; ?>>Februari</option>
 							<option value="3" <?php if($data_li->bulan  == 3 ) echo 'selected' ; ?>>Maret</option>
@@ -79,7 +79,7 @@
 							<option value="12" <?php if($data_li->bulan  == 12 ) echo 'selected' ; ?>>Desember</option>
 						</select>
 					</div>
-							<div class="col-2" >
+							<div class="col-4" >
 								<input class="form-control" type="text" value="{{$data_li->tahun}}"   name="tahun" size="4" maxlength="4" onkeypress="return hanyaAngka(event)" autocomplete='off' >
 							</div>
 				</div>
@@ -92,31 +92,31 @@
 				<div class="form-group row">
 					<label for="id-pekerja;-input" class="col-2 col-form-label">Makan Pagi</label>
 					<div class="col-10">
-						<input class="form-control" type="text" value="<?php echo number_format($data_li->makanpg, 0, '', '') ?>" id="makanpg" name="makanpg" onkeypress="return hanyaAngka(event)" autocomplete='off'>
+						<input class="form-control" type="text" value="<?php echo number_format($data_li->makanpg, 2, '.', '') ?>" id="mapg" name="makanpg" oninput="this.value = this.value.replace(/[^0-9\-]+/g, ',');setCustomValidity('')" autocomplete='off'>
 					</div>
 				</div>
 				<div class="form-group row">
 					<label for="id-pekerja;-input" class="col-2 col-form-label">Makan Siang</label>
 					<div class="col-10">
-						<input class="form-control" type="text" value="<?php echo number_format($data_li->makansg, 0, '', '') ?>" id="makansg" name="makansg" onkeypress="return hanyaAngka(event)" autocomplete='off'>
+						<input class="form-control" type="text" value="<?php echo number_format($data_li->makansg, 2, '.', '') ?>" id="masi" name="makansg" oninput="this.value = this.value.replace(/[^0-9\-]+/g, ',');setCustomValidity('')" autocomplete='off'>
 					</div>
 				</div>
 				<div class="form-group row">
-					<label for="id-pekerja;-input" class="col-2 col-form-label">Makan Siang</label>
+					<label for="id-pekerja;-input" class="col-2 col-form-label">Makan Malam</label>
 					<div class="col-10">
-						<input class="form-control" type="text" value="<?php echo number_format($data_li->makanml, 0, '', '') ?>" id="makanml" name="makanml" onkeypress="return hanyaAngka(event)" autocomplete='off'>
+						<input class="form-control" type="text" value="<?php echo number_format($data_li->makanml, 2, '.', '') ?>" id="maml" name="makanml" oninput="this.value = this.value.replace(/[^0-9\-]+/g, ',');setCustomValidity('')" autocomplete='off'>
 					</div>
 				</div>
 				<div class="form-group row">
 					<label for="id-pekerja;-input" class="col-2 col-form-label">Transport</label>
 					<div class="col-10">
-						<input class="form-control" type="text" value="<?php echo number_format($data_li->transport, 0, '', '') ?>" id="transport" name="transport" onkeypress="return hanyaAngka(event)" autocomplete='off'>
+						<input class="form-control" type="text" value="<?php echo number_format($data_li->transport, 2, '.', '') ?>" id="trans" name="transport" oninput="this.value = this.value.replace(/[^0-9\-]+/g, ',');setCustomValidity('')" autocomplete='off'>
 					</div>
 				</div>
 				<div class="form-group row">
 					<label for="id-pekerja;-input" class="col-2 col-form-label">Lembur</label>
 					<div class="col-10">
-						<input class="form-control" type="text" value="<?php echo number_format($data_li->lembur, 0, '', '') ?>" id="lembur" name="lembur" onkeypress="return hanyaAngka(event)" autocomplete='off'>
+						<input class="form-control" type="text" value="<?php echo number_format($data_li->lembur, 2, '.', '') ?>" id="lem" name="lembur" oninput="this.value = this.value.replace(/[^0-9\-]+/g, ',');setCustomValidity('')" autocomplete='off'>
 					</div>
 				</div>
 				@endforeach
@@ -142,7 +142,9 @@
 @section('scripts')
 <script type="text/javascript">
 $(document).ready(function () {
-
+$('.kt-select2').select2().on('change', function() {
+	// $(this).valid();
+});
 //edit lembur
 $('#form-edit').submit(function(){
 $.ajax({
@@ -210,12 +212,12 @@ return {
 
 KTBootstrapDatepicker.init();
 });
-function hanyaAngka(evt) {
-		  var charCode = (evt.which) ? evt.which : event.keyCode
-		   if (charCode > 31 && (charCode < 48 || charCode > 57))
- 
-		    return false;
-		  return true;
-		}
+	function hanyaAngka(evt) {
+		var charCode = (evt.which) ? evt.which : event.keyCode
+		if (charCode > 31 && (charCode < 48 || charCode > 57))
+
+		return false;
+		return true;
+	}
 </script>
 @endsection

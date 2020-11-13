@@ -328,20 +328,20 @@
                                 $total=$c+$c1+$c2+$c3+$c4+$c5+$c6+$c7;
                                 $potongan =$c_005+$iuranjm+$c_011+$c_012+$pot_pajak+$pembulatan+$pot_pinjaman+$pot_koperasi;
                                 $gajihbersih =$total+$potongan;
-                                $subtotalc[$b] = $b;
-                                 $subtotalc1[$b] = $b1;
-                                 $subtotalc2[$b] = $b2;
-                                 $subtotalc3[$b] = $b3;
-                                 $subtotalc4[$b] = $b4;
-                                 $subtotalc5[$b] = $b5;
-                                 $subtotalc6[$b] = $b6;
-                                 $subtotalc7[$b] = $b7;
-                                 $subtotalc8[$b] = $iuranjm;
-                                 $subtotalc9[$b] = $pot_pajak;
-                                 $subtotalc10[$b] = $pot_pinjaman;
-                                 $subtotalc11[$b] = $pembulatan;
-                                 $subtotalc13[$b] = $gajihbersih;
-                                 $subtotalc14[$b] = $total;
+                                $subtotalc[$c] = $c;
+                                 $subtotalc1[$c] = $c1;
+                                 $subtotalc2[$c] = $c2;
+                                 $subtotalc3[$c] = $c3;
+                                 $subtotalc4[$c] = $c4;
+                                 $subtotalc5[$c] = $c5;
+                                 $subtotalc6[$c] = $c6;
+                                 $subtotalc7[$c] = $c7;
+                                 $subtotalc8[$c] = $iuranjm;
+                                 $subtotalc9[$c] = $pot_pajak;
+                                 $subtotalc10[$c] = $pot_pinjaman;
+                                 $subtotalc11[$c] = $pembulatan;
+                                 $subtotalc13[$c] = $gajihbersih;
+                                 $subtotalc14[$c] = $total;
                                 ?>
                                 <td style="text-align:right;">{{number_format($total,0)}}</td>
                                 <td style="text-align:right;">{{$data->iuranjm <= 0 ? '('.number_format($data->iuranjm*-1,0).')' : number_format($data->iuranjm,0)}}</td>

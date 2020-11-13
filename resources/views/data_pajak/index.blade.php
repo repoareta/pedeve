@@ -121,7 +121,7 @@ $(document).ready(function () {
 						}
 					},
 			columns: [
-				{data: 'action', name: 'action'},
+				{data: 'action', name: 'aksi', orderable: false, searchable: false, class:'radio-button'},
 				{data: 'tahun', name: 'tahun'},
 				{data: 'bulan', name: 'bulan'},
 				{data: 'pekerja', name: 'pekerja'},

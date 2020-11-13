@@ -3,7 +3,7 @@
     <div id="kt_aside_menu" class="kt-aside-menu " data-ktmenu-vertical="1" data-ktmenu-scroll="1" data-ktmenu-dropdown-timeout="500">
         <ul class="kt-menu__nav ">
             <li class="kt-menu__item " aria-haspopup="true">
-                <img class="img-responsive avatar-view" style="margin: auto;width: 50%;height: 50%;border-radius: 100%;" src="{{ asset('assets/media/users/default.jpg') }}" alt="Avatar" title="Change the avatar">
+                <img class="img-responsive avatar-view pointer-link" style="margin: auto;width: 50%;height: 50%;border-radius: 100%;" src="{{ asset('assets/media/users/default.jpg') }}" alt="{{Auth::user()->usernm}}" title="Rubah foto profil">
                 <h6 style="text-align:center; padding-top:20px;" class="kt-menu__section-text">
                     Welcome
                 </h6>
@@ -691,11 +691,13 @@
                 $cetak_kas_bank = array(
                     'cetak_kas_bank.index',                
                     'cetak_kas_bank.create',                
+                    'cetak_kas_bank.rekap',                
                 ); // isi nama semua route cetak_kas_bank
                 $tabel_deposito = array(
                     'tabel_deposito.index',
                     'tabel_deposito.create',
-                    'tabel_deposito.edit'
+                    'tabel_deposito.edit',
+                    'tabel_deposito.rekap'
                 ); // isi nama semua route tabel_deposito
                 
                 $treassury = array_merge(
@@ -832,6 +834,11 @@
                     'set_menu.create',
                     'set_menu.edit'                    
                 ); // isi nama semua route set_menu
+                $set_function = array(
+                    'set_function.index',
+                    'set_function.create',
+                    'set_function.edit'                    
+                ); // isi nama semua route set_function
                 $tabel_menu = array(
                     'tabel_menu.index',
                     'tabel_menu.create',
@@ -843,6 +850,7 @@
                 $administrator = array_merge(
                     $set_user,
                     $set_menu,
+                    $set_function,
                     $tabel_menu,
                     $password_administrator
                 ); // array merge semua submenu
@@ -2266,6 +2274,8 @@
                 </a>
                 <div class="kt-menu__submenu "><span class="kt-menu__arrow"></span>
                     <ul class="kt-menu__subnav">
+                        @foreach(DB::table('usermenu')->where('userid',Auth::user()->userid)->where('menuid',801)->limit(1)->get() as $data_umu)
+                        @if($data_umu->ability == 1)
                         <li class="kt-menu__item kt-menu__item{{ set_active_submenu($data_perkara) }}" aria-haspopup="true">
                             <a href="{{route('data_perkara.index')}}" class="kt-menu__link">
                                 <i class="kt-menu__link-bullet kt-menu__link-bullet--dot">
@@ -2274,7 +2284,10 @@
                                 <span class="kt-menu__link-text">Data Perkara</span>
                             </a>
                         </li>
-
+                        @endif
+                        @endforeach
+                        @foreach(DB::table('usermenu')->where('userid',Auth::user()->userid)->where('menuid',802)->limit(1)->get() as $data_umu)
+                        @if($data_umu->ability == 1)
                         <li class="kt-menu__item kt-menu__item{{ set_active_submenu($perusahaan_afiliasi) }}" aria-haspopup="true">
                             <a href="{{route('perusahaan_afiliasi.index')}}" class="kt-menu__link">
                                 <i class="kt-menu__link-bullet kt-menu__link-bullet--dot">
@@ -2283,10 +2296,10 @@
                                 <span class="kt-menu__link-text">Perusahaan Afiliasi</span>
                             </a>
                         </li>
-                    </ul>
-                </div>
-                <div class="kt-menu__submenu "><span class="kt-menu__arrow"></span>
-                    <ul class="kt-menu__subnav">
+                        @endif
+                        @endforeach
+                        @foreach(DB::table('usermenu')->where('userid',Auth::user()->userid)->where('menuid',803)->limit(1)->get() as $data_umu)
+                        @if($data_umu->ability == 1)
                         <li class="kt-menu__item kt-menu__item{{ set_active_submenu($monitoring_kinerja) }}" aria-haspopup="true">
                             <a href="{{route('monitoring_kinerja.index')}}" class="kt-menu__link">
                                 <i class="kt-menu__link-bullet kt-menu__link-bullet--dot">
@@ -2295,6 +2308,8 @@
                                 <span class="kt-menu__link-text">Monitoring Kinerja</span>
                             </a>
                         </li>
+                        @endif
+                        @endforeach
                     </ul>
                 </div>
             </li>
@@ -2325,7 +2340,7 @@
                                 <i class="kt-menu__link-bullet kt-menu__link-bullet--dot">
                                     <span></span>
                                 </i>
-                                <span class="kt-menu__link-text">User Administration</span>
+                                <span class="kt-menu__link-text">Set User</span>
                             </a>
                         </li>
                         <li class="kt-menu__item kt-menu__item{{ set_active_submenu($set_menu) }}" aria-haspopup="true">
@@ -2333,7 +2348,15 @@
                                 <i class="kt-menu__link-bullet kt-menu__link-bullet--dot">
                                     <span></span>
                                 </i>
-                                <span class="kt-menu__link-text">Menu & Function</span>
+                                <span class="kt-menu__link-text">Set Menu</span>
+                            </a>
+                        </li>
+                        <li class="kt-menu__item kt-menu__item{{ set_active_submenu($set_function) }}" aria-haspopup="true">
+                            <a href="{{route('set_function.index')}}" class="kt-menu__link">
+                                <i class="kt-menu__link-bullet kt-menu__link-bullet--dot">
+                                    <span></span>
+                                </i>
+                                <span class="kt-menu__link-text">Set function</span>
                             </a>
                         </li>
                         <li class="kt-menu__item kt-menu__item{{ set_active_submenu($tabel_menu) }}" aria-haspopup="true">

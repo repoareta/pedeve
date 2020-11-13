@@ -45,9 +45,14 @@
 				<div class="kt-portlet__body">
 					<div class="form-group form-group-last">
 						<div class="form-group row">
-							<label class="col-2 col-form-label">Nama Perusahaan<span style="color:red;">*</span></label>
-							<div class="col-8">						
-								<input class="form-control" type="text" value="" name="nama"  size="200" maxlength="200" title="Nama Perusahaan" required oninvalid="this.setCustomValidity('Nama Perusahaan Harus Diisi..')" oninput="setCustomValidity('')" autocomplete='off' >						
+							<label for="jenis-dinas-input" class="col-2 col-form-label">Nama Perusahaan<span style="color:red;">*</span></label>
+							<div class="col-8">
+								<select name="nama" class="form-control selectpicker" data-live-search="true" required oninvalid="this.setCustomValidity('Nama Perusahaan Harus Diisi..')" onchange="setCustomValidity('')">
+									<option value="">- Pilih -</option>
+									@foreach ($data_perusahaan as $row)
+									<option value="{{ $row->id }}">{{ $row->nama }}</option>
+									@endforeach
+								</select>
 							</div>
 						</div>
 						<div class="form-group row">
@@ -95,25 +100,25 @@
 							<label for="" class="col-2 col-form-label">Total Aset</label>
 							<div class="col-8">
 								<input class="form-control" type="hidden" value="1" name="kurs" id="kurs"  size="25" maxlength="20" title="Kurs" >
-								<input class="form-control" type="text" value="" name="total_aset"  size="25" maxlength="25" title="Total Aset" onkeypress="return hanyaAngka(event)" autocomplete='off' >
+								<input class="form-control" type="text" value="" name="total_aset" id="total_aset" size="25" maxlength="25" title="Total Aset" oninput="this.value = this.value.replace(/[^0-9\-]+/g, ',');" autocomplete='off' >
 							</div>
 						</div>
 						<div class="form-group row">
 							<label class="col-2 col-form-label">Sales</label>
 							<div class="col-8">						
-								<input class="form-control" type="text" value="{{ old('sales') }}" name="sales"  size="200" maxlength="200" title="Sales" onkeypress="return hanyaAngka(event)" autocomplete='off'>
+								<input class="form-control" type="text" value="{{ old('sales') }}" name="sales" id="sales"  size="200" maxlength="200" title="Sales" oninput="this.value = this.value.replace(/[^0-9\-]+/g, ',');" autocomplete='off'>
 							</div>
 						</div>
 						<div class="form-group row">
 							<label for="" class="col-2 col-form-label">Laba Bersih</label>
 							<div class="col-8">
-								<input class="form-control" type="text" value="" name="laba_bersih"  size="25" maxlength="25" title="Laba Bersih" onkeypress="return hanyaAngka(event)" autocomplete='off' >
+								<input class="form-control" type="text" value="" name="laba_bersih" id="laba_bersih"  size="25" maxlength="25" title="Laba Bersih" oninput="this.value = this.value.replace(/[^0-9\-]+/g, ',');" autocomplete='off' >
 							</div>
 						</div>
 						<div class="form-group row">
 							<label class="col-2 col-form-label">TKP</label>
 							<div class="col-8">						
-								<input class="form-control" type="text" value="{{ old('tkp') }}" name="tkp"  title="TKP" onkeypress="return hanyaAngka(event)" autocomplete='off'>
+								<input class="form-control" type="text" value="{{ old('tkp') }}" name="tkp" id="tkp"  title="TKP" oninput="this.value = this.value.replace(/[^0-9\-]+/g, ',');" autocomplete='off'>
 							</div>
 						</div>
 						

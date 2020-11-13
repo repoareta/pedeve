@@ -63,7 +63,7 @@
 						<div class="form-group row">
 							<label class="col-2 col-form-label">Nilai<span style="color:red;">*</span></label>
 							<div class="col-10">
-								<input class="form-control" name="nilai" type="text" value="" id="nilai" required oninvalid="this.setCustomValidity('Nilai Harus Diisi..')" oninput="setCustomValidity('')" autocomplete='off' onkeypress="return hanyaAngka(event)">
+								<input class="form-control" name="nilai" type="text" value=""  required oninvalid="this.setCustomValidity('Nilai Harus Diisi..')" oninput="this.value = this.value.replace(/[^0-9\-]+/g, ',');setCustomValidity('')" autocomplete='off'>
 							</div>
 						</div>
 						
@@ -149,52 +149,6 @@
 			}
 		})
 	});
-
-
-
-
-
-
-
-    var KTBootstrapDatepicker = function () {
-
-var arrows;
-if (KTUtil.isRTL()) {
-	arrows = {
-		leftArrow: '<i class="la la-angle-right"></i>',
-		rightArrow: '<i class="la la-angle-left"></i>'
-	}
-} else {
-	arrows = {
-		leftArrow: '<i class="la la-angle-left"></i>',
-		rightArrow: '<i class="la la-angle-right"></i>'
-	}
-}
-
-// Private functions
-var demos = function () {
-
-	// minimum setup
-	$('#tgldebet').datepicker({
-		rtl: KTUtil.isRTL(),
-		todayHighlight: true,
-		orientation: "bottom left",
-		templates: arrows,
-		autoclose: true,
-		// language : 'id',
-		format   : 'mm/yyyy'
-	});
-};
-
-return {
-	// public functions
-	init: function() {
-		demos(); 
-	}
-};
-}();
-
-KTBootstrapDatepicker.init();
 });
 		function hanyaAngka(evt) {
 		  var charCode = (evt.which) ? evt.which : event.keyCode

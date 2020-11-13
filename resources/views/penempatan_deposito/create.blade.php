@@ -84,7 +84,7 @@
 						<div class="form-group row">
 							<label for="spd-input" class="col-2 col-form-label">Nominal<span style="color:red;">*</span></label>
 							<div class="col-10">
-								<input  class="form-control" type="number" value="" id="nominal" name="nominal" size="15" maxlength="15" required oninvalid="this.setCustomValidity('Nominal Harus Diisi..')" oninput="setCustomValidity('')" autocomplete='off' >
+								<input  class="form-control" type="text" value=""  name="nominal" size="25" maxlength="25" required oninvalid="this.setCustomValidity('Nominal Harus Diisi..')" oninput="this.value = this.value.replace(/[^0-9\-]+/g, ','); setCustomValidity('')" autocomplete='off' >
 							</div>
 						</div>
 						<div class="form-group row">
@@ -102,7 +102,7 @@
 						<div class="form-group row">
 							<label for="spd-input" class="col-2 col-form-label">Bunga % Tahun<span style="color:red;">*</span></label>
 							<div class="col-10">
-								<input  class="form-control" type="number" value="" id="tahunbunga" name="tahunbunga" size="15" maxlength="15" step="0.01" pattern="^\d+(?:\.\d{1,2})?$" onblur="this.parentNode.parentNode.style.backgroundColor=/^\d+(?:\.\d{1,2})?$/.test(this.value)?'inherit':''" required oninvalid="this.setCustomValidity('Bungan % Tahun Harus Diisi..')" oninput="setCustomValidity('')" autocomplete='off' >
+								<input  class="form-control" type="text" value="" name="tahunbunga" size="15" maxlength="15"  required oninvalid="this.setCustomValidity('Bungan % Tahun Harus Diisi..')" oninput="this.value = this.value.replace(/[^0-9\-]+/g, ','); setCustomValidity('')" autocomplete='off' >
 							</div>
 						</div>
 						<div class="form-group row">
@@ -154,7 +154,17 @@
 					$('#keterangan').val(data.keterangan);
 					$('#kdbank').val(data.kdbank);
 					$('#namabank').val(data.descacct);
-					$('#nominal').val(data.nominal);
+					var bilangan=data.nominal;
+					var	number_string = bilangan.toString(),
+						sisa 	= number_string.length % 3,
+						rupiah 	= number_string.substr(0, sisa),
+						ribuan 	= number_string.substr(sisa).match(/\d{3}/g);
+							
+					if (ribuan) {
+						separator = sisa ? '.' : '';
+						rupiah += separator + ribuan.join('.');
+					}
+					$('#nominal').val(rupiah);
 					$('#asal').val(data.asal);
 				},
 				error : function(){
@@ -218,18 +228,15 @@
 			orientation: "bottom left",
 			autoclose: true,
 			// language : 'id',
-			format   : 'yyyy-mm-dd'
+			format   : 'dd-mm-yyyy'
 		});
 		$('#tanggal2').datepicker({
 			todayHighlight: true,
 			orientation: "bottom left",
 			autoclose: true,
 			// language : 'id',
-			format   : 'yyyy-mm-dd'
+			format   : 'dd-mm-yyyy'
 		});
-
-
-
 });
 		function hanyaAngka(evt) {
 		  var charCode = (evt.which) ? evt.which : event.keyCode

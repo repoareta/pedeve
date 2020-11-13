@@ -34,9 +34,6 @@
 			<div class="kt-portlet__head-toolbar">
 				<div class="kt-portlet__head-wrapper">
 					<div class="kt-portlet__head-actions">
-						<span style="font-size: 2em;" class="kt-font-primary pointer-link" data-toggle="kt-tooltip" data-placement="top" title="Akses Function">
-							<i class="fas fa-edit" id="addRow"></i>
-						</span>
 						<span style="font-size: 2em;" class="kt-font-warning pointer-link" data-toggle="kt-tooltip" data-placement="top" title="Akses Menu">
 							<i class="fas fa-edit" id="editRow"></i>
 						</span>
@@ -77,6 +74,7 @@ $(document).ready(function () {
 			serverSide: true,
 			searching: true,
 			lengthChange: true,
+			pageLength: 200,
 			language: {
 				processing: '<i class="fa fa-spinner fa-spin fa-2x fa-fw"></i> <br> Loading...'
 			},

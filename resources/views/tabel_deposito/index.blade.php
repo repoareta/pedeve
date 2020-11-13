@@ -109,46 +109,86 @@
 <script type="text/javascript">
 $(document).ready(function () {
 		var t = $('#kt_table').DataTable({
-			scrollX   : true,
-			processing: true,
-			serverSide: true,
-			searching: false,
-			lengthChange: false,
-			language: {
+				scrollX   : true,
+				processing: true,
+				serverSide: true,
+				searching: false,
+				lengthChange: false,
+				pageLength: 100,
+				scrollY:        "500px",
+				scrollCollapse: true,
+				language: {
 				processing: '<i class="fa fa-spinner fa-spin fa-2x fa-fw"></i> <br> Loading...'
-			},
-			ajax      : {
-						url: "{{ route('tabel_deposito.search.index') }}",
-						type : "POST",
-						dataType : "JSON",
-						headers: {
-						'X-CSRF-Token': '{{ csrf_token() }}',
-						},
-						data: function (d) {
-							d.tahun = $('input[name=tahun]').val();
-							d.bulan = $('select[name=bulan]').val();
-						}
+				},
+				ajax      : {
+					url: "{{route('tabel_deposito.search.index')}}",
+					type : "POST",
+					dataType : "JSON",
+					headers: {
+					'X-CSRF-Token': '{{ csrf_token() }}',
 					},
-			columns: [
-				{data: 'radio', name: 'aksi', orderable: false, searchable: false, class:'radio-button'},
-				{data: 'noseri', name: 'noseri'},
-				{data: 'namabank', name: 'namabank'},
-				{data: 'asal', name: 'asal'},
-				{data: 'nominal', name: 'nominal'},
-				{data: 'tgldep', name: 'tgldep'},
-				{data: 'tgltempo', name: 'tgltempo'},
-				{data: 'haribunga', name: 'haribunga'},
-				{data: 'bungatahun', name: 'bungatahun'},
-				{data: 'bungabulan', name: 'bungabulan'},
-				{data: 'pph20', name: 'pph20'},
-				{data: 'netbulan', name: 'netbulan'},
-				{data: 'accharibunga', name: 'accharibunga'},
-				{data: 'accnetbulan', name: 'accnetbulan'},
-			]
+					data: function (d) {
+						d.bulan = $('select[name=bulan]').val();
+						d.tahun = $('input[name=tahun]').val();
+					}
+				},
+				columns: [
+					{data: 'radio', name: 'aksi', orderable: false, searchable: false, class:'radio-button'},
+					{data: 'noseri', name: 'noseri'},
+					{data: 'namabank', name: 'namabank'},
+					{data: 'nominal', name: 'nominal'},
+					{data: 'tgldep', name: 'tgldep'},
+					{data: 'tgltempo', name: 'tgltempo'},
+					{data: 'haribunga', name: 'haribunga'},
+					{data: 'rate', name: 'rate'},
+					{data: 'bungatahun', name: 'bungatahun'},
+					{data: 'bungabulan', name: 'bungabulan'},
+					{data: 'pph20', name: 'pph20'},
+					{data: 'netbulan', name: 'netbulan'},
+					{data: 'accharibunga', name: 'accharibunga'},
+					{data: 'accnetbulan', name: 'accnetbulan'},
+				],
+				columnDefs: [
+							{"className": "dt-center", "targets": "_all"}
+						],
+				createdRow: function( row, data, dataIndex ) {
+					if(data["warna"] == 1){
+						$( row ).css( "background-color", "#FF0000" );
+						$('td', row ).css( "color", "#FFFEFE" );
+					}else if(data["warna"] == 2){
+						$( row ).css( "background-color", "#666666" );
+						$('td', row ).css( "color", "#FFFEFE" );
+					}else{
+						$( row ).css( "background-color", "#000000" );
+						$('td', row ).css( "color", "#FFFEFE" );
+					}
+				},
+				
 		});
 		$('#search-form').on('submit', function(e) {
 			t.draw();
 			e.preventDefault();
+		});
+
+		$('.kt-select2').select2().on('change', function() {
+			// $(this).valid();
+		});
+
+		//exportRow penempatan deposito
+		$('#exportRow').on('click', function(e) {
+			e.preventDefault();
+
+			if($('input[class=btn-radio]').is(':checked')) { 
+				$("input[class=btn-radio]:checked").each(function() {  
+					e.preventDefault();
+					var no = $(this).attr('nodok').split("/").join("-");
+					var id = $(this).attr('lineno');
+						location.replace("{{url('kontroler/tabel_deposito/rekap')}}"+ '/' +no+'/'+id);
+				});
+			} else{
+				swalAlertInit('cetak');
+			}
+			
 		});
 });
 

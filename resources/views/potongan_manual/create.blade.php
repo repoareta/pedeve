@@ -61,7 +61,7 @@
 									$tahun = date_format($tgl, 'Y'); 
 									$bulan = date_format($tgl, 'n'); 
 								?>
-								<select class="form-control" name="bulan" required>
+								<select class="form-control kt-select2" name="bulan" required>
 									<option value="1" <?php if($bulan  == 1 ) echo 'selected' ; ?>>Januari</option>
 									<option value="2" <?php if($bulan  == 2 ) echo 'selected' ; ?>>Februari</option>
 									<option value="3" <?php if($bulan  == 3 ) echo 'selected' ; ?>>Maret</option>
@@ -84,7 +84,7 @@
 						<div class="form-group row">
 							<label for="" class="col-2 col-form-label">Pegawai<span style="color:red;">*</span></label>
 							<div class="col-10">
-								<select name="nopek"  class="form-control selectpicker" data-live-search="true" required autocomplete='off' oninvalid="this.setCustomValidity('Pegawai Harus Diisi..')" onchange="setCustomValidity('')">
+								<select name="nopek"  class="form-control kt-select2" required autocomplete='off' oninvalid="this.setCustomValidity('Pegawai Harus Diisi..')" onchange="setCustomValidity('')">
 									<option value="">- Pilih -</option>
 									@foreach($data_pegawai as $data)
 									<option value="{{$data->nopeg}}">{{$data->nopeg}} - {{$data->nama}}</option>
@@ -95,7 +95,7 @@
 						<div class="form-group row">
 							<label for="" class="col-2 col-form-label">Aard<span style="color:red;">*</span></label>
 							<div class="col-10">
-								<select name="aard"  class="form-control selectpicker" data-live-search="true" required autocomplete='off'  oninvalid="this.setCustomValidity('AARD Harus Diisi..')" onchange="setCustomValidity('')">
+								<select name="aard"  class="form-control kt-select2" required autocomplete='off'  oninvalid="this.setCustomValidity('AARD Harus Diisi..')" onchange="setCustomValidity('')">
 									<option value="">- Pilih -</option>
 									@foreach($pay_aard as $data)
 									<option value="{{$data->kode}}">{{$data->kode}} - {{$data->nama}}</option>
@@ -118,7 +118,7 @@
 						<div class="form-group row">
 							<label class="col-2 col-form-label">Nilai<span style="color:red;">*</span></label>
 							<div class="col-10">
-								<input class="form-control" name="nilai" type="text" value="" id="nilai" size="17" maxlength="17" required oninvalid="this.setCustomValidity('Nilai Harus Diisi..')" oninput="setCustomValidity('')" autocomplete='off' onkeypress="return hanyaAngka(event)">
+								<input class="form-control" name="nilai" type="text" value=""  size="25" maxlength="25" required oninvalid="this.setCustomValidity('Nilai Harus Diisi..')" oninput="this.value = this.value.replace(/[^0-9\-]+/g, ',');setCustomValidity('')" autocomplete='off' >
 							</div>
 						</div>
 						
@@ -145,81 +145,57 @@
 	<script type="text/javascript">
 	$(document).ready(function () {
 
-$('#form-create').submit(function(){
-	$.ajax({
-		url  : "{{route('potongan_manual.store')}}",
-		type : "POST",
-		data : $('#form-create').serialize(),
-		dataType : "JSON",
-		headers: {
-		'X-CSRF-Token': '{{ csrf_token() }}',
-		},
-		success : function(data){
-		console.log(data);
-		if(data == 1){
-			Swal.fire({
-				type  : 'success',
-				title : 'Data Berhasil Ditambah',
-				text  : 'Berhasil',
-				timer : 2000
-			}).then(function() {
-					window.location.replace("{{ route('potongan_manual.index')}}");;
-				});
-		}else{
-			Swal.fire({
-				type  : 'info',
-				title : 'Data Potongan Manual Yang Diinput Sudah Ada.',
-				text  : 'Failed',
-			});
-		}
-		}, 
-		error : function(){
-			alert("Terjadi kesalahan, coba lagi nanti");
-		}
-	});	
-	return false;
-});
+		$('.kt-select2').select2().on('change', function() {
+			// $(this).valid();
+		});
 
-    var KTBootstrapDatepicker = function () {
+		$('#form-create').submit(function(){
+			$.ajax({
+				url  : "{{route('potongan_manual.store')}}",
+				type : "POST",
+				data : $('#form-create').serialize(),
+				dataType : "JSON",
+				headers: {
+				'X-CSRF-Token': '{{ csrf_token() }}',
+				},
+				success : function(data){
+				console.log(data);
+				if(data == 1){
+					Swal.fire({
+						type  : 'success',
+						title : 'Data Berhasil Ditambah',
+						text  : 'Berhasil',
+						timer : 2000
+					}).then(function() {
+							window.location.replace("{{ route('potongan_manual.index')}}");;
+						});
+				}else{
+					Swal.fire({
+						type  : 'info',
+						title : 'Data Potongan Manual Yang Diinput Sudah Ada.',
+						text  : 'Failed',
+					});
+				}
+				}, 
+				error : function(){
+					alert("Terjadi kesalahan, coba lagi nanti");
+				}
+			});	
+			return false;
+		});
 
-var arrows;
-if (KTUtil.isRTL()) {
-	arrows = {
-		leftArrow: '<i class="la la-angle-right"></i>',
-		rightArrow: '<i class="la la-angle-left"></i>'
-	}
-} else {
-	arrows = {
-		leftArrow: '<i class="la la-angle-left"></i>',
-		rightArrow: '<i class="la la-angle-right"></i>'
-	}
-}
 
-// Private functions
-var demos = function () {
-
-	// minimum setup
-	$('#tgldebet').datepicker({
-		rtl: KTUtil.isRTL(),
-		todayHighlight: true,
-		orientation: "bottom left",
-		templates: arrows,
-		autoclose: true,
-		// language : 'id',
-		format   : 'mm/yyyy'
+		// minimum setup
+		$('#tgldebet').datepicker({
+			todayHighlight: true,
+			orientation: "bottom left",
+			autoclose: true,
+			// language : 'id',
+			format   : 'mm/yyyy'
+		});
 	});
-};
 
-return {
-	// public functions
-	init: function() {
-		demos(); 
-	}
-};
-}();
 
-KTBootstrapDatepicker.init();
-});
 		function hanyaAngka(evt) {
 		  var charCode = (evt.which) ? evt.which : event.keyCode
 		   if (charCode > 31 && (charCode < 48 || charCode > 57))
@@ -227,6 +203,7 @@ KTBootstrapDatepicker.init();
 		    return false;
 		  return true;
 		}
+
 </script>
 
 @endsection

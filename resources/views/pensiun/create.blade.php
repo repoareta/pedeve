@@ -56,25 +56,25 @@
 						<div class="form-group row">
 							<label class="col-2 col-form-label">Pribadi<span style="color:red;">*</span></label>
 							<div class="col-10">
-								<input class="form-control" type="number"  required name="pribadi"  size="20" maxlength="20" value="" step="0.01"  pattern="^\d+(?:\.\d{1,2})?$" onblur="this.parentNode.parentNode.style.backgroundColor=/^\d+(?:\.\d{1,2})?$/.test(this.value)?'inherit':''" required oninvalid="this.setCustomValidity('Pribadi Harus Diisi..')" oninput="setCustomValidity('')" autocomplete='off'>
+								<input class="form-control" type="text"  required name="pribadi"  size="20" maxlength="20" value="" required oninvalid="this.setCustomValidity('Pribadi Harus Diisi..')" oninput="this.value = this.value.replace(/[^0-9\-]+/g, ',');setCustomValidity('')" autocomplete='off'>
 							</div>
 						</div>
 						<div class="form-group row">
 							<label class="col-2 col-form-label">Perusahaan Direksi<span style="color:red;">*</span></label>
 							<div class="col-10">
-								<input class="form-control" name="perusahaan" type="number" value="" size="20" maxlength="20" step="0.01"  pattern="^\d+(?:\.\d{1,2})?$" onblur="this.parentNode.parentNode.style.backgroundColor=/^\d+(?:\.\d{1,2})?$/.test(this.value)?'inherit':''" required oninvalid="this.setCustomValidity('Perusahaan Direksi Harus Diisi..')" oninput="setCustomValidity('')" >
+								<input class="form-control" name="perusahaan" type="text" value="" size="20" maxlength="20" required oninvalid="this.setCustomValidity('Perusahaan Direksi Harus Diisi..')" oninput="this.value = this.value.replace(/[^0-9\-]+/g, ',');setCustomValidity('')" >
 							</div>
 						</div>
 						<div class="form-group row">
 							<label class="col-2 col-form-label">Perusahaan Pekerja<span style="color:red;">*</span></label>
 							<div class="col-10">
-								<input class="form-control" name="perusahaan2" type="number" value="" size="20" maxlength="20" step="0.01"  pattern="^\d+(?:\.\d{1,2})?$" onblur="this.parentNode.parentNode.style.backgroundColor=/^\d+(?:\.\d{1,2})?$/.test(this.value)?'inherit':''" required oninvalid="this.setCustomValidity('Perusahaan Pekerja Harus Diisi..')" oninput="setCustomValidity('')" >
+								<input class="form-control" name="perusahaan2" type="text" value="" size="20" maxlength="20" required oninvalid="this.setCustomValidity('Perusahaan Pekerja Harus Diisi..')" oninput="this.value = this.value.replace(/[^0-9\-]+/g, ',');setCustomValidity('')" >
 							</div>
 						</div>
 						<div class="form-group row">
 							<label class="col-2 col-form-label">Perusahaan Direksi(BNI)<span style="color:red;">*</span></label>
 							<div class="col-10">
-								<input class="form-control" name="perusahaan3" type="number" value="" size="20" maxlength="20" step="0.01"  pattern="^\d+(?:\.\d{1,2})?$" onblur="this.parentNode.parentNode.style.backgroundColor=/^\d+(?:\.\d{1,2})?$/.test(this.value)?'inherit':''" required oninvalid="this.setCustomValidity('Perusahaan Direksi(BNI) Harus Diisi..')" oninput="setCustomValidity('')" >
+								<input class="form-control" name="perusahaan3" type="text" value="" size="20" maxlength="20" required oninvalid="this.setCustomValidity('Perusahaan Direksi(BNI) Harus Diisi..')" oninput="this.value = this.value.replace(/[^0-9\-]+/g, ',');setCustomValidity('')" >
 							</div>
 						</div>						
 						

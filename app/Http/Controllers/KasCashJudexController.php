@@ -24,6 +24,14 @@ class KasCashJudexController extends Controller
         $data_sanper = DB::select("select kodeacct,descacct from account where length(kodeacct)=6 and kodeacct not like '%x%' order by kodeacct desc");
         return view('kas_bank.report1', compact('data_kodelok', 'data_sanper', 'data_tahun'));
     }
+    public function searchAccount(Request $request)
+    {
+        if ($request->has('q')) {
+            $cari = strtoupper($request->q);
+            $data_account = DB::select("select kodeacct,descacct from account where length(kodeacct)=6 and kodeacct not like '%x%' and (kodeacct like '$cari%' or descacct like '$cari%') order by kodeacct desc");
+            return response()->json($data_account);
+        }
+    }
     public function Cetak1(Request $request)
     {
         if ($request->status == "1") {
@@ -34,7 +42,7 @@ class KasCashJudexController extends Controller
             $xxx =['10','11','13','15','18'];
         }
 
-        if ($request->lapangan == "KL") {
+        // if ($request->lapangan == "KL") {
             $yyy = "$request->tahun";
             if ($request->bulan <> "") {
                 $sss =[$request->bulan];
@@ -48,22 +56,22 @@ class KasCashJudexController extends Controller
                 $ddd = "$request->sanper";
                 $data_list = V_d2kasbank::where('tahun', $yyy)->whereIn('bulan', $sss)->where('account', $ddd)->whereIn('jk', $xxx)->orderBy('account', 'asc')->get();
             }
-        } else {
-            $bbb = "$request->lapangan";
-            $yyy = "$request->tahun";
-            if ($request->bulan <> "") {
-                $sss = [$request->bulan];
-            } else {
-                $sss =['01','02','03','04','05','06','07','08','09','10','11','12'];
-            }
+        // } else {
+        //     $bbb = "$request->lapangan";
+        //     $yyy = "$request->tahun";
+        //     if ($request->bulan <> "") {
+        //         $sss = [$request->bulan];
+        //     } else {
+        //         $sss =['01','02','03','04','05','06','07','08','09','10','11','12'];
+        //     }
             
-            if ($request->sanper == "") {
-                $data_list = V_d2kasbank::where('lokasi', $bbb)->where('tahun', $yyy)->whereIn('bulan', $sss)->whereIn('jk', $xxx)->orderBy('account', 'asc')->get();
-            } else {
-                $ddd = "$request->sanper";
-                $data_list = V_d2kasbank::where('lokasi', $bbb)->where('tahun', $yyy)->where('account', $ddd)->whereIn('bulan', $sss)->whereIn('jk', $xxx)->orderBy('account', 'asc')->get();
-            }
-        }
+        //     if ($request->sanper == "") {
+        //         $data_list = V_d2kasbank::where('lokasi', $bbb)->where('tahun', $yyy)->whereIn('bulan', $sss)->whereIn('jk', $xxx)->orderBy('account', 'asc')->get();
+        //     } else {
+        //         $ddd = "$request->sanper";
+        //         $data_list = V_d2kasbank::where('lokasi', $bbb)->where('tahun', $yyy)->where('account', $ddd)->whereIn('bulan', $sss)->whereIn('jk', $xxx)->orderBy('account', 'asc')->get();
+        //     }
+        // }
 
         if ($request->bulan <> "") {
             $export_d2_kas_bank = 'export_d2_kas_bank_bulan_pdf' ;
@@ -441,6 +449,14 @@ class KasCashJudexController extends Controller
     {
         $data_judex = DB::select("select kode,nama from cashjudex");
         return view('kas_bank.report10',compact('data_judex'));
+    }
+    public function searchCj(Request $request)
+    {
+        if ($request->has('q')) {
+            $cari = strtoupper($request->q);
+            $data_cj = DB::select("select kode,nama from cashjudex where kode like '$cari%' or nama like '$cari%' order by kode");
+            return response()->json($data_cj);
+        }
     }
 
 

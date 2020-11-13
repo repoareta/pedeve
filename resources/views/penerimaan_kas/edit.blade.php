@@ -158,28 +158,28 @@
 							</div>
 						</div>
 						<div class="form-group row">
-							<label class="col-2 col-form-label">Sejumlah<span style="color:red;">*</span></label>
+							<label class="col-2 col-form-label">Sejumlah</label>
 							<div class="col-10">
-								<input class="form-control" type="text"  value="{{number_format($data->nilai_dok,0,',','.')}}" size="16" maxlength="16" readonly required oninvalid="this.setCustomValidity('Sejumlah Harus Diisi..')" oninput="setCustomValidity('')" autocomplete='off' onkeypress="return hanyaAngka(event)">
-								<input class="form-control" type="hidden" name="nilai" id="nilai" value="{{number_format($count,0,'','')}}" size="16" maxlength="16" required oninvalid="this.setCustomValidity('Sejumlah Harus Diisi..')" oninput="setCustomValidity('')" autocomplete='off' onkeypress="return hanyaAngka(event)">
+								<input class="form-control" type="text"  value="{{number_format($data->nilai_dok,2,'.',',')}}" size="16" maxlength="16" readonly autocomplete='off' onkeypress="return hanyaAngka(event)">
+								<input class="form-control" type="hidden" name="nilai" id="nilai" value="{{number_format($count, 2, '.', '')}}" size="16" maxlength="16" autocomplete='off' onkeypress="return hanyaAngka(event)">
 							</div>
 						</div>
 						<div class="form-group row">
 							<label class="col-2 col-form-label">Catatan 1</label>
 							<div class="col-10">
-								<input class="form-control" type="text" name="ket1" id="ket1" value="{{$data->ket1}}" size="35" maxlength="35"  autocomplete='off'>
+								<textarea class="form-control" type="text" name="ket1" id="ket1">{{$data->ket1}}</textarea>
 							</div>
 						</div>
 						<div class="form-group row">
 							<label class="col-2 col-form-label">Catatan 2</label>
 							<div class="col-10">
-								<input class="form-control" type="text" name="ket2" id="ket2" value="{{$data->ket2}}" size="35" maxlength="35"  autocomplete='off'>
+								<textarea class="form-control" type="text" name="ket2" id="ket2">{{$data->ket2}}</textarea>
 							</div>
 						</div>
 						<div class="form-group row">
 							<label class="col-2 col-form-label">Catatan 3</label>
 							<div class="col-10">
-								<input class="form-control" type="text" name="ket3" id="ket3" value="{{$data->ket3}}" size="35" maxlength="35"  autocomplete='off'>
+								<textarea class="form-control" type="text" name="ket3" id="ket3">{{$data->ket3}}</textarea>
 							</div>
 						</div>
 						@endforeach
@@ -238,7 +238,7 @@
 								<th ></th>
 								<th>No</th>
 								<th>Rincian</th>	
-								<th>KL</th>
+								{{-- <th>KL</th> --}}
 								<th>Sanper</th>
 								<th>Bagian</th>
 								<th>PK</th>
@@ -255,19 +255,25 @@
 								<td scope="row" align="center"><label class="kt-radio kt-radio--bold kt-radio--brand"><input type="radio" name="btn-radio" nodok="{{$data_d->docno}}" nourut="{{$data_d->lineno}}"  class="btn-radio" ><span></span></label></td>
 								<td scope="row" align="center">{{$data_d->lineno}}</td>
 								<td>{{$data_d->keterangan}}</td>
-								<td>{{$data_d->lokasi}}</td>
+								{{-- <td>{{$data_d->lokasi}}</td> --}}
 								<td align="center">{{$data_d->account}}</td>
 								<td align="center">{{$data_d->bagian}}</td>
 								<td align="center">{{$data_d->pk}}</td>
 								<td align="center">{{$data_d->jb}}</td>
 								<td align="center">{{$data_d->cj}}</td>
-								<td align="center">{{number_format($data_d->totprice,2,'.',',')}}</td>
+								<td align="right">{{number_format($data_d->totprice,2,'.',',')}}</td>
 							</tr>
 							@endforeach
 						</tbody>
 							<tr>
-								<td colspan="9" align="right">Jumlah Total : </td>
-								<td >Rp. <?php echo number_format($count, 0, '.', ','); ?></td>
+								<td colspan="8" align="right">Jumlah Total : </td>
+								<td ><?php 
+                                    if ($count <> "") {
+                                        echo number_format($count, 2, '.', ',');
+                                    }else{
+                                        echo '0.00';
+                                    }
+								?></td>
 							</tr>
 					</table>
 				</div>
@@ -290,7 +296,7 @@
 					{{csrf_field()}}
                         
                     <div class="form-group row ">
-						<label for="example-text-input" class="col-2 col-form-label">No. Urut<span style="color:red;">*</span></label>
+						<label for="example-text-input" class="col-2 col-form-label">No. Urut</label>
 						<label for="example-text-input" class=" col-form-label">:</label>
 						<div class="col-8">
 							<input style="background-color:#DCDCDC; cursor:not-allowed"  class="form-control" type="text" value="{{$no_urut}}"  name="nourut" readonly>
@@ -299,48 +305,36 @@
 					</div>
 
 					<div class="form-group row">
-						<label for="example-text-input" class="col-2 col-form-label">Rincian<span style="color:red;">*</span></label>
+						<label for="example-text-input" class="col-2 col-form-label">Rincian</label>
 						<label for="example-text-input" class=" col-form-label">:</label>
 						<div class="col-8">
-							<textarea  class="form-control" type="text" value=""  name="rincian" size="50" maxlength="250" required oninvalid="this.setCustomValidity('Rincian Harus Diisi..')" oninput="setCustomValidity('')"></textarea>
+							<textarea  class="form-control" type="text" value=""  name="rincian" size="50" maxlength="250"  onkeyup="this.value = this.value.toUpperCase()">-</textarea>
 						</div>
 					</div>
-					<div class="form-group row">
-						<label for="example-text-input" class="col-2 col-form-label">KD. Lapang<span style="color:red;">*</span></label>
+					{{-- <div class="form-group row">
+						<label for="example-text-input" class="col-2 col-form-label">KD. Lapang</label>
 						<label for="example-text-input" class=" col-form-label">:</label>
 						<div class="col-8">
-							<select name="lapangan"  class="form-control selectpicker" data-live-search="true" required oninvalid="this.setCustomValidity('KD. Lapang Harus Diisi..')" onchange="setCustomValidity('')">
+							<select name="lapangan"  class="form-control selectpicker" data-live-search="true" >
 								<option value="">-Pilih-</option>
 								@foreach($lokasi as $data_lok)
 								<option value="{{$data_lok->kodelokasi}}">{{$data_lok->kodelokasi}} - {{$data_lok->nama}}</option>
 								@endforeach
 							</select>						
 						</div>
-					</div>
+					</div> --}}
 					<div class="form-group row">
-						<label for="example-text-input" class="col-2 col-form-label">Sandi Perkiraan<span style="color:red;">*</span></label>
+						<label for="example-text-input" class="col-2 col-form-label">Sandi Perkiraan</label>
 						<label for="example-text-input" class=" col-form-label">:</label>
 						<div class="col-8">
-							<select name="sanper"  class="form-control selectpicker" data-live-search="true" required oninvalid="this.setCustomValidity('Sandi Perkiraan Harus Diisi..')" onchange="setCustomValidity('')">
-								<option value="">-Pilih-</option>
-								@foreach($data_account as $data_acc)
-								<option value="{{$data_acc->kodeacct}}">{{$data_acc->kodeacct}} - {{$data_acc->descacct}}</option>
-								@endforeach
-								
-							</select>
+							<select class="cariaccount form-control" style="width: 100% !important;" name="sanper"></select>
 						</div>
 					</div>
 					<div class="form-group row">
-						<label for="example-text-input" class="col-2 col-form-label">Kode Bagian<span style="color:red;">*</span></label>
+						<label for="example-text-input" class="col-2 col-form-label">Kode Bagian</label>
 						<label for="example-text-input" class=" col-form-label">:</label>
 						<div  class="col-8">
-							<select name="bagian"  class="form-control selectpicker" data-live-search="true" required oninvalid="this.setCustomValidity('Kode Bagian Harus Diisi..')" onchange="setCustomValidity('')">
-								<option value="">-Pilih-</option>
-								@foreach($data_bagian as $data_bag)
-								<option value="{{$data_bag->kode}}">{{$data_bag->kode}} - {{$data_bag->nama}}</option>
-								@endforeach
-								
-							</select>
+							<select class="caribagian form-control" style="width: 100% !important;" name="bagian"></select>
 						</div>
 					</div>
 	
@@ -351,31 +345,20 @@
 							<input  class="form-control" type="text" value="000000"  name="pk" size="6" maxlength="6">
 						</div>
 					</div>
-
+					
 					<div class="form-group row">
-						<label for="example-text-input" class="col-2 col-form-label">Jenis Biaya<span style="color:red;">*</span></label>
+						<label for="example-text-input" class="col-2 col-form-label">Jenis Biaya</label>
 						<label for="example-text-input" class=" col-form-label">:</label>
 						<div  class="col-8">
-							<select name="jb"  class="form-control selectpicker" data-live-search="true" required oninvalid="this.setCustomValidity('Jenis Biaya Harus Diisi..')" onchange="setCustomValidity('')">
-								<option value="">-Pilih-</option>
-								@foreach($data_jenis as $data_jen)
-								<option value="{{$data_jen->kode}}">{{$data_jen->kode}} - {{$data_jen->keterangan}}</option>
-								@endforeach
-							
-							</select>
+							<select class="carijb form-control" style="width: 100% !important;" name="jb"></select>
 						</div>
 					</div>
 									
 					<div class="form-group row">
-						<label for="example-text-input" class="col-2 col-form-label">C. Judex<span style="color:red;">*</span></label>
+						<label for="example-text-input" class="col-2 col-form-label">C. Judex</label>
 						<label for="example-text-input" class=" col-form-label">:</label>
 						<div class="col-8">
-							<select name="cj" class="form-control selectpicker" data-live-search="true" required oninvalid="this.setCustomValidity('C. Judex Harus Diisi..')" onchange="setCustomValidity('')">
-								<option value="">-Pilih-</option>
-								@foreach($data_casj as $data_cas)
-								<option value="{{$data_cas->kode}}">{{$data_cas->kode}} - {{$data_cas->nama}}</option>
-								@endforeach
-							</select>
+							<select class="caricj form-control" style="width: 100% !important;" name="cj"></select>
 						</div>
 					</div>
 									
@@ -384,7 +367,7 @@
 						<label for="example-text-input" class="col-2 col-form-label">Jumlah<span style="color:red;">*</span></label>
 						<label for="example-text-input" class=" col-form-label">:</label>
 						<div class="col-8">
-							<input  class="form-control" type="number" value="" name="nilai" size="16" maxlength="16"  required oninvalid="this.setCustomValidity('Jumlah Harus Diisi..')" oninput="setCustomValidity('')" autocomplete='off'>
+							<input  class="form-control" type="text" value="" name="nilai" size="16" maxlength="16"  required oninvalid="this.setCustomValidity('Jumlah Harus Diisi..')" oninput="this.value = this.value.replace(/[^0-9\-]+/g, ','); setCustomValidity('')" autocomplete='off'>
 						</div>
 					</div>
 
@@ -434,10 +417,10 @@
 						<label for="example-text-input" class="col-2 col-form-label">Rincian<span style="color:red;">*</span></label>
 						<label for="example-text-input" class=" col-form-label">:</label>
 						<div class="col-8">
-							<textarea  class="form-control" type="text" value=""  name="rincian" id="rincian" size="50" maxlength="250" required oninvalid="this.setCustomValidity('Rincian Harus Diisi..')" oninput="setCustomValidity('')"></textarea>
+							<textarea  class="form-control" type="text" value=""  name="rincian" id="rincian" size="50" maxlength="250" required oninvalid="this.setCustomValidity('Rincian Harus Diisi..')" oninput="setCustomValidity('')" onkeyup="this.value = this.value.toUpperCase()"></textarea>
 						</div>
 					</div>
-					<div class="form-group row">
+					{{-- <div class="form-group row">
 						<label for="example-text-input" class="col-2 col-form-label">KD. Lapang</label>
 						<label for="example-text-input" class=" col-form-label">:</label>
 						<div class="col-8" >
@@ -450,12 +433,12 @@
 							<div id="lapangan"></div>
 
 						</div>
-					</div>
+					</div> --}}
 					<div class="form-group row">
 						<label for="example-text-input" class="col-2 col-form-label">Sandi Perkiraan</label>
 						<label for="example-text-input" class=" col-form-label">:</label>
 						<div class="col-8">
-							<select name="sanper"  id="select-sanper" class="form-control selectpicker" data-live-search="true" >
+							<select name="sanper"  id="select-sanper" class="cariaccount form-control" style="width: 100% !important;">
 								<option value="">-Pilih-</option>
 								@foreach($data_account as $data_acc)
 								<option value="{{$data_acc->kodeacct}}">{{$data_acc->kodeacct}} - {{$data_acc->descacct}}</option>
@@ -468,7 +451,7 @@
 						<label for="example-text-input" class="col-2 col-form-label">Kode Bagian</label>
 						<label for="example-text-input" class=" col-form-label">:</label>
 						<div  class="col-8">
-							<select name="bagian" id="select-bagian" class="form-control selectpicker" data-live-search="true" >
+							<select name="bagian" id="select-bagian" class="caribagian form-control" style="width: 100% !important;" >
 								<option value="">-Pilih-</option>
 								@foreach($data_bagian as $data_bag)
 								<option value="{{$data_bag->kode}}">{{$data_bag->kode}} - {{$data_bag->nama}}</option>
@@ -490,7 +473,7 @@
 						<label for="example-text-input" class="col-2 col-form-label">Jenis Biaya</label>
 						<label for="example-text-input" class=" col-form-label">:</label>
 						<div  class="col-8">
-							<select name="jb" id="select-jb"  class="form-control selectpicker" data-live-search="true" >
+							<select name="jb" id="select-jb"  class="carijb form-control" style="width: 100% !important;" >
 								<option value="">-Pilih-</option>
 								@foreach($data_jenis as $data_jen)
 								<option value="{{$data_jen->kode}}">{{$data_jen->kode}} - {{$data_jen->keterangan}}</option>
@@ -504,7 +487,7 @@
 						<label for="example-text-input" class="col-2 col-form-label">C. Judex</label>
 						<label for="example-text-input" class=" col-form-label">:</label>
 						<div class="col-8">
-							<select name="cj" id="select-cj" class="form-control selectpicker" data-live-search="true" >
+							<select name="cj" id="select-cj" class="caricj form-control" style="width: 100% !important;" >
 								<option value="">-Pilih-</option>
 								@foreach($data_casj as $data_cas)
 								<option value="{{$data_cas->kode}}">{{$data_cas->kode}} - {{$data_cas->nama}}</option>
@@ -518,7 +501,7 @@
 						<label for="example-text-input" class="col-2 col-form-label">Jumlah<span style="color:red;">*</span></label>
 						<label for="example-text-input" class=" col-form-label">:</label>
 						<div class="col-8">
-							<input  class="form-control" type="number" value="" name="nilai" id="nilai1" size="16" maxlength="16"  required oninvalid="this.setCustomValidity('Jumlah Harus Diisi..')" oninput="setCustomValidity('')" autocomplete='off'>
+							<input  class="form-control" type="text" value="" name="nilai" id="nilai1"  size="16" maxlength="16"  required oninvalid="this.setCustomValidity('Jumlah Harus Diisi..')" oninput="this.value = this.value.replace(/[^0-9\-]+/g, ','); setCustomValidity('')" autocomplete='off'>
 						</div>
 					</div>
 
@@ -550,6 +533,106 @@
 			scrollX   : true,
 			processing: true,
 			serverSide: false,
+		});
+
+		$('.cariaccount').select2({
+			placeholder: '-Pilih-',
+			allowClear: true,
+			ajax: {
+				url: "{{ route('penerimaan_kas.search.account') }}",
+				type : "get",
+				dataType : "JSON",
+				headers: {
+				'X-CSRF-Token': '{{ csrf_token() }}',
+				},
+				delay: 250,
+			processResults: function (data) {
+				return {
+				results:  $.map(data, function (item) {
+					return {
+					text: item.kodeacct +'--'+ item.descacct,
+					id: item.kodeacct
+					}
+				})
+				};
+			},
+			cache: true
+			}
+		});
+
+		$('.caribagian').select2({
+			placeholder: '-Pilih-',
+			allowClear: true,
+			ajax: {
+				url: "{{ route('penerimaan_kas.search.bagian') }}",
+				type : "get",
+				dataType : "JSON",
+				headers: {
+				'X-CSRF-Token': '{{ csrf_token() }}',
+				},
+				delay: 250,
+			processResults: function (data) {
+				return {
+				results:  $.map(data, function (item) {
+					return {
+					text: item.kode +'--'+ item.nama,
+					id: item.kode
+					}
+				})
+				};
+			},
+			cache: true
+			}
+		});
+
+		$('.carijb').select2({
+			placeholder: '-Pilih-',
+			allowClear: true,
+			ajax: {
+				url: "{{ route('penerimaan_kas.search.jb') }}",
+				type : "get",
+				dataType : "JSON",
+				headers: {
+				'X-CSRF-Token': '{{ csrf_token() }}',
+				},
+				delay: 250,
+			processResults: function (data) {
+				return {
+				results:  $.map(data, function (item) {
+					return {
+					text: item.kode +'--'+ item.keterangan,
+					id: item.kode
+					}
+				})
+				};
+			},
+			cache: true
+			}
+		});
+
+		$('.caricj').select2({
+			placeholder: '-Pilih-',
+			allowClear: true,
+			ajax: {
+				url: "{{ route('penerimaan_kas.search.cj') }}",
+				type : "get",
+				dataType : "JSON",
+				headers: {
+				'X-CSRF-Token': '{{ csrf_token() }}',
+				},
+				delay: 250,
+			processResults: function (data) {
+				return {
+				results:  $.map(data, function (item) {
+					return {
+					text: item.kode +'--'+ item.nama,
+					id: item.kode
+					}
+				})
+				};
+			},
+			cache: true
+			}
 		});
 
 		var jk = $('#jk').val();
@@ -854,7 +937,7 @@ if($('input[type=radio]').is(':checked')) {
 		var nodok = $(this).attr('nodok').split("/").join("-");
 		var nourut = $(this).attr('nourut');
 			$.ajax({
-				url :"{{('perbendaharaan/penerimaan_kas/editdetail')}}"+ '/' +nodok+ '/' +nourut,
+				url :"{{url('perbendaharaan/penerimaan_kas/editdetail')}}"+ '/' +nodok+ '/' +nourut,
 				type : 'get',
 				dataType:"json",
 				headers: {
@@ -866,8 +949,9 @@ if($('input[type=radio]').is(':checked')) {
 					$('#nourut').val(data.lineno);
 					$('#rincian').val(data.keterangan);
 					$('#pk').val(data.pk);
-					var output=parseInt(data.totprice);
-					$('#nilai1').val(output);
+					var d=parseFloat(data.totprice);
+					var rupiah = d.toFixed(2);
+					$('#nilai1').val(rupiah);					
 					$('#title-edit-detail').html("Edit Detail Perbendaharaan - Kas/Bank");
 					$('#select-lapangan').val(data.lokasi).trigger('change');
 					$('#select-sanper').val(data.account).trigger('change');
@@ -1029,6 +1113,83 @@ KTBootstrapDatepicker.init();
  
 		    return false;
 		  return true;
+		}
+		var rupiah = document.getElementById('rupiah');
+		rupiah.addEventListener('keyup', function(e){
+			// tambahkan 'Rp.' pada saat form di ketik
+			// gunakan fungsi formatRupiah() untuk mengubah angka yang di ketik menjadi format angka
+			rupiah.value = formatRupiah(this.value, '');
+		});
+
+		/* Fungsi formatRupiah */
+		function formatRupiah(angka, prefix){
+			var number_string = angka.replace(/[^,\d]/g, '').toString(),
+			split   		= number_string.split(','),
+			sisa     		= split[0].length % 3,
+			rupiah     		= split[0].substr(0, sisa),
+			ribuan     		= split[0].substr(sisa).match(/\d{3}/gi);
+
+			// tambahkan titik jika yang di input sudah menjadi angka ribuan
+			if(ribuan){
+				separator = sisa ? '.' : '';
+				rupiah += separator + ribuan.join('.');
+			}
+
+			rupiah = split[1] != undefined ? rupiah + ',' + split[1] : rupiah;
+			$a= prefix == undefined ? rupiah : (rupiah ? rupiah: '');
+         return $a;
+		}
+
+		var nilai = document.getElementById('nilai');
+		nilai.addEventListener('keyup', function(e){
+			// tambahkan 'Rp.' pada saat form di ketik
+			// gunakan fungsi formatnilai() untuk mengubah angka yang di ketik menjadi format angka
+			nilai.value = formatRupiah(this.value, '');
+		});
+
+		/* Fungsi formatRupiah */
+		function formatRupiah(angka, prefix){
+			var number_string = angka.replace(/[^,\d]/g, '').toString(),
+			split   		= number_string.split(','),
+			sisa     		= split[0].length % 3,
+			nilai     		= split[0].substr(0, sisa),
+			ribuan     		= split[0].substr(sisa).match(/\d{3}/gi);
+
+			// tambahkan titik jika yang di input sudah menjadi angka ribuan
+			if(ribuan){
+				separator = sisa ? '.' : '';
+				nilai += separator + ribuan.join('.');
+			}
+
+			nilai = split[1] != undefined ? nilai + ',' + split[1] : nilai;
+			$a= prefix == undefined ? nilai : (nilai ? nilai: '');
+         return $a;
+		}
+		
+		var nilai1 = document.getElementById('nilai1');
+		nilai1.addEventListener('keyup', function(e){
+			// tambahkan 'Rp.' pada saat form di ketik
+			// gunakan fungsi formatnilai1() untuk mengubah angka yang di ketik menjadi format angka
+			nilai1.value = formatRupiah1(this.value, '');
+		});
+
+		/* Fungsi formatRupiah1 */
+		function formatRupiah1(angka, prefix){
+			var number_string = angka.replace(/[^,\d]/g, '').toString(),
+			split   		= number_string.split(','),
+			sisa     		= split[0].length % 3,
+			nilai     		= split[0].substr(0, sisa),
+			ribuan     		= split[0].substr(sisa).match(/\d{3}/gi);
+
+			// tambahkan titik jika yang di input sudah menjadi angka ribuan
+			if(ribuan){
+				separator = sisa ? '.' : '';
+				nilai += separator + ribuan.join('.');
+			}
+
+			nilai = split[1] != undefined ? nilai + ',' + split[1] : nilai;
+			$a= prefix == undefined ? nilai : (nilai ? nilai: '');
+         return $a;
 		}
 </script>
 

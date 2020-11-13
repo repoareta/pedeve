@@ -78,8 +78,14 @@
 					<div class="form-group row">
 						<label for="example-email-input" class="col-2 col-form-label">Jenis Uang Muka<span style="color:red;">*</span></label>
 						<div class="col-6">
-							<input style=" width: 17px;height: 17px;margin-left:50px;" value="K" type="radio"  name="jenis_um" checked  autocomplete='off' />  <label style="font-size:12px; margin-left:10px;">Uang Muka Kerja</label>
-							<input style=" width: 17px;height: 17px;margin-left:50px;" value="D" type="radio"   name="jenis_um"   autocomplete='off'/><label style="font-size:12px; margin-left:10px;"> Uang Muka Dinas</label>
+							<label class="kt-radio kt-radio--solid">
+								<input value="K" type="radio"  name="jenis_um" checked> Uang Muka Kerja
+								<span></span>
+							</label>
+							<label style="margin-left:50px;" class="kt-radio kt-radio--solid">
+								<input value="D" type="radio"   name="jenis_um"> Uang Muka Dinas
+								<span></span>
+							</label>
 						</div>
 					</div>
 					<div class="form-group row">
@@ -91,8 +97,14 @@
 					<div class="form-group row">
 						<label for="dari-input" class="col-2 col-form-label">Mata Uang<span style="color:red;">*</span></label>
 						<div class="col-10">
-							<input    style=" width: 17px;height: 26px;margin-left:50px;" value="1" type="radio"  name="ci" onclick="displayResult(1)"  checked />  <label style="font-size:12px; margin-left:10px;">IDR</label>
-							<input   style=" width: 17px;height: 26px;margin-left:50px;" value="2" type="radio"    name="ci"  onclick="displayResult(2)" /><label style="font-size:12px; margin-left:10px;"> USD</label>
+							<label class="kt-radio kt-radio--solid">
+								<input value="1" type="radio"  name="ci" checked> IDR
+								<span></span>
+							</label>
+							<label style="margin-left:50px;" class="kt-radio kt-radio--solid">
+								<input value="2" type="radio"    name="ci"> USD
+								<span></span>
+							</label>
 						</div>
 					</div>
 					<div class="form-group row">
@@ -218,78 +230,43 @@
 
 	});
 
-function displayResult(ci){ 
-	if(ci == 1)
-	{
-		$('#kurs').val(1);
-		$('#simbol-kurs').hide();
-		$( "#kurs" ).prop( "required", false );
-		$( "#kurs" ).prop( "readonly", true );
-		$('#kurs').css("background-color","#DCDCDC");
-		$('#kurs').css("cursor","not-allowed");
+	function displayResult(ci){ 
+		if(ci == 1)
+		{
+			$('#kurs').val(1);
+			$('#simbol-kurs').hide();
+			$( "#kurs" ).prop( "required", false );
+			$( "#kurs" ).prop( "readonly", true );
+			$('#kurs').css("background-color","#DCDCDC");
+			$('#kurs').css("cursor","not-allowed");
 
-	}else{
-		$('#kurs').val("");
-		$('#simbol-kurs').show();
-		$( "#kurs" ).prop( "required", true );
-		$( "#kurs" ).prop( "readonly", false );
-		$('#kurs').css("background-color","#ffffff");
-		$('#kurs').css("cursor","text");
+		}else{
+			$('#kurs').val("");
+			$('#simbol-kurs').show();
+			$( "#kurs" ).prop( "required", true );
+			$( "#kurs" ).prop( "readonly", false );
+			$('#kurs').css("background-color","#ffffff");
+			$('#kurs').css("cursor","text");
+		}
 	}
-}
-
-
-// Class definition
-var KTBootstrapDatepicker = function () {
-
-var arrows;
-if (KTUtil.isRTL()) {
-	arrows = {
-		leftArrow: '<i class="la la-angle-right"></i>',
-		rightArrow: '<i class="la la-angle-left"></i>'
-	}
-} else {
-	arrows = {
-		leftArrow: '<i class="la la-angle-left"></i>',
-		rightArrow: '<i class="la la-angle-right"></i>'
-	}
-}
-
-// Private functions
-var demos = function () {
 
 	// minimum setup
 	$('#datepicker').datepicker({
-		rtl: KTUtil.isRTL(),
 		todayHighlight: true,
 		orientation: "bottom left",
-		templates: arrows,
 		autoclose: true,
 		// language : 'id',
 		format   : 'dd-mm-yyyy'
 	});
 	// minimum setup
 	$('#bulan_buku').datepicker({
-		rtl: KTUtil.isRTL(),
 		todayHighlight: true,
 		orientation: "bottom left",
-		templates: arrows,
 		autoclose: true,
 		// language : 'id',
 		format   : 'yyyymm'
 	});
-};
 
-return {
-	// public functions
-	init: function() {
-		demos(); 
-	}
-};
-}();
-
-KTBootstrapDatepicker.init();
-	
 	//create
 	$('#form-create-umk').submit(function(){
         var no_umk = $("#noumk").val();

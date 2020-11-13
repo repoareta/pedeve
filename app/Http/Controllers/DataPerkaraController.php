@@ -90,9 +90,9 @@ class DataPerkaraController extends Controller
         'r_perkara' => $request->ringkasan_perkara,
         'r_patitum' => $request->ringkasan_petitum,
         'r_putusan' => $request->ringkasan_putusan,
-        'nilai_perkara' => str_replace('.', '', $request->nilai_perkara),
+        'nilai_perkara' => str_replace(',', '.', $request->nilai_perkara),
         'file' => '0',
-        'rate' => $request->kurs,
+        'rate' => 1,
         'ci' => $request->ci,
         ]);
         Alert::success('Data berhasil di simpan', 'Berhasil')->persistent(true)->autoClose(2000);
@@ -237,20 +237,15 @@ class DataPerkaraController extends Controller
                 ]);
                 return response()->json(1);
         } else {
-                $data = DB::select("select * from tbl_hakim a  where status='$request->status' and kd_pihak='$request->kd_pihak'");
-                if (!empty($data)) {
-                    return response()->json(3);
-                }else{
-                    DB::table('tbl_hakim')->insert([
-                    'kd_pihak' => $request->kd_pihak,
-                    'nama' => $request->nama,
-                    'alamat' => $request->alamat,
-                    'telp' => $request->telp,
-                    'keterangan' => $request->keterangan,
-                    'status' => $request->status,
-                    ]);
-                    return response()->json(2);
-                }
+                DB::table('tbl_hakim')->insert([
+                'kd_pihak' => $request->kd_pihak,
+                'nama' => $request->nama,
+                'alamat' => $request->alamat,
+                'telp' => $request->telp,
+                'keterangan' => $request->keterangan,
+                'status' => $request->status,
+                ]);
+                return response()->json(2);
         }
     }
     public function showhakim(Request $request)
@@ -286,24 +281,13 @@ class DataPerkaraController extends Controller
             'r_perkara' => $request->ringkasan_perkara,
             'r_patitum' => $request->ringkasan_petitum,
             'r_putusan' => $request->ringkasan_putusan,
-            'nilai_perkara' => $request->nilai_perkara,
-            'rate' => $request->kurs,
+            'nilai_perkara' => str_replace(',', '.', $request->nilai_perkara),
+            'file' => '0',
+            'rate' => 1,
             'ci' => $request->ci,
             ]);
         }else{
 
-            $this->validate($request, [
-                'file' => 'required|mimes:pdf,jpg,jpeg|max:2048',
-            ]);
-
-            // menyimpan data file yang diupload ke variabel $file
-            $file = $request->file('file');
-            $nama_file = time()."_".$file->getClientOriginalName();
-            // isi dengan nama folder tempat kemana file diupload
-            $tujuan_upload = 'data_perkara';
-            $file->move($tujuan_upload, $nama_file);
-            
-            // dd($nama_file);
             DB::table('tbl_perkara')->where('no_perkara',$request->no_perkara)
             ->update([
             'tgl_perkara' => $request->tanggal,
@@ -313,9 +297,9 @@ class DataPerkaraController extends Controller
             'r_perkara' => $request->ringkasan_perkara,
             'r_patitum' => $request->ringkasan_petitum,
             'r_putusan' => $request->ringkasan_putusan,
-            'nilai_perkara' => $request->nilai_perkara,
-            'file' => $nama_file,
-            'rate' => $request->kurs,
+            'nilai_perkara' => str_replace(',', '.', $request->nilai_perkara),
+            'file' => '0',
+            'rate' => 1,
             'ci' => $request->ci,
             ]);
             File::delete('data_perkara/'.$request->file_1);
@@ -390,7 +374,7 @@ class DataPerkaraController extends Controller
 
         if(!File::isDirectory($folderPath)){
 
-            File::makeDirectory($folderPath, 0777, true, true);
+            File::makeDirectory($folderPath);
     
         }
 

@@ -195,17 +195,6 @@
 						});
 						// append to datatable
 						t.ajax.reload();
-					}else{
-						$('#hakimModal').modal('toggle');
-						$('#hakimModal').on('hidden.bs.modal', function () {
-							$('#status_hakim').trigger('reset');
-							$('#status_hakim').val("").trigger('change');
-						});
-						Swal.fire({
-							type  : 'info',
-							title : 'Duplikasi data dokumen, entri dibatalkan.',
-							text  : 'Info',
-						});
 					}
 				}, 
 				error : function(){

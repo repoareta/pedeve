@@ -154,7 +154,24 @@ $(document).ready(function () {
 			e.preventDefault();
 		});
 
+		
+		//report
+		$('#exportRow').on('click', function(e) {
+			e.preventDefault();
+
+			if($('input[class=btn-radio]').is(':checked')) { 
+				$("input[class=btn-radio]:checked").each(function() {  
+					e.preventDefault();
+					var dataid = $(this).attr('kode');
+						location.replace("{{url('kontroler/cetak_kas_bank/rekap')}}"+ '/' +dataid);
+				});
+			} else{
+				swalAlertInit('cetak');
+			}
+			
 		});
+
+	});
 
 function hanyaAngka(evt) {
 	var charCode = (evt.which) ? evt.which : event.keyCode

@@ -78,7 +78,7 @@
 						<div class="form-group row">
 							<label for="jenis-dinas-input" class="col-2 col-form-label">Bagian<span style="color:red;">*</span></label>
 							<div class="col-10">
-								<select name="bagian" id="bagian" class="form-control selectpicker" data-live-search="true" required oninvalid="this.setCustomValidity('Bagian Harus Diisi..')" onchange="setCustomValidity('')">
+								<select name="bagian" id="bagian" class="form-control kt-select2" style="width: 100% !important;" required oninvalid="this.setCustomValidity('Bagian Harus Diisi..')" onchange="setCustomValidity('')">
 									<option value="">- Pilih -</option>
 									@foreach($data_bagian as $data)
 									<option value="{{$data->kode}}">{{$data->kode}} - {{$data->nama}}</option>
@@ -92,7 +92,7 @@
 						<div class="form-group row">
 							<label class="col-2 col-form-label">Jenis Kartu<span style="color:red;">*</span></label>
 							<div class="col-3">
-								<select name="jk" id="jk" class="form-control selectpicker" data-live-search="true" required oninvalid="this.setCustomValidity('Jenis Kartu Harus Diisi..')" onchange="setCustomValidity('')">
+								<select name="jk" id="jk" class="form-control kt-select2" style="width: 100% !important;" required oninvalid="this.setCustomValidity('Jenis Kartu Harus Diisi..')" onchange="setCustomValidity('')">
 									<option value="">- Pilih -</option>
 									<option value="10">Kas(Rupiah)</option>
 									<option value="11">Bank(Rupiah)</option>
@@ -112,7 +112,7 @@
 						<div class="form-group row">
 							<label for="jenis-dinas-input" class="col-2 col-form-label">Lokasi<span style="color:red;">*</span></label>
 							<div class="col-4">
-								<select name="lokasi" id="lokasi" class="form-control" data-live-search="true" required oninvalid="this.setCustomValidity('Lokasi Harus Diisi..')" onchange="setCustomValidity('')">
+								<select name="lokasi" id="lokasi" class="form-control kt-select2" style="width: 100% !important;" required oninvalid="this.setCustomValidity('Lokasi Harus Diisi..')" onchange="setCustomValidity('')">
 									<option value="">- Pilih -</option>
 									
 								</select>
@@ -141,32 +141,33 @@
 							<label class="col-2 col-form-label">
 							@if($request->mp == "M") {{$darkep}} @else {{$darkep}} @endif<span style="color:red;">*</span></label>
 							<div class="col-10">
-								<input class="form-control" type="text" name="kepada" id="kepada" value="" size="40" maxlength="40" required oninvalid="this.setCustomValidity('{{$darkep}} Harus Diisi..')" oninput="setCustomValidity('')" autocomplete='off'>
+							<select class="kepada form-control" style="width: 100% !important;" name="kepada" ></select>
+								<!-- <input class="form-control" type="text" name="kepada" id="kepada" value="" size="40" maxlength="40" required oninvalid="this.setCustomValidity('{{$darkep}} Harus Diisi..')" oninput="setCustomValidity('')" autocomplete='off'> -->
 							</div>
 						</div>
 						<div class="form-group row">
 							<label class="col-2 col-form-label">Sejumlah</label>
 							<div class="col-10">
-								<input class="form-control" type="text" name="nilai" id="nilai" value="" size="16" maxlength="16">
+								<input class="form-control" type="text" name="nilai" id="nilai" value="0" size="16" maxlength="16" autocomplete='off' readonly>
 								<input class="form-control" type="hidden" name="iklan" value=""  id="iklan" size="4" maxlength="4" readonly style="background-color:#DCDCDC; cursor:not-allowed">
 							</div>
 						</div>
 						<div class="form-group row">
 							<label class="col-2 col-form-label">Catatan 1</label>
 							<div class="col-10">
-								<input class="form-control" type="text" name="ket1" id="ket1" value="" size="35" maxlength="35"  autocomplete='off'>
+								<textarea class="form-control" type="text" name="ket1" id="ket1"></textarea>
 							</div>
 						</div>
 						<div class="form-group row">
 							<label class="col-2 col-form-label">Catatan 2</label>
 							<div class="col-10">
-								<input class="form-control" type="text" name="ket2" id="ket2" value="" size="35" maxlength="35"  autocomplete='off'>
+								<textarea class="form-control" type="text" name="ket2" id="ket2"></textarea>
 							</div>
 						</div>
 						<div class="form-group row">
 							<label class="col-2 col-form-label">Catatan 3</label>
 							<div class="col-10">
-								<input class="form-control" type="text" name="ket3" id="ket3" value="" size="35" maxlength="35"  autocomplete='off'>
+								<textarea class="form-control" type="text" name="ket3" id="ket3"></textarea>
 							</div>
 						</div>
 						<div class="kt-form__actions">
@@ -242,7 +243,9 @@
 @section('scripts')
 	<script type="text/javascript">
 	$(document).ready(function () {
-
+		$('.kt-select2').select2().on('change', function() {
+			// $(this).valid();
+		});
 		$("#jk").on("change", function(){ 
 		var ci = $(this).val();
 		console.log(ci);
@@ -427,6 +430,34 @@ var tahun = $('#tahun').val();
 			alert("Ada kesalahan controller!");
 		}
 	})
+});
+
+
+ $('.kepada').select2({
+	placeholder: '-Pilih-',
+	allowClear: true,
+	tags: true,
+	ajax: {
+		url: "{{route('penerimaan_kas.kepadaJson')}}",
+		type : "post",
+		dataType : "JSON",
+		headers: {
+		'X-CSRF-Token': '{{ csrf_token() }}',
+		},
+		delay: 250,
+	processResults: function (data) {
+		console.log(data.length);
+		return {
+		results:  $.map(data, function (item) {
+			return {
+			text: item.kepada,
+			id: item.kepada
+			}
+		})
+		};
+	},
+	cache: true
+	}
 });
 
 $('#nilai').keyup(function(){

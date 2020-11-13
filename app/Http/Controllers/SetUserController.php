@@ -24,7 +24,8 @@ class SetUserController extends Controller
 {
     public function index()
     {
-        return view('set_user.index');
+        $data = Userpdv::orderBy('userid', 'asc')->get();
+        return view('set_user.index',compact('data'));
     }
 
     public function searchIndex(Request $request)
@@ -76,7 +77,7 @@ class SetUserController extends Controller
             return $userp1.' '.$userp2.' '.$userp4.' '.$userp5.' '.$userp6;
         })
         ->addColumn('radio', function ($data) {
-            $radio = '<center><label class="kt-radio kt-radio--bold kt-radio--brand"><input type="radio" kode="'.$data->userid.'" class="btn-radio" name="btn-radio"><span></span></label></center>';
+            $radio = '<center><label class="kt-radio kt-radio--bold kt-radio--brand"><input type="radio" kode="'.$data->userid.'" username="'.$data->usernm.'" class="btn-radio" name="btn-radio"><span></span></label></center>';
             return $radio;
         })
         ->addColumn('reset', function ($data) {
@@ -256,18 +257,28 @@ class SetUserController extends Controller
         }else{
             $sdm = '';
         }
-        Usermenu::where('userid', $userid)->delete();
+
+        
         $data_menu = DB::select("select distinct(menuid) as menuid from dftmenu where userap in ('$akt','$cm','$pbd','$umu','$sdm')");
         foreach ($data_menu as $data_m) {
-            Usermenu::insert([
+            $data_cek = DB::select("select * from usermenu where userid ='$userid' and menuid='$data_m->menuid'");
+            if(!empty($data_cek)){
+                Usermenu::where('userid',$userid)->where('menuid',$data_m->menuid)
+                ->update([
                     'userid' => $userid,
-                    'menuid' => $data_m->menuid,
-                    'cetak' => '0',
-                    'tambah' => '0',
-                    'rubah' => '0',
-                    'lihat' => '0',
-                    'hapus' => '0'
+                    'menuid' => $data_m->menuid
                 ]);
+            }else{
+                Usermenu::insert([
+                        'userid' => $userid,
+                        'menuid' => $data_m->menuid,
+                        'cetak' => '0',
+                        'tambah' => '0',
+                        'rubah' => '0',
+                        'lihat' => '0',
+                        'hapus' => '0'
+                    ]);
+            }
         }
         return response()->json();
     }
@@ -277,6 +288,18 @@ class SetUserController extends Controller
         Userpdv::where('userid', $request->kode)->delete();
         Usermenu::where('userid', $request->kode)->delete();
         return response()->json();
+    }
+
+    public function export(Request $request)
+    {
+        if($request->cetak == 'A'){
+            $data_user = Userpdv::all();
+        }else{
+            $data_user = Userpdv::where('userid', $request->userid)->get();
+        }
+        $pdf = DomPDF::loadview('set_user.export', compact('data_user'))->setPaper('a4', 'Portrait');
+        // return $pdf->download('rekap_permint_'.date('Y-m-d H:i:s').'.pdf');
+        return $pdf->stream();
     }
 
     public function Reset(Request $request)
