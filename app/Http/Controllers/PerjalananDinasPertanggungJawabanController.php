@@ -46,7 +46,7 @@ class PerjalananDinasPertanggungJawabanController extends Controller
                 return Carbon::parse($row->tgl_ppanjar)->translatedFormat('d F Y');
             })
             ->addColumn('nopek', function ($row) {
-                return $row->nopek." - ".$row->nama;
+                return $row->nopek.".".$row->nama;
             })
             ->addColumn('jmlpanjar', function ($row) {
                 return currency_idr($row->jmlpanjar);

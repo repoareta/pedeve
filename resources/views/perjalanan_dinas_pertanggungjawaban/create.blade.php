@@ -55,7 +55,7 @@
 					<div class="form-group row">
 						<label for="spd-input" class="col-2 col-form-label">No. PJ Panjar</label>
 						<div class="col-5">
-							<input class="form-control" type="text" name="no_pj_panjar" value="{{ $no_pspd }}" id="no_pj_panjar">
+							<input class="form-control" type="text" readonly name="no_pj_panjar" value="{{ $no_pspd }}" id="no_pj_panjar">
 						</div>
 
 						<label for="spd-input" class="col-2 col-form-label">Tanggal PJ Panjar</label>
@@ -79,7 +79,7 @@
 
 						<label for="example-email-input" class="col-2 col-form-label">Keterangan</label>
 						<div class="col-3">
-							<input class="form-control" type="text" name="keterangan" id="keterangan">
+							<input class="form-control" type="text" readonly name="keterangan" id="keterangan">
 						</div>
 					</div>
 
@@ -110,19 +110,19 @@
 
 						<label for="example-email-input" class="col-2 col-form-label">Golongan</label>
 						<div class="col-3">
-							<input class="form-control" type="text" name="golongan" id="golongan">
+							<input class="form-control" type="text" readonly name="golongan" id="golongan">
 						</div>
 					</div>
 
 					<div class="form-group row">
 						<label for="jumlah" class="col-2 col-form-label">Jumlah Panjar Dinas</label>
 						<div class="col-5">
-							<input class="form-control" type="number" name="jumlah" id="jumlah" value="0.00">
+							<input class="form-control thousands" type="text" readonly name="jumlah" id="jumlah" value="0.00">
 						</div>
 
 						<label for="example-email-input" class="col-2 col-form-label">Jumlah Panjar Detail</label>
 						<div class="col-3">
-							<input class="form-control" type="number" name="jumlah_detail" id="jumlah_detail">
+							<input class="form-control thousands" type="text" readonly name="jumlah_detail" id="jumlah_detail">
 						</div>
 					</div>
 
@@ -168,7 +168,7 @@
 			</div>
 		</div>
 		<div class="kt-portlet__body">
-			<table class="table table-striped table-bordered table-hover table-checkable" id="kt_table">
+			<table class="table table-bordered table-hover table-checkable" id="kt_table">
 				<thead class="thead-light">
 					<tr>
 						<th></th>
@@ -205,7 +205,7 @@
 					<div class="form-group row">
 						<label for="spd-input" class="col-2 col-form-label">No. Urut</label>
 						<div class="col-10">
-							<input class="form-control" type="number" name="no_urut" id="no_urut">
+							<input class="form-control" type="text" readonly name="no_urut" id="no_urut">
 						</div>
 					</div>
 
@@ -232,7 +232,7 @@
 					<div class="form-group row">
 						<label for="spd-input" class="col-2 col-form-label">Nilai</label>
 						<div class="col-10">
-							<input class="form-control" type="number" name="nilai_detail" id="nilai_detail" value="0.00">
+							<input class="form-control thousands" type="text" name="nilai_detail" id="nilai_detail" value="0.00">
 						</div>
 					</div>
 
@@ -259,7 +259,6 @@
 @section('scripts')
 {!! JsValidator::formRequest('App\Http\Requests\PPerjalananDinasStore', '#formPPanjarDinas') !!}
 {!! JsValidator::formRequest('App\Http\Requests\PPerjalananDinasDetailStore', '#formPPanjarDinasDetail') !!}
-
 <script type="text/javascript">
 
 	function refreshTable() {
@@ -314,7 +313,7 @@
 			orientation: "bottom left",
 			autoclose: true,
 			// language : 'id',
-			format   : 'yyyy-mm-dd'
+			format   : 'dd-mm-yyyy'
 		});
 
 		$("#jumlah_detail, #jumlah").on('change', function(e){
