@@ -895,7 +895,7 @@
                                             <i class="kt-menu__link-bullet kt-menu__link-bullet--line">
                                                 <span></span>
                                             </i>
-                                            <span class="kt-menu__link-text">Permintaan SPD</span>
+                                            <span class="kt-menu__link-text">Permintaan Panjar Dinas</span>
                                         </a>
                                     </li>
                                     <li class="kt-menu__item kt-menu__item{{ set_active_submenu($perjalanan_dinas_pertanggungjawaban) }}" aria-haspopup="true">
@@ -903,7 +903,7 @@
                                             <i class="kt-menu__link-bullet kt-menu__link-bullet--line">
                                                 <span></span>
                                             </i>
-                                            <span class="kt-menu__link-text">Pertanggungjawaban SPD</span>
+                                            <span class="kt-menu__link-text">Pertanggungjawaban Panjar</span>
                                         </a>
                                     </li>
                                 </ul>
@@ -961,17 +961,6 @@
                         @endif
                         @endforeach
 
-                        {{-- <li class="kt-menu__item  kt-menu__item{{ set_active_submenu($anggaran) }}" aria-haspopup="true">
-                            <a href="{{ route('anggaran.index') }}" class="kt-menu__link">
-                                <i class="kt-menu__link-bullet kt-menu__link-bullet--dot">
-                                    <span></span>
-                                </i>
-                                <span class="kt-menu__link-text">
-                                    Anggaran
-                                </span>
-                            </a>
-                        </li> --}}
-
                         <li class="kt-menu__item kt-menu__item--submenu {{ set_active($anggaran_umum) }}" aria-haspopup="true" data-ktmenu-submenu-toggle="hover">
                             <a href="javascript:;" class="kt-menu__link kt-menu__toggle">
                                 <i class="kt-menu__link-bullet kt-menu__link-bullet--dot">
@@ -1004,6 +993,15 @@
                                                 <span></span>
                                             </i>
                                             <span class="kt-menu__link-text">Detail Anggaran</span>
+                                        </a>
+                                    </li>
+
+                                    <li class="kt-menu__item kt-menu__item{{ set_active_submenu($anggaran_submain_detail) }}" aria-haspopup="true">
+                                        <a href="{{route('anggaran.submain.detail.index')}}" class="kt-menu__link">
+                                            <i class="kt-menu__link-bullet kt-menu__link-bullet--line">
+                                                <span></span>
+                                            </i>
+                                            <span class="kt-menu__link-text">Report Anggaran</span>
                                         </a>
                                     </li>
                                 </ul>

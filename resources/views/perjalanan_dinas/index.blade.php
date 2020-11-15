@@ -52,10 +52,6 @@
 					<i class="fas fa-times-circle"></i>
 				</span>
 				@endif
-
-				{{-- <span class="kt-font-info pointer-link" id="exportRowData" data-toggle="kt-tooltip" data-placement="top" title="Cetak Data">
-					<i class="fas fa-print"></i>
-				</span> --}}
 				
 				@if($data_akses->cetak == 1)
 				<span class="kt-font-info pointer-link" id="exportRow" data-toggle="kt-tooltip" data-placement="top" title="Cetak Data">
@@ -73,13 +69,27 @@
 	</div>
 	<div class="kt-portlet__body">
 
+		<div class="col-12">
+			<form class="kt-form" id="search-form" method="POST">
+				<div class="form-group row">
+					<label for="" class="col-form-label">No. Panjar</label>
+					<div class="col-4">
+						<input class="form-control" type="text" name="nopanjar" id="nopanjar">
+					</div>
+
+					<div class="col-2">
+						<button type="submit" class="btn btn-brand"><i class="fa fa-search" aria-hidden="true"></i> Cari</button>
+					</div>
+				</div>
+			</form>
+		</div>
+
 		<!--begin: Datatable -->
-		<table class="table table-striped table-bordered table-hover table-checkable" id="kt_table" width="100%">
+		<table class="table table-bordered table-hover table-checkable" id="kt_table" width="100%">
 			<thead class="thead-light">
 				<tr>
 					<th></th>
 					<th>No. Panjar</th>
-					<th>No. UMK</th>
 					<th>Jenis</th>
 					<th>Mulai</th>
 					<th>Sampai</th>
@@ -165,11 +175,16 @@
 			scrollX   : true,
 			processing: true,
 			serverSide: true,
-			ajax      : "{{ route('perjalanan_dinas.index.json') }}",
+			searching : false,
+			ajax      : {
+				url: "{{ route('perjalanan_dinas.index.json') }}",
+				data: function (d) {
+					d.nopanjar = $('input[name=nopanjar]').val();
+				}
+			},
 			columns: [
 				{data: 'action', name: 'aksi', orderable: false, searchable: false, class:'radio-button'},
 				{data: 'no_panjar', name: 'no_panjar', class:'no-wrap'},
-				{data: 'no_umk', name: 'no_umk'},
 				{data: 'jenis_dinas', name: 'jenis'},
 				{data: 'mulai', name: 'mulai', class:'no-wrap'},
 				{data: 'sampai', name: 'sampai', class:'no-wrap'},
@@ -181,7 +196,26 @@
 			]
 		});
 
-		
+		$('#kt_table tbody').on( 'click', 'tr', function (event) {
+			if ( $(this).hasClass('selected') ) {
+				$(this).removeClass('selected');
+			}
+			else {
+				t.$('tr.selected').removeClass('selected');
+				// $(':radio', this).trigger('click');
+
+				if (event.target.type !== 'radio') {
+					$(':radio', this).trigger('click');
+				}
+
+				$(this).addClass('selected');
+			}
+		} );
+
+		$('#search-form').on('submit', function(e) {
+			t.draw();
+			e.preventDefault();
+		});
 
 		$('#editRow').click(function(e) {
 			e.preventDefault();

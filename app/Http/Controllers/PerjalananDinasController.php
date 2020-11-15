@@ -40,11 +40,16 @@ class PerjalananDinasController extends Controller
      *
      * @return void
      */
-    public function indexJson()
+    public function indexJson(Request $request)
     {
-        $panjar_list = PanjarHeader::orderBy('tgl_panjar', 'desc')->get();
+        $panjar_list = PanjarHeader::orderBy('tgl_panjar', 'desc');
 
         return datatables()->of($panjar_list)
+            ->filter(function ($query) use ($request) {
+                if (request('nopanjar')) {
+                    $query->where('no_panjar', request('nopanjar'));
+                }
+            })
             ->addColumn('mulai', function ($row) {
                 return Carbon::parse($row->mulai)->translatedFormat('d F Y');
             })
@@ -136,22 +141,8 @@ class PerjalananDinasController extends Controller
         // Save Panjar Header
         $panjar_header->save();
 
-        // Save Panjar Detail;
-        if (session('panjar_detail')) {
-            foreach (session('panjar_detail') as $panjar) {
-                $panjar_detail = new PanjarDetail;
-                $panjar_detail->no = $panjar['no'];
-                $panjar_detail->no_panjar = $request->no_spd;
-                $panjar_detail->nopek = $panjar['nopek'];
-                $panjar_detail->nama = $panjar['nama'];
-                $panjar_detail->jabatan = $panjar['jabatan'];
-                $panjar_detail->status = $panjar['golongan'] = $panjar['status'];
-                $panjar_detail->keterangan = $panjar['keterangan'];
-    
-                $panjar_detail->save();
-            }
-    
-            session()->forget('panjar_detail');
+        if ($request->url == 'edit') {
+            return redirect()->route('perjalanan_dinas.edit', ['no_panjar' => str_replace('/', '-', $panjar_header->no_panjar)]);
         }
 
         Alert::success('Simpan Panjar Dinas', 'Berhasil')->persistent(true)->autoClose(2000);

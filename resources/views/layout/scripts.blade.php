@@ -48,6 +48,7 @@
 <!-- treeview JS -->
 <script type="text/javascript" src="{{ asset('tree/jquery.treeview.js')}}"></script>
 <!-- end treeview JS -->
+<script src="https://cdnjs.cloudflare.com/ajax/libs/autonumeric/1.8.2/autoNumeric.js"></script>
 
 <script type="text/javascript">
 
@@ -62,6 +63,14 @@
         } else {
             $('#body-style').removeClass('kt-aside--minimize');
         }
+
+        $(".thousands").autoNumeric('init', {
+			aSep: ',', 
+			aDec: '.',
+			aForm: true,
+			vMax: '999999999999.99',
+			vMin: '-999999999999.99'
+		});
     });
 
     function kt_minimize() {

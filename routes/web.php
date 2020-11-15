@@ -75,6 +75,7 @@ Route::group(['middleware'=> ['auth','checkRole:1,0']], function () {
                 Route::get('uang_muka_kerja/pertanggungjawaban/approval/{no_pumk}', 'UangMukaKerjaPertanggungJawabanController@approv')->name('approval');
                 Route::delete('uang_muka_kerja/pertanggungjawaban/delete', 'UangMukaKerjaPertanggungJawabanController@delete')->name('delete');
                 Route::get('uang_muka_kerja/pertanggungjawaban/export/{no_pumk}', 'UangMukaKerjaPertanggungJawabanController@exportRow')->name('export');
+                Route::post('uang_muka_kerja/pertanggungjawaban/store_app', 'UangMukaKerjaPertanggungJawabanController@storeApp')->name('store.app');
                 // P UANG MUKA KERJA END
 
                 // P UANG MUKA KERJA DETAIL START
@@ -1457,7 +1458,6 @@ Route::group(['middleware'=> ['auth','checkRole:1,0']], function () {
             Route::post('data_perkara/dokumen', 'DataPerkaraController@dokumen')->name('store.dokumen');
             Route::post('data_perkara/dokumen/pihak', 'DataPerkaraController@pihakJson')->name('pihakJson');
             Route::delete('data_perkara/delete/dokumen', 'DataPerkaraController@deletedokumen')->name('delete.dokumen');
-
         });
         //end data_perkara
 

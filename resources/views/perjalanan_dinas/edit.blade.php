@@ -60,7 +60,7 @@
 
 					<label for="spd-input" class="col-2 col-form-label">Tanggal Panjar</label>
 					<div class="col-3">
-						<input class="form-control" type="text" name="tanggal" id="tanggal" value="{{ $panjar_header->tgl_panjar }}">
+						<input class="form-control" type="text" name="tanggal" id="tanggal" value="{{ date('d-m-Y', strtotime($panjar_header->tgl_panjar)) }}">
 					</div>
 				</div>
 				<div class="form-group row">
@@ -93,7 +93,7 @@
 
 					<label for="example-email-input" class="col-2 col-form-label">Golongan</label>
 					<div class="col-3">
-						<input class="form-control" type="text" name="golongan" id="golongan" value="{{ $panjar_header->gol }}">
+						<input class="form-control" type="text" readonly name="golongan" id="golongan" value="{{ $panjar_header->gol }}">
 					</div>
 				</div>
 				<div class="form-group row">
@@ -131,11 +131,11 @@
 					<label for="mulai-input" class="col-2 col-form-label">Mulai</label>
 					<div class="col-10">
 						<div class="input-daterange input-group" id="date_range_picker">
-							<input type="text" class="form-control" name="mulai" value="{{ date('Y-m-d', strtotime($panjar_header->mulai)) }}" autocomplete="off" />
+							<input type="text" class="form-control" name="mulai" value="{{ date('d-m-Y', strtotime($panjar_header->mulai)) }}" autocomplete="off" />
 							<div class="input-group-append">
 								<span class="input-group-text">Sampai</span>
 							</div>
-							<input type="text" class="form-control" name="sampai" value="{{ date('Y-m-d', strtotime($panjar_header->sampai)) }}" autocomplete="off" />
+							<input type="text" class="form-control" name="sampai" value="{{ date('d-m-Y', strtotime($panjar_header->sampai)) }}" autocomplete="off" />
 						</div>
 						<span class="form-text text-muted">Pilih rentang waktu mulai dan sampai</span>
 					</div>
@@ -223,7 +223,7 @@
 			</div>
 		</div>
 		<div class="kt-portlet__body">
-			<table class="table table-striped table-bordered table-hover table-checkable" id="kt_table">
+			<table class="table table-bordered table-hover table-checkable" id="kt_table">
 				<thead class="thead-light">
 					<tr>
 						<th></th>
@@ -283,7 +283,7 @@
 					<div class="form-group row">
 						<label for="spd-input" class="col-2 col-form-label">Jabatan</label>
 						<div class="col-10">
-							<select class="form-control kt-select2" name="jabatan_detail" id="jabatan_detail" style="width: 100% !important;">
+							<select class="form-control kt-select2" name="jabatan_detail" readonly id="jabatan_detail" style="width: 100% !important;">
 								<option value="">- Pilih Jabatan -</option>
 								@foreach ($jabatan_list as $jabatan)
 									<option value="{{ $jabatan->keterangan }}">{{ $jabatan->keterangan }}</option>
@@ -296,7 +296,7 @@
 					<div class="form-group row">
 						<label for="spd-input" class="col-2 col-form-label">Golongan</label>
 						<div class="col-10">
-							<input class="form-control" type="text" name="golongan_detail" id="golongan_detail">
+							<input class="form-control" type="text" name="golongan_detail" id="golongan_detail" readonly>
 						</div>
 					</div>
 				</div>
@@ -357,6 +357,22 @@
 			order: [[ 0, "asc" ], [ 1, "asc" ]]
 		});
 
+		$('#kt_table tbody').on( 'click', 'tr', function (event) {
+			if ( $(this).hasClass('selected') ) {
+				$(this).removeClass('selected');
+			}
+			else {
+				t.$('tr.selected').removeClass('selected');
+				// $(':radio', this).trigger('click');
+
+				if (event.target.type !== 'radio') {
+					$(':radio', this).trigger('click');
+				}
+
+				$(this).addClass('selected');
+			}
+		} );
+
 	
 		$('#openDetail').click(function(e) {
 			e.preventDefault();
@@ -370,7 +386,7 @@
 			todayHighlight: true,
 			// autoclose: true,
 			// language : 'id',
-			format   : 'yyyy-mm-dd'
+			format   : 'dd-mm-yyyy'
 		});
 
 		// minimum setup
@@ -379,7 +395,7 @@
 			orientation: "bottom left",
 			autoclose: true,
 			// language : 'id',
-			format   : 'yyyy-mm-dd'
+			format   : 'dd-mm-yyyy'
 		});
 
 		$("#formPanjarDinas").on('submit', function(){

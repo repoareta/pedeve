@@ -4,6 +4,7 @@
 /**
  * A helper file for Laravel, to provide autocomplete information to your IDE
  * Generated for Laravel 6.18.43.
+
  *
  * This file should not be included in your code, only analyzed by your IDE!
  *
@@ -2331,6 +2332,7 @@
          *
          * @param mixed|null $event
          * @return \Illuminate\Broadcasting\PendingBroadcast 
+
          * @static 
          */ 
         public static function event($event = null)
@@ -7445,7 +7447,54 @@
                         /** @var \Illuminate\Support\Testing\Fakes\QueueFake $instance */
                         return $instance->setConnectionName($name);
         }
-         
+
+                    /**
+         * Get the retry delay for an object-based queue handler.
+         *
+         * @param mixed $job
+         * @return mixed 
+         * @static 
+         */ 
+        public static function getJobRetryDelay($job)
+        {            //Method inherited from \Illuminate\Queue\Queue         
+                        /** @var \Illuminate\Queue\SyncQueue $instance */
+                        return $instance->getJobRetryDelay($job);
+        }
+                    /**
+         * Get the expiration timestamp for an object-based queue handler.
+         *
+         * @param mixed $job
+         * @return mixed 
+         * @static 
+         */ 
+        public static function getJobExpiration($job)
+        {            //Method inherited from \Illuminate\Queue\Queue         
+                        /** @var \Illuminate\Queue\SyncQueue $instance */
+                        return $instance->getJobExpiration($job);
+        }
+                    /**
+         * Register a callback to be executed when creating job payloads.
+         *
+         * @param callable $callback
+         * @return void 
+         * @static 
+         */ 
+        public static function createPayloadUsing($callback)
+        {            //Method inherited from \Illuminate\Queue\Queue         
+                        \Illuminate\Queue\SyncQueue::createPayloadUsing($callback);
+        }
+                    /**
+         * Set the IoC container instance.
+         *
+         * @param \Illuminate\Container\Container $container
+         * @return void 
+         * @static 
+         */ 
+        public static function setContainer($container)
+        {            //Method inherited from \Illuminate\Queue\Queue         
+                        /** @var \Illuminate\Queue\SyncQueue $instance */
+                        $instance->setContainer($container);
+        }         
     }
             /**
      * 
@@ -12299,6 +12348,7 @@
          *
          * @param string $name
          * @param mixed $parameters
+
          * @param \DateTimeInterface|\DateInterval|int|null $expiration
          * @param bool $absolute
          * @return string 
@@ -15162,7 +15212,6 @@
     }
      
 }
-
     namespace DaveJamesMiller\Breadcrumbs\Facades { 
             /**
      * Breadcrumbs facade - allows easy access to the Manager instance.
