@@ -268,28 +268,28 @@
 					</div>
 
 					<div class="form-group row">
-						<label for="example-text-input" class="col-2 col-form-label">Rincian<span style="color:red;">*</span></label>
+						<label for="example-text-input" class="col-2 col-form-label">Rincian</label>
 						<div class="col-8">
-							<input  class="form-control" type="text" value=""  size="35" maxlength="35" name="rincian" autocomplete='off' required oninvalid="this.setCustomValidity('Rincian Harus Diisi..')" oninput="setCustomValidity('')">
+							<input  class="form-control" type="text" value="-"  size="35" maxlength="35" name="rincian" autocomplete='off'>
 						</div>
 					</div>
 									
 																					
-					<div class="form-group row">
-						<label for="example-text-input" class="col-2 col-form-label">Kd.Lapangan<span style="color:red;">*</span></label>
+					{{-- <div class="form-group row">
+						<label for="example-text-input" class="col-2 col-form-label">Kd.Lapangan</label>
 						<div  class="col-8" >
-							<select name="lapangan"  class="form-control selectpicker" data-live-search="true" required oninvalid="this.setCustomValidity('Kd.Lapangan Harus Diisi..')" onchange="setCustomValidity('')">
+							<select name="lapangan"  class="form-control selectpicker" data-live-search="true">
 								<option value="">-Pilih-</option>
 									@foreach($data_lapang as $data_lap)
 								<option value="{{$data_lap->kodelokasi}}">{{$data_lap->kodelokasi}} - {{$data_lap->nama}}</option>
 									@endforeach
 							</select>
 						</div>
-					</div>			
+					</div> --}}			
 					<div class="form-group row">
-						<label for="example-text-input" class="col-2 col-form-label">Sandi Perkiraan<span style="color:red;">*</span></label>
+						<label for="example-text-input" class="col-2 col-form-label">Sandi Perkiraan</label>
 						<div  class="col-8" >
-							<select name="sanper"  class="form-control selectpicker" data-live-search="true" required oninvalid="this.setCustomValidity('Sandi Perkiraan Harus Diisi..')" onchange="setCustomValidity('')">
+							<select name="sanper"  class="form-control selectpicker" data-live-search="true">
 								<option value="">-Pilih-</option>
 									@foreach($data_sandi as $data_san)
 								<option value="{{$data_san->kodeacct}}">{{$data_san->kodeacct}} - {{$data_san->descacct}}</option>
@@ -298,9 +298,9 @@
 						</div>
 					</div>			
 					<div class="form-group row">
-						<label for="example-text-input" class="col-2 col-form-label">Kode Bagian<span style="color:red;">*</span></label>
+						<label for="example-text-input" class="col-2 col-form-label">Kode Bagian</label>
 						<div  class="col-8" >
-							<select name="bagian"  class="form-control selectpicker" data-live-search="true" required oninvalid="this.setCustomValidity('Kode Bagian Harus Diisi..')" onchange="setCustomValidity('')">
+							<select name="bagian"  class="form-control selectpicker" data-live-search="true">
 								<option value="">-Pilih-</option>
 									@foreach($data_bagian as $data_bag)
 								<option value="{{$data_bag->kode}}">{{$data_bag->kode}} - {{$data_bag->nama}}</option>
@@ -310,15 +310,15 @@
 					</div>		
 					@if($mp == "P")
 					<div class="form-group row">
-						<label for="example-text-input" class="col-2 col-form-label">Perintah Kerja<span style="color:red;">*</span></label>
+						<label for="example-text-input" class="col-2 col-form-label">Perintah Kerja</label>
 						<div class="col-8">
-							<input  class="form-control" type="text" value="000000" size="6" maxlength="6" name="wo" required oninvalid="this.setCustomValidity('Perintah Kerja Harus Diisi..')" oninput="setCustomValidity('')">
+							<input  class="form-control" type="text" value="000000" size="6" maxlength="6" name="wo">
 						</div>
 					</div>	
 					<div class="form-group row">
-						<label for="example-text-input" class="col-2 col-form-label">Jenis Biaya<span style="color:red;">*</span></label>
+						<label for="example-text-input" class="col-2 col-form-label">Jenis Biaya</label>
 						<div  class="col-8" >
-							<select name="jnsbiaya" class="form-control selectpicker" data-live-search="true" required oninvalid="this.setCustomValidity('Jenis Biaya Harus Diisi..')" onchange="setCustomValidity('')">
+							<select name="jnsbiaya" class="form-control selectpicker" data-live-search="true">
 								<option value="">-Pilih-</option>
 									@foreach($data_jenis as $data_jen)
 								<option value="{{$data_jen->kode}}">{{$data_jen->kode}} - {{$data_jen->keterangan}}</option>
@@ -330,13 +330,13 @@
 					<div class="form-group row">
 						<label for="example-text-input" class="col-2 col-form-label">Jumlah</label>
 						<div class="col-8">
-							<input  class="form-control" type="text" value="" name="jumlah" size="16" maxlength="16" onkeypress="return hanyaAngka(event)" autocomplete='off' required oninvalid="this.setCustomValidity('Jumlah Harus Diisi..')" oninput="setCustomValidity('')">
+							<input  class="form-control" type="text" value="" name="jumlah" size="16" maxlength="16"  autocomplete='off' oninput="this.value = this.value.replace(/[^0-9\-]+/g, ',');">
 						</div>
 					</div>
 					<div class="form-group row">
-						<label for="example-text-input" class="col-2 col-form-label">C.Judex<span style="color:red;">*</span></label>
+						<label for="example-text-input" class="col-2 col-form-label">C.Judex</label>
 						<div  class="col-8" >
-							<select name="cjudex"  class="form-control selectpicker" data-live-search="true" required oninvalid="this.setCustomValidity('c.Judex Harus Diisi..')" onchange="setCustomValidity('')">
+							<select name="cjudex"  class="form-control selectpicker" data-live-search="true">
 								<option value="">-Pilih-</option>
 									@foreach($data_cjudex as $data_judex)
 								<option value="{{$data_judex->kode}}">{{$data_judex->kode}} - {{$data_judex->nama}}</option>
@@ -347,9 +347,9 @@
 					@else
 					<input  class="form-control" type="hidden" value="000000" size="6" maxlength="6" name="wo">
 					<div class="form-group row">
-						<label for="example-text-input" class="col-2 col-form-label">Jenis Biaya<span style="color:red;">*</span></label>
+						<label for="example-text-input" class="col-2 col-form-label">Jenis Biaya</label>
 						<div  class="col-8" >
-							<select name="jnsbiaya" class="form-control selectpicker" data-live-search="true" required oninvalid="this.setCustomValidity('Jenis Biaya Harus Diisi..')" onchange="setCustomValidity('')">
+							<select name="jnsbiaya" class="form-control selectpicker" data-live-search="true">
 								<option value="">-Pilih-</option>
 									@foreach($data_jenis as $data_jen)
 								<option value="{{$data_jen->kode}}" <?php if($data_jen->kode  == '000000' ) echo 'selected' ; ?>>{{$data_jen->kode}} - {{$data_jen->keterangan}}</option>
@@ -359,15 +359,15 @@
 					</div>		
 
 					<div class="form-group row">
-						<label for="example-text-input" class="col-2 col-form-label">Jumlah<span style="color:red;">*</span></label>
+						<label for="example-text-input" class="col-2 col-form-label">Jumlah</label>
 						<div class="col-8">
-							<input  class="form-control" type="text" value="" name="jumlah" size="16" maxlength="16" onkeypress="return hanyaAngka(event)" autocomplete='off'>
+							<input  class="form-control" type="text" value="" name="jumlah" size="16" maxlength="16" oninput="this.value = this.value.replace(/[^0-9\-]+/g, ',');" autocomplete='off'>
 						</div>
 					</div>
 					<div class="form-group row">
-						<label for="example-text-input" class="col-2 col-form-label">C.Judex<span style="color:red;">*</span></label>
+						<label for="example-text-input" class="col-2 col-form-label">C.Judex</label>
 						<div  class="col-8" >
-							<select name="cjudex"  class="form-control selectpicker" data-live-search="true" required oninvalid="this.setCustomValidity('C.Judex Harus Diisi..')" onchange="setCustomValidity('')">
+							<select name="cjudex"  class="form-control selectpicker" data-live-search="true" >
 								<option value="">-Pilih-</option>
 									@foreach($data_cjudex as $data_judex)
 								<option value="{{$data_judex->kode}}">{{$data_judex->kode}} - {{$data_judex->nama}}</option>
@@ -416,28 +416,28 @@
 					</div>
 
 					<div class="form-group row">
-						<label for="example-text-input" class="col-2 col-form-label">Rincian<span style="color:red;">*</span></label>
+						<label for="example-text-input" class="col-2 col-form-label">Rincian</label>
 						<div class="col-8">
-							<input  class="form-control" type="text" value=""  size="35" maxlength="35" name="rincian" id="rincian" autocomplete='off' required oninvalid="this.setCustomValidity('Rincian Harus Diisi..')" oninput="setCustomValidity('')">
+							<input  class="form-control" type="text" value="-"  size="35" maxlength="35" name="rincian" id="rincian" autocomplete='off' >
 						</div>
 					</div>
 									
 																					
-					<div class="form-group row">
-						<label for="example-text-input" class="col-2 col-form-label">Kd.Lapangan<span style="color:red;">*</span></label>
+					{{-- <div class="form-group row">
+						<label for="example-text-input" class="col-2 col-form-label">Kd.Lapangan</label>
 						<div  class="col-8" >
-							<select name="lapangan" id="lapangan" class="form-control selectpicker" data-live-search="true" required oninvalid="this.setCustomValidity('Kd.Lapangan Harus Diisi..')" onchange="setCustomValidity('')">
+							<select name="lapangan" id="lapangan" class="form-control selectpicker" data-live-search="true" >
 								<option value="">-Pilih-</option>
 									@foreach($data_lapang as $data_lap)
 								<option value="{{$data_lap->kodelokasi}}">{{$data_lap->kodelokasi}} - {{$data_lap->nama}}</option>
 									@endforeach
 							</select>
 						</div>
-					</div>			
+					</div> --}}			
 					<div class="form-group row">
-						<label for="example-text-input" class="col-2 col-form-label">Sandi Perkiraan<span style="color:red;">*</span></label>
+						<label for="example-text-input" class="col-2 col-form-label">Sandi Perkiraan</label>
 						<div  class="col-8" >
-							<select name="sanper" id="sanper" class="form-control selectpicker" data-live-search="true" required oninvalid="this.setCustomValidity('Sandi Perkiraan Harus Diisi..')" onchange="setCustomValidity('')">
+							<select name="sanper" id="sanper" class="form-control selectpicker" data-live-search="true">
 								<option value="">-Pilih-</option>
 									@foreach($data_sandi as $data_san)
 								<option value="{{$data_san->kodeacct}}">{{$data_san->kodeacct}} - {{$data_san->descacct}}</option>
@@ -446,9 +446,9 @@
 						</div>
 					</div>			
 					<div class="form-group row">
-						<label for="example-text-input" class="col-2 col-form-label">Kode Bagian<span style="color:red;">*</span></label>
+						<label for="example-text-input" class="col-2 col-form-label">Kode Bagian</label>
 						<div  class="col-8" >
-							<select name="bagian" id="bagian" class="form-control selectpicker" data-live-search="true" required oninvalid="this.setCustomValidity('Kode Bagian Harus Diisi..')" onchange="setCustomValidity('')">
+							<select name="bagian" id="bagian" class="form-control selectpicker" data-live-search="true" >
 								<option value="">-Pilih-</option>
 									@foreach($data_bagian as $data_bag)
 								<option value="{{$data_bag->kode}}">{{$data_bag->kode}} - {{$data_bag->nama}}</option>
@@ -458,15 +458,15 @@
 					</div>		
 					@if($mp == "P")
 					<div class="form-group row">
-						<label for="example-text-input" class="col-2 col-form-label">Perintah Kerja<span style="color:red;">*</span></label>
+						<label for="example-text-input" class="col-2 col-form-label">Perintah Kerja</label>
 						<div class="col-8">
-							<input  class="form-control" type="text" value="000000" size="6" maxlength="6" name="wo" id="wo" required oninvalid="this.setCustomValidity('Perintah Kerja Harus Diisi..')" oninput="setCustomValidity('')">
+							<input  class="form-control" type="text" value="000000" size="6" maxlength="6" name="wo" id="wo">
 						</div>
 					</div>	
 					<div class="form-group row">
-						<label for="example-text-input" class="col-2 col-form-label">Jenis Biaya<span style="color:red;">*</span></label>
+						<label for="example-text-input" class="col-2 col-form-label">Jenis Biaya</label>
 						<div  class="col-8" >
-							<select name="jnsbiaya" id="jnsbiaya" class="form-control selectpicker" data-live-search="true" required oninvalid="this.setCustomValidity('Jenis Biaya Harus Diisi..')" onchange="setCustomValidity('')">
+							<select name="jnsbiaya" id="jnsbiaya" class="form-control selectpicker" data-live-search="true">
 								<option value="">-Pilih-</option>
 									@foreach($data_jenis as $data_jen)
 								<option value="{{$data_jen->kode}}">{{$data_jen->kode}} - {{$data_jen->keterangan}}</option>
@@ -478,13 +478,13 @@
 					<div class="form-group row">
 						<label for="example-text-input" class="col-2 col-form-label">Jumlah</label>
 						<div class="col-8">
-							<input  class="form-control" type="text" value="" name="jumlah" id="jumlah" size="16" maxlength="16" onkeypress="return hanyaAngka(event)" autocomplete='off'>
+							<input  class="form-control" type="text" value="" name="jumlah" id="jumlah" size="16" maxlength="16" autocomplete='off' oninput="this.value = this.value.replace(/[^0-9\-]+/g, ',');">
 						</div>
 					</div>
 					<div class="form-group row">
-						<label for="example-text-input" class="col-2 col-form-label">C.Judex<span style="color:red;">*</span></label>
+						<label for="example-text-input" class="col-2 col-form-label">C.Judex</label>
 						<div  class="col-8" >
-							<select name="cjudex"  id="cjudex" class="form-control selectpicker" data-live-search="true" required oninvalid="this.setCustomValidity('C.Judex Harus Diisi..')" onchange="setCustomValidity('')">
+							<select name="cjudex"  id="cjudex" class="form-control selectpicker" data-live-search="true">
 								<option value="">-Pilih-</option>
 									@foreach($data_cjudex as $data_judex)
 								<option value="{{$data_judex->kode}}">{{$data_judex->kode}} - {{$data_judex->nama}}</option>
@@ -495,9 +495,9 @@
 					@else
 					<input  class="form-control" type="hidden"  size="6" maxlength="6" name="wo" id="wo">
 					<div class="form-group row">
-						<label for="example-text-input" class="col-2 col-form-label">Jenis Biaya<span style="color:red;">*</span></label>
+						<label for="example-text-input" class="col-2 col-form-label">Jenis Biaya</label>
 						<div  class="col-8" >
-							<select name="jnsbiaya" id="jnsbiaya" class="form-control selectpicker" data-live-search="true" required oninvalid="this.setCustomValidity('Jenis Biaya Harus Diisi..')" onchange="setCustomValidity('')">
+							<select name="jnsbiaya" id="jnsbiaya" class="form-control selectpicker" data-live-search="true">
 								<option value="">-Pilih-</option>
 									@foreach($data_jenis as $data_jen)
 								<option value="{{$data_jen->kode}}">{{$data_jen->kode}} - {{$data_jen->keterangan}}</option>
@@ -507,15 +507,15 @@
 					</div>		
 
 					<div class="form-group row">
-						<label for="example-text-input" class="col-2 col-form-label">Jumlah<span style="color:red;">*</span></label>
+						<label for="example-text-input" class="col-2 col-form-label">Jumlah</label>
 						<div class="col-8">
-							<input  class="form-control" type="text" value="" name="jumlah" id="jumlah" size="16" maxlength="16" onkeypress="return hanyaAngka(event)" autocomplete='off' required oninvalid="this.setCustomValidity('Jumlah Harus Diisi..')" oninput="setCustomValidity('')">
+							<input  class="form-control" type="text" value="" name="jumlah" id="jumlah" size="16" maxlength="16" oninput="this.value = this.value.replace(/[^0-9\-]+/g, ',');" autocomplete='off'>
 						</div>
 					</div>
 					<div class="form-group row">
-						<label for="example-text-input" class="col-2 col-form-label">C.Judex<span style="color:red;">*</span></label>
+						<label for="example-text-input" class="col-2 col-form-label">C.Judex</label>
 						<div  class="col-8" >
-							<select name="cjudex"  id="cjudex" class="form-control selectpicker" data-live-search="true" required oninvalid="this.setCustomValidity('C.Judex Harus Diisi..')" onchange="setCustomValidity('')">
+							<select name="cjudex"  id="cjudex" class="form-control selectpicker" data-live-search="true">
 								<option value="">-Pilih-</option>
 									@foreach($data_cjudex as $data_judex)
 								<option value="{{$data_judex->kode}}">{{$data_judex->kode}} - {{$data_judex->nama}}</option>
@@ -678,8 +678,9 @@
 						{
 							$('#nourut').val(data.lineno);
 							$('#rincian').val(data.keterangan);
-							var totprice=parseInt(data.totprice);
-							$('#jumlah').val(totprice);
+							var d=parseFloat(data.totprice);
+							var rupiah = d.toFixed(2);
+							$('#jumlah').val(rupiah);
 							$('#wo').val(data.pk);
 							$('.modal-edit-detail').modal('show');
 							$('#sanper').val(data.account).trigger('change');

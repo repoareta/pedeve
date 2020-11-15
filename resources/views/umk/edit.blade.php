@@ -638,7 +638,7 @@ $('#form-update-umk').submit(function(){
 					text  : 'Berhasil',
 					timer : 2000
 				}).then(function() {
-                    window.location.replace("{{route('uang_muka_kerja.index')}}");;
+                    window.location.replace("{{route('uang_muka_kerja.index')}}");
                 });
 			}, 
 			error : function(){

@@ -97,6 +97,9 @@
 @section('scripts')
 	<script type="text/javascript">
 	$(document).ready(function () {
+		$('.kt-select2').select2().on('change', function() {
+			$(this).valid();
+		});
 		$('#form-edit').submit(function(){
 			$.ajax({
 				url  : "{{route('tabel_menu.update')}}",

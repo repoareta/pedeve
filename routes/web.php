@@ -33,6 +33,9 @@ Route::group(['middleware'=> ['auth','checkRole:1,0']], function () {
     Route::name('default.')->group(function () {
         Route::get('default', 'DefaultController@index')->name('index');
     });
+    Route::name('upload_profil.')->group(function () {
+        Route::post('upload_profil', 'DefaultController@upload')->name('store');
+    });
 
     Route::prefix('umum')->group(function () {
         // UMK

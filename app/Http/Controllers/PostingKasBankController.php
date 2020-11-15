@@ -335,7 +335,7 @@ class PostingKasBankController extends Controller
             $bagian = $request->bagian;
             $wo = $request->wo;
             $jnsbiaya=$request->jnsbiaya;
-            $jumlah = $request->jumlah;
+            $jumlah = str_replace(',', '.', $request->jumlah);
             $cjudex = $request->cjudex;
             
         $data_objrs = DB::select("select * from kasdoc a where a.docno='$docno'");
@@ -375,7 +375,7 @@ class PostingKasBankController extends Controller
             $bagian = $request->bagian;
             $wo = $request->wo;
             $jnsbiaya=$request->jnsbiaya;
-            $jumlah = $request->jumlah;
+            $jumlah = str_replace(',', '.', $request->jumlah);
             $cjudex = $request->cjudex;
             
         $data_objrs = DB::select("select * from kasdoc a where a.docno='$docno'");

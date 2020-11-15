@@ -244,4 +244,60 @@
         });
     });
 </script>
+
+<script type="text/javascript">
+    $('#btn-profile').on('click', function(e) {
+        e.preventDefault();
+        $('#profile').modal('show');
+    });
+
+        $('#form-upload-profil').submit(function(){
+			let formData = new FormData($('#form-upload-profil')[0]);
+			let file = $('input[type=file]')[0].files[0];
+			formData.append('file', file, file.name);
+			$.ajax({
+				url  : "{{route('upload_profil.store')}}",
+				type : "POST",
+				data : formData,
+				dataType : "JSON",  
+				cache: false,
+				contentType: false,
+				processData: false,
+				headers: {
+				'X-CSRF-Token': '{{ csrf_token() }}',
+				},
+				success : function(data){
+						Swal.fire({
+							type : 'success',
+							title: "Profil berhasil dirubah",
+							text : 'Success',
+						}).then(function() {
+                            window.location.replace("{{route('default.index')}}");
+                        });
+				}, 
+				error : function(){
+					alert("Terjadi kesalahan, coba lagi nanti");
+				}
+			});	
+			return false;
+		});
+    
+    var KTAvatarDemo = function () {
+		// Private functions
+		var initDemos = function () {
+			var avatar2 = new KTAvatar('kt_user_avatar_2_2');
+		}
+
+		return {
+			// public functions
+			init: function() {
+				initDemos();
+			}
+		};
+    }();
+    
+    KTUtil.ready(function() {
+		KTAvatarDemo.init();
+	});
+</script>
 @yield("scripts")

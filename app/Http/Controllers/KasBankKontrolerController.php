@@ -325,11 +325,12 @@ class KasBankKontrolerController extends Controller
             ->update([
                 'tgl_kurs' =>  $request->tanggal,
             ]);
-            $data_list= DB::select("select a.nilai_dok,a.mrs_no,a.kepada,a.tgl_kurs,a.jk,right(a.thnbln,2) bulan, left(a.thnbln, 4) tahun,a.store,a.ci,a.rate,a.ket1,a.ket2,a.ket3, b.*,a.voucher from kasdoc a join kasline b on a.docno=b.docno where a.docno='$docno'");    
+            $data_list= DB::select("select a.docno,a.nilai_dok,a.mrs_no,a.kepada,a.tgl_kurs,a.jk,right(a.thnbln,2) bulan, left(a.thnbln, 4) tahun,a.store,a.ci,a.rate,a.ket1,a.ket2,a.ket3, b.*,a.voucher from kasdoc a join kasline b on a.docno=b.docno where a.docno='$docno'");    
     
         if(!empty($data_list)){
             foreach($data_list as $data){
                 $jk = $data->jk;
+                $docno = $data->docno;
                 $tahun = $data->tahun;
                 $bulan = $data->bulan;
                 $store = $data->store;
@@ -366,7 +367,8 @@ class KasBankKontrolerController extends Controller
                 'mrs_no',
                 'tgl_kurs',
                 'kepada',
-                'nilai_dok'
+                'nilai_dok',
+                'docno'
                 ))->setPaper('A4', 'Portrait');
             $pdf->output();
             $dom_pdf = $pdf->getDomPDF();

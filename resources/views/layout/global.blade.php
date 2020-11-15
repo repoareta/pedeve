@@ -29,7 +29,7 @@
 	<!-- end::Head -->
 
 	<!-- begin::Body -->
-	<body style="background-image: url('{{ asset('images/logo-login.png')}}');
+	<body style="background-image: url('images/logo-login.png');
 				-webkit-background-size: 100% 100%;
                 -moz-background-size: 100% 100%;
                 -o-background-size: 100% 100%;
@@ -99,6 +99,44 @@
 						@include('sweetalert::alert')
 						<!-- begin:: Content -->
 						@yield('content')
+
+						<div class="modal fade bd-example-modal-sm" id="profile" tabindex="-1" role="dialog" aria-labelledby="exampleModalCenter" aria-hidden="true">
+							<div class="modal-dialog  modal-sm" role="document">
+								<div class="modal-content">
+									<div class="modal-header">
+										<h5 class="modal-title" id="title_modal_jabatan" data-state="add">Upload Foto Profil</h5>
+										<button type="button" class="close" data-dismiss="modal" aria-label="Close">
+										</button>
+									</div>
+									<form action="" method="" id="form-upload-profil" enctype="multipart/form-data">
+										{{csrf_field()}}
+										<div class="modal-body">
+										<div class="col-lg-2" style="margin-left:25%">
+											<div class="kt-avatar" id="kt_user_avatar_2_2">
+												@if(Auth::user()->file == null)
+													<div class="kt-avatar__holder" style="background-image: url(assets/media/users/default.jpg)"></div>
+												@else
+													<div class="kt-avatar__holder" style="background-image: url('profile/'{{Auth::user()->file}})"></div>
+												@endif
+												<label class="kt-avatar__upload" data-toggle="kt-tooltip" title="" data-original-title="Ubah foto">
+													<i class="fa fa-pen"></i>
+													<input  type="file" name="profil" accept=".png, .jpg, .jpeg">
+												</label>
+												<span class="kt-avatar__cancel" data-toggle="kt-tooltip" title="" data-original-title="Hapus foto">
+													<i class="fa fa-times"></i>
+												</span>
+											</div>
+										</div>
+										
+										<div class="modal-footer">
+											<input  type="hidden" name="profil_1" value="{{Auth::user()->file}}">
+											<button type="submit" class="btn btn-primary"><i class="fa fa-check" aria-hidden="true"></i> Upload</button>
+										</div>
+										</div>
+									</form>
+								</div>
+							</div>
+						</div>
 						<!-- end:: Content -->
 					</div>
                     <!-- begin:: Footer -->
