@@ -848,6 +848,11 @@
                     'tabel_menu.create',
                     'tabel_menu.edit'                    
                 ); // isi nama semua route tabel_menu
+                $log = array(
+                    'log.index',
+                    'log.create',
+                    'log.edit'                    
+                ); // isi nama semua route log
                 $password_administrator = array(
                     'password_administrator.index'                   
                 ); // isi nama semua route password_administrator
@@ -856,6 +861,7 @@
                     $set_menu,
                     $set_function,
                     $tabel_menu,
+                    $log,
                     $password_administrator
                 ); // array merge semua submenu
             @endphp
@@ -2369,6 +2375,14 @@
                                     <span></span>
                                 </i>
                                 <span class="kt-menu__link-text">Tabel Menu</span>
+                            </a>
+                        </li>
+                        <li class="kt-menu__item kt-menu__item{{ set_active_submenu($log) }}" aria-haspopup="true">
+                            <a href="{{route('log.index')}}" class="kt-menu__link">
+                                <i class="kt-menu__link-bullet kt-menu__link-bullet--dot">
+                                    <span></span>
+                                </i>
+                                <span class="kt-menu__link-text">Log</span>
                             </a>
                         </li>
                         @endif

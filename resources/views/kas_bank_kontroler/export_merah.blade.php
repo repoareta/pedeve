@@ -110,9 +110,9 @@ header {
         <div class="row">
             <div class="text-center">
                 <p>
-                    <b>PT PERTAMINA PEDEVE INDONESIA
-                    <br>
-                    BUKTI PENERIMAAN KAS BANK
+                    <br><u>
+                    BUKTI PENERIMAAN KAS/BANK
+                    </u>
                     </b>
                 </p>
             </div>
@@ -124,7 +124,7 @@ header {
     </header>
       
     <main>
-        <div class="text-right" style="margin-right:5%;">{{$docno}}</div>
+        <div class="text-right" id="container" style="margin-right:5%;">{{$docno}}</div>
         <div class="row">
             <table style="width:100%;" class="table">
                 <thead>
@@ -135,16 +135,16 @@ header {
                             <br>
                             UANG SEJUMLAH &nbsp;&nbsp;&nbsp;&nbsp;&nbsp; :  
                             @if($ci == 1)
-                                Rp. {{number_format($nilai_dok) < 0 ? "(".number_format($nilai_dok*-1,2).")" : number_format($nilai_dok,2)}}
+                                Rp. {{number_format($nilai_dok) < 0 ? number_format($nilai_dok*-1,2) : number_format($nilai_dok,2)}}
                             @else
                                 US$. {{number_format($nilai_dok) < 0 ? "(".number_format($nilai_dok*-1,2).")" : number_format($nilai_dok,2)}}
                             @endif
                             <br>
                             <div style="border: 1px solid black; padding: 10px;">
                             @if($ci == 1)
-                                {{number_format($nilai_dok) < 0 ? strtoupper(Terbilang::angka($nilai_dok*-1)) : strtoupper(Terbilang::angka($nilai_dok)) }} {{strtoupper('rupiah')}}
+                                {{number_format($nilai_dok) < 0 ? strtoupper(terbilang($nilai_dok*-1)) : strtoupper(terbilang($nilai_dok)) }} {{strtoupper('rupiah')}}
                             @else
-                                {{number_format($nilai_dok) < 0 ? strtoupper(Terbilang::angka($nilai_dok*-1)) : strtoupper(Terbilang::angka($nilai_dok)) }} {{strtoupper('DOLLAR')}}
+                                {{number_format($nilai_dok) < 0 ? strtoupper(terbilang($nilai_dok*-1)) : strtoupper(terbilang($nilai_dok)) }} {{strtoupper('DOLLAR')}}
                             @endif
                             </div>
                             </p>
@@ -182,11 +182,14 @@ header {
                 </thead>
                 <tbody>
                     
-                    <?php $no=0; ?>
+                    @php
+                        $no=0;
+                        $total_row = 0;
+                    @endphp
                     @foreach($data_list as $data)  
-                    <?php $no++; 
-                        $total[$no] = $data->totprice; 
-                    ?>
+                    @php
+                        $pe[$no] = $data->totprice; 
+                    @endphp
                     <tr>
                         <td valign="top">{{$data->keterangan}}</td>
                         <td valign="top" class="text-center">{{$data->account}}</td>
@@ -197,10 +200,13 @@ header {
                         {{number_format($data->totprice,2) < 0 ? number_format($data->totprice*-1,2)." CR" : number_format($data->totprice,2)}}
                         </td>
                         <td valign="top" class="text-center">{{$data->cj}}</td>
+                        @php
+                            $total_row++;
+                        @endphp    
                     </tr>
                     @endforeach                   
                     <tr>
-                        <td class="border-top-less" valign="top" >
+                        <td class="border-top-less" valign="top" style="height:{{ 565 - ($total_row*50) }}px">
                             <b><u>KETERANGAN :</u></b>
                             <br>
                             {{$ket1}}
@@ -209,7 +215,7 @@ header {
                             <br>
                             {{$ket3}}
                         </td>
-                        <td class="border-top-less" style="height:{{ 565 - (150) }}px"></td>
+                        <td class="border-top-less" ></td>
                         <td class="border-top-less"></td>
                         <td class="border-top-less"></td>
                         <td class="border-top-less"></td>
@@ -219,7 +225,7 @@ header {
                     <tr>
                         <td colspan="5" class="text-right">Jumlah</td>
                         <td colspan="2" class="text-center">
-                            100
+                        <b>{{number_format($nilai_dok,2) < 0 ? number_format($nilai_dok*-1,2)." CR" : number_format($nilai_dok,2)}}</b>
                         </td>
                     </tr>
                     <tr>
@@ -234,16 +240,16 @@ header {
                         <td  class="text-center" valign="top" style="border-bottom: 2px solid #FFFFFF;">
                             Pemeriksaan Kas,
                             <br>
-                            a
+                            {{$request->setuju2}}
                         </td>
                         <td class="text-center" valign="top" style="border-bottom: 2px solid #FFFFFF;">
                             Pembukuan,
                             <br>
-                            a
+                            {{$request->buku2}}
                         </td>
                         <td colspan="5" class="text-center" valign="top" style="border-top: 2px solid #FFFFFF; border-bottom: 2px solid #FFFFFF;">
                             <br>
-                            a
+                            {{$request->kas2}}
                         </td>
                     </tr>
                     <tr>
@@ -252,21 +258,21 @@ header {
                             <br>
                             <br>
                             <br>
-                            a
+                            {{$request->nsetuju2}}
                         </td>
                         <td class="text-center border-less">
                             <br>
                             <br>
                             <br>
                             <br>
-                            a
+                            {{$request->nbuku2}}
                         </td>
                         <td colspan="5" class="text-center border-less">
                             <br>
                             <br>
                             <br>
                             <br>
-                            a
+                            {{$request->nkas2}}
                         </td>
                     </tr>
                 </tbody>

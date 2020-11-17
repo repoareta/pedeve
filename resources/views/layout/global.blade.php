@@ -116,7 +116,7 @@
 												@if(Auth::user()->file == null)
 													<div class="kt-avatar__holder" style="background-image: url(assets/media/users/default.jpg)"></div>
 												@else
-													<div class="kt-avatar__holder" style="background-image: url('profile/'{{Auth::user()->file}})"></div>
+													<div class="kt-avatar__holder" style="background-image: url({{'profile/'.Auth::user()->file}})"></div>
 												@endif
 												<label class="kt-avatar__upload" data-toggle="kt-tooltip" title="" data-original-title="Ubah foto">
 													<i class="fa fa-pen"></i>

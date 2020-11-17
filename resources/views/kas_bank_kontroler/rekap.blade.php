@@ -50,6 +50,7 @@
 					</div>
 				</div>
 			@if($mp == "P")
+				<input name="mp" value="P" type="hidden">
 				<div class="form-group row">
 					<label class="col-2 col-form-label"></label>
 					<div class="col-8">
@@ -103,6 +104,7 @@
 				</div>
 
 			@else
+				<input name="mp" value="M" type="hidden">
 				<div class="form-group row">
 					<label class="col-2 col-form-label"></label>
 					<div class="col-8">

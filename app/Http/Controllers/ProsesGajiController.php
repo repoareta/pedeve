@@ -366,7 +366,7 @@ class ProsesGajiController extends Controller
                                 $data_tabunganpt = PayTabunga::all();
                                 foreach($data_tabunganpt as $data_tabpt)
                                 {
-                                    $iuranwajibpt = ($data_tabpt->tabungan/100) * $upahtetappt;
+                                    $iuranwajibpt = ($data_tabpt->perusahaan/100) * $upahtetappt;
                                 }
                                 PayMasterBebanprshn::insert([
                                     'tahun' => $data_tahun,
@@ -2789,7 +2789,7 @@ class ProsesGajiController extends Controller
                                 $data_tabunganpt = PayTabunga::all();
                                 foreach($data_tabunganpt as $data_tabpt)
                                 {
-                                    $iuranwajibpt = ($data_tabpt->tabungan/100) * $upahtetappt;
+                                    $iuranwajibpt = ($data_tabpt->perusahaan/100) * $upahtetappt;
                                 }
                                 PayMasterBebanprshn::insert([
                                     'tahun' => $data_tahun,
@@ -4987,7 +4987,7 @@ class ProsesGajiController extends Controller
             $pdf->output();
             $dom_pdf = $pdf->getDomPDF();
         
-            $canvas = $dom_pdf ->get_canvas();
+            $canvas = $dom_pdf ->getcanvas();
             $canvas->page_text(910, 120, "Halaman {PAGE_NUM} Dari {PAGE_COUNT}", null, 10, array(0, 0, 0)); //slip Gaji landscape
             // return $pdf->download('rekap_umk_'.date('Y-m-d H:i:s').'.pdf');
             return $pdf->stream();
@@ -5030,7 +5030,7 @@ class ProsesGajiController extends Controller
             $pdf->output();
             $dom_pdf = $pdf->getDomPDF();
         
-            $canvas = $dom_pdf ->get_canvas();
+            $canvas = $dom_pdf ->getcanvas();
             $canvas->page_text(890, 125, "Halaman {PAGE_NUM} Dari {PAGE_COUNT}", null, 10, array(0, 0, 0)); //Rekap Gaji landscape
             // return $pdf->download('rekap_umk_'.date('Y-m-d H:i:s').'.pdf');
             return $pdf->stream();
@@ -5063,7 +5063,7 @@ class ProsesGajiController extends Controller
             $pdf->output();
             $dom_pdf = $pdf->getDomPDF();
         
-            $canvas = $dom_pdf ->get_canvas();
+            $canvas = $dom_pdf ->getcanvas();
             $canvas->page_text(880, 140, "Halaman {PAGE_NUM} Dari {PAGE_COUNT}", null, 10, array(0, 0, 0)); //Rekap Gaji landscape
             // return $pdf->download('rekap_umk_'.date('Y-m-d H:i:s').'.pdf');
             return $pdf->stream();
@@ -5099,7 +5099,7 @@ class ProsesGajiController extends Controller
             $pdf->output();
             $dom_pdf = $pdf->getDomPDF();
         
-            $canvas = $dom_pdf ->get_canvas();
+            $canvas = $dom_pdf ->getcanvas();
             $canvas->page_text(880, 140, "Halaman {PAGE_NUM} Dari {PAGE_COUNT}", null, 10, array(0, 0, 0)); //Rekap Gaji landscape
             // return $pdf->download('rekap_umk_'.date('Y-m-d H:i:s').'.pdf');
             return $pdf->stream();
@@ -5121,7 +5121,7 @@ class ProsesGajiController extends Controller
             $pdf->output();
             $dom_pdf = $pdf->getDomPDF();
         
-            $canvas = $dom_pdf ->get_canvas();
+            $canvas = $dom_pdf ->getcanvas();
             $canvas->page_text(880, 140, "Halaman {PAGE_NUM} Dari {PAGE_COUNT}", null, 10, array(0, 0, 0)); //Rekap Gaji landscape
             // return $pdf->download('rekap_umk_'.date('Y-m-d H:i:s').'.pdf');
             return $pdf->stream();
@@ -5143,7 +5143,7 @@ class ProsesGajiController extends Controller
             $pdf->output();
             $dom_pdf = $pdf->getDomPDF();
         
-            $canvas = $dom_pdf ->get_canvas();
+            $canvas = $dom_pdf ->getcanvas();
             $canvas->page_text(880, 140, "Halaman {PAGE_NUM} Dari {PAGE_COUNT}", null, 10, array(0, 0, 0)); //Rekap Gaji landscape
             // return $pdf->download('rekap_umk_'.date('Y-m-d H:i:s').'.pdf');
             return $pdf->stream();
@@ -5194,7 +5194,7 @@ class ProsesGajiController extends Controller
                 $pdf->output();
                 $dom_pdf = $pdf->getDomPDF();
             
-                $canvas = $dom_pdf ->get_canvas();
+                $canvas = $dom_pdf ->getcanvas();
                 $canvas->page_text(890, 125, "Halaman {PAGE_NUM} Dari {PAGE_COUNT}", null, 10, array(0, 0, 0)); //Rekap Gaji landscape
                 // return $pdf->download('rekap_umk_'.date('Y-m-d H:i:s').'.pdf');
                 return $pdf->stream();
@@ -5215,7 +5215,7 @@ class ProsesGajiController extends Controller
                 $pdf->output();
                 $dom_pdf = $pdf->getDomPDF();
             
-                $canvas = $dom_pdf ->get_canvas();
+                $canvas = $dom_pdf ->getcanvas();
                 $canvas->page_text(880, 140, "Halaman {PAGE_NUM} Dari {PAGE_COUNT}", null, 10, array(0, 0, 0)); //Rekap Gaji landscape
                 // return $pdf->download('rekap_umk_'.date('Y-m-d H:i:s').'.pdf');
                 return $pdf->stream();
@@ -5236,7 +5236,7 @@ class ProsesGajiController extends Controller
                 $pdf->output();
                 $dom_pdf = $pdf->getDomPDF();
             
-                $canvas = $dom_pdf ->get_canvas();
+                $canvas = $dom_pdf ->getcanvas();
                 $canvas->page_text(880, 140, "Halaman {PAGE_NUM} Dari {PAGE_COUNT}", null, 10, array(0, 0, 0)); //Rekap Gaji landscape
                 // return $pdf->download('rekap_umk_'.date('Y-m-d H:i:s').'.pdf');
                 return $pdf->stream();

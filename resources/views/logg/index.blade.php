@@ -6,15 +6,15 @@
 	<div class="kt-container  kt-container--fluid ">
 		<div class="kt-subheader__main">
 			<h3 class="kt-subheader__title">
-				Kas Bank </h3>
+				Set Menu </h3>
 			<span class="kt-subheader__separator kt-hidden"></span>
 			<div class="kt-subheader__breadcrumbs">
 				<a href="#" class="kt-subheader__breadcrumbs-home"><i class="flaticon2-shelter"></i></a>
 				<span class="kt-subheader__breadcrumbs-separator"></span>
 				<a href="" class="kt-subheader__breadcrumbs-link">
-					Kontroler </a>
+					Administrator </a>
 				<span class="kt-subheader__breadcrumbs-separator"></span>
-				<span class="kt-subheader__breadcrumbs-link kt-subheader__breadcrumbs-link--active">Kas Bank</span>
+				<span class="kt-subheader__breadcrumbs-link kt-subheader__breadcrumbs-link--active">Set Menu</span>
 			</div>
 		</div>
 	</div>
@@ -29,50 +29,58 @@
 				<i class="kt-font-brand flaticon2-line-chart"></i>
 			</span>
 			<h3 class="kt-portlet__head-title">
-				Tabel Kas Bank
+				Log
 			</h3>			
 			<div class="kt-portlet__head-toolbar">
 				<div class="kt-portlet__head-wrapper">
 					<div class="kt-portlet__head-actions">
-						@foreach(DB::table('usermenu')->where('userid',Auth::user()->userid)->where('menuid',206)->limit(1)->get() as $data_akses)
-						@if($data_akses->tambah == 1)
-						<a href="{{ route('kas_bank_kontroler.create') }}">
-							<span style="font-size: 2em;" class="kt-font-success" data-toggle="kt-tooltip" data-placement="top" title="Tambah Data">
-								<i class="fas fa-plus-circle"></i>
-							</span>
-						</a>
-						@endif
-
-						@if($data_akses->rubah == 1 or $data_akses->lihat == 1)
-						<span style="font-size: 2em;" class="kt-font-warning pointer-link" data-toggle="kt-tooltip" data-placement="top" title="Ubah Data Atau Lihat Data">
-							<i class="fas fa-edit" id="editRow"></i>
-						</span>
-						@endif
-
-						@if($data_akses->hapus == 1)
-						<span style="font-size: 2em;"  class="kt-font-danger pointer-link" data-toggle="kt-tooltip" data-placement="top" title="Hapus Data">
-							<i class="fas fa-times-circle" id="deleteRow"></i>
-						</span>
-						@endif
-						@endforeach
 					</div>
 				</div>
 			</div>
 		</div>
 	</div>
 	<div class="kt-portlet__body">
+		<div class="">
+			<form class="kt-form" id="search-form" >
+				<div class="form-group row col-12">
+					<label for="" class="col-form-label">Bulan</label>
+					<div class="col-2">
+						<select name="bulan" class="form-control selectpicker" data-live-search="true">
+							<option value="" >-- Pilih --</option>
+							<option value="1" <?php if(date('m')  == '01' ) echo 'selected' ; ?>>Januari</option>
+							<option value="2" <?php if(date('m')  == '02' ) echo 'selected' ; ?>>Februari</option>
+							<option value="3" <?php if(date('m')  == '03' ) echo 'selected' ; ?>>Maret</option>
+							<option value="4" <?php if(date('m')  == '04' ) echo 'selected' ; ?>>April</option>
+							<option value="5" <?php if(date('m')  == '05' ) echo 'selected' ; ?>>Mei</option>
+							<option value="6" <?php if(date('m')  == '05' ) echo 'selected' ; ?>>Juni</option>
+							<option value="7" <?php if(date('m')  == '07' ) echo 'selected' ; ?>>Juli</option>
+							<option value="8" <?php if(date('m')  == '08' ) echo 'selected' ; ?>>Agustus</option>
+							<option value="9" <?php if(date('m')  == '09' ) echo 'selected' ; ?>>September</option>
+							<option value="10" <?php if(date('m')  == '10' ) echo 'selected' ; ?>>Oktober</option>
+							<option value="11" <?php if(date('m')  == '11' ) echo 'selected' ; ?>>November</option>
+							<option value="12" <?php if(date('m')  == '12' ) echo 'selected' ; ?>>Desember</option>
+						</select>
+					</div>
+	
+					<label for="" class="col-form-label">Tahun</label>
+					<div class="col-2">
+						<input class="form-control" type="text" name="tahun" value="{{date('Y')}}" size="4" maxlength="4" onkeypress="return hanyaAngka(event)" autocomplete='off'>
+					</div>
+					<div class="col-2">
+						<button type="submit" class="btn btn-brand"><i class="fa fa-search" aria-hidden="true"></i> Cari</button>
+					</div>
+				</div>
+			</form>
+		</div>
 		<!--begin: Datatable -->
 		<table class="table table-striped table-bordered table-hover table-checkable" id="kt_table" width="100%">
 			<thead class="thead-light">
 				<tr>
-					<th></th>
-					<th>JENIS</th>
-					<th>KODE</th>
-					<th>NAMA</th>
-					<th>NO.REKENING</th>
-					<th>CI</th>
-					<th>SANPER</th>
-					<th>LOKASI</th>
+					<th>USER ID</th>
+					<th>USER NAME</th>
+					<th>LOGIN</th>
+					<th>LOGOUT</th>
+					<th>TERMINAL</th>
 				</tr>
 			</thead>
 			<tbody>
@@ -99,25 +107,23 @@ $(document).ready(function () {
 				processing: '<i class="fa fa-spinner fa-spin fa-2x fa-fw"></i> <br> Loading...'
 			},
 			ajax      : {
-						url: "{{ route('kas_bank_kontroler.search.index') }}",
+						url: "{{ route('log.search') }}",
 						type : "POST",
 						dataType : "JSON",
 						headers: {
 						'X-CSRF-Token': '{{ csrf_token() }}',
 						},
 						data: function (d) {
-							d.pencarian = $('input[name=pencarian]').val();
+							d.bulan = $('select[name=bulan]').val();
+							d.tahun = $('input[name=tahun]').val();
 						}
 					},
 			columns: [
-				{data: 'radio', name: 'aksi', orderable: false, searchable: false, class:'radio-button'},
-				{data: 'jeniskartu', name: 'jeniskartu'},
-				{data: 'kodestore', name: 'kodestore'},
-				{data: 'namabank', name: 'namabank'},
-				{data: 'norekening', name: 'norekening'},
-				{data: 'ci', name: 'ci'},
-				{data: 'account', name: 'account'},
-				{data: 'lokasi', name: 'lokasi'},
+				{data: 'userid', name: 'userid'},
+				{data: 'usernm', name: 'usernm'},
+				{data: 'login', name: 'login'},
+				{data: 'logout', name: 'logout'},
+				{data: 'terminal', name: 'terminal'},
 			]
 		});
 		$('#search-form').on('submit', function(e) {
@@ -136,7 +142,6 @@ $(document).ready(function () {
 				$(this).addClass('selected');
 			}
 		} );
-
 		$('#deleteRow').click(function(e) {
 			e.preventDefault();
 			if($('input[class=btn-radio]').is(':checked')) { 
@@ -152,7 +157,7 @@ $(document).ready(function () {
 						})
 						swalWithBootstrapButtons.fire({
 							title: "Data yang akan dihapus?",
-							text: "Kode  : " +kode,
+							text: "User ID  : " +kode,
 							type: 'warning',
 							showCancelButton: true,
 							reverseButtons: true,
@@ -162,7 +167,7 @@ $(document).ready(function () {
 						.then((result) => {
 						if (result.value) {
 							$.ajax({
-								url: "{{ route('kas_bank_kontroler.delete') }}",
+								url: "{{ route('set_menu.delete') }}",
 								type: 'DELETE',
 								dataType: 'json',
 								data: {
@@ -172,7 +177,7 @@ $(document).ready(function () {
 								success: function (data) {
 									Swal.fire({
 										type  : 'success',
-										title : "Data Kas Bank dengan kode  : " +kode+" Berhasil Dihapus.",
+										title : "Data Set Menu dengan User ID  : " +kode+" Berhasil Dihapus.",
 										text  : 'Berhasil',
 										
 									}).then(function() {
@@ -198,7 +203,20 @@ $(document).ready(function () {
 			if($('input[class=btn-radio]').is(':checked')) { 
 				$("input[class=btn-radio]:checked").each(function(){
 					var no = $(this).attr('kode');
-					location.replace("{{url('kontroler/kas_bank_kontroler/edit')}}"+ '/' +no);
+					location.replace("{{url('administrator/set_menu/edit')}}"+ '/' +no);
+				});
+			} else {
+				swalAlertInit('ubah');
+			}
+		});
+		//edit 
+		$('#addRow').click(function(e) {
+			e.preventDefault();
+
+			if($('input[class=btn-radio]').is(':checked')) { 
+				$("input[class=btn-radio]:checked").each(function(){
+					var no = $(this).attr('kode');
+					location.replace("{{url('administrator/set_menu/create')}}"+ '/' +no);
 				});
 			} else {
 				swalAlertInit('ubah');
