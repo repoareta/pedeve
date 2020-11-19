@@ -94,6 +94,7 @@ $(document).ready(function () {
 			serverSide: true,
 			searching: true,
 			lengthChange: true,
+			pageLength: 200,
 			language: {
 				processing: '<i class="fa fa-spinner fa-spin fa-2x fa-fw"></i> <br> Loading...'
 			},
@@ -123,6 +124,18 @@ $(document).ready(function () {
 			t.draw();
 			e.preventDefault();
 		});
+		$('#kt_table tbody').on( 'click', 'tr', function (event) {
+			if ( $(this).hasClass('selected') ) {
+				$(this).removeClass('selected');
+			} else {
+				t.$('tr.selected').removeClass('selected');
+				// $(':radio', this).trigger('click');
+				if (event.target.type !== 'radio') {
+					$(':radio', this).trigger('click');
+				}
+				$(this).addClass('selected');
+			}
+		} );
 
 		$('#deleteRow').click(function(e) {
 			e.preventDefault();

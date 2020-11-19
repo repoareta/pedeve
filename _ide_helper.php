@@ -3,7 +3,8 @@
 
 /**
  * A helper file for Laravel, to provide autocomplete information to your IDE
- * Generated for Laravel 6.18.37.
+ * Generated for Laravel 6.18.43.
+
  *
  * This file should not be included in your code, only analyzed by your IDE!
  *
@@ -2330,7 +2331,8 @@
          * Begin broadcasting an event.
          *
          * @param mixed|null $event
-         * @return \Illuminate\Broadcasting\PendingBroadcast|void 
+         * @return \Illuminate\Broadcasting\PendingBroadcast 
+
          * @static 
          */ 
         public static function event($event = null)
@@ -7445,6 +7447,7 @@
                         /** @var \Illuminate\Support\Testing\Fakes\QueueFake $instance */
                         return $instance->setConnectionName($name);
         }
+
                     /**
          * Get the retry delay for an object-based queue handler.
          *
@@ -7491,8 +7494,7 @@
         {            //Method inherited from \Illuminate\Queue\Queue         
                         /** @var \Illuminate\Queue\SyncQueue $instance */
                         $instance->setContainer($container);
-        }
-         
+        }         
     }
             /**
      * 
@@ -9037,7 +9039,7 @@
                     /**
          * Gets the preferred format for the response by inspecting, in the following order:
          *   * the request format set using setRequestFormat
-         *   * the values of the Accept HTTP header
+         *   * the values of the Accept HTTP header.
          * 
          * Note that if you use this method, you should send the "Vary: Accept" header
          * in the response to prevent any issues with intermediary HTTP caches.
@@ -12345,7 +12347,8 @@
          * Create a signed route URL for a named route.
          *
          * @param string $name
-         * @param array $parameters
+         * @param mixed $parameters
+
          * @param \DateTimeInterface|\DateInterval|int|null $expiration
          * @param bool $absolute
          * @return string 
@@ -15146,6 +15149,69 @@
      
 }
 
+    namespace Intervention\Image\Facades { 
+            /**
+     * 
+     *
+     */ 
+        class Image {
+                    /**
+         * Overrides configuration settings
+         *
+         * @param array $config
+         * @return self 
+         * @static 
+         */ 
+        public static function configure($config = [])
+        {
+                        /** @var \Intervention\Image\ImageManager $instance */
+                        return $instance->configure($config);
+        }
+                    /**
+         * Initiates an Image instance from different input types
+         *
+         * @param mixed $data
+         * @return \Intervention\Image\Image 
+         * @static 
+         */ 
+        public static function make($data)
+        {
+                        /** @var \Intervention\Image\ImageManager $instance */
+                        return $instance->make($data);
+        }
+                    /**
+         * Creates an empty image canvas
+         *
+         * @param int $width
+         * @param int $height
+         * @param mixed $background
+         * @return \Intervention\Image\Image 
+         * @static 
+         */ 
+        public static function canvas($width, $height, $background = null)
+        {
+                        /** @var \Intervention\Image\ImageManager $instance */
+                        return $instance->canvas($width, $height, $background);
+        }
+                    /**
+         * Create new cached image and run callback
+         * (requires additional package intervention/imagecache)
+         *
+         * @param \Closure $callback
+         * @param int $lifetime
+         * @param boolean $returnObj
+         * @return \Image 
+         * @static 
+         */ 
+        public static function cache($callback, $lifetime = null, $returnObj = false)
+        {
+                        /** @var \Intervention\Image\ImageManager $instance */
+                        return $instance->cache($callback, $lifetime, $returnObj);
+        }
+         
+    }
+     
+}
     namespace DaveJamesMiller\Breadcrumbs\Facades { 
             /**
      * Breadcrumbs facade - allows easy access to the Manager instance.
@@ -19743,6 +19809,7 @@ namespace  {
             class Alert extends \RealRashid\SweetAlert\Facades\Alert {}
             class PDF extends \Barryvdh\Snappy\Facades\SnappyPdf {}
             class SnappyImage extends \Barryvdh\Snappy\Facades\SnappyImage {}
+            class Image extends \Intervention\Image\Facades\Image {}
             class Breadcrumbs extends \DaveJamesMiller\Breadcrumbs\Facades\Breadcrumbs {}
             class Flare extends \Facade\Ignition\Facades\Flare {}
             class Form extends \Collective\Html\FormFacade {}

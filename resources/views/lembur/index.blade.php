@@ -169,6 +169,18 @@ $(document).ready(function () {
 		t.draw();
 		e.preventDefault();
 	});
+	$('#kt_table tbody').on( 'click', 'tr', function (event) {
+		if ( $(this).hasClass('selected') ) {
+			$(this).removeClass('selected');
+		} else {
+			t.$('tr.selected').removeClass('selected');
+			// $(':radio', this).trigger('click');
+			if (event.target.type !== 'radio') {
+				$(':radio', this).trigger('click');
+			}
+			$(this).addClass('selected');
+		}
+	} );
 
 //refresh data
 $('#show-data').on('click', function(e) {

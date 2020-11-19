@@ -112,7 +112,7 @@
 			</form>
 		</div>
 		<!--begin: Datatable -->
-		<table id="data-monitoring_kinerja" class="table table-striped table-bordered table-hover table-checkable" style="background-color:#ECF3F3;" >
+		<table id="kt_table" class="table table-striped table-bordered table-hover table-checkable" style="background-color:#ECF3F3;" >
 			<thead  style="text-align:center;vertical-align:middle;">
 				<tr >
 					<th style="vertical-align:middle;" rowspan="3">No</th>
@@ -147,7 +147,7 @@
 @section('scripts')
 <script type="text/javascript">
 $(document).ready(function(){
-	var t =$('#data-monitoring_kinerja').DataTable({
+	var t =$('#kt_table').DataTable({
 			scrollX   : true,
 			processing: true,
 			serverSide: true,
@@ -186,6 +186,18 @@ $(document).ready(function(){
 				var bulan = $('select[name=bulan]').val();
 		$('#acc').val(bulan);
 	});
+	$('#kt_table tbody').on( 'click', 'tr', function (event) {
+		if ( $(this).hasClass('selected') ) {
+			$(this).removeClass('selected');
+		} else {
+			t.$('tr.selected').removeClass('selected');
+			// $(':radio', this).trigger('click');
+			if (event.target.type !== 'radio') {
+				$(':radio', this).trigger('click');
+			}
+			$(this).addClass('selected');
+		}
+	} );
 	$('.kt-select2').select2().on('change', function() {
 		$(this).valid();
 	});

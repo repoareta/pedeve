@@ -366,7 +366,7 @@ class ProsesGajiController extends Controller
                                 $data_tabunganpt = PayTabunga::all();
                                 foreach($data_tabunganpt as $data_tabpt)
                                 {
-                                    $iuranwajibpt = ($data_tabpt->tabungan/100) * $upahtetappt;
+                                    $iuranwajibpt = ($data_tabpt->perusahaan/100) * $upahtetappt;
                                 }
                                 PayMasterBebanprshn::insert([
                                     'tahun' => $data_tahun,
@@ -421,6 +421,7 @@ class ProsesGajiController extends Controller
                                 }else{
                                     $sisagajipt = '0';
                                 }
+
                                 PayMasterUpah::insert([
                                             'tahun' => $data_tahun,
                                             'bulan' => $data_bulan,
@@ -464,7 +465,7 @@ class ProsesGajiController extends Controller
                                 {
                                     $kortampt = $koreksigpt->kortam * -1;
                                 }
-
+                                
                                 $totalkenapajakpt = ($nilaikenapajakpt + $niljstaccidentpt + $niljslifept + $fasilitaspt+ $kortampt)*12;
 
                                 // 17.CARI NILAI PENGURANG
@@ -475,6 +476,7 @@ class ProsesGajiController extends Controller
                                         $biayajabatanpt = $biayajabatanspt;
                                     }
                                     
+                                    
                                     $neto1tahunpt = $totalkenapajakpt - $biayajabatanpt;
                                 
                                     TblPajak::where('tahun', $data_tahun)
@@ -484,11 +486,12 @@ class ProsesGajiController extends Controller
                                                 'bjabatan' => $biayajabatanpt,
                                             ]);
 
+
                                 // 18.CARI NILAI TIDAK KENA PAJAK
                                 $data_ptkp = DB::select("select a.kodekeluarga,b.nilai from sdm_master_pegawai a,pay_tbl_ptkp b where a.kodekeluarga=b.kdkel and a.nopeg='$datapt->nopeg'");
                                 
-                                if(!empty($data_ptkppt)){
-                                    foreach($data_ptkppt as $data_ppt)
+                                if(!empty($data_ptkp)){
+                                    foreach($data_ptkp as $data_ppt)
                                     {
                                         $nilaiptkp1pt = $data_ppt->nilai;
                                     }
@@ -498,6 +501,7 @@ class ProsesGajiController extends Controller
 
                                 //    19.PENGHASILAN KENA PAJAK SETAHUN
                                 $nilaikenapajakapt = $neto1tahunpt - $nilaiptkp1pt;
+
                                 TblPajak::where('tahun', $data_tahun)
                                                 ->where('bulan',$data_bulan)
                                                 ->where('nopeg',$datapt->nopeg)
@@ -2785,7 +2789,7 @@ class ProsesGajiController extends Controller
                                 $data_tabunganpt = PayTabunga::all();
                                 foreach($data_tabunganpt as $data_tabpt)
                                 {
-                                    $iuranwajibpt = ($data_tabpt->tabungan/100) * $upahtetappt;
+                                    $iuranwajibpt = ($data_tabpt->perusahaan/100) * $upahtetappt;
                                 }
                                 PayMasterBebanprshn::insert([
                                     'tahun' => $data_tahun,
@@ -2906,8 +2910,8 @@ class ProsesGajiController extends Controller
                                 // 18.CARI NILAI TIDAK KENA PAJAK
                                 $data_ptkp = DB::select("select a.kodekeluarga,b.nilai from sdm_master_pegawai a,pay_tbl_ptkp b where a.kodekeluarga=b.kdkel and a.nopeg='$datapt->nopeg'");
                                 
-                                if(!empty($data_ptkppt)){
-                                    foreach($data_ptkppt as $data_ppt)
+                                if(!empty($data_ptkp)){
+                                    foreach($data_ptkp as $data_ppt)
                                     {
                                         $nilaiptkp1pt = $data_ppt->nilai;
                                     }
@@ -4983,7 +4987,7 @@ class ProsesGajiController extends Controller
             $pdf->output();
             $dom_pdf = $pdf->getDomPDF();
         
-            $canvas = $dom_pdf ->get_canvas();
+            $canvas = $dom_pdf ->getcanvas();
             $canvas->page_text(910, 120, "Halaman {PAGE_NUM} Dari {PAGE_COUNT}", null, 10, array(0, 0, 0)); //slip Gaji landscape
             // return $pdf->download('rekap_umk_'.date('Y-m-d H:i:s').'.pdf');
             return $pdf->stream();
@@ -5026,7 +5030,7 @@ class ProsesGajiController extends Controller
             $pdf->output();
             $dom_pdf = $pdf->getDomPDF();
         
-            $canvas = $dom_pdf ->get_canvas();
+            $canvas = $dom_pdf ->getcanvas();
             $canvas->page_text(890, 125, "Halaman {PAGE_NUM} Dari {PAGE_COUNT}", null, 10, array(0, 0, 0)); //Rekap Gaji landscape
             // return $pdf->download('rekap_umk_'.date('Y-m-d H:i:s').'.pdf');
             return $pdf->stream();
@@ -5059,7 +5063,7 @@ class ProsesGajiController extends Controller
             $pdf->output();
             $dom_pdf = $pdf->getDomPDF();
         
-            $canvas = $dom_pdf ->get_canvas();
+            $canvas = $dom_pdf ->getcanvas();
             $canvas->page_text(880, 140, "Halaman {PAGE_NUM} Dari {PAGE_COUNT}", null, 10, array(0, 0, 0)); //Rekap Gaji landscape
             // return $pdf->download('rekap_umk_'.date('Y-m-d H:i:s').'.pdf');
             return $pdf->stream();
@@ -5095,7 +5099,7 @@ class ProsesGajiController extends Controller
             $pdf->output();
             $dom_pdf = $pdf->getDomPDF();
         
-            $canvas = $dom_pdf ->get_canvas();
+            $canvas = $dom_pdf ->getcanvas();
             $canvas->page_text(880, 140, "Halaman {PAGE_NUM} Dari {PAGE_COUNT}", null, 10, array(0, 0, 0)); //Rekap Gaji landscape
             // return $pdf->download('rekap_umk_'.date('Y-m-d H:i:s').'.pdf');
             return $pdf->stream();
@@ -5117,7 +5121,7 @@ class ProsesGajiController extends Controller
             $pdf->output();
             $dom_pdf = $pdf->getDomPDF();
         
-            $canvas = $dom_pdf ->get_canvas();
+            $canvas = $dom_pdf ->getcanvas();
             $canvas->page_text(880, 140, "Halaman {PAGE_NUM} Dari {PAGE_COUNT}", null, 10, array(0, 0, 0)); //Rekap Gaji landscape
             // return $pdf->download('rekap_umk_'.date('Y-m-d H:i:s').'.pdf');
             return $pdf->stream();
@@ -5139,7 +5143,7 @@ class ProsesGajiController extends Controller
             $pdf->output();
             $dom_pdf = $pdf->getDomPDF();
         
-            $canvas = $dom_pdf ->get_canvas();
+            $canvas = $dom_pdf ->getcanvas();
             $canvas->page_text(880, 140, "Halaman {PAGE_NUM} Dari {PAGE_COUNT}", null, 10, array(0, 0, 0)); //Rekap Gaji landscape
             // return $pdf->download('rekap_umk_'.date('Y-m-d H:i:s').'.pdf');
             return $pdf->stream();
@@ -5190,7 +5194,7 @@ class ProsesGajiController extends Controller
                 $pdf->output();
                 $dom_pdf = $pdf->getDomPDF();
             
-                $canvas = $dom_pdf ->get_canvas();
+                $canvas = $dom_pdf ->getcanvas();
                 $canvas->page_text(890, 125, "Halaman {PAGE_NUM} Dari {PAGE_COUNT}", null, 10, array(0, 0, 0)); //Rekap Gaji landscape
                 // return $pdf->download('rekap_umk_'.date('Y-m-d H:i:s').'.pdf');
                 return $pdf->stream();
@@ -5211,7 +5215,7 @@ class ProsesGajiController extends Controller
                 $pdf->output();
                 $dom_pdf = $pdf->getDomPDF();
             
-                $canvas = $dom_pdf ->get_canvas();
+                $canvas = $dom_pdf ->getcanvas();
                 $canvas->page_text(880, 140, "Halaman {PAGE_NUM} Dari {PAGE_COUNT}", null, 10, array(0, 0, 0)); //Rekap Gaji landscape
                 // return $pdf->download('rekap_umk_'.date('Y-m-d H:i:s').'.pdf');
                 return $pdf->stream();
@@ -5232,7 +5236,7 @@ class ProsesGajiController extends Controller
                 $pdf->output();
                 $dom_pdf = $pdf->getDomPDF();
             
-                $canvas = $dom_pdf ->get_canvas();
+                $canvas = $dom_pdf ->getcanvas();
                 $canvas->page_text(880, 140, "Halaman {PAGE_NUM} Dari {PAGE_COUNT}", null, 10, array(0, 0, 0)); //Rekap Gaji landscape
                 // return $pdf->download('rekap_umk_'.date('Y-m-d H:i:s').'.pdf');
                 return $pdf->stream();

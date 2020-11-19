@@ -104,7 +104,7 @@ class PostingKasBankController extends Controller
                 $nobukti = $objrs->voucher;
                 $kepada = $objrs->kepada;
                 $kurs = $objrs->rate;
-                $nilai = $objrs->nilai_dok;
+                $nilai = number_format($objrs->nilai_dok);
                 $verified = $objrs->verified;
                 $mp = substr($objrs->docno,0,1);
                 $bagian = substr($objrs->docno,2,5);
@@ -179,7 +179,8 @@ class PostingKasBankController extends Controller
                     $jumlahnya = 0;
                 }
             }
-        return view('posting_kas_bank.verkas',compact(
+            $data_rsjurnal = DB::select("select distinct(store) from kasdoc where paid='Y' and verified='N'");
+            return view('posting_kas_bank.verkas',compact(
                                                         'jumlahnya',
                                                         'verified',
                                                         'data_detail',
@@ -211,7 +212,8 @@ class PostingKasBankController extends Controller
                                                         'namaci',
                                                         'namajk',
                                                         'nama_bagian',
-                                                        'nama_kas'
+                                                        'nama_kas',
+                                                        'data_rsjurnal'
                                                             ));
     }
     public function verkass()
@@ -261,6 +263,9 @@ class PostingKasBankController extends Controller
                     $jumlahnya = 0;
                 }
             }
+        
+            $data_rsjurnal = DB::select("select distinct(store) from kasdoc where paid='Y' and verified='N'");
+
         return view('posting_kas_bank.verkas',compact(
                                                         'jumlahnya',
                                                         'verified',
@@ -293,7 +298,8 @@ class PostingKasBankController extends Controller
                                                         'namaci',
                                                         'namajk',
                                                         'nama_bagian',
-                                                        'nama_kas'
+                                                        'nama_kas',
+                                                        'data_rsjurnal'
                                                             ));
     }
     public function verkasJson(Request $request)
@@ -301,7 +307,7 @@ class PostingKasBankController extends Controller
         $data_rsjurnal = DB::select("select distinct(store) from kasdoc where paid='Y' and verified='N'");
         foreach($data_rsjurnal as $sjurnal)
         {
-            $data = DB::select("select a.docno,a.verified from kasdoc a where a.store='$sjurnal->store' and a.paid='Y' and a.verified='N' order by a.docno asc");
+            $data = DB::select("select docno,verified, store from kasdoc where store='$sjurnal->store' and paid='Y' and verified='N' order by docno asc");
         }
 
         return datatables()->of($data)
@@ -329,7 +335,7 @@ class PostingKasBankController extends Controller
             $bagian = $request->bagian;
             $wo = $request->wo;
             $jnsbiaya=$request->jnsbiaya;
-            $jumlah = $request->jumlah;
+            $jumlah = str_replace(',', '.', $request->jumlah);
             $cjudex = $request->cjudex;
             
         $data_objrs = DB::select("select * from kasdoc a where a.docno='$docno'");
@@ -369,7 +375,7 @@ class PostingKasBankController extends Controller
             $bagian = $request->bagian;
             $wo = $request->wo;
             $jnsbiaya=$request->jnsbiaya;
-            $jumlah = $request->jumlah;
+            $jumlah = str_replace(',', '.', $request->jumlah);
             $cjudex = $request->cjudex;
             
         $data_objrs = DB::select("select * from kasdoc a where a.docno='$docno'");

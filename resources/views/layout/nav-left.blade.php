@@ -3,7 +3,11 @@
     <div id="kt_aside_menu" class="kt-aside-menu " data-ktmenu-vertical="1" data-ktmenu-scroll="1" data-ktmenu-dropdown-timeout="500">
         <ul class="kt-menu__nav ">
             <li class="kt-menu__item " aria-haspopup="true">
-                <img class="img-responsive avatar-view pointer-link" style="margin: auto;width: 50%;height: 50%;border-radius: 100%;" src="{{ asset('assets/media/users/default.jpg') }}" alt="{{Auth::user()->usernm}}" title="Rubah foto profil">
+                @if(Auth::user()->file == null)
+                <img class="img-responsive avatar-view pointer-link" style="margin: auto;width: 50%;height: 50%;border-radius: 10%;" id="btn-profile" data-target="#kt_modal_4" src="{{ asset('assets/media/users/default.jpg') }}" alt="{{Auth::user()->usernm}}" title="Rubah foto profil">
+                @else
+                <img class="img-responsive avatar-view pointer-link" style="margin: auto;width: 50%;height: 50%;-moz-border-radius: 100px 100px 100px 100px; -webkit-border-radius: 100px 100px 100px 100px; border-radius: 100px;" id="btn-profile" data-target="#kt_modal_4" src="{{ asset('profile/'.Auth::user()->file)}}" alt="{{Auth::user()->usernm}}" title="Rubah foto profil">
+                @endif
                 <h6 style="text-align:center; padding-top:20px;" class="kt-menu__section-text">
                     Welcome
                 </h6>
@@ -844,6 +848,11 @@
                     'tabel_menu.create',
                     'tabel_menu.edit'                    
                 ); // isi nama semua route tabel_menu
+                $log = array(
+                    'log.index',
+                    'log.create',
+                    'log.edit'                    
+                ); // isi nama semua route log
                 $password_administrator = array(
                     'password_administrator.index'                   
                 ); // isi nama semua route password_administrator
@@ -852,6 +861,7 @@
                     $set_menu,
                     $set_function,
                     $tabel_menu,
+                    $log,
                     $password_administrator
                 ); // array merge semua submenu
             @endphp
@@ -2365,6 +2375,14 @@
                                     <span></span>
                                 </i>
                                 <span class="kt-menu__link-text">Tabel Menu</span>
+                            </a>
+                        </li>
+                        <li class="kt-menu__item kt-menu__item{{ set_active_submenu($log) }}" aria-haspopup="true">
+                            <a href="{{route('log.index')}}" class="kt-menu__link">
+                                <i class="kt-menu__link-bullet kt-menu__link-bullet--dot">
+                                    <span></span>
+                                </i>
+                                <span class="kt-menu__link-text">Log</span>
                             </a>
                         </li>
                         @endif

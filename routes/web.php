@@ -33,6 +33,9 @@ Route::group(['middleware'=> ['auth','checkRole:1,0']], function () {
     Route::name('default.')->group(function () {
         Route::get('default', 'DefaultController@index')->name('index');
     });
+    Route::name('upload_profil.')->group(function () {
+        Route::post('upload_profil', 'DefaultController@upload')->name('store');
+    });
 
     Route::prefix('umum')->group(function () {
         // UMK
@@ -1604,5 +1607,13 @@ Route::group(['middleware'=> ['auth','checkRole:1,0']], function () {
             Route::post('password_administrator/store', 'PasswordController@store')->name('store');
         });
         //end password_administrator
+
+        //log
+        // Route assigned name "log.index"...
+        Route::name('log.')->group(function () {
+            Route::get('log', 'LogController@index')->name('index');
+            Route::post('log/search', 'LogController@Search')->name('search');
+        });
+        //end log
     });
 });
