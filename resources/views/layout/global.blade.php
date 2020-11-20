@@ -114,7 +114,7 @@
 										<div class="col-lg-2" style="margin-left:25%">
 											<div class="kt-avatar" id="kt_user_avatar_2_2">
 												@if(Auth::user()->file == null)
-													<div class="kt-avatar__holder" style="background-image: url(assets/media/users/default.jpg)"></div>
+													<div class="kt-avatar__holder" style="background-image: url({{asset('assets/media/users/default.jpg') }})"></div>
 												@else
 													<div class="kt-avatar__holder" style="background-image: url({{'profile/'.Auth::user()->file}})"></div>
 												@endif
