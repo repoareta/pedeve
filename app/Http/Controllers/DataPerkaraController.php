@@ -391,8 +391,8 @@ class DataPerkaraController extends Controller
                    'file' => $data,
                ]);
             }
+            return response()->json();
          }
-        return response()->json();
     }
     public function deletedokumen(Request $request)
     {
