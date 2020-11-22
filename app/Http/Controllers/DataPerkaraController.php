@@ -348,7 +348,7 @@ class DataPerkaraController extends Controller
         $data = DB::select("select *  from tbl_dokumen_perkara where no_perkara='$request->no_perkara'");
         return datatables()->of($data)
         ->addColumn('nama', function ($data) {
-            $dat= '<embed width="200" height="110" src="'.asset('/data_perkara/'.$data->no_perkara.'/'.$data->file).'" type="application/pdf"></embed>';
+            $dat= '<embed align="center"  width="800" height="400" src="'.asset('/data_perkara/'.$data->no_perkara.'/'.$data->file).'" type="application/pdf"></embed>';
             return $dat;
         })
         ->addColumn('file', function ($data) {
@@ -391,8 +391,8 @@ class DataPerkaraController extends Controller
                    'file' => $data,
                ]);
             }
-            return response()->json();
          }
+        return response()->json();
     }
     public function deletedokumen(Request $request)
     {
