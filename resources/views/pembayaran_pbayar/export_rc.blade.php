@@ -115,9 +115,9 @@
                 <td>:</td>
                 <td>
                 @if($request->ci == 1)
-                    {{number_format($request->jumangka,0) < 0 ? "(".ucwords(Terbilang::angka($request->jumangka*-1)).")" : ucwords(Terbilang::angka($request->jumangka))}} Rupiah</td>
+                    {{number_format($request->jumangka,0) < 0 ? "(".ucwords(terbilang($request->jumangka*-1)).")" : ucwords(terbilang($request->jumangka))}} Rupiah</td>
                 @else
-                    {{number_format($request->jumangka,0) < 0 ? "(".ucwords(Terbilang::angka($request->jumangka*-1)).")" : ucwords(Terbilang::angka($request->jumangka))}} Dolar</td>
+                    {{number_format($request->jumangka,0) < 0 ? "(".ucwords(terbilang($request->jumangka*-1)).")" : ucwords(terbilang($request->jumangka))}} Dolar</td>
                 @endif
             </tr>
             <tr>
