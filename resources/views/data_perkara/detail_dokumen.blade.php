@@ -107,8 +107,8 @@
 			ajax: "{{ route('data_perkara.search.dokumen', ['no_perkara' => $data->no_perkara]) }}",
 			columns: [
 				{data: 'radio', name: 'radio'},
-				{data: 'nama', name: 'nama'},
 				{data: 'file', name: 'file'},
+				{data: 'nama', name: 'nama'},
 			]
 		});
 		$('#dokumen tbody').on( 'click', 'tr', function (event) {

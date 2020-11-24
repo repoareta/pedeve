@@ -29,7 +29,7 @@
 	<!-- end::Head -->
 
 	<!-- begin::Body -->
-	<body style="background-image: url('images/logo-login.png');
+	<body style="background-image: url({{asset('images/logo-login.png') }});
 				-webkit-background-size: 100% 100%;
                 -moz-background-size: 100% 100%;
                 -o-background-size: 100% 100%;
@@ -114,9 +114,9 @@
 										<div class="col-lg-2" style="margin-left:25%">
 											<div class="kt-avatar" id="kt_user_avatar_2_2">
 												@if(Auth::user()->file == null)
-													<div class="kt-avatar__holder" style="background-image: url(assets/media/users/default.jpg)"></div>
+													<div class="kt-avatar__holder" style="background-image: url({{asset('assets/media/users/default.jpg') }})"></div>
 												@else
-													<div class="kt-avatar__holder" style="background-image: url({{'profile/'.Auth::user()->file}})"></div>
+													<div class="kt-avatar__holder" style="background-image: url({{ asset('profile/'.Auth::user()->file)}})"></div>
 												@endif
 												<label class="kt-avatar__upload" data-toggle="kt-tooltip" title="" data-original-title="Ubah foto">
 													<i class="fa fa-pen"></i>

@@ -78,9 +78,9 @@
                             <tr> 
                                 <td>
                                     @if($ci == 1)
-                                        {{number_format($nilai_dok) < 0 ? strtoupper(Terbilang::angka($nilai_dok*-1)) : strtoupper(Terbilang::angka($nilai_dok)) }} {{strtoupper('rupiah')}}
+                                        {{number_format($nilai_dok) < 0 ? strtoupper(terbilang($nilai_dok*-1)) : strtoupper(terbilang($nilai_dok)) }} {{strtoupper('rupiah')}}
                                     @else
-                                        {{number_format($nilai_dok) < 0 ? strtoupper(Terbilang::angka($nilai_dok*-1)) : strtoupper(Terbilang::angka($nilai_dok)) }} {{strtoupper('DOLLAR')}}
+                                        {{number_format($nilai_dok) < 0 ? strtoupper(terbilang($nilai_dok*-1)) : strtoupper(terbilang($nilai_dok)) }} {{strtoupper('DOLLAR')}}
                                     @endif
                                 </td>
                             </tr>

@@ -123,7 +123,7 @@
 						<label for="example-datetime-local-input" class="col-2 col-form-label">Jumlah</label>
 						<div class="col-10">
 							<input style="background-color:#DCDCDC; cursor:not-allowed" class="form-control" type="text" value="Rp. 0"  readonly>
-							<input class="form-control" type="hidden" value="" name="jumlah" id="jumlah" size="70" maxlength="200" readonly>
+							<input class="form-control" type="hidden" value="0" name="jumlah" id="jumlah" size="70" maxlength="200" readonly>
 						</div>
 					</div>
 					<div class="kt-form__actions">

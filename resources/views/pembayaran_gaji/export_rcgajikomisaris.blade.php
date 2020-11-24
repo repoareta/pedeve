@@ -133,7 +133,7 @@
         </table>
         <table width="100%">
             <tr>
-                <td style="padding-top:2%;padding-bottom:3%;">Terbilang    : {{ucwords(Terbilang::angka($request->koperasi+$request->pkpp)) }} @if($request->ci == 1) Rupiah @else Dollar @endif</td>
+                <td style="padding-top:2%;padding-bottom:3%;">Terbilang    : {{ucwords(terbilang($request->koperasi+$request->pkpp)) }} @if($request->ci == 1) Rupiah @else Dollar @endif</td>
             </tr>
             <tr>
                 <td style="padding-bottom:3%;">No. Bilyet Giro   :{{$request->reg}}</td>
