@@ -130,7 +130,7 @@
 
                 <!--begin: Navigation -->
                 <div class="kt-notification">
-                    <a href="custom/apps/user/profile-1/personal-information.html" class="kt-notification__item">
+                    {{-- <a href="#" class="kt-notification__item">
                         <div class="kt-notification__item-icon">
                             <i class="flaticon2-calendar-3 kt-font-success"></i>
                         </div>
@@ -142,20 +142,7 @@
                                 Account settings and more
                             </div>
                         </div>
-                    </a>
-                    <a href="custom/apps/user/profile-2.html" class="kt-notification__item">
-                        <div class="kt-notification__item-icon">
-                            <i class="flaticon2-rocket-1 kt-font-danger"></i>
-                        </div>
-                        <div class="kt-notification__item-details">
-                            <div class="kt-notification__item-title kt-font-bold">
-                                My Activities
-                            </div>
-                            <div class="kt-notification__item-time">
-                                Logs and notifications
-                            </div>
-                        </div>
-                    </a>
+                    </a> --}}
                     <div class="kt-notification__custom kt-space-between">
                         <a href="{{ route('logout.index') }}"  class="btn btn-label btn-label-brand btn-sm btn-bold btn-block">Sign Out</a>
                     </div>
