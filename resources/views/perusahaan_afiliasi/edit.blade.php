@@ -88,14 +88,14 @@
                     <div class="form-group row">
 						<label for="jumlah_lembar_saham" class="col-2 col-form-label">Jumlah Lembar Saham</label>
 						<div class="col-10">
-							<input class="form-control" type="number" name="jumlah_lembar_saham" id="jumlah_lembar_saham" min="0" value="{{ nominal_abs($perusahaan_afiliasi->jumlah_lembar_saham) }}">
+							<input class="form-control" type="number" name="jumlah_lembar_saham" id="jumlah_lembar_saham" min="0" value="{{ $perusahaan_afiliasi->jumlah_lembar_saham }}">
 						</div>
                     </div>
                     
                     <div class="form-group row">
 						<label for="nilai_nominal_per_saham" class="col-2 col-form-label">Nilai Nominal per Saham</label>
 						<div class="col-10">
-							<input class="form-control" type="number" name="nilai_nominal_per_saham" id="nilai_nominal_per_saham" min="0" value="{{ $perusahaan_afiliasi->nilai_nominal_per_saham }}">
+							<input class="form-control" type="number" name="nilai_nominal_per_saham" id="nilai_nominal_per_saham" min="0" value="{{ nominal_abs($perusahaan_afiliasi->nilai_nominal_per_saham) }}">
 						</div>
 					</div>
 
