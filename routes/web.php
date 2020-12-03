@@ -180,7 +180,7 @@ Route::group(['middleware'=> ['auth','checkRole:1,0']], function () {
             Route::delete('anggaran/delete', 'AnggaranController@delete')->name('delete');
             Route::post('anggaran/rekap/export', 'AnggaranController@rekapExport')->name('rekap.export');
             Route::get('anggaran/report', 'AnggaranController@report')->name('report');
-            Route::get('anggaran/report/export', 'AnggaranController@reportExport')->name('report.export');
+            Route::post('anggaran/report/export', 'AnggaranController@reportExport')->name('report.export');
         
             // ANGGARAN SUBMAIN START
             Route::name('submain.')->group(function () {

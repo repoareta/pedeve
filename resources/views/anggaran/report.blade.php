@@ -45,7 +45,7 @@
             <div class="form-group row">
                 <label for="mulai-input" class="col-2 col-form-label">Tahun</label>
                 <div class="col-8">
-                    <input type="text" class="form-control" name="mulai" autocomplete="off" />
+                    <input type="text" class="form-control" name="tahun" autocomplete="off" />
                 </div>
             </div>
 
@@ -54,7 +54,7 @@
                     <div class="col-2"></div>
                     <div class="col-10">
                         <a  href="{{ url()->previous() }}" class="btn btn-warning"><i class="fa fa-reply" aria-hidden="true"></i> Batal</a>
-                        <button type="submit" onclick="exportPDF()" name="submit" value="pdf" class="btn btn-danger"><i class="fa fa-file-pdf" aria-hidden="true"></i> Export .PDF</button>
+                        <button type="submit" class="btn btn-danger"><i class="fa fa-file-pdf" aria-hidden="true"></i> Export .PDF</button>
                     </div>
                 </div>
             </div>

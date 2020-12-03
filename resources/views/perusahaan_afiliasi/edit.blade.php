@@ -74,21 +74,21 @@
 					<div class="form-group row">
 						<label for="modal_dasar" class="col-2 col-form-label">Modal Dasar</label>
 						<div class="col-10">
-							<input class="form-control" type="number" name="modal_dasar" id="modal_dasar" min="0" value="{{ $perusahaan_afiliasi->modal_dasar }}">
+							<input class="form-control" type="number" name="modal_dasar" id="modal_dasar" min="0" value="{{ nominal_abs($perusahaan_afiliasi->modal_dasar) }}">
 						</div>
                     </div>
 
 					<div class="form-group row">
 						<label for="modal_disetor" class="col-2 col-form-label">Modal Disetor</label>
 						<div class="col-10">
-							<input class="form-control" type="number" name="modal_disetor" id="modal_disetor" min="0" value="{{ $perusahaan_afiliasi->modal_disetor }}">
+							<input class="form-control" type="number" name="modal_disetor" id="modal_disetor" min="0" value="{{ nominal_abs($perusahaan_afiliasi->modal_disetor) }}">
 						</div>
                     </div>
                     
                     <div class="form-group row">
 						<label for="jumlah_lembar_saham" class="col-2 col-form-label">Jumlah Lembar Saham</label>
 						<div class="col-10">
-							<input class="form-control" type="number" name="jumlah_lembar_saham" id="jumlah_lembar_saham" min="0" value="{{ $perusahaan_afiliasi->jumlah_lembar_saham }}">
+							<input class="form-control" type="number" name="jumlah_lembar_saham" id="jumlah_lembar_saham" min="0" value="{{ nominal_abs($perusahaan_afiliasi->jumlah_lembar_saham) }}">
 						</div>
                     </div>
                     
