@@ -6,7 +6,7 @@
 	<div class="kt-container  kt-container--fluid ">
 		<div class="kt-subheader__main">
 			<h3 class="kt-subheader__title">
-				Monitoring Kinerja </h3>
+				Rencana Kinerja </h3>
 			<span class="kt-subheader__separator kt-hidden"></span>
 			<div class="kt-subheader__breadcrumbs">
 				<a href="#" class="kt-subheader__breadcrumbs-home"><i class="flaticon2-shelter"></i></a>
@@ -15,7 +15,7 @@
 					Customer Management </a>
 				<span class="kt-subheader__breadcrumbs-separator"></span>
 				<a href="" class="kt-subheader__breadcrumbs-link">
-					Monitoring Kinerja </a>
+					Rencana Kinerja </a>
 				<span class="kt-subheader__breadcrumbs-separator"></span>
 				<span class="kt-subheader__breadcrumbs-link kt-subheader__breadcrumbs-link--active">Edit</span>
 			</div>
@@ -32,7 +32,7 @@
 					<i class="kt-font-brand flaticon2-plus-1"></i>
 				</span>
 				<h3 class="kt-portlet__head-title">
-					Edit Monitoring Kinerja
+					Edit Rencana Kinerja
 				</h3>			
 			</div>
 			<div class="kt-portlet__head-toolbar">
@@ -65,7 +65,7 @@
 							<div class="col-8">
 								<div class="kt-radio-inline">
 									<label class="kt-radio kt-radio--solid">
-										<input class="form-control" type="hidden" value="{{ $data->kd_monitoring }}" name="kd_monitoring">
+										<input class="form-control" type="hidden" value="{{ $data->kd_rencana_kerja }}" name="kd_rencana_kerja">
 										<input value="1" type="radio"  name="ci" id="ci" onclick="displayResult(1)" <?php if( $data->ci  == 1 ) echo 'checked' ; ?>> Rp
 										<span></span>
 									</label>
@@ -124,7 +124,7 @@
 							<div class="row">
 								<div class="col-2"></div>
 								<div class="col-10">
-									<a  href="{{route('monitoring_kinerja.index')}}" class="btn btn-warning"><i class="fa fa-reply" aria-hidden="true"></i>Cancel</a>
+									<a  href="{{route('rencana_kerja.index')}}" class="btn btn-warning"><i class="fa fa-reply" aria-hidden="true"></i>Cancel</a>
 									<button type="submit" class="btn btn-brand"><i class="fa fa-check" aria-hidden="true"></i>Save</button>
 								</div>
 							</div>
@@ -179,7 +179,7 @@
 
 		$('#form-update').submit(function(){
 			$.ajax({
-				url  : "{{route('monitoring_kinerja.update')}}",
+				url  : "{{route('rencana_kerja.update')}}",
 				type : "POST",
 				data : $('#form-update').serialize(),
 				dataType : "JSON",
@@ -194,7 +194,7 @@
 						text  : 'Berhasil',
 						timer : 2000
 					}).then(function(data) {
-						window.location.replace("{{ route('monitoring_kinerja.index') }}");
+						window.location.replace("{{ route('rencana_kerja.index') }}");
 						});
 				}, 
 				error : function(){

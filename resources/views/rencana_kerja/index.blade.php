@@ -6,7 +6,7 @@
 	<div class="kt-container  kt-container--fluid ">
 		<div class="kt-subheader__main">
 			<h3 class="kt-subheader__title">
-				Monitoring Kinerja </h3>
+				Rencana Kinerja </h3>
 			<span class="kt-subheader__separator kt-hidden"></span>
 			<div class="kt-subheader__breadcrumbs">
 				<a href="#" class="kt-subheader__breadcrumbs-home"><i class="flaticon2-shelter"></i></a>
@@ -14,7 +14,7 @@
 				<a href="" class="kt-subheader__breadcrumbs-link">
 					Customer Management </a>
 				<span class="kt-subheader__breadcrumbs-separator"></span>
-				<span class="kt-subheader__breadcrumbs-link kt-subheader__breadcrumbs-link--active">Monitoring Kinerja</span>
+				<span class="kt-subheader__breadcrumbs-link kt-subheader__breadcrumbs-link--active">Rencana Kinerja</span>
 			</div>
 		</div>
 	</div>
@@ -29,14 +29,14 @@
 				<i class="kt-font-brand flaticon2-line-chart"></i>
 			</span>
 			<h3 class="kt-portlet__head-title">
-				Tabel Monitoring Kinerja
+				Tabel Rencana Kinerja
 			</h3>
 			<div class="kt-portlet__head-toolbar">
 				<div class="kt-portlet__head-wrapper">
 					<div class="kt-portlet__head-actions">
 						@foreach(DB::table('usermenu')->where('userid',Auth::user()->userid)->where('menuid',803)->limit(1)->get() as $data_akses)
 						@if($data_akses->tambah == 1)
-						<a href="{{ route('monitoring_kinerja.create') }}">
+						<a href="{{ route('rencana_kerja.create') }}">
 							<span style="font-size: 2em;" class="kt-font-success" data-toggle="kt-tooltip" data-placement="top" title="Tambah Data">
 								<i class="fas fa-plus-circle"></i>
 							</span>
@@ -163,7 +163,7 @@ $(document).ready(function(){
             	processing: '<i class="fa fa-spinner fa-spin fa-2x fa-fw"></i> <br> Loading...'
 			},
 			ajax      : {
-				url: "{{ route('monitoring_kinerja.index.json') }}",
+				url: "{{ route('rencana_kerja.index.json') }}",
 				type : "POST",
 				dataType : "JSON",
 				headers: {
@@ -213,14 +213,14 @@ $(document).ready(function(){
 	});
 
 
-	//edit monitoring_kinerja
+	//edit rencana_kerja
 	$('#editRow').click(function(e) {
 			e.preventDefault();
 
 			if($('input[class=btn-radio]').is(':checked')) { 
 				$("input[class=btn-radio]:checked").each(function(){
 					var id = $(this).attr('data-id');
-					location.replace("{{url('customer_management/monitoring_kinerja/edit')}}"+ '/' +id);
+					location.replace("{{url('customer_management/rencana_kerja/edit')}}"+ '/' +id);
 				});
 			} else {
 				swalAlertInit('ubah');
@@ -228,7 +228,7 @@ $(document).ready(function(){
 		});
 
 
-	//delete monitoring_kinerja
+	//delete rencana_kerja
 	$('#deleteRow').click(function(e) {
 			e.preventDefault();
 			if($('input[class=btn-radio]').is(':checked')) { 
@@ -244,7 +244,7 @@ $(document).ready(function(){
 						})
 						swalWithBootstrapButtons.fire({
 							title: "Data yang akan dihapus?",
-							text: "No. monitoring kinerja : " + id,
+							text: "No. Rencana kinerja : " + id,
 							type: 'warning',
 							showCancelButton: true,
 							reverseButtons: true,
@@ -254,7 +254,7 @@ $(document).ready(function(){
 						.then((result) => {
 						if (result.value) {
 							$.ajax({
-								url: "{{ route('monitoring_kinerja.delete') }}",
+								url: "{{ route('rencana_kerja.delete') }}",
 								type: 'DELETE',
 								dataType: 'json',
 								data: {
@@ -264,7 +264,7 @@ $(document).ready(function(){
 								success: function () {
 									Swal.fire({
 										type  : 'success',
-										title : 'Hapus No. monitoring kinerja ' + id,
+										title : 'Hapus No. Rencana kinerja ' + id,
 										text  : 'Berhasil',
 										timer : 2000
 									}).then(function() {
