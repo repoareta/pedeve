@@ -209,4 +209,9 @@ class AnggaranController extends Controller
 
         return $pdf->stream('rekap_anggaran_'.date('Y-m-d H:i:s').'.pdf');
     }
+
+    public function report()
+    {
+        return view('anggaran.report');
+    }
 }
