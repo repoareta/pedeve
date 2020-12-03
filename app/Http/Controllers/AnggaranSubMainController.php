@@ -87,7 +87,7 @@ class AnggaranSubMainController extends Controller
      */
     public function create()
     {
-        $anggaran_main_list = AnggaranMain::all();
+        $anggaran_main_list = AnggaranMain::where('tahun', date('Y'))->get();
         return view('anggaran_submain.create', compact('anggaran_main_list'));
     }
 

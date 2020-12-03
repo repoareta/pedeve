@@ -54,7 +54,7 @@
 					<div class="form-group row">
 						<label for="tahun" class="col-2 col-form-label">Tahun</label>
 						<div class="col-10">
-							<input class="form-control" type="text" name="tahun" id="tahun" value="{{ date('Y') }}">
+							<input class="form-control" type="text" name="tahun" id="tahun" value="{{ date('Y') }}" onkeyup="getMasterAnggaran(this.value)">
 						</div>
 					</div>
 
@@ -86,7 +86,7 @@
 					</div>
 
 					<div class="form-group row">
-						<label for="nilai" class="col-2 col-form-label">Nilai Sub</label>
+						<label for="nilai" class="col-2 col-form-label">Nilai</label>
 						<div class="col-10">
 							<input class="form-control" type="text" name="nilai" id="nilai">
 						</div>
@@ -124,6 +124,16 @@
 				$("#kode_main-error").insertAfter("#kode_main-nya");
 			}
 		});
+
+		$("#tahun").inputFilter(function(value) {
+			return /^\d*$/.test(value);    // Allow digits only, using a RegExp
+		});
+
+		
 	});
+
+	function getMasterAnggaran(tahun) {
+		alert(tahun);
+	}
 </script>
 @endsection
