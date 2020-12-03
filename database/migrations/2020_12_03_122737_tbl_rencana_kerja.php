@@ -4,13 +4,13 @@ use Illuminate\Database\Migrations\Migration;
 use Illuminate\Database\Schema\Blueprint;
 use Illuminate\Support\Facades\Schema;
 
-class TabMonitoring extends Migration
+class TblRencanaKerja extends Migration
 {
     public function up()
     {
-        if (!Schema::hasTable('tbl_monitoring')) {
-            Schema::create('tbl_monitoring', function (Blueprint $table) {
-                $table->increments('kd_monitoring');
+        if (!Schema::hasTable('tbl_rencana_kerja')) {
+            Schema::create('tbl_rencana_kerja', function (Blueprint $table) {
+                $table->increments('kd_rencana_kerja');
                 $table->integer('kd_perusahaan');
                 $table->char('tahun',4);
                 $table->char('bulan',2);
@@ -29,6 +29,6 @@ class TabMonitoring extends Migration
 
     public function down()
     {
-        Schema::dropIfExists('tbl_monitoring');
+        Schema::dropIfExists('tbl_rencana_kerja');
     }
 }

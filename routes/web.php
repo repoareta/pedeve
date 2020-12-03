@@ -1475,6 +1475,20 @@ Route::group(['middleware'=> ['auth','checkRole:1,0']], function () {
         });
         //end monitoring_kinerja
 
+        //rencana_kerja
+        // Route assigned name "rencana_kerja.index"...
+        Route::name('rencana_kerja.')->group(function () {
+            Route::get('rencana_kerja', 'RencanaKinerjaController@index')->name('index');
+            Route::post('rencana_kerja/index/search', 'RencanaKinerjaController@indexJson')->name('index.json');
+            Route::get('rencana_kerja/create', 'RencanaKinerjaController@create')->name('create');
+            Route::post('rencana_kerja/store', 'RencanaKinerjaController@store')->name('store');
+            Route::get('rencana_kerja/edit/{no}', 'RencanaKinerjaController@edit')->name('edit');
+            Route::get('rencana_kerja/detail/{no}', 'RencanaKinerjaController@detail')->name('detail');
+            Route::post('rencana_kerja/update', 'RencanaKinerjaController@update')->name('update');
+            Route::delete('rencana_kerja/delete', 'RencanaKinerjaController@delete')->name('delete');
+        });
+        //end rencana_kerja
+
         // perusahaan afiliasi START
         // Route assigned name "perusahaan_afiliasi.index"...
         Route::name('perusahaan_afiliasi.')->group(function () {

@@ -11,7 +11,7 @@ use Carbon\Carbon;
 use Session;
 use DB;
 
-class MonitoringKinerjaController extends Controller
+class RencanaKinerjaController extends Controller
 {
     /**
      * Display a listing of the resource.
@@ -20,16 +20,16 @@ class MonitoringKinerjaController extends Controller
      */
     public function index()
     {
-        return view('monitoring_kinerja.index');
+        return view('Rencana_kerja.index');
     }
 
     public function indexJson(Request $request)
     {
           
-        $data =DB::select("select a.*, b.nama from tbl_monitoring a join cm_perusahaan_afiliasi b on a.kd_perusahaan=b.id where a.bulan='$request->bulan' and a.tahun='$request->tahun'");
+        $data =DB::select("select a.*, b.nama from tbl_rencana_kerja a join cm_perusahaan_afiliasi b on a.kd_perusahaan=b.id where a.bulan='$request->bulan' and a.tahun='$request->tahun'");
         return datatables()->of($data)
         ->addColumn('action', function ($data) {
-                $radio = '<label  class="kt-radio kt-radio--bold kt-radio--brand"><input type="radio" class="btn-radio" data-id="'.$data->kd_monitoring.'" value="'.$data->kd_monitoring.'" name="btn-radio"><span></span></label>';
+                $radio = '<label  class="kt-radio kt-radio--bold kt-radio--brand"><input type="radio" class="btn-radio" data-id="'.$data->kd_rencana_kerja.'" value="'.$data->kd_rencana_kerja.'" name="btn-radio"><span></span></label>';
             return $radio;
         })
         ->addColumn('nama', function ($data) {
@@ -80,11 +80,11 @@ class MonitoringKinerjaController extends Controller
     public function create()
     {
         $data_perusahaan = PerusahaanAfiliasi::all();
-        return view('monitoring_kinerja.create',compact('data_perusahaan'));
+        return view('Rencana_kerja.create',compact('data_perusahaan'));
     }
     public function store(Request $request)
     {
-        DB::table('tbl_monitoring')->insert([
+        DB::table('tbl_rencana_kerja')->insert([
             'kd_perusahaan' => $request->nama,
             'ci'            => $request->ci,
             'tahun'         => $request->tahun,
@@ -104,14 +104,14 @@ class MonitoringKinerjaController extends Controller
    
     public function edit($id)
     {
-        $data_list =  DB::select("select a.*, b.nama from tbl_monitoring a join cm_perusahaan_afiliasi b on a.kd_perusahaan=b.id where kd_monitoring='$id'");
-        return view('monitoring_kinerja.edit', compact('data_list'));
+        $data_list =  DB::select("select a.*, b.nama from tbl_rencana_kerja a join cm_perusahaan_afiliasi b on a.kd_perusahaan=b.id where kd_rencana_kerja='$id'");
+        return view('Rencana_kerja.edit', compact('data_list'));
     }
 
     
     public function update(Request $request)
     {
-            DB::table('tbl_monitoring')->where('kd_monitoring',$request->kd_monitoring)
+            DB::table('tbl_rencana_kerja')->where('kd_rencana_kerja',$request->kd_rencana_kerja)
             ->update([
                 'kd_perusahaan' => $request->nama,
                 'ci'            => $request->ci,
@@ -131,7 +131,7 @@ class MonitoringKinerjaController extends Controller
 
     public function delete(Request $request)
     {
-        DB::table('tbl_monitoring')->where('kd_monitoring', $request->id)->delete();
+        DB::table('tbl_rencana_kerja')->where('kd_rencana_kerja', $request->id)->delete();
         return response()->json();
     }
 }
