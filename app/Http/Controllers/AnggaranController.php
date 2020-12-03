@@ -16,6 +16,7 @@ use App\Http\Requests\AnggaranStore;
 use Carbon\Carbon;
 use Session;
 use DomPDF;
+use PDF;
 use Excel;
 use Alert;
 use Auth;
@@ -213,5 +214,22 @@ class AnggaranController extends Controller
     public function report()
     {
         return view('anggaran.report');
+    }
+
+    public function reportExport(Request $request)
+    {
+        $tahun = $request->tahun;
+        $anggaran_list = AnggaranMain::where('tahun', $tahun)
+        ->with(['anggaran_submain.anggaran_detail' => function ($query) {
+            $query->orderBy('kode', 'ASC');
+        }])
+        ->orderBy('kode_main', 'ASC')
+        ->get();
+
+        // return default PDF
+        $pdf = PDF::loadview('anggaran.report_export_pdf', compact('anggaran_list', 'tahun'))
+        ->setPaper('a4', 'potrait');
+
+        return $pdf->stream('rekap_anggaran_'.date('Y-m-d H:i:s').'.pdf');
     }
 }
