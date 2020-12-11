@@ -121,7 +121,7 @@
 					<th rowspan="3">CI</th>
 				</tr>
 				<tr>
-					<th colspan="4" >REALISASI</th>
+					<th colspan="4" >RENCANA KINERJA</th>
 				</tr>
 				<tr>
 					<th>Aset</th>

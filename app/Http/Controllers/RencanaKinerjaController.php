@@ -67,10 +67,10 @@ class RencanaKinerjaController extends Controller
             return "<p align='right'>".number_format($data->laba_bersih_r,2)."</p>";
         })
         ->addColumn('tkp', function ($data) {
-            return "<p align='right'>".number_format($data->tkp_r,2)."</p>";
+            return "<p align='right'>".round($data->tkp_r)."</p>";
         })
         ->addColumn('kpi', function ($data) {
-            return "<p align='right'>".number_format($data->kpi_r,2)."</p>";
+            return "<p align='right'>".round($data->kpi_r)."</p>";
         })
         ->rawColumns(['action','thnbln','aset','revenue','beban_pokok','biaya_operasi','laba_bersih','laba_kotor','laba_operasi','sales','tkp','kpi'])
         ->make(true);

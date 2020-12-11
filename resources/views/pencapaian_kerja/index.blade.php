@@ -155,13 +155,13 @@
 				</tr>
 				<tr>
 					<td>TKP</td>
-					<td>{{number_format($row->tkp,2)}}</td>
-					<td>{{number_format($row->tkp_r,2)}}</td>
+					<td>{{round($row->tkp)}}</td>
+					<td>{{round($row->tkp_r)}}</td>
 				</tr>
 				<tr>
 					<td>KPI</th>
-					<td>{{number_format($row->kpi,2)}}</td>
-					<td>{{number_format($row->kpi_r,2)}}</td>
+					<td>{{round($row->kpi)}}</td>
+					<td>{{round($row->kpi_r)}}</td>
 				</tr>
 				@endforeach
 			</tbody>
