@@ -57,22 +57,11 @@
                     'permintaan_bayar.approv'
                 ); // isi nama semua route permintaan_bayar
 
-                $anggaran = array(
-                    'anggaran.index',
-                    'anggaran.create',
-                    'anggaran.edit',
-                    'anggaran.submain.index',
-                    'anggaran.submain.create',
-                    'anggaran.submain.edit',
-                    'anggaran.submain.detail.index',
-                    'anggaran.submain.detail.create',
-                    'anggaran.submain.detail.edit',
-                ); // isi nama semua route anggaran
-
                 $anggaran_master = array(
                     'anggaran.index',
                     'anggaran.create',
                     'anggaran.edit',
+                    'anggaran.report',
                 ); // isi nama semua route anggaran
 
                 $anggaran_submain = array(
@@ -114,7 +103,7 @@
                     $umk_menu,
                     $umk_pertanggungjawaban,
                     $permintaan_bayar,
-                    $anggaran,
+                    $anggaran_umum,
                     $vendor,
                     $report_umum_menu
                 ); // array merge semua submenu
@@ -1013,8 +1002,8 @@
                                         </a>
                                     </li>
 
-                                    <li class="kt-menu__item kt-menu__item{{ set_active_submenu($anggaran_submain_detail) }}" aria-haspopup="true">
-                                        <a href="{{route('anggaran.submain.detail.index')}}" class="kt-menu__link">
+                                    <li class="kt-menu__item kt-menu__item{{ set_active_submenu($anggaran_master) }}" aria-haspopup="true">
+                                        <a href="{{route('anggaran.report')}}" class="kt-menu__link">
                                             <i class="kt-menu__link-bullet kt-menu__link-bullet--line">
                                                 <span></span>
                                             </i>
