@@ -20,7 +20,7 @@ class RencanaKinerjaController extends Controller
      */
     public function index()
     {
-        return view('Rencana_kerja.index');
+        return view('rencana_kerja.index');
     }
 
     public function indexJson(Request $request)
@@ -39,38 +39,38 @@ class RencanaKinerjaController extends Controller
                 return "<p align='center'>$data->bulan/$data->tahun</p>";
         })
         ->addColumn('ci', function ($data) {
-                if($data->ci == 1){
+                if($data->ci_r == 1){
                     return "IDR";
                 }else{
                     return "USD";
                 }
         })
         ->addColumn('aset', function ($data) {
-                return "<p align='right'>".number_format($data->aset,2)."</p>";
+                return "<p align='right'>".number_format($data->aset_r,2)."</p>";
         })
         ->addColumn('revenue', function ($data) {
-                return "<p align='right'>".number_format($data->revenue,2)."</p>";
+                return "<p align='right'>".number_format($data->revenue_r,2)."</p>";
         })
         ->addColumn('beban_pokok', function ($data) {
-            return "<p align='right'>".number_format($data->beban_pokok,2)."</p>";
+            return "<p align='right'>".number_format($data->beban_pokok_r,2)."</p>";
         })
         ->addColumn('laba_kotor', function ($data) {
-            return "<p align='right'>".number_format($data->beban_pokok+$data->revenue,2)."</p>";
+            return "<p align='right'>".number_format($data->beban_pokok_r+$data->revenue_r,2)."</p>";
         })
         ->addColumn('biaya_operasi', function ($data) {
-            return "<p align='right'>".number_format($data->biaya_operasi,2)."</p>";
+            return "<p align='right'>".number_format($data->biaya_operasi_r,2)."</p>";
         })
         ->addColumn('laba_operasi', function ($data) {
-            return "<p align='right'>".number_format($data->biaya_operasi+($data->beban_pokok+$data->revenue),2)."</p>";
+            return "<p align='right'>".number_format($data->biaya_operasi_r+($data->beban_pokok_r+$data->revenue_r),2)."</p>";
         })
         ->addColumn('laba_bersih', function ($data) {
-            return "<p align='right'>".number_format($data->laba_bersih,2)."</p>";
+            return "<p align='right'>".number_format($data->laba_bersih_r,2)."</p>";
         })
         ->addColumn('tkp', function ($data) {
-            return "<p align='right'>".number_format($data->tkp,2)."</p>";
+            return "<p align='right'>".number_format($data->tkp_r,2)."</p>";
         })
         ->addColumn('kpi', function ($data) {
-            return "<p align='right'>".number_format($data->kpi,2)."</p>";
+            return "<p align='right'>".number_format($data->kpi_r,2)."</p>";
         })
         ->rawColumns(['action','thnbln','aset','revenue','beban_pokok','biaya_operasi','laba_bersih','laba_kotor','laba_operasi','sales','tkp','kpi'])
         ->make(true);
@@ -80,23 +80,23 @@ class RencanaKinerjaController extends Controller
     public function create()
     {
         $data_perusahaan = PerusahaanAfiliasi::all();
-        return view('Rencana_kerja.create',compact('data_perusahaan'));
+        return view('rencana_kerja.create',compact('data_perusahaan'));
     }
     public function store(Request $request)
     {
         DB::table('tbl_rencana_kerja')->insert([
             'kd_perusahaan' => $request->nama,
-            'ci'            => $request->ci,
+            'ci_r'            => $request->ci,
             'tahun'         => $request->tahun,
             'bulan'         => $request->bulan,
-            'rate'          => $request->kurs,
-            'aset'          => str_replace(',', '.', $request->aset),
-            'revenue'       => str_replace(',', '.', $request->revenue),
-            'beban_pokok'   => str_replace(',', '.', $request->beban_pokok),
-            'biaya_operasi' => str_replace(',', '.', $request->biaya_operasi),
-            'laba_bersih'   => str_replace(',', '.', $request->laba_bersih),
-            'tkp'           => str_replace(',', '.', $request->tkp),
-            'kpi'           => str_replace(',', '.', $request->kpi),
+            'rate_r'          => $request->kurs,
+            'aset_r'          => str_replace(',', '.', $request->aset),
+            'revenue_r'       => str_replace(',', '.', $request->revenue),
+            'beban_pokok_r'   => str_replace(',', '.', $request->beban_pokok),
+            'biaya_operasi_r' => str_replace(',', '.', $request->biaya_operasi),
+            'laba_bersih_r'   => str_replace(',', '.', $request->laba_bersih),
+            'tkp_r'           => str_replace(',', '.', $request->tkp),
+            'kpi_r'           => str_replace(',', '.', $request->kpi),
         ]);
         return response()->json(1);
     }
@@ -105,7 +105,7 @@ class RencanaKinerjaController extends Controller
     public function edit($id)
     {
         $data_list =  DB::select("select a.*, b.nama from tbl_rencana_kerja a join cm_perusahaan_afiliasi b on a.kd_perusahaan=b.id where kd_rencana_kerja='$id'");
-        return view('Rencana_kerja.edit', compact('data_list'));
+        return view('rencana_kerja.edit', compact('data_list'));
     }
 
     
@@ -114,17 +114,17 @@ class RencanaKinerjaController extends Controller
             DB::table('tbl_rencana_kerja')->where('kd_rencana_kerja',$request->kd_rencana_kerja)
             ->update([
                 'kd_perusahaan' => $request->nama,
-                'ci'            => $request->ci,
+                'ci_r'            => $request->ci,
                 'tahun'         => $request->tahun,
                 'bulan'         => $request->bulan,
-                'rate'          => $request->kurs,
-                'aset'          => str_replace(',', '.', $request->aset),
-                'revenue'       => str_replace(',', '.', $request->revenue),
-                'beban_pokok'   => str_replace(',', '.', $request->beban_pokok),
-                'biaya_operasi' => str_replace(',', '.', $request->biaya_operasi),
-                'laba_bersih'   => str_replace(',', '.', $request->laba_bersih),
-                'tkp'           => str_replace(',', '.', $request->tkp),
-                'kpi'           => str_replace(',', '.', $request->kpi),
+                'rate_r'          => $request->kurs,
+                'aset_r'          => str_replace(',', '.', $request->aset),
+                'revenue_r'       => str_replace(',', '.', $request->revenue),
+                'beban_pokok_r'   => str_replace(',', '.', $request->beban_pokok),
+                'biaya_operasi_r' => str_replace(',', '.', $request->biaya_operasi),
+                'laba_bersih_r'   => str_replace(',', '.', $request->laba_bersih),
+                'tkp_r'           => str_replace(',', '.', $request->tkp),
+                'kpi_r'           => str_replace(',', '.', $request->kpi),
             ]);
             return response()->json();
     }
