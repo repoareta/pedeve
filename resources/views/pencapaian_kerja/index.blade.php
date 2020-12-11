@@ -186,6 +186,12 @@
 			<form class="kt-form kt-form--label-right" action="{{ route('pencapaian_kerja.export') }}" method="GET" target="_blank">
 				<div class="modal-body">
 					<div class="form-group row">
+						<label for="" class="col-2 col-form-label">Tahun</label>
+						<div class="col-10">
+							<input class="form-control" type="text" name="tahun" value="{{date('Y')}}" size="4" maxlength="4" onkeypress="return hanyaAngka(event)" autocomplete='off' required>
+						</div>
+					</div>				
+					<div class="form-group row">
 						<label for="" class="col-2 col-form-label">Perusahaan</label>
 						<div class="col-10">
 							<select name="perusahaan" class="form-control selectpicker" data-live-search="true" required oninvalid="this.setCustomValidity('Dibayar Kepada Harus Diisi..')" onchange="setCustomValidity('')">
@@ -222,7 +228,7 @@ $(document).ready(function(){
 	});
 
 	$('.kt-select2').select2().on('change', function() {
-		$(this).valid();
+		// $(this).valid();
 	});
 });		
 </script>

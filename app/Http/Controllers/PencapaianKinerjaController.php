@@ -43,7 +43,8 @@ class PencapaianKinerjaController extends Controller
         }else{
             $perusahaan = "and a.kd_perusahaan = '$request->perusahaan'";
         }
-        $data = DB::select("select a.*, b.nama, c.* from tbl_monitoring a join cm_perusahaan_afiliasi b on a.kd_perusahaan=b.id, tbl_rencana_kerja c  where a.kd_perusahaan=c.kd_perusahaan  ");
+        
+        $data = DB::select("select a.*, b.nama, c.* from tbl_monitoring a join cm_perusahaan_afiliasi b on a.kd_perusahaan=b.id, tbl_rencana_kerja c  where a.kd_perusahaan=c.kd_perusahaan and a.bulan=c.bulan and a.tahun=c.tahun $perusahaan and a.tahun='$request->tahun'");
 
         $pdf = PDF::loadview('pencapaian_kerja.export_pencapaian_pdf',compact('data'))
         ->setPaper('a4', 'portrait')
