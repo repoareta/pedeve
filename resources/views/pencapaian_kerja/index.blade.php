@@ -95,8 +95,8 @@
 						<input class="form-control" type="text" name="tahun" value="{{$tahun}}" size="4" maxlength="4" onkeypress="return hanyaAngka(event)" autocomplete='off'>
 					</div>
 					<label for="" class="col-form-label">Perusahaan</label>
-					<div class="col-2">
-						<select name="perusahaan" class="form-control">
+					<div class="col-4">
+						<select name="perusahaan" class="form-control kt-select2">
 							<option value="">- Pilih -</option>
 							@foreach ($data_perusahaan as $row)
 							<option value="{{ $row->id }}">{{ $row->nama }}</option>

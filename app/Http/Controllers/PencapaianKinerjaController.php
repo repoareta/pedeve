@@ -32,7 +32,7 @@ class PencapaianKinerjaController extends Controller
 
     public function search(Request $request)
     {   
-        if($request->perusahaan <> 'null'){
+        if($request->perusahaan <> null){
             $perusahaan = "and a.kd_perusahaan = '$request->perusahaan'";
         }else{
             $perusahaan = "";
