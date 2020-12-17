@@ -52,10 +52,7 @@
 							</div>
 						</div>
 						<div class="form-group row">
-							<label for="spd-input" class="col-2 col-form-label">Bulan/Tahun</label>
-							<div class="col-4">
-								<input class="form-control" type="text" value="{{$data->bulan}}"   name="bulan" size="2" maxlength="2" readonly style="background-color:#DCDCDC; cursor:not-allowed"> 
-							</div>
+							<label for="spd-input" class="col-2 col-form-label">Tahun</label>
 							<div class="col-4" >
 								<input class="form-control" type="text" value="{{$data->tahun}}"   name="tahun" size="4" maxlength="4" readonly style="background-color:#DCDCDC; cursor:not-allowed"> 
 							</div>

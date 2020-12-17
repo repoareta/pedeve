@@ -2323,7 +2323,7 @@
                                 <i class="kt-menu__link-bullet kt-menu__link-bullet--dot">
                                     <span></span>
                                 </i>
-                                <span class="kt-menu__link-text">Rencana Kinerja</span>
+                                <span class="kt-menu__link-text">Rencana Kerja</span>
                             </a>
                         </li>
                         <li class="kt-menu__item kt-menu__item{{ set_active_submenu($pencapaian_kerja) }}" aria-haspopup="true">

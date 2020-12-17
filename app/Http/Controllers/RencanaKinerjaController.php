@@ -26,7 +26,7 @@ class RencanaKinerjaController extends Controller
     public function indexJson(Request $request)
     {
           
-        $data =DB::select("select a.*, b.nama from tbl_rencana_kerja a join cm_perusahaan_afiliasi b on a.kd_perusahaan=b.id where a.bulan='$request->bulan' and a.tahun='$request->tahun'");
+        $data =DB::select("select a.*, b.nama from tbl_rencana_kerja a join cm_perusahaan_afiliasi b on a.kd_perusahaan=b.id where a.tahun='$request->tahun'");
         return datatables()->of($data)
         ->addColumn('action', function ($data) {
                 $radio = '<label  class="kt-radio kt-radio--bold kt-radio--brand"><input type="radio" class="btn-radio" data-id="'.$data->kd_rencana_kerja.'" value="'.$data->kd_rencana_kerja.'" name="btn-radio"><span></span></label>';
@@ -36,7 +36,7 @@ class RencanaKinerjaController extends Controller
                 return $data->nama;
         })
         ->addColumn('thnbln', function ($data) {
-                return "<p align='center'>$data->bulan/$data->tahun</p>";
+                return "<p align='center'>$data->tahun</p>";
         })
         ->addColumn('ci', function ($data) {
                 if($data->ci_r == 1){
@@ -88,7 +88,7 @@ class RencanaKinerjaController extends Controller
             'kd_perusahaan' => $request->nama,
             'ci_r'            => $request->ci,
             'tahun'         => $request->tahun,
-            'bulan'         => $request->bulan,
+            'bulan'         => date('m'),
             'rate_r'          => $request->kurs,
             'aset_r'          => str_replace(',', '.', $request->aset),
             'revenue_r'       => str_replace(',', '.', $request->revenue),
@@ -116,7 +116,7 @@ class RencanaKinerjaController extends Controller
                 'kd_perusahaan' => $request->nama,
                 'ci_r'            => $request->ci,
                 'tahun'         => $request->tahun,
-                'bulan'         => $request->bulan,
+                'bulan'         => date('m'),
                 'rate_r'          => $request->kurs,
                 'aset_r'          => str_replace(',', '.', $request->aset),
                 'revenue_r'       => str_replace(',', '.', $request->revenue),
