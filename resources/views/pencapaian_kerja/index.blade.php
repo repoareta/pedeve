@@ -96,7 +96,7 @@
 					</div>
 					<label for="" class="col-form-label">Perusahaan</label>
 					<div class="col-2">
-						<select name="perusahaan" class="form-control selectpicker" data-live-search="true" required oninvalid="this.setCustomValidity('Nama Perusahaan Harus Diisi..')" onchange="setCustomValidity('')">
+						<select name="perusahaan" class="form-control">
 							<option value="">- Pilih -</option>
 							@foreach ($data_perusahaan as $row)
 							<option value="{{ $row->id }}">{{ $row->nama }}</option>
