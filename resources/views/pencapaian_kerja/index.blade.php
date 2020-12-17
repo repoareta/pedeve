@@ -94,6 +94,15 @@
 					<div class="col-2">
 						<input class="form-control" type="text" name="tahun" value="{{$tahun}}" size="4" maxlength="4" onkeypress="return hanyaAngka(event)" autocomplete='off'>
 					</div>
+					<label for="" class="col-form-label">Perusahaan</label>
+					<div class="col-2">
+						<select name="perusahaan" class="form-control selectpicker" data-live-search="true" required oninvalid="this.setCustomValidity('Nama Perusahaan Harus Diisi..')" onchange="setCustomValidity('')">
+							<option value="">- Pilih -</option>
+							@foreach ($data_perusahaan as $row)
+							<option value="{{ $row->id }}">{{ $row->nama }}</option>
+							@endforeach
+						</select>					
+					</div>
 					<div class="col-2">
 						<button type="submit" class="btn btn-brand"><i class="fa fa-search" aria-hidden="true"></i> Cari</button>
 					</div>

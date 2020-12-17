@@ -25,14 +25,21 @@ class PencapaianKinerjaController extends Controller
         $tgl = date_create(now());
         $bulan = date_format($tgl, 'm'); 
         $tahun = date_format($tgl, 'Y'); 
+        $data_perusahaan = PerusahaanAfiliasi::all();
         $data = DB::select("select a.*, b.nama,b.id, c.* from tbl_monitoring a join cm_perusahaan_afiliasi b on a.kd_perusahaan=b.id, tbl_rencana_kerja c  where a.kd_perusahaan=c.kd_perusahaan and a.bulan='$bulan' and a.tahun='$tahun'");
-        return view('pencapaian_kerja.index',compact('data'));
+        return view('pencapaian_kerja.index',compact('data','data_perusahaan'));
     }
 
     public function search(Request $request)
-    {          
-        $data =DB::select("select a.*, b.nama,b.id, c.* from tbl_monitoring a join cm_perusahaan_afiliasi b on a.kd_perusahaan=b.id, tbl_rencana_kerja c  where a.kd_perusahaan=c.kd_perusahaan and a.bulan='$request->bulan' and a.tahun='$request->tahun'");
-        return view('pencapaian_kerja.index',compact('data'));
+    {   
+        if($request->perusahaan <> 'null'){
+            $perusahaan = "and a.kd_perusahaan = '$request->perusahaan'";
+        }else{
+            $perusahaan = "";
+        }
+        $data_perusahaan = PerusahaanAfiliasi::all();
+        $data =DB::select("select a.*, b.nama,b.id, c.* from tbl_monitoring a join cm_perusahaan_afiliasi b on a.kd_perusahaan=b.id, tbl_rencana_kerja c  where a.kd_perusahaan=c.kd_perusahaan and a.bulan='$request->bulan' and a.tahun='$request->tahun' $perusahaan");
+        return view('pencapaian_kerja.index',compact('data','data_perusahaan'));
             
     }
 
