@@ -64,8 +64,8 @@ tr {
                 <thead>
                     <tr class="text-left th-large">
                         <th></th>
-                        <th>REALISASI</th>
                         <th>RENCANA KERJA</th>
+                        <th>REALISASI</th>
                     </tr>
                 </thead>
                 
@@ -79,8 +79,8 @@ tr {
                     </tr>
                     <tr>
                         <td>Aset</td>
-                        <td>{{number_format($row->aset,2)}}</td>
                         <td>{{number_format($row->aset_r,2)}}</td>
+                        <td>{{number_format($row->aset,2)}}</td>
                     </tr>
                     <tr>
                         <td>Revenue</td>
@@ -89,38 +89,38 @@ tr {
                     </tr>
                     <tr>
                         <td>Beban Pokok</td>
-                        <td>{{number_format($row->beban_pokok,2)}}</td>
                         <td>{{number_format($row->beban_pokok_r,2)}}</td>
+                        <td>{{number_format($row->beban_pokok,2)}}</td>
                     </tr>
                     <tr>
                         <td>Laba Kotor</td>
-                        <td>{{number_format($row->beban_pokok+$row->revenue,2)}}</td>
                         <td>{{number_format($row->beban_pokok_r+$row->revenue_r,2)}}</td>
+                        <td>{{number_format($row->beban_pokok+$row->revenue,2)}}</td>
                     </tr>
                     <tr>
                         <td>Biaya Operasi</td>
-                        <td>{{number_format($row->biaya_operasi,2)}}</td>
                         <td>{{number_format($row->biaya_operasi_r,2)}}</td>
+                        <td>{{number_format($row->biaya_operasi,2)}}</td>
                     </tr>
                     <tr>
                         <td>Laba Operasi</td>
-                        <td>{{number_format($row->biaya_operasi+($row->beban_pokok+$row->revenue),2)}}</td>
                         <td>{{number_format($row->biaya_operasi_r+($row->beban_pokok_r+$row->revenue_r),2)}}</td>
+                        <td>{{number_format($row->biaya_operasi+($row->beban_pokok+$row->revenue),2)}}</td>
                     </tr>
                     <tr>
                         <td>Laba Bersih</td>
-                        <td>{{number_format($row->laba_bersih,2)}}</td>
                         <td>{{number_format($row->laba_bersih_r,2)}}</td>
+                        <td>{{number_format($row->laba_bersih,2)}}</td>
                     </tr>
                     <tr>
                         <td>TKP</td>
-                        <td>{{round($row->tkp)}}</td>
                         <td>{{round($row->tkp_r)}}</td>
+                        <td>{{round($row->tkp)}}</td>
                     </tr>
                     <tr>
                         <td>KPI</th>
+                            <td>{{round($row->kpi_r)}}</td>
                         <td>{{round($row->kpi)}}</td>
-                        <td>{{round($row->kpi_r)}}</td>
                     </tr>
                     @endforeach
                 </tbody>
