@@ -67,10 +67,10 @@ class MonitoringKinerjaController extends Controller
             return "<p align='right'>".number_format($data->laba_bersih,2)."</p>";
         })
         ->addColumn('tkp', function ($data) {
-            return "<p align='right'>".number_format($data->tkp,2)."</p>";
+            return "<p align='right'>".round($data->tkp)."</p>";
         })
         ->addColumn('kpi', function ($data) {
-            return "<p align='right'>".number_format($data->kpi,2)."</p>";
+            return "<p align='right'>".round($data->kpi)."</p>";
         })
         ->rawColumns(['action','thnbln','aset','revenue','beban_pokok','biaya_operasi','laba_bersih','laba_kotor','laba_operasi','sales','tkp','kpi'])
         ->make(true);

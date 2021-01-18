@@ -1491,6 +1491,15 @@ Route::group(['middleware'=> ['auth','checkRole:1,0']], function () {
         });
         //end rencana_kerja
 
+        //rencana_kerja
+        // Route assigned name "pencapaian_kerja.index"...
+        Route::name('pencapaian_kerja.')->group(function () {
+            Route::get('pencapaian_kerja', 'PencapaianKinerjaController@index')->name('index');
+            Route::post('pencapaian_kerja/search', 'PencapaianKinerjaController@search')->name('search');
+            Route::get('pencapaian_kerja/export', 'PencapaianKinerjaController@export')->name('export');
+        });
+        //end pencapaian_kerja
+
         // perusahaan afiliasi START
         // Route assigned name "perusahaan_afiliasi.index"...
         Route::name('perusahaan_afiliasi.')->group(function () {

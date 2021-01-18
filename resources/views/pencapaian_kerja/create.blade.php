@@ -17,7 +17,7 @@
 				<a href="" class="kt-subheader__breadcrumbs-link">
 					Rencana Kinerja </a>
 				<span class="kt-subheader__breadcrumbs-separator"></span>
-				<span class="kt-subheader__breadcrumbs-link kt-subheader__breadcrumbs-link--active">Edit</span>
+				<span class="kt-subheader__breadcrumbs-link kt-subheader__breadcrumbs-link--active">Tambah</span>
 			</div>
 		</div>
 	</div>
@@ -32,7 +32,7 @@
 					<i class="kt-font-brand flaticon2-plus-1"></i>
 				</span>
 				<h3 class="kt-portlet__head-title">
-					Edit Rencana Kinerja
+					Tambah Rencana Kinerja
 				</h3>			
 			</div>
 			<div class="kt-portlet__head-toolbar">
@@ -40,21 +40,25 @@
 				</div>
 			</div>
 		</div>
-			<form  class="kt-form kt-form--label-right" id="form-update">
+			<form  class="kt-form kt-form--label-right" id="form-create">
 				{{csrf_field()}}
-				@foreach($data_list as $data)
 				<div class="kt-portlet__body">
 					<div class="form-group form-group-last">
 						<div class="form-group row">
-							<label class="col-2 col-form-label">Nama Perusahaan</label>
-							<div class="col-8">					
-								<input class="form-control" type="text" value="{{$data->kd_perusahaan}}" name="nama"  size="200" maxlength="200" title="Nama Perusahaan" readonly style="background-color:#DCDCDC; cursor:not-allowed">												
+							<label for="jenis-dinas-input" class="col-2 col-form-label">Nama Perusahaan<span style="color:red;">*</span></label>
+							<div class="col-8">
+								<select name="nama" class="form-control selectpicker" data-live-search="true" required oninvalid="this.setCustomValidity('Nama Perusahaan Harus Diisi..')" onchange="setCustomValidity('')">
+									<option value="">- Pilih -</option>
+									@foreach ($data_perusahaan as $row)
+									<option value="{{ $row->id }}">{{ $row->nama }}</option>
+									@endforeach
+								</select>
 							</div>
 						</div>
 						<div class="form-group row">
 							<label for="spd-input" class="col-2 col-form-label">Tahun</label>
 							<div class="col-4" >
-								<input class="form-control" type="text" value="{{$data->tahun}}"   name="tahun" size="4" maxlength="4" readonly style="background-color:#DCDCDC; cursor:not-allowed"> 
+								<input class="form-control" type="text" value="{{date('Y')}}"   name="tahun" size="4" maxlength="4" onkeypress="return hanyaAngka(event)" autocomplete='off' required> 
 							</div>
 						</div>
 						<div class="form-group row">
@@ -62,12 +66,11 @@
 							<div class="col-8">
 								<div class="kt-radio-inline">
 									<label class="kt-radio kt-radio--solid">
-										<input class="form-control" type="hidden" value="{{ $data->kd_rencana_kerja }}" name="kd_rencana_kerja">
-										<input value="1" type="radio"  name="ci" id="ci" onclick="displayResult(1)" <?php if( $data->ci_r  == 1 ) echo 'checked' ; ?>> Rp
+										<input value="1" type="radio"  name="ci" id="ci" onclick="displayResult(1)" checked> Rp
 										<span></span>
 									</label>
 									<label class="kt-radio kt-radio--solid">
-										<input value="2" type="radio"    name="ci" id="ci" onclick="displayResult(2)" <?php if( $data->ci_r  == 2 ) echo 'checked' ; ?>> US$
+										<input value="2" type="radio"    name="ci" id="ci" onclick="displayResult(2)"> US$
 										<span></span>
 									</label>
 								</div>
@@ -76,43 +79,44 @@
 						<div class="form-group row">
 							<label for="" class="col-2 col-form-label">Aset</label>
 							<div class="col-8">
-								<input class="form-control" type="text" value="{{number_format($data->aset_r,2,'.','')}}" name="aset"  size="25" maxlength="25" title="Aset" autocomplete='off' oninput="this.value = this.value.replace(/[^0-9\-]+/g, ',');" >
+								<input class="form-control" type="hidden" value="1" name="kurs" id="kurs"  size="25" maxlength="20" title="Kurs" >
+								<input class="form-control" type="text" value="0" name="aset" id="total_aset" size="25" maxlength="25" title="Aset" oninput="this.value = this.value.replace(/[^0-9\-]+/g, ',');" autocomplete='off' >
 							</div>
 						</div>
 						<div class="form-group row">
 							<label class="col-2 col-form-label">Revenue</label>
 							<div class="col-8">						
-								<input class="form-control" type="text" value="{{ number_format($data->revenue_r ,2,'.','')}}" name="revenue"  size="200" maxlength="200" title="Revenue" autocomplete='off' oninput="this.value = this.value.replace(/[^0-9\-]+/g, ',');">
+								<input class="form-control" type="text" value="0" name="revenue"  size="200" maxlength="200" title="Revenue" oninput="this.value = this.value.replace(/[^0-9\-]+/g, ',');" autocomplete='off'>
 							</div>
 						</div>
 						<div class="form-group row">
 							<label class="col-2 col-form-label">Beban Pokok</label>
 							<div class="col-8">						
-								<input class="form-control" type="text" value="{{ number_format($data->beban_pokok_r ,2,'.','')}}" name="beban_pokok"  size="200" maxlength="200" title="Beban Pokok" oninput="this.value = this.value.replace(/[^0-9\-]+/g, ',');" autocomplete='off'>
+								<input class="form-control" type="text" value="0" name="beban_pokok"  size="200" maxlength="200" title="Beban Pokok" oninput="this.value = this.value.replace(/[^0-9\-]+/g, ',');" autocomplete='off'>
 							</div>
 						</div>
 						<div class="form-group row">
 							<label class="col-2 col-form-label">Biaya Operasi</label>
 							<div class="col-8">						
-								<input class="form-control" type="text" value="{{ number_format($data->biaya_operasi_r ,2,'.','')}}" name="biaya_operasi"  size="200" maxlength="200" title="Biaya Operasi" oninput="this.value = this.value.replace(/[^0-9\-]+/g, ',');" autocomplete='off'>
+								<input class="form-control" type="text" value="0" name="biaya_operasi"  size="200" maxlength="200" title="Biaya Operasi" oninput="this.value = this.value.replace(/[^0-9\-]+/g, ',');" autocomplete='off'>
 							</div>
 						</div>
 						<div class="form-group row">
 							<label for="" class="col-2 col-form-label">Laba Bersih</label>
 							<div class="col-8">
-								<input class="form-control" type="text" value="{{number_format($data->laba_bersih_r,2,'.','')}}" name="laba_bersih" id="laba_bersih" size="25" maxlength="25" title="Laba Bersih" autocomplete='off' oninput="this.value = this.value.replace(/[^0-9\-]+/g, ',');" >
+								<input class="form-control" type="text" value="0" name="laba_bersih" id="laba_bersih"  size="25" maxlength="25" title="Laba Bersih" oninput="this.value = this.value.replace(/[^0-9\-]+/g, ',');" autocomplete='off' >
 							</div>
 						</div>
 						<div class="form-group row">
 							<label class="col-2 col-form-label">TKP</label>
 							<div class="col-8">						
-								<input class="form-control" type="text" value="{{ round($data->tkp_r)}}" name="tkp" id="tkp"  title="TKP" autocomplete='off' oninput="this.value = this.value.replace(/[^0-9\-]+/g, ',');">
+								<input class="form-control" type="text" value="0" name="tkp" id="tkp"  title="TKP" oninput="this.value = this.value.replace(/[^0-9\-]+/g, ',');" autocomplete='off'>
 							</div>
 						</div>
 						<div class="form-group row">
 							<label class="col-2 col-form-label">KPI</label>
 							<div class="col-8">						
-								<input class="form-control" type="text" value="{{ round($data->kpi_r)}}" name="kpi" id="tkp"  title="KPI" oninput="this.value = this.value.replace(/[^0-9\-]+/g, ',');" autocomplete='off'>
+								<input class="form-control" type="text" value="0" name="kpi" id="tkp"  title="KPI" oninput="this.value = this.value.replace(/[^0-9\-]+/g, ',');" autocomplete='off'>
 							</div>
 						</div>
 						
@@ -128,7 +132,6 @@
 						</div>
 					</div>
 				</div>
-				@endforeach
 			</form>
 	</div>
 </div>
@@ -174,25 +177,32 @@
 
 		
 
-		$('#form-update').submit(function(){
+		$('#form-create').submit(function(){
 			$.ajax({
-				url  : "{{route('rencana_kerja.update')}}",
+				url  : "{{route('rencana_kerja.store')}}",
 				type : "POST",
-				data : $('#form-update').serialize(),
+				data : $('#form-create').serialize(),
 				dataType : "JSON",
 				headers: {
 				'X-CSRF-Token': '{{ csrf_token() }}',
 				},
 				success : function(data){
-					
+				if(data == 1){					
 					Swal.fire({
 						type  : 'success',
-						title : 'Data Berhasil Diubah',
+						title : 'Data Berhasil Ditambah',
 						text  : 'Berhasil',
 						timer : 2000
 					}).then(function(data) {
 						window.location.replace("{{ route('rencana_kerja.index') }}");
 						});
+				}else{
+					Swal.fire({
+						type  : 'info',
+						title : 'Data sudah ada, entri dibatalkan.',
+						text  : 'Info',
+					});
+				}
 				}, 
 				error : function(){
 					alert("Terjadi kesalahan, coba lagi nanti");

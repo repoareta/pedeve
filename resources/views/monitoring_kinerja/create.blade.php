@@ -100,43 +100,43 @@
 							<label for="" class="col-2 col-form-label">Aset</label>
 							<div class="col-8">
 								<input class="form-control" type="hidden" value="1" name="kurs" id="kurs"  size="25" maxlength="20" title="Kurs" >
-								<input class="form-control" type="text" value="" name="aset" id="total_aset" size="25" maxlength="25" title="Aset" oninput="this.value = this.value.replace(/[^0-9\-]+/g, ',');" autocomplete='off' >
+								<input class="form-control" type="text" value="0" name="aset" id="total_aset" size="25" maxlength="25" title="Aset" oninput="this.value = this.value.replace(/[^0-9\-]+/g, ',');" autocomplete='off' >
 							</div>
 						</div>
 						<div class="form-group row">
 							<label class="col-2 col-form-label">Revenue</label>
 							<div class="col-8">						
-								<input class="form-control" type="text" value="{{ old('revenue') }}" name="revenue"  size="200" maxlength="200" title="Revenue" oninput="this.value = this.value.replace(/[^0-9\-]+/g, ',');" autocomplete='off'>
+								<input class="form-control" type="text" value="0" name="revenue"  size="200" maxlength="200" title="Revenue" oninput="this.value = this.value.replace(/[^0-9\-]+/g, ',');" autocomplete='off'>
 							</div>
 						</div>
 						<div class="form-group row">
 							<label class="col-2 col-form-label">Beban Pokok</label>
 							<div class="col-8">						
-								<input class="form-control" type="text" value="{{ old('beban_pokok') }}" name="beban_pokok"  size="200" maxlength="200" title="Beban Pokok" oninput="this.value = this.value.replace(/[^0-9\-]+/g, ',');" autocomplete='off'>
+								<input class="form-control" type="text" value="0" name="beban_pokok"  size="200" maxlength="200" title="Beban Pokok" oninput="this.value = this.value.replace(/[^0-9\-]+/g, ',');" autocomplete='off'>
 							</div>
 						</div>
 						<div class="form-group row">
 							<label class="col-2 col-form-label">Biaya Operasi</label>
 							<div class="col-8">						
-								<input class="form-control" type="text" value="{{ old('biaya_operasi') }}" name="biaya_operasi"  size="200" maxlength="200" title="Biaya Operasi" oninput="this.value = this.value.replace(/[^0-9\-]+/g, ',');" autocomplete='off'>
+								<input class="form-control" type="text" value="0" name="biaya_operasi"  size="200" maxlength="200" title="Biaya Operasi" oninput="this.value = this.value.replace(/[^0-9\-]+/g, ',');" autocomplete='off'>
 							</div>
 						</div>
 						<div class="form-group row">
 							<label for="" class="col-2 col-form-label">Laba Bersih</label>
 							<div class="col-8">
-								<input class="form-control" type="text" value="" name="laba_bersih" id="laba_bersih"  size="25" maxlength="25" title="Laba Bersih" oninput="this.value = this.value.replace(/[^0-9\-]+/g, ',');" autocomplete='off' >
+								<input class="form-control" type="text" value="0" name="laba_bersih" id="laba_bersih"  size="25" maxlength="25" title="Laba Bersih" oninput="this.value = this.value.replace(/[^0-9\-]+/g, ',');" autocomplete='off' >
 							</div>
 						</div>
 						<div class="form-group row">
 							<label class="col-2 col-form-label">TKP</label>
 							<div class="col-8">						
-								<input class="form-control" type="text" value="{{ old('tkp') }}" name="tkp" id="tkp"  title="TKP" oninput="this.value = this.value.replace(/[^0-9\-]+/g, ',');" autocomplete='off'>
+								<input class="form-control" type="text" value="0" name="tkp" id="tkp"  title="TKP" oninput="this.value = this.value.replace(/[^0-9\-]+/g, ',');" autocomplete='off'>
 							</div>
 						</div>
 						<div class="form-group row">
 							<label class="col-2 col-form-label">KPI</label>
 							<div class="col-8">						
-								<input class="form-control" type="text" value="{{ old('kpi') }}" name="kpi" id="tkp"  title="KPI" oninput="this.value = this.value.replace(/[^0-9\-]+/g, ',');" autocomplete='off'>
+								<input class="form-control" type="text" value="0" name="kpi" id="tkp"  title="KPI" oninput="this.value = this.value.replace(/[^0-9\-]+/g, ',');" autocomplete='off'>
 							</div>
 						</div>
 						

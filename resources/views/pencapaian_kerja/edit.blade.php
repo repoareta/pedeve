@@ -52,7 +52,10 @@
 							</div>
 						</div>
 						<div class="form-group row">
-							<label for="spd-input" class="col-2 col-form-label">Tahun</label>
+							<label for="spd-input" class="col-2 col-form-label">Bulan/Tahun</label>
+							<div class="col-4">
+								<input class="form-control" type="text" value="{{$data->bulan}}"   name="bulan" size="2" maxlength="2" readonly style="background-color:#DCDCDC; cursor:not-allowed"> 
+							</div>
 							<div class="col-4" >
 								<input class="form-control" type="text" value="{{$data->tahun}}"   name="tahun" size="4" maxlength="4" readonly style="background-color:#DCDCDC; cursor:not-allowed"> 
 							</div>
@@ -63,11 +66,11 @@
 								<div class="kt-radio-inline">
 									<label class="kt-radio kt-radio--solid">
 										<input class="form-control" type="hidden" value="{{ $data->kd_rencana_kerja }}" name="kd_rencana_kerja">
-										<input value="1" type="radio"  name="ci" id="ci" onclick="displayResult(1)" <?php if( $data->ci_r  == 1 ) echo 'checked' ; ?>> Rp
+										<input value="1" type="radio"  name="ci" id="ci" onclick="displayResult(1)" <?php if( $data->ci  == 1 ) echo 'checked' ; ?>> Rp
 										<span></span>
 									</label>
 									<label class="kt-radio kt-radio--solid">
-										<input value="2" type="radio"    name="ci" id="ci" onclick="displayResult(2)" <?php if( $data->ci_r  == 2 ) echo 'checked' ; ?>> US$
+										<input value="2" type="radio"    name="ci" id="ci" onclick="displayResult(2)" <?php if( $data->ci  == 2 ) echo 'checked' ; ?>> US$
 										<span></span>
 									</label>
 								</div>
@@ -76,43 +79,43 @@
 						<div class="form-group row">
 							<label for="" class="col-2 col-form-label">Aset</label>
 							<div class="col-8">
-								<input class="form-control" type="text" value="{{number_format($data->aset_r,2,'.','')}}" name="aset"  size="25" maxlength="25" title="Aset" autocomplete='off' oninput="this.value = this.value.replace(/[^0-9\-]+/g, ',');" >
+								<input class="form-control" type="text" value="{{number_format($data->aset,2,'.','')}}" name="aset"  size="25" maxlength="25" title="Aset" autocomplete='off' oninput="this.value = this.value.replace(/[^0-9\-]+/g, ',');" >
 							</div>
 						</div>
 						<div class="form-group row">
 							<label class="col-2 col-form-label">Revenue</label>
 							<div class="col-8">						
-								<input class="form-control" type="text" value="{{ number_format($data->revenue_r ,2,'.','')}}" name="revenue"  size="200" maxlength="200" title="Revenue" autocomplete='off' oninput="this.value = this.value.replace(/[^0-9\-]+/g, ',');">
+								<input class="form-control" type="text" value="{{ number_format($data->revenue ,2,'.','')}}" name="revenue"  size="200" maxlength="200" title="Revenue" autocomplete='off' oninput="this.value = this.value.replace(/[^0-9\-]+/g, ',');">
 							</div>
 						</div>
 						<div class="form-group row">
 							<label class="col-2 col-form-label">Beban Pokok</label>
 							<div class="col-8">						
-								<input class="form-control" type="text" value="{{ number_format($data->beban_pokok_r ,2,'.','')}}" name="beban_pokok"  size="200" maxlength="200" title="Beban Pokok" oninput="this.value = this.value.replace(/[^0-9\-]+/g, ',');" autocomplete='off'>
+								<input class="form-control" type="text" value="{{ number_format($data->beban_pokok ,2,'.','')}}" name="beban_pokok"  size="200" maxlength="200" title="Beban Pokok" oninput="this.value = this.value.replace(/[^0-9\-]+/g, ',');" autocomplete='off'>
 							</div>
 						</div>
 						<div class="form-group row">
 							<label class="col-2 col-form-label">Biaya Operasi</label>
 							<div class="col-8">						
-								<input class="form-control" type="text" value="{{ number_format($data->biaya_operasi_r ,2,'.','')}}" name="biaya_operasi"  size="200" maxlength="200" title="Biaya Operasi" oninput="this.value = this.value.replace(/[^0-9\-]+/g, ',');" autocomplete='off'>
+								<input class="form-control" type="text" value="{{ number_format($data->biaya_operasi ,2,'.','')}}" name="biaya_operasi"  size="200" maxlength="200" title="Biaya Operasi" oninput="this.value = this.value.replace(/[^0-9\-]+/g, ',');" autocomplete='off'>
 							</div>
 						</div>
 						<div class="form-group row">
 							<label for="" class="col-2 col-form-label">Laba Bersih</label>
 							<div class="col-8">
-								<input class="form-control" type="text" value="{{number_format($data->laba_bersih_r,2,'.','')}}" name="laba_bersih" id="laba_bersih" size="25" maxlength="25" title="Laba Bersih" autocomplete='off' oninput="this.value = this.value.replace(/[^0-9\-]+/g, ',');" >
+								<input class="form-control" type="text" value="{{number_format($data->laba_bersih,2,'.','')}}" name="laba_bersih" id="laba_bersih" size="25" maxlength="25" title="Laba Bersih" autocomplete='off' oninput="this.value = this.value.replace(/[^0-9\-]+/g, ',');" >
 							</div>
 						</div>
 						<div class="form-group row">
 							<label class="col-2 col-form-label">TKP</label>
 							<div class="col-8">						
-								<input class="form-control" type="text" value="{{ round($data->tkp_r)}}" name="tkp" id="tkp"  title="TKP" autocomplete='off' oninput="this.value = this.value.replace(/[^0-9\-]+/g, ',');">
+								<input class="form-control" type="text" value="{{ number_format($data->tkp ,2,'.','')}}" name="tkp" id="tkp"  title="TKP" autocomplete='off' oninput="this.value = this.value.replace(/[^0-9\-]+/g, ',');">
 							</div>
 						</div>
 						<div class="form-group row">
 							<label class="col-2 col-form-label">KPI</label>
 							<div class="col-8">						
-								<input class="form-control" type="text" value="{{ round($data->kpi_r)}}" name="kpi" id="tkp"  title="KPI" oninput="this.value = this.value.replace(/[^0-9\-]+/g, ',');" autocomplete='off'>
+								<input class="form-control" type="text" value="{{ number_format($data->kpi ,2,'.','')}}" name="kpi" id="tkp"  title="KPI" oninput="this.value = this.value.replace(/[^0-9\-]+/g, ',');" autocomplete='off'>
 							</div>
 						</div>
 						
