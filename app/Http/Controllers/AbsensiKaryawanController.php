@@ -4,6 +4,9 @@ namespace App\Http\Controllers;
 
 use Illuminate\Http\Request;
 
+// Load Model
+use App\Models\Absensi;
+
 class AbsensiKaryawanController extends Controller
 {
     /**
@@ -16,6 +19,18 @@ class AbsensiKaryawanController extends Controller
         $ip = "192.168.16.201";
         $key = "0";
         return view('absensi_karyawan.index', compact('ip', 'key'));
+    }
+
+    /**
+     * Display a listing of the resource.
+     *
+     * @return \Illuminate\Http\Response
+     */
+    public function indexJson()
+    {
+        $absensi_list = Absensi::orderBy('tanggal', 'desc');
+
+        return datatables()->of($absensi_list)->make(true);
     }
 
     /**
@@ -41,42 +56,53 @@ class AbsensiKaryawanController extends Controller
                 $buffer=$buffer.$Response;
             }
         } else {
-            echo "Koneksi Gagal";
+            return "Koneksi Gagal";
         }
 
-        // include("parse.php");
-        // $buffer=Parse_Data($buffer, "<GetAttLogResponse>", "</GetAttLogResponse>");
-        // $buffer=explode("\r\n", $buffer);
+        $buffer=$this->parseData($buffer, "<GetAttLogResponse>", "</GetAttLogResponse>");
+        $buffer=explode("\r\n", $buffer);
 
-        // for ($a=0;$a<count($buffer);$a++) {
-        //     $data=Parse_Data($buffer[$a], "<Row>", "</Row>");
-        //     $PIN=Parse_Data($data, "<PIN>", "</PIN>");
-        //     $DateTime=Parse_Data($data, "<DateTime>", "</DateTime>");
-        //     $Verified=Parse_Data($data, "<Verified>", "</Verified>");
-        //     $Status=Parse_Data($data, "<Status>", "</Status>");
+        for ($a=0; $a < count($buffer); $a++) {
+            $data = $this->parseData($buffer[$a], "<Row>", "</Row>");
+            $PIN = $this->parseData($data, "<PIN>", "</PIN>");
+            $DateTime = $this->parseData($data, "<DateTime>", "</DateTime>");
+            $Verified = $this->parseData($data, "<Verified>", "</Verified>");
+            $Status = $this->parseData($data, "<Status>", "</Status>");
 
-        //     if ($PIN <> '') {
-        //         $data = "select count(*) as NUMBER_OF_ROWS from PDV_ABS_ABSENSI_LOG where userid = '$PIN' and tanggal = to_date('$DateTime', 'YYYY-MM-DD HH24:MI:SS') and status = '$Status'";
-        //         $resultrecord = oci_parse($c1, $data);
-        //         oci_define_by_name($resultrecord, 'NUMBER_OF_ROWS', $number_of_rows);
-        //         oci_execute($resultrecord);
-        //         oci_fetch($resultrecord);
-        //         echo $number_of_rows;
-        //         echo $PIN;
-        //         echo $DateTime;
+            if ($PIN <> '') {
+                $absensi = Absensi::where('userid', $PIN)
+                ->where('tanggal', $DateTime)
+                ->get();
 
-        //         if ($number_of_rows == '0') {
-        //             $db1 = "insert into PDV_ABS_ABSENSI_LOG values ('$PIN',to_date('$DateTime', 'YYYY-MM-DD HH24:MI:SS'),to_date('$DateTime', 'YYYY-MM-DD HH24:MI:SS'),'$Status')";
-        //             $result=oci_parse($c1, $db1);
-        //             oci_execute($result);
-        //         } else {
-        //             echo "tidak";
-        //         }
-        //     }
-        // }
+                if ($absensi->count() == '0') {
+                    // LAKUKAN INSERT
+                    $absensi = new Absensi;
+                    $absensi->userid = $PIN;
+                    $absensi->tanggal  = $DateTime;
+                    $absensi->verifikasi = $Verified;
+                    $absensi->status = $Status;
 
-        $data = [];
+                    $absensi->save();
+                } else {
+                    echo "tidak";
+                }
+            }
+        }
 
-        return view('absensi_karyawan.index', compact('ip', 'key', 'data'));
+        return view('absensi_karyawan.index', compact('ip', 'key'));
+    }
+
+    public function parseData($data, $p1, $p2)
+    {
+        $data=" ".$data;
+        $hasil="";
+        $awal=strpos($data, $p1);
+        if ($awal!="") {
+            $akhir=strpos(strstr($data, $p1), $p2);
+            if ($akhir!="") {
+                $hasil=substr($data, $awal+strlen($p1), $akhir-strlen($p1));
+            }
+        }
+        return $hasil;
     }
 }
