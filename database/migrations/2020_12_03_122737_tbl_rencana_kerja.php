@@ -14,15 +14,15 @@ class TblRencanaKerja extends Migration
                 $table->integer('kd_perusahaan');
                 $table->char('tahun',4);
                 $table->char('bulan',2);
-                $table->decimal('aset',38,10)->nullable();
-                $table->decimal('revenue',38,10)->nullable();
-                $table->decimal('beban_pokok',38,10)->nullable();                
-                $table->decimal('biaya_operasi',38,10)->nullable();                
-                $table->decimal('tkp',38,10)->nullable();                
-                $table->decimal('kpi',38,10)->nullable();                
-                $table->decimal('laba_bersih',38,10)->nullable();
-                $table->decimal('rate',38,10)->nullable();;
-                $table->integer('ci');
+                $table->decimal('aset_r',38,10)->nullable();
+                $table->decimal('revenue_r',38,10)->nullable();
+                $table->decimal('beban_pokok_r',38,10)->nullable();                
+                $table->decimal('biaya_operasi_r',38,10)->nullable();                
+                $table->decimal('tkp_r',38,10)->nullable();                
+                $table->decimal('kpi_r',38,10)->nullable();                
+                $table->decimal('laba_bersih_r',38,10)->nullable();
+                $table->decimal('rate_r',38,10)->nullable();;
+                $table->integer('ci_r');
             });
         };
     }

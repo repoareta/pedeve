@@ -62,48 +62,9 @@
 		<div class="">
 			<form class="kt-form" id="search-form" >
 				<div class="form-group row col-12">
-					<label for="" class="col-form-label">Bulan</label>
-					<div class="col-2">
-						<?php 
-							$tgl = date_create(now());
-							$bulan = date_format($tgl, 'm'); 
-							$tahun = date_format($tgl, 'Y'); 
-							$array_bln	 = array (
-								1 =>   'Januari',
-								'Februari',
-								'Maret',
-								'April',
-								'Mei',
-								'Juni',
-								'Juli',
-								'Agustus',
-								'September',
-								'Oktober',
-								'November',
-								'Desember'
-							);
-							
-							$bulan_1 = ($array_bln[ltrim($bulan,0)]);
-						?>
-						<select class="form-control kt-select2" name="bulan">
-							<option value="01" <?php if($bulan  == '01' ) echo 'selected' ; ?>>Januari</option>
-							<option value="02" <?php if($bulan  == '02' ) echo 'selected' ; ?>>Februari</option>
-							<option value="03" <?php if($bulan  == '03' ) echo 'selected' ; ?>>Maret</option>
-							<option value="04" <?php if($bulan  == '04' ) echo 'selected' ; ?>>April</option>
-							<option value="05" <?php if($bulan  == '05' ) echo 'selected' ; ?>>Mei</option>
-							<option value="06" <?php if($bulan  == '06' ) echo 'selected' ; ?>>Juni</option>
-							<option value="07" <?php if($bulan  == '07' ) echo 'selected' ; ?>>Juli</option>
-							<option value="08" <?php if($bulan  == '08' ) echo 'selected' ; ?>>Agustus</option>
-							<option value="09" <?php if($bulan  == '09' ) echo 'selected' ; ?>>September</option>
-							<option value="10" <?php if($bulan  =='10'  ) echo 'selected' ; ?>>Oktober</option>
-							<option value="11" <?php if($bulan  == '11' ) echo 'selected' ; ?>>November</option>
-							<option value="12" <?php if($bulan  == '12' ) echo 'selected' ; ?>>Desember</option>
-						</select>
-					</div>
-	
 					<label for="" class="col-form-label">Tahun</label>
 					<div class="col-2">
-						<input class="form-control" type="text" name="tahun" value="{{$tahun}}" size="4" maxlength="4" onkeypress="return hanyaAngka(event)" autocomplete='off'>
+						<input class="form-control" type="text" name="tahun" value="{{date('Y')}}" size="4" maxlength="4" onkeypress="return hanyaAngka(event)" autocomplete='off'>
 					</div>
 					<div class="col-2">
 						<button type="submit" class="btn btn-brand"><i class="fa fa-search" aria-hidden="true"></i> Cari</button>
@@ -117,11 +78,11 @@
 				<tr >
 					<th style="vertical-align:middle;" rowspan="3">No</th>
 					<th style="vertical-align:middle;" rowspan="3">Perusahaan</th>
-					<th rowspan="3">BULAN/TAHUN</th>
+					<th rowspan="3">TAHUN</th>
 					<th rowspan="3">CI</th>
 				</tr>
 				<tr>
-					<th colspan="4" >REALISASI</th>
+					<th colspan="4" >RENCANA KERJA</th>
 				</tr>
 				<tr>
 					<th>Aset</th>

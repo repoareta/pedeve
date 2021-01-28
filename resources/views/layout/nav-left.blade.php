@@ -808,6 +808,10 @@
                     'rencana_kerja.create',
                     'rencana_kerja.edit'                   
                 ); // isi nama semua route rencana_kerja
+                $pencapaian_kerja = array(
+                    'pencapaian_kerja.index',
+                    'pencapaian_kerja.search'                 
+                ); // isi nama semua route pencapaian_kerja
                 $perusahaan_afiliasi = array(
                     'perusahaan_afiliasi.index',
                     'perusahaan_afiliasi.create',
@@ -819,7 +823,8 @@
                     $data_perkara,
                     $perusahaan_afiliasi,
                     $monitoring_kinerja,
-                    $rencana_kerja
+                    $rencana_kerja,
+                    $pencapaian_kerja
                 ); // array merge semua submenu
 
 
@@ -2319,6 +2324,14 @@
                                     <span></span>
                                 </i>
                                 <span class="kt-menu__link-text">Rencana Kerja</span>
+                            </a>
+                        </li>
+                        <li class="kt-menu__item kt-menu__item{{ set_active_submenu($pencapaian_kerja) }}" aria-haspopup="true">
+                            <a href="{{route('pencapaian_kerja.index')}}" class="kt-menu__link">
+                                <i class="kt-menu__link-bullet kt-menu__link-bullet--dot">
+                                    <span></span>
+                                </i>
+                                <span class="kt-menu__link-text">Pencapaian Kinerja</span>
                             </a>
                         </li>
                         @endif

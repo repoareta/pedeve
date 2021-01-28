@@ -109,13 +109,13 @@
 						<div class="form-group row">
 							<label class="col-2 col-form-label">TKP</label>
 							<div class="col-8">						
-								<input class="form-control" type="text" value="{{ number_format($data->tkp ,2,'.','')}}" name="tkp" id="tkp"  title="TKP" autocomplete='off' oninput="this.value = this.value.replace(/[^0-9\-]+/g, ',');">
+								<input class="form-control" type="text" value="{{ round($data->tkp)}}" name="tkp" id="tkp"  title="TKP" autocomplete='off' oninput="this.value = this.value.replace(/[^0-9\-]+/g, ',');">
 							</div>
 						</div>
 						<div class="form-group row">
 							<label class="col-2 col-form-label">KPI</label>
 							<div class="col-8">						
-								<input class="form-control" type="text" value="{{ number_format($data->kpi ,2,'.','')}}" name="kpi" id="tkp"  title="KPI" oninput="this.value = this.value.replace(/[^0-9\-]+/g, ',');" autocomplete='off'>
+								<input class="form-control" type="text" value="{{ round($data->kpi)}}" name="kpi" id="tkp"  title="KPI" oninput="this.value = this.value.replace(/[^0-9\-]+/g, ',');" autocomplete='off'>
 							</div>
 						</div>
 						
