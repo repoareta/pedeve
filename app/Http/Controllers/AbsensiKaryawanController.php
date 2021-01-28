@@ -83,8 +83,6 @@ class AbsensiKaryawanController extends Controller
                     $absensi->status = $Status;
 
                     $absensi->save();
-                } else {
-                    echo "tidak";
                 }
             }
         }
