@@ -57,7 +57,7 @@
 			</div>
 		</form>
 		<!--begin: Datatable -->
-		<table class="table table-striped table-bordered table-hover table-checkable" id="kt_table">
+		<table class="table table-striped table-bordered table-hover table-checkable" id="kt_table" width="100%">
 			<thead class="thead-light">
 				<tr>
 					<th>UserID</th>
@@ -79,7 +79,18 @@
 @section('scripts')
 	<script type="text/javascript">
 	$(document).ready(function () {
-		$('#kt_table').DataTable();
+		var t = $('#kt_table').DataTable({
+			scrollX   : true,
+			processing: true,
+			serverSide: true,
+			ajax      : "{{ route('absensi_karyawan.index.json') }}",
+			columns: [
+				{data: 'userid', name: 'userid', class:'no-wrap'},
+				{data: 'tanggal', name: 'tanggal', class:'no-wrap'},
+				{data: 'verifikasi', name: 'verifikasi', class:'no-wrap'},
+				{data: 'status', name: 'status', class:'no-wrap'}
+			]
+		});
 	});
 	</script>
 @endsection
