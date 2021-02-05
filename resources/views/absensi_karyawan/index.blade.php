@@ -110,7 +110,7 @@
 						<div class="col-10">
 							<select class="form-control kt-select2" name="noabsen" required>
 								<option value="">- Pilih -</option>
-								@foreach ($data_absensi as $item)
+								@foreach ($data_absensi->unique('userid')  as $item)
 									@if ($item->noabsen == null)
 										<option value="{{$item->userid}}">{{$item->userid}}</option>
 									@endif
