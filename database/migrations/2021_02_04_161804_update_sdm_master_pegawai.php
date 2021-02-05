@@ -16,7 +16,7 @@ class UpdateSdmMasterPegawai extends Migration
         //
         Schema::table('sdm_master_pegawai', function (Blueprint $table) {
             if (!Schema::hasColumn('sdm_master_pegawai', 'noabsen')) {
-                $table->integer('noabsen')->nullable()->after('noktp');
+                $table->string('noabsen')->nullable()->after('noktp');
             }
         });
     }
