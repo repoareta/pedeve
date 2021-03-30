@@ -789,7 +789,7 @@ if($('input[type=radio]').is(':checked')) {
 		var nodok = $(this).attr('nodok').split("/").join("-");
 		var nourut = $(this).attr('nourut');
 			$.ajax({
-				url :"{{('perbendaharaan/penerimaan_kas/editdetail')}}"+ '/' +nodok+ '/' +nourut,
+				url :"{{url('perbendaharaan/penerimaan_kas/editdetail')}}"+ '/' +nodok+ '/' +nourut,
 				type : 'get',
 				dataType:"json",
 				headers: {
