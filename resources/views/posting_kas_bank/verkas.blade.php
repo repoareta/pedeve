@@ -668,7 +668,7 @@
 					var no = $(this).attr('docno');
 					var id = $(this).attr('lineno');
 					$.ajax({
-						url :"{{('kontroler/postingan_kas_bank/editdetail')}}"+'/'+no+'/'+id,
+						url :"{{url('kontroler/postingan_kas_bank/editdetail')}}"+'/'+no+'/'+id,
 						type : 'get',
 						dataType:"json",
 						headers: {

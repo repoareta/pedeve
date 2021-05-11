@@ -49,7 +49,6 @@ class ReportKontrolerController extends Controller
             $jk = "in ('10','11','13','15','18')";
         }
 
-        if ($request->lp == "KL") {
             $tahun = $request->tahun;
             if ($request->bulan <> "") {
                 $bulan ="in ('$request->bulan')";
@@ -67,25 +66,7 @@ class ReportKontrolerController extends Controller
                                         from kasline a join kasdoc b on b.docno=a.docno 
                                         where b.jk $jk and substring(b.thnbln from 1 for 4)='$tahun' and substring(b.thnbln from 5 for 2) $bulan and a.account $sanper and a.keterangan <> 'penutup'");
             }
-        } else {
-            $lp = "$request->lp";
-            $tahun = "$request->tahun";
-            if ($request->bulan <> "") {
-                $bulan = "in ('$request->bulan')";
-            } else {
-                $bulan ="in ('01','02','03','04','05','06','07','08','09','10','11','12')";
-            }
-            if ($request->sanper == "") {
-                $data_list = DB::select("select b.docno,substring(b.thnbln from 1 for 4) as tahun,substring(b.thnbln from 5 for 2) as bulan,b.jk,b.store,b.voucher,b.ci,b.paiddate as tglbayar,b.rate,a.lineno,a.account,a.lokasi,a.bagian,a.cj,round(a.totprice,2) as totprice,a.keterangan 
-                                        from kasline a join kasdoc b on b.docno=a.docno 
-                                        where b.jk $jk and substring(b.thnbln from 1 for 4)='$tahun' and substring(b.thnbln from 5 for 2) $bulan and a.lokasi='$lp' and a.keterangan <> 'penutup'");
-            } else {
-                $sanper = "like '$request->sanper'";
-                $data_list = DB::select("select b.docno,substring(b.thnbln from 1 for 4) as tahun,substring(b.thnbln from 5 for 2) as bulan,b.jk,b.store,b.voucher,b.ci,b.paiddate as tglbayar,b.rate,a.lineno,a.account,a.lokasi,a.bagian,a.cj,round(a.totprice,2) as totprice,a.keterangan 
-                                        from kasline a join kasdoc b on b.docno=a.docno 
-                                        where b.jk $jk and substring(b.thnbln from 1 for 4)='$tahun' and substring(b.thnbln from 5 for 2) $bulan and a.account $sanper and a.lokasi='$lp' and a.keterangan <> 'penutup'");
-            }
-        }
+
         // dd($data_list);
         if (!empty($data_list)) {
             // return view('report_kontroler.export_report1',compact('request','data_list'));
@@ -119,21 +100,12 @@ class ReportKontrolerController extends Controller
     }
     public function exportD5(Request $request)
     {
-        if ($request->lapangan <> "KL") {
-            $lokasi = "a.lapangan = '$request->lapangan'";
             $tahun = "$request->tahun";
             $bulan = "$request->bulan";
             $suplesi = "$request->suplesi";
             $thnbln = "2019$request->bulan$request->suplesi";
             $obpsi  = "obpsi_$request->tahun";
-        } else {
-            $lokasi = "a.lapangan in ('MD','MS')";
-            $tahun = "$request->tahun";
-            $bulan = "$request->bulan";
-            $suplesi = "$request->suplesi'";
-            $thnbln = "2019$request->bulan$request->suplesi";
-            $obpsi  = "obpsi_$request->tahun";
-        }
+        
         $data_cek = DB::select("select a.tablename as vada from pg_tables a where a.tablename = '$obpsi' ");
         if (!empty($data_cek)) {
             DB::statement("DROP VIEW IF EXISTS v_report_d5 CASCADE");
@@ -147,18 +119,10 @@ class ReportKontrolerController extends Controller
                         ");
             if ($request->sandi <> "") {
                 $yyy = "$request->sandi";
-                if ($request->lapangan <> "KL") {
-                    $sss = "$request->lapangan";
-                    $data_list = v_report_d5::where('sandi', $yyy)->where('lapangan', $request->lapangan)->orderBy('sandi', 'asc')->get();
-                } else {
-                    $data_list = v_report_d5::where('sandi', $yyy)->where('lapangan', 'MD')->orWhere('lapangan', 'MS')->orderBy('sandi', 'asc')->get();
-                }
+                $data_list = v_report_d5::where('sandi', $yyy)->orderBy('sandi', 'asc')->get();
+                
             } else {
-                if ($request->lapangan <> "KL") {
-                    $data_list = v_report_d5::where('lapangan', $request->lapangan)->orderBy('sandi', 'asc')->get();
-                } else {
-                    $data_list = v_report_d5::where('lapangan', 'MD')->orWhere('lapangan', 'MS')->orderBy('sandi', 'asc')->get();
-                }
+                $data_list = v_report_d5::orderBy('sandi', 'asc')->get();
             }
             if ($data_list->count() > 0) {
                 foreach ($data_list as $data_bln) {
@@ -192,21 +156,12 @@ class ReportKontrolerController extends Controller
     }
     public function exportNeracaKonsolidasi(Request $request)
     {
-        if ($request->lapangan <> "KL") {
-            $lokasi = "a.lapangan = '$request->lapangan'";
             $tahun = "$request->tahun";
             $bulan = "$request->bulan";
             $suplesi = "$request->suplesi";
             $thnbln = "2019$request->bulan$request->suplesi";
             $obpsi  = "obpsi_$request->tahun";
-        } else {
-            $lokasi = "a.lapangan in ('MD','MS')";
-            $tahun = "$request->tahun";
-            $bulan = "$request->bulan";
-            $suplesi = "$request->suplesi'";
-            $thnbln = "2019$request->bulan$request->suplesi";
-            $obpsi  = "obpsi_$request->tahun";
-        }
+           
         $data_cek = DB::select("select a.tablename as vada from pg_tables a where a.tablename = '$obpsi' ");
         if (!empty($data_cek)) {
             DB::statement("DROP VIEW IF EXISTS v_report_d5 CASCADE");
@@ -223,7 +178,7 @@ class ReportKontrolerController extends Controller
                     sum(CASE WHEN a.lapangan ='MD'  THEN c.pengali_tampil*a.cum_rp ELSE '0' END) as mmd,
                     sum(CASE WHEN a.lapangan ='MS'  THEN c.pengali_tampil*a.cum_rp ELSE '0' END) as mms,
                     sum(c.pengali_tampil*a.cum_rp) as kons
-                    from v_neraca a join v_sub_class_account b on a.urutan_sc=b.urutan join v_class_account c on b.urutan_cs=c.urutan_sc where $lokasi  group by a.jenis, a.sub_akun order by a.sub_akun asc
+                    from v_neraca a join v_sub_class_account b on a.urutan_sc=b.urutan join v_class_account c on b.urutan_cs=c.urutan_sc  group by a.jenis, a.sub_akun order by a.sub_akun asc
                     ");
             // dd($data_list);
             if (!empty($data_list)) {
@@ -254,21 +209,12 @@ class ReportKontrolerController extends Controller
     }
     public function exportNeracaDetail(Request $request)
     {
-        if ($request->lapangan <> "KL") {
-            $lokasi = "a.lapangan = '$request->lapangan'";
             $tahun = "$request->tahun";
             $bulan = "$request->bulan";
             $suplesi = "$request->suplesi";
             $thnbln = "2019$request->bulan$request->suplesi";
             $obpsi  = "obpsi_$request->tahun";
-        } else {
-            $lokasi = "a.lapangan in ('MD','MS')";
-            $tahun = "$request->tahun";
-            $bulan = "$request->bulan";
-            $suplesi = "$request->suplesi'";
-            $thnbln = "2019$request->bulan$request->suplesi";
-            $obpsi  = "obpsi_$request->tahun";
-        }
+       
         $data_cek = DB::select("select a.tablename as vada from pg_tables a where a.tablename = '$obpsi' ");
         if (!empty($data_cek)) {
             DB::statement("DROP VIEW IF EXISTS v_report_d5 CASCADE");
@@ -285,7 +231,7 @@ class ReportKontrolerController extends Controller
                 sum(c.pengali_tampil*a.last_rp) as mmd,
                 sum(c.pengali_tampil*a.cur_rp) as mms,
                 sum(c.pengali_tampil*a.cum_rp) as kons
-                from v_neraca a join v_sub_class_account b on a.urutan_sc=b.urutan join v_class_account c on b.urutan_cs=c.urutan_sc where $lokasi  group by a.jenis, a.sub_akun order by a.sub_akun asc
+                from v_neraca a join v_sub_class_account b on a.urutan_sc=b.urutan join v_class_account c on b.urutan_cs=c.urutan_sc group by a.jenis, a.sub_akun order by a.sub_akun asc
                 ");
             if (!empty($data_list)) {
                 $pdf = DomPDF::loadview('report_kontroler.export_neraca_detail', compact('request', 'data_list'))->setPaper('a4', 'Portrait');
@@ -316,21 +262,13 @@ class ReportKontrolerController extends Controller
     }
     public function exportLabaRugiKonsolidasi(Request $request)
     {
-        if ($request->lapangan <> "KL") {
-            $lokasi = "a.lapangan = '$request->lapangan'";
+       
             $tahun = "$request->tahun";
             $bulan = "$request->bulan";
             $suplesi = "$request->suplesi";
             $thnbln = "2019$request->bulan$request->suplesi";
             $obpsi  = "obpsi_$request->tahun";
-        } else {
-            $lokasi = "a.lapangan in ('MD','MS')";
-            $tahun = "$request->tahun";
-            $bulan = "$request->bulan";
-            $suplesi = "$request->suplesi'";
-            $thnbln = "2019$request->bulan$request->suplesi";
-            $obpsi  = "obpsi_$request->tahun";
-        }
+        
         $data_cek = DB::select("select a.tablename as vada from pg_tables a where a.tablename = '$obpsi' ");
         if (!empty($data_cek)) {
             DB::statement("DROP VIEW IF EXISTS v_report_d5 CASCADE");
@@ -345,7 +283,7 @@ class ReportKontrolerController extends Controller
             $data_list = DB::select("
                     select 
                     a.*, c.pengali_tampil as pengali_tmpl
-                    from v_neraca a join v_sub_class_account b on a.urutan_sc=b.urutan join v_class_account c on b.urutan_cs=c.urutan_sc where $lokasi order by a.sub_akun asc
+                    from v_neraca a join v_sub_class_account b on a.urutan_sc=b.urutan join v_class_account c on b.urutan_cs=c.urutan_sc order by a.sub_akun asc
                     ");
             if (!empty($data_list)) {
                 $pdf = DomPDF::loadview('report_kontroler.export_laba_rugi_konsolidasi', compact('request', 'data_list'))->setPaper('a4', 'Portrait');
@@ -373,21 +311,13 @@ class ReportKontrolerController extends Controller
     }
     public function exportLabaRugiDetail(Request $request)
     {
-        if ($request->lapangan <> "KL") {
-            $lokasi = "a.lapangan = '$request->lapangan'";
+        
             $tahun = "$request->tahun";
             $bulan = "$request->bulan";
             $suplesi = "$request->suplesi";
             $thnbln = "2019$request->bulan$request->suplesi";
             $obpsi  = "obpsi_$request->tahun";
-        } else {
-            $lokasi = "a.lapangan in ('MD','MS')";
-            $tahun = "$request->tahun";
-            $bulan = "$request->bulan";
-            $suplesi = "$request->suplesi'";
-            $thnbln = "2019$request->bulan$request->suplesi";
-            $obpsi  = "obpsi_$request->tahun";
-        }
+        
         $data_cek = DB::select("select a.tablename as vada from pg_tables a where a.tablename = '$obpsi' ");
         if (!empty($data_cek)) {
             DB::statement("DROP VIEW IF EXISTS v_report_d5 CASCADE");
@@ -402,7 +332,7 @@ class ReportKontrolerController extends Controller
             $data_list = DB::select("
                     select 
                     a.*, c.pengali_tampil as pengali_tmpl
-                    from v_neraca a join v_sub_class_account b on a.urutan_sc=b.urutan join v_class_account c on b.urutan_cs=c.urutan_sc where $lokasi order by a.sub_akun asc
+                    from v_neraca a join v_sub_class_account b on a.urutan_sc=b.urutan join v_class_account c on b.urutan_cs=c.urutan_sc order by a.sub_akun asc
                     ");
         
             if (!empty($data_list)) {
@@ -502,9 +432,7 @@ class ReportKontrolerController extends Controller
         ->when(request('suplesi'), function ($query) {
             return $query->where('supbln', request('suplesi'));
         })
-        ->when(request('lp'), function ($query) {
-            return $query->where('lokasi', request('lp'));
-        })
+        
         ->when(request('jk') == 1, function ($query) {
             return $query->whereIn('jk', [10, 11, 13]);
         })
@@ -544,9 +472,6 @@ class ReportKontrolerController extends Controller
         })
         ->when(request('suplesi'), function ($query) {
             return $query->where('supbln', request('suplesi'));
-        })
-        ->when(request('lp'), function ($query) {
-            return $query->where('lokasi', request('lp'));
         })
         ->when(request('jk') == 1, function ($query) {
             return $query->whereIn('jk', [10, 11, 13]);
@@ -613,9 +538,6 @@ class ReportKontrolerController extends Controller
         ->when(request('tahun'), function ($query) {
             return $query->where('tahun', request('tahun'));
         })
-        ->when(request('lp'), function ($query) {
-            return $query->where('lokasi', request('lp'));
-        })
         ->when(request('jk') == 1, function ($query) {
             return $query->whereIn('jk', [10, 11, 13]);
         })
@@ -653,9 +575,6 @@ class ReportKontrolerController extends Controller
         ->when(request('tahun'), function ($query) {
             return $query->where('tahun', request('tahun'));
         })
-        ->when(request('lp'), function ($query) {
-            return $query->where('lokasi', request('lp'));
-        })
         ->when(request('jk') == 1, function ($query) {
             return $query->whereIn('jk', [10, 11, 13]);
         })
@@ -692,11 +611,6 @@ class ReportKontrolerController extends Controller
         $tahun = $request->tahun;
         $bulan = $request->bulan;
         $suplesi = $request->suplesi;
-        $lp = $request->input('lp');
-
-        if ($lp == 'KL') {
-            $lp = "MS,MD";
-        }
 
         // $calk_list = DB::table('v_class_account AS vca')
         // ->select(
@@ -758,13 +672,6 @@ class ReportKontrolerController extends Controller
                     $q_three->where('bulan', request('bulan'));
                     $q_three->where('tahun', request('tahun'));
                     $q_three->where('suplesi', request('suplesi'));
-                    $q_three->when(request('lp'), function ($q_where) {
-                        if (request('lp') == 'KL') {
-                            return $q_where->where('lokasi', "MS,MD");
-                        }
-
-                        return $q_where->where('lokasi', request('lp'));
-                    });
                     $q_three->orderBy('sandi');
                 }]);
             }]);

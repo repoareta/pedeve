@@ -50,7 +50,6 @@
 							$tahun = substr($data->sbulan, 0, 4);
 							$bulan = substr($data->sbulan, 4, 2);
 							$suplesi = substr($data->sbulan, 6);
-							$lapangan = "KL";
 						}
 						?>
 						<select class="form-control kt-select2" name="bulan">
@@ -76,17 +75,7 @@
 						<input class="form-control" type="text" value="{{$suplesi}}"   name="suplesi" size="4" maxlength="4" onkeypress="return hanyaAngka(event)" autocomplete='off' required>
 					</div>
 				</div>
-				<div class="form-group row">
-					<label for="dari-input" class="col-2 col-form-label">Lapangan<span style="color:red;">*</span></label>
-					<div class="col-10">
-						<select name="lp" class="form-control kt-select2" required oninvalid="this.setCustomValidity('Lapangan Harus Diisi..')" onchange="setCustomValidity('')">
-							<option value="">- Pilih -</option>
-							@foreach($data_kodelok as $data_kode)
-							<option value="{{$data_kode->kodelokasi}}" <?php if($lapangan  == $data_kode->kodelokasi ) echo 'selected' ; ?>>{{$data_kode->kodelokasi}} -- {{$data_kode->nama}}</option>
-							@endforeach
-						</select>								
-					</div>
-				</div>
+				
 				<div class="kt-form__actions">
 					<div class="row">
 						<div class="col-2"></div>

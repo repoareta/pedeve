@@ -142,7 +142,7 @@ class PenerimaanKasController extends Controller
             $datas = DB::select("Select Max(left(mrs_no,4)) as nover from Kasdoc Where substr(DocNo,1,1)='P' and left(THNBLN,4)='$bulan_buku'");
             foreach ($datas as $data) {
                 if ($data->nover <> null) {
-                    $da = '2'.$data->nover+1;
+                    $da = '2'.($data->nover+1);
                     $nover = substr($da, 1, 4);
                 } else {
                     $nover = '0001';
@@ -187,7 +187,7 @@ class PenerimaanKasController extends Controller
         if (!empty($datas)) {
             foreach ($datas as $dataa) {
                 if ($dataa->nb <> null) {
-                    $da = '2'.$dataa->nb+1;
+                    $da = '2'.($dataa->nb+1);
                     $data = substr($da, 1, 4);
                 } else {
                     $data = '0001';

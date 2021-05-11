@@ -6,6 +6,7 @@ use Illuminate\Http\Request;
 
 // Load Model
 use App\Models\Absensi;
+use DB;
 
 class AbsensiKaryawanController extends Controller
 {
@@ -18,7 +19,17 @@ class AbsensiKaryawanController extends Controller
     {
         $ip = "192.168.16.201";
         $key = "0";
-        return view('absensi_karyawan.index', compact('ip', 'key'));
+        $data_absensi = DB::table('absensi as a')
+        ->leftJoin('sdm_master_pegawai as b', 'a.userid', '=', 'b.noabsen')
+        ->select('a.userid','b.nama','b.noabsen')
+        ->orderBy('tanggal', 'desc')
+        ->get();
+
+        $data_pegawai = DB::table('sdm_master_pegawai')
+        ->where('noabsen', null)
+        ->orderBy('tglentry', 'desc')
+        ->get();
+        return view('absensi_karyawan.index', compact('ip', 'key', 'data_absensi', 'data_pegawai'));
     }
 
     /**
@@ -28,9 +39,23 @@ class AbsensiKaryawanController extends Controller
      */
     public function indexJson()
     {
-        $absensi_list = Absensi::orderBy('tanggal', 'desc');
-
-        return datatables()->of($absensi_list)->make(true);
+        $absensi_list = DB::table('absensi as a')
+        ->leftJoin('sdm_master_pegawai as b', 'a.userid', '=', 'b.noabsen')
+        ->select('a.*','b.nama','b.noabsen')
+        ->orderBy('tanggal', 'desc')
+        ->get();
+        
+        return datatables()->of($absensi_list)
+        ->addColumn('pegawai', function ($absensi_list) {
+            if($absensi_list->noabsen == null){
+                $radio = $absensi_list->userid;
+            }else{
+                $radio = $absensi_list->nama;
+            }
+            return $radio;
+        })
+        ->rawColumns(['pegawai'])
+        ->make(true);
     }
 
     /**
@@ -102,5 +127,15 @@ class AbsensiKaryawanController extends Controller
             }
         }
         return $hasil;
+    }
+
+    public function mapping(Request $request)
+    {
+        DB::table('sdm_master_pegawai')
+        ->where('nopeg', $request->nopeg)
+        ->update([
+        'noabsen' => $request->noabsen
+        ]);
+        return redirect()->route('absensi_karyawan.index');
     }
 }

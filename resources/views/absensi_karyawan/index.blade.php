@@ -31,7 +31,13 @@
 			</span>
 			<h3 class="kt-portlet__head-title">
 				Absensi Karyawan
-			</h3>			
+			</h3>
+			
+			<div class="kt-portlet__head-actions" style="font-size: 2rem;">
+				<span class="kt-font-success pointer-link" data-toggle="modal" data-target="#mapping" data-placement="top" title="Mapping Data Absen.">
+					<i class="fab fa-hubspot"></i>
+				</span>
+			</div>
 		</div>
 		<div class="kt-portlet__head-toolbar">
 			<div class="kt-portlet__head-wrapper">
@@ -60,7 +66,7 @@
 		<table class="table table-striped table-bordered table-hover table-checkable" id="kt_table" width="100%">
 			<thead class="thead-light">
 				<tr>
-					<th>UserID</th>
+					<th>Pegawai</th>
 					<th>Tanggal & Jam</th>
 					<th>Verifikasi</th>
 					<th>Status</th>
@@ -74,6 +80,56 @@
 	</div>
 </div>
 </div>
+
+<!-- Modal-->
+<div class="modal fade" id="mapping" data-backdrop="static" tabindex="-1" role="dialog" aria-labelledby="staticBackdrop" aria-hidden="true">
+    <div class="modal-dialog" role="document">
+        <div class="modal-content">
+            <div class="modal-header">
+                <h5 class="modal-title" id="exampleModalLabel">Mapping data absen dengan data pegawai.</h5>
+                <button type="button" class="close" data-dismiss="modal" aria-label="Close">
+                    <i aria-hidden="true" class="ki ki-close"></i>
+                </button>
+			</div>
+			<form action="{{route('absensi_karyawan.mapping')}}" method="POST">
+				@csrf
+				<div class="modal-body">
+					<div class="form-group row">
+						<label for="kode_main" class="col-2 col-form-label">Pegawai</label>
+						<div class="col-10">
+							<select class="form-control kt-select2" name="nopeg" required>
+								<option value="">- Pilih -</option>
+								@foreach ($data_pegawai as $item)
+									<option value="{{$item->nopeg}}">{{$item->nama}}</option>
+								@endforeach
+							</select>
+						</div>
+					</div>
+					<div class="form-group row">
+						<label for="kode_main" class="col-2 col-form-label">No Absen</label>
+						<div class="col-10">
+							<select class="form-control kt-select2" name="noabsen" required>
+								<option value="">- Pilih -</option>
+								@foreach ($data_absensi->unique('userid')  as $item)
+									@if ($item->noabsen == null)
+										<option value="{{$item->userid}}">{{$item->userid}}</option>
+									@endif
+
+								@endforeach
+							</select>
+							<div id="kode_main-nya"></div>
+						</div>
+					</div>
+				</div>
+				<div class="modal-footer">
+					<button type="submit" class="btn btn-primary font-weight-bold">Save</button>
+				</div>
+			</form>
+        </div>
+    </div>
+</div>
+<!-- Modal-->
+
 @endsection
 
 @section('scripts')
@@ -85,7 +141,7 @@
 			serverSide: true,
 			ajax      : "{{ route('absensi_karyawan.index.json') }}",
 			columns: [
-				{data: 'userid', name: 'userid', class:'no-wrap'},
+				{data: 'pegawai', name: 'userid', class:'no-wrap'},
 				{data: 'tanggal', name: 'tanggal', class:'no-wrap'},
 				{data: 'verifikasi', name: 'verifikasi', class:'no-wrap'},
 				{data: 'status', name: 'status', class:'no-wrap'}

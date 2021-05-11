@@ -212,7 +212,7 @@ class PembayaranGajiController extends Controller
             foreach($datas as $data)
             {
                 if($data->nover <> null){
-                    $da = '2'.$data->nover+1;
+                    $da = '2'.($data->nover+1);
                     $nover = substr($da,1,4);
                 }else {
                     $nover = '0001';
@@ -271,7 +271,7 @@ class PembayaranGajiController extends Controller
             foreach($datas as $dataa)
             {
                 if($dataa->nb <> null){
-                    $da = '2'.$dataa->nb+1;
+                    $da = '2'.($dataa->nb+1);
                     $data = substr($da,1,4);
                 }else {
                     $data = '0001';

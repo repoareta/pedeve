@@ -772,6 +772,7 @@ Route::group(['middleware'=> ['auth','checkRole:1,0']], function () {
         Route::get('absensi_karyawan', 'AbsensiKaryawanController@index')->name('absensi_karyawan.index');
         Route::get('absensi_karyawan/index_json', 'AbsensiKaryawanController@indexJson')->name('absensi_karyawan.index.json');
         Route::get('absensi_karyawan/download', 'AbsensiKaryawanController@download')->name('absensi_karyawan.download');
+        Route::post('absensi_karyawan/mapping', 'AbsensiKaryawanController@mapping')->name('absensi_karyawan.mapping');
         //absensi karyawan
 
 

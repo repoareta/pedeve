@@ -296,7 +296,7 @@
 					</div>
 									
 																					
-					<div class="form-group row">
+					{{-- <div class="form-group row">
 						<label for="example-text-input" class="col-2 col-form-label">Kd.Lapangan<span style="color:red;">*</span></label>
 						<div  class="col-8" >
 							<select name="lapangan"  class="form-control selectpicker" data-live-search="true" required oninvalid="this.setCustomValidity('Kd.Lapangan Harus Diisi..')" onchange="setCustomValidity('')">
@@ -306,7 +306,7 @@
 									@endforeach
 							</select>
 						</div>
-					</div>			
+					</div>			 --}}
 					<div class="form-group row">
 						<label for="example-text-input" class="col-2 col-form-label">Sandi Perkiraan<span style="color:red;">*</span></label>
 						<div  class="col-8" >
@@ -413,7 +413,7 @@
 					</div>
 									
 																					
-					<div class="form-group row">
+					{{-- <div class="form-group row">
 						<label for="example-text-input" class="col-2 col-form-label">Kd.Lapangan<span style="color:red;">*</span></label>
 						<div  class="col-8" >
 							<select name="lapangan" id="lapangan"  class="form-control selectpicker" data-live-search="true" required oninvalid="this.setCustomValidity('Kd.Lapangan Harus Diisi..')" onchange="setCustomValidity('')">
@@ -423,7 +423,7 @@
 									@endforeach
 							</select>
 						</div>
-					</div>			
+					</div>			 --}}
 					<div class="form-group row">
 						<label for="example-text-input" class="col-2 col-form-label">Sandi Perkiraan<span style="color:red;">*</span></label>
 						<div  class="col-8" >
@@ -643,7 +643,7 @@ $('#editRow').on('click', function(e) {
 			var no = $(this).attr('docno');
 			var id = $(this).attr('lineno');
 			$.ajax({
-				url :"{{('kontroler/jurnal_umum/editdetail')}}"+ '/' +no+'/'+id,
+				url :"{{url('kontroler/jurnal_umum/editdetail')}}"+ '/' +no+'/'+id,
 				type : 'get',
 				dataType:"json",
 				headers: {

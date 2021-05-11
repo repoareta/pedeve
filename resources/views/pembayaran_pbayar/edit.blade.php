@@ -868,7 +868,7 @@ if($('input[type=radio]').is(':checked')) {
 		var nodok = $(this).attr('nodok').split("/").join("-");
 		var nourut = $(this).attr('nourut');
 			$.ajax({
-				url :"{{('perbendaharaan/pembayaran_pbayar/editdetail')}}"+ '/' +nodok+ '/' +nourut,
+				url :"{{url('perbendaharaan/pembayaran_pbayar/editdetail')}}"+ '/' +nodok+ '/' +nourut,
 				type : 'get',
 				dataType:"json",
 				headers: {

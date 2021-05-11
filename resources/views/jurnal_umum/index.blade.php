@@ -79,7 +79,7 @@
 							<option value="03" <?php if($bulan  == '03' ) echo 'selected' ; ?>>Maret</option>
 							<option value="04" <?php if($bulan  == '04' ) echo 'selected' ; ?>>April</option>
 							<option value="05" <?php if($bulan  == '05' ) echo 'selected' ; ?>>Mei</option>
-							<option value="06" <?php if($bulan  == '05' ) echo 'selected' ; ?>>Juni</option>
+							<option value="06" <?php if($bulan  == '06' ) echo 'selected' ; ?>>Juni</option>
 							<option value="07" <?php if($bulan  == '07' ) echo 'selected' ; ?>>Juli</option>
 							<option value="08" <?php if($bulan  == '08' ) echo 'selected' ; ?>>Agustus</option>
 							<option value="09" <?php if($bulan  == '09' ) echo 'selected' ; ?>>September</option>

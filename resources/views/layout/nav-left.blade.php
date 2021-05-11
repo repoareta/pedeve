@@ -1616,7 +1616,7 @@
                         <i class="fa fa-chalkboard"></i>
                     </span>
                     <span class="kt-menu__link-text">
-                        Perbendaharaan
+                        Treasury
                     </span><i class="kt-menu__ver-arrow la la-angle-right"></i>
                 </a>
                 <div class="kt-menu__submenu "><span class="kt-menu__arrow"></span>
@@ -1624,7 +1624,7 @@
                         <li class="kt-menu__item  kt-menu__item--parent" aria-haspopup="true">
                             <span class="kt-menu__link">
                                 <span class="kt-menu__link-text">
-                                    Perbendaharaan
+                                    Treasury
                                 </span>
                             </span>
                         </li>
