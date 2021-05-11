@@ -216,6 +216,12 @@ class AnggaranController extends Controller
         return view('anggaran.report');
     }
 
+    /**
+     * Undocumented function
+     *
+     * @param Request $request
+     * @return void
+     */
     public function reportExport(Request $request)
     {
         $tahun = $request->tahun;
