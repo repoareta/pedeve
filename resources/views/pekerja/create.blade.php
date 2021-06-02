@@ -80,6 +80,7 @@
 								<select class="form-control kt-select2" name="status" id="status">
 									<option value=""> - Pilih Status- </option>
 									<option value="C">Aktif</option>
+									<option value="TA">Tidak Aktif</option>
 									<option value="P">Pensiun</option>									
 									<option value="K">Kontrak</option>
 									<option value="B">Perbantuan</option>
